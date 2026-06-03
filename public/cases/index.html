@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zivik — Case Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0d14;
+            --bg-secondary: #111827;
+            --bg-tertiary: #1a2234;
+            --bg-card: #141b2d;
+            --bg-elevated: #1e2a45;
+            --text-primary: #e8eaf0;
+            --text-secondary: #9ca3b8;
+            --text-muted: #6b7280;
+            --gold: #d4a84b;
+            --gold-light: #e8c87a;
+            --gold-dark: #a67c32;
+            --gold-glow: rgba(212, 168, 75, 0.15);
+            --success: #34d399;
+            --warning: #fbbf24;
+            --error: #f87171;
+            --info: #60a5fa;
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Source Sans 3', system-ui, sans-serif;
+            --border-subtle: 1px solid rgba(212, 168, 75, 0.1);
+            --border-accent: 1px solid rgba(212, 168, 75, 0.3);
+            --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 1rem 2rem;
+            background: rgba(10, 13, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: var(--border-subtle);
+        }
+        .nav-content {
+            max-width: 1400px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-brand {
+            display: flex; align-items: center; gap: 0.75rem;
+            text-decoration: none; color: var(--text-primary);
+        }
+        .nav-brand svg { width: 32px; height: 32px; fill: var(--gold); }
+        .nav-brand span {
+            font-family: var(--font-display); font-size: 1.1rem;
+            font-weight: 600; letter-spacing: 0.05em;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.875rem; font-weight: 500;
+            letter-spacing: 0.03em; text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--gold); }
+
+        .hero {
+            min-height: 70vh; display: flex; align-items: center; justify-content: center;
+            padding: 8rem 2rem 4rem; text-align: center;
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 168, 75, 0.08) 0%, transparent 50%),
+                var(--bg-primary);
+        }
+        .hero h1 {
+            font-family: var(--font-display); font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 600; color: var(--text-primary); margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+        .hero p {
+            font-size: 1.2rem; color: var(--text-secondary); max-width: 700px;
+            margin: 0 auto 3rem; line-height: 1.7;
+        }
+        .hero-stats {
+            display: flex; justify-content: center; gap: 3rem;
+            padding-top: 2rem; border-top: var(--border-subtle);
+        }
+        .hero-stat { text-align: center; }
+        .hero-stat-value {
+            font-family: var(--font-display); font-size: 2.5rem;
+            font-weight: 700; color: var(--gold); display: block;
+        }
+        .hero-stat-label {
+            font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .section { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+        .section-label {
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 0.5rem;
+        }
+        .section-title {
+            font-family: var(--font-display); font-size: 2rem; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 1rem;
+        }
+
+        .cases-grid {
+            display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem;
+        }
+
+        .case-card {
+            display: grid; grid-template-columns: auto 1fr auto; gap: 2rem;
+            align-items: start; padding: 2rem;
+            background: var(--bg-card); border: var(--border-subtle); border-radius: 8px;
+            text-decoration: none; color: inherit;
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .case-card:hover {
+            border-color: rgba(212, 168, 75, 0.3);
+            background: var(--bg-elevated);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .case-number {
+            font-family: var(--font-display); font-size: 2.5rem; font-weight: 700;
+            color: var(--gold); opacity: 0.3; line-height: 1; min-width: 80px; text-align: center;
+        }
+        .case-content { flex: 1; }
+        .case-court {
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;
+        }
+        .case-title {
+            font-family: var(--font-display); font-size: 1.5rem; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 0.25rem; line-height: 1.3;
+        }
+        .case-parties {
+            font-family: var(--font-display); font-size: 1rem; font-style: italic;
+            color: var(--text-secondary); margin-bottom: 0.75rem;
+        }
+        .case-desc {
+            font-size: 0.95rem; color: var(--text-muted); line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .case-meta {
+            display: flex; gap: 1.5rem; font-size: 0.8rem; color: var(--text-muted);
+        }
+        .case-meta span { display: flex; align-items: center; gap: 0.4rem; }
+        .case-badge {
+            padding: 0.3rem 0.75rem; border-radius: 100px;
+            font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+            align-self: start; white-space: nowrap;
+        }
+        .badge-available { background: rgba(52, 211, 153, 0.1); color: var(--success); border: 1px solid rgba(52, 211, 153, 0.3); }
+        .badge-pending { background: rgba(251, 191, 36, 0.1); color: var(--warning); border: 1px solid rgba(251, 191, 36, 0.3); }
+
+        .tools-section { border-top: var(--border-subtle); margin-top: 2rem; }
+        .tools-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem; margin-top: 2rem;
+        }
+        .tool-card {
+            padding: 1.5rem; background: var(--bg-card); border: var(--border-subtle);
+            border-radius: 8px; text-decoration: none; color: inherit;
+            transition: all 0.3s ease;
+        }
+        .tool-card:hover {
+            border-color: rgba(212, 168, 75, 0.3); background: var(--bg-elevated);
+            transform: translateY(-2px);
+        }
+        .tool-card h3 {
+            font-family: var(--font-display); font-size: 1.25rem; font-weight: 600;
+            color: var(--text-primary); margin-bottom: 0.5rem;
+        }
+        .tool-card p { font-size: 0.9rem; color: var(--text-muted); }
+
+        footer {
+            border-top: var(--border-subtle); padding: 3rem 2rem;
+            text-align: center; color: var(--text-muted); font-size: 0.85rem;
+        }
+        footer a { color: var(--gold); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 768px) {
+            .case-card { grid-template-columns: 1fr; gap: 1rem; }
+            .case-number { font-size: 1.5rem; min-width: auto; text-align: left; }
+            .hero-stats { flex-wrap: wrap; gap: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="/cases" class="nav-brand">
+                <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <span>Zivik · Case Archive</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="/atlas">Atlas</a></li>
+                <li><a href="/subway">Subway</a></li>
+                <li><a href="/reader">Reader</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div>
+            <h1>Case <em>Archive</em></h1>
+            <p>Interactive analysis of landmark international legal proceedings between Ukraine and the Russian Federation. Judgments, timelines, voting breakdowns, and intervening states — sourced from the public record.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-value">41</span>
+                    <span class="hero-stat-label">Total Cases</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">2</span>
+                    <span class="hero-stat-label">Detailed Summaries</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">13</span>
+                    <span class="hero-stat-label">Court Cities</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-value">8</span>
+                    <span class="hero-stat-label">Harm Sites</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section">
+        <span class="section-label">Case Summaries</span>
+        <h2 class="section-title">Available Analyses</h2>
+
+        <div class="cases-grid">
+            <a href="/icj-case-182.html" class="case-card">
+                <span class="case-number">182</span>
+                <div class="case-content">
+                    <div class="case-court">International Court of Justice</div>
+                    <div class="case-title">Allegations of Genocide</div>
+                    <div class="case-parties">Ukraine v. Russian Federation · 32 States Intervening</div>
+                    <div class="case-desc">
+                        Preliminary objections judgment of 2 February 2024. Russia raised six objections — five rejected, one upheld. Court jurisdiction narrowed to Ukraine's negative genocide declaration. Full voting breakdown, timeline, and intervening states map.
+                    </div>
+                    <div class="case-meta">
+                        <span>Filed: 26 Feb 2022</span>
+                        <span>Judgment: 2 Feb 2024</span>
+                        <span>Phase: Merits pending</span>
+                    </div>
+                </div>
+                <span class="case-badge badge-available">Full Analysis</span>
+            </a>
+
+            <a href="/reader/case/icj-cerd-icsft" class="case-card">
+                <span class="case-number">166</span>
+                <div class="case-content">
+                    <div class="case-court">International Court of Justice</div>
+                    <div class="case-title">Application of the ICSFT and CERD</div>
+                    <div class="case-parties">Ukraine v. Russian Federation</div>
+                    <div class="case-desc">
+                        Merits judgment of 31 January 2024. Russia violated ICSFT Art. 9(1) and CERD Arts. 2(1)(a) &amp; 5(e)(v). Verdict scorecard across 16 findings, collapsible analysis per article, party submissions, and judgment excerpts with paragraph references.
+                    </div>
+                    <div class="case-meta">
+                        <span>Filed: 16 Jan 2017</span>
+                        <span>Judgment: 31 Jan 2024</span>
+                        <span>Status: Merits delivered</span>
+                    </div>
+                </div>
+                <span class="case-badge badge-available">Full Analysis</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="section tools-section">
+        <span class="section-label">Visualizations</span>
+        <h2 class="section-title">Explore the Data</h2>
+
+        <div class="tools-grid">
+            <a href="/atlas" class="tool-card">
+                <h3>The Atlas</h3>
+                <p>Interactive map of 41 cases across 13 court cities and 8 harm sites. Filter by theme, click any place for case details.</p>
+            </a>
+            <a href="/subway" class="tool-card">
+                <h3>The Subway</h3>
+                <p>Metro-style diagram of 8 legal "lines" connecting harm sites in Ukraine to courts across Europe. The Hague is the megahub.</p>
+            </a>
+            <a href="/reader" class="tool-card">
+                <h3>The Reader</h3>
+                <p>Research reader on the inter-state proceeding under the European Convention on Human Rights. Case summaries with detailed analysis.</p>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>Zivik · Case Archive &middot; A reader. Not legal advice. The judgments control.</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://www.icj-cij.org" target="_blank">ICJ Website</a> &middot;
+            <a href="https://github.com/vm-cpu/zivik-platform" target="_blank">Source Code</a>
+        </p>
+    </footer>
+</body>
+</html>
