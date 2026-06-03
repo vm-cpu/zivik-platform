@@ -1,26 +1,74 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Reader (caseworks) palette */
+  --bg: #f7f6f2;
+  --bg-2: #efeee8;
+  --ink: #0c0c0d;
+  --ink-soft: #58575a;
+  --rule: #c9c8c1;
+  --accent: #1c2bd6;
+  --accent-soft: #1c2bd61f;
+
+  /* Atlas (caseflows) palette */
+  --atlas-bg: #f4efe5;
+  --atlas-ink: #1c1814;
+  --atlas-ink-soft: #4a443a;
+  --atlas-muted: #8a8270;
+  --atlas-gold: #b88a3a;
+  --atlas-red: #a83426;
+  --atlas-green: #5e7a64;
+  --atlas-rule: #d4cfc3;
+  --atlas-header-bg: #f4efe5;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Reader colors */
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+
+  /* Atlas colors */
+  --color-atlas-bg: var(--atlas-bg);
+  --color-atlas-ink: var(--atlas-ink);
+  --color-atlas-ink-soft: var(--atlas-ink-soft);
+  --color-atlas-muted: var(--atlas-muted);
+  --color-atlas-gold: var(--atlas-gold);
+  --color-atlas-red: var(--atlas-red);
+  --color-atlas-green: var(--atlas-green);
+  --color-atlas-rule: var(--atlas-rule);
+
+  /* Fonts */
+  --font-serif: var(--font-newsreader);
+  --font-display: var(--font-fraunces);
+  --font-mono: var(--font-ibm-plex-mono);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  background: #e8e0d0 !important;
+  font-family: inherit;
+}
+
+.leaflet-control-zoom a {
+  background: var(--atlas-bg) !important;
+  color: var(--atlas-ink) !important;
+  border-color: var(--atlas-rule) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 2px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
 }
