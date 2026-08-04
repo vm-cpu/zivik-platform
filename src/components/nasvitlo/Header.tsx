@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
@@ -41,27 +40,16 @@ export default function Header({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span
-            style={{
-              background: "#F5F0E6",
-              padding: "5px 8px",
-              borderRadius: 3,
-              display: "inline-flex",
-            }}
-          >
-            <Image
-              src="/logos/fp-logo.webp"
-              alt={dict.brand.facultyAlt}
-              width={66}
-              height={26}
-              style={{ height: 26, width: "auto" }}
-              priority
-            />
-          </span>
+          {/* White Faculty-of-Law mark on the dark bar. eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`/logos/fp-logo-white-${locale}.svg`}
+            alt={dict.brand.facultyAlt}
+            style={{ height: 40, width: "auto", display: "block" }}
+          />
           <span
             style={{
               width: 1,
-              height: 28,
+              height: 36,
               background: "rgba(243,232,226,.16)",
             }}
           />

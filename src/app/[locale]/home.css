@@ -397,7 +397,7 @@
   .regm .mrow{display:flex;flex-direction:column;gap:7px;padding:16px;text-decoration:none;background:var(--surface);border:1px solid var(--rule);cursor:pointer}
   .regm .mrow:active{border-color:var(--gold)}
   .regm .tok{min-height:34px}
-  .page{--red:#7F1716;--redd:#5C100F;--gold:#946428;--paper:#F5F0E6;--paper2:#EDE6D6;--surface:#FFFDF9;--ink:#211C18;--ink2:#5E554B;--muted:#5E554B;--faint:#938979;--rule:#DCD3C2;
+  .page{--red:#7F1716;--redd:#5C100F;--gold:#946428;--paper:#F4F4F2;--paper2:#EAEAE6;--surface:#FFFFFF;--ink:#211C18;--ink2:#57534C;--muted:#57534C;--faint:#98948B;--rule:#E0DFDA;
     width:100%;max-width:1280px;margin:0 auto;background:var(--paper);color:var(--ink);font-family:'Fira Sans',sans-serif;font-size:14px;line-height:1.55;box-shadow:0 0 90px rgba(0,0,0,.5)}
   .page h1,.page h2,.page h3,.page h4{font-family:'Charis SIL',Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   .page a{color:var(--red);text-decoration:none}
@@ -435,6 +435,27 @@
 .nsv-news-links a{font:700 11px 'Fira Sans';letter-spacing:.06em;text-transform:uppercase;color:var(--red);text-decoration:none;white-space:nowrap}
 .nsv-news-links a:hover{color:var(--redd)}
 
+/* wide-format events map — full-bleed across the page column, widescreen height */
+.nsv-map{margin:22px -28px 0;background:#140807;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.nsv-map-frame{height:clamp(360px,58vh,580px);overflow:hidden}
+.nsv-map-frame iframe{width:100%;height:100%;border:0;display:block}
+.nsv-map-legend{display:flex;gap:26px;flex-wrap:wrap;padding:13px 28px}
+
+/* ============================================================
+   Keep the lamp centred on the now-fluid hero stage at any width.
+   The fixtures were authored at fixed px for a 900px stage (centre = 450px);
+   re-anchor them to 50% so the lamp stays over the wordmark when the stage
+   narrows. (At 900px these resolve to the original positions.)
+   ============================================================ */
+.lmp .dcord{left:calc(50% - 1px)}
+.lmp .dcollar{left:calc(50% - 12px)}
+.lmp .bshade{left:calc(50% - 88px)}
+.lmp .bmouth{left:calc(50% - 86px)}
+.lmp .bcone{left:calc(50% - 260px)}
+.lmp .bpool{left:calc(50% - 230px)}
+.lmp .dchain{left:calc(50% + 58px)}
+.lmp .chint{left:calc(50% + 98px)}
+
 /* ============================================================
    Responsive layout — reflow the desktop composition for
    tablet/phone. Structural containers carry `nsv-*` classes.
@@ -461,10 +482,10 @@
   .nsv-newsletter{flex-direction:column !important;align-items:flex-start !important;gap:16px !important}
   .nsv-newsletter .nsv-news-cta{flex-wrap:wrap}
   .lmp .wm{font-size:clamp(46px,15vw,88px) !important}
-  .nsv-hero{padding:104px 18px 0 !important}
+  .nsv-hero{padding:158px 18px 0 !important}
   .pj{min-height:auto !important;padding-bottom:44px !important}
-  .lmp .bshade,.lmp .bmouth,.lmp .bmouth i,.lmp .dcord,.lmp .dcollar,.lmp .dchain,.lmp .chint{display:none !important}
-  .lmp .bcone{opacity:.3 !important}
+  /* keep the lamp; only drop the hover hint on small screens */
+  .lmp .chint{display:none !important}
   .acc details{position:relative}
   .acc summary{grid-template-columns:1fr auto !important;gap:4px 12px !important;padding:14px 16px !important}
   .acc .ab{grid-column:1;grid-row:1}

@@ -67,15 +67,14 @@ export default function MapSection({ dict }: { dict: Dictionary }) {
           {dict.mapSection.fullMap}
         </a>
       </div>
-      <div style={{ background: "#140807", padding: 14, border: "1px solid var(--rule)" }}>
-        <div style={{ height: 400, overflow: "hidden" }}>
+      <div className="nsv-map">
+        <div className="nsv-map-frame">
           <iframe
             src="/nasvitlo/map-dark.html"
             title={dict.mapSection.heading}
-            style={{ width: "100%", height: "100%", border: 0, display: "block" }}
           />
         </div>
-        <div style={{ display: "flex", gap: 26, flexWrap: "wrap", marginTop: 13 }}>
+        <div className="nsv-map-legend">
           <span style={legendItem}>
             <i
               style={{
