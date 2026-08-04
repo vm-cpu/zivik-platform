@@ -1,10 +1,10 @@
 /**
  * Content models for the насвітло archive.
  *
- * These are the shapes the UI consumes. Today they are backed by typed files
- * (`src/content/*.ts`); later a `PayloadRepository` will return the same shapes
- * from the CMS, so components never change. Every human-facing string is
- * `Localized` so content is authored per language.
+ * Backed today by typed files (`src/content/*.ts`); a `PayloadRepository` will
+ * later return the same shapes from the CMS, so components never change. Every
+ * human-facing string is `Localized` so content is authored per language.
+ * Official case citations are single strings (identical across locales).
  */
 import type { Locale } from "@/i18n/config";
 
@@ -19,39 +19,61 @@ export function pick<T>(value: Localized<T>, locale: Locale): T {
 /** Geographic point as `[longitude, latitude]` (d3-geo order). */
 export type LonLat = [number, number];
 
-export type CaseStatus = "decided" | "progress" | "warrant" | "queued";
+/** Normalised case status driving the chip colour/label (source status is free text). */
+export type CaseStatusKey =
+  | "decided"
+  | "progress"
+  | "warrant"
+  | "settled"
+  | "enforcement"
+  | "frozen"
+  | "rejected";
 
-export type EventCategory = "hr" | "war" | "asset";
+export type InstitutionCategory =
+  | "international"
+  | "arbitration"
+  | "national"
+  | "executive";
 
-/** A court / instance that hears cases (registry accordion group). */
-export interface Court {
+/** A court, tribunal or body that hears cases against Russia. */
+export interface Institution {
   /** Stable slug, e.g. `"ecthr"`. */
   id: string;
-  /** Abbreviation shown as the badge — differs by locale (ЄСПЛ ↔ ECtHR). */
+  /** Abbreviation shown as the badge — may differ by locale (ЄСПЛ ↔ ECtHR). */
   abbr: Localized;
-  /** Full name, e.g. "Європейський суд з прав людини". */
   name: Localized;
-  /** Seat city, e.g. "Страсбург". */
-  seat: Localized;
-  /** Total number of cases before this court. */
-  total: number;
-  /** How many have been fully processed ("lit"). */
-  analysed: number;
-  /** Sort order in the registry. */
+  /** Seat city, or null for national/EU groupings. */
+  seat: Localized | null;
+  category: InstitutionCategory;
+  /** Whether this institution appears in the homepage registry (Phase 1). */
+  phase1: boolean;
   order: number;
 }
 
 /** A single case in the registry. */
 export interface RegistryCase {
   id: string;
-  /** References `Court.id`. */
-  courtId: string;
-  title: Localized;
+  /** Sequence number from the source table (null for the umbrella ICC situation). */
+  num: number | null;
+  /** References `Institution.id`. */
+  institutionId: string;
+  /** Official citation — identical in both locales. */
+  name: string;
+  type: Localized;
+  /** Normalised status for the chip. */
+  statusKey: CaseStatusKey;
+  /** Full status wording. */
+  status: Localized;
+  year: number | null;
+  /** Amount at stake in USD, if applicable. */
+  amountUsd: number | null;
+  /** Short context / docket reference. */
   note: Localized;
-  status: CaseStatus;
-  /** Display date or range, e.g. "09.07.2025" or "2022 →". */
-  date: string;
-  /** Whether the case has a summary/timeline/documents ("lit" vs queued). */
+  /** Page count of the decision, if known. */
+  pages: number | null;
+  /** Link to the decision or case page. */
+  decisionUrl: string | null;
+  /** True once a summary/timeline/documents exist ("lit" vs merely registered). */
   lit: boolean;
 }
 
@@ -60,7 +82,6 @@ export interface CourtHub {
   id: string;
   city: Localized;
   coord: LonLat;
-  /** [abbr, full name] pairs of the courts seated here. */
   seats: Array<{ abbr: string; name: Localized }>;
 }
 
@@ -68,20 +89,17 @@ export interface CourtHub {
 export interface MapEvent {
   id: string;
   coord: LonLat;
-  category: EventCategory;
-  /** Pin size in px. */
+  category: "hr" | "war" | "asset";
   size: number;
   tag?: Localized;
   eyebrow: Localized;
   title: Localized;
   note: Localized;
-  /** References `CourtHub.id`. */
   hubs: string[];
   forum: Localized;
   cases: Localized;
   fresh?: boolean;
   freshLabel?: Localized;
-  /** Open the popup by default (used for the featured event). */
   featured?: boolean;
 }
 
@@ -89,7 +107,6 @@ export interface MapEvent {
 export interface Stat {
   value: string;
   label: Localized;
-  /** Render the number in the gold accent. */
   gilt?: boolean;
 }
 
@@ -97,7 +114,12 @@ export interface Stat {
 export interface Partner {
   id: string;
   name: Localized;
-  /** Path under `/public/logos/partners/`, if a real logo exists yet. */
   logo?: string;
   url?: string;
+}
+
+/** "About the library" prose, per locale. */
+export interface AboutContent {
+  title: Localized;
+  paragraphs: Localized<string[]>;
 }

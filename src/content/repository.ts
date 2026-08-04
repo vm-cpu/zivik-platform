@@ -2,32 +2,38 @@
  * Content access boundary.
  *
  * The UI depends only on `ContentRepository`, never on where content is stored.
- * Today it's backed by typed files (`fileRepository`); when Payload CMS lands we
- * add a `payloadRepository` implementing the same interface and swap it in
- * `getContentRepository()` — no component changes required.
- *
- * All methods are async so the file-backed and CMS-backed implementations are
- * interchangeable.
+ * Today it's backed by typed files; when Payload CMS lands we add a
+ * `payloadRepository` implementing the same interface and swap it in
+ * `getContentRepository()` — no component changes required. All methods are
+ * async so file-backed and CMS-backed implementations are interchangeable.
  */
-import { courts } from "./courts";
+import { about } from "./about";
+import { registryCases } from "./cases";
+import { institutions } from "./institutions";
 import { partners } from "./partners";
-import { registryCases } from "./registry";
 import { stats } from "./stats";
-import type { Court, Partner, RegistryCase, Stat } from "./types";
+import type {
+  AboutContent,
+  Institution,
+  Partner,
+  RegistryCase,
+  Stat,
+} from "./types";
 
 export interface ContentRepository {
-  getCourts(): Promise<Court[]>;
-  getRegistryCases(): Promise<RegistryCase[]>;
+  getInstitutions(): Promise<Institution[]>;
+  getCases(): Promise<RegistryCase[]>;
   getStats(): Promise<Stat[]>;
   getPartners(): Promise<Partner[]>;
+  getAbout(): Promise<AboutContent>;
 }
 
 /** File-backed implementation used until Payload CMS is wired up. */
 export const fileRepository: ContentRepository = {
-  async getCourts() {
-    return [...courts].sort((a, b) => a.order - b.order);
+  async getInstitutions() {
+    return [...institutions].sort((a, b) => a.order - b.order);
   },
-  async getRegistryCases() {
+  async getCases() {
     return registryCases;
   },
   async getStats() {
@@ -35,6 +41,9 @@ export const fileRepository: ContentRepository = {
   },
   async getPartners() {
     return partners;
+  },
+  async getAbout() {
+    return about;
   },
 };
 
@@ -46,16 +55,16 @@ export function getContentRepository(): ContentRepository {
   return fileRepository;
 }
 
-/** Convenience: registry cases grouped by court id, preserving file order. */
-export async function getRegistryByCourt(
+/** Registry cases grouped by institution id, preserving file order. */
+export async function getCasesByInstitution(
   repo: ContentRepository = fileRepository,
 ): Promise<Map<string, RegistryCase[]>> {
-  const cases = await repo.getRegistryCases();
-  const byCourt = new Map<string, RegistryCase[]>();
+  const cases = await repo.getCases();
+  const byInstitution = new Map<string, RegistryCase[]>();
   for (const c of cases) {
-    const list = byCourt.get(c.courtId);
+    const list = byInstitution.get(c.institutionId);
     if (list) list.push(c);
-    else byCourt.set(c.courtId, [c]);
+    else byInstitution.set(c.institutionId, [c]);
   }
-  return byCourt;
+  return byInstitution;
 }

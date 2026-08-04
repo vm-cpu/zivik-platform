@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { getContentRepository, getRegistryByCourt } from "@/content/repository";
+import {
+  getCasesByInstitution,
+  getContentRepository,
+} from "@/content/repository";
 import { siteUrl } from "@/lib/seo";
 import LampShell from "@/components/nasvitlo/LampShell";
 import Header from "@/components/nasvitlo/Header";
@@ -23,12 +26,17 @@ export default async function HomePage({
 
   const dict = await getDictionary(locale);
   const repo = getContentRepository();
-  const [courts, stats, partners, casesByCourt] = await Promise.all([
-    repo.getCourts(),
-    repo.getStats(),
-    repo.getPartners(),
-    getRegistryByCourt(repo),
-  ]);
+  const [institutions, stats, partners, cases, casesByInstitution] =
+    await Promise.all([
+      repo.getInstitutions(),
+      repo.getStats(),
+      repo.getPartners(),
+      repo.getCases(),
+      getCasesByInstitution(repo),
+    ]);
+  const phase1 = institutions.filter((i) => i.phase1);
+  const totalCases = cases.length;
+  const analysedCases = cases.filter((c) => c.lit).length;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -58,8 +66,10 @@ export default async function HomePage({
         <Registry
           locale={locale}
           dict={dict}
-          courts={courts}
-          casesByCourt={casesByCourt}
+          institutions={phase1}
+          casesByInstitution={casesByInstitution}
+          totalCases={totalCases}
+          analysedCases={analysedCases}
         />
         <Newsletter dict={dict} />
         <Partners locale={locale} dict={dict} partners={partners} />

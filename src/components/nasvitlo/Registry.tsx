@@ -2,16 +2,23 @@ import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import {
   pick,
-  type CaseStatus,
-  type Court,
+  type CaseStatusKey,
+  type Institution,
   type RegistryCase,
 } from "@/content/types";
 
-const CHIP_CLASS: Record<Exclude<CaseStatus, "queued">, string> = {
+const CHIP_CLASS: Record<CaseStatusKey, string> = {
   decided: "st-decided",
   progress: "st-progress",
   warrant: "st-warrant",
+  settled: "st-enforce",
+  enforcement: "st-enforce",
+  frozen: "st-enforce",
+  rejected: "st-progress",
 };
+
+/** Statuses that read as "still moving" get an arrow after the year. */
+const ONGOING: ReadonlySet<CaseStatusKey> = new Set(["progress", "warrant"]);
 
 function fmt(template: string, vars: Record<string, string | number>): string {
   return Object.entries(vars).reduce(
@@ -20,26 +27,27 @@ function fmt(template: string, vars: Record<string, string | number>): string {
   );
 }
 
-/** Registry of courts and their cases, as a lit/queued accordion. */
+/** Registry of Phase-1 courts and their cases, as a lit/queued accordion. */
 export default function Registry({
   locale,
   dict,
-  courts,
-  casesByCourt,
+  institutions,
+  casesByInstitution,
+  totalCases,
+  analysedCases,
 }: {
   locale: Locale;
   dict: Dictionary;
-  courts: Court[];
-  casesByCourt: Map<string, RegistryCase[]>;
+  institutions: Institution[];
+  casesByInstitution: Map<string, RegistryCase[]>;
+  totalCases: number;
+  analysedCases: number;
 }) {
-  const total = courts.reduce((sum, c) => sum + c.total, 0);
-  const analysed = courts.reduce((sum, c) => sum + c.analysed, 0);
-  const pct = total ? Math.round((analysed / total) * 100) : 0;
+  const pct = totalCases ? Math.round((analysedCases / totalCases) * 100) : 0;
 
-  const statusLabel: Record<Exclude<CaseStatus, "queued">, string> = {
-    decided: dict.registry.statusDecided,
-    progress: dict.registry.statusProgress,
-    warrant: dict.registry.statusWarrant,
+  const caseDate = (c: RegistryCase) => {
+    if (c.year == null) return "—";
+    return ONGOING.has(c.statusKey) ? `${c.year} →` : String(c.year);
   };
 
   return (
@@ -83,7 +91,7 @@ export default function Registry({
             </p>
           </div>
           <a className="btn btn-o" href="#" style={{ flex: "none" }}>
-            {fmt(dict.registry.fullRegistry, { count: total })}
+            {fmt(dict.registry.fullRegistry, { count: totalCases })}
           </a>
         </div>
       </div>
@@ -103,9 +111,7 @@ export default function Registry({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <span
-            style={{ font: "600 12.5px 'Fira Sans'", color: "var(--ink)" }}
-          >
+          <span style={{ font: "600 12.5px 'Fira Sans'", color: "var(--ink)" }}>
             {dict.registry.processed}{" "}
             <b
               style={{
@@ -114,9 +120,9 @@ export default function Registry({
                 fontWeight: 400,
               }}
             >
-              {analysed}
+              {analysedCases}
             </b>{" "}
-            {dict.registry.of} {total}
+            {dict.registry.of} {totalCases}
           </span>
           <span
             style={{
@@ -145,58 +151,59 @@ export default function Registry({
         </div>
         <label className="swonly">
           <input type="checkbox" />
-          {fmt(dict.registry.onlyAnalysed, { count: analysed })}
+          {fmt(dict.registry.onlyAnalysed, { count: analysedCases })}
         </label>
       </div>
 
       <div className="acc" style={{ position: "relative", zIndex: 3 }}>
-        {courts.map((court, index) => {
-          const cases = casesByCourt.get(court.id) ?? [];
-          const dots = Array.from({ length: court.total });
+        {institutions.map((inst, index) => {
+          const cases = casesByInstitution.get(inst.id) ?? [];
+          const analysed = cases.filter((c) => c.lit).length;
+          const seat = inst.seat ? pick(inst.seat, locale) : null;
           return (
             <details
-              key={court.id}
+              key={inst.id}
               open={index === 0}
-              data-lit={court.analysed > 0 ? "1" : undefined}
+              data-lit={analysed > 0 ? "1" : undefined}
             >
               <summary>
-                <span className="ab">{pick(court.abbr, locale)}</span>
+                <span className="ab">{pick(inst.abbr, locale)}</span>
                 <span className="fn">
-                  {pick(court.name, locale)}{" "}
-                  <i>· {pick(court.seat, locale)}</i>
+                  {pick(inst.name, locale)}
+                  {seat ? <i> · {seat}</i> : null}
                 </span>
-                <span className="cn">{court.total}</span>
+                <span className="cn">{cases.length}</span>
                 <span className="prog">
-                  {dots.map((_, i) => (
-                    <i key={i} className={i < court.analysed ? "on" : undefined} />
+                  {cases.map((_, i) => (
+                    <i key={i} className={i < analysed ? "on" : undefined} />
                   ))}
                 </span>
                 <span className="cv" />
               </summary>
               <div className="body">
                 {cases.map((c) => (
-                  <a key={c.id} className={`arow ${c.lit ? "lit" : "dim"}`}>
+                  <a
+                    key={c.id}
+                    className={`arow ${c.lit ? "lit" : "dim"}`}
+                    href={c.decisionUrl ?? undefined}
+                    target={c.decisionUrl ? "_blank" : undefined}
+                    rel={c.decisionUrl ? "noopener noreferrer" : undefined}
+                  >
                     <span className="mk" />
                     <span>
-                      <span className="at">{pick(c.title, locale)}</span>
+                      <span className="at">{c.name}</span>
                       <span className="an">{pick(c.note, locale)}</span>
                     </span>
-                    {c.status === "queued" ? (
-                      <span className="queued">
-                        {dict.registry.statusQueued}
-                      </span>
-                    ) : (
-                      <span className={`chip ${CHIP_CLASS[c.status]}`}>
-                        {statusLabel[c.status]}
-                      </span>
-                    )}
-                    <span className="ad">{c.date}</span>
+                    <span className={`chip ${CHIP_CLASS[c.statusKey]}`}>
+                      {dict.registry.status[c.statusKey]}
+                    </span>
+                    <span className="ad">{caseDate(c)}</span>
                   </a>
                 ))}
                 <a className="more">
                   {fmt(dict.registry.allCases, {
-                    count: court.total,
-                    court: pick(court.abbr, locale),
+                    count: cases.length,
+                    court: pick(inst.abbr, locale),
                   })}
                 </a>
               </div>
