@@ -435,19 +435,6 @@
 .nsv-news-links a{font:700 11px 'Fira Sans';letter-spacing:.06em;text-transform:uppercase;color:var(--red);text-decoration:none;white-space:nowrap}
 .nsv-news-links a:hover{color:var(--redd)}
 
-/* full-width page: section backgrounds span the viewport, readable content
-   stays centred (capped ~1600px) so lines don't stretch on ultra-wide screens */
-@media (min-width:1024px){
-  .page > .lmp > div{
-    padding-left:max(28px, calc((100vw - 1600px) / 2)) !important;
-    padding-right:max(28px, calc((100vw - 1600px) / 2)) !important;
-  }
-  .nsv-map{
-    margin-left:calc(-1 * max(28px, calc((100vw - 1600px) / 2))) !important;
-    margin-right:calc(-1 * max(28px, calc((100vw - 1600px) / 2))) !important;
-  }
-}
-
 /* wide-format events map — full-bleed across the page column, widescreen height */
 .nsv-map{margin:22px -28px 0;background:#140807;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 .nsv-map-frame{height:clamp(360px,58vh,580px);overflow:hidden}
