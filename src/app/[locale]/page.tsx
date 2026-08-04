@@ -13,6 +13,7 @@ import Intro from "@/components/nasvitlo/Intro";
 import About from "@/components/nasvitlo/About";
 import Slogan from "@/components/nasvitlo/Slogan";
 import MapSection from "@/components/nasvitlo/MapSection";
+import Quote from "@/components/nasvitlo/Quote";
 import Registry from "@/components/nasvitlo/Registry";
 import Newsletter from "@/components/nasvitlo/Newsletter";
 import Partners from "@/components/nasvitlo/Partners";
@@ -65,9 +66,16 @@ export default async function HomePage({
         <Header locale={locale} dict={dict} />
         <Hero dict={dict} />
         <Intro locale={locale} dict={dict} stats={stats} />
-        <About locale={locale} about={about} />
+        <About
+          locale={locale}
+          dict={dict}
+          about={about}
+          totalCases={totalCases}
+          institutionCount={institutions.length}
+        />
         <Slogan dict={dict} />
         <MapSection dict={dict} />
+        <Quote dict={dict} />
         <Registry
           locale={locale}
           dict={dict}

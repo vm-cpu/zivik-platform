@@ -397,7 +397,7 @@
   .regm .mrow{display:flex;flex-direction:column;gap:7px;padding:16px;text-decoration:none;background:var(--surface);border:1px solid var(--rule);cursor:pointer}
   .regm .mrow:active{border-color:var(--gold)}
   .regm .tok{min-height:34px}
-  .page{--red:#7F1716;--redd:#5C100F;--gold:#946428;--paper:#F4F4F2;--paper2:#EAEAE6;--surface:#FFFFFF;--ink:#211C18;--ink2:#57534C;--muted:#57534C;--faint:#98948B;--rule:#E0DFDA;
+  .page{--red:#7F1716;--redd:#5C100F;--gold:#946428;--paper:#F6F4EF;--paper2:#ECE8E0;--surface:#FFFFFF;--ink:#221D18;--ink2:#57524A;--muted:#57524A;--faint:#9A9388;--rule:#E5E0D5;
     width:100%;max-width:1400px;margin:0 auto;background:var(--paper);color:var(--ink);font-family:'Fira Sans',sans-serif;font-size:14px;line-height:1.55;box-shadow:0 0 90px rgba(0,0,0,.5)}
   .page h1,.page h2,.page h3,.page h4{font-family:'Charis SIL',Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   .page a{color:var(--red);text-decoration:none}
@@ -442,6 +442,22 @@
 .nsv-map-frame{height:clamp(360px,58vh,580px);overflow:hidden}
 .nsv-map-frame iframe{width:100%;height:100%;border:0;display:block}
 .nsv-map-legend{display:flex;gap:26px;flex-wrap:wrap;padding:13px 28px}
+
+/* about: main text + marginalia side-rail (law-journal layout) */
+.nsv-about-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:56px;align-items:start}
+.nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:16px}
+.nsv-rail{border-top:2px solid var(--red);padding-top:15px}
+.nsv-rail .rk{font:700 10px 'Fira Sans';letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.nsv-rail .ri{display:flex;justify-content:space-between;gap:14px;align-items:baseline;padding:11px 0;border-top:1px solid var(--rule)}
+.nsv-rail .rl{font:600 11px 'Fira Sans';letter-spacing:.03em;text-transform:uppercase;color:var(--faint)}
+.nsv-rail .rv{font:500 13px 'Fira Sans';color:var(--ink);text-align:right}
+.nsv-rail .rv.num{font-family:'Charis SIL',Georgia,serif;font-size:24px;line-height:1;color:var(--gold);font-variant-numeric:tabular-nums}
+
+/* judgment pull-quote — dark band in the court's own words */
+.nsv-quote{margin:0;padding:66px 28px;background:#1E0C0B;position:relative}
+.nsv-quote::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#C79A3C 50%,transparent)}
+.nsv-quote-text{max-width:940px;margin:0 auto;font-family:'Charis SIL',Georgia,serif;font-size:clamp(21px,3vw,33px);line-height:1.42;color:#F3E8E2;text-align:center;text-wrap:balance}
+.nsv-quote-src{max-width:940px;margin:20px auto 0;text-align:center;font:700 11px 'Fira Sans';letter-spacing:.11em;text-transform:uppercase;color:#E6B65C}
 
 /* ============================================================
    Keep the lamp centred on the now-fluid hero stage at any width.
@@ -507,6 +523,8 @@
   .nsv-statline .stat:first-child .num{font-size:52px}
   .nsv-slogan{gap:14px;padding:24px 18px}
   .nsv-slogan .rule{display:none}
+  .nsv-about-grid{grid-template-columns:1fr;gap:26px}
+  .nsv-quote{padding:44px 20px}
 }
 
 @media (max-width:760px){
