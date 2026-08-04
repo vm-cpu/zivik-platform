@@ -1,0 +1,7 @@
+.next
+node_modules
+public
+*.lock
+package-lock.json
+src/app/nasvitloStyles.ts
+src/app/nasvitloMarkup.ts

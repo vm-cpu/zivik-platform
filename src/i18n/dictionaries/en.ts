@@ -1,0 +1,104 @@
+import type { Dictionary } from "./uk";
+
+/**
+ * English UI dictionary. Typed as `Dictionary`, so it must mirror the exact
+ * shape of the canonical Ukrainian dictionary — a missing or renamed key is a
+ * compile error.
+ */
+const en: Dictionary = {
+  meta: {
+    title: "nasvitlo — international court decisions on the aggression against Ukraine",
+    description:
+      "An open archive of international court decisions on Russia's aggression against Ukraine: ECtHR, the International Court of Justice, the ICC, maritime arbitration. A project of the UCU Faculty of Law.",
+    ogAlt: "nasvitlo — archive of international court decisions",
+  },
+  nav: {
+    home: "Home",
+    decisions: "Decisions",
+    map: "Map",
+    team: "Team",
+    partners: "Partners",
+    blog: "Blog",
+  },
+  brand: {
+    facultyAlt: "UCU Faculty of Law",
+    wordmark: "nasvitlo",
+  },
+  hero: {
+    eyebrow: "A project of the UCU Faculty of Law",
+    lead: "International court decisions on the aggression against Ukraine — brought to light.",
+    sub: "35 proceedings against Russia: from the International Court of Justice and the ECtHR to ICC warrants and maritime arbitration.",
+    ctaRegistry: "Case registry",
+    ctaMap: "Events map",
+    chainHint: "pull the cord",
+    lampLabel: "Turn the lamp on or off",
+  },
+  intro: {
+    text: "We read the decisions of international courts and retell them in plain language — so you can rely on them in an argument, an article, or a claim.",
+    about: "About the project",
+  },
+  mapSection: {
+    label: "Map",
+    heading: "Events and the courts that hear them",
+    description:
+      "Shelling, deportations and seizures — linked by a dotted line to the courtroom where they are argued.",
+    fullMap: "Full map →",
+    legendEvent: "Event: shelling, deportation, seizure",
+    legendCourt: "The court that hears it",
+  },
+  registry: {
+    label: "Registry",
+    heading: "Courts hearing cases against Russia",
+    description:
+      "Here the light is already on. The registry grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
+    fullRegistry: "Full registry ({count})",
+    processed: "Processed",
+    of: "of",
+    queuedRest: "the rest are queued",
+    onlyAnalysed: "Analysed only ({count})",
+    allCases: "All {count} {court} cases →",
+    queuedNote: "Added to the registry · summary in preparation",
+    legendLit: "Processed decision: summary, timeline, documents",
+    legendQueued: "Queued: added, summary in preparation",
+    statusDecided: "Decided",
+    statusProgress: "Pending",
+    statusWarrant: "Warrants",
+    statusQueued: "TBD",
+  },
+  newsletter: {
+    heading: "Want to receive new summaries?",
+    text: "One email a month: what the courts decided and what it means.",
+    subscribe: "Subscribe",
+    support: "Support the project",
+  },
+  partners: {
+    label: "Partners",
+    heading: "Who we work with",
+    all: "All partners →",
+    note: "Placeholders for logos — send the files and we'll add the real ones.",
+  },
+  footer: {
+    tagline:
+      "An open archive of international court decisions on Russia's aggression against Ukraine.",
+    org: "Louis Sohn Center",
+    faculty: "UCU Faculty of Law",
+    colArchive: "Archive",
+    colCenter: "Center",
+    colContacts: "Contacts",
+    linkRegistry: "Case registry",
+    linkMap: "Events map",
+    linkCourts: "Courts and instances",
+    linkDocs: "Documents",
+    linkAbout: "About the project",
+    linkTeam: "Team",
+    linkPartners: "Partners",
+    linkBlog: "Blog",
+    email: "nasvitlo@ucu.edu.ua",
+    address: "Lviv, 2a Kozelnytska St.",
+    rights: "© 2026 Louis Sohn Center, UCU. Materials — CC BY 4.0.",
+    privacy: "Privacy policy",
+    terms: "Terms of use",
+  },
+};
+
+export default en;
