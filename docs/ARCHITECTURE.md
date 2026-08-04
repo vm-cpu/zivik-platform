@@ -82,8 +82,17 @@ src/
 
 ## Середовище розробки
 
-- `next dev`/`next build` **не стартують на Node 23** (зависають). Використовуйте
-  **Node 20/22 LTS** (`nvm install 20 && nvm use 20`). Перевірка тут велася статично.
+- `next dev`/`next build` **не стартують на Node 23** (зависають). Потрібен **Node 22 LTS**
+  (закріплено у `.node-version`). Тут встановлено keg-only через Homebrew:
+  `brew install node@22`. Запуск, не змінюючи глобальний node:
+  ```bash
+  export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
+  npm run dev
+  ```
+  (або додайте цей рядок у `~/.zshrc`). Ця машина дуже повільна: старт ~95с,
+  перша компіляція роуту ~2хв, далі — миттєво (кеш).
+- Стороннє попередження про «workspace root»: є зайвий `~/package-lock.json`.
+  Прибрати його або задати `turbopack.root` у `next.config.ts`.
 
 ## Наступні кроки
 
