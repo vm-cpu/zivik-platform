@@ -1,6 +1,6 @@
 import type { Dictionary } from "@/i18n/dictionaries";
 
-/** Newsletter + support call-to-action band. */
+/** Quiet newsletter + support sign-off (editorial, not a CTA card). */
 export default function Newsletter({ dict }: { dict: Dictionary }) {
   return (
     <div
@@ -8,7 +8,7 @@ export default function Newsletter({ dict }: { dict: Dictionary }) {
       style={{
         position: "relative",
         zIndex: 3,
-        padding: "30px 28px",
+        padding: "26px 28px",
         background: "var(--paper2)",
         borderTop: "1px solid var(--rule)",
         display: "flex",
@@ -21,9 +21,9 @@ export default function Newsletter({ dict }: { dict: Dictionary }) {
         <div
           style={{
             fontFamily: "'Charis SIL',serif",
-            fontSize: 22,
+            fontSize: 19,
             color: "var(--ink)",
-            marginBottom: 6,
+            marginBottom: 5,
           }}
         >
           {dict.newsletter.heading}
@@ -32,13 +32,9 @@ export default function Newsletter({ dict }: { dict: Dictionary }) {
           {dict.newsletter.text}
         </div>
       </div>
-      <div className="nsv-news-cta" style={{ display: "flex", gap: 10, flex: "none" }}>
-        <a className="btn btn-f" href="#">
-          {dict.newsletter.subscribe}
-        </a>
-        <a className="btn btn-o" href="#">
-          {dict.newsletter.support}
-        </a>
+      <div className="nsv-news-links">
+        <a href="#">{dict.newsletter.subscribe} →</a>
+        <a href="#">{dict.newsletter.support} →</a>
       </div>
     </div>
   );

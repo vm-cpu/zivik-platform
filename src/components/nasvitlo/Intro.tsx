@@ -49,43 +49,12 @@ export default function Intro({
         </a>
       </div>
 
-      <div
-        className="nsv-stats"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4,1fr)",
-          gap: 1,
-          background: "var(--rule)",
-          border: "1px solid var(--rule)",
-        }}
-      >
+      {/* Editorial figure line — hairline-separated numerals, not a KPI grid. */}
+      <div className="nsv-statline">
         {stats.map((stat) => (
-          <div
-            key={stat.value + pick(stat.label, locale)}
-            style={{ background: "var(--surface)", padding: "22px 24px" }}
-          >
-            <div
-              style={{
-                fontFamily: "'Charis SIL',serif",
-                fontSize: 38,
-                lineHeight: 1,
-                color: stat.gilt ? "var(--gold)" : "var(--ink)",
-                fontVariantNumeric: "tabular-nums",
-              }}
-            >
-              {stat.value}
-            </div>
-            <div
-              style={{
-                font: "600 10px 'Fira Sans'",
-                letterSpacing: ".1em",
-                textTransform: "uppercase",
-                color: "var(--faint)",
-                marginTop: 6,
-              }}
-            >
-              {pick(stat.label, locale)}
-            </div>
+          <div key={stat.value + pick(stat.label, locale)} className="stat">
+            <span className="num">{stat.value}</span>
+            <span className="cap">{pick(stat.label, locale)}</span>
           </div>
         ))}
       </div>

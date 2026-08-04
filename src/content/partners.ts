@@ -1,20 +1,23 @@
 import type { Partner } from "./types";
 
 /**
- * Partner organisations. Real logos go under `/public/logos/partners/`; entries
- * without a `logo` render as a text placeholder until files arrive.
+ * Real partner organisations only (no placeholder boxes). Add entries — with a
+ * `logo` under `/public/logos/partners/` once files arrive — as partnerships
+ * are confirmed.
  */
 export const partners: Partner[] = [
   {
     id: "uku",
-    name: { uk: "УКУ", en: "UCU" },
+    name: { uk: "Український католицький університет", en: "Ukrainian Catholic University" },
     url: "https://ucu.edu.ua",
+  },
+  {
+    id: "law-faculty",
+    name: { uk: "Факультет права УКУ", en: "UCU Faculty of Law" },
+    url: "https://law.ucu.edu.ua",
   },
   {
     id: "louis-sohn",
     name: { uk: "Центр Луї Зона", en: "Louis Sohn Center" },
   },
-  { id: "partner-3", name: { uk: "Логотип партнера", en: "Partner logo" } },
-  { id: "partner-4", name: { uk: "Логотип партнера", en: "Partner logo" } },
-  { id: "partner-5", name: { uk: "Логотип партнера", en: "Partner logo" } },
 ];

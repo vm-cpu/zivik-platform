@@ -10,6 +10,7 @@ import LampShell from "@/components/nasvitlo/LampShell";
 import Header from "@/components/nasvitlo/Header";
 import Hero from "@/components/nasvitlo/Hero";
 import Intro from "@/components/nasvitlo/Intro";
+import Slogan from "@/components/nasvitlo/Slogan";
 import MapSection from "@/components/nasvitlo/MapSection";
 import Registry from "@/components/nasvitlo/Registry";
 import Newsletter from "@/components/nasvitlo/Newsletter";
@@ -62,6 +63,7 @@ export default async function HomePage({
         <Header locale={locale} dict={dict} />
         <Hero dict={dict} />
         <Intro locale={locale} dict={dict} stats={stats} />
+        <Slogan dict={dict} />
         <MapSection dict={dict} />
         <Registry
           locale={locale}

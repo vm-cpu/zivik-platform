@@ -3,7 +3,7 @@ import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { pick, type Partner } from "@/content/types";
 
-/** Partner logo grid (text placeholders until real logos arrive). */
+/** Restrained partner row (real marks only, hairline-separated). */
 export default function Partners({
   locale,
   dict,
@@ -13,6 +13,8 @@ export default function Partners({
   dict: Dictionary;
   partners: Partner[];
 }) {
+  if (partners.length === 0) return null;
+
   return (
     <div
       id="partners"
@@ -32,7 +34,7 @@ export default function Partners({
           alignItems: "flex-end",
           justifyContent: "space-between",
           gap: 24,
-          marginBottom: 24,
+          marginBottom: 22,
         }}
       >
         <div>
@@ -65,56 +67,38 @@ export default function Partners({
           {dict.partners.all}
         </a>
       </div>
-      <div
-        className="nsv-partners"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(5,1fr)",
-          gap: 1,
-          background: "var(--rule)",
-          border: "1px solid var(--rule)",
-        }}
-      >
-        {partners.map((partner) => (
-          <div
-            key={partner.id}
-            style={{
-              background: "var(--surface)",
-              height: 88,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              padding: 14,
-            }}
-          >
-            {partner.logo ? (
-              <Image
-                src={partner.logo}
-                alt={pick(partner.name, locale)}
-                width={120}
-                height={48}
-                style={{ maxWidth: "100%", height: "auto" }}
-              />
-            ) : (
-              <span
-                style={{
-                  font: "700 11px 'Fira Sans'",
-                  letterSpacing: ".09em",
-                  textTransform: "uppercase",
-                  color: "var(--faint)",
-                  textAlign: "center",
-                  lineHeight: 1.4,
-                }}
-              >
-                {pick(partner.name, locale)}
-              </span>
-            )}
-          </div>
-        ))}
+
+      <div className="nsv-partnerrow">
+        {partners.map((partner) => {
+          const name = pick(partner.name, locale);
+          const inner = partner.logo ? (
+            <Image
+              src={partner.logo}
+              alt={name}
+              width={120}
+              height={40}
+              style={{ maxWidth: "100%", height: 34, width: "auto" }}
+            />
+          ) : (
+            name
+          );
+          return partner.url ? (
+            <a
+              key={partner.id}
+              className="pmark"
+              href={partner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {inner}
+            </a>
+          ) : (
+            <span key={partner.id} className="pmark">
+              {inner}
+            </span>
+          );
+        })}
       </div>
-      <p style={{ fontSize: 12, color: "var(--faint)", margin: "14px 0 0" }}>
-        {dict.partners.note}
-      </p>
     </div>
   );
 }

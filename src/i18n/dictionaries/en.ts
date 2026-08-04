@@ -37,6 +37,7 @@ const en: Dictionary = {
     text: "We read the decisions of international courts and retell them in plain language — so you can rely on them in an argument, an article, or a claim.",
     about: "About the project",
   },
+  slogan: "Research · Explain · Bring to light",
   mapSection: {
     label: "Map",
     heading: "Events and the courts that hear them",

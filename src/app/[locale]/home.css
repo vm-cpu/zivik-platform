@@ -408,6 +408,34 @@
 
 
 /* ============================================================
+   Editorial treatments (replacing generic "card grid" patterns)
+   ============================================================ */
+/* statistic line — figures on the paper with hairline dividers, not tiles */
+.nsv-statline{display:flex;align-items:flex-end;flex-wrap:wrap;row-gap:20px}
+.nsv-statline .stat{display:flex;flex-direction:column;gap:6px;padding:0 30px;border-left:1px solid var(--rule)}
+.nsv-statline .stat:first-child{padding-left:0;border-left:0}
+.nsv-statline .num{font-family:'Charis SIL',Georgia,serif;font-size:40px;line-height:.9;color:var(--ink);font-variant-numeric:tabular-nums}
+.nsv-statline .stat:first-child .num{font-size:66px;color:var(--gold)}
+.nsv-statline .cap{font:600 10.5px 'Fira Sans';letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+
+/* partner marks — restrained row, no empty placeholder boxes */
+.nsv-partnerrow{display:flex;flex-wrap:wrap;align-items:center;row-gap:14px}
+.nsv-partnerrow .pmark{padding:0 22px;border-left:1px solid var(--rule);font:700 12px 'Fira Sans';letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);text-decoration:none}
+.nsv-partnerrow .pmark:first-child{padding-left:0;border-left:0}
+.nsv-partnerrow a.pmark:hover{color:var(--red)}
+
+/* brand slogan divider — Charis SIL caps, wide tracking (UCU "гасла" style) */
+.nsv-slogan{display:flex;align-items:center;gap:24px;padding:30px 28px;background:var(--paper2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.nsv-slogan .rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rule))}
+.nsv-slogan .rule.r2{background:linear-gradient(90deg,var(--rule),transparent)}
+.nsv-slogan .motto{font-family:'Charis SIL',Georgia,serif;font-size:clamp(15px,2.3vw,21px);letter-spacing:.16em;text-transform:uppercase;color:var(--red);text-align:center}
+
+/* newsletter — quieter editorial sign-off */
+.nsv-news-links{display:flex;align-items:center;gap:20px;flex:none;flex-wrap:wrap}
+.nsv-news-links a{font:700 11px 'Fira Sans';letter-spacing:.06em;text-transform:uppercase;color:var(--red);text-decoration:none;white-space:nowrap}
+.nsv-news-links a:hover{color:var(--redd)}
+
+/* ============================================================
    Responsive layout — reflow the desktop composition for
    tablet/phone. Structural containers carry `nsv-*` classes.
    ============================================================ */
@@ -451,6 +479,11 @@
   .acc .arow .ad{grid-column:3;justify-self:end;text-align:right}
   .regprog{flex-direction:column !important;align-items:flex-start !important;gap:12px !important}
   .legend{flex-direction:column;gap:10px}
+  .nsv-statline .stat{padding:0 16px}
+  .nsv-statline .num{font-size:32px}
+  .nsv-statline .stat:first-child .num{font-size:52px}
+  .nsv-slogan{gap:14px;padding:24px 18px}
+  .nsv-slogan .rule{display:none}
 }
 
 @media (max-width:760px){
