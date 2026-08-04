@@ -1,7 +1,4 @@
-// Auto-generated from the Claude Design project "Насвітло - головна.dc.html".
-// Full stylesheet, injected via a scoped <style> so the dark body backdrop
-// never leaks into other routes. Do not hand-edit; regenerate from the design source.
-export const NASVITLO_CSS = `.nsv-root{background:#0C0504;min-height:100dvh}
+.nsv-root{background:#0C0504;min-height:100dvh}
 .nsv-root *,.nsv-root *::before,.nsv-root *::after{box-sizing:border-box}
   a{color:inherit}
   /* ---- options-canvas chrome ---- */
@@ -408,4 +405,60 @@ export const NASVITLO_CSS = `.nsv-root{background:#0C0504;min-height:100dvh}
   .page .lmp{border:0}
   /* lamp geometry is authored against a 900px stage — centre that stage in the wider page */
   .page .pj{width:900px;margin:0 auto}
-`;
+
+
+/* ============================================================
+   Responsive layout — reflow the desktop composition for
+   tablet/phone. Structural containers carry `nsv-*` classes.
+   ============================================================ */
+.nsv-burger{display:none;align-items:center;justify-content:center;width:40px;height:40px;background:none;border:0;cursor:pointer;color:#F0DDA8}
+.nsv-burger span{display:block;width:20px;height:2px;background:currentColor;box-shadow:0 6px 0 currentColor,0 -6px 0 currentColor}
+.nsv-mobnav{display:none;flex-direction:column;gap:2px;padding:8px 30px 16px;background:#1A0F0D;border-bottom:1px solid rgba(243,232,226,.1)}
+.nsv-mobnav a{padding:11px 0;font:500 15px 'Fira Sans';color:#F3E8E2;text-decoration:none;border-bottom:1px solid rgba(243,232,226,.07)}
+.nsv-mobnav[data-open="yes"]{display:flex}
+
+@media (max-width:880px){
+  .page{box-shadow:none;max-width:100%}
+  /* the lamp "stage" is authored at a fixed 900px; let it go fluid on small screens */
+  .page .pj{width:100% !important}
+  .nsv-nav{display:none !important}
+  .nsv-burger{display:inline-flex}
+}
+
+@media (max-width:760px){
+  .nsv-stats{grid-template-columns:repeat(2,1fr) !important}
+  .nsv-partners{grid-template-columns:repeat(2,1fr) !important}
+  .nsv-foot{grid-template-columns:1fr 1fr !important;gap:26px !important}
+  .nsv-intro{flex-direction:column !important;align-items:flex-start !important;gap:18px !important}
+  .nsv-newsletter{flex-direction:column !important;align-items:flex-start !important;gap:16px !important}
+  .nsv-newsletter .nsv-news-cta{flex-wrap:wrap}
+  .lmp .wm{font-size:clamp(46px,15vw,88px) !important}
+  .nsv-hero{padding:104px 18px 0 !important}
+  .pj{min-height:auto !important;padding-bottom:44px !important}
+  .lmp .bshade,.lmp .bmouth,.lmp .bmouth i,.lmp .dcord,.lmp .dcollar,.lmp .dchain,.lmp .chint{display:none !important}
+  .lmp .bcone{opacity:.3 !important}
+  .acc details{position:relative}
+  .acc summary{grid-template-columns:1fr auto !important;gap:4px 12px !important;padding:14px 16px !important}
+  .acc .ab{grid-column:1;grid-row:1}
+  .acc .cn{grid-column:2;grid-row:1;justify-self:end}
+  .acc .fn{grid-column:1 / 3;grid-row:2}
+  .acc .prog{grid-column:1 / 3;grid-row:3;justify-self:start;margin-top:5px}
+  .acc .cv{position:absolute;right:16px;top:22px}
+  .acc .body{padding:0 16px 16px}
+  .acc .arow{grid-template-columns:9px 1fr auto !important;gap:4px 10px !important}
+  .acc .arow > span:has(.at){grid-column:2 / 4}
+  .acc .arow .chip,.acc .arow .queued{grid-column:2}
+  .acc .arow .ad{grid-column:3;justify-self:end;text-align:right}
+  .regprog{flex-direction:column !important;align-items:flex-start !important;gap:12px !important}
+  .legend{flex-direction:column;gap:10px}
+}
+
+@media (max-width:760px){
+  .nsv-sechead{flex-wrap:wrap;gap:14px !important}
+  .nsv-sechead > a{flex:none}
+}
+
+@media (max-width:480px){
+  .nsv-stats{grid-template-columns:1fr !important}
+  .nsv-foot{grid-template-columns:1fr !important}
+}

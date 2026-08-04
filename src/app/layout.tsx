@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="uk"
       className={`${newsreader.variable} ${ibmPlexMono.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full">{children}</body>
