@@ -398,7 +398,7 @@
   .regm .mrow:active{border-color:var(--gold)}
   .regm .tok{min-height:34px}
   .page{--red:#7F1716;--redd:#5C100F;--gold:#946428;--paper:#F6F4EF;--paper2:#ECE8E0;--surface:#FFFFFF;--ink:#221D18;--ink2:#57524A;--muted:#57524A;--faint:#9A9388;--rule:#E5E0D5;
-    width:100%;max-width:1400px;margin:0 auto;background:var(--paper);color:var(--ink);font-family:'Fira Sans',sans-serif;font-size:14px;line-height:1.55;box-shadow:0 0 90px rgba(0,0,0,.5)}
+    width:100%;max-width:none;margin:0 auto;background:var(--paper);color:var(--ink);font-family:'Fira Sans',sans-serif;font-size:14px;line-height:1.55;box-shadow:none}
   .page h1,.page h2,.page h3,.page h4{font-family:'Charis SIL',Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   .page a{color:var(--red);text-decoration:none}
   .page a:hover{color:var(--redd)}
@@ -436,15 +436,14 @@
 .nsv-news-links a:hover{color:var(--redd)}
 
 /* wide-format events map — full-bleed across the page column, widescreen height */
-/* map breaks out of the content column to full viewport width (clip on
-   .nsv-root absorbs the scrollbar-width overshoot, so no horizontal scroll) */
-.nsv-map{width:100vw;margin:22px 0 0;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);background:#140807;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+/* full-width page: map bleeds to the page (= viewport) edges via -28px */
+.nsv-map{margin:22px -28px 0;background:#140807;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 .nsv-map-frame{height:clamp(360px,58vh,580px);overflow:hidden}
 .nsv-map-frame iframe{width:100%;height:100%;border:0;display:block}
 .nsv-map-legend{display:flex;gap:26px;flex-wrap:wrap;padding:13px 28px}
 
 /* about: main text + marginalia side-rail (law-journal layout) */
-.nsv-about-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:56px;align-items:start}
+.nsv-about-grid{display:grid;grid-template-columns:minmax(0,720px) 260px;gap:56px;align-items:start}
 .nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:16px}
 .nsv-rail{border-top:2px solid var(--red);padding-top:15px}
 .nsv-rail .rk{font:700 10px 'Fira Sans';letter-spacing:.14em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
