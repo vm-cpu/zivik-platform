@@ -398,7 +398,7 @@
   .regm .mrow:active{border-color:var(--gold)}
   .regm .tok{min-height:34px}
   .page{--red:#7F1716;--redd:#5C100F;--gold:#946428;--paper:#F4F4F2;--paper2:#EAEAE6;--surface:#FFFFFF;--ink:#211C18;--ink2:#57534C;--muted:#57534C;--faint:#98948B;--rule:#E0DFDA;
-    width:100%;max-width:1280px;margin:0 auto;background:var(--paper);color:var(--ink);font-family:'Fira Sans',sans-serif;font-size:14px;line-height:1.55;box-shadow:0 0 90px rgba(0,0,0,.5)}
+    width:100%;max-width:none;margin:0 auto;background:var(--paper);color:var(--ink);font-family:'Fira Sans',sans-serif;font-size:14px;line-height:1.55;box-shadow:none}
   .page h1,.page h2,.page h3,.page h4{font-family:'Charis SIL',Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   .page a{color:var(--red);text-decoration:none}
   .page a:hover{color:var(--redd)}
@@ -434,6 +434,19 @@
 .nsv-news-links{display:flex;align-items:center;gap:20px;flex:none;flex-wrap:wrap}
 .nsv-news-links a{font:700 11px 'Fira Sans';letter-spacing:.06em;text-transform:uppercase;color:var(--red);text-decoration:none;white-space:nowrap}
 .nsv-news-links a:hover{color:var(--redd)}
+
+/* full-width page: section backgrounds span the viewport, readable content
+   stays centred (capped ~1600px) so lines don't stretch on ultra-wide screens */
+@media (min-width:1024px){
+  .page > .lmp > div{
+    padding-left:max(28px, calc((100vw - 1600px) / 2)) !important;
+    padding-right:max(28px, calc((100vw - 1600px) / 2)) !important;
+  }
+  .nsv-map{
+    margin-left:calc(-1 * max(28px, calc((100vw - 1600px) / 2))) !important;
+    margin-right:calc(-1 * max(28px, calc((100vw - 1600px) / 2))) !important;
+  }
+}
 
 /* wide-format events map — full-bleed across the page column, widescreen height */
 .nsv-map{margin:22px -28px 0;background:#140807;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}

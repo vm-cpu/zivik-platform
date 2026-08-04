@@ -10,6 +10,7 @@ import LampShell from "@/components/nasvitlo/LampShell";
 import Header from "@/components/nasvitlo/Header";
 import Hero from "@/components/nasvitlo/Hero";
 import Intro from "@/components/nasvitlo/Intro";
+import About from "@/components/nasvitlo/About";
 import Slogan from "@/components/nasvitlo/Slogan";
 import MapSection from "@/components/nasvitlo/MapSection";
 import Registry from "@/components/nasvitlo/Registry";
@@ -27,13 +28,14 @@ export default async function HomePage({
 
   const dict = await getDictionary(locale);
   const repo = getContentRepository();
-  const [institutions, stats, partners, cases, casesByInstitution] =
+  const [institutions, stats, partners, cases, casesByInstitution, about] =
     await Promise.all([
       repo.getInstitutions(),
       repo.getStats(),
       repo.getPartners(),
       repo.getCases(),
       getCasesByInstitution(repo),
+      repo.getAbout(),
     ]);
   const phase1 = institutions.filter((i) => i.phase1);
   const totalCases = cases.length;
@@ -63,6 +65,7 @@ export default async function HomePage({
         <Header locale={locale} dict={dict} />
         <Hero dict={dict} />
         <Intro locale={locale} dict={dict} stats={stats} />
+        <About locale={locale} about={about} />
         <Slogan dict={dict} />
         <MapSection dict={dict} />
         <Registry
