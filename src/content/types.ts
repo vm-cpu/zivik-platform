@@ -73,6 +73,8 @@ export interface RegistryCase {
   pages: number | null;
   /** Link to the decision or case page. */
   decisionUrl: string | null;
+  /** Slug of the on-site decision page, when a summary has been published. */
+  summarySlug?: string;
   /** True once a summary/timeline/documents exist ("lit" vs merely registered). */
   lit: boolean;
 }

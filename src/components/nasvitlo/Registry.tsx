@@ -181,13 +181,19 @@ export default function Registry({
                 <span className="cv" />
               </summary>
               <div className="body">
-                {cases.map((c) => (
+                {cases.map((c) => {
+                  const internal = c.summarySlug
+                    ? `/${locale}/cases/${c.summarySlug}`
+                    : null;
+                  const href = internal ?? c.decisionUrl ?? undefined;
+                  const external = !internal && !!c.decisionUrl;
+                  return (
                   <a
                     key={c.id}
                     className={`arow ${c.lit ? "lit" : "dim"}`}
-                    href={c.decisionUrl ?? undefined}
-                    target={c.decisionUrl ? "_blank" : undefined}
-                    rel={c.decisionUrl ? "noopener noreferrer" : undefined}
+                    href={href}
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
                   >
                     <span className="mk" />
                     <span>
@@ -199,7 +205,8 @@ export default function Registry({
                     </span>
                     <span className="ad">{caseDate(c)}</span>
                   </a>
-                ))}
+                  );
+                })}
                 <a className="more">
                   {fmt(dict.registry.allCases, {
                     count: cases.length,

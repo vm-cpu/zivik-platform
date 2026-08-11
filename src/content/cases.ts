@@ -21,6 +21,7 @@ export const registryCases: RegistryCase[] = [
     note: { uk: "ICJ GL 166 · Крим, Донбас", en: "ICJ GL 166 · Crimea, Donbas" },
     pages: 213,
     decisionUrl: "https://www.icj-cij.org/sites/default/files/case-related/166/166-20240131-jud-01-00-en.pdf",
+    summarySlug: "icj-cerd-icsft",
     lit: true,
   },
   {
