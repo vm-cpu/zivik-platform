@@ -175,7 +175,9 @@ function draw(){
     pin.addEventListener('click', e=>{ e.stopPropagation(); activate(); });
     pop.querySelector('.cls').addEventListener('click', e=>{ e.stopPropagation(); closeAll(); });
     pop.addEventListener('click', e=>e.stopPropagation());
-    if(ev.open && !document.body.hasAttribute('data-compact')) activate();
+    // auto-open the featured case only on wider screens; on phones the map
+    // loads clean and the docked card appears when a marker is tapped
+    if(ev.open && !document.body.hasAttribute('data-compact') && window.innerWidth > 560) activate();
   });
 }
 d3.json((window.__resources && window.__resources.atlas) || 'https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json').then(topo=>{
