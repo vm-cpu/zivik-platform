@@ -34,6 +34,7 @@
   .acc .arow>span:has(.at){display:flex;flex-direction:column}
   .acc .at{font-family:var(--brand-font-display),serif;font-size:16.5px;line-height:1.25;color:var(--ink)}
   .acc .an{font-size:12.5px;color:var(--ink2);margin-top:3px}
+  /* .chip and .st-* live in shared.css — used by the registry table too */
   .acc .arow .chip{justify-self:start}
   .acc .ad{font:500 12px var(--brand-font-body);color:var(--faint);text-align:right}
   .acc .more{align-self:start;margin-top:13px;font:700 10.5px var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--red);text-decoration:none}
@@ -90,11 +91,6 @@
   .lbl{display:flex;align-items:center;gap:11px;margin-bottom:14px}
   .lbl::before{content:"";width:34px;height:3px;background:var(--red);flex:none}
   .lbl span{font:700 11px var(--brand-font-body),sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
-  .chip{display:inline-flex;align-items:center;gap:5px;font:700 10px var(--brand-font-body),sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border-radius:var(--r-pill);white-space:nowrap}
-  .st-decided{color:#3F6144;background:rgba(63,97,68,.13)}
-  .st-progress{color:#8A5D1F;background:rgba(148,100,40,.15)}
-  .st-warrant{color:var(--brand-red);background:rgba(127,23,22,.11)}
-  .st-enforce{color:#3A5670;background:rgba(58,86,112,.13)}
   .dot{width:6px;height:6px;border-radius:50%;flex:none}
   .btn{display:inline-flex;align-items:center;gap:8px;font:700 11px var(--brand-font-body),sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:12px 22px;border-radius:var(--r-pill);border:2px solid var(--red);cursor:pointer;text-decoration:none;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background-color var(--dur) var(--ease),color var(--dur) var(--ease)}
   .btn:hover{transform:translateY(-1px)}

@@ -1,0 +1,41 @@
+/* ============================================================================
+   Shared primitives — the only stylesheet loaded on every page under [locale].
+
+   These are genuinely cross-surface: the status badge is rendered by
+   RegistryTable on the registry page, inside the accordion on the home page,
+   and anywhere a case's status is shown. Everything else belongs to its own
+   surface's stylesheet.
+
+   Keep this file small. If a rule is only used by one surface, it lives with
+   that surface — a global rule that leaks is how the decision page's primary
+   button ended up wearing a 2px border in the colour we reserve for breaches.
+   ========================================================================== */
+
+/* Status badge ------------------------------------------------------------ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 700 10px var(--brand-font-body), sans-serif;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+.st-decided {
+  color: #3f6144;
+  background: rgba(63, 97, 68, 0.13);
+}
+.st-progress {
+  color: #8a5d1f;
+  background: rgba(148, 100, 40, 0.15);
+}
+.st-warrant {
+  color: var(--brand-red);
+  background: rgba(127, 23, 22, 0.11);
+}
+.st-enforce {
+  color: #3a5670;
+  background: rgba(58, 86, 112, 0.13);
+}

@@ -85,6 +85,29 @@ display type reads as a different register, not just bigger body text.
 - Uppercase labels get `letter-spacing: 0.14em`; display gets `-0.028em`.
 - Slogans follow the brandbook: Charis SIL, uppercase, wide tracking.
 
+### Spacing
+
+A 4px grid. **The step number is the multiple of 4**, so `--space-6` is 24px
+and there is nothing to memorise.
+
+| Token | px | | Token | px |
+| --- | --- | --- | --- | --- |
+| `--space-1` | 4 | | `--space-8` | 32 |
+| `--space-2` | 8 | | `--space-10` | 40 |
+| `--space-3` | 12 | | `--space-12` | 48 |
+| `--space-4` | 16 | | `--space-14` | 56 |
+| `--space-5` | 20 | | `--space-16` | 64 |
+| `--space-6` | 24 | | `--space-24` | 96 |
+| `--space-7` | 28 | | | |
+
+- **Snap to the nearest step.** If a value seems to need something in between,
+  the layout is usually the problem, not the scale.
+- **Fluid gutters stay in `clamp()`.** A scale governs rhythm, not responsive
+  ranges — `padding-block: clamp(32px, 4vw, 56px)` is correct as written.
+- Before this scale existed the site used **42 distinct spacing values, half of
+  them off any grid** (3, 7, 9, 15, 22, 26, 34, 54…). Every gap was a fresh
+  guess, which is exactly the drift a system is supposed to prevent.
+
 ### Shape & depth
 
 | Token | Value |
@@ -118,6 +141,28 @@ are forbidden: they read as neither sharp nor round.
   content read as clutter.
 
 ---
+
+### Stylesheet scope
+
+| Stylesheet | Loaded on | Rule |
+| --- | --- | --- |
+| `globals.css` | everything | tokens, focus ring, motion baseline |
+| `[locale]/shared.css` | every localized page | **only** genuinely cross-surface primitives (the status badge) |
+| `[locale]/home.css` | the home page | imported by `page.tsx`, not the layout |
+| `cases/case.css` | decision pages | every rule scoped under `.casepage` |
+| `registry/registry.css` | the registry | scoped |
+| `nasvitlo/header.css` | wherever `<Header>` renders | owns its own chrome |
+
+**A surface's stylesheet is imported by that surface, never by the layout.**
+`home.css` used to load from `[locale]/layout.tsx`, which put **399 unscoped
+rules on the registry and decision pages too**. That is not hypothetical: its
+global `.btn { border: 2px solid var(--red) }` reached the decision page's
+primary call to action, so the button wore a 2px border in the exact colour
+this system reserves for a finding of breach — plus uppercase and letter
+spacing it never asked for.
+
+If two surfaces need the same rule, it moves to `shared.css` and is deleted
+from both. Two definitions of one class name is always a bug in waiting.
 
 ## 3. Components
 

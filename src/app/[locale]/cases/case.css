@@ -75,12 +75,12 @@
 .casepage .lbl {
   display: flex;
   align-items: baseline;
-  gap: 12px;
+  gap: var(--space-3);
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--gold);
-  margin: 0 0 18px;
+  margin: 0 0 var(--space-5);
 }
 .casepage .lbl::after {
   content: "";
@@ -101,7 +101,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--pgold);
-  margin-bottom: 14px;
+  margin-bottom: var(--space-4);
 }
 
 /* ---- 1. Masthead ---------------------------------------------------------- */
@@ -115,13 +115,13 @@
 .casepage .backlink {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   font: 600 var(--t-cap) var(--brand-font-body);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--faint);
   text-decoration: none;
-  margin-bottom: 24px;
+  margin-bottom: var(--space-6);
 }
 .casepage .backlink:hover {
   color: var(--gold);
@@ -130,12 +130,12 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 14px;
+  gap: var(--space-2) var(--space-4);
   font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 20px;
+  margin-bottom: var(--space-5);
 }
 .casepage .eyebrow .dot {
   color: var(--rule);
@@ -156,7 +156,7 @@
   color: var(--cream);
 }
 .casepage .parties {
-  margin: 16px 0 0;
+  margin: var(--space-4) 0 0;
   font-family: var(--brand-font-display), serif;
   font-style: italic;
   font-size: var(--t-lead);
@@ -175,7 +175,7 @@
 }
 .casepage .fullname {
   max-width: 68ch;
-  margin: 16px 0 0;
+  margin: var(--space-4) 0 0;
   font-size: var(--t-sm);
   line-height: 1.6;
   color: var(--muted);
@@ -183,16 +183,16 @@
 .casepage .actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 28px;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
 }
 .casepage .btn {
   display: inline-flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--space-1);
   text-decoration: none;
   font: 700 var(--t-sm) var(--brand-font-body);
-  padding: 14px 24px;
+  padding: var(--space-4) var(--space-6);
   border-radius: var(--r-pill);
   transition: transform var(--dur) var(--ease),
               box-shadow var(--dur) var(--ease),
@@ -246,7 +246,7 @@
 }
 .casepage .why {
   border-left: 2px solid var(--pgold);
-  padding-left: 22px;
+  padding-left: var(--space-6);
 }
 .casepage .why p {
   margin: 0;
@@ -270,15 +270,15 @@
 .casepage .kpis {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 12px;
+  gap: var(--space-3);
 }
 .casepage .kpi {
   background: var(--panel);
   border-radius: var(--r-md);
-  padding: 22px 24px;
+  padding: var(--space-6) var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-2);
 }
 .casepage .kpi b {
   font-family: var(--brand-font-display), serif;
@@ -356,15 +356,15 @@
 .casepage .map-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 24px;
-  margin-top: 16px;
-  padding-top: 16px;
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
   border-top: 1px solid var(--rule-soft);
 }
 .casepage .map-legend span {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: var(--space-2);
   font: 500 var(--t-sm) var(--brand-font-body);
   color: var(--muted);
 }
@@ -388,8 +388,8 @@
   align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 4px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-1);
 }
 .casepage .score-head h2 {
   margin: 0;
@@ -415,14 +415,14 @@
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: baseline;
-  gap: 8px 20px;
-  padding: 14px 0;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-4) 0;
   border-bottom: 1px solid var(--rule-soft);
 }
 .casepage .v-track,
 .casepage .v-track-link {
   grid-column: 1 / -1;
-  margin-top: 14px;
+  margin-top: var(--space-4);
   font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -440,7 +440,7 @@
 .casepage .v-out {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: var(--space-2);
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -482,7 +482,7 @@
 }
 .casepage .tl {
   position: relative;
-  padding: 30px 20px 0 0;
+  padding: var(--space-8) var(--space-5) 0 0;
 }
 .casepage .tl::before {
   content: "";
@@ -506,7 +506,7 @@
   font-variant-numeric: tabular-nums;
 }
 .casepage .tl-label {
-  margin: 8px 0 0;
+  margin: var(--space-2) 0 0;
   font-size: var(--t-sm);
   line-height: 1.45;
   color: var(--muted);
@@ -529,8 +529,8 @@
   background: var(--card);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-sm);
-  padding: 20px 22px;
-  margin-bottom: 12px;
+  padding: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-3);
 }
 .casepage .ruling b {
   display: block;
@@ -538,7 +538,7 @@
   font-size: var(--t-h3);
   font-weight: 700;
   color: var(--ink);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
 }
 .casepage .ruling p {
   margin: 0;
@@ -556,8 +556,8 @@
   background: var(--card);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-sm);
-  padding: 18px 22px 18px 24px;
-  margin-bottom: 12px;
+  padding: var(--space-5) var(--space-6) var(--space-5) var(--space-6);
+  margin-bottom: var(--space-3);
   overflow: hidden;
 }
 .casepage .pmeasures li::before {
@@ -575,7 +575,7 @@
   align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px 16px;
+  gap: var(--space-2) var(--space-4);
 }
 .casepage .pm-measure {
   font: 700 var(--t-ui) var(--brand-font-body);
@@ -592,7 +592,7 @@
   color: var(--pred);
 }
 .casepage .pm-note {
-  margin: 8px 0 0;
+  margin: var(--space-2) 0 0;
   font-size: var(--t-sm);
   line-height: 1.55;
   color: var(--ink2);
@@ -615,8 +615,8 @@
   position: sticky;
   top: 24px;
   display: grid;
-  gap: 14px;
-  padding-right: 4px;
+  gap: var(--space-4);
+  padding-right: var(--space-1);
 }
 .casepage .sidetoc-toggle {
   display: none;
@@ -624,7 +624,7 @@
 .casepage .sidetoc-head {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 .casepage .sidetoc-title {
   font: 700 var(--t-micro) var(--brand-font-body);
@@ -641,16 +641,16 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 2px;
+  gap: var(--space-1);
   border-left: 2px solid var(--prule);
 }
 .casepage .sidetoc-list a {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 10px;
+  gap: var(--space-3);
   align-items: baseline;
-  padding: 9px 0 9px 16px;
-  margin-left: -2px;
+  padding: var(--space-2) 0 var(--space-2) var(--space-4);
+  margin-left: -var(--space-1);
   border-left: 2px solid transparent;
   text-decoration: none;
   color: var(--ink3);
@@ -690,33 +690,33 @@
   font-size: clamp(19px, 2vw, 22px);
   line-height: 1.55;
   color: var(--ink);
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
 }
 .casepage .read h2 {
-  margin: 56px 0 6px;
-  padding-top: 20px;
+  margin: var(--space-14) 0 var(--space-2);
+  padding-top: var(--space-5);
   border-top: 2px solid var(--ink);
   font-family: var(--brand-font-display), serif;
   font-weight: 700;
   font-size: var(--t-h2);
   line-height: 1.15;
   color: var(--ink);
-  scroll-margin-top: 24px;
+  scroll-margin-top: var(--space-6);
 }
 .casepage .read h3 {
-  margin: 36px 0 0;
+  margin: var(--space-10) 0 0;
   font-family: var(--brand-font-display), serif;
   font-size: var(--t-h3);
   line-height: 1.25;
   color: var(--pred);
 }
 .casepage .read h4 {
-  margin: 26px 0 0;
+  margin: var(--space-7) 0 0;
   font: 700 var(--t-sm) var(--brand-font-body);
   color: var(--ink);
 }
 .casepage .read p {
-  margin: 15px 0 0;
+  margin: var(--space-4) 0 0;
   font-size: var(--t-body);
   line-height: 1.7;
   color: var(--ink2);
@@ -728,8 +728,8 @@
 }
 /* `.read p` is (0,2,1); this needs to match it to win, hence `.read p.disp`. */
 .casepage .read p.disp {
-  margin: 14px 0 0;
-  padding: 18px 22px 18px 48px;
+  margin: var(--space-4) 0 0;
+  padding: var(--space-5) var(--space-6) var(--space-5) var(--space-12);
   position: relative;
   background: var(--card);
   border-radius: var(--r-md);
@@ -750,8 +750,8 @@
   font-variant-numeric: tabular-nums;
 }
 .casepage .findings {
-  margin: 20px 0 0;
-  padding: 8px 26px 24px;
+  margin: var(--space-5) 0 0;
+  padding: var(--space-2) var(--space-7) var(--space-6);
   background: var(--card);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-sm);
@@ -761,7 +761,7 @@
   line-height: 1.65;
 }
 .casepage .findings .sub {
-  margin-top: 22px;
+  margin-top: var(--space-6);
   font-family: var(--brand-font-display), serif;
   font-size: var(--t-h3);
   font-weight: 700;
@@ -772,10 +772,10 @@
   font-weight: 700;
 }
 .casepage .sources {
-  margin: 16px 0 0;
-  padding-left: 22px;
+  margin: var(--space-4) 0 0;
+  padding-left: var(--space-6);
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
 }
 .casepage .sources li {
   font-size: var(--t-sm);
@@ -783,7 +783,7 @@
 }
 .casepage .cite-meta {
   display: block;
-  margin-top: 4px;
+  margin-top: var(--space-1);
   font-family: var(--brand-font-mono);
   font-size: var(--t-cap);
   color: var(--ink3);
@@ -822,12 +822,12 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 .casepage .who li {
   display: grid;
-  gap: 3px;
-  padding-left: 14px;
+  gap: var(--space-1);
+  padding-left: var(--space-4);
   border-left: 2px solid var(--prule);
 }
 .casepage .who li[data-kind="court"] {
@@ -845,14 +845,14 @@
 .casepage .glossary {
   margin: 0;
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 .casepage .glossary dt {
   font: 700 var(--t-sm) var(--brand-font-body);
   color: var(--ink);
 }
 .casepage .glossary dd {
-  margin: 2px 0 0;
+  margin: var(--space-1) 0 0;
   font-size: var(--t-sm);
   line-height: 1.55;
   color: var(--ink2);
@@ -861,8 +861,8 @@
   background: var(--card);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-sm);
-  padding: 16px 20px;
-  margin-bottom: 10px;
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-3);
 }
 .casepage .faq summary {
   cursor: pointer;
@@ -883,7 +883,7 @@
   content: "–";
 }
 .casepage .faq p {
-  margin: 12px 0 0;
+  margin: var(--space-3) 0 0;
   font-size: var(--t-sm);
   line-height: 1.6;
   color: var(--ink2);
@@ -893,12 +893,12 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
 }
 .casepage .related a {
   display: grid;
-  gap: 3px;
-  padding: 16px 20px;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
   background: var(--card);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-sm);
@@ -930,7 +930,7 @@
 @media (max-width: 1000px) {
   .casepage .readzone-grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: var(--space-6);
   }
   /* side nav collapses into a sticky bar above the article */
   .casepage .sidetoc {
@@ -939,25 +939,25 @@
     z-index: 5;
     background: var(--paper);
     border-bottom: 1px solid var(--prule);
-    padding: 10px 0;
+    padding: var(--space-3) 0;
     gap: 0;
   }
   .casepage .sidetoc-toggle {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: var(--space-3);
     width: 100%;
     background: none;
     border: 0;
-    padding: 6px 0;
+    padding: var(--space-2) 0;
     cursor: pointer;
     text-align: left;
   }
   .casepage .sidetoc-toggle-label {
     display: flex;
     align-items: baseline;
-    gap: 10px;
+    gap: var(--space-3);
     font: 600 var(--t-sm) var(--brand-font-body);
     color: var(--ink);
   }
@@ -981,7 +981,7 @@
   }
   .casepage .sidetoc-list {
     display: none;
-    padding-block: 8px;
+    padding-block: var(--space-2);
   }
   .casepage .sidetoc[data-open="yes"] .sidetoc-list {
     display: grid;
@@ -1001,6 +1001,6 @@
     border-left: 0;
     border-top: 2px solid var(--pgold);
     padding-left: 0;
-    padding-top: 18px;
+    padding-top: var(--space-5);
   }
 }

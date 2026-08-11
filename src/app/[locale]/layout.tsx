@@ -4,7 +4,10 @@ import { isLocale, locales, localeHtmlLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { homeMetadata } from "@/lib/seo";
 import HtmlLang from "@/components/nasvitlo/HtmlLang";
-import "./home.css";
+// Only cross-surface primitives load for every page. home.css is the home
+// page's own stylesheet and is imported there — loading it here put 399
+// unscoped rules on the registry and decision pages too.
+import "./shared.css";
 
 type Params = { params: Promise<{ locale: string }> };
 

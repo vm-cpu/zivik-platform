@@ -6,6 +6,7 @@ import {
   getContentRepository,
 } from "@/content/repository";
 import { siteUrl } from "@/lib/seo";
+import "./home.css";
 import LampShell from "@/components/nasvitlo/LampShell";
 import Header from "@/components/nasvitlo/Header";
 import Hero from "@/components/nasvitlo/Hero";
