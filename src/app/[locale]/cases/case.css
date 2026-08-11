@@ -31,7 +31,7 @@
 
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-body), sans-serif;
+  font-family: var(--brand-font-body), sans-serif;
 }
 
 /* ---- 1. Masthead ---------------------------------------------------------- */
@@ -56,7 +56,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font: 600 12px var(--font-body);
+  font: 600 12px var(--brand-font-body);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
@@ -70,7 +70,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px 16px;
-  font: 700 11.5px var(--font-body);
+  font: 700 11.5px var(--brand-font-body);
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--gold);
@@ -88,7 +88,7 @@
 .casepage .official {
   max-width: 20ch;
   margin: 0;
-  font-family: var(--font-display), serif;
+  font-family: var(--brand-font-display), serif;
   font-weight: 700;
   font-size: clamp(26px, 3.6vw, 46px);
   line-height: 1.08;
@@ -105,7 +105,7 @@
 }
 .casepage .parties {
   margin: 22px 0 0;
-  font-family: var(--font-display), serif;
+  font-family: var(--brand-font-display), serif;
   font-style: italic;
   font-size: clamp(17px, 1.7vw, 21px);
   color: var(--cream);
@@ -125,7 +125,7 @@
   padding: 16px 18px;
 }
 .casepage .glance dt {
-  font: 700 10px var(--font-body);
+  font: 700 10px var(--brand-font-body);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--faint);
@@ -133,7 +133,7 @@
 }
 .casepage .glance dd {
   margin: 0;
-  font-family: var(--font-display), serif;
+  font-family: var(--brand-font-display), serif;
   font-size: 16px;
   line-height: 1.25;
   color: var(--cream);
@@ -159,7 +159,7 @@
   margin: 0 0 20px;
 }
 .casepage .instr-head b {
-  font: 700 11px var(--font-body);
+  font: 700 11px var(--brand-font-body);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--pred);
@@ -197,7 +197,7 @@
   border-color: var(--pred);
 }
 .casepage .tl-date {
-  font: 700 12px var(--font-body);
+  font: 700 12px var(--brand-font-body);
   letter-spacing: 0.03em;
   color: var(--pred);
   font-variant-numeric: tabular-nums;
@@ -229,12 +229,12 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 10px;
-  font-family: var(--font-display), serif;
+  font-family: var(--brand-font-display), serif;
   font-size: 19px;
   color: var(--ink);
 }
 .casepage .theatre .tag {
-  font: 700 10px var(--font-body);
+  font: 700 10px var(--brand-font-body);
   letter-spacing: 0.08em;
   color: var(--pred);
   border: 1px solid var(--pred);
@@ -268,7 +268,7 @@
   border-bottom: 0;
 }
 .casepage .v-track {
-  font: 700 9.5px var(--font-body);
+  font: 700 9.5px var(--brand-font-body);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink3);
@@ -279,7 +279,7 @@
   color: var(--ink2);
 }
 .casepage .v-out {
-  font: 700 10px var(--font-body);
+  font: 700 10px var(--brand-font-body);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 4px 9px;
@@ -303,7 +303,7 @@
   padding: clamp(44px, 6vw, 80px) 24px clamp(60px, 8vw, 100px);
 }
 .casepage .read .lead {
-  font-family: var(--font-display), serif;
+  font-family: var(--brand-font-display), serif;
   font-size: clamp(18px, 2vw, 21px);
   line-height: 1.55;
   color: var(--ink);
@@ -313,7 +313,7 @@
   margin: 52px 0 4px;
   padding-top: 20px;
   border-top: 2px solid var(--ink);
-  font-family: var(--font-display), serif;
+  font-family: var(--brand-font-display), serif;
   font-weight: 700;
   font-size: clamp(21px, 2.4vw, 27px);
   line-height: 1.15;
@@ -321,14 +321,14 @@
 }
 .casepage .read h3 {
   margin: 34px 0 0;
-  font-family: var(--font-display), serif;
+  font-family: var(--brand-font-display), serif;
   font-size: 18.5px;
   line-height: 1.25;
   color: var(--pred);
 }
 .casepage .read h4 {
   margin: 24px 0 0;
-  font: 700 12.5px var(--font-body);
+  font: 700 12.5px var(--brand-font-body);
   letter-spacing: 0.03em;
   color: var(--ink);
 }
@@ -363,7 +363,7 @@
   position: absolute;
   left: 15px;
   top: 15px;
-  font: 700 12px var(--font-body);
+  font: 700 12px var(--brand-font-body);
   color: var(--pred);
   font-variant-numeric: tabular-nums;
 }
@@ -384,7 +384,7 @@
 }
 .casepage .findings .sub {
   margin-top: 20px;
-  font-family: var(--font-display), serif;
+  font-family: var(--brand-font-display), serif;
   font-size: 16px;
   font-weight: 700;
   color: var(--pred);
