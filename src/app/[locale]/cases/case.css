@@ -50,7 +50,7 @@
   --t-lead: 20px;    /* standfirst */
   --t-h3: 22.5px;    /* card titles */
   --t-h2: clamp(23px, 2.4vw, 29px);
-  --t-h1: clamp(30px, 4.2vw, 52px);
+  --t-h1: clamp(32px, 5vw, 68px);
 
   /* rhythm */
   --gutter: clamp(24px, 5vw, 72px);
@@ -131,8 +131,8 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 14px;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.11em;
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 20px;
@@ -150,8 +150,8 @@
   font-family: var(--brand-font-display), serif;
   font-weight: 700;
   font-size: var(--t-h1);
-  line-height: 1.06;
-  letter-spacing: -0.015em;
+  line-height: 1.02;
+  letter-spacing: -0.028em;
   text-wrap: balance;
   color: var(--cream);
 }
@@ -423,8 +423,8 @@
 .casepage .v-track-link {
   grid-column: 1 / -1;
   margin-top: 14px;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.1em;
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--gold-dim);
   text-decoration: none;
@@ -500,8 +500,8 @@
   border-color: var(--red);
 }
 .casepage .tl-date {
-  font: 700 var(--t-cap) var(--brand-font-body);
-  letter-spacing: 0.03em;
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.01em;
   color: var(--gold);
   font-variant-numeric: tabular-nums;
 }
@@ -660,8 +660,8 @@
   color: var(--ink);
 }
 .casepage .sidetoc-num {
-  font: 700 10px var(--brand-font-body);
-  letter-spacing: 0.06em;
+  font: 500 10px var(--brand-font-mono);
+  letter-spacing: 0.02em;
   color: var(--prule);
   font-variant-numeric: tabular-nums;
 }
@@ -744,8 +744,8 @@
   content: counter(disp);
   position: absolute;
   left: 17px;
-  top: 16px;
-  font: 700 var(--t-cap) var(--brand-font-body);
+  top: 18px;
+  font: 500 var(--t-cap) var(--brand-font-mono);
   color: var(--pred);
   font-variant-numeric: tabular-nums;
 }
@@ -783,7 +783,8 @@
 }
 .casepage .cite-meta {
   display: block;
-  margin-top: 3px;
+  margin-top: 4px;
+  font-family: var(--brand-font-mono);
   font-size: var(--t-cap);
   color: var(--ink3);
 }

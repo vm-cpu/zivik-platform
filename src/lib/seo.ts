@@ -43,3 +43,54 @@ export function homeMetadata(locale: Locale, dict: Dictionary): Metadata {
     },
   };
 }
+
+/** `hreflang` map for a page that exists at the same path in every locale. */
+export function pathAlternates(path: (locale: Locale) => string) {
+  const languages: Record<string, string> = {};
+  for (const locale of locales) languages[locale] = path(locale);
+  languages["x-default"] = path(defaultLocale);
+  return languages;
+}
+
+/** Metadata for a decision page. */
+export function decisionMetadata({
+  locale,
+  slug,
+  title,
+  description,
+  ogAlt,
+  siteName,
+}: {
+  locale: Locale;
+  slug: string;
+  title: string;
+  description: string;
+  ogAlt: string;
+  siteName: string;
+}): Metadata {
+  const path = `/${locale}/cases/${slug}`;
+  return {
+    metadataBase: new URL(siteUrl),
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: pathAlternates((l) => `/${l}/cases/${slug}`),
+    },
+    openGraph: {
+      type: "article",
+      locale,
+      url: path,
+      siteName,
+      title,
+      description,
+      images: [{ url: "/og/nasvitlo.png", alt: ogAlt }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/og/nasvitlo.png"],
+    },
+  };
+}

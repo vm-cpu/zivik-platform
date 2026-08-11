@@ -89,6 +89,8 @@ export interface JudgmentSource {
   /** The court's case-overview page. */
   caseUrl: string;
   pages: number;
+  /** Delivery date as ISO 8601 (YYYY-MM-DD) — used in structured data. */
+  date: string;
 }
 
 /** Plain-language framing for non-lawyers. */

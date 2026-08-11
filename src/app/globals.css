@@ -70,6 +70,10 @@
      Own namespace avoids Tailwind's @theme --font-display. */
   --brand-font-body: var(--font-fira), 'Fira Sans';
   --brand-font-display: var(--font-charis), 'Charis SIL';
+  /* Monospace carries the machinery of a judgment — paragraph refs (§ 392),
+     docket numbers, dates. Pairing a neo-serif with mono is what keeps a legal
+     archive from reading like a brochure. */
+  --brand-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 
   /* Reader (caseworks) palette — surfaces follow the brand neutrals */
   --bg: var(--brand-paper);

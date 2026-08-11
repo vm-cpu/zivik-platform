@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { decisionMetadata, siteUrl } from "@/lib/seo";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
@@ -203,6 +205,26 @@ export function generateStaticParams() {
   return Object.keys(SUMMARIES).map((slug) => ({ slug }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const summary = SUMMARIES[slug];
+  if (!isLocale(locale) || !summary) return {};
+  const dict = await getDictionary(locale);
+  const parties = summary.masthead.parties.replace(/^\(|\)$/g, "");
+  return decisionMetadata({
+    locale,
+    slug,
+    title: `${parties} — ${pick(summary.judgment.court, locale)}`,
+    description: pick(summary.plain.tldr, locale),
+    ogAlt: dict.meta.ogAlt,
+    siteName: dict.brand.wordmark,
+  });
+}
+
 export default async function CasePage({
   params,
 }: {
@@ -243,8 +265,86 @@ export default async function CasePage({
     instruments.find((i) => i.abbr === track)?.url;
   const pagesLabel = pick(T.pagesPdf, locale).replace("{n}", String(judgment.pages));
 
+  /**
+   * Structured data. This archive exists to be cited — by journalists, in
+   * filings, and increasingly by search and AI agents reading the page rather
+   * than looking at it. Three graphs: what this document is and what it is
+   * based on, the questions it answers, and where it sits in the site.
+   */
+  const pageUrl = `${siteUrl}/${locale}/cases/${slug}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${pageUrl}#article`,
+        headline: `${parties} — ${pick(judgment.court, locale)}`,
+        description: pick(plain.tldr, locale),
+        inLanguage: locale,
+        url: pageUrl,
+        datePublished: judgment.date,
+        about: {
+          "@type": "Legislation",
+          name: masthead.official,
+          legislationJurisdiction: pick(judgment.court, locale),
+          datePublished: judgment.date,
+          url: judgment.caseUrl ?? judgment.url,
+        },
+        isBasedOn: judgment.url,
+        publisher: {
+          "@type": "Organization",
+          name: dict.footer.org,
+          url: siteUrl,
+        },
+        citation: sources.map((s) => ({
+          "@type": "CreativeWork",
+          name: s.title,
+          url: s.url,
+        })),
+        mentions: instruments.map((i) => ({
+          "@type": "Legislation",
+          name: pick(i.name, locale),
+          alternateName: i.abbr,
+          url: i.url,
+        })),
+      },
+      {
+        "@type": "FAQPage",
+        "@id": `${pageUrl}#faq`,
+        mainEntity: faq.map((f) => ({
+          "@type": "Question",
+          name: pick(f.q, locale),
+          acceptedAnswer: { "@type": "Answer", text: pick(f.a, locale) },
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumbs`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: dict.brand.wordmark,
+            item: `${siteUrl}/${locale}`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: dict.nav.decisions,
+            item: `${siteUrl}/${locale}#registry`,
+          },
+          { "@type": "ListItem", position: 3, name: parties },
+        ],
+      },
+    ],
+  };
+
   return (
     <div className="page casepage">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header locale={locale} dict={dict} />
 
       {/* 1 — Masthead */}

@@ -183,6 +183,7 @@ export const icjCerdIcsft: DecisionSummary = {
     url: "https://www.icj-cij.org/sites/default/files/case-related/166/166-20240131-jud-01-00-en.pdf",
     caseUrl: "https://www.icj-cij.org/case/166",
     pages: 213,
+    date: "2024-01-31",
   },
 
   instruments: [
