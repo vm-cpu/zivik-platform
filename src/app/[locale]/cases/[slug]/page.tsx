@@ -5,6 +5,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import Header from "@/components/nasvitlo/Header";
 import Footer from "@/components/nasvitlo/Footer";
+import ShareBar from "@/components/nasvitlo/ShareBar";
 import { icjCerdIcsft } from "@/content/summaries/icj-cerd-icsft";
 import type { DecisionSummary, SummaryBlock, Theatre } from "@/content/summaries/types";
 import uaMap from "@/content/summaries/ukraine-map.json";
@@ -34,6 +35,15 @@ const T = {
   provSub: { uk: "Наказ від 19 квітня 2017", en: "Order of 19 April 2017" },
   orderBreached: { uk: "Наказ порушено", en: "Order breached" },
   orderComplied: { uk: "Дотримано", en: "Complied" },
+  inShort: { uk: "Якщо коротко", en: "In short" },
+  whyMatters: { uk: "Чому це важливо", en: "Why it matters" },
+  onThisPage: { uk: "На цій сторінці", en: "On this page" },
+  minRead: { uk: "{n} хв читання", en: "{n} min read" },
+  glossaryH: { uk: "Словник", en: "Glossary" },
+  whoH: { uk: "Хто є хто", en: "Who's who" },
+  faqH: { uk: "Часті запитання", en: "Common questions" },
+  relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
+  fullSummary: { uk: "Повне самері", en: "Full summary" },
 } as const;
 
 const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
@@ -45,42 +55,79 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
 
 const MK = uaMap.markers as Record<string, [number, number]>;
 
-/** The lit map of Ukraine with the case's treaty theatres highlighted. */
+const mapContext = (uaMap as { context?: string[] }).context ?? [];
+
+/** Europe-context map: the court in The Hague, Kyiv, and the two treaty theatres. */
 function TheatreMap({ theatres, locale }: { theatres: Theatre[]; locale: Locale }) {
+  const [vw0, vh0, vw, vh] = uaMap.viewBox.split(" ").map(Number);
   return (
     <div className="map-wrap">
-      <svg className="map" viewBox={uaMap.viewBox} role="img" aria-label="Map of Ukraine">
-        <path className="ua-fill" d={uaMap.path} />
+      <svg className="map" viewBox={uaMap.viewBox} role="img" aria-label="Map of Europe">
+        <defs>
+          <clipPath id="mapclip">
+            <rect x={vw0} y={vh0} width={vw} height={vh} />
+          </clipPath>
+        </defs>
+        <g clipPath="url(#mapclip)">
+          {mapContext.map((d, i) => (
+            <path key={i} className="ctx" d={d} />
+          ))}
+          <path className="ua-fill" d={uaMap.path} />
 
-        {/* Kyiv reference */}
-        <circle className="mk-city" cx={MK.kyiv[0]} cy={MK.kyiv[1]} r={4.5} />
-        <text className="mk-city-label" x={MK.kyiv[0] + 12} y={MK.kyiv[1] + 4}>
-          {locale === "uk" ? "Київ" : "Kyiv"}
-        </text>
+          {/* the court's reach: The Hague → Kyiv */}
+          <line
+            className="reach"
+            x1={MK.hague[0]}
+            y1={MK.hague[1]}
+            x2={MK.kyiv[0]}
+            y2={MK.kyiv[1]}
+          />
 
-        {theatres.map((t) => {
-          const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
-          const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
-          const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
-          return (
-            <g key={t.treaty}>
-              {pts.map((p, i) => (
-                <g key={i}>
-                  <circle className="zone-halo" cx={p[0]} cy={p[1]} r={54} />
-                  <circle className="zone" cx={p[0]} cy={p[1]} r={7} />
-                </g>
-              ))}
-              <text className="mk-treaty" x={cx} y={cy - 66} textAnchor="middle">
-                {t.treaty}
-              </text>
-              <text className="mk-label" x={cx} y={cy - 50} textAnchor="middle">
-                {pick(t.place, locale)}
-              </text>
-            </g>
-          );
-        })}
+          {/* The Hague — the court */}
+          <g>
+            <circle className="mk-court" cx={MK.hague[0]} cy={MK.hague[1]} r={6} />
+            <text className="mk-treaty" x={MK.hague[0] + 12} y={MK.hague[1] - 4}>
+              {locale === "uk" ? "ГААГА" : "THE HAGUE"}
+            </text>
+            <text className="mk-city-label" x={MK.hague[0] + 12} y={MK.hague[1] + 11}>
+              {pick({ uk: "Міжнародний суд ООН", en: "Int’l Court of Justice" }, locale)}
+            </text>
+          </g>
+
+          {/* Kyiv reference */}
+          <circle className="mk-city" cx={MK.kyiv[0]} cy={MK.kyiv[1]} r={4} />
+          <text className="mk-city-label" x={MK.kyiv[0] + 9} y={MK.kyiv[1] + 3}>
+            {locale === "uk" ? "Київ" : "Kyiv"}
+          </text>
+
+          {theatres.map((t) => {
+            const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
+            const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
+            const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
+            return (
+              <g key={t.treaty}>
+                {pts.map((p, i) => (
+                  <g key={i}>
+                    <circle className="zone-halo" cx={p[0]} cy={p[1]} r={30} />
+                    <circle className="zone" cx={p[0]} cy={p[1]} r={5.5} />
+                  </g>
+                ))}
+                <text className="mk-treaty" x={cx} y={cy - 40} textAnchor="middle">
+                  {t.treaty}
+                </text>
+                <text className="mk-label" x={cx} y={cy - 26} textAnchor="middle">
+                  {pick(t.place, locale)}
+                </text>
+              </g>
+            );
+          })}
+        </g>
       </svg>
       <div className="map-legend">
+        <span>
+          <i className="lg-court" />
+          {pick({ uk: "Гаага — суд", en: "The Hague — court" }, locale)}
+        </span>
         {theatres.map((t) => (
           <span key={t.treaty}>
             <i />
@@ -164,7 +211,7 @@ export default async function CasePage({
 
   const dict = await getDictionary(locale);
   const { masthead, judgment, instruments, stats, timeline, verdicts, theatres, sources } = summary;
-  const { interpretations, provisionalMeasures } = summary;
+  const { interpretations, provisionalMeasures, plain, glossary, whoIsWho, faq, related } = summary;
   const parties = masthead.parties.replace(/^\(|\)$/g, "");
   // Body in the reader's language; English is the source of truth.
   const rawBlocks = locale === "uk" && summary.blocksUk ? summary.blocksUk : summary.blocks;
@@ -172,6 +219,14 @@ export default async function CasePage({
     b.kind === "h2" && /^\s*(Researches|Дослідження)/.test(b.text);
   const body = rawBlocks.filter((b) => b.kind !== "link" && !isSourcesHeading(b));
   const violations = verdicts.filter((v) => v.outcome === "violation").length;
+
+  // Reading-time estimate and table of contents from the body headings.
+  const words = body.map((b) => b.text).join(" ").split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.round(words / 180));
+  const readTime = pick(T.minRead, locale).replace("{n}", String(minutes));
+  const sections = body
+    .filter((b) => b.kind === "h2")
+    .map((b, i) => ({ id: `sec-${i}`, text: b.text }));
 
   /** Official-text URL for a verdict track, when one exists. */
   const trackUrl = (track: string): string | undefined =>
@@ -216,6 +271,20 @@ export default async function CasePage({
           </a>
         </div>
       </header>
+
+      {/* 1b — Plain-language lede */}
+      <section className="lede">
+        <div className="lede-inner">
+          <div className="tldr">
+            <div className="lbl-light">{pick(T.inShort, locale)}</div>
+            <p>{pick(plain.tldr, locale)}</p>
+          </div>
+          <aside className="why">
+            <div className="lbl-light">{pick(T.whyMatters, locale)}</div>
+            <p>{pick(plain.whyMatters, locale)}</p>
+          </aside>
+        </div>
+      </section>
 
       {/* 2 — Dashboard */}
       <section className="dash">
@@ -330,13 +399,41 @@ export default async function CasePage({
 
       {/* 3 — Verbatim summary */}
       <article className="read">
-        {body.map((b, i) => (
-          <Block key={i} block={b} />
-        ))}
+        <nav className="toc" aria-label={pick(T.onThisPage, locale)}>
+          <div className="toc-head">
+            <span className="toc-title">{pick(T.onThisPage, locale)}</span>
+            <span className="toc-time">{readTime}</span>
+          </div>
+          <ol>
+            {sections.map((s) => (
+              <li key={s.id}>
+                <a href={`#${s.id}`}>{s.text.trim()}</a>
+              </li>
+            ))}
+            {sources.length > 0 && (
+              <li>
+                <a href="#sec-sources">{pick(T.sources, locale)}</a>
+              </li>
+            )}
+          </ol>
+        </nav>
+
+        {(() => {
+          let h2i = 0;
+          return body.map((b, i) =>
+            b.kind === "h2" ? (
+              <h2 id={`sec-${h2i++}`} key={i}>
+                {b.text}
+              </h2>
+            ) : (
+              <Block key={i} block={b} />
+            ),
+          );
+        })()}
 
         {sources.length > 0 && (
           <>
-            <h2>{pick(T.sources, locale)}</h2>
+            <h2 id="sec-sources">{pick(T.sources, locale)}</h2>
             <ol className="sources">
               {sources.map((s, i) => {
                 const meta = [
@@ -358,6 +455,71 @@ export default async function CasePage({
           </>
         )}
       </article>
+
+      {/* 4 — Reader aids */}
+      <section className="aids">
+        <div className="aids-inner">
+          <div className="aids-col">
+            <div className="aid">
+              <div className="lbl">{pick(T.whoH, locale)}</div>
+              <ul className="who">
+                {whoIsWho.map((w, i) => (
+                  <li key={i} data-kind={w.kind}>
+                    <b>{pick(w.name, locale)}</b>
+                    <span>{pick(w.role, locale)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="aid">
+              <div className="lbl">{pick(T.glossaryH, locale)}</div>
+              <dl className="glossary">
+                {glossary.map((g, i) => (
+                  <div key={i}>
+                    <dt>{pick(g.term, locale)}</dt>
+                    <dd>{pick(g.def, locale)}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+
+          <div className="aids-col">
+            <div className="aid">
+              <div className="lbl">{pick(T.faqH, locale)}</div>
+              <div className="faq">
+                {faq.map((f, i) => (
+                  <details key={i} open={i === 0}>
+                    <summary>{pick(f.q, locale)}</summary>
+                    <p>{pick(f.a, locale)}</p>
+                  </details>
+                ))}
+              </div>
+            </div>
+
+            <div className="aid">
+              <div className="lbl">{pick(T.relatedH, locale)}</div>
+              <ul className="related">
+                {related.map((r, i) => (
+                  <li key={i}>
+                    <a href={`/${locale}${r.href}`}>
+                      <b>{pick(r.label, locale)}</b>
+                      <span>{pick(r.note, locale)}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <ShareBar
+              locale={locale}
+              title={parties}
+              citation={`${masthead.official} (${parties}), ${judgment.court[locale]}, ${masthead.judgment}.`}
+            />
+          </div>
+        </div>
+      </section>
 
       <Footer dict={dict} />
     </div>

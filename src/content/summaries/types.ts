@@ -91,6 +91,40 @@ export interface JudgmentSource {
   pages: number;
 }
 
+/** Plain-language framing for non-lawyers. */
+export interface PlainLanguage {
+  /** 2–3 sentence "what this is and how it ended", in everyday words. */
+  tldr: Localized;
+  /** Practical significance — why a non-lawyer should care. */
+  whyMatters: Localized;
+}
+
+/** A glossary term with a plain definition. */
+export interface GlossaryTerm {
+  term: Localized;
+  def: Localized;
+}
+
+/** An actor in the case, explained in one line. */
+export interface WhoEntry {
+  name: Localized;
+  role: Localized;
+  kind: "party" | "court" | "actor";
+}
+
+/** A plain-language question and answer. */
+export interface FaqEntry {
+  q: Localized;
+  a: Localized;
+}
+
+/** A pointer to a related case. */
+export interface RelatedCase {
+  label: Localized;
+  note: Localized;
+  href: string;
+}
+
 /** A doctrinal ruling the Court settled on a point of law. */
 export interface Interpretation {
   term: Localized;
@@ -117,6 +151,11 @@ export interface Citation {
 
 /** Everything a decision page renders. */
 export interface DecisionSummary extends VerbatimSummary {
+  plain: PlainLanguage;
+  glossary: GlossaryTerm[];
+  whoIsWho: WhoEntry[];
+  faq: FaqEntry[];
+  related: RelatedCase[];
   judgment: JudgmentSource;
   instruments: Instrument[];
   stats: Stat[];

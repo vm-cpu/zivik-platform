@@ -47,6 +47,10 @@
   .acc .arow{grid-template-columns:9px 1fr 118px 88px;align-items:start}
   .acc .arow.dim .at{color:var(--muted)}
   .acc .arow.dim:hover .at{color:var(--ink)}
+  /* inert rows (no on-site page yet) don't feign clickability */
+  .acc .arow.inert{cursor:default}
+  .acc .arow.inert:hover .at{color:var(--ink)}
+  .acc .arow.dim.inert:hover .at{color:var(--muted)}
   .acc .arow.dim .an{color:var(--muted)}
   .acc .queued{font:600 10px var(--brand-font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--faint);justify-self:start;padding:3px 0}
   /* ---- mobile adaptation of the home page blocks ---- */

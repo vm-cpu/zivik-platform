@@ -26,6 +26,158 @@ export const icjCerdIcsft: DecisionSummary = {
   }),
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
+  plain: {
+    tldr: {
+      uk: "Україна судилася з Росією у Міжнародному суді ООН за двома договорами — про фінансування тероризму (події на сході) і про расову дискримінацію (Крим). Суд визнав лише два порушення: Росія не розслідувала ймовірне фінансування тероризму й згорнула шкільну освіту українською мовою в Криму. Більшість вимог України відхилено.",
+      en: "Ukraine took Russia to the International Court of Justice under two treaties — on terrorism financing (events in the east) and on racial discrimination (Crimea). The Court upheld only two breaches: Russia failed to investigate alleged terrorism financing, and it curtailed Ukrainian-language schooling in Crimea. Most of Ukraine's claims were dismissed.",
+    },
+    whyMatters: {
+      uk: "Рішення Міжнародного суду ООН остаточне й оскарженню не підлягає, але не має механізму примусового виконання. Його головна вага — фактологічна та правова: воно офіційно фіксує порушення й дає опору для майбутніх позовів, статей та аргументів.",
+      en: "A judgment of the International Court of Justice is final and cannot be appealed, but there is no mechanism to enforce it. Its weight is factual and legal: it puts the breaches on the record and gives a foundation for future claims, writing and argument.",
+    },
+  },
+
+  glossary: [
+    {
+      term: { uk: "Меджліс", en: "Mejlis" },
+      def: {
+        uk: "Представницький орган кримськотатарського народу; заборонений Росією у 2016 році.",
+        en: "The representative body of the Crimean Tatar people; banned by Russia in 2016.",
+      },
+    },
+    {
+      term: { uk: "Тимчасові заходи", en: "Provisional measures" },
+      def: {
+        uk: "Термінові приписи суду на час розгляду справи, щоб зберегти права сторін — свого роду забезпечення позову.",
+        en: "Urgent orders a court issues while a case is pending, to preserve the parties' rights — akin to an injunction.",
+      },
+    },
+    {
+      term: { uk: "Dispositif", en: "Dispositif" },
+      def: {
+        uk: "Резолютивна (постановча) частина рішення — власне висновки, до яких дійшов суд.",
+        en: "The operative part of a judgment — the Court's actual findings and orders.",
+      },
+    },
+    {
+      term: { uk: "CERD", en: "CERD" },
+      def: {
+        uk: "Міжнародна конвенція про ліквідацію всіх форм расової дискримінації (1965).",
+        en: "International Convention on the Elimination of All Forms of Racial Discrimination (1965).",
+      },
+    },
+    {
+      term: { uk: "ICSFT", en: "ICSFT" },
+      def: {
+        uk: "Міжнародна конвенція про боротьбу з фінансуванням тероризму (1999).",
+        en: "International Convention for the Suppression of the Financing of Terrorism (1999).",
+      },
+    },
+    {
+      term: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
+      def: {
+        uk: "Самопроголошені утворення на сході України, підтримувані Росією; лапки означають невизнання.",
+        en: "Self-proclaimed entities in eastern Ukraine backed by Russia; quotation marks signal non-recognition.",
+      },
+    },
+    {
+      term: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
+      def: {
+        uk: "Головний судовий орган ООН у Гаазі; вирішує спори між державами.",
+        en: "The principal judicial organ of the UN, in The Hague; settles disputes between States.",
+      },
+    },
+  ],
+
+  whoIsWho: [
+    {
+      name: { uk: "Україна", en: "Ukraine" },
+      role: { uk: "Заявник — держава, що подала позов.", en: "Applicant — the State that brought the case." },
+      kind: "party",
+    },
+    {
+      name: { uk: "Російська Федерація", en: "Russian Federation" },
+      role: { uk: "Відповідач.", en: "Respondent." },
+      kind: "party",
+    },
+    {
+      name: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
+      role: {
+        uk: "Головний судовий орган ООН у Гаазі; вирішує спори між державами.",
+        en: "The UN's principal judicial organ, in The Hague; settles disputes between States.",
+      },
+      kind: "court",
+    },
+    {
+      name: { uk: "Кримські татари", en: "Crimean Tatars" },
+      role: {
+        uk: "Корінний народ Криму; від їхнього імені порушено питання дискримінації за CERD.",
+        en: "Indigenous people of Crimea; the CERD discrimination claims were brought on their behalf.",
+      },
+      kind: "actor",
+    },
+    {
+      name: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
+      role: {
+        uk: "Самопроголошені збройні угруповання на сході; за їх фінансування Україна винила РФ.",
+        en: "Self-proclaimed armed groups in the east; Ukraine blamed Russia for financing them.",
+      },
+      kind: "actor",
+    },
+  ],
+
+  faq: [
+    {
+      q: { uk: "То Україна виграла?", en: "So did Ukraine win?" },
+      a: {
+        uk: "Частково. Суд визнав два порушення по суті (нерозслідування фінансування тероризму та згортання освіти українською в Криму) і два порушення тимчасового наказу, але відхилив більшість інших вимог.",
+        en: "Partly. The Court upheld two breaches on the merits (failure to investigate terrorism financing, and curtailing Ukrainian-language education in Crimea) and two breaches of the interim Order, but dismissed most other claims.",
+      },
+    },
+    {
+      q: { uk: "Чи можна змусити Росію виконати рішення?", en: "Can Russia be forced to comply?" },
+      a: {
+        uk: "Прямого механізму примусу немає. Рішення остаточне, але його дотримання залежить від самої держави; теоретично питання виконання може розглядати Рада Безпеки ООН.",
+        en: "There is no direct enforcement mechanism. The judgment is final, but compliance depends on the State itself; in theory enforcement can be raised at the UN Security Council.",
+      },
+    },
+    {
+      q: { uk: "Навіщо це рішення, якщо його не виконують?", en: "Why does the judgment matter if it isn't enforced?" },
+      a: {
+        uk: "Воно офіційно й авторитетно фіксує факти та правові порушення — це основа для майбутніх позовів, репарацій, журналістики й адвокації.",
+        en: "It authoritatively puts the facts and legal breaches on the record — a foundation for future claims, reparations, journalism and advocacy.",
+      },
+    },
+    {
+      q: { uk: "Що буде далі?", en: "What happens next?" },
+      a: {
+        uk: "Рішення МС ООН оскарженню не підлягає. Паралельно тривають інші справи проти РФ — про геноцид (МС ООН), у ЄСПЛ та в Міжнародному кримінальному суді.",
+        en: "An ICJ judgment cannot be appealed. Other cases against Russia continue in parallel — on genocide (ICJ), at the ECtHR, and at the International Criminal Court.",
+      },
+    },
+  ],
+
+  related: [
+    {
+      label: {
+        uk: "Звинувачення у геноциді (Україна проти РФ)",
+        en: "Allegations of Genocide (Ukraine v. Russian Federation)",
+      },
+      note: { uk: "МС ООН · 32 держави-інтервенти", en: "ICJ · 32 States intervening" },
+      href: "#registry",
+    },
+    {
+      label: { uk: "Ордери МКС на арешт", en: "ICC arrest warrants" },
+      note: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },
+      href: "#registry",
+    },
+    {
+      label: { uk: "MH17 (ЄСПЛ)", en: "MH17 (ECtHR)" },
+      note: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
+      href: "#registry",
+    },
+  ],
+
   judgment: {
     court: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
     url: "https://www.icj-cij.org/sites/default/files/case-related/166/166-20240131-jud-01-00-en.pdf",

@@ -182,18 +182,16 @@ export default function Registry({
               </summary>
               <div className="body">
                 {cases.map((c) => {
-                  const internal = c.summarySlug
+                  // Only ever navigate to our own decision pages — never to
+                  // external PDFs. Cases without a published summary are inert.
+                  const href = c.summarySlug
                     ? `/${locale}/cases/${c.summarySlug}`
-                    : null;
-                  const href = internal ?? c.decisionUrl ?? undefined;
-                  const external = !internal && !!c.decisionUrl;
+                    : undefined;
                   return (
                   <a
                     key={c.id}
-                    className={`arow ${c.lit ? "lit" : "dim"}`}
+                    className={`arow ${c.lit ? "lit" : "dim"}${href ? "" : " inert"}`}
                     href={href}
-                    target={external ? "_blank" : undefined}
-                    rel={external ? "noopener noreferrer" : undefined}
                   >
                     <span className="mk" />
                     <span>
