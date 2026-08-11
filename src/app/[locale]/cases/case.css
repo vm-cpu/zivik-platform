@@ -33,8 +33,11 @@
   --ink2: var(--brand-ink-2);
   --ink3: var(--brand-faint);
   --prule: var(--brand-rule);
-  --pgold: #8a5d24;
-  --pred: #a3302c;
+  /* Accents on the light ground must follow the theme too — as literals they
+     dropped to 3.3:1 and 2.7:1 on the dark ground. The brand tokens lift
+     automatically in dark mode. */
+  --pgold: var(--brand-gold);
+  --pred: var(--brand-red);
 
   /* Type ramp. Steps sit ~1.11–1.14 apart through the UI/prose range (fine
      gradations where density matters) and open up at the top so display type

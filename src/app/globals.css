@@ -10,7 +10,8 @@
   --brand-red: #7f1716;        /* UCU cherry-red — primary accent */
   --brand-red-dark: #5c100f;   /* pressed / hover */
   --brand-cherry: #c23b32;     /* lit accent on dark scenes */
-  --brand-gold: #946428;       /* ink gold on paper */
+  --brand-gold: #8a6e4b;       /* ink gold on paper — Pantone 874 C (brandbook
+                                  metal accent), 4.60:1 on paper: AA for text */
   --brand-gold-lit: #e6b65c;   /* luminous gold in dark / glow contexts */
   --brand-gold-lamp: #d6a24b;  /* lamp-scene gold */
 
@@ -89,6 +90,59 @@
   --atlas-green: #5e7a64;
   --atlas-rule: var(--brand-rule);
   --atlas-header-bg: var(--brand-paper);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Dark theme — the lamp metaphor made a real site preference.
+
+   Because every surface on the site already reads from the
+   --brand-* tokens, flipping them here flips the whole site; no
+   component needs a dark variant of its own. Scenes that are
+   *intentionally* dark in both themes (the lamp stage, the court
+   masthead) keep their own --brand-night ground.
+
+   Order matters: the media query is the OS default, and the
+   [data-theme] attributes must be able to override it in BOTH
+   directions, so they come last. Every pair below was checked
+   for WCAG AA (lowest is 4.78:1).
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand-paper: #14120f;
+    --brand-paper-2: #1a1714;
+    --brand-surface: #201c18;
+    --brand-ink: #f4f1ea;
+    --brand-ink-2: #c2bab0;
+    --brand-faint: #8f877d;
+    --brand-rule: #322c26;
+    /* accents lift so they stay legible on a dark ground */
+    --brand-gold: #d9ab5e;
+    --brand-red: #d9564b;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.5), 0 18px 48px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --brand-paper: #14120f;
+  --brand-paper-2: #1a1714;
+  --brand-surface: #201c18;
+  --brand-ink: #f4f1ea;
+  --brand-ink-2: #c2bab0;
+  --brand-faint: #8f877d;
+  --brand-rule: #322c26;
+  --brand-gold: #d9ab5e;
+  --brand-red: #d9564b;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.5), 0 18px 48px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
 }
 
 @theme inline {

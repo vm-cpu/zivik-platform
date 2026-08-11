@@ -54,6 +54,15 @@ export const metadata: Metadata = {
     "Reader's guide to international legal cases between Ukraine and Russia",
 };
 
+/**
+ * Applies the saved theme before the first paint. Without this the page paints
+ * in the OS theme and then snaps to the saved one — the flash we just removed
+ * from the fonts. Kept tiny and dependency-free on purpose.
+ */
+const themeScript = `(function(){try{var t=localStorage.getItem("nsv-theme");
+if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);
+}catch(e){}})();`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -63,7 +72,11 @@ export default function RootLayout({
     <html
       lang="uk"
       className={`${newsreader.variable} ${ibmPlexMono.variable} ${fraunces.variable} ${charis.variable} ${firaSans.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-full">{children}</body>
     </html>
   );

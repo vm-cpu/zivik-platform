@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import ThemeToggle from "./ThemeToggle";
 import "./header.css";
 
 /** Dark top bar: brand, primary nav (collapses to a menu), language switch. */
@@ -105,6 +106,13 @@ export default function Header({
               EN
             </Link>
           </span>
+          <ThemeToggle
+            label={
+              locale === "uk"
+                ? "Перемкнути світлу або темну тему"
+                : "Switch between light and dark theme"
+            }
+          />
           <button
             type="button"
             className="nsv-burger"
