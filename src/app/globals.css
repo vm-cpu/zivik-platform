@@ -13,14 +13,48 @@
   --brand-gold: #946428;       /* ink gold on paper */
   --brand-gold-lit: #e6b65c;   /* luminous gold in dark / glow contexts */
   --brand-gold-lamp: #d6a24b;  /* lamp-scene gold */
-  --brand-paper: #f5f0e6;      /* page background */
-  --brand-paper-2: #ede6d6;    /* recessed surface */
-  --brand-surface: #fffdf9;    /* cards / rows */
-  --brand-ink: #211c18;        /* primary text */
-  --brand-ink-2: #5e554b;      /* secondary text */
-  --brand-faint: #938979;      /* muted / captions */
-  --brand-rule: #dcd3c2;       /* hairline dividers */
+
+  /* Light surfaces. A near-neutral ramp with only a whisper of warmth, so the
+     cherry and gold carry all the colour. (Replaced the beige/cream paper —
+     it dated the whole site and muddied the accents.) */
+  --brand-paper: #fbfbfa;      /* page background */
+  --brand-paper-2: #f4f4f2;    /* recessed band */
+  --brand-surface: #ffffff;    /* cards / rows — float above the page */
+  --brand-ink: #1a1917;        /* primary text */
+  --brand-ink-2: #55524d;      /* secondary text */
+  --brand-faint: #8a8681;      /* muted / captions */
+  --brand-rule: #e7e5e1;       /* hairline dividers */
   --brand-cream: #f3e8e2;      /* text on dark scenes */
+
+  /* Dark surfaces — a near-black with a warm cast, so the lamp still reads as
+     light in the dark without the scene going muddy brown. */
+  --brand-night: #17110f;      /* darkest ground */
+  --brand-night-2: #201815;    /* raised panel on dark */
+  --brand-night-rule: #332622; /* hairline on dark */
+
+  /* ── Shape & depth ──────────────────────────────────────────────
+     The site read as boxy because everything was a 1px hairline
+     rectangle. Cards now carry real radii and soft, layered shadows
+     instead of borders; hairlines are reserved for true dividers. */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(26, 25, 23, 0.04),
+               0 1px 1px rgba(26, 25, 23, 0.03);
+  --shadow-md: 0 2px 4px rgba(26, 25, 23, 0.04),
+               0 6px 16px rgba(26, 25, 23, 0.06);
+  --shadow-lg: 0 4px 8px rgba(26, 25, 23, 0.04),
+               0 16px 40px rgba(26, 25, 23, 0.09);
+  --shadow-dark: 0 2px 6px rgba(0, 0, 0, 0.3),
+                 0 14px 40px rgba(0, 0, 0, 0.34);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 180ms;
   /* on-dark scene palette (header, footer, hero over the dark backdrop) */
   --brand-gold-pale: #f0dda8;  /* accent / active text on dark */
   --brand-gold-mark: #c79a3c;  /* "analysed / lit" indicator gold */
@@ -36,25 +70,25 @@
   --brand-font-body: var(--font-fira), 'Fira Sans';
   --brand-font-display: var(--font-charis), 'Charis SIL';
 
-  /* Reader (caseworks) palette */
-  --bg: #f7f6f2;
-  --bg-2: #efeee8;
+  /* Reader (caseworks) palette — surfaces follow the brand neutrals */
+  --bg: var(--brand-paper);
+  --bg-2: var(--brand-paper-2);
   --ink: #0c0c0d;
   --ink-soft: #58575a;
-  --rule: #c9c8c1;
+  --rule: var(--brand-rule);
   --accent: #1c2bd6;
   --accent-soft: #1c2bd61f;
 
   /* Atlas (caseflows) palette */
-  --atlas-bg: #f4efe5;
+  --atlas-bg: var(--brand-paper);
   --atlas-ink: #1c1814;
   --atlas-ink-soft: #4a443a;
   --atlas-muted: #8a8270;
   --atlas-gold: #b88a3a;
   --atlas-red: #a83426;
   --atlas-green: #5e7a64;
-  --atlas-rule: #d4cfc3;
-  --atlas-header-bg: #f4efe5;
+  --atlas-rule: var(--brand-rule);
+  --atlas-header-bg: var(--brand-paper);
 }
 
 @theme inline {
@@ -93,7 +127,7 @@ body {
 
 /* Leaflet overrides */
 .leaflet-container {
-  background: #e8e0d0 !important;
+  background: var(--brand-paper-2) !important;
   font-family: inherit;
 }
 
@@ -104,6 +138,34 @@ body {
 }
 
 .leaflet-popup-content-wrapper {
-  border-radius: 2px !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+  border-radius: var(--r-md) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Interaction & motion baseline.
+   Keyboard users had no visible focus anywhere on the site; a
+   single ring on :focus-visible covers every control without
+   showing on mouse clicks. Motion respects the OS setting.
+   ───────────────────────────────────────────────────────────── */
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand-red);
+  outline-offset: 3px;
+  border-radius: var(--r-xs);
+}
+/* On dark scenes the cherry ring disappears — use the lamp gold. */
+:where(.lamp, .court, .casepage .mast, .casepage .dash, .casepage .sharezone)
+  :where(a, button, summary, [tabindex]):focus-visible {
+  outline-color: var(--brand-gold-lit);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

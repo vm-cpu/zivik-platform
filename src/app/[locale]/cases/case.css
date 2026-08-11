@@ -12,27 +12,27 @@
    ========================================================================== */
 
 .casepage {
-  /* dark "court" ground */
-  --bg: #1a0b0a;
-  --panel: #251110;
-  --rule: #3d201d;
-  --rule-soft: #2e1816;
-  --cream: #f3e8e2;
-  --muted: #cbb4ad;
-  --faint: #9d827b;
-  --gold: #e6b65c;
+  /* Dark "court" ground — all from the brand tokens, no local copies. */
+  --bg: var(--brand-night);
+  --panel: var(--brand-night-2);
+  --rule: var(--brand-night-rule);
+  --rule-soft: #2a201c;
+  --cream: var(--brand-cream);
+  --muted: #cbbdb8;
+  --faint: #968a85;
+  --gold: var(--brand-gold-lit);
   --gold-dim: #b98a3f;
-  --red: #e05a4e; /* breach only */
-  --accent: #7f1716;
+  --red: #e0685c; /* breach only */
+  --accent: var(--brand-red);
 
-  /* light "paper" ground */
-  --paper: #f5f0e6;
-  --paper2: #efe8da;
-  --card: #fffdf9;
-  --ink: #211c18;
-  --ink2: #4a423b;
-  --ink3: #6e6154;
-  --prule: #ded4c2;
+  /* Light ground */
+  --paper: var(--brand-paper);
+  --paper2: var(--brand-paper-2);
+  --card: var(--brand-surface);
+  --ink: var(--brand-ink);
+  --ink2: var(--brand-ink-2);
+  --ink3: var(--brand-faint);
+  --prule: var(--brand-rule);
   --pgold: #8a5d24;
   --pred: #a3302c;
 
@@ -189,9 +189,12 @@
   gap: 3px;
   text-decoration: none;
   font: 700 var(--t-sm) var(--brand-font-body);
-  padding: 13px 22px;
-  border-radius: 3px;
-  transition: transform 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  padding: 14px 24px;
+  border-radius: var(--r-pill);
+  transition: transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              color var(--dur) var(--ease);
 }
 .casepage .btn:hover {
   transform: translateY(-1px);
@@ -205,6 +208,7 @@
 .casepage .btn-primary {
   background: var(--accent);
   color: #fbeee9;
+  box-shadow: var(--shadow-md);
 }
 .casepage .btn-ghost {
   align-self: stretch;
@@ -263,12 +267,11 @@
 .casepage .kpis {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1px;
-  background: var(--rule-soft);
-  border: 1px solid var(--rule-soft);
+  gap: 12px;
 }
 .casepage .kpi {
   background: var(--panel);
+  border-radius: var(--r-md);
   padding: 22px 24px;
   display: flex;
   flex-direction: column;
@@ -521,8 +524,9 @@
 }
 .casepage .ruling {
   background: var(--card);
-  border: 1px solid var(--prule);
-  padding: 18px 20px;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: 20px 22px;
   margin-bottom: 12px;
 }
 .casepage .ruling b {
@@ -545,14 +549,23 @@
   padding: 0;
 }
 .casepage .pmeasures li {
+  position: relative;
   background: var(--card);
-  border: 1px solid var(--prule);
-  border-left: 3px solid var(--prule);
-  padding: 16px 20px;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 22px 18px 24px;
   margin-bottom: 12px;
+  overflow: hidden;
 }
-.casepage .pmeasures li[data-order="violated"] {
-  border-left-color: var(--pred);
+.casepage .pmeasures li::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--prule);
+}
+.casepage .pmeasures li[data-order="violated"]::before {
+  background: var(--pred);
 }
 .casepage .pm-head {
   display: flex;
@@ -713,10 +726,11 @@
 /* `.read p` is (0,2,1); this needs to match it to win, hence `.read p.disp`. */
 .casepage .read p.disp {
   margin: 14px 0 0;
-  padding: 16px 20px 16px 46px;
+  padding: 18px 22px 18px 48px;
   position: relative;
   background: var(--card);
-  border: 1px solid var(--prule);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
   border-left: 3px solid var(--pred);
   font-size: var(--t-ui);
   line-height: 1.6;
@@ -734,9 +748,10 @@
 }
 .casepage .findings {
   margin: 20px 0 0;
-  padding: 6px 24px 22px;
+  padding: 8px 26px 24px;
   background: var(--card);
-  border: 1px solid var(--prule);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
 }
 .casepage .findings p {
   font-size: var(--t-ui);
@@ -840,8 +855,9 @@
 }
 .casepage .faq details {
   background: var(--card);
-  border: 1px solid var(--prule);
-  padding: 14px 18px;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: 16px 20px;
   margin-bottom: 10px;
 }
 .casepage .faq summary {
@@ -878,14 +894,17 @@
 .casepage .related a {
   display: grid;
   gap: 3px;
-  padding: 14px 18px;
+  padding: 16px 20px;
   background: var(--card);
-  border: 1px solid var(--prule);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
   text-decoration: none;
-  transition: border-color 0.15s ease;
+  transition: box-shadow var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
 }
 .casepage .related a:hover {
-  border-color: var(--pgold);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 .casepage .related b {
   font: 700 var(--t-sm) var(--brand-font-body);
