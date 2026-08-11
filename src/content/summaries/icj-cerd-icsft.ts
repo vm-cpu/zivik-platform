@@ -245,6 +245,60 @@ export const icjCerdIcsft: DecisionSummary = {
     },
   ],
 
+  interpretations: [
+    {
+      term: { uk: "«Кошти» (ICSFT)", en: "“Funds” (ICSFT)" },
+      ruling: {
+        uk: "Лише грошові та фінансові ресурси. Постачання зброї та організація тренувальних таборів — поза сферою дії конвенції.",
+        en: "Monetary and financial resources only. Supplying weapons and running training camps fall outside the Convention.",
+      },
+    },
+    {
+      term: { uk: "Расова дискримінація (CERD)", en: "Racial discrimination (CERD)" },
+      ruling: {
+        uk: "Розрізнення за забороненою ознакою з метою АБО наслідком применшення прав. Зовні нейтральний захід може кваліфікуватися за його непропорційним негативним впливом.",
+        en: "A distinction on a prohibited ground with the purpose OR effect of impairing rights. A facially neutral measure can qualify by its disparate adverse effect.",
+      },
+    },
+    {
+      term: { uk: "Доктрина «чистих рук»", en: "“Clean hands” doctrine" },
+      ruling: {
+        uk: "Не застосовна у міждержавному спорі, де юрисдикцію встановлено, а заяву визнано прийнятною. Відхилена як заперечення по суті.",
+        en: "Cannot apply in an inter-State dispute where jurisdiction is established and the application is admissible. Rejected as a defence on the merits.",
+      },
+    },
+  ],
+
+  provisionalMeasures: [
+    {
+      measure: { uk: "Не обмежувати Меджліс", en: "Not to restrict the Mejlis" },
+      order: "violated",
+      note: {
+        uk: "Заборону збережено (§ 392) — але по суті це не порушення CERD, лише порушення Наказу.",
+        en: "Ban maintained (§ 392) — yet not a CERD violation in substance, only a breach of the Order.",
+      },
+    },
+    {
+      measure: {
+        uk: "Забезпечити освіту українською мовою",
+        en: "Ensure Ukrainian-language education",
+      },
+      order: "complied",
+      note: {
+        uk: "Освіта залишалася доступною (§ 395).",
+        en: "Education remained available (§ 395).",
+      },
+    },
+    {
+      measure: { uk: "Не загострювати спір", en: "Not to aggravate the dispute" },
+      order: "violated",
+      note: {
+        uk: "Визнання «ДНР» і «ЛНР» та початок «спеціальної воєнної операції» (§ 397–398).",
+        en: "Recognition of the “DPR” and “LPR” and the launch of a “special military operation” (§ 397–398).",
+      },
+    },
+  ],
+
   theatres: [
     {
       place: { uk: "Східна Україна", en: "Eastern Ukraine" },

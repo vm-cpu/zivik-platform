@@ -91,6 +91,19 @@ export interface JudgmentSource {
   pages: number;
 }
 
+/** A doctrinal ruling the Court settled on a point of law. */
+export interface Interpretation {
+  term: Localized;
+  ruling: Localized;
+}
+
+/** A provisional measure from the interim Order and its compliance finding. */
+export interface ProvisionalMeasure {
+  measure: Localized;
+  order: "violated" | "complied";
+  note?: Localized;
+}
+
 /** A cited commentary or analysis, with bibliographic metadata. */
 export interface Citation {
   url: string;
@@ -110,6 +123,8 @@ export interface DecisionSummary extends VerbatimSummary {
   glance: GlanceFact[];
   timeline: TimelineEvent[];
   verdicts: Verdict[];
+  interpretations: Interpretation[];
+  provisionalMeasures: ProvisionalMeasure[];
   theatres: Theatre[];
   sources: Citation[];
 }

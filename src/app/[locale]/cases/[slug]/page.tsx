@@ -29,6 +29,11 @@ const T = {
   readJudgment: { uk: "Читати рішення", en: "Read the judgment" },
   caseFile: { uk: "Справа на сайті Суду", en: "Case file at the Court" },
   pagesPdf: { uk: "PDF, {n} с.", en: "PDF, {n} pp." },
+  keyRulings: { uk: "Ключові тлумачення", en: "Key rulings on the law" },
+  provMeasures: { uk: "Тимчасові заходи", en: "Provisional measures" },
+  provSub: { uk: "Наказ від 19 квітня 2017", en: "Order of 19 April 2017" },
+  orderBreached: { uk: "Наказ порушено", en: "Order breached" },
+  orderComplied: { uk: "Дотримано", en: "Complied" },
 } as const;
 
 const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
@@ -159,6 +164,7 @@ export default async function CasePage({
 
   const dict = await getDictionary(locale);
   const { masthead, judgment, instruments, stats, timeline, verdicts, theatres, sources } = summary;
+  const { interpretations, provisionalMeasures } = summary;
   const parties = masthead.parties.replace(/^\(|\)$/g, "");
   // Body in the reader's language; English is the source of truth.
   const rawBlocks = locale === "uk" && summary.blocksUk ? summary.blocksUk : summary.blocks;
@@ -268,6 +274,42 @@ export default async function CasePage({
                     </li>
                   );
                 })}
+              </ul>
+            </div>
+          </div>
+
+          <div className="rulings-grid">
+            <div>
+              <div className="lbl">{pick(T.keyRulings, locale)}</div>
+              <div className="rulings">
+                {interpretations.map((it, i) => (
+                  <div key={i} className="ruling">
+                    <b>{pick(it.term, locale)}</b>
+                    <p>{pick(it.ruling, locale)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="lbl">
+                {pick(T.provMeasures, locale)}
+                <em className="lbl-sub">{pick(T.provSub, locale)}</em>
+              </div>
+              <ul className="pmeasures">
+                {provisionalMeasures.map((m, i) => (
+                  <li key={i} data-order={m.order}>
+                    <div className="pm-head">
+                      <span className="pm-measure">{pick(m.measure, locale)}</span>
+                      <span className="pm-flag">
+                        {m.order === "violated"
+                          ? pick(T.orderBreached, locale)
+                          : pick(T.orderComplied, locale)}
+                      </span>
+                    </div>
+                    {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
