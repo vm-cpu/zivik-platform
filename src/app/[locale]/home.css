@@ -539,7 +539,10 @@
 /* fluid side padding that grows on wider screens (28 → 96px). The map margin
    matches, so it stays full-bleed to the page edge — no 100vw, no overflow. */
 @media (min-width:1024px){
-  .page > .lmp > div:not(.pj){
+  /* .acc is excluded: its white rows must span full width; only their content
+     is inset (below). Padding the .acc container would expose the dark hero
+     gradient behind it as side strips. */
+  .page > .lmp > div:not(.pj):not(.acc){
     padding-left:clamp(28px, 5vw, 96px) !important;
     padding-right:clamp(28px, 5vw, 96px) !important;
   }
@@ -551,7 +554,11 @@
     padding-left:clamp(28px, 5vw, 96px);
     padding-right:clamp(28px, 5vw, 96px);
   }
-  /* accordion rows already carry 28px; drop it so they align to the new inset */
-  .acc summary{padding-left:0 !important;padding-right:0 !important}
-  .acc .body{padding-left:0 !important;padding-right:0 !important}
+  /* inset the accordion content (rows span full width, content aligns to the
+     same fluid margin as the other sections) */
+  .acc summary,
+  .acc .body{
+    padding-left:clamp(28px, 5vw, 96px) !important;
+    padding-right:clamp(28px, 5vw, 96px) !important;
+  }
 }
