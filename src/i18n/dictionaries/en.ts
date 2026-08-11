@@ -37,7 +37,7 @@ const en: Dictionary = {
     text: "We read the decisions of international courts and retell them in plain language — so you can rely on them in an argument, an article, or a claim.",
     about: "About the project",
   },
-  slogan: "Research · Explain · Bring to light",
+  slogan: "We research · We explain · We bring to light",
   aboutRail: {
     title: "At a glance",
     scope: "Scope",

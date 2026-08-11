@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import "./header.css";
 
 /** Dark top bar: brand, primary nav (collapses to a menu), language switch. */
 export default function Header({
@@ -35,6 +36,9 @@ export default function Header({
           justifyContent: "space-between",
           gap: 24,
           padding: "15px 30px",
+          // Transparent over the homepage lamp gradient; pages without the lamp
+          // (e.g. a decision page) set --nsv-header-bg to supply their own dark.
+          background: "var(--nsv-header-bg, transparent)",
           borderBottom: "1px solid rgba(243,232,226,.1)",
         }}
       >

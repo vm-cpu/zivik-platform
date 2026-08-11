@@ -90,7 +90,11 @@ export default function Registry({
               {dict.registry.description}
             </p>
           </div>
-          <a className="btn btn-o" href="#" style={{ flex: "none" }}>
+          <a
+            className="btn btn-o"
+            href={`/${locale}/registry`}
+            style={{ flex: "none" }}
+          >
             {fmt(dict.registry.fullRegistry, { count: totalCases })}
           </a>
         </div>

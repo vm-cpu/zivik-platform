@@ -481,18 +481,13 @@
    Responsive layout — reflow the desktop composition for
    tablet/phone. Structural containers carry `nsv-*` classes.
    ============================================================ */
-.nsv-burger{display:none;align-items:center;justify-content:center;width:40px;height:40px;background:none;border:0;cursor:pointer;color:var(--brand-gold-pale)}
-.nsv-burger span{display:block;width:20px;height:2px;background:currentColor;box-shadow:0 6px 0 currentColor,0 -6px 0 currentColor}
-.nsv-mobnav{display:none;flex-direction:column;gap:2px;padding:8px 30px 16px;background:#1A0F0D;border-bottom:1px solid rgba(243,232,226,.1)}
-.nsv-mobnav a{padding:11px 0;font:500 15px var(--brand-font-body);color:var(--brand-cream);text-decoration:none;border-bottom:1px solid rgba(243,232,226,.07)}
-.nsv-mobnav[data-open="yes"]{display:flex}
+/* Header chrome (.nsv-burger/.nsv-mobnav/.nsv-nav collapse) now lives with the
+   component, in components/nasvitlo/header.css, so every page gets it. */
 
 @media (max-width:880px){
   .page{box-shadow:none;max-width:100%}
   /* the lamp "stage" is authored at a fixed 900px; let it go fluid on small screens */
   .page .pj{width:100% !important}
-  .nsv-nav{display:none !important}
-  .nsv-burger{display:inline-flex}
 }
 
 @media (max-width:760px){

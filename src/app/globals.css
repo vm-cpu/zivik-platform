@@ -30,9 +30,11 @@
   --brand-muted-brown: #6e574f;/* footer legal / low-emphasis */
   --brand-cream-warm: #fff8ea; /* text on solid red buttons */
   --brand-ink-black: #0e0504;  /* darkest surface (footer) */
-  --brand-font-body: 'Fira Sans';       /* UI / body */
-  --brand-font-display: 'Charis SIL';   /* headings / display (own namespace —
-                                           avoids Tailwind's @theme --font-display) */
+  /* Brand faces are self-hosted via next/font (see app/layout.tsx); the
+     literal names stay as fallbacks for anyone with them installed locally.
+     Own namespace avoids Tailwind's @theme --font-display. */
+  --brand-font-body: var(--font-fira), 'Fira Sans';
+  --brand-font-display: var(--font-charis), 'Charis SIL';
 
   /* Reader (caseworks) palette */
   --bg: #f7f6f2;

@@ -6,6 +6,7 @@ import { pick } from "@/content/types";
 import Header from "@/components/nasvitlo/Header";
 import Footer from "@/components/nasvitlo/Footer";
 import ShareBar from "@/components/nasvitlo/ShareBar";
+import SideToc from "@/components/nasvitlo/SideToc";
 import { icjCerdIcsft } from "@/content/summaries/icj-cerd-icsft";
 import type { DecisionSummary, SummaryBlock, Theatre } from "@/content/summaries/types";
 import uaMap from "@/content/summaries/ukraine-map.json";
@@ -38,6 +39,7 @@ const T = {
   inShort: { uk: "Якщо коротко", en: "In short" },
   whyMatters: { uk: "Чому це важливо", en: "Why it matters" },
   onThisPage: { uk: "На цій сторінці", en: "On this page" },
+  progress: { uk: "Прогрес читання", en: "Reading progress" },
   minRead: { uk: "{n} хв читання", en: "{n} min read" },
   glossaryH: { uk: "Словник", en: "Glossary" },
   whoH: { uk: "Хто є хто", en: "Who's who" },
@@ -228,7 +230,13 @@ export default async function CasePage({
   const readTime = pick(T.minRead, locale).replace("{n}", String(minutes));
   const sections = body
     .filter((b) => b.kind === "h2")
-    .map((b, i) => ({ id: `sec-${i}`, text: b.text }));
+    .map((b, i) => ({ id: `sec-${i}`, text: b.text.trim() }));
+  const tocSections = [
+    ...sections,
+    ...(sources.length > 0
+      ? [{ id: "sec-sources", text: pick(T.sources, locale) }]
+      : []),
+  ];
 
   /** Official-text URL for a verdict track, when one exists. */
   const trackUrl = (track: string): string | undefined =>
@@ -240,14 +248,18 @@ export default async function CasePage({
       <Header locale={locale} dict={dict} />
 
       {/* 1 — Masthead */}
-      <header className="mast">
+      <header className="mast rail">
         <Link href={`/${locale}#registry`} className="backlink">
           ← {pick(T.back, locale)}
         </Link>
         <div className="eyebrow">
           <span>{pick({ uk: "Міжнародний суд ООН", en: "International Court of Justice" }, locale)}</span>
+          <span className="dot">·</span>
           <span>{pick({ uk: "Гаага", en: "The Hague" }, locale)}</span>
+          <span className="dot">·</span>
           <span>{masthead.judgment}</span>
+          <span className="dot">·</span>
+          <span className="readtime">{readTime}</span>
         </div>
         <h1 className="official">{parties}</h1>
         <p className="parties">
@@ -276,7 +288,7 @@ export default async function CasePage({
 
       {/* 1b — Plain-language lede */}
       <section className="lede">
-        <div className="lede-inner">
+        <div className="rail lede-grid">
           <div className="tldr">
             <div className="lbl-light">{pick(T.inShort, locale)}</div>
             <p>{pick(plain.tldr, locale)}</p>
@@ -288,9 +300,9 @@ export default async function CasePage({
         </div>
       </section>
 
-      {/* 2 — Dashboard */}
+      {/* 2 — Dashboard: one column of full-width instruments */}
       <section className="dash">
-        <div className="dash-inner">
+        <div className="rail dash-stack">
           <div>
             <div className="lbl">{pick(T.overview, locale)}</div>
             <div className="kpis">
@@ -303,20 +315,19 @@ export default async function CasePage({
             </div>
           </div>
 
-          <div className="dash-grid">
-            <div className="panel">
-              <div className="lbl">{pick(T.tracks, locale)}</div>
-              <TheatreMap theatres={theatres} locale={locale} />
-            </div>
+          <div>
+            <div className="lbl">{pick(T.tracks, locale)}</div>
+            <TheatreMap theatres={theatres} locale={locale} />
+          </div>
 
-            <div className="panel">
-              <div className="score-head">
-                <h3>{pick(T.found, locale)}</h3>
-                <b>
-                  {violations} {pick(T.violationsOf, locale)} {verdicts.length}
-                </b>
-              </div>
-              <ul className="verdicts">
+          <div>
+            <div className="score-head">
+              <h2>{pick(T.found, locale)}</h2>
+              <span className="score-count">
+                <b>{violations}</b> {pick(T.violationsOf, locale)} {verdicts.length}
+              </span>
+            </div>
+            <ul className="verdicts">
                 {verdicts.map((v, i) => {
                   const prev = verdicts[i - 1];
                   const showTrack = !prev || prev.track !== v.track;
@@ -345,44 +356,7 @@ export default async function CasePage({
                     </li>
                   );
                 })}
-              </ul>
-            </div>
-          </div>
-
-          <div className="rulings-grid">
-            <div>
-              <div className="lbl">{pick(T.keyRulings, locale)}</div>
-              <div className="rulings">
-                {interpretations.map((it, i) => (
-                  <div key={i} className="ruling">
-                    <b>{pick(it.term, locale)}</b>
-                    <p>{pick(it.ruling, locale)}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <div className="lbl">
-                {pick(T.provMeasures, locale)}
-                <em className="lbl-sub">{pick(T.provSub, locale)}</em>
-              </div>
-              <ul className="pmeasures">
-                {provisionalMeasures.map((m, i) => (
-                  <li key={i} data-order={m.order}>
-                    <div className="pm-head">
-                      <span className="pm-measure">{pick(m.measure, locale)}</span>
-                      <span className="pm-flag">
-                        {m.order === "violated"
-                          ? pick(T.orderBreached, locale)
-                          : pick(T.orderComplied, locale)}
-                      </span>
-                    </div>
-                    {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            </ul>
           </div>
 
           <div>
@@ -399,27 +373,54 @@ export default async function CasePage({
         </div>
       </section>
 
-      {/* 3 — Verbatim summary */}
-      <article className="read">
-        <nav className="toc" aria-label={pick(T.onThisPage, locale)}>
-          <div className="toc-head">
-            <span className="toc-title">{pick(T.onThisPage, locale)}</span>
-            <span className="toc-time">{readTime}</span>
-          </div>
-          <ol>
-            {sections.map((s) => (
-              <li key={s.id}>
-                <a href={`#${s.id}`}>{s.text.trim()}</a>
-              </li>
+      {/* 2b — Reference: doctrine and the interim order, on paper */}
+      <section className="refs">
+        <div className="rail refs-grid">
+          <div>
+            <div className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</div>
+            {interpretations.map((it, i) => (
+              <div key={i} className="ruling">
+                <b>{pick(it.term, locale)}</b>
+                <p>{pick(it.ruling, locale)}</p>
+              </div>
             ))}
-            {sources.length > 0 && (
-              <li>
-                <a href="#sec-sources">{pick(T.sources, locale)}</a>
-              </li>
-            )}
-          </ol>
-        </nav>
+          </div>
 
+          <div>
+            <div className="lbl lbl-onpaper">
+              {pick(T.provMeasures, locale)}
+              <em className="lbl-sub">{pick(T.provSub, locale)}</em>
+            </div>
+            <ul className="pmeasures">
+              {provisionalMeasures.map((m, i) => (
+                <li key={i} data-order={m.order}>
+                  <div className="pm-head">
+                    <span className="pm-measure">{pick(m.measure, locale)}</span>
+                    <span className="pm-flag">
+                      {m.order === "violated"
+                        ? pick(T.orderBreached, locale)
+                        : pick(T.orderComplied, locale)}
+                    </span>
+                  </div>
+                  {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* 3 — Verbatim summary, with the sticky side nav */}
+      <section className="readzone">
+        <div className="rail readzone-grid">
+          <SideToc
+            sections={tocSections}
+            title={pick(T.onThisPage, locale)}
+            readTime={readTime}
+            progressLabel={pick(T.progress, locale)}
+          />
+
+          <article className="read">
         {(() => {
           let h2i = 0;
           return body.map((b, i) =>
@@ -456,11 +457,13 @@ export default async function CasePage({
             </ol>
           </>
         )}
-      </article>
+          </article>
+        </div>
+      </section>
 
       {/* 4 — Reader aids */}
       <section className="aids">
-        <div className="aids-inner">
+        <div className="rail aids-grid">
           <div className="aids-col">
             <div className="aid">
               <div className="lbl">{pick(T.whoH, locale)}</div>
@@ -513,13 +516,18 @@ export default async function CasePage({
                 ))}
               </ul>
             </div>
-
-            <ShareBar
-              locale={locale}
-              title={parties}
-              citation={`${masthead.official} (${parties}), ${judgment.court[locale]}, ${masthead.judgment}.`}
-            />
           </div>
+        </div>
+      </section>
+
+      {/* 5 — Share, standing on its own */}
+      <section className="sharezone">
+        <div className="rail">
+          <ShareBar
+            locale={locale}
+            title={parties}
+            citation={`${masthead.official} (${parties}), ${judgment.court[locale]}, ${masthead.judgment}.`}
+          />
         </div>
       </section>
 

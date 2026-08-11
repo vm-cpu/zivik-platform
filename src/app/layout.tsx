@@ -1,6 +1,33 @@
 import type { Metadata } from "next";
-import { Newsreader, IBM_Plex_Mono, Fraunces } from "next/font/google";
+import {
+  Newsreader,
+  IBM_Plex_Mono,
+  Fraunces,
+  Charis_SIL,
+  Fira_Sans,
+} from "next/font/google";
 import "./globals.css";
+
+/**
+ * Brand faces, self-hosted by next/font so they are preloaded and shipped with
+ * metric-matched fallbacks — no flash of a different face on load (the old
+ * <link> to fonts.googleapis.com swapped visibly mid-render).
+ */
+const charis = Charis_SIL({
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
+  variable: "--font-charis",
+  display: "swap",
+});
+
+const firaSans = Fira_Sans({
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
+  variable: "--font-fira",
+  display: "swap",
+});
 
 const newsreader = Newsreader({
   subsets: ["latin", "latin-ext"],
@@ -35,7 +62,7 @@ export default function RootLayout({
   return (
     <html
       lang="uk"
-      className={`${newsreader.variable} ${ibmPlexMono.variable} ${fraunces.variable} h-full antialiased`}
+      className={`${newsreader.variable} ${ibmPlexMono.variable} ${fraunces.variable} ${charis.variable} ${firaSans.variable} h-full antialiased`}
     >
       <body className="min-h-full">{children}</body>
     </html>
