@@ -53,7 +53,7 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
   "preprint/repository": { uk: "препринт / репозиторій", en: "preprint / repository" },
 };
 
-const MK = uaMap.markers as Record<string, [number, number]>;
+const MK = uaMap.markers as Record<string, number[]>;
 
 const mapContext = (uaMap as { context?: string[] }).context ?? [];
 
