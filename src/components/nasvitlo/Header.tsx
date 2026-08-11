@@ -14,7 +14,6 @@ export default function Header({
   dict: Dictionary;
 }) {
   const [open, setOpen] = useState(false);
-  const other: Locale = locale === "uk" ? "en" : "uk";
 
   const nav = [
     { label: dict.nav.home, href: `/${locale}`, active: true },
@@ -83,7 +82,7 @@ export default function Header({
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <span style={{ font: "600 12px 'Fira Sans'", color: "#8E736C" }}>
             <Link
-              href={`/${locale}`}
+              href="/uk"
               style={{
                 color: locale === "uk" ? "#F0DDA8" : "#8E736C",
                 fontWeight: locale === "uk" ? 700 : 600,
@@ -93,7 +92,7 @@ export default function Header({
             </Link>{" "}
             /{" "}
             <Link
-              href={`/${other === "en" ? "en" : "uk"}`}
+              href="/en"
               style={{
                 color: locale === "en" ? "#F0DDA8" : "#8E736C",
                 fontWeight: locale === "en" ? 700 : 600,
