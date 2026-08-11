@@ -5,7 +5,7 @@ const legendItem: React.CSSProperties = {
   alignItems: "center",
   gap: 8,
   font: "500 12px var(--brand-font-body)",
-  color: "#C9AFA8",
+  color: "var(--brand-muted-dark)",
 };
 
 /**
@@ -81,7 +81,7 @@ export default function MapSection({ dict }: { dict: Dictionary }) {
                 width: 8,
                 height: 8,
                 borderRadius: "50%",
-                background: "#C23B32",
+                background: "var(--brand-cherry)",
                 display: "block",
               }}
             />
@@ -93,7 +93,7 @@ export default function MapSection({ dict }: { dict: Dictionary }) {
                 width: 8,
                 height: 8,
                 borderRadius: "50%",
-                background: "#F0DDA8",
+                background: "var(--brand-gold-pale)",
                 display: "block",
                 boxShadow: "0 0 8px rgba(240,221,168,.7)",
               }}

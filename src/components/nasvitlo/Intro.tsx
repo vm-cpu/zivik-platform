@@ -19,7 +19,7 @@ export default function Intro({
         zIndex: 3,
         padding: "40px 28px 34px",
         background: "var(--paper)",
-        borderTop: "3px solid #C79A3C",
+        borderTop: "3px solid var(--brand-gold-mark)",
       }}
     >
       <div

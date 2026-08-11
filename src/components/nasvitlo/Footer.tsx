@@ -4,12 +4,12 @@ const colHead: React.CSSProperties = {
   font: "700 10px var(--brand-font-body)",
   letterSpacing: ".14em",
   textTransform: "uppercase",
-  color: "#F0DDA8",
+  color: "var(--brand-gold-pale)",
   marginBottom: 3,
 };
 const footLink: React.CSSProperties = {
   fontSize: 13,
-  color: "#C9AFA8",
+  color: "var(--brand-muted-dark)",
   textDecoration: "none",
 };
 const socialBox: React.CSSProperties = {
@@ -20,7 +20,7 @@ const socialBox: React.CSSProperties = {
   height: 32,
   border: "1px solid rgba(243,232,226,.2)",
   font: "700 10px var(--brand-font-body)",
-  color: "#C9AFA8",
+  color: "var(--brand-muted-dark)",
   textDecoration: "none",
 };
 
@@ -43,8 +43,8 @@ export default function Footer({ dict }: { dict: Dictionary }) {
       style={{
         position: "relative",
         zIndex: 3,
-        background: "#0E0504",
-        borderTop: "3px solid #C79A3C",
+        background: "var(--brand-ink-black)",
+        borderTop: "3px solid var(--brand-gold-mark)",
         padding: "44px 28px 0",
       }}
     >
@@ -63,7 +63,7 @@ export default function Footer({ dict }: { dict: Dictionary }) {
               style={{
                 fontFamily: "var(--brand-font-display),serif",
                 fontSize: 24,
-                color: "#FFF8EA",
+                color: "var(--brand-cream-warm)",
                 textShadow:
                   "0 0 18px rgba(255,238,196,.55),0 0 44px rgba(240,221,168,.28)",
               }}
@@ -75,7 +75,7 @@ export default function Footer({ dict }: { dict: Dictionary }) {
             style={{
               fontSize: 13,
               lineHeight: 1.6,
-              color: "#9C817A",
+              color: "var(--brand-faint-dark)",
               margin: "0 0 16px",
               maxWidth: 280,
             }}
@@ -87,7 +87,7 @@ export default function Footer({ dict }: { dict: Dictionary }) {
               font: "600 10px/1.8 var(--brand-font-body)",
               letterSpacing: ".13em",
               textTransform: "uppercase",
-              color: "#6E574F",
+              color: "var(--brand-muted-brown)",
             }}
           >
             {f.org}
@@ -140,12 +140,12 @@ export default function Footer({ dict }: { dict: Dictionary }) {
           flexWrap: "wrap",
         }}
       >
-        <span style={{ fontSize: 11, color: "#6E574F" }}>{f.rights}</span>
+        <span style={{ fontSize: 11, color: "var(--brand-muted-brown)" }}>{f.rights}</span>
         <span style={{ display: "flex", gap: 18 }}>
-          <a href="#" style={{ fontSize: 11, color: "#6E574F", textDecoration: "none" }}>
+          <a href="#" style={{ fontSize: 11, color: "var(--brand-muted-brown)", textDecoration: "none" }}>
             {f.privacy}
           </a>
-          <a href="#" style={{ fontSize: 11, color: "#6E574F", textDecoration: "none" }}>
+          <a href="#" style={{ fontSize: 11, color: "var(--brand-muted-brown)", textDecoration: "none" }}>
             {f.terms}
           </a>
         </span>

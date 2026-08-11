@@ -10,10 +10,10 @@
   .dv-opt{flex:none;display:flex;flex-direction:column;gap:11px;scroll-margin-top:16px}
   .dv-oid{font:700 10.5px var(--brand-font-body),monospace;padding:3px 8px;background:rgba(60,40,20,.12);color:#211C18;border-radius:4px;text-decoration:none;letter-spacing:.04em}
   .dv-olabel{display:flex;align-items:baseline;gap:9px;font:400 11.5px/1.35 var(--brand-font-body),sans-serif;color:rgba(33,28,24,.6);max-width:340px}
-  .dv-opt:target .dv-oid{background:#7F1716;color:#fff}
+  .dv-opt:target .dv-oid{background:var(--brand-red);color:#fff}
   .dv-card{max-width:100%;background:#FFFDF9;border:1px solid rgba(60,40,20,.14);box-shadow:0 2px 10px rgba(60,40,20,.10);overflow:hidden}
   .dv-next{margin:26px 0 0;font:12px/1.6 var(--brand-font-body),sans-serif;color:rgba(33,28,24,.55)}
-  .dv-next a{color:#7F1716}
+  .dv-next a{color:var(--brand-red)}
 
   /* ---- turn 14: court accordion on home ---- */
   .acc{border-top:1px solid var(--rule)}
@@ -40,9 +40,9 @@
   .regprog~.acc summary{grid-template-columns:104px 1fr auto auto 20px}
   .acc .prog{display:flex;align-items:center;gap:5px;justify-self:end}
   .acc .prog i{width:7px;height:7px;border-radius:50%;background:var(--rule)}
-  .acc .prog i.on{background:#C79A3C;box-shadow:0 0 6px rgba(199,154,60,.65)}
+  .acc .prog i.on{background:var(--brand-gold-mark);box-shadow:0 0 6px rgba(199,154,60,.65)}
   .acc .arow .mk{width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px}
-  .acc .arow.lit .mk{background:#C79A3C;box-shadow:0 0 8px 1px rgba(199,154,60,.5)}
+  .acc .arow.lit .mk{background:var(--brand-gold-mark);box-shadow:0 0 8px 1px rgba(199,154,60,.5)}
   .acc .arow.dim .mk{border:1.5px solid var(--rule);background:transparent}
   .acc .arow{grid-template-columns:9px 1fr 118px 88px;align-items:start}
   .acc .arow.dim .at{color:var(--muted)}
@@ -73,7 +73,7 @@
   .swonly{display:inline-flex;align-items:center;gap:9px;cursor:pointer;font:600 12px var(--brand-font-body);color:var(--ink2)}
   .swonly input{appearance:none;width:34px;height:19px;border-radius:11px;background:var(--rule);position:relative;cursor:pointer;transition:background .22s ease;margin:0}
   .swonly input::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .22s ease}
-  .swonly input:checked{background:#C79A3C}
+  .swonly input:checked{background:var(--brand-gold-mark)}
   .swonly input:checked::after{transform:translateX(15px)}
   .regprog:has(input:checked)~.acc .arow.dim{display:none}
   .regprog:has(input:checked)~.acc details:not([data-lit])>summary{opacity:.45}
@@ -88,7 +88,7 @@
   .chip{display:inline-flex;align-items:center;gap:5px;font:700 10px var(--brand-font-body),sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:2px;white-space:nowrap}
   .st-decided{color:#3F6144;background:rgba(63,97,68,.13)}
   .st-progress{color:#8A5D1F;background:rgba(148,100,40,.15)}
-  .st-warrant{color:#7F1716;background:rgba(127,23,22,.11)}
+  .st-warrant{color:var(--brand-red);background:rgba(127,23,22,.11)}
   .st-enforce{color:#3A5670;background:rgba(58,86,112,.13)}
   .dot{width:6px;height:6px;border-radius:50%;flex:none}
   .btn{display:inline-flex;align-items:center;gap:8px;font:700 11px var(--brand-font-body),sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:11px 20px;border-radius:2px;border:2px solid var(--red);cursor:pointer;text-decoration:none}
@@ -262,7 +262,7 @@
   .hv .mrow + .mrow{margin-top:8px}
   /* ---- pull-down wall map ---- */
   .roll .mount{position:relative}
-  .roll .bar{position:relative;height:15px;background:linear-gradient(#7F1716,#5C100F);border-radius:3px;box-shadow:0 3px 7px rgba(60,40,20,.2);z-index:2}
+  .roll .bar{position:relative;height:15px;background:linear-gradient(var(--brand-red),var(--brand-red-dark));border-radius:3px;box-shadow:0 3px 7px rgba(60,40,20,.2);z-index:2}
   .roll .bar::before,.roll .bar::after{content:"";position:absolute;top:-3px;width:8px;height:21px;background:var(--faint);border-radius:2px}
   .roll .bar::before{left:-4px}
   .roll .bar::after{right:-4px}
@@ -316,7 +316,7 @@
   .pj .rc:hover{border-color:rgba(226,238,252,.45);box-shadow:0 0 38px 4px rgba(216,230,246,.12)}
   @media (prefers-reduced-motion: reduce){ .pj .rig,.pj .tgt{transition-duration:1ms !important} }
   /* ---- turn 12: interrogation lamp ---- */
-  .lmp{--px:0px;position:relative;overflow:hidden;color:#F3E8E2;background:radial-gradient(120% 95% at 50% -12%,#2A1412 0%,#180A09 44%,#0C0504 100%)}
+  .lmp{--px:0px;position:relative;overflow:hidden;color:var(--brand-cream);background:radial-gradient(120% 95% at 50% -12%,#2A1412 0%,#180A09 44%,#0C0504 100%)}
   /* desk lamp lighting the wordmark */
   /* industrial articulated lamp: matte black, dome shade with an Edison bulb over the wordmark */
   .lmp .dcord{position:absolute;left:449px;top:0;width:2px;height:52px;background:linear-gradient(180deg,rgba(214,198,168,.15),#B7A585);z-index:4}
@@ -454,9 +454,9 @@
 
 /* judgment pull-quote — dark band in the court's own words */
 .nsv-quote{margin:0;padding:66px 28px;background:#1E0C0B;position:relative}
-.nsv-quote::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,#C79A3C 50%,transparent)}
-.nsv-quote-text{max-width:940px;margin:0 auto;font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(21px,3vw,33px);line-height:1.42;color:#F3E8E2;text-align:center;text-wrap:balance}
-.nsv-quote-src{max-width:940px;margin:20px auto 0;text-align:center;font:700 11px var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:#E6B65C}
+.nsv-quote::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,var(--brand-gold-mark) 50%,transparent)}
+.nsv-quote-text{max-width:940px;margin:0 auto;font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(21px,3vw,33px);line-height:1.42;color:var(--brand-cream);text-align:center;text-wrap:balance}
+.nsv-quote-src{max-width:940px;margin:20px auto 0;text-align:center;font:700 11px var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:var(--brand-gold-lit)}
 
 /* ============================================================
    Keep the lamp centred on the now-fluid hero stage at any width.
@@ -477,10 +477,10 @@
    Responsive layout — reflow the desktop composition for
    tablet/phone. Structural containers carry `nsv-*` classes.
    ============================================================ */
-.nsv-burger{display:none;align-items:center;justify-content:center;width:40px;height:40px;background:none;border:0;cursor:pointer;color:#F0DDA8}
+.nsv-burger{display:none;align-items:center;justify-content:center;width:40px;height:40px;background:none;border:0;cursor:pointer;color:var(--brand-gold-pale)}
 .nsv-burger span{display:block;width:20px;height:2px;background:currentColor;box-shadow:0 6px 0 currentColor,0 -6px 0 currentColor}
 .nsv-mobnav{display:none;flex-direction:column;gap:2px;padding:8px 30px 16px;background:#1A0F0D;border-bottom:1px solid rgba(243,232,226,.1)}
-.nsv-mobnav a{padding:11px 0;font:500 15px var(--brand-font-body);color:#F3E8E2;text-decoration:none;border-bottom:1px solid rgba(243,232,226,.07)}
+.nsv-mobnav a{padding:11px 0;font:500 15px var(--brand-font-body);color:var(--brand-cream);text-decoration:none;border-bottom:1px solid rgba(243,232,226,.07)}
 .nsv-mobnav[data-open="yes"]{display:flex}
 
 @media (max-width:880px){

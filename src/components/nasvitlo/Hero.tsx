@@ -64,7 +64,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             font: "700 10px var(--brand-font-body)",
             letterSpacing: ".22em",
             textTransform: "uppercase",
-            color: "#C9AFA8",
+            color: "var(--brand-muted-dark)",
             marginBottom: 18,
           }}
         >
@@ -84,7 +84,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             fontFamily: "var(--brand-font-display),serif",
             fontSize: 20,
             lineHeight: 1.5,
-            color: "#F7EFE3",
+            color: "var(--brand-cream)",
             margin: "0 0 12px",
             maxWidth: 520,
           }}
@@ -95,7 +95,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
           style={{
             fontSize: 14,
             lineHeight: 1.65,
-            color: "#C9AFA8",
+            color: "var(--brand-muted-dark)",
             margin: "0 0 32px",
             maxWidth: 430,
           }}
@@ -112,7 +112,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         >
           <a
             href="#registry"
-            style={{ ...ctaBase, background: "#C23B32", color: "#fff" }}
+            style={{ ...ctaBase, background: "var(--brand-cherry)", color: "#fff" }}
           >
             {dict.hero.ctaRegistry}
           </a>
@@ -121,7 +121,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             style={{
               ...ctaBase,
               border: "2px solid rgba(240,221,168,.5)",
-              color: "#F0DDA8",
+              color: "var(--brand-gold-pale)",
             }}
           >
             {dict.hero.ctaMap}

@@ -140,7 +140,7 @@ export default function Registry({
                 position: "absolute",
                 inset: "0 auto 0 0",
                 width: `${pct}%`,
-                background: "linear-gradient(90deg,#C79A3C,#E3BC6A)",
+                background: "linear-gradient(90deg,var(--brand-gold-mark),var(--brand-gold-bright))",
                 boxShadow: "0 0 9px rgba(199,154,60,.6)",
               }}
             />
@@ -224,7 +224,7 @@ export default function Registry({
           <span>
             <i
               style={{
-                background: "#C79A3C",
+                background: "var(--brand-gold-mark)",
                 boxShadow: "0 0 7px rgba(199,154,60,.8)",
               }}
             />

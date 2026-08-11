@@ -21,6 +21,15 @@
   --brand-faint: #938979;      /* muted / captions */
   --brand-rule: #dcd3c2;       /* hairline dividers */
   --brand-cream: #f3e8e2;      /* text on dark scenes */
+  /* on-dark scene palette (header, footer, hero over the dark backdrop) */
+  --brand-gold-pale: #f0dda8;  /* accent / active text on dark */
+  --brand-gold-mark: #c79a3c;  /* "analysed / lit" indicator gold */
+  --brand-gold-bright: #e3bc6a;/* bright end of gold gradient */
+  --brand-muted-dark: #c9afa8; /* muted text on cherry / dark scenes */
+  --brand-faint-dark: #8e736c; /* faint text on dark */
+  --brand-muted-brown: #6e574f;/* footer legal / low-emphasis */
+  --brand-cream-warm: #fff8ea; /* text on solid red buttons */
+  --brand-ink-black: #0e0504;  /* darkest surface (footer) */
   --brand-font-body: 'Fira Sans';       /* UI / body */
   --brand-font-display: 'Charis SIL';   /* headings / display (own namespace —
                                            avoids Tailwind's @theme --font-display) */

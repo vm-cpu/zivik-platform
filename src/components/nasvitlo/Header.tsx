@@ -56,7 +56,7 @@ export default function Header({
             style={{
               fontFamily: "var(--brand-font-display),serif",
               fontSize: 19,
-              color: "#F0DDA8",
+              color: "var(--brand-gold-pale)",
               lineHeight: 1,
             }}
           >
@@ -72,7 +72,7 @@ export default function Header({
             <Link
               key={item.label}
               href={item.href}
-              style={{ color: item.active ? "#F0DDA8" : "#F3E8E2" }}
+              style={{ color: item.active ? "var(--brand-gold-pale)" : "var(--brand-cream)" }}
             >
               {item.label}
             </Link>
@@ -80,11 +80,11 @@ export default function Header({
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <span style={{ font: "600 12px var(--brand-font-body)", color: "#8E736C" }}>
+          <span style={{ font: "600 12px var(--brand-font-body)", color: "var(--brand-faint-dark)" }}>
             <Link
               href="/uk"
               style={{
-                color: locale === "uk" ? "#F0DDA8" : "#8E736C",
+                color: locale === "uk" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
                 fontWeight: locale === "uk" ? 700 : 600,
               }}
             >
@@ -94,7 +94,7 @@ export default function Header({
             <Link
               href="/en"
               style={{
-                color: locale === "en" ? "#F0DDA8" : "#8E736C",
+                color: locale === "en" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
                 fontWeight: locale === "en" ? 700 : 600,
               }}
             >
