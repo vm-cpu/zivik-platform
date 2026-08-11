@@ -1,7 +1,7 @@
 import type { Dictionary } from "@/i18n/dictionaries";
 
 const colHead: React.CSSProperties = {
-  font: "700 10px 'Fira Sans'",
+  font: "700 10px var(--brand-font-body)",
   letterSpacing: ".14em",
   textTransform: "uppercase",
   color: "#F0DDA8",
@@ -19,7 +19,7 @@ const socialBox: React.CSSProperties = {
   width: 32,
   height: 32,
   border: "1px solid rgba(243,232,226,.2)",
-  font: "700 10px 'Fira Sans'",
+  font: "700 10px var(--brand-font-body)",
   color: "#C9AFA8",
   textDecoration: "none",
 };
@@ -61,7 +61,7 @@ export default function Footer({ dict }: { dict: Dictionary }) {
           <div style={{ marginBottom: 13 }}>
             <span
               style={{
-                fontFamily: "'Charis SIL',serif",
+                fontFamily: "var(--brand-font-display),serif",
                 fontSize: 24,
                 color: "#FFF8EA",
                 textShadow:
@@ -84,11 +84,10 @@ export default function Footer({ dict }: { dict: Dictionary }) {
           </p>
           <div
             style={{
-              font: "600 10px 'Fira Sans'",
+              font: "600 10px/1.8 var(--brand-font-body)",
               letterSpacing: ".13em",
               textTransform: "uppercase",
               color: "#6E574F",
-              lineHeight: 1.8,
             }}
           >
             {f.org}

@@ -43,7 +43,7 @@ export default function Partners({
           </div>
           <h2
             style={{
-              fontFamily: "'Charis SIL',serif",
+              fontFamily: "var(--brand-font-display),serif",
               fontWeight: 400,
               fontSize: 26,
               color: "var(--ink)",
@@ -56,7 +56,7 @@ export default function Partners({
         <a
           href="#"
           style={{
-            font: "700 11px 'Fira Sans'",
+            font: "700 11px var(--brand-font-body)",
             letterSpacing: ".06em",
             textTransform: "uppercase",
             color: "var(--red)",

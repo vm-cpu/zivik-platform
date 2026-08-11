@@ -51,7 +51,7 @@ export default function About({
               key={i}
               style={{
                 margin: 0,
-                fontFamily: i === 0 ? "'Charis SIL',serif" : undefined,
+                fontFamily: i === 0 ? "var(--brand-font-display),serif" : undefined,
                 fontSize: i === 0 ? 18 : 14.5,
                 lineHeight: i === 0 ? 1.6 : 1.75,
                 color: i === 0 ? "var(--ink)" : "var(--ink2)",

@@ -1,6 +1,30 @@
 @import "tailwindcss";
 
 :root {
+  /* ─────────────────────────────────────────────────────────────
+     Насвітло brand tokens — SINGLE SOURCE OF TRUTH (UCU brandbook).
+     Every section palette in [locale]/home.css references these,
+     so changing a value here propagates across the whole site.
+     Primitives, not per-section: edit here, not in the sections.
+     ───────────────────────────────────────────────────────────── */
+  --brand-red: #7f1716;        /* UCU cherry-red — primary accent */
+  --brand-red-dark: #5c100f;   /* pressed / hover */
+  --brand-cherry: #c23b32;     /* lit accent on dark scenes */
+  --brand-gold: #946428;       /* ink gold on paper */
+  --brand-gold-lit: #e6b65c;   /* luminous gold in dark / glow contexts */
+  --brand-gold-lamp: #d6a24b;  /* lamp-scene gold */
+  --brand-paper: #f5f0e6;      /* page background */
+  --brand-paper-2: #ede6d6;    /* recessed surface */
+  --brand-surface: #fffdf9;    /* cards / rows */
+  --brand-ink: #211c18;        /* primary text */
+  --brand-ink-2: #5e554b;      /* secondary text */
+  --brand-faint: #938979;      /* muted / captions */
+  --brand-rule: #dcd3c2;       /* hairline dividers */
+  --brand-cream: #f3e8e2;      /* text on dark scenes */
+  --brand-font-body: 'Fira Sans';       /* UI / body */
+  --brand-font-display: 'Charis SIL';   /* headings / display (own namespace —
+                                           avoids Tailwind's @theme --font-display) */
+
   /* Reader (caseworks) palette */
   --bg: #f7f6f2;
   --bg-2: #efeee8;

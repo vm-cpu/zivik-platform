@@ -4,7 +4,7 @@ const ctaBase: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   gap: 8,
-  font: "700 11px 'Fira Sans'",
+  font: "700 11px var(--brand-font-body)",
   letterSpacing: ".07em",
   textTransform: "uppercase",
   padding: "12px 20px",
@@ -61,7 +61,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
       >
         <div
           style={{
-            font: "700 10px 'Fira Sans'",
+            font: "700 10px var(--brand-font-body)",
             letterSpacing: ".22em",
             textTransform: "uppercase",
             color: "#C9AFA8",
@@ -81,7 +81,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         </h1>
         <p
           style={{
-            fontFamily: "'Charis SIL',serif",
+            fontFamily: "var(--brand-font-display),serif",
             fontSize: 20,
             lineHeight: 1.5,
             color: "#F7EFE3",

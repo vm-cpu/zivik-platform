@@ -34,7 +34,7 @@ export default function Intro({
       >
         <p
           style={{
-            fontFamily: "'Charis SIL',serif",
+            fontFamily: "var(--brand-font-display),serif",
             fontSize: 19,
             lineHeight: 1.5,
             color: "var(--ink)",

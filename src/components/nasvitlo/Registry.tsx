@@ -111,11 +111,11 @@ export default function Registry({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <span style={{ font: "600 12.5px 'Fira Sans'", color: "var(--ink)" }}>
+          <span style={{ font: "600 12.5px var(--brand-font-body)", color: "var(--ink)" }}>
             {dict.registry.processed}{" "}
             <b
               style={{
-                fontFamily: "'Charis SIL',serif",
+                fontFamily: "var(--brand-font-display),serif",
                 fontSize: 17,
                 fontWeight: 400,
               }}

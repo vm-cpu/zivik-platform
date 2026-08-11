@@ -4,7 +4,7 @@ const legendItem: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   gap: 8,
-  font: "500 12px 'Fira Sans'",
+  font: "500 12px var(--brand-font-body)",
   color: "#C9AFA8",
 };
 
@@ -56,7 +56,7 @@ export default function MapSection({ dict }: { dict: Dictionary }) {
         <a
           href="#"
           style={{
-            font: "700 11px 'Fira Sans'",
+            font: "700 11px var(--brand-font-body)",
             letterSpacing: ".06em",
             textTransform: "uppercase",
             color: "var(--red)",

@@ -20,7 +20,7 @@ export default function Newsletter({ dict }: { dict: Dictionary }) {
       <div>
         <div
           style={{
-            fontFamily: "'Charis SIL',serif",
+            fontFamily: "var(--brand-font-display),serif",
             fontSize: 19,
             color: "var(--ink)",
             marginBottom: 5,
