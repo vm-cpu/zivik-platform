@@ -8,10 +8,7 @@ import { pick, type AboutContent } from "@/content/types";
  */
 export default function About({
   locale,
-  dict,
   about,
-  totalCases,
-  institutionCount,
 }: {
   locale: Locale;
   dict: Dictionary;
@@ -20,14 +17,6 @@ export default function About({
   institutionCount: number;
 }) {
   const paragraphs = pick(about.paragraphs, locale);
-  const rail = dict.aboutRail;
-
-  const facts: Array<{ k: string; v: string; num?: boolean }> = [
-    { k: rail.scope, v: rail.scopeVal },
-    { k: rail.proceedings, v: String(totalCases), num: true },
-    { k: rail.institutions, v: String(institutionCount), num: true },
-    { k: rail.audience, v: rail.audienceVal },
-  ];
 
   return (
     <div
@@ -44,32 +33,21 @@ export default function About({
       <div className="lbl">
         <span>{pick(about.title, locale)}</span>
       </div>
-      <div className="nsv-about-grid">
-        <div className="nsv-about-main">
-          {paragraphs.map((text, i) => (
-            <p
-              key={i}
-              style={{
-                margin: 0,
-                fontFamily: i === 0 ? "var(--brand-font-display),serif" : undefined,
-                fontSize: i === 0 ? 18 : 14.5,
-                lineHeight: i === 0 ? 1.6 : 1.75,
-                color: i === 0 ? "var(--ink)" : "var(--ink2)",
-              }}
-            >
-              {text}
-            </p>
-          ))}
-        </div>
-        <aside className="nsv-rail">
-          <div className="rk">{rail.title}</div>
-          {facts.map((f) => (
-            <div className="ri" key={f.k}>
-              <span className="rl">{f.k}</span>
-              <span className={f.num ? "rv num" : "rv"}>{f.v}</span>
-            </div>
-          ))}
-        </aside>
+      <div className="nsv-about-main">
+        {paragraphs.map((text, i) => (
+          <p
+            key={i}
+            style={{
+              margin: 0,
+              fontFamily: i === 0 ? "var(--brand-font-display),serif" : undefined,
+              fontSize: i === 0 ? 18 : 14.5,
+              lineHeight: i === 0 ? 1.6 : 1.75,
+              color: i === 0 ? "var(--ink)" : "var(--ink2)",
+            }}
+          >
+            {text}
+          </p>
+        ))}
       </div>
     </div>
   );
