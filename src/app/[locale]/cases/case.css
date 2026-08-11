@@ -72,11 +72,12 @@
 }
 .casepage .eyebrow span {
   position: relative;
+  padding-right: 16px;
 }
-.casepage .eyebrow span + span::before {
+.casepage .eyebrow span:not(:last-child)::after {
   content: "·";
   position: absolute;
-  left: -10px;
+  right: 4px;
   color: var(--faint);
 }
 .casepage .official {
@@ -97,12 +98,65 @@
   font-size: clamp(16px, 1.6vw, 20px);
   color: var(--gold);
 }
+.casepage .parties a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(230, 182, 92, 0.4);
+}
+.casepage .parties a:hover {
+  border-bottom-color: var(--gold);
+}
+.casepage .parties .sep {
+  color: var(--faint);
+}
 .casepage .fullname {
   max-width: 70ch;
   margin: 16px 0 0;
   font-size: 13px;
   line-height: 1.55;
   color: var(--muted);
+}
+
+/* masthead actions */
+.casepage .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+}
+.casepage .btn {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  text-decoration: none;
+  font: 700 13px var(--brand-font-body);
+  letter-spacing: 0.01em;
+  padding: 12px 20px;
+  border-radius: 4px;
+  transition: transform 0.12s ease;
+}
+.casepage .btn:hover {
+  transform: translateY(-1px);
+}
+.casepage .btn em {
+  font: 500 10.5px var(--brand-font-body);
+  font-style: normal;
+  letter-spacing: 0.03em;
+  opacity: 0.8;
+}
+.casepage .btn-primary {
+  background: var(--accent);
+  color: #fbeee9;
+}
+.casepage .btn-ghost {
+  align-self: stretch;
+  justify-content: center;
+  border: 1px solid var(--rule);
+  color: var(--cream);
+}
+.casepage .btn-ghost:hover {
+  border-color: var(--gold);
+  color: var(--gold);
 }
 
 /* ---- 2. Dashboard (dark) -------------------------------------------------- */
@@ -290,6 +344,13 @@
   text-transform: uppercase;
   color: var(--faint);
 }
+.casepage .v-track-link {
+  color: var(--gold);
+  text-decoration: none;
+}
+.casepage .v-track-link:hover {
+  color: var(--cream);
+}
 .casepage .v-claim {
   font-size: 13.5px;
   line-height: 1.35;
@@ -470,13 +531,51 @@
   font-weight: 600;
 }
 .casepage .sources {
-  margin-top: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: cite;
   display: grid;
-  gap: 10px;
+  gap: 16px;
+}
+.casepage .sources li {
+  position: relative;
+  padding-left: 34px;
+  counter-increment: cite;
+}
+.casepage .sources li::before {
+  content: counter(cite);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  font: 700 11px var(--brand-font-body);
+  color: var(--pred);
+  background: var(--card);
+  border: 1px solid var(--prule);
+  border-radius: 50%;
+  font-variant-numeric: tabular-nums;
 }
 .casepage .sources a {
-  font-size: 13px;
-  line-height: 1.45;
+  display: block;
+  font-family: var(--brand-font-display), serif;
+  font-size: 15.5px;
+  line-height: 1.35;
+  color: var(--ink);
+  text-decoration: none;
+}
+.casepage .sources a:hover {
+  color: var(--pred);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.casepage .cite-meta {
+  display: block;
+  margin-top: 4px;
+  font: 500 12.5px var(--brand-font-body);
   color: var(--ink3);
 }
 
@@ -484,5 +583,43 @@
 @media (max-width: 820px) {
   .casepage .dash-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Vertical timeline + full-width actions on narrow screens. */
+@media (max-width: 560px) {
+  .casepage .timeline {
+    display: block;
+    margin-top: 10px;
+    padding-left: 4px;
+  }
+  .casepage .timeline::before {
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(180deg, var(--gold-dim), var(--red));
+  }
+  .casepage .tl {
+    padding: 0 0 24px 30px;
+  }
+  .casepage .tl:last-child {
+    padding-bottom: 0;
+  }
+  .casepage .tl::before {
+    top: 2px;
+    left: 0;
+  }
+  .casepage .tl-label {
+    max-width: none;
+  }
+  .casepage .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .casepage .btn {
+    align-items: flex-start;
   }
 }

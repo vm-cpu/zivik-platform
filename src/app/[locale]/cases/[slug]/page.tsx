@@ -24,9 +24,19 @@ const T = {
   violation: { uk: "Порушення", en: "Violation" },
   noViolation: { uk: "Немає", en: "No violation" },
   violationsOf: { uk: "порушення з", en: "violations of" },
-  sources: { uk: "Джерела та матеріали", en: "Researches and other materials" },
+  sources: { uk: "Джерела та коментарі", en: "Researches and other materials" },
   back: { uk: "До реєстру", en: "Back to registry" },
+  readJudgment: { uk: "Читати рішення", en: "Read the judgment" },
+  caseFile: { uk: "Справа на сайті Суду", en: "Case file at the Court" },
+  pagesPdf: { uk: "PDF, {n} с.", en: "PDF, {n} pp." },
 } as const;
+
+const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
+  "blog post": { uk: "допис у блозі", en: "blog post" },
+  "journal article": { uk: "стаття в журналі", en: "journal article" },
+  "news/insight": { uk: "аналітика", en: "news / insight" },
+  "preprint/repository": { uk: "препринт / репозиторій", en: "preprint / repository" },
+};
 
 const MK = uaMap.markers as Record<string, [number, number]>;
 
@@ -83,14 +93,14 @@ function Findings({ text }: { text: string }) {
   return (
     <div className="findings">
       {lines.map((line, i) => {
-        if (/^(ICSFT|CERD)\s*[-–]/.test(line)) {
+        if (/^(ICSFT|CERD)\s*[-–—]/.test(line)) {
           return (
             <p key={i} className="sub">
               {line}
             </p>
           );
         }
-        const m = line.match(/^(The Court['’]s position:)(.*)$/);
+        const m = line.match(/^(The Court['’]s position:|Позиція Суду:)(.*)$/);
         if (m) {
           return (
             <p key={i}>
@@ -121,7 +131,9 @@ function Block({ block }: { block: SummaryBlock }) {
     case "link":
       return null;
     case "dispositif":
-      return /^(Finds|Rejects)\b/.test(block.text) ? (
+      // Operative items open with Finds/Rejects (EN) or Встановлює/Відхиляє (UK);
+      // the framing lines ("The Court," / "However…") stay plain paragraphs.
+      return /^(Finds|Rejects|Встановлює|Відхиляє)/.test(block.text) ? (
         <p className="disp">{block.text}</p>
       ) : (
         <p>{block.text}</p>
@@ -146,16 +158,19 @@ export default async function CasePage({
   if (!summary) notFound();
 
   const dict = await getDictionary(locale);
-  const { masthead, stats, timeline, verdicts, theatres, blocks } = summary;
+  const { masthead, judgment, instruments, stats, timeline, verdicts, theatres, sources } = summary;
   const parties = masthead.parties.replace(/^\(|\)$/g, "");
-  const sources = blocks.filter((b) => b.kind === "link");
-  const sourcesHeading =
-    blocks.find((b) => b.kind === "h2" && /^Researches/.test(b.text))?.text ??
-    pick(T.sources, locale);
-  const body = blocks.filter(
-    (b) => b.kind !== "link" && !(b.kind === "h2" && /^Researches/.test(b.text)),
-  );
+  // Body in the reader's language; English is the source of truth.
+  const rawBlocks = locale === "uk" && summary.blocksUk ? summary.blocksUk : summary.blocks;
+  const isSourcesHeading = (b: SummaryBlock) =>
+    b.kind === "h2" && /^\s*(Researches|Дослідження)/.test(b.text);
+  const body = rawBlocks.filter((b) => b.kind !== "link" && !isSourcesHeading(b));
   const violations = verdicts.filter((v) => v.outcome === "violation").length;
+
+  /** Official-text URL for a verdict track, when one exists. */
+  const trackUrl = (track: string): string | undefined =>
+    instruments.find((i) => i.abbr === track)?.url;
+  const pagesLabel = pick(T.pagesPdf, locale).replace("{n}", String(judgment.pages));
 
   return (
     <div className="page casepage">
@@ -172,8 +187,28 @@ export default async function CasePage({
           <span>{masthead.judgment}</span>
         </div>
         <h1 className="official">{parties}</h1>
-        <p className="parties">ICSFT (1999) · CERD (1965)</p>
+        <p className="parties">
+          {instruments.map((inst, i) => (
+            <span key={inst.abbr}>
+              {i > 0 && <span className="sep"> · </span>}
+              <a href={inst.url} target="_blank" rel="noopener noreferrer" title={pick(inst.name, locale)}>
+                {inst.abbr}
+              </a>{" "}
+              ({inst.year})
+            </span>
+          ))}
+        </p>
         <p className="fullname">{masthead.official}</p>
+
+        <div className="actions">
+          <a className="btn btn-primary" href={judgment.url} target="_blank" rel="noopener noreferrer">
+            {pick(T.readJudgment, locale)}
+            <em>{pick(judgment.court, locale)} · {pagesLabel}</em>
+          </a>
+          <a className="btn btn-ghost" href={judgment.caseUrl} target="_blank" rel="noopener noreferrer">
+            {pick(T.caseFile, locale)}
+          </a>
+        </div>
       </header>
 
       {/* 2 — Dashboard */}
@@ -208,9 +243,22 @@ export default async function CasePage({
                 {verdicts.map((v, i) => {
                   const prev = verdicts[i - 1];
                   const showTrack = !prev || prev.track !== v.track;
+                  const url = trackUrl(v.track);
                   return (
                     <li key={i}>
-                      {showTrack && <span className="v-track">{v.track}</span>}
+                      {showTrack &&
+                        (url ? (
+                          <a
+                            className="v-track v-track-link"
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {v.track} ↗
+                          </a>
+                        ) : (
+                          <span className="v-track">{v.track}</span>
+                        ))}
                       <span className="v-claim">{pick(v.claim, locale)}</span>
                       <span className="v-out" data-o={v.outcome}>
                         {v.outcome === "violation"
@@ -246,14 +294,25 @@ export default async function CasePage({
 
         {sources.length > 0 && (
           <>
-            <h2>{sourcesHeading}</h2>
-            <div className="sources">
-              {sources.map((s, i) => (
-                <a key={i} href={s.text} target="_blank" rel="noopener noreferrer">
-                  {s.text}
-                </a>
-              ))}
-            </div>
+            <h2>{pick(T.sources, locale)}</h2>
+            <ol className="sources">
+              {sources.map((s, i) => {
+                const meta = [
+                  s.authors,
+                  s.publication,
+                  s.date,
+                  pick(TYPE_LABEL[s.type] ?? { uk: s.type, en: s.type }, locale),
+                ].filter(Boolean);
+                return (
+                  <li key={i}>
+                    <a href={s.url} target="_blank" rel="noopener noreferrer">
+                      {s.title}
+                    </a>
+                    <span className="cite-meta">{meta.join(" · ")}</span>
+                  </li>
+                );
+              })}
+            </ol>
           </>
         )}
       </article>

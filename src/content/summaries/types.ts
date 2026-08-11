@@ -29,7 +29,10 @@ export interface VerbatimSummary {
   id: string;
   caseId: string;
   masthead: { official: string; parties: string; judgment: string };
+  /** Source-language body (English — the language of the judgment). */
   blocks: SummaryBlock[];
+  /** Ukrainian translation of the body (draft, pending legal review). */
+  blocksUk?: SummaryBlock[];
 }
 
 import type { Localized } from "@/content/types";
@@ -69,11 +72,44 @@ export interface Theatre {
   summary: Localized;
 }
 
+/** A treaty the case turns on, linked to its official text. */
+export interface Instrument {
+  abbr: string;
+  name: Localized;
+  year: number;
+  /** Official published text of the convention. */
+  url: string;
+}
+
+/** The judgment itself, on the court's own site. */
+export interface JudgmentSource {
+  court: Localized;
+  /** Direct link to the judgment document (PDF). */
+  url: string;
+  /** The court's case-overview page. */
+  caseUrl: string;
+  pages: number;
+}
+
+/** A cited commentary or analysis, with bibliographic metadata. */
+export interface Citation {
+  url: string;
+  title: string;
+  authors: string;
+  publication: string;
+  date: string;
+  /** "blog post" | "journal article" | "news/insight" | "preprint/repository" */
+  type: string;
+}
+
 /** Everything a decision page renders. */
 export interface DecisionSummary extends VerbatimSummary {
+  judgment: JudgmentSource;
+  instruments: Instrument[];
   stats: Stat[];
   glance: GlanceFact[];
   timeline: TimelineEvent[];
   verdicts: Verdict[];
   theatres: Theatre[];
+  sources: Citation[];
 }

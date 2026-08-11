@@ -1,5 +1,6 @@
 import type { DecisionSummary, SummaryBlock } from "./types";
 import verbatim from "./icj-cerd-icsft.verbatim.json";
+import verbatimUk from "./icj-cerd-icsft.uk.json";
 
 /**
  * ICSFT & CERD (Ukraine v. Russian Federation), ICJ Judgment of 31 January 2024.
@@ -23,6 +24,35 @@ export const icjCerdIcsft: DecisionSummary = {
     masthead: { official: string; parties: string; judgment: string };
     blocks: SummaryBlock[];
   }),
+  blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
+
+  judgment: {
+    court: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
+    url: "https://www.icj-cij.org/sites/default/files/case-related/166/166-20240131-jud-01-00-en.pdf",
+    caseUrl: "https://www.icj-cij.org/case/166",
+    pages: 213,
+  },
+
+  instruments: [
+    {
+      abbr: "ICSFT",
+      name: {
+        uk: "Міжнародна конвенція про боротьбу з фінансуванням тероризму",
+        en: "International Convention for the Suppression of the Financing of Terrorism",
+      },
+      year: 1999,
+      url: "https://treaties.un.org/pages/ViewDetails.aspx?src=IND&mtdsg_no=XVIII-11&chapter=18&clang=_en",
+    },
+    {
+      abbr: "CERD",
+      name: {
+        uk: "Міжнародна конвенція про ліквідацію всіх форм расової дискримінації",
+        en: "International Convention on the Elimination of All Forms of Racial Discrimination",
+      },
+      year: 1965,
+      url: "https://www.ohchr.org/en/instruments-mechanisms/instruments/international-convention-elimination-all-forms-racial-discrimination",
+    },
+  ],
 
   stats: [
     { value: "2", label: { uk: "конвенції", en: "conventions" } },
@@ -119,6 +149,99 @@ export const icjCerdIcsft: DecisionSummary = {
       track: "Provisional measures",
       claim: { uk: "Інші вимоги", en: "All other submissions" },
       outcome: "no-violation",
+    },
+  ],
+
+  sources: [
+    {
+      url: "https://asil.org/ilib/icj-delivers-judgment-ukraine-v-russia-case-concerning-terrorism-financing-and-cerd/",
+      title:
+        "ICJ Delivers Judgment in Ukraine v. Russia Case Concerning Terrorism Financing and CERD",
+      authors: "",
+      publication: "ASIL",
+      date: "2024",
+      type: "news/insight",
+    },
+    {
+      url: "https://www.ejiltalk.org/human-rights-reparations-and-fact-finding-quandaries-in-the-2024-icj-judgments-in-ukraine-v-russian-federation/",
+      title:
+        "Human Rights Reparations and Fact-Finding Quandaries in the 2024 ICJ Judgments in Ukraine v. Russian Federation",
+      authors: "Diane Desierto",
+      publication: "EJIL: Talk!",
+      date: "11 March 2024",
+      type: "blog post",
+    },
+    {
+      url: "https://www.researchgate.net/publication/381785364_Judgment_on_the_merits_of_the_International_Court_of_Justice_of_January_31_2024_case_Ukraine_vs_Russian_Federation",
+      title:
+        "Judgment on the merits of the International Court of Justice of January 31, 2024, case Ukraine vs Russian Federation",
+      authors: "O.A. Kiseleva",
+      publication: "Law Enforcement Review (via ResearchGate)",
+      date: "2024",
+      type: "journal article",
+    },
+    {
+      url: "https://www.cambridge.org/core/journals/american-journal-of-international-law/article/application-of-the-international-convention-for-the-suppression-of-the-financing-of-terrorism-and-of-international-convention-on-the-elimination-of-all-forms-of-racial-discrimination-ukraine-v-russian-federation-judgment/1C4B2C51220C6332B91392FAC2204267",
+      title:
+        "Application of the International Convention for the Suppression of the Financing of Terrorism and of International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation), Judgment",
+      authors: "Lauri Mälksoo",
+      publication: "American Journal of International Law",
+      date: "2024",
+      type: "journal article",
+    },
+    {
+      url: "https://internationallaw.blog/2024/04/08/narrow-interpretation-of-the-term-funds-by-the-judgement-of-31-january-2024-is-icj-the-one-to-blame/",
+      title:
+        "Narrow Interpretation of the Term “Funds” by the Judgement of 31 January 2024: Is ICJ the One to Blame?",
+      authors: "Oleksandr Marusiak",
+      publication: "International Law Blog",
+      date: "8 April 2024",
+      type: "blog post",
+    },
+    {
+      url: "https://www.researchgate.net/publication/385033225_Application_of_the_International_Convention_for_the_Suppression_of_the_Financing_of_Terrorism_and_of_International_Convention_on_the_Elimination_of_All_Forms_of_Racial_Discrimination_Ukraine_v_Russian",
+      title:
+        "Application of the International Convention for the Suppression of the Financing of Terrorism and of International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
+      authors: "",
+      publication: "ResearchGate",
+      date: "2024",
+      type: "preprint/repository",
+    },
+    {
+      url: "https://www.researchgate.net/publication/389453084_Comments_on_the_judgment_of_the_International_Court_of_Justice_of_31_January_2024_Case_No_166_Application_of_the_International_Convention_for_the_Suppression_of_the_Financing_of_Terrorism_and_the_Inte",
+      title:
+        "Comments on the judgment of the International Court of Justice of 31 January 2024, Case No. 166 (Ukraine v. Russian Federation)",
+      authors: "Kaja Kowalczewska, Barbara Pauli",
+      publication: "Polish Review of International and European Law",
+      date: "2024",
+      type: "journal article",
+    },
+    {
+      url: "https://www.cambridge.org/core/journals/international-legal-materials/article/application-of-the-intl-conv-for-the-suppression-of-the-financing-of-terrorism-of-the-intl-conv-on-the-elimination-of-all-forms-of-racial-discr-ukr-v-russ-merits-icj/32AB65A2A320168FB1297F160747197D",
+      title:
+        "Application of the Int’l Conv. for the Suppression of the Financing of Terrorism & of the Int’l Conv. on the Elimination of All Forms of Racial Discr. (Ukr. v. Russ.) (Merits) (I.C.J.)",
+      authors: "Iryna Marchuk",
+      publication: "International Legal Materials",
+      date: "2024",
+      type: "journal article",
+    },
+    {
+      url: "https://www.researchgate.net/publication/388942304_Reflecting_on_the_interpretation_and_application_of_the_international_convention_for_the_suppression_of_the_financing_of_terrorism_in_light_of_the_Ukraine_v_Russia_case",
+      title:
+        "Reflecting on the interpretation and application of the International Convention for the Suppression of the Financing of Terrorism in light of the Ukraine v. Russia case",
+      authors: "Daniele Musmeci",
+      publication: "Journal of International Dispute Settlement (via ResearchGate)",
+      date: "2025",
+      type: "journal article",
+    },
+    {
+      url: "https://legaljournal.princeton.edu/from-financing-to-frontlines-interpreting-funds-in-the-international-convention-for-the-suppression-of-the-financing-of-terrorism/",
+      title:
+        "From Financing to Frontlines: Interpreting Funds in the International Convention for the Suppression of the Financing of Terrorism",
+      authors: "Katherine Lee",
+      publication: "Princeton Legal Journal",
+      date: "Fall 2024",
+      type: "journal article",
     },
   ],
 
