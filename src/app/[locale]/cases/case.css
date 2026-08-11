@@ -36,14 +36,16 @@
   --pgold: #8a5d24;
   --pred: #a3302c;
 
-  /* type ramp */
-  --t-micro: 11px;
-  --t-cap: 12.5px;
-  --t-sm: 14px;
-  --t-ui: 15px;
-  --t-body: 17px;
-  --t-lead: 20px;
-  --t-h3: 22px;
+  /* Type ramp. Steps sit ~1.11–1.14 apart through the UI/prose range (fine
+     gradations where density matters) and open up at the top so display type
+     reads as a different register, not just "bigger body". */
+  --t-micro: 11px;   /* uppercase labels */
+  --t-cap: 12.5px;   /* captions, citations */
+  --t-sm: 14px;      /* secondary prose */
+  --t-ui: 15.5px;    /* UI rows, list items */
+  --t-body: 17.5px;  /* long-form reading */
+  --t-lead: 20px;    /* standfirst */
+  --t-h3: 22.5px;    /* card titles */
   --t-h2: clamp(23px, 2.4vw, 29px);
   --t-h1: clamp(30px, 4.2vw, 52px);
 
@@ -708,7 +710,8 @@
   text-underline-offset: 2px;
   word-break: break-word;
 }
-.casepage .disp {
+/* `.read p` is (0,2,1); this needs to match it to win, hence `.read p.disp`. */
+.casepage .read p.disp {
   margin: 14px 0 0;
   padding: 16px 20px 16px 46px;
   position: relative;
