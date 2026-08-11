@@ -85,18 +85,18 @@ function TheatreMap({ theatres, locale }: { theatres: Theatre[]; locale: Locale 
 
           {/* The Hague — the court */}
           <g>
-            <circle className="mk-court" cx={MK.hague[0]} cy={MK.hague[1]} r={6} />
-            <text className="mk-treaty" x={MK.hague[0] + 12} y={MK.hague[1] - 4}>
+            <circle className="mk-court" cx={MK.hague[0]} cy={MK.hague[1]} r={10} />
+            <text className="mk-treaty" x={MK.hague[0] + 18} y={MK.hague[1] - 8}>
               {locale === "uk" ? "ГААГА" : "THE HAGUE"}
             </text>
-            <text className="mk-city-label" x={MK.hague[0] + 12} y={MK.hague[1] + 11}>
+            <text className="mk-city-label" x={MK.hague[0] + 18} y={MK.hague[1] + 18}>
               {pick({ uk: "Міжнародний суд ООН", en: "Int’l Court of Justice" }, locale)}
             </text>
           </g>
 
           {/* Kyiv reference */}
-          <circle className="mk-city" cx={MK.kyiv[0]} cy={MK.kyiv[1]} r={4} />
-          <text className="mk-city-label" x={MK.kyiv[0] + 9} y={MK.kyiv[1] + 3}>
+          <circle className="mk-city" cx={MK.kyiv[0]} cy={MK.kyiv[1]} r={7} />
+          <text className="mk-city-label" x={MK.kyiv[0] + 14} y={MK.kyiv[1] - 8}>
             {locale === "uk" ? "Київ" : "Kyiv"}
           </text>
 
@@ -104,18 +104,20 @@ function TheatreMap({ theatres, locale }: { theatres: Theatre[]; locale: Locale 
             const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
             const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
             const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
+            // keep centred labels inside the 0..1000 viewBox
+            const lx = Math.min(Math.max(cx, 130), 860);
             return (
               <g key={t.treaty}>
                 {pts.map((p, i) => (
                   <g key={i}>
-                    <circle className="zone-halo" cx={p[0]} cy={p[1]} r={30} />
-                    <circle className="zone" cx={p[0]} cy={p[1]} r={5.5} />
+                    <circle className="zone-halo" cx={p[0]} cy={p[1]} r={40} />
+                    <circle className="zone" cx={p[0]} cy={p[1]} r={9} />
                   </g>
                 ))}
-                <text className="mk-treaty" x={cx} y={cy - 40} textAnchor="middle">
+                <text className="mk-treaty" x={lx} y={cy - 84} textAnchor="middle">
                   {t.treaty}
                 </text>
-                <text className="mk-label" x={cx} y={cy - 26} textAnchor="middle">
+                <text className="mk-label" x={lx} y={cy - 56} textAnchor="middle">
                   {pick(t.place, locale)}
                 </text>
               </g>
