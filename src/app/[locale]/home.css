@@ -492,8 +492,6 @@
 }
 
 @media (max-width:760px){
-  .nsv-stats{grid-template-columns:repeat(2,1fr) !important}
-  .nsv-partners{grid-template-columns:repeat(2,1fr) !important}
   .nsv-foot{grid-template-columns:1fr 1fr !important;gap:26px !important}
   .nsv-intro{flex-direction:column !important;align-items:flex-start !important;gap:18px !important}
   .nsv-newsletter{flex-direction:column !important;align-items:flex-start !important;gap:16px !important}
@@ -532,7 +530,6 @@
 }
 
 @media (max-width:480px){
-  .nsv-stats{grid-template-columns:1fr !important}
   .nsv-foot{grid-template-columns:1fr !important}
 }
 

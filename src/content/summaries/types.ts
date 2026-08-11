@@ -32,35 +32,46 @@ export interface VerbatimSummary {
   blocks: SummaryBlock[];
 }
 
+import type { Localized } from "@/content/types";
+
+/** A headline metric tile for the outcome dashboard. */
+export interface Stat {
+  value: string;
+  label: Localized;
+}
+
 /** A single key/value fact for the "at a glance" instrument. */
 export interface GlanceFact {
-  label: string;
-  value: string;
+  label: Localized;
+  value: Localized;
 }
 
 /** A dated event for the timeline instrument. */
 export interface TimelineEvent {
-  date: string;
-  label: string;
+  date: Localized;
+  label: Localized;
   kind?: "filing" | "order" | "judgment" | "context";
 }
 
 /** One row of the verdict matrix — how the Court disposed of a claim. */
 export interface Verdict {
   track: "ICSFT" | "CERD" | "Provisional measures";
-  claim: string;
+  claim: Localized;
   outcome: "violation" | "no-violation";
 }
 
-/** A geographic theatre the case concerns. */
+/** A geographic theatre the case concerns, anchored to the map. */
 export interface Theatre {
-  place: string;
+  place: Localized;
   treaty: string;
-  summary: string;
+  /** Map marker key in `ukraine-map.json` this theatre highlights. */
+  markerKeys: string[];
+  summary: Localized;
 }
 
 /** Everything a decision page renders. */
 export interface DecisionSummary extends VerbatimSummary {
+  stats: Stat[];
   glance: GlanceFact[];
   timeline: TimelineEvent[];
   verdicts: Verdict[];
