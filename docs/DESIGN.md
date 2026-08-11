@@ -116,6 +116,18 @@ and there is nothing to memorise.
 | `--r-pill` | 999px — buttons, chips |
 | `--shadow-sm/md/lg` | layered, low-opacity; deeper set in dark |
 
+**Which component takes which step.** The scale above says what radii exist;
+this says which one each component gets. Without this half, cards were built at
+both 14px and 20px and both were "correct".
+
+| Role | Token | px |
+| --- | --- | --- |
+| Button, chip, badge, toggle, progress bar | `--r-pill` | 999 |
+| Card, panel, callout, findings block | `--r-md` | 14 |
+| List row, small control | `--r-sm` | 10 |
+| Large surface, modal, media frame | `--r-lg` | 20 |
+| Illustration (lamp, scales, map markers) | — | bespoke, deliberately off-scale |
+
 **Rule:** cards are **radius + soft elevation**, not a 1px rectangle. Hairlines
 are for true dividers only. Full-bleed structural bands stay square — the
 softness lives in the components, not the page architecture. Corners of 2–3px

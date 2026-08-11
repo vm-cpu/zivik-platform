@@ -230,10 +230,12 @@ body {
    single ring on :focus-visible covers every control without
    showing on mouse clicks. Motion respects the OS setting.
    ───────────────────────────────────────────────────────────── */
+/* No border-radius here on purpose: the outline already follows whatever radius
+   the element itself carries, so setting one would reshape the element on
+   focus — a pill would square off, a plain link would gain corners. */
 :where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--brand-red);
   outline-offset: 3px;
-  border-radius: var(--r-xs);
 }
 /* On dark scenes the cherry ring disappears — use the lamp gold. */
 :where(.lamp, .court, .casepage .mast, .casepage .dash, .casepage .sharezone)
