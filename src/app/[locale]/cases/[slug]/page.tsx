@@ -9,14 +9,28 @@ import Header from "@/components/nasvitlo/Header";
 import Footer from "@/components/nasvitlo/Footer";
 import ShareBar from "@/components/nasvitlo/ShareBar";
 import SideToc from "@/components/nasvitlo/SideToc";
+import CaseTimeline from "@/components/cases/CaseTimeline";
+import MoneyBars from "@/components/cases/MoneyBars";
+import AttributionTree from "@/components/cases/AttributionTree";
+import ObjectionCards from "@/components/cases/ObjectionCards";
+import TakingsGrid from "@/components/cases/TakingsGrid";
+import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import { icjCerdIcsft } from "@/content/summaries/icj-cerd-icsft";
-import type { DecisionSummary, SummaryBlock, Theatre } from "@/content/summaries/types";
+import { oschadbank } from "@/content/summaries/oschadbank";
+import type { Localized } from "@/content/types";
+import type {
+  DecisionSummary,
+  Outcome,
+  SummaryBlock,
+  Theatre,
+} from "@/content/summaries/types";
 import uaMap from "@/content/summaries/ukraine-map.json";
 import "../case.css";
 
-/** Slug → decision summary. One entry today; grows as summaries are ingested. */
+/** Slug → decision summary. Grows as summaries are ingested. */
 const SUMMARIES: Record<string, DecisionSummary> = {
   "icj-cerd-icsft": icjCerdIcsft,
+  oschadbank: oschadbank,
 };
 
 /** Localized chrome labels (the summary body stays in its source language). */
@@ -48,7 +62,36 @@ const T = {
   faqH: { uk: "Часті запитання", en: "Common questions" },
   relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
   fullSummary: { uk: "Повне самері", en: "Full summary" },
+
+  // Outcomes beyond the court-style violation / no-violation pair.
+  granted: { uk: "Задоволено", en: "Upheld" },
+  rejected: { uk: "Відхилено", en: "Rejected" },
+  notDecided: { uk: "Не розглядалося", en: "Not decided" },
+  grantedOf: { uk: "задоволено з", en: "granted of" },
+
+  // Instruments an arbitral award earns.
+  allEvents: { uk: "Усе", en: "All" },
+  openDetail: { uk: "Показати деталі", en: "Show detail" },
+  amountsH: { uk: "Суми", en: "Amounts" },
+  shareOf: { uk: "від суми", en: "of the total" },
+  attributionH: { uk: "Чия поведінка — це поведінка держави", en: "Whose conduct counts as the State's" },
+  objectionLbl: { uk: "Заперечення", en: "Objection" },
+  rulingLbl: { uk: "Рішення суду", en: "Ruling" },
+  objRejected: { uk: "Відхилено", en: "Rejected" },
+  objUpheld: { uk: "Прийнято", en: "Upheld" },
+  standing: { uk: "Рішення чинне", en: "Award stands" },
+  notStanding: { uk: "Рішення скасовано", en: "Award annulled" },
+  seatLabel: { uk: "Місце арбітражу", en: "Seat" },
 } as const;
+
+/** Chrome label for each way a claim can be disposed of. */
+const OUTCOME_LABEL: Record<Outcome, Localized> = {
+  violation: T.violation,
+  "no-violation": T.noViolation,
+  granted: T.granted,
+  rejected: T.rejected,
+  "not-decided": T.notDecided,
+};
 
 const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
   "blog post": { uk: "допис у блозі", en: "blog post" },
@@ -61,9 +104,31 @@ const MK = uaMap.markers as Record<string, number[]>;
 
 const mapContext = (uaMap as { context?: string[] }).context ?? [];
 
-/** Europe-context map: the court in The Hague, Kyiv, and the two treaty theatres. */
-function TheatreMap({ theatres, locale }: { theatres: Theatre[]; locale: Locale }) {
+/**
+ * Europe-context map: where the case was decided, and the ground it is about.
+ *
+ * The forum defaults to the ICJ in The Hague with its reach drawn to Kyiv. An
+ * arbitration overrides both — Oschadbank was seated in Paris, and the line
+ * that matters runs from the seat to Crimea, the territory whose assets were
+ * taken. Marker positions come from the same projection as the base map.
+ */
+function TheatreMap({
+  theatres,
+  locale,
+  forum,
+}: {
+  theatres: Theatre[];
+  locale: Locale;
+  forum: {
+    key: string;
+    name: Localized;
+    caption: Localized;
+    reachTo: string;
+  };
+}) {
   const [vw0, vh0, vw, vh] = uaMap.viewBox.split(" ").map(Number);
+  const seat = MK[forum.key] ?? MK.hague;
+  const reach = MK[forum.reachTo] ?? MK.kyiv;
   return (
     <div className="map-wrap">
       <svg className="map" viewBox={uaMap.viewBox} role="img" aria-label="Map of Europe">
@@ -78,23 +143,17 @@ function TheatreMap({ theatres, locale }: { theatres: Theatre[]; locale: Locale 
           ))}
           <path className="ua-fill" d={uaMap.path} />
 
-          {/* the court's reach: The Hague → Kyiv */}
-          <line
-            className="reach"
-            x1={MK.hague[0]}
-            y1={MK.hague[1]}
-            x2={MK.kyiv[0]}
-            y2={MK.kyiv[1]}
-          />
+          {/* the forum's reach: seat → the ground in dispute */}
+          <line className="reach" x1={seat[0]} y1={seat[1]} x2={reach[0]} y2={reach[1]} />
 
-          {/* The Hague — the court */}
+          {/* the seat of the proceedings */}
           <g>
-            <circle className="mk-court" cx={MK.hague[0]} cy={MK.hague[1]} r={10} />
-            <text className="mk-treaty" x={MK.hague[0] + 18} y={MK.hague[1] - 8}>
-              {locale === "uk" ? "ГААГА" : "THE HAGUE"}
+            <circle className="mk-court" cx={seat[0]} cy={seat[1]} r={10} />
+            <text className="mk-treaty" x={seat[0] + 18} y={seat[1] - 8}>
+              {pick(forum.name, locale)}
             </text>
-            <text className="mk-city-label" x={MK.hague[0] + 18} y={MK.hague[1] + 18}>
-              {pick({ uk: "Міжнародний суд ООН", en: "Int’l Court of Justice" }, locale)}
+            <text className="mk-city-label" x={seat[0] + 18} y={seat[1] + 18}>
+              {pick(forum.caption, locale)}
             </text>
           </g>
 
@@ -132,7 +191,7 @@ function TheatreMap({ theatres, locale }: { theatres: Theatre[]; locale: Locale 
       <div className="map-legend">
         <span>
           <i className="lg-court" />
-          {pick({ uk: "Гаага — суд", en: "The Hague — court" }, locale)}
+          {pick(forum.name, locale)} — {pick(forum.caption, locale)}
         </span>
         {theatres.map((t) => (
           <span key={t.treaty}>
@@ -189,9 +248,10 @@ function Block({ block }: { block: SummaryBlock }) {
     case "link":
       return null;
     case "dispositif":
-      // Operative items open with Finds/Rejects (EN) or Встановлює/Відхиляє (UK);
-      // the framing lines ("The Court," / "However…") stay plain paragraphs.
-      return /^(Finds|Rejects|Встановлює|Відхиляє)/.test(block.text) ? (
+      // Operative items open with Finds/Rejects (EN), Встановлює/Відхиляє (UK)
+      // or, in an arbitral dispositif, "That the Respondent shall…"; the
+      // framing lines ("The Court," / "However…") stay plain paragraphs.
+      return /^(Finds|Rejects|That |Встановлює|Відхиляє|Що )/.test(block.text) ? (
         <p className="disp">{block.text}</p>
       ) : (
         <p>{block.text}</p>
@@ -236,9 +296,23 @@ export default async function CasePage({
   if (!summary) notFound();
 
   const dict = await getDictionary(locale);
-  const { masthead, judgment, instruments, stats, timeline, verdicts, theatres, sources } = summary;
-  const { interpretations, provisionalMeasures, plain, glossary, whoIsWho, faq, related } = summary;
+  const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
+  const { interpretations, plain, glossary, whoIsWho, faq, related } = summary;
+  const { theatres = [], provisionalMeasures = [], timelineTracks = [] } = summary;
+  const { takings, attribution, amounts, objections, afterlife } = summary;
   const parties = masthead.parties.replace(/^\(|\)$/g, "");
+
+  // Institution and seat: the ICJ in The Hague unless the summary says otherwise.
+  const forum = summary.forum ?? {
+    institution: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
+    seat: { uk: "Гаага", en: "The Hague" },
+  };
+  const mapForum = {
+    key: summary.mapFocus?.forumKey ?? "hague",
+    name: forum.seat,
+    caption: forum.institution,
+    reachTo: summary.mapFocus?.reachTo ?? "kyiv",
+  };
   // Body in the reader's language; English is the source of truth.
   const rawBlocks = locale === "uk" && summary.blocksUk ? summary.blocksUk : summary.blocks;
   const isSourcesHeading = (b: SummaryBlock) =>
@@ -263,7 +337,18 @@ export default async function CasePage({
   /** Official-text URL for a verdict track, when one exists. */
   const trackUrl = (track: string): string | undefined =>
     instruments.find((i) => i.abbr === track)?.url;
-  const pagesLabel = pick(T.pagesPdf, locale).replace("{n}", String(judgment.pages));
+  const pagesLabel = judgment.pages
+    ? pick(T.pagesPdf, locale).replace("{n}", String(judgment.pages))
+    : null;
+  /*
+   * The scorecard counts what the dispositif is mostly made of. An inter-State
+   * judgment turns on breaches, so it counts violations. An arbitral award
+   * turns on what was granted — counting its single expropriation finding as
+   * "1 of 9" would badly understate an award the claimant won outright.
+   */
+  const granted = verdicts.filter((v) => v.outcome === "granted").length;
+  const decided = granted > 0 ? granted : violations;
+  const decidedLabel = granted > 0 ? pick(T.grantedOf, locale) : pick(T.violationsOf, locale);
 
   /**
    * Structured data. This archive exists to be cited — by journalists, in
@@ -353,9 +438,9 @@ export default async function CasePage({
           ← {pick(T.back, locale)}
         </Link>
         <div className="eyebrow">
-          <span>{pick({ uk: "Міжнародний суд ООН", en: "International Court of Justice" }, locale)}</span>
+          <span>{pick(forum.institution, locale)}</span>
           <span className="dot">·</span>
-          <span>{pick({ uk: "Гаага", en: "The Hague" }, locale)}</span>
+          <span>{pick(forum.seat, locale)}</span>
           <span className="dot">·</span>
           <span>{masthead.judgment}</span>
           <span className="dot">·</span>
@@ -377,11 +462,14 @@ export default async function CasePage({
 
         <div className="actions">
           <a className="btn btn-primary" href={judgment.url} target="_blank" rel="noopener noreferrer">
-            {pick(T.readJudgment, locale)}
-            <em>{pick(judgment.court, locale)} · {pagesLabel}</em>
+            {pick(judgment.readLabel ?? T.readJudgment, locale)}
+            <em>
+              {pick(judgment.court, locale)}
+              {pagesLabel ? ` · ${pagesLabel}` : ""}
+            </em>
           </a>
           <a className="btn btn-ghost" href={judgment.caseUrl} target="_blank" rel="noopener noreferrer">
-            {pick(T.caseFile, locale)}
+            {pick(judgment.fileLabel ?? T.caseFile, locale)}
           </a>
         </div>
       </header>
@@ -407,24 +495,32 @@ export default async function CasePage({
             <div className="lbl">{pick(T.overview, locale)}</div>
             <div className="kpis">
               {stats.map((s, i) => (
-                <div key={i} className="kpi" data-em={s.label.en === "violations found" ? "1" : undefined}>
-                  <b>{s.value}</b>
+                <div
+                  key={i}
+                  className="kpi"
+                  data-em={s.em || s.label.en === "violations found" ? "1" : undefined}
+                >
+                  <b>{typeof s.value === "string" ? s.value : pick(s.value, locale)}</b>
                   <span>{pick(s.label, locale)}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div>
-            <div className="lbl">{pick(T.tracks, locale)}</div>
-            <TheatreMap theatres={theatres} locale={locale} />
-          </div>
+          {theatres.length > 0 && (
+            <div>
+              <div className="lbl">
+                {theatres.length > 1 ? pick(T.tracks, locale) : pick(T.seatLabel, locale)}
+              </div>
+              <TheatreMap theatres={theatres} locale={locale} forum={mapForum} />
+            </div>
+          )}
 
           <div>
             <div className="score-head">
-              <h2>{pick(T.found, locale)}</h2>
+              <h2>{pick(summary.verdictsHeading ?? T.found, locale)}</h2>
               <span className="score-count">
-                <b>{violations}</b> {pick(T.violationsOf, locale)} {verdicts.length}
+                <b>{decided}</b> {decidedLabel} {verdicts.length}
               </span>
             </div>
             <ul className="verdicts">
@@ -445,13 +541,13 @@ export default async function CasePage({
                             {v.track} ↗
                           </a>
                         ) : (
-                          <span className="v-track">{v.track}</span>
+                          <span className="v-track">
+                            {v.trackLabel ? pick(v.trackLabel, locale) : v.track}
+                          </span>
                         ))}
                       <span className="v-claim">{pick(v.claim, locale)}</span>
                       <span className="v-out" data-o={v.outcome}>
-                        {v.outcome === "violation"
-                          ? pick(T.violation, locale)
-                          : pick(T.noViolation, locale)}
+                        {pick(OUTCOME_LABEL[v.outcome], locale)}
                       </span>
                     </li>
                   );
@@ -459,23 +555,44 @@ export default async function CasePage({
             </ul>
           </div>
 
+          {takings && (
+            <div>
+              <div className="lbl">{pick(takings.heading, locale)}</div>
+              <TakingsGrid metrics={takings.metrics} locale={locale} />
+              {takings.note && <p className="dash-note">{pick(takings.note, locale)}</p>}
+            </div>
+          )}
+
+          {amounts && (
+            <div>
+              <div className="lbl">{pick(T.amountsH, locale)}</div>
+              <MoneyBars
+                figures={amounts.figures}
+                locale={locale}
+                shareLabel={pick(T.shareOf, locale)}
+              />
+              {amounts.note && <p className="dash-note">{pick(amounts.note, locale)}</p>}
+            </div>
+          )}
+
           <div>
             <div className="lbl">{pick(T.timeline, locale)}</div>
-            <div className="timeline">
-              {timeline.map((e, i) => (
-                <div key={i} className="tl" data-kind={e.kind}>
-                  <div className="tl-date">{pick(e.date, locale)}</div>
-                  <p className="tl-label">{pick(e.label, locale)}</p>
-                </div>
-              ))}
-            </div>
+            <CaseTimeline
+              events={timeline}
+              tracks={timelineTracks}
+              locale={locale}
+              labels={{
+                all: pick(T.allEvents, locale),
+                openDetail: pick(T.openDetail, locale),
+              }}
+            />
           </div>
         </div>
       </section>
 
       {/* 2b — Reference: doctrine and the interim order, on paper */}
       <section className="refs">
-        <div className="rail refs-grid">
+        <div className="rail refs-grid" data-single={provisionalMeasures.length ? "no" : "yes"}>
           <div>
             <div className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</div>
             {interpretations.map((it, i) => (
@@ -486,29 +603,82 @@ export default async function CasePage({
             ))}
           </div>
 
-          <div>
-            <div className="lbl lbl-onpaper">
-              {pick(T.provMeasures, locale)}
-              <em className="lbl-sub">{pick(T.provSub, locale)}</em>
+          {provisionalMeasures.length > 0 && (
+            <div>
+              <div className="lbl lbl-onpaper">
+                {pick(T.provMeasures, locale)}
+                <em className="lbl-sub">{pick(T.provSub, locale)}</em>
+              </div>
+              <ul className="pmeasures">
+                {provisionalMeasures.map((m, i) => (
+                  <li key={i} data-order={m.order}>
+                    <div className="pm-head">
+                      <span className="pm-measure">{pick(m.measure, locale)}</span>
+                      <span className="pm-flag">
+                        {m.order === "violated"
+                          ? pick(T.orderBreached, locale)
+                          : pick(T.orderComplied, locale)}
+                      </span>
+                    </div>
+                    {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="pmeasures">
-              {provisionalMeasures.map((m, i) => (
-                <li key={i} data-order={m.order}>
-                  <div className="pm-head">
-                    <span className="pm-measure">{pick(m.measure, locale)}</span>
-                    <span className="pm-flag">
-                      {m.order === "violated"
-                        ? pick(T.orderBreached, locale)
-                        : pick(T.orderComplied, locale)}
-                    </span>
-                  </div>
-                  {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
-                </li>
-              ))}
-            </ul>
-          </div>
+          )}
         </div>
       </section>
+
+      {/* 2c — Machinery of the award: attribution, objections, what followed */}
+      {(attribution || objections || afterlife) && (
+        <section className="machinery">
+          <div className="rail machinery-stack">
+            {attribution && (
+              <div>
+                <div className="lbl lbl-onpaper">{pick(T.attributionH, locale)}</div>
+                <p className="mach-note">{pick(attribution.note, locale)}</p>
+                <AttributionTree
+                  respondent={pick(attribution.respondent, locale)}
+                  nodes={attribution.nodes}
+                  locale={locale}
+                />
+              </div>
+            )}
+
+            {objections && (
+              <div>
+                <div className="lbl lbl-onpaper">{pick(objections.heading, locale)}</div>
+                <p className="mach-note">{pick(objections.note, locale)}</p>
+                <ObjectionCards
+                  items={objections.items}
+                  locale={locale}
+                  labels={{
+                    objection: pick(T.objectionLbl, locale),
+                    ruling: pick(T.rulingLbl, locale),
+                    rejected: pick(T.objRejected, locale),
+                    upheld: pick(T.objUpheld, locale),
+                  }}
+                />
+              </div>
+            )}
+
+            {afterlife && (
+              <div>
+                <div className="lbl lbl-onpaper">{pick(afterlife.heading, locale)}</div>
+                <p className="mach-note">{pick(afterlife.note, locale)}</p>
+                <AfterlifeStrip
+                  stages={afterlife.stages}
+                  locale={locale}
+                  labels={{
+                    standing: pick(T.standing, locale),
+                    notStanding: pick(T.notStanding, locale),
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* 3 — Verbatim summary, with the sticky side nav */}
       <section className="readzone">

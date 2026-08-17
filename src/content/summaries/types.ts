@@ -39,8 +39,12 @@ import type { Localized } from "@/content/types";
 
 /** A headline metric tile for the outcome dashboard. */
 export interface Stat {
-  value: string;
+  /** A bare numeral reads the same in both locales; anything with a word in
+   *  it ("$1.1B" / "$1,1 млрд") must be localized. */
+  value: string | Localized;
   label: Localized;
+  /** Give this tile the accent treatment — one per dashboard. */
+  em?: boolean;
 }
 
 /** A single key/value fact for the "at a glance" instrument. */
@@ -54,13 +58,100 @@ export interface TimelineEvent {
   date: Localized;
   label: Localized;
   kind?: "filing" | "order" | "judgment" | "context";
+  /**
+   * Optional filter group for the interactive timeline (e.g. "arbitration",
+   * "french-courts"). Events without a track render in every filter.
+   */
+  track?: string;
+  /** One sentence of detail, revealed when the reader opens the entry. */
+  note?: Localized;
+  /** Sort key, ISO 8601 — the visible `date` may be a range or a month. */
+  iso?: string;
 }
 
-/** One row of the verdict matrix — how the Court disposed of a claim. */
+/** A named filter for the interactive timeline. */
+export interface TimelineTrack {
+  id: string;
+  label: Localized;
+}
+
+/**
+ * How a claim was disposed of. `violation`/`no-violation` are the court-style
+ * pair; `granted`/`rejected`/`not-decided` fit an arbitral dispositif, where a
+ * tribunal may uphold jurisdiction, reject an objection, or leave alternative
+ * claims undecided for judicial economy.
+ */
+export type Outcome =
+  | "violation"
+  | "no-violation"
+  | "granted"
+  | "rejected"
+  | "not-decided";
+
+/** One row of the verdict matrix — how the court or tribunal disposed of a claim. */
 export interface Verdict {
-  track: "ICSFT" | "CERD" | "Provisional measures";
+  /**
+   * Grouping key, e.g. a treaty ("CERD") or a stage ("Jurisdiction"). Where it
+   * matches an `Instrument.abbr` the heading links to the official text.
+   */
+  track: string;
+  /** Display form of the track, when the key is not a proper name. */
+  trackLabel?: Localized;
   claim: Localized;
-  outcome: "violation" | "no-violation";
+  outcome: Outcome;
+}
+
+/** One measured quantity in the "what was taken" instrument. */
+export interface Metric {
+  label: Localized;
+  /** Localize anything a locale writes differently ("16.5%" / "16,5%"). */
+  value: string | Localized;
+  /** Share of a whole, 0–100 — draws a bar instead of a plain figure. */
+  percent?: number;
+  /** Countable units — draws one mark per unit (capped in the component). */
+  count?: number;
+  note?: Localized;
+}
+
+/** A sum of money the decision turns on, optionally split into parts. */
+export interface MoneyFigure {
+  label: Localized;
+  /** Display value, already formatted ("≈ $1.11 billion"). */
+  display: string;
+  /** Magnitude in a single unit (USD), used to scale the bars. */
+  amount: number;
+  parts?: { label: Localized; display: string; amount: number }[];
+  /** Render as an open-ended / estimated bar rather than a solid one. */
+  estimated?: boolean;
+  note?: Localized;
+}
+
+/** A body whose conduct was attributed to the respondent State. */
+export interface AttributionNode {
+  actor: Localized;
+  /** The rule relied on, e.g. "ILC art. 4". */
+  basis: string;
+  basisNote: Localized;
+  did: Localized;
+}
+
+/** A jurisdictional objection and how it fared. */
+export interface Objection {
+  ground: Localized;
+  /** Latin tag, e.g. "ratione temporis". */
+  latin?: string;
+  objection: Localized;
+  outcome: "rejected" | "upheld";
+  reasoning: Localized;
+}
+
+/** One step in the life of a decision after it was rendered. */
+export interface Stage {
+  year: string;
+  title: Localized;
+  note: Localized;
+  /** Did this step keep the decision standing? */
+  standing: "yes" | "no";
 }
 
 /** A geographic theatre the case concerns, anchored to the map. */
@@ -88,9 +179,22 @@ export interface JudgmentSource {
   url: string;
   /** The court's case-overview page. */
   caseUrl: string;
-  pages: number;
+  /** Length of the published text, where it is known. */
+  pages?: number;
   /** Delivery date as ISO 8601 (YYYY-MM-DD) — used in structured data. */
   date: string;
+  /** Label for the primary action, when "read the judgment" does not fit. */
+  readLabel?: Localized;
+  /** Label for the secondary action (the institution's case file). */
+  fileLabel?: Localized;
+}
+
+/** The institution that decided, and where it sat — shown in the masthead. */
+export interface Forum {
+  /** Institution, e.g. "Permanent Court of Arbitration". */
+  institution: Localized;
+  /** Seat of the proceedings, e.g. "Paris". */
+  seat: Localized;
 }
 
 /** Plain-language framing for non-lawyers. */
@@ -151,7 +255,15 @@ export interface Citation {
   type: string;
 }
 
-/** Everything a decision page renders. */
+/**
+ * Everything a decision page renders.
+ *
+ * The required fields are the ones every decision has: prose, parties, a
+ * dispositif, a date. The optional ones are instruments a particular decision
+ * earns — an inter-State judgment brings provisional measures and treaty
+ * theatres; an investment award brings money, attribution and a set-aside
+ * history. A page renders only the instruments its case actually fills.
+ */
 export interface DecisionSummary extends VerbatimSummary {
   plain: PlainLanguage;
   glossary: GlossaryTerm[];
@@ -165,7 +277,24 @@ export interface DecisionSummary extends VerbatimSummary {
   timeline: TimelineEvent[];
   verdicts: Verdict[];
   interpretations: Interpretation[];
-  provisionalMeasures: ProvisionalMeasure[];
-  theatres: Theatre[];
   sources: Citation[];
+
+  /** Institution and seat; defaults to the ICJ in The Hague when absent. */
+  forum?: Forum;
+  /** Heading for the verdict matrix, when "what the Court found" is wrong. */
+  verdictsHeading?: Localized;
+  /** Filters for the timeline. Absent → a plain, unfiltered timeline. */
+  timelineTracks?: TimelineTrack[];
+  provisionalMeasures?: ProvisionalMeasure[];
+  theatres?: Theatre[];
+  /**
+   * Map framing: which marker is the seat, and where the reach line points.
+   * Defaults to The Hague → Kyiv. The labels come from `forum`.
+   */
+  mapFocus?: { forumKey: string; reachTo?: string };
+  takings?: { heading: Localized; note?: Localized; metrics: Metric[] };
+  attribution?: { respondent: Localized; note: Localized; nodes: AttributionNode[] };
+  amounts?: { note?: Localized; figures: MoneyFigure[] };
+  objections?: { heading: Localized; note: Localized; items: Objection[] };
+  afterlife?: { heading: Localized; note: Localized; stages: Stage[] };
 }

@@ -337,6 +337,7 @@ export const registryCases: RegistryCase[] = [
     note: { uk: "PCA 2016-14", en: "PCA 2016-14" },
     pages: null,
     decisionUrl: "https://jusmundi.com/en/document/decision/en-oschadbank-v-russian-federation-none-currently-available-friday-1st-january-2016#decision_4484",
+    summarySlug: "oschadbank",
     lit: true,
   },
   {
