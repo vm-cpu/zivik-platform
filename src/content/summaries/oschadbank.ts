@@ -187,6 +187,13 @@ export const oschadbank: DecisionSummary = {
       },
     },
     {
+      q: { uk: "Що далі?", en: "What happens next?" },
+      a: {
+        uk: "Два напрями. Перший — стягнення: рішення остаточне у Франції, тривають процедури у Франції та США. Другий — новий спір: 24 липня 2025 року Ощадбанк повідомив Росію про претензії за тим самим договором щодо втрат на Донеччині, Луганщині, Херсонщині та Запоріжжі. Це окрема справа, рішення в ній ще немає.",
+        en: "Two tracks. Enforcement: the award is final in France, and proceedings continue in France and the United States. And a new claim: on 24 July 2025 Oschadbank notified Russia of a dispute under the same treaty over losses in Donetsk, Luhansk, Kherson and Zaporizhzhia. That is a separate case, with no ruling yet.",
+      },
+    },
+    {
       q: {
         uk: "Чому Росія не брала участі в арбітражі?",
         en: "Why did Russia not take part?",
@@ -480,6 +487,20 @@ export const oschadbank: DecisionSummary = {
       note: {
         uk: "Перше відчутне стягнення за рішенням — близько 6% основної суми.",
         en: "The first substantial recovery under the award — about 6% of the principal.",
+      },
+    },
+    {
+      date: { uk: "24 лип. 2025", en: "24 Jul 2025" },
+      iso: "2025-07-24",
+      track: "arbitration",
+      kind: "context",
+      label: {
+        uk: "Ощадбанк заявляє про другий спір проти Росії",
+        en: "Oschadbank notifies Russia of a second dispute",
+      },
+      note: {
+        uk: "Окрема справа за тим самим договором 1998 року — про втрати на Донеччині, Луганщині, Херсонщині та Запоріжжі. Це повідомлення про спір, а не рішення; склад арбітражу формується.",
+        en: "A separate case under the same 1998 treaty, over losses in Donetsk, Luhansk, Kherson and Zaporizhzhia. This is a notice of dispute, not a ruling; the tribunal is being constituted.",
       },
     },
     {
@@ -947,6 +968,15 @@ export const oschadbank: DecisionSummary = {
       url: "https://www.iareporter.com/articles/analysis-unpacking-the-reasons-that-led-the-paris-court-of-appeal-to-dismiss-russias-bid-to-set-aside-the-oschadbank-v-russia-crimea-award/",
       title:
         "Analysis: unpacking the reasons that led the Paris Court of Appeal to dismiss Russia's bid to set aside the Oschadbank v. Russia Crimea award",
+      authors: "",
+      publication: "IAReporter",
+      date: "2025",
+      type: "news/insight",
+    },
+    {
+      url: "https://www.iareporter.com/articles/ukraines-oschadbank-submits-notice-of-treaty-dispute-to-russia-over-donbass-kherson-and-zaporizhzhia-assets/",
+      title:
+        "Ukraine's Oschadbank submits notice of treaty dispute to Russia over Donbass, Kherson, and Zaporizhzhia assets",
       authors: "",
       publication: "IAReporter",
       date: "2025",

@@ -432,8 +432,11 @@ export default async function CasePage({
       />
       <Header locale={locale} dict={dict} />
 
-      {/* 1 — Masthead */}
-      <header className="mast rail">
+      {/* 1 — Masthead. The band is full-bleed; the rail sits inside it, like
+          every other band on the page. Merging the two capped the dark ground
+          at the rail's 1180px and left paper down both edges on a wide screen. */}
+      <header className="mast">
+        <div className="rail">
         <Link href={`/${locale}#registry`} className="backlink">
           ← {pick(T.back, locale)}
         </Link>
@@ -471,6 +474,7 @@ export default async function CasePage({
           <a className="btn btn-ghost" href={judgment.caseUrl} target="_blank" rel="noopener noreferrer">
             {pick(judgment.fileLabel ?? T.caseFile, locale)}
           </a>
+        </div>
         </div>
       </header>
 
