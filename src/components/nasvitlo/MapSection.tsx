@@ -1,26 +1,22 @@
-import Link from "next/link";
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-
-const legendItem: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  font: "500 12px var(--brand-font-body)",
-  color: "var(--brand-muted-dark)",
-};
+import { buildMapModel } from "@/lib/map-model";
+import MapExplorer from "./map/MapExplorer";
+import Link from "next/link";
 
 /**
- * Events map. Currently embeds the self-contained d3 map via iframe; a native
- * `d3-geo` React component is the planned replacement (see docs/ARCHITECTURE).
+ * Events map on the home page — the short version: the map, the legend and one
+ * violation open, with everything else a click away on the full map page.
  */
-export default function MapSection({
+export default async function MapSection({
   locale,
   dict,
 }: {
   locale: Locale;
   dict: Dictionary;
 }) {
+  const model = await buildMapModel(locale);
+
   return (
     <div
       id="map"
@@ -55,7 +51,7 @@ export default function MapSection({
               lineHeight: 1.6,
               color: "var(--ink2)",
               margin: 0,
-              maxWidth: 520,
+              maxWidth: 560,
             }}
           >
             {dict.mapSection.description}
@@ -75,40 +71,16 @@ export default function MapSection({
           {dict.mapSection.fullMap}
         </Link>
       </div>
-      <div className="nsv-map">
-        <div className="nsv-map-frame">
-          <iframe
-            src="/nasvitlo/map-dark.html"
-            title={dict.mapSection.heading}
-          />
-        </div>
-        <div className="nsv-map-legend">
-          <span style={legendItem}>
-            <i
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "var(--brand-cherry)",
-                display: "block",
-              }}
-            />
-            {dict.mapSection.legendEvent}
-          </span>
-          <span style={legendItem}>
-            <i
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "var(--brand-gold-pale)",
-                display: "block",
-                boxShadow: "0 0 8px rgba(240,221,168,.7)",
-              }}
-            />
-            {dict.mapSection.legendCourt}
-          </span>
-        </div>
+
+      {/* full-bleed to the page edges, as the section band above it */}
+      <div style={{ margin: "22px -28px 0" }}>
+        <MapExplorer
+          model={model}
+          t={dict.mapSection}
+          variant="teaser"
+          registryHref={`/${locale}/registry`}
+          fullMapHref={`/${locale}/map`}
+        />
       </div>
     </div>
   );

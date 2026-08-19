@@ -10,13 +10,16 @@
 import { about } from "./about";
 import { registryCases } from "./cases";
 import { institutions } from "./institutions";
+import { courtHubs, mapEvents } from "./map";
 import { partners } from "./partners";
 import { posts } from "./posts";
 import { stats } from "./stats";
 import { team } from "./team";
 import type {
   AboutContent,
+  CourtHub,
   Institution,
+  MapEvent,
   Partner,
   Post,
   RegistryCase,
@@ -29,6 +32,8 @@ export interface ContentRepository {
   getCases(): Promise<RegistryCase[]>;
   getStats(): Promise<Stat[]>;
   getPartners(): Promise<Partner[]>;
+  getMapEvents(): Promise<MapEvent[]>;
+  getCourtHubs(): Promise<CourtHub[]>;
   getTeam(): Promise<TeamMember[]>;
   getPosts(): Promise<Post[]>;
   getPost(slug: string): Promise<Post | null>;
@@ -48,6 +53,12 @@ export const fileRepository: ContentRepository = {
   },
   async getPartners() {
     return partners;
+  },
+  async getMapEvents() {
+    return mapEvents;
+  },
+  async getCourtHubs() {
+    return courtHubs;
   },
   async getTeam() {
     return [...team].sort((a, b) => a.order - b.order);

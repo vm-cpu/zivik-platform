@@ -10,6 +10,8 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import { siteUrl } from "@/lib/seo";
+import { buildMapModel } from "@/lib/map-model";
+import MapExplorer from "@/components/nasvitlo/map/MapExplorer";
 import Header from "@/components/nasvitlo/Header";
 import Footer from "@/components/nasvitlo/Footer";
 import "./map.css";
@@ -69,7 +71,10 @@ export default async function MapPage({
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
   const locale: Locale = raw;
-  const dict = await getDictionary(locale);
+  const [dict, model] = await Promise.all([
+    getDictionary(locale),
+    buildMapModel(raw),
+  ]);
 
   return (
     <div className="page mappage">
@@ -84,22 +89,15 @@ export default async function MapPage({
           <p className="map-lede">{pick(T.lede, locale)}</p>
         </header>
 
-        {/* Full-height stage — the map is the page here, not a preview strip. */}
-        <div className="map-stage">
-          <iframe src="/nasvitlo/map-dark.html" title={pick(T.title, locale)} />
-        </div>
+        <MapExplorer
+          model={model}
+          t={dict.mapSection}
+          variant="full"
+          registryHref={`/${locale}/registry`}
+        />
 
         <div className="map-foot">
-          <div className="map-legend">
-            <span>
-              <i className="d ev" />
-              {dict.mapSection.legendEvent}
-            </span>
-            <span>
-              <i className="d ct" />
-              {dict.mapSection.legendCourt}
-            </span>
-          </div>
+          <p className="map-hint">{dict.mapSection.hint}</p>
           <Link href={`/${locale}/registry`} className="map-next">
             {pick(T.toRegistry, locale)}
           </Link>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CaseStatusKey } from "@/content/types";
 
 /** Status → the global badge class defined in home.css (.st-*). */
@@ -58,6 +58,14 @@ export default function RegistryTable({
 }) {
   const [q, setQ] = useState("");
   const [court, setCourt] = useState("all");
+
+  // `?court=icj` opens the table filtered to that court — this is where the
+  // map's courthouse panels land. Read after mount so the page stays static.
+  useEffect(() => {
+    const wanted = new URLSearchParams(window.location.search).get("court");
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only URL state, see above
+    if (wanted && courts.some((c) => c.id === wanted)) setCourt(wanted);
+  }, [courts]);
   const [status, setStatus] = useState<"all" | CaseStatusKey>("all");
   const [sort, setSort] = useState<SortKey>("new");
 

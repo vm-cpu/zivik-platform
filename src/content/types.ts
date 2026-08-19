@@ -79,29 +79,42 @@ export interface RegistryCase {
   lit: boolean;
 }
 
-/** A court location on the events map (a hub city may host several seats). */
+/**
+ * A seat city on the events map. One city can host several institutions (The
+ * Hague holds the ICJ, the ICC, the PCA and the Dutch courts), so the seats and
+ * the case counts shown on the map are derived from `institutionIds` — never
+ * typed out a second time, and never able to drift from the registry.
+ */
 export interface CourtHub {
   id: string;
   city: Localized;
   coord: LonLat;
-  seats: Array<{ abbr: string; name: Localized }>;
+  /** References `Institution.id`. */
+  institutionIds: string[];
 }
 
-/** An event on the map, linked to the courts that hear it. */
+/** Category of an alleged violation; drives the marker colour and the filter. */
+export type MapEventCategory = "hr" | "war" | "asset";
+
+/**
+ * An alleged violation pinned to the place it happened. `caseIds` is the whole
+ * link to the law: the courts it connects to, the lines drawn on the map and
+ * the "read the decision" links are all resolved from those cases, so a case
+ * added to the registry shows up on the map without editing anything here.
+ */
 export interface MapEvent {
   id: string;
   coord: LonLat;
-  category: "hr" | "war" | "asset";
-  size: number;
-  tag?: Localized;
+  category: MapEventCategory;
+  /** Relative marker weight, 1 (minor) to 3 (defining). */
+  weight: 1 | 2 | 3;
+  /** Date or period line above the title, e.g. "17.07.2014". */
   eyebrow: Localized;
   title: Localized;
   note: Localized;
-  hubs: string[];
-  forum: Localized;
-  cases: Localized;
-  fresh?: boolean;
-  freshLabel?: Localized;
+  /** References `RegistryCase.id`. */
+  caseIds: string[];
+  /** Opens selected when the map first loads (at most one). */
   featured?: boolean;
 }
 
