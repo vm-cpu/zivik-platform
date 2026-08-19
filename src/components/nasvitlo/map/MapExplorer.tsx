@@ -383,6 +383,36 @@ function EventPanel({
         ) : null}
       </div>
 
+      <div className="nsvmap-place">
+        <span className="k">{t.placeHead}</span>
+        <span className="v">
+          {event.place.label}
+          {event.place.precision === "area" ? (
+            <em> · {t.placeArea}</em>
+          ) : null}
+        </span>
+        {event.place.sourceLabel ? (
+          <span className="src">
+            {t.placeBasis}:{" "}
+            {event.place.sourceHref ? (
+              event.place.sourceHref.startsWith("/") ? (
+                <Link href={event.place.sourceHref}>{event.place.sourceLabel}</Link>
+              ) : (
+                <a
+                  href={event.place.sourceHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {event.place.sourceLabel}
+                </a>
+              )
+            ) : (
+              event.place.sourceLabel
+            )}
+          </span>
+        ) : null}
+      </div>
+
       <div className="nsvmap-cases-head">
         {t.proceedings} · {event.cases.length}
       </div>

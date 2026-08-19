@@ -531,7 +531,7 @@ export default async function CasePage({
         </div>
       </section>
 
-      <Footer dict={dict} />
+      <Footer locale={locale} dict={dict} />
     </div>
   );
 }

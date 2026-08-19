@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "map:geometry": "node scripts/build-map-geometry.mjs",
+    "map:check": "node scripts/check-map-places.mjs"
   },
   "dependencies": {
     "@types/leaflet": "^1.9.21",

@@ -110,6 +110,9 @@
   text-anchor:middle;font:700 10px var(--brand-font-body);fill:#1B0F0B;pointer-events:none;
 }
 .nsvmap-event:hover .nsvmap-event-halo{opacity:.34}
+/* an area has no exact point: dashed ring, softer centre */
+.nsvmap-event-area{fill:none;stroke:var(--cat);stroke-width:1;stroke-dasharray:3 4;opacity:.55}
+.nsvmap-event.is-area .nsvmap-event-mark{opacity:.86}
 
 /* zoom controls + legend */
 .nsvmap-controls{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px;z-index:2}
@@ -151,6 +154,15 @@
 .nsvmap-listitem .me{font:500 11px var(--brand-font-body);color:var(--m-ink2)}
 .nsvmap-listitem .me b{color:var(--m-gold);font-weight:700}
 .nsvmap-empty,.nsvmap-note{padding:16px;margin:0;font-size:12px;line-height:1.6;color:var(--m-faint)}
+
+/* place + provenance of the coordinate */
+.nsvmap-place{display:flex;flex-direction:column;gap:3px;padding:0 16px 14px}
+.nsvmap-place .k{font:700 9.5px var(--brand-font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--m-faint)}
+.nsvmap-place .v{font-size:12.5px;line-height:1.45;color:var(--m-ink)}
+.nsvmap-place .v em{font-style:normal;color:var(--m-faint)}
+.nsvmap-place .src{font-size:11px;line-height:1.45;color:var(--m-faint)}
+.nsvmap-place .src a{color:var(--m-ink2);text-decoration:none;border-bottom:1px solid var(--m-rule)}
+.nsvmap-place .src a:hover{color:var(--m-gold)}
 
 /* ---- detail panel ---- */
 .nsvmap-panel{display:flex;flex-direction:column;border-top:3px solid var(--cat,var(--m-gold))}

@@ -14,6 +14,7 @@ import {
   type CaseStatusKey,
   type LonLat,
   type MapEventCategory,
+  type PlacePrecision,
 } from "@/content/types";
 
 /** One proceeding as the map panel shows it. */
@@ -34,9 +35,19 @@ export interface MapCaseView {
   lit: boolean;
 }
 
+/** What the marker's coordinate means, ready to render. */
+export interface MapPlaceView {
+  label: string;
+  precision: PlacePrecision;
+  /** Where the place comes from: a proceeding on the site, or an outside source. */
+  sourceLabel: string | null;
+  sourceHref: string | null;
+}
+
 export interface MapEventView {
   id: string;
   coord: LonLat;
+  place: MapPlaceView;
   category: MapEventCategory;
   weight: 1 | 2 | 3;
   eyebrow: string;
@@ -142,9 +153,34 @@ export async function buildMapModel(
       return (b.year ?? 0) - (a.year ?? 0);
     });
 
+    // Prefer the proceeding that fixes the place: it is the strongest basis we
+    // can show, and it links to the decision itself.
+    const basisCase = event.place.sourceCaseId
+      ? caseById.get(event.place.sourceCaseId)
+      : undefined;
+    const basisInstitution = basisCase
+      ? institutionById.get(basisCase.institutionId)
+      : undefined;
+
+    const place: MapPlaceView = {
+      label: pick(event.place.label, locale),
+      precision: event.place.precision,
+      sourceLabel: basisCase
+        ? `${basisInstitution ? pick(basisInstitution.abbr, locale) : basisCase.institutionId} — ${basisCase.name}`
+        : event.place.source
+          ? pick(event.place.source.label, locale)
+          : null,
+      sourceHref: basisCase
+        ? (basisCase.summarySlug
+            ? `/${locale}/cases/${basisCase.summarySlug}`
+            : basisCase.decisionUrl)
+        : (event.place.source?.url ?? null),
+    };
+
     return {
       id: event.id,
       coord: event.coord,
+      place,
       category: event.category,
       weight: event.weight,
       eyebrow: pick(event.eyebrow, locale),

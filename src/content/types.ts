@@ -97,6 +97,31 @@ export interface CourtHub {
 export type MapEventCategory = "hr" | "war" | "asset";
 
 /**
+ * How exact a map coordinate is.
+ *
+ * `site` — the place itself is in the record (a crash site, a named asset).
+ * `settlement` — the town is named, the coordinate is its centre.
+ * `area` — a region or a campaign with no single point. The map draws these
+ * without a sharp pin, because pretending otherwise would be false precision
+ * on a page about legal findings.
+ */
+export type PlacePrecision = "site" | "settlement" | "area";
+
+/** What a map coordinate points at, and on what authority. */
+export interface MapPlace {
+  /** The place in words, e.g. "Грабове, Донецька область". */
+  label: Localized;
+  precision: PlacePrecision;
+  /**
+   * The proceeding whose record fixes this place — the strongest basis we can
+   * give, and it links straight to the decision. References `RegistryCase.id`.
+   */
+  sourceCaseId?: string;
+  /** An outside source, where no proceeding fixes the place. */
+  source?: { label: Localized; url?: string };
+}
+
+/**
  * An alleged violation pinned to the place it happened. `caseIds` is the whole
  * link to the law: the courts it connects to, the lines drawn on the map and
  * the "read the decision" links are all resolved from those cases, so a case
@@ -105,6 +130,8 @@ export type MapEventCategory = "hr" | "war" | "asset";
 export interface MapEvent {
   id: string;
   coord: LonLat;
+  /** Where the coordinate comes from and how exact it is. */
+  place: MapPlace;
   category: MapEventCategory;
   /** Relative marker weight, 1 (minor) to 3 (defining). */
   weight: 1 | 2 | 3;

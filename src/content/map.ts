@@ -71,6 +71,13 @@ export const mapEvents: MapEvent[] = [
   {
     id: "crimea",
     coord: [34.3, 45.32],
+    place: {
+      label: { uk: "Кримський півострів", en: "Crimean peninsula" },
+      precision: "area",
+      // The ECtHR judgment is about an administrative practice across the whole
+      // peninsula, not an incident at a point.
+      sourceCaseId: "ecthr-4",
+    },
     category: "hr",
     weight: 3,
     eyebrow: { uk: "Окупація · з лютого 2014", en: "Occupation · since February 2014" },
@@ -84,6 +91,17 @@ export const mapEvents: MapEvent[] = [
   {
     id: "crimea-assets",
     coord: [33.4, 44.62],
+    place: {
+      label: {
+        uk: "Крим — активи по всьому півострову",
+        en: "Crimea — assets across the peninsula",
+      },
+      precision: "area",
+      // Each arbitration names its own asset (Belbek airport, the Krymenergo
+      // grid, Everest Estate in Yalta); the marker stands for all of them until
+      // the individual sites are entered per case.
+      sourceCaseId: "pca-23",
+    },
     category: "asset",
     weight: 3,
     eyebrow: { uk: "Націоналізація · з 2014", en: "Expropriation · since 2014" },
@@ -114,6 +132,13 @@ export const mapEvents: MapEvent[] = [
   {
     id: "mh17",
     coord: [38.65, 48.13],
+    place: {
+      label: { uk: "Грабове, Донецька область", en: "Hrabove, Donetsk region" },
+      precision: "site",
+      // The crash site is established in the Dutch criminal proceedings and in
+      // the Dutch Safety Board investigation.
+      sourceCaseId: "nl-32",
+    },
     category: "war",
     weight: 3,
     eyebrow: { uk: "MH17 · 17.07.2014", en: "MH17 · 17 July 2014" },
@@ -128,6 +153,14 @@ export const mapEvents: MapEvent[] = [
   {
     id: "donbas",
     coord: [38.9, 49.02],
+    place: {
+      label: {
+        uk: "Донецька і Луганська області",
+        en: "Donetsk and Luhansk regions",
+      },
+      precision: "area",
+      sourceCaseId: "icj-1",
+    },
     category: "war",
     weight: 3,
     eyebrow: { uk: "Схід України · з 2014", en: "Eastern Ukraine · since 2014" },
@@ -144,6 +177,12 @@ export const mapEvents: MapEvent[] = [
   {
     id: "kerch",
     coord: [36.63, 45.27],
+    place: {
+      label: { uk: "Керченська протока", en: "Kerch Strait" },
+      precision: "site",
+      // ITLOS Order of 25 May 2019 recounts where the vessels were seized.
+      sourceCaseId: "itlos-15",
+    },
     category: "war",
     weight: 2,
     eyebrow: { uk: "Керченська протока · 25.11.2018", en: "Kerch Strait · 25 November 2018" },
@@ -160,6 +199,16 @@ export const mapEvents: MapEvent[] = [
   {
     id: "deportation",
     coord: [35.37, 46.84],
+    place: {
+      label: {
+        uk: "Окуповані території півдня та сходу",
+        en: "Occupied territories of the south and east",
+      },
+      precision: "area",
+      // The ICC warrants name the conduct, not a place; the marker stands for
+      // the occupied territories the children were taken from.
+      sourceCaseId: "icc-9",
+    },
     category: "hr",
     weight: 3,
     eyebrow: { uk: "Депортації · з 2022", en: "Deportations · since 2022" },
@@ -176,6 +225,14 @@ export const mapEvents: MapEvent[] = [
   {
     id: "strikes",
     coord: [30.52, 50.45],
+    place: {
+      label: {
+        uk: "Енергосистема України — удари по всій території",
+        en: "Ukraine's power grid — strikes nationwide",
+      },
+      precision: "area",
+      sourceCaseId: "icc-11",
+    },
     category: "war",
     weight: 3,
     eyebrow: { uk: "Удари по інфраструктурі · з 2022", en: "Strikes on infrastructure · since 2022" },
@@ -192,6 +249,16 @@ export const mapEvents: MapEvent[] = [
   {
     id: "energy-assets",
     coord: [34.63, 47.5],
+    place: {
+      label: {
+        uk: "Запорізька АЕС, Енергодар",
+        en: "Zaporizhzhia nuclear plant, Enerhodar",
+      },
+      precision: "site",
+      source: {
+        label: { uk: "Розташування станції", en: "Location of the plant" },
+      },
+    },
     category: "asset",
     weight: 2,
     eyebrow: { uk: "Енергетика · з 2020", en: "Energy · since 2020" },

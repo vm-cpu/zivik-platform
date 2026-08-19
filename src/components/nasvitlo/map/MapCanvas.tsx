@@ -297,10 +297,11 @@ export default function MapCanvas({
               const isSelected =
                 selected?.kind === "event" && selected.id === event.id;
               const radius = 4.5 + event.weight * 1.9;
+              const isArea = event.place.precision === "area";
               return (
                 <g
                   key={event.id}
-                  className={`nsvmap-event cat-${event.category}${isSelected ? " is-selected" : ""}`}
+                  className={`nsvmap-event cat-${event.category}${isSelected ? " is-selected" : ""}${isArea ? " is-area" : ""}`}
                   transform={`translate(${at[0]},${at[1]})`}
                   role="button"
                   tabIndex={0}
@@ -317,10 +318,13 @@ export default function MapCanvas({
                   }}
                 >
                   <title>
-                    {`${event.title} — ${event.cases.length} ${proceedings(event.cases.length, t)}`}
+                    {`${event.title} · ${event.place.label} — ${event.cases.length} ${proceedings(event.cases.length, t)}`}
                   </title>
                   {isSelected ? (
                     <circle className="nsvmap-event-ring" r={radius + 7} />
+                  ) : null}
+                  {isArea ? (
+                    <circle className="nsvmap-event-area" r={radius + 6} />
                   ) : null}
                   <circle className="nsvmap-event-halo" r={radius + 3} />
                   <circle className="nsvmap-event-mark" r={radius} />
