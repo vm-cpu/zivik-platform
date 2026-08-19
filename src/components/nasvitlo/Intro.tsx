@@ -1,8 +1,10 @@
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { pick, type Stat } from "@/content/types";
+import { daysSince } from "@/lib/days";
+import LiveDays from "./LiveDays";
 
-/** Intro sentence + the four headline figures. */
+/** Intro sentence + the headline figures. */
 export default function Intro({
   locale,
   dict,
@@ -44,7 +46,7 @@ export default function Intro({
         >
           {dict.intro.text}
         </p>
-        <a className="btn btn-o" href="#" style={{ flex: "none" }}>
+        <a className="btn btn-o" href="#about" style={{ flex: "none" }}>
           {dict.intro.about}
         </a>
       </div>
@@ -52,8 +54,18 @@ export default function Intro({
       {/* Editorial figure line — hairline-separated numerals, not a KPI grid. */}
       <div className="nsv-statline">
         {stats.map((stat) => (
-          <div key={stat.value + pick(stat.label, locale)} className="stat">
-            <span className="num">{stat.value}</span>
+          <div key={pick(stat.label, locale)} className="stat">
+            <span className="num">
+              {stat.live === "warDays" && stat.sinceIso ? (
+                <LiveDays
+                  sinceIso={stat.sinceIso}
+                  initial={daysSince(stat.sinceIso)}
+                  locale={locale}
+                />
+              ) : (
+                stat.value
+              )}
+            </span>
             <span className="cap">{pick(stat.label, locale)}</span>
           </div>
         ))}

@@ -1,0 +1,54 @@
+/* ============================================================
+   Map page — the events map at full size, with the page chrome kept
+   deliberately thin so the map itself carries the screen. Shares the
+   .page palette from home.css; the header needs its own dark ground
+   because there is no lamp backdrop here.
+   ============================================================ */
+.mappage{--nsv-header-bg:#14100e;background:var(--paper);min-height:100dvh}
+
+.mappage .map-wrap{max-width:1360px;margin:0 auto;padding:0 clamp(20px,5vw,44px) 70px}
+
+/* ---- page heading ---- */
+.map-mast{padding:40px 0 24px}
+.map-back{
+  display:inline-block;margin-bottom:18px;
+  font:700 11px var(--brand-font-body);letter-spacing:.06em;text-transform:uppercase;
+  color:var(--faint);text-decoration:none;
+}
+.map-back:hover{color:var(--red)}
+.map-mast h1{
+  font-family:var(--brand-font-display),Georgia,serif;font-weight:400;
+  font-size:clamp(30px,5vw,44px);line-height:1.08;color:var(--ink);margin:0 0 12px;
+}
+.map-lede{max-width:680px;font-size:15px;line-height:1.6;color:var(--ink2);margin:0}
+
+/* ---- the map stage: tall enough to actually read the country ---- */
+.map-stage{
+  height:clamp(460px,74vh,860px);
+  background:#140807;
+  border:1px solid var(--rule);
+  overflow:hidden;
+}
+.map-stage iframe{width:100%;height:100%;border:0;display:block}
+
+/* ---- legend + onward link ---- */
+.map-foot{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:16px 30px;padding:16px 2px 0;
+}
+.map-legend{display:flex;flex-wrap:wrap;gap:24px}
+.map-legend span{
+  display:flex;align-items:center;gap:8px;
+  font:500 12px var(--brand-font-body);color:var(--ink2);
+}
+.map-legend .d{width:8px;height:8px;border-radius:50%;flex:none;display:block}
+.map-legend .d.ev{background:var(--brand-cherry)}
+.map-legend .d.ct{background:var(--brand-gold);box-shadow:0 0 8px rgba(240,221,168,.7)}
+.map-next{
+  font:700 11px var(--brand-font-body);letter-spacing:.06em;text-transform:uppercase;
+  color:var(--red);text-decoration:none;white-space:nowrap;
+}
+
+@media (max-width:640px){
+  .map-stage{height:clamp(380px,62vh,560px)}
+}

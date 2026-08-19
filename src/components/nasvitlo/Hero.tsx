@@ -85,19 +85,21 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             fontSize: 20,
             lineHeight: 1.5,
             color: "var(--brand-cream)",
-            margin: "0 0 12px",
-            maxWidth: 520,
+            margin: "0 0 14px",
+            maxWidth: 560,
           }}
         >
           {dict.hero.lead}
         </p>
+        {/* Longer scope sentence: wider measure and a smaller size keep the
+            hero from turning into a wall of text. */}
         <p
           style={{
-            fontSize: 14,
-            lineHeight: 1.65,
+            fontSize: 13.5,
+            lineHeight: 1.7,
             color: "var(--brand-muted-dark)",
             margin: "0 0 32px",
-            maxWidth: 430,
+            maxWidth: 680,
           }}
         >
           {dict.hero.sub}

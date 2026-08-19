@@ -16,6 +16,7 @@ import MapSection from "@/components/nasvitlo/MapSection";
 import Quote from "@/components/nasvitlo/Quote";
 import Registry from "@/components/nasvitlo/Registry";
 import Newsletter from "@/components/nasvitlo/Newsletter";
+import Team from "@/components/nasvitlo/Team";
 import Partners from "@/components/nasvitlo/Partners";
 import Footer from "@/components/nasvitlo/Footer";
 
@@ -29,15 +30,23 @@ export default async function HomePage({
 
   const dict = await getDictionary(locale);
   const repo = getContentRepository();
-  const [institutions, stats, partners, cases, casesByInstitution, about] =
-    await Promise.all([
-      repo.getInstitutions(),
-      repo.getStats(),
-      repo.getPartners(),
-      repo.getCases(),
-      getCasesByInstitution(repo),
-      repo.getAbout(),
-    ]);
+  const [
+    institutions,
+    stats,
+    partners,
+    team,
+    cases,
+    casesByInstitution,
+    about,
+  ] = await Promise.all([
+    repo.getInstitutions(),
+    repo.getStats(),
+    repo.getPartners(),
+    repo.getTeam(),
+    repo.getCases(),
+    getCasesByInstitution(repo),
+    repo.getAbout(),
+  ]);
   const phase1 = institutions.filter((i) => i.phase1);
   const totalCases = cases.length;
   const analysedCases = cases.filter((c) => c.lit).length;
@@ -74,7 +83,7 @@ export default async function HomePage({
           institutionCount={institutions.length}
         />
         <Slogan dict={dict} />
-        <MapSection dict={dict} />
+        <MapSection locale={locale} dict={dict} />
         <Quote dict={dict} />
         <Registry
           locale={locale}
@@ -85,8 +94,9 @@ export default async function HomePage({
           analysedCases={analysedCases}
         />
         <Newsletter dict={dict} />
+        <Team locale={locale} dict={dict} team={team} />
         <Partners locale={locale} dict={dict} partners={partners} />
-        <Footer dict={dict} />
+        <Footer locale={locale} dict={dict} />
       </LampShell>
     </div>
   );

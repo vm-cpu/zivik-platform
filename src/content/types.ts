@@ -110,6 +110,29 @@ export interface Stat {
   value: string;
   label: Localized;
   gilt?: boolean;
+  /**
+   * Marks a figure that must be counted, not authored. `warDays` renders the
+   * days elapsed since `sinceIso` and keeps ticking in the browser, so a
+   * statically built page never shows a stale number.
+   */
+  live?: "warDays";
+  /** Start date (ISO) for a `live` figure. */
+  sinceIso?: string;
+}
+
+/** A member of the project team. */
+export interface TeamMember {
+  id: string;
+  name: Localized;
+  /** Role as it should read in each language (UA titles differ from the EN ones). */
+  role: Localized;
+  /**
+   * Portrait under `/public/team/` (e.g. `/team/olha-denkovych.jpg`). Optional:
+   * the section renders as a plain masthead until the photos arrive, and
+   * switches to portraits as soon as they do.
+   */
+  photo?: string;
+  order: number;
 }
 
 /** A partner organisation. */
@@ -118,6 +141,23 @@ export interface Partner {
   name: Localized;
   logo?: string;
   url?: string;
+}
+
+/** A blog entry. Bodies are plain paragraphs until the CMS supplies rich text. */
+export interface Post {
+  id: string;
+  /** URL segment, shared across locales: `/uk/blog/<slug>`. */
+  slug: string;
+  /** Publication date, ISO `YYYY-MM-DD`. */
+  date: string;
+  title: Localized;
+  /** One- or two-sentence teaser for the index and for `<meta description>`. */
+  excerpt: Localized;
+  body: Localized<string[]>;
+  /** Optional byline; omit for institutional posts. */
+  author?: Localized;
+  /** Optional short kicker, e.g. "Аналітика" / "Analysis". */
+  kicker?: Localized;
 }
 
 /** "About the library" prose, per locale. */

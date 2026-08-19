@@ -430,6 +430,17 @@
 .nsv-partnerrow .pmark:first-child{padding-left:0;border-left:0}
 .nsv-partnerrow a.pmark:hover{color:var(--red)}
 
+/* team masthead — name over role, hairline-ruled columns (no profile cards) */
+.nsv-team{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:0 34px}
+.nsv-team li{display:flex;flex-direction:column;gap:4px;padding:14px 0;border-top:1px solid var(--rule)}
+.nsv-team .tname{font-family:var(--brand-font-display),Georgia,serif;font-size:17px;line-height:1.25;color:var(--ink)}
+.nsv-team .trole{font:600 10.5px var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:var(--faint)}
+/* with portraits: the rule moves under the photo and the tiles get room */
+.nsv-team[data-portraits=yes]{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:30px 26px}
+.nsv-team[data-portraits=yes] li{padding:0;border-top:0;gap:0}
+.nsv-team .tphoto{width:100%;height:auto;aspect-ratio:5/6;object-fit:cover;object-position:top center;display:block;margin-bottom:12px;filter:grayscale(1) contrast(1.05);border-bottom:3px solid var(--red)}
+.nsv-team li:hover .tphoto{filter:none}
+
 /* brand slogan divider — Charis SIL caps, wide tracking (UCU "гасла" style) */
 .nsv-slogan{display:flex;align-items:center;gap:24px;padding:30px 28px;background:var(--paper2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 .nsv-slogan .rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rule))}

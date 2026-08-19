@@ -11,13 +11,17 @@ import { about } from "./about";
 import { registryCases } from "./cases";
 import { institutions } from "./institutions";
 import { partners } from "./partners";
+import { posts } from "./posts";
 import { stats } from "./stats";
+import { team } from "./team";
 import type {
   AboutContent,
   Institution,
   Partner,
+  Post,
   RegistryCase,
   Stat,
+  TeamMember,
 } from "./types";
 
 export interface ContentRepository {
@@ -25,6 +29,9 @@ export interface ContentRepository {
   getCases(): Promise<RegistryCase[]>;
   getStats(): Promise<Stat[]>;
   getPartners(): Promise<Partner[]>;
+  getTeam(): Promise<TeamMember[]>;
+  getPosts(): Promise<Post[]>;
+  getPost(slug: string): Promise<Post | null>;
   getAbout(): Promise<AboutContent>;
 }
 
@@ -41,6 +48,15 @@ export const fileRepository: ContentRepository = {
   },
   async getPartners() {
     return partners;
+  },
+  async getTeam() {
+    return [...team].sort((a, b) => a.order - b.order);
+  },
+  async getPosts() {
+    return [...posts].sort((a, b) => b.date.localeCompare(a.date));
+  },
+  async getPost(slug) {
+    return posts.find((p) => p.slug === slug) ?? null;
   },
   async getAbout() {
     return about;

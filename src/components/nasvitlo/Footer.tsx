@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 const colHead: React.CSSProperties = {
@@ -25,16 +27,34 @@ const socialBox: React.CSSProperties = {
 };
 
 /** Dark site footer: brand, link columns, contacts, legal bar. */
-export default function Footer({ dict }: { dict: Dictionary }) {
+export default function Footer({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
   const f = dict.footer;
-  const column = (head: string, links: string[]) => (
+  const home = `/${locale}`;
+
+  /** `href: null` = destination not built yet; renders as plain text, not a dead link. */
+  const column = (
+    head: string,
+    links: Array<{ label: string; href: string | null }>,
+  ) => (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <div style={colHead}>{head}</div>
-      {links.map((label) => (
-        <a key={label} href="#" style={footLink}>
-          {label}
-        </a>
-      ))}
+      {links.map(({ label, href }) =>
+        href ? (
+          <Link key={label} href={href} style={footLink}>
+            {label}
+          </Link>
+        ) : (
+          <span key={label} style={{ ...footLink, opacity: 0.55 }}>
+            {label}
+          </span>
+        ),
+      )}
     </div>
   );
 
@@ -97,16 +117,16 @@ export default function Footer({ dict }: { dict: Dictionary }) {
         </div>
 
         {column(f.colArchive, [
-          f.linkRegistry,
-          f.linkMap,
-          f.linkCourts,
-          f.linkDocs,
+          { label: f.linkRegistry, href: `${home}/registry` },
+          { label: f.linkMap, href: `${home}/map` },
+          { label: f.linkCourts, href: `${home}#registry` },
+          { label: f.linkDocs, href: null },
         ])}
         {column(f.colCenter, [
-          f.linkAbout,
-          f.linkTeam,
-          f.linkPartners,
-          f.linkBlog,
+          { label: f.linkAbout, href: `${home}#about` },
+          { label: f.linkTeam, href: `${home}#team` },
+          { label: f.linkPartners, href: `${home}#partners` },
+          { label: f.linkBlog, href: `${home}/blog` },
         ])}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

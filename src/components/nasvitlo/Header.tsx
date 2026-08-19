@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import "./header.css";
@@ -15,15 +16,30 @@ export default function Header({
   dict: Dictionary;
 }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const home = `/${locale}`;
 
+  /**
+   * Two kinds of destination: standalone pages (registry, map, blog) and
+   * sections of the home page. Section links are absolute (`/uk#team`) so they
+   * also work from a sub-page, where the section isn't on screen.
+   */
   const nav = [
-    { label: dict.nav.home, href: `/${locale}`, active: true },
-    { label: dict.nav.decisions, href: "#registry" },
-    { label: dict.nav.map, href: "#map" },
-    { label: dict.nav.team, href: "#" },
-    { label: dict.nav.partners, href: "#partners" },
-    { label: dict.nav.blog, href: "#" },
-  ];
+    { label: dict.nav.about, href: `${home}#about` },
+    { label: dict.nav.decisions, href: `${home}/registry`, page: true },
+    { label: dict.nav.map, href: `${home}/map`, page: true },
+    { label: dict.nav.team, href: `${home}#team` },
+    { label: dict.nav.partners, href: `${home}#partners` },
+    { label: dict.nav.blog, href: `${home}/blog`, page: true },
+  ].map((item) => ({
+    ...item,
+    // Only page links can be "current"; the section links share the home page,
+    // so highlighting them would light up three items at once.
+    active: Boolean(
+      item.page &&
+        (pathname === item.href || pathname.startsWith(`${item.href}/`)),
+    ),
+  }));
 
   return (
     <>
@@ -42,7 +58,16 @@ export default function Header({
           borderBottom: "1px solid rgba(243,232,226,.1)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {/* The mark is the way home now that "Home" has left the nav. */}
+        <Link
+          href={`/${locale}`}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            textDecoration: "none",
+          }}
+        >
           {/* White Faculty-of-Law mark on the dark bar. eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/logos/fp-logo-white-${locale}.svg`}
@@ -66,7 +91,7 @@ export default function Header({
           >
             {dict.brand.wordmark}
           </span>
-        </div>
+        </Link>
 
         <nav
           className="nsv-nav"

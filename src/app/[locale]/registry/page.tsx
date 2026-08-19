@@ -20,7 +20,7 @@ import "./registry.css";
 
 /** Localized page chrome (the case data itself is localized from content). */
 const T = {
-  title: { uk: "Реєстр рішень", en: "Case registry" },
+  title: { uk: "Бібліотека рішень", en: "Library of decisions" },
   lede: {
     uk: "Усі провадження проти РФ у міжнародних судах, трибуналах та арбітражах — з можливістю фільтрувати за судом і статусом. Опрацьовані справи ведуть до конспекту рішення.",
     en: "Every proceeding against Russia across international courts, tribunals and arbitrations — filter by court and status. Analysed cases link through to a decision summary.",
@@ -182,7 +182,7 @@ export default async function RegistryPage({
         />
       </main>
 
-      <Footer dict={dict} />
+      <Footer locale={locale} dict={dict} />
     </div>
   );
 }

@@ -13,8 +13,8 @@ const en: Dictionary = {
     ogAlt: "nasvitlo — archive of international court decisions",
   },
   nav: {
-    home: "Home",
-    decisions: "Decisions",
+    about: "About us",
+    decisions: "Library of decisions",
     map: "Map",
     team: "Team",
     partners: "Partners",
@@ -25,11 +25,12 @@ const en: Dictionary = {
     wordmark: "nasvitlo",
   },
   hero: {
-    eyebrow: "A project of the UCU Faculty of Law",
-    lead: "International court decisions on the aggression against Ukraine — brought to light.",
-    sub: "39 proceedings against Russia: from the International Court of Justice and the ECtHR to ICC warrants and maritime arbitration.",
-    ctaRegistry: "Case registry",
-    ctaMap: "Events map",
+    eyebrow:
+      "A project of the Louis B. Sohn Research Center, UCU Faculty of Law",
+    lead: "The Library of Accountability and Justice for Ukraine — lighting the legal path Ukraine walks towards justice.",
+    sub: "An online collection of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign domestic case-law concerning Ukraine's initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
+    ctaRegistry: "Library of decisions",
+    ctaMap: "Map",
     chainHint: "pull the cord",
     lampLabel: "Turn the lamp on or off",
   },
@@ -53,19 +54,19 @@ const en: Dictionary = {
   },
   mapSection: {
     label: "Map",
-    heading: "Events and the courts that hear them",
+    heading: "Alleged violations and the courts assessing them",
     description:
-      "Shelling, deportations and seizures — linked by a dotted line to the courtroom where they are argued.",
+      "Alleged violations — shelling, deportations and seizures — linked by a dotted line to the court where their legal assessment takes place.",
     fullMap: "Full map →",
-    legendEvent: "Event: shelling, deportation, seizure",
-    legendCourt: "The court that hears it",
+    legendEvent: "Alleged violation: shelling, deportation, seizure",
+    legendCourt: "The court assessing it",
   },
   registry: {
-    label: "Registry",
-    heading: "Courts hearing cases against Russia",
+    label: "Library of decisions",
+    heading: "An online collection of international case-law",
     description:
-      "Here the light is already on. The registry grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
-    fullRegistry: "Full registry ({count})",
+      "Here the light is already on. The collection grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
+    fullRegistry: "The whole library ({count})",
     processed: "Processed",
     of: "of",
     queuedRest: "the rest are queued",
@@ -89,11 +90,13 @@ const en: Dictionary = {
     subscribe: "Subscribe",
     support: "Support the project",
   },
+  team: {
+    label: "Team",
+    heading: "Who works on the library",
+  },
   partners: {
     label: "Partners",
     heading: "Who we work with",
-    all: "All partners →",
-    note: "Placeholders for logos — send the files and we'll add the real ones.",
   },
   footer: {
     tagline:
@@ -103,8 +106,8 @@ const en: Dictionary = {
     colArchive: "Archive",
     colCenter: "Center",
     colContacts: "Contacts",
-    linkRegistry: "Case registry",
-    linkMap: "Events map",
+    linkRegistry: "Library of decisions",
+    linkMap: "Map of violations",
     linkCourts: "Courts and instances",
     linkDocs: "Documents",
     linkAbout: "About the project",

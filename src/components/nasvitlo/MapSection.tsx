@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 const legendItem: React.CSSProperties = {
@@ -12,7 +14,13 @@ const legendItem: React.CSSProperties = {
  * Events map. Currently embeds the self-contained d3 map via iframe; a native
  * `d3-geo` React component is the planned replacement (see docs/ARCHITECTURE).
  */
-export default function MapSection({ dict }: { dict: Dictionary }) {
+export default function MapSection({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
   return (
     <div
       id="map"
@@ -53,8 +61,8 @@ export default function MapSection({ dict }: { dict: Dictionary }) {
             {dict.mapSection.description}
           </p>
         </div>
-        <a
-          href="#"
+        <Link
+          href={`/${locale}/map`}
           style={{
             font: "700 11px var(--brand-font-body)",
             letterSpacing: ".06em",
@@ -65,7 +73,7 @@ export default function MapSection({ dict }: { dict: Dictionary }) {
           }}
         >
           {dict.mapSection.fullMap}
-        </a>
+        </Link>
       </div>
       <div className="nsv-map">
         <div className="nsv-map-frame">
