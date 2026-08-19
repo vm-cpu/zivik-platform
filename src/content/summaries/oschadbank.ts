@@ -1,5 +1,6 @@
 import type { DecisionSummary, SummaryBlock } from "./types";
 import verbatim from "./oschadbank.verbatim.json";
+import verbatimUk from "./oschadbank.uk.json";
 
 /**
  * JSC Oschadbank v. The Russian Federation, PCA Case No. 2016-14,
@@ -28,6 +29,9 @@ export const oschadbank: DecisionSummary = {
     masthead: { official: string; parties: string; judgment: string };
     blocks: SummaryBlock[];
   }),
+  // Ukrainian translation of the body, structurally 1:1 with the English
+  // (same 104 blocks, same kinds) — draft, pending legal review.
+  blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
   forum: {
     institution: {
