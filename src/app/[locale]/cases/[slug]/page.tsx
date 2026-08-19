@@ -8,13 +8,15 @@ import Footer from "@/components/nasvitlo/Footer";
 import ShareBar from "@/components/nasvitlo/ShareBar";
 import SideToc from "@/components/nasvitlo/SideToc";
 import { icjCerdIcsft } from "@/content/summaries/icj-cerd-icsft";
+import { icjGenocide } from "@/content/summaries/icj-genocide";
 import type { DecisionSummary, SummaryBlock, Theatre } from "@/content/summaries/types";
 import uaMap from "@/content/summaries/ukraine-map.json";
 import "../case.css";
 
-/** Slug → decision summary. One entry today; grows as summaries are ingested. */
+/** Slug → decision summary. Grows as summaries are ingested. */
 const SUMMARIES: Record<string, DecisionSummary> = {
   "icj-cerd-icsft": icjCerdIcsft,
+  "icj-genocide": icjGenocide,
 };
 
 /** Localized chrome labels (the summary body stays in its source language). */
@@ -46,6 +48,15 @@ const T = {
   faqH: { uk: "Часті запитання", en: "Common questions" },
   relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
   fullSummary: { uk: "Повне самері", en: "Full summary" },
+  objections: { uk: "Попередні заперечення", en: "Preliminary objections" },
+  rejected: { uk: "Відхилено", en: "Rejected" },
+  upheld: { uk: "Задоволено", en: "Upheld" },
+  toMerits: { uk: "До розгляду по суті", en: "To the merits" },
+  upheldOf: { uk: "задоволене з", en: "upheld of" },
+  benchNote: {
+    uk: "Кожна шкала — склад Суду з {n} суддів. Тексти заперечень наведено за самері; підрахунки голосів і два останні висновки — з резолютивної частини рішення, якої самері не відтворює.",
+    en: "Each bar is the bench of {n}. The objections are quoted from the summary; the tallies and the final two findings come from the Court's operative clause, which the summary does not reproduce.",
+  },
 } as const;
 
 const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
@@ -107,7 +118,7 @@ function TheatreMap({ theatres, locale }: { theatres: Theatre[]; locale: Locale 
             const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
             const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
             // keep centred labels inside the 0..1000 viewBox
-            const lx = Math.min(Math.max(cx, 130), 860);
+            const lx = Math.min(Math.max(cx + (t.labelDx ?? 0), 130), 860);
             return (
               <g key={t.treaty}>
                 {pts.map((p, i) => (
@@ -116,10 +127,10 @@ function TheatreMap({ theatres, locale }: { theatres: Theatre[]; locale: Locale 
                     <circle className="zone" cx={p[0]} cy={p[1]} r={9} />
                   </g>
                 ))}
-                <text className="mk-treaty" x={lx} y={cy - 84} textAnchor="middle">
+                <text className="mk-treaty" x={lx} y={cy - 84 + (t.labelDy ?? 0)} textAnchor="middle">
                   {t.treaty}
                 </text>
-                <text className="mk-label" x={lx} y={cy - 56} textAnchor="middle">
+                <text className="mk-label" x={lx} y={cy - 56 + (t.labelDy ?? 0)} textAnchor="middle">
                   {pick(t.place, locale)}
                 </text>
               </g>
@@ -216,6 +227,7 @@ export default async function CasePage({
   const dict = await getDictionary(locale);
   const { masthead, judgment, instruments, stats, timeline, verdicts, theatres, sources } = summary;
   const { interpretations, provisionalMeasures, plain, glossary, whoIsWho, faq, related } = summary;
+  const { objections = [], benchSize = 0, theatresLabel } = summary;
   const parties = masthead.parties.replace(/^\(|\)$/g, "");
   // Body in the reader's language; English is the source of truth.
   const rawBlocks = locale === "uk" && summary.blocksUk ? summary.blocksUk : summary.blocks;
@@ -315,11 +327,62 @@ export default async function CasePage({
             </div>
           </div>
 
-          <div>
-            <div className="lbl">{pick(T.tracks, locale)}</div>
-            <TheatreMap theatres={theatres} locale={locale} />
-          </div>
+          {theatres.length > 0 && (
+            <div>
+              <div className="lbl">{pick(theatresLabel ?? T.tracks, locale)}</div>
+              <TheatreMap theatres={theatres} locale={locale} />
+            </div>
+          )}
 
+          {objections.length > 0 && (
+            <div>
+              <div className="score-head">
+                <h2>{pick(T.objections, locale)}</h2>
+                <span className="score-count">
+                  <b>{objections.filter((o) => o.outcome === "upheld").length}</b>{" "}
+                  {pick(T.upheldOf, locale)}{" "}
+                  {objections.filter((o) => o.outcome !== "finding").length}
+                </span>
+              </div>
+              <ul className="objections">
+                {objections.map((o, i) => (
+                  <li key={i}>
+                    <span className="o-n">{o.n}</span>
+                    <span className="o-claim">{o.claim}</span>
+                    <span className="o-out" data-o={o.outcome}>
+                      {o.outcome === "upheld"
+                        ? pick(T.upheld, locale)
+                        : o.outcome === "finding"
+                          ? pick(T.toMerits, locale)
+                          : pick(T.rejected, locale)}
+                    </span>
+                    <span className="o-votes">
+                      {o.votes.map((v, j) => (
+                        <span key={j} className="o-vote">
+                          <span
+                            className="o-bench"
+                            style={{ width: `${benchSize * 8 - 2}px` }}
+                            aria-hidden="true"
+                          >
+                            <i style={{ width: `${v.for * 8 - 2}px` }} />
+                          </span>
+                          <span className="o-tally">
+                            {v.for}–{v.against}
+                            {v.scope && <em> {pick(v.scope, locale)}</em>}
+                          </span>
+                        </span>
+                      ))}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="o-note">
+                {pick(T.benchNote, locale).replace("{n}", String(benchSize))}
+              </p>
+            </div>
+          )}
+
+          {verdicts.length > 0 && (
           <div>
             <div className="score-head">
               <h2>{pick(T.found, locale)}</h2>
@@ -358,6 +421,7 @@ export default async function CasePage({
                 })}
             </ul>
           </div>
+          )}
 
           <div>
             <div className="lbl">{pick(T.timeline, locale)}</div>
@@ -386,6 +450,7 @@ export default async function CasePage({
             ))}
           </div>
 
+          {provisionalMeasures.length > 0 && (
           <div>
             <div className="lbl lbl-onpaper">
               {pick(T.provMeasures, locale)}
@@ -407,6 +472,7 @@ export default async function CasePage({
               ))}
             </ul>
           </div>
+          )}
         </div>
       </section>
 
@@ -531,7 +597,7 @@ export default async function CasePage({
         </div>
       </section>
 
-      <Footer dict={dict} />
+      <Footer locale={locale} dict={dict} />
     </div>
   );
 }

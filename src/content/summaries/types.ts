@@ -70,6 +70,10 @@ export interface Theatre {
   /** Map marker key in `ukraine-map.json` this theatre highlights. */
   markerKeys: string[];
   summary: Localized;
+  /** Nudge the map label off a collision with Kyiv or a neighbouring theatre. */
+  labelDy?: number;
+  /** Nudge the map label back inside the frame when the zone sits at an edge. */
+  labelDx?: number;
 }
 
 /** A treaty the case turns on, linked to its official text. */
@@ -125,6 +129,27 @@ export interface RelatedCase {
   href: string;
 }
 
+/** One vote in the operative clause: a majority against a minority. */
+export interface Vote {
+  for: number;
+  against: number;
+  /** What this particular vote covered, when a claim was voted on twice. */
+  scope?: Localized;
+}
+
+/**
+ * A preliminary objection and how the Court disposed of it. `claim` stays in
+ * the source language, like the body prose; the tallies come from the Court's
+ * operative clause, which the summaries do not reproduce.
+ */
+export interface Objection {
+  /** Ordinal, or a mark for a consequential finding that follows the six. */
+  n: string;
+  claim: string;
+  outcome: "rejected" | "upheld" | "finding";
+  votes: Vote[];
+}
+
 /** A doctrinal ruling the Court settled on a point of law. */
 export interface Interpretation {
   term: Localized;
@@ -166,4 +191,10 @@ export interface DecisionSummary extends VerbatimSummary {
   provisionalMeasures: ProvisionalMeasure[];
   theatres: Theatre[];
   sources: Citation[];
+  /** Heading for the theatre map, when "two theatres" does not describe it. */
+  theatresLabel?: Localized;
+  /** Preliminary objections, for cases decided at the jurisdiction stage. */
+  objections?: Objection[];
+  /** Judges sitting, so a vote reads as a proportion of the bench. */
+  benchSize?: number;
 }
