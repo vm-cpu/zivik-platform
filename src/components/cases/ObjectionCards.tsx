@@ -16,10 +16,13 @@ export default function ObjectionCards({
   items,
   locale,
   labels,
+  benchSize = 0,
 }: {
   items: Objection[];
   locale: Locale;
   labels: { objection: string; rejected: string; upheld: string; ruling: string };
+  /** Judges sitting. With a bench, a vote draws as seats won of seats sitting. */
+  benchSize?: number;
 }) {
   const [open, setOpen] = useState<number | null>(null);
 
@@ -50,6 +53,26 @@ export default function ObjectionCards({
                 {o.outcome === "rejected" ? labels.rejected : labels.upheld}
                 <i aria-hidden="true" />
               </span>
+
+              {benchSize > 0 && o.votes && o.votes.length > 0 && (
+                <span className="obj-votes">
+                  {o.votes.map((v, j) => (
+                    <span key={j} className="obj-vote">
+                      <span
+                        className="obj-bench"
+                        style={{ width: `${benchSize * 8 - 2}px` }}
+                        aria-hidden="true"
+                      >
+                        <i style={{ width: `${v.for * 8 - 2}px` }} />
+                      </span>
+                      <span className="obj-tally">
+                        {v.for}–{v.against}
+                        {v.scope && <em> {pick(v.scope, locale)}</em>}
+                      </span>
+                    </span>
+                  ))}
+                </span>
+              )}
 
               {isOpen && (
                 <span className="obj-reason">

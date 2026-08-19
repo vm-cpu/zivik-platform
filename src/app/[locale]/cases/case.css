@@ -1457,6 +1457,55 @@
   background: var(--pgold);
 }
 
+/* how the bench divided — one tick per seat, filled ticks are the majority */
+.casepage .obj-votes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.casepage .obj-vote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.casepage .obj-bench {
+  position: relative;
+  display: inline-block;
+  height: 14px;
+  flex: none;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--prule) 0 6px,
+    transparent 6px 8px
+  );
+}
+.casepage .obj-bench i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink3) 0 6px,
+    transparent 6px 8px
+  );
+}
+.casepage .objections li[data-outcome="upheld"] .obj-bench i {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--pgold) 0 6px,
+    transparent 6px 8px
+  );
+}
+.casepage .obj-tally {
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--ink2);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .obj-tally em {
+  font-style: normal;
+  color: var(--ink3);
+}
+
 /* what happened to the award afterwards */
 .casepage .afterlife {
   list-style: none;

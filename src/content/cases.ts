@@ -37,6 +37,7 @@ export const registryCases: RegistryCase[] = [
     note: { uk: "ICJ GL 182", en: "ICJ GL 182" },
     pages: 70,
     decisionUrl: "https://www.icj-cij.org/sites/default/files/case-related/182/182-20240202-jud-01-00-en.pdf",
+    summarySlug: "icj-genocide",
     lit: true,
   },
   {

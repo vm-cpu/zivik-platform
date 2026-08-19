@@ -135,6 +135,14 @@ export interface AttributionNode {
   did: Localized;
 }
 
+/** One vote in an operative clause: a majority against a minority. */
+export interface Vote {
+  for: number;
+  against: number;
+  /** What this vote covered, when one claim was voted on more than once. */
+  scope?: Localized;
+}
+
 /** A jurisdictional objection and how it fared. */
 export interface Objection {
   ground: Localized;
@@ -143,6 +151,8 @@ export interface Objection {
   objection: Localized;
   outcome: "rejected" | "upheld";
   reasoning: Localized;
+  /** How the bench divided, where the dispositif records a vote. */
+  votes?: Vote[];
 }
 
 /** One step in the life of a decision after it was rendered. */
@@ -161,6 +171,9 @@ export interface Theatre {
   /** Map marker key in `ukraine-map.json` this theatre highlights. */
   markerKeys: string[];
   summary: Localized;
+  /** Nudge the label off a collision with the seat, a city or a neighbour. */
+  labelDx?: number;
+  labelDy?: number;
 }
 
 /** A treaty the case turns on, linked to its official text. */
@@ -283,6 +296,8 @@ export interface DecisionSummary extends VerbatimSummary {
   forum?: Forum;
   /** Heading for the verdict matrix, when "what the Court found" is wrong. */
   verdictsHeading?: Localized;
+  /** Heading for the map, when neither "two theatres" nor the seat fits. */
+  theatresHeading?: Localized;
   /** Filters for the timeline. Absent → a plain, unfiltered timeline. */
   timelineTracks?: TimelineTrack[];
   provisionalMeasures?: ProvisionalMeasure[];
@@ -295,6 +310,12 @@ export interface DecisionSummary extends VerbatimSummary {
   takings?: { heading: Localized; note?: Localized; metrics: Metric[] };
   attribution?: { respondent: Localized; note: Localized; nodes: AttributionNode[] };
   amounts?: { note?: Localized; figures: MoneyFigure[] };
-  objections?: { heading: Localized; note: Localized; items: Objection[] };
+  objections?: {
+    heading: Localized;
+    note: Localized;
+    items: Objection[];
+    /** Judges sitting, so a vote reads as a proportion of the bench. */
+    benchSize?: number;
+  };
   afterlife?: { heading: Localized; note: Localized; stages: Stage[] };
 }

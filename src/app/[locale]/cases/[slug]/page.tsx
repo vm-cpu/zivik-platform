@@ -16,6 +16,7 @@ import ObjectionCards from "@/components/cases/ObjectionCards";
 import TakingsGrid from "@/components/cases/TakingsGrid";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import { icjCerdIcsft } from "@/content/summaries/icj-cerd-icsft";
+import { icjGenocide } from "@/content/summaries/icj-genocide";
 import { oschadbank } from "@/content/summaries/oschadbank";
 import type { Localized } from "@/content/types";
 import type {
@@ -30,6 +31,7 @@ import "../case.css";
 /** Slug → decision summary. Grows as summaries are ingested. */
 const SUMMARIES: Record<string, DecisionSummary> = {
   "icj-cerd-icsft": icjCerdIcsft,
+  "icj-genocide": icjGenocide,
   oschadbank: oschadbank,
 };
 
@@ -168,7 +170,7 @@ function TheatreMap({
             const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
             const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
             // keep centred labels inside the 0..1000 viewBox
-            const lx = Math.min(Math.max(cx, 130), 860);
+            const lx = Math.min(Math.max(cx + (t.labelDx ?? 0), 130), 860);
             return (
               <g key={t.treaty}>
                 {pts.map((p, i) => (
@@ -177,10 +179,10 @@ function TheatreMap({
                     <circle className="zone" cx={p[0]} cy={p[1]} r={9} />
                   </g>
                 ))}
-                <text className="mk-treaty" x={lx} y={cy - 84} textAnchor="middle">
+                <text className="mk-treaty" x={lx} y={cy - 84 + (t.labelDy ?? 0)} textAnchor="middle">
                   {t.treaty}
                 </text>
-                <text className="mk-label" x={lx} y={cy - 56} textAnchor="middle">
+                <text className="mk-label" x={lx} y={cy - 56 + (t.labelDy ?? 0)} textAnchor="middle">
                   {pick(t.place, locale)}
                 </text>
               </g>
@@ -514,7 +516,11 @@ export default async function CasePage({
           {theatres.length > 0 && (
             <div>
               <div className="lbl">
-                {theatres.length > 1 ? pick(T.tracks, locale) : pick(T.seatLabel, locale)}
+                {pick(
+                  summary.theatresHeading ??
+                    (theatres.length > 1 ? T.tracks : T.seatLabel),
+                  locale,
+                )}
               </div>
               <TheatreMap theatres={theatres} locale={locale} forum={mapForum} />
             </div>
@@ -656,6 +662,7 @@ export default async function CasePage({
                 <ObjectionCards
                   items={objections.items}
                   locale={locale}
+                  benchSize={objections.benchSize}
                   labels={{
                     objection: pick(T.objectionLbl, locale),
                     ruling: pick(T.rulingLbl, locale),
