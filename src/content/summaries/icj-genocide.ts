@@ -1,5 +1,6 @@
 import type { DecisionSummary, SummaryBlock } from "./types";
 import verbatim from "./icj-genocide.verbatim.json";
+import verbatimUk from "./icj-genocide.uk.json";
 
 /**
  * Allegations of Genocide (Ukraine v. Russian Federation: 32 States
@@ -26,6 +27,7 @@ export const icjGenocide: DecisionSummary = {
     masthead: { official: string; parties: string; judgment: string };
     blocks: SummaryBlock[];
   }),
+  blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
   plain: {
     tldr: {
