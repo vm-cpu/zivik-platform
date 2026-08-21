@@ -33,6 +33,8 @@ export const iccUkraine: DecisionSummary = {
   }),
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
+  asOf: "2026-08-21",
+
   forum: {
     institution: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },
     seat: { uk: "Гаага", en: "The Hague" },

@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import { defaultLocale, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
-/** Absolute site origin, used for canonical URLs, Open Graph and the sitemap. */
+/**
+ * Absolute site origin, used for canonical URLs, Open Graph and the sitemap.
+ * Explicit NEXT_PUBLIC_SITE_URL wins; on Vercel the project's production
+ * domain is the default, so canonicals never leak localhost into production.
+ */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
 
 /** `hreflang` map pointing each locale at its localized home, plus x-default. */
 function languageAlternates(): Record<string, string> {

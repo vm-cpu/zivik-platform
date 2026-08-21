@@ -311,6 +311,13 @@ export interface Citation {
  * history. A page renders only the instruments its case actually fills.
  */
 export interface DecisionSummary extends VerbatimSummary {
+  /**
+   * Date the page's context layer was last verified against its sources
+   * (ISO 8601). For live dockets — an ICC situation, an enforcement stage —
+   * it renders next to the out-of-record figures and feeds `dateModified` in
+   * the structured data.
+   */
+  asOf?: string;
   plain: PlainLanguage;
   glossary: GlossaryTerm[];
   whoIsWho: WhoEntry[];

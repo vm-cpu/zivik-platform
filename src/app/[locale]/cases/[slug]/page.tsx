@@ -94,6 +94,7 @@ const T = {
   announcementLbl: { uk: "Повідомлення Суду", en: "The Court's announcement" },
   warCrimeLbl: { uk: "Воєнний злочин", en: "War crime" },
   cahLbl: { uk: "Злочин проти людяності", en: "Crime against humanity" },
+  asOf: { uk: "станом на", en: "as of" },
 } as const;
 
 /** Chrome label for each way a claim can be disposed of. */
@@ -381,6 +382,7 @@ export default async function CasePage({
         inLanguage: locale,
         url: pageUrl,
         datePublished: judgment.date,
+        ...(summary.asOf ? { dateModified: summary.asOf } : {}),
         about: {
           "@type": "Legislation",
           name: masthead.official,
@@ -580,7 +582,21 @@ export default async function CasePage({
             <div>
               <div className="lbl">{pick(takings.heading, locale)}</div>
               <TakingsGrid metrics={takings.metrics} locale={locale} />
-              {takings.note && <p className="dash-note">{pick(takings.note, locale)}</p>}
+              {takings.note && (
+                <p className="dash-note">
+                  {pick(takings.note, locale)}
+                  {summary.asOf && (
+                    <span className="asof">
+                      {" "}
+                      · {pick(T.asOf, locale)}{" "}
+                      {new Date(summary.asOf + "T00:00:00Z").toLocaleDateString(
+                        locale === "uk" ? "uk-UA" : "en-GB",
+                        { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
+                      )}
+                    </span>
+                  )}
+                </p>
+              )}
             </div>
           )}
 
