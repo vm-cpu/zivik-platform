@@ -549,10 +549,16 @@ export const iccUkraine: DecisionSummary = {
   ],
 
   warrants: {
-    heading: { uk: "Шість ордерів, три хвилі", en: "Six warrants, three waves" },
+    heading: { uk: "Шість ордерів — одна вертикаль влади", en: "Six warrants, one vertical of power" },
+    rungs: [
+      { uk: "Глава держави", en: "Head of state" },
+      { uk: "Офіс Президента", en: "Presidential office" },
+      { uk: "Міністр оборони і Генштаб", en: "Defence Minister and General Staff" },
+      { uk: "Оперативні командувачі", en: "Operational commanders" },
+    ],
     note: {
-      uk: "Кожен ордер — висновок Палати про «обґрунтовані підстави вважати», не вирок. Плашки — статті Римського статуту; кожна хвиля посилається на офіційне повідомлення Суду.",
-      en: "Each warrant is the Chamber's finding of \"reasonable grounds to believe\", not a verdict. The chips are Rome Statute articles; each wave links to the Court's own announcement.",
+      uk: "Ордери покривають вертикаль командування згори донизу — від верховного головнокомандувача до командувачів авіації та флоту. Колір — лінія звинувачення. Кожен ордер — висновок Палати про «обґрунтовані підстави вважати», не вирок; кожна лінія посилається на офіційне повідомлення Суду.",
+      en: "The warrants run down the chain of command — from the commander-in-chief to the commanders of the aviation and the fleet. Colour marks the theory of the case. Each warrant is the Chamber's finding of \"reasonable grounds to believe\", not a verdict; each line links to the Court's own announcement.",
     },
     waves: [
       {
@@ -569,6 +575,7 @@ export const iccUkraine: DecisionSummary = {
             name: { uk: "Владімір Путін", en: "Vladimir Putin" },
             role: { uk: "Президент Російської Федерації", en: "President of the Russian Federation" },
             born: "1952",
+            rung: 0,
             charges: [
               {
                 art: "8(2)(a)(vii)",
@@ -599,6 +606,7 @@ export const iccUkraine: DecisionSummary = {
               en: "Commissioner for Children's Rights in the President's Office",
             },
             born: "1984",
+            rung: 1,
             charges: [
               {
                 art: "8(2)(a)(vii)",
@@ -637,6 +645,7 @@ export const iccUkraine: DecisionSummary = {
               en: "Lieutenant General, Commander of Long-Range Aviation",
             },
             born: "1965",
+            rung: 3,
             charges: [
               {
                 art: "8(2)(b)(ii)",
@@ -664,6 +673,7 @@ export const iccUkraine: DecisionSummary = {
             name: { uk: "Віктор Соколов", en: "Viktor Sokolov" },
             role: { uk: "Адмірал, командувач Чорноморського флоту", en: "Admiral, Commander of the Black Sea Fleet" },
             born: "1962",
+            rung: 3,
             charges: [
               {
                 art: "8(2)(b)(ii)",
@@ -703,6 +713,7 @@ export const iccUkraine: DecisionSummary = {
             name: { uk: "Сергій Шойгу", en: "Sergei Shoigu" },
             role: { uk: "Міністр оборони РФ на час діянь", en: "Minister of Defence at the time of the conduct" },
             born: "1955",
+            rung: 2,
             charges: [
               {
                 art: "8(2)(b)(ii)",
@@ -733,6 +744,7 @@ export const iccUkraine: DecisionSummary = {
               en: "Chief of the General Staff, First Deputy Minister of Defence",
             },
             born: "1955",
+            rung: 2,
             charges: [
               {
                 art: "8(2)(b)(ii)",

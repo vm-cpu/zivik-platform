@@ -3,89 +3,166 @@
 import { useState } from "react";
 import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
+import type { Localized } from "@/content/types";
 import type { WarrantWave } from "@/content/summaries/types";
 
 /**
- * The warrants of arrest, wave by wave.
+ * The warrants of arrest, drawn as a ladder of command.
  *
- * The ICC's Ukraine docket is not one decision but three, each a different
- * theory of the case: the deportation of children (March 2023), the missile
- * campaign against the power grid as flown and sailed (March 2024), and the
- * same campaign at the top of the chain of command (June 2024). The wall keeps
- * that structure: a rail of waves, each holding its suspects. A card opens to
- * the charges — every chip is a Rome Statute article — and each wave links to
- * the Court's own announcement, so the reader can verify against the source.
+ * The strongest fact in this data is not the six names — it is their
+ * altitude. The warrants run down an entire vertical of power: head of state,
+ * presidential office, Defence Ministry and General Staff, operational
+ * commanders. So the instrument is a ladder: one spine, four rungs, each
+ * suspect pinned to their rung and coloured by the theory of the case that
+ * charged them (the deportation of children, or the campaign against the
+ * grid). Selecting a suspect opens the charges — every chip a Rome Statute
+ * article — with the Court's own announcement one click away, so each claim
+ * stays verifiable at the source.
+ *
+ * Without `rungs` the component falls back to plain wave sections, so a
+ * future situation summary that has no command structure still renders.
  */
 export default function WarrantWall({
   waves,
+  rungs,
   locale,
   labels,
 }: {
   waves: WarrantWave[];
+  rungs?: Localized[];
   locale: Locale;
   labels: { charges: string; modes: string; announcement: string; warCrime: string; cah: string };
 }) {
-  const [open, setOpen] = useState<string | null>("0-0");
+  const [open, setOpen] = useState<string>("0-0");
 
-  return (
-    <div className="warrants">
-      {waves.map((w, wi) => (
-        <section key={wi} className="wave" data-wave={wi}>
-          <header className="wave-head">
-            <span className="wave-date">{pick(w.date, locale)}</span>
-            <h3 className="wave-theme">{pick(w.theme, locale)}</h3>
-            <p className="wave-sum">{pick(w.summary, locale)}</p>
-          </header>
+  // Flatten to (wave, person) pairs once; the ladder and the detail share it.
+  const flat = waves.flatMap((w, wi) => w.persons.map((p, pi) => ({ w, wi, p, key: `${wi}-${pi}` })));
+  const sel = flat.find((f) => f.key === open) ?? flat[0];
 
-          <ul className="wave-people">
-            {w.persons.map((p, pi) => {
-              const key = `${wi}-${pi}`;
-              const isOpen = open === key;
-              return (
-                <li key={pi} data-on={isOpen ? "yes" : "no"}>
+  const detail = (
+    <div className="wr-detail" data-wave={sel.wi}>
+      <div className="wr-detail-head">
+        <span className="wr-detail-name">{pick(sel.p.name, locale)}</span>
+        <span className="wr-detail-wave">
+          {pick(sel.w.theme, locale)} · {pick(sel.w.date, locale)}
+        </span>
+      </div>
+      <p className="wr-detail-role">
+        {pick(sel.p.role, locale)}
+        {sel.p.born ? ` · ${sel.p.born}` : ""}
+      </p>
+
+      <span className="suspect-lbl">{labels.charges}</span>
+      <div className="charges">
+        {sel.p.charges.map((c, ci) => (
+          <span key={ci} className="charge" data-kind={c.kind}>
+            <b>{c.kind === "cah" ? labels.cah : labels.warCrime}</b>
+            {pick(c.label, locale)}
+            <em>
+              {locale === "uk" ? "ст." : "art."} {c.art}
+            </em>
+          </span>
+        ))}
+      </div>
+
+      <span className="suspect-lbl">{labels.modes}</span>
+      <div className="modes">
+        {sel.p.modes.map((m, mi) => (
+          <span key={mi} className="mode">
+            {pick(m.label, locale)}
+            <em>
+              {" "}
+              · {locale === "uk" ? "ст." : "art."} {m.art}
+            </em>
+          </span>
+        ))}
+      </div>
+
+      <a className="wave-src" href={sel.w.url} target="_blank" rel="noopener noreferrer">
+        {labels.announcement} ↗
+      </a>
+    </div>
+  );
+
+  if (!rungs) {
+    // Fallback: plain wave sections (no command structure declared).
+    return (
+      <div className="warrants">
+        {waves.map((w, wi) => (
+          <section key={wi} className="wave" data-wave={wi}>
+            <header className="wave-head">
+              <span className="wave-date">{pick(w.date, locale)}</span>
+              <h3 className="wave-theme">{pick(w.theme, locale)}</h3>
+              <p className="wave-sum">{pick(w.summary, locale)}</p>
+            </header>
+            <ul className="wave-people">
+              {w.persons.map((p, pi) => (
+                <li key={pi} data-on={open === `${wi}-${pi}` ? "yes" : "no"}>
                   <button
                     type="button"
                     className="suspect"
-                    aria-expanded={isOpen}
-                    onClick={() => setOpen(isOpen ? null : key)}
+                    aria-expanded={open === `${wi}-${pi}`}
+                    onClick={() => setOpen(`${wi}-${pi}`)}
                   >
                     <span className="suspect-name">{pick(p.name, locale)}</span>
                     <span className="suspect-role">{pick(p.role, locale)}</span>
-
-                    {isOpen && (
-                      <span className="suspect-detail">
-                        <span className="suspect-lbl">{labels.charges}</span>
-                        <span className="charges">
-                          {p.charges.map((c, ci) => (
-                            <span key={ci} className="charge" data-kind={c.kind}>
-                              <b>{c.kind === "cah" ? labels.cah : labels.warCrime}</b>
-                              {pick(c.label, locale)}
-                              <em>{locale === "uk" ? "ст." : "art."} {c.art}</em>
-                            </span>
-                          ))}
-                        </span>
-                        <span className="suspect-lbl">{labels.modes}</span>
-                        <span className="modes">
-                          {p.modes.map((m, mi) => (
-                            <span key={mi} className="mode">
-                              {pick(m.label, locale)}
-                              <em> · {locale === "uk" ? "ст." : "art."} {m.art}</em>
-                            </span>
-                          ))}
-                        </span>
-                      </span>
-                    )}
                   </button>
                 </li>
-              );
-            })}
-          </ul>
+              ))}
+            </ul>
+          </section>
+        ))}
+        {detail}
+      </div>
+    );
+  }
 
-          <a className="wave-src" href={w.url} target="_blank" rel="noopener noreferrer">
-            {labels.announcement} ↗
-          </a>
-        </section>
-      ))}
+  return (
+    <div className="warrants warrants-ladder">
+      {/* legend: one entry per wave, carrying the wave's colour and date */}
+      <div className="wr-legend">
+        {waves.map((w, wi) => (
+          <span key={wi} className="wr-key" data-wave={wi}>
+            <i aria-hidden="true" />
+            {pick(w.theme, locale)} · {pick(w.date, locale)}
+          </span>
+        ))}
+      </div>
+
+      <div className="ladder">
+        <div className="ladder-spine" aria-hidden="true" />
+        {rungs.map((r, ri) => {
+          const here = flat.filter((f) => (f.p.rung ?? 0) === ri);
+          if (here.length === 0) return null;
+          return (
+            <div key={ri} className="rung">
+              <div className="rung-label">
+                <b>{String(ri + 1).padStart(2, "0")}</b>
+                {pick(r, locale)}
+              </div>
+              <div className="rung-people">
+                {here.map((f) => (
+                  <button
+                    key={f.key}
+                    type="button"
+                    className="wr-node"
+                    data-wave={f.wi}
+                    data-on={open === f.key ? "yes" : "no"}
+                    aria-expanded={open === f.key}
+                    onClick={() => setOpen(f.key)}
+                  >
+                    <span className="wr-node-name">{pick(f.p.name, locale)}</span>
+                    <span className="wr-node-role">{pick(f.p.role, locale)}</span>
+                    <span className="wr-node-date">{pick(f.w.date, locale)}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {detail}
     </div>
   );
 }

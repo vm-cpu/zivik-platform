@@ -659,6 +659,7 @@ export default async function CasePage({
               <p className="mach-note">{pick(warrants.note, locale)}</p>
               <WarrantWall
                 waves={warrants.waves}
+                rungs={warrants.rungs}
                 locale={locale}
                 labels={{
                   charges: pick(T.chargesLbl, locale),

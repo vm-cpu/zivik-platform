@@ -172,6 +172,8 @@ export interface WarrantPerson {
   charges: Charge[];
   /** Modes of individual responsibility, e.g. "25(3)(a)". */
   modes: { art: string; label: Localized }[];
+  /** Rung of the chain of command this person sits on (index into `rungs`). */
+  rung?: number;
 }
 
 /** One wave of warrants issued the same day on one theory of the case. */
@@ -349,6 +351,16 @@ export interface DecisionSummary extends VerbatimSummary {
     benchSize?: number;
   };
   afterlife?: { heading: Localized; note: Localized; stages: Stage[] };
-  /** Warrants of arrest, wave by wave — the core instrument of an ICC page. */
-  warrants?: { heading: Localized; note: Localized; waves: WarrantWave[] };
+  /**
+   * Warrants of arrest — the core instrument of an ICC page. `waves` group the
+   * suspects by issuance date and theory of the case; `rungs`, when present,
+   * name the levels of the chain of command and turn the wall into a ladder:
+   * one spine of power, each suspect pinned to their rung, coloured by wave.
+   */
+  warrants?: {
+    heading: Localized;
+    note: Localized;
+    waves: WarrantWave[];
+    rungs?: Localized[];
+  };
 }

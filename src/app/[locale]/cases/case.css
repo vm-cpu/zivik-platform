@@ -1807,3 +1807,175 @@
 .casepage .wave-src:hover {
   color: var(--pred);
 }
+
+/* ---- warrant ladder: the chain of command --------------------------------- */
+/* Wave colour: wave 0 (children) is the breach red; waves 1–2 (the grid
+   campaign, one theory at two altitudes) share the gold. */
+.casepage .warrants-ladder {
+  display: grid;
+  gap: var(--space-6);
+}
+.casepage .wr-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+}
+.casepage .wr-key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--ink2);
+}
+.casepage .wr-key i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--pgold);
+}
+.casepage .wr-key[data-wave="0"] i {
+  background: var(--pred);
+}
+
+.casepage .ladder {
+  position: relative;
+  display: grid;
+  gap: var(--space-5);
+}
+/* the spine of the vertical: one line the whole structure hangs from */
+.casepage .ladder-spine {
+  position: absolute;
+  inset: 8px auto 8px 7px;
+  width: 2px;
+  background: var(--prule);
+}
+.casepage .rung {
+  position: relative;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: var(--space-5);
+  align-items: start;
+  padding-left: var(--space-8);
+}
+/* rung joint on the spine */
+.casepage .rung::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--pgold);
+}
+.casepage .rung-label {
+  display: grid;
+  gap: 2px;
+  padding-top: var(--space-2);
+  font: 700 var(--t-sm) var(--brand-font-body);
+  color: var(--ink);
+}
+.casepage .rung-label b {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--ink3);
+}
+.casepage .rung-people {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-3);
+}
+.casepage .wr-node {
+  display: grid;
+  gap: 2px;
+  text-align: left;
+  background: var(--card);
+  border: 0;
+  border-top: 3px solid var(--pgold);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4) var(--space-5);
+  cursor: pointer;
+  font-family: inherit;
+  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.casepage .wr-node[data-wave="0"] {
+  border-top-color: var(--pred);
+}
+.casepage .wr-node:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.casepage .wr-node[data-on="yes"] {
+  box-shadow: var(--shadow-md);
+  outline: 2px solid var(--pgold);
+  outline-offset: 1px;
+}
+.casepage .wr-node[data-on="yes"][data-wave="0"] {
+  outline-color: var(--pred);
+}
+.casepage .wr-node-name {
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-ui);
+  font-weight: 700;
+  color: var(--ink);
+}
+.casepage .wr-node-role {
+  font-size: var(--t-cap);
+  line-height: 1.45;
+  color: var(--ink2);
+}
+.casepage .wr-node-date {
+  margin-top: var(--space-1);
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--ink3);
+  font-variant-numeric: tabular-nums;
+}
+
+/* detail panel for the selected suspect */
+.casepage .wr-detail {
+  display: grid;
+  gap: var(--space-3);
+  background: var(--card);
+  border-left: 3px solid var(--pgold);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+}
+.casepage .wr-detail[data-wave="0"] {
+  border-left-color: var(--pred);
+}
+.casepage .wr-detail-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+}
+.casepage .wr-detail-name {
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-h3);
+  font-weight: 700;
+  color: var(--ink);
+}
+.casepage .wr-detail-wave {
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--ink3);
+}
+.casepage .wr-detail-role {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink2);
+}
+
+@media (max-width: 760px) {
+  .casepage .rung {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .casepage .rung-label {
+    padding-top: 0;
+  }
+}
