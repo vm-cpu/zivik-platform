@@ -1657,3 +1657,153 @@
     gap: var(--space-1);
   }
 }
+
+/* ---- warrant wall: waves of arrest warrants (ICC situation pages) ---------- */
+.casepage .warrants {
+  display: grid;
+  gap: var(--space-8);
+}
+.casepage .wave {
+  border-top: 3px solid var(--pgold);
+  padding-top: var(--space-4);
+}
+.casepage .wave[data-wave="0"] {
+  border-top-color: var(--pred);
+}
+.casepage .wave-head {
+  margin-bottom: var(--space-4);
+}
+.casepage .wave-date {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .wave-theme {
+  margin: var(--space-1) 0 var(--space-2);
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-h3);
+  font-weight: 700;
+  color: var(--ink);
+}
+.casepage .wave-sum {
+  margin: 0;
+  max-width: 62ch;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.casepage .wave-people {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-3);
+  align-items: start;
+}
+.casepage .suspect {
+  display: grid;
+  gap: var(--space-1);
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 0;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5) var(--space-6);
+  cursor: pointer;
+  font-family: inherit;
+  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.casepage .suspect:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.casepage .wave-people li[data-on="yes"] .suspect {
+  box-shadow: var(--shadow-md);
+}
+.casepage .suspect-name {
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-h3);
+  font-weight: 700;
+  color: var(--ink);
+}
+.casepage .suspect-role {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--ink2);
+}
+.casepage .suspect-detail {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  border-top: 1px solid var(--prule);
+  padding-top: var(--space-3);
+}
+.casepage .suspect-lbl {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+.casepage .charges {
+  display: grid;
+  gap: var(--space-2);
+}
+.casepage .charge {
+  display: grid;
+  gap: 2px;
+  border-left: 3px solid var(--pred);
+  padding-left: var(--space-3);
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--ink);
+}
+.casepage .charge[data-kind="cah"] {
+  border-left-color: var(--pgold);
+}
+.casepage .charge b {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--pred);
+}
+.casepage .charge[data-kind="cah"] b {
+  color: var(--pgold);
+}
+.casepage .charge em {
+  font-style: normal;
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--ink3);
+}
+.casepage .modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.casepage .mode {
+  font-size: var(--t-cap);
+  line-height: 1.5;
+  color: var(--ink2);
+  background: var(--paper2);
+  border-radius: var(--r-sm);
+  padding: var(--space-1) var(--space-3);
+}
+.casepage .mode em {
+  font-style: normal;
+  font-family: var(--brand-font-mono);
+  color: var(--ink3);
+}
+.casepage .wave-src {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font: 600 var(--t-cap) var(--brand-font-body);
+  letter-spacing: 0.03em;
+  color: var(--pgold);
+  text-decoration: none;
+}
+.casepage .wave-src:hover {
+  color: var(--pred);
+}

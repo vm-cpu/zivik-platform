@@ -113,7 +113,8 @@ export const registryCases: RegistryCase[] = [
     note: { uk: "ICC-01/22", en: "ICC-01/22" },
     pages: null,
     decisionUrl: "https://www.icc-cpi.int/situations/ukraine",
-    lit: false,
+    summarySlug: "icc-ukraine",
+    lit: true,
   },
   {
     id: "icc-9",

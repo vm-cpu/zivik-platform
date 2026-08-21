@@ -15,9 +15,11 @@ import AttributionTree from "@/components/cases/AttributionTree";
 import ObjectionCards from "@/components/cases/ObjectionCards";
 import TakingsGrid from "@/components/cases/TakingsGrid";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
+import WarrantWall from "@/components/cases/WarrantWall";
 import { icjCerdIcsft } from "@/content/summaries/icj-cerd-icsft";
 import { icjGenocide } from "@/content/summaries/icj-genocide";
 import { oschadbank } from "@/content/summaries/oschadbank";
+import { iccUkraine } from "@/content/summaries/icc-ukraine";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -33,6 +35,7 @@ const SUMMARIES: Record<string, DecisionSummary> = {
   "icj-cerd-icsft": icjCerdIcsft,
   "icj-genocide": icjGenocide,
   oschadbank: oschadbank,
+  "icc-ukraine": iccUkraine,
 };
 
 /** Localized chrome labels (the summary body stays in its source language). */
@@ -84,6 +87,13 @@ const T = {
   standing: { uk: "Рішення чинне", en: "Award stands" },
   notStanding: { uk: "Рішення скасовано", en: "Award annulled" },
   seatLabel: { uk: "Місце арбітражу", en: "Seat" },
+
+  // Warrant wall.
+  chargesLbl: { uk: "Звинувачення", en: "Charges" },
+  modesLbl: { uk: "Форма відповідальності", en: "Mode of responsibility" },
+  announcementLbl: { uk: "Повідомлення Суду", en: "The Court's announcement" },
+  warCrimeLbl: { uk: "Воєнний злочин", en: "War crime" },
+  cahLbl: { uk: "Злочин проти людяності", en: "Crime against humanity" },
 } as const;
 
 /** Chrome label for each way a claim can be disposed of. */
@@ -100,6 +110,7 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
   "journal article": { uk: "стаття в журналі", en: "journal article" },
   "news/insight": { uk: "аналітика", en: "news / insight" },
   "preprint/repository": { uk: "препринт / репозиторій", en: "preprint / repository" },
+  "official/ICC": { uk: "офіційний документ МКС", en: "ICC official document" },
 };
 
 const MK = uaMap.markers as Record<string, number[]>;
@@ -301,7 +312,7 @@ export default async function CasePage({
   const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
   const { interpretations, plain, glossary, whoIsWho, faq, related } = summary;
   const { theatres = [], provisionalMeasures = [], timelineTracks = [] } = summary;
-  const { takings, attribution, amounts, objections, afterlife } = summary;
+  const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
   const parties = masthead.parties.replace(/^\(|\)$/g, "");
 
   // Institution and seat: the ICJ in The Hague unless the summary says otherwise.
@@ -638,6 +649,29 @@ export default async function CasePage({
           )}
         </div>
       </section>
+
+      {/* 2w — The warrants, wave by wave (ICC situation pages) */}
+      {warrants && (
+        <section className="machinery">
+          <div className="rail machinery-stack">
+            <div>
+              <div className="lbl lbl-onpaper">{pick(warrants.heading, locale)}</div>
+              <p className="mach-note">{pick(warrants.note, locale)}</p>
+              <WarrantWall
+                waves={warrants.waves}
+                locale={locale}
+                labels={{
+                  charges: pick(T.chargesLbl, locale),
+                  modes: pick(T.modesLbl, locale),
+                  announcement: pick(T.announcementLbl, locale),
+                  warCrime: pick(T.warCrimeLbl, locale),
+                  cah: pick(T.cahLbl, locale),
+                }}
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* 2c — Machinery of the award: attribution, objections, what followed */}
       {(attribution || objections || afterlife) && (

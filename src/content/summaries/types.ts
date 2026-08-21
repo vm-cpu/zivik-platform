@@ -155,6 +155,37 @@ export interface Objection {
   votes?: Vote[];
 }
 
+/** One charge on an arrest warrant, tied to its Rome Statute article. */
+export interface Charge {
+  /** Statute article, e.g. "8(2)(a)(vii)". */
+  art: string;
+  label: Localized;
+  /** "war-crime" | "crime-against-humanity" — sets the chip colour. */
+  kind: "war-crime" | "cah";
+}
+
+/** One suspect on a warrant of arrest. */
+export interface WarrantPerson {
+  name: Localized;
+  role: Localized;
+  born?: string;
+  charges: Charge[];
+  /** Modes of individual responsibility, e.g. "25(3)(a)". */
+  modes: { art: string; label: Localized }[];
+}
+
+/** One wave of warrants issued the same day on one theory of the case. */
+export interface WarrantWave {
+  date: Localized;
+  iso: string;
+  theme: Localized;
+  /** What the wave is about, in one sentence. */
+  summary: Localized;
+  persons: WarrantPerson[];
+  /** The Court's announcement of this wave. */
+  url: string;
+}
+
 /** One step in the life of a decision after it was rendered. */
 export interface Stage {
   year: string;
@@ -318,4 +349,6 @@ export interface DecisionSummary extends VerbatimSummary {
     benchSize?: number;
   };
   afterlife?: { heading: Localized; note: Localized; stages: Stage[] };
+  /** Warrants of arrest, wave by wave — the core instrument of an ICC page. */
+  warrants?: { heading: Localized; note: Localized; waves: WarrantWave[] };
 }
