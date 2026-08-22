@@ -33,6 +33,11 @@ export const oschadbank: DecisionSummary = {
   // (same 104 blocks, same kinds) — draft, pending legal review.
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
+  title: {
+    uk: "Ощадбанк проти Російської Федерації",
+    en: "JSC Oschadbank v. the Russian Federation",
+  },
+
   forum: {
     institution: {
       uk: "Постійна палата третейського суду",

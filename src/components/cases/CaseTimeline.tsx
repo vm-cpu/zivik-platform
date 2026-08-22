@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import type { TimelineEvent, TimelineTrack } from "@/content/summaries/types";
@@ -28,6 +28,19 @@ export default function CaseTimeline({
 }) {
   const [active, setActive] = useState<string>("all");
   const [open, setOpen] = useState<number | null>(null);
+
+  // The chosen filter lives in the hash (#chronology:warrants), so a filtered
+  // view survives reload and can be shared as a link.
+  useEffect(() => {
+    const m = window.location.hash.match(/^#chronology:(\w[\w-]*)$/);
+    if (m && tracks.some((t) => t.id === m[1])) setActive(m[1]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const pickTrack = (id: string) => {
+    setActive(id);
+    const hash = id === "all" ? "#chronology" : `#chronology:${id}`;
+    window.history.replaceState(null, "", hash);
+  };
 
   const shown = useMemo(
     () => events.filter((e) => active === "all" || !e.track || e.track === active),
@@ -59,7 +72,7 @@ export default function CaseTimeline({
             role="tab"
             aria-selected={active === "all"}
             data-on={active === "all" ? "yes" : "no"}
-            onClick={() => setActive("all")}
+            onClick={() => pickTrack("all")}
           >
             {labels.all}
           </button>
@@ -71,7 +84,7 @@ export default function CaseTimeline({
               aria-selected={active === t.id}
               data-on={active === t.id ? "yes" : "no"}
               data-track={t.id}
-              onClick={() => setActive(t.id)}
+              onClick={() => pickTrack(t.id)}
             >
               {pick(t.label, locale)}
             </button>

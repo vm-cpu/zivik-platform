@@ -313,6 +313,13 @@ export interface Citation {
  */
 export interface DecisionSummary extends VerbatimSummary {
   /**
+   * Localized display title for the masthead H1 and page metadata. The
+   * verbatim masthead stays English (the language of the record); the H1 is
+   * chrome, and a UA reader should not lose the page's headline. `en`
+   * normally repeats the verbatim parties line.
+   */
+  title?: Localized;
+  /**
    * Date the page's context layer was last verified against its sources
    * (ISO 8601). For live dockets — an ICC situation, an enforcement stage —
    * it renders next to the out-of-record figures and feeds `dateModified` in

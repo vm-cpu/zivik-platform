@@ -35,6 +35,11 @@ export const iccUkraine: DecisionSummary = {
 
   asOf: "2026-08-21",
 
+  title: {
+    uk: "Ситуація в Україні",
+    en: "Situation in Ukraine",
+  },
+
   forum: {
     institution: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },
     seat: { uk: "Гаага", en: "The Hague" },

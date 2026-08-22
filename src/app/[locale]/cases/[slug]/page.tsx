@@ -106,6 +106,7 @@ const T = {
   officialH: { uk: "Офіційні документи Суду", en: "Official court documents" },
   commentaryH: { uk: "Дослідження та коментарі", en: "Research and commentary" },
   updated: { uk: "оновлено", en: "updated" },
+  termsInText: { uk: "Терміни в цьому тексті", en: "Terms in this text" },
 } as const;
 
 /** Chrome label for each way a claim can be disposed of. */
@@ -302,7 +303,9 @@ export async function generateMetadata({
   const summary = SUMMARIES[slug];
   if (!isLocale(locale) || !summary) return {};
   const dict = await getDictionary(locale);
-  const parties = summary.masthead.parties.replace(/^\(|\)$/g, "");
+  const parties = summary.title
+    ? pick(summary.title, locale)
+    : summary.masthead.parties.replace(/^\(|\)$/g, "");
   return decisionMetadata({
     locale,
     slug,
@@ -328,7 +331,9 @@ export default async function CasePage({
   const { interpretations, plain, glossary, whoIsWho, faq, related } = summary;
   const { theatres = [], provisionalMeasures = [], timelineTracks = [] } = summary;
   const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
-  const parties = masthead.parties.replace(/^\(|\)$/g, "");
+  const parties = summary.title
+    ? pick(summary.title, locale)
+    : masthead.parties.replace(/^\(|\)$/g, "");
 
   // Institution and seat: the ICJ in The Hague unless the summary says otherwise.
   const forum = summary.forum ?? {
@@ -832,7 +837,7 @@ export default async function CasePage({
                 <div className="lbl">{pick(T.glossaryH, locale)}</div>
                 <dl className="glossary">
                   {glossary.map((g, i) => (
-                    <div key={i}>
+                    <div key={i} id={`term-${i}`}>
                       <dt>{pick(g.term, locale)}</dt>
                       <dd>{pick(g.def, locale)}</dd>
                     </div>
@@ -847,6 +852,16 @@ export default async function CasePage({
       <section className="readzone" id="fulltext" data-navsec>
         <div className="rail">
           <article className="read">
+            {glossary.length > 0 && (
+              <nav className="termchips" aria-label={pick(T.termsInText, locale)}>
+                <span className="termchips-lbl">{pick(T.termsInText, locale)}:</span>
+                {glossary.map((g, i) => (
+                  <a key={i} href={`#term-${i}`}>
+                    {pick(g.term, locale)}
+                  </a>
+                ))}
+              </nav>
+            )}
         {(() => {
           let h2i = 0;
           return body.map((b, i) =>
