@@ -20,6 +20,7 @@ import { icjGenocide } from "@/content/summaries/icj-genocide";
 import { oschadbank } from "@/content/summaries/oschadbank";
 import { iccUkraine } from "@/content/summaries/icc-ukraine";
 import { dtekKrymenergo } from "@/content/summaries/dtek-krymenergo";
+import { echrUkraineNetherlands } from "@/content/summaries/echr-ukraine-netherlands";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -37,6 +38,7 @@ const SUMMARIES: Record<string, DecisionSummary> = {
   oschadbank: oschadbank,
   "icc-ukraine": iccUkraine,
   "dtek-krymenergo": dtekKrymenergo,
+  "echr-ukraine-netherlands": echrUkraineNetherlands,
 };
 
 /** Localized chrome labels (the summary body stays in its source language). */

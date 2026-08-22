@@ -83,7 +83,8 @@ export const registryCases: RegistryCase[] = [
     note: { uk: "Apps 8019/16 et al.", en: "Apps 8019/16 et al." },
     pages: 304,
     decisionUrl: "https://hudoc.echr.coe.int/eng#{%22appno%22:[%2243800/14%22],%22itemid%22:[%22001-244292%22]}",
-    lit: false,
+    summarySlug: "echr-ukraine-netherlands",
+    lit: true,
   },
   {
     id: "ecthr-8",
