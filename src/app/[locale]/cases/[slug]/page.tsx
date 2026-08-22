@@ -7,7 +7,6 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import Header from "@/components/nasvitlo/Header";
 import Footer from "@/components/nasvitlo/Footer";
-import SideToc from "@/components/nasvitlo/SideToc";
 import PageNav from "@/components/cases/PageNav";
 import CaseTimeline from "@/components/cases/CaseTimeline";
 import MoneyBars from "@/components/cases/MoneyBars";
@@ -102,7 +101,7 @@ const T = {
   navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
   navRulings: { uk: "Тлумачення", en: "Key rulings" },
   navHandbook: { uk: "Довідник", en: "Reader's guide" },
-  navFulltext: { uk: "Повний текст", en: "Full text" },
+  navFulltext: { uk: "Самері", en: "Summary" },
   navSources: { uk: "Джерела", en: "Sources" },
 } as const;
 
@@ -350,12 +349,6 @@ export default async function CasePage({
   const sections = body
     .filter((b) => b.kind === "h2")
     .map((b, i) => ({ id: `sec-${i}`, text: b.text.trim() }));
-  const tocSections = [
-    ...sections,
-    ...(sources.length > 0
-      ? [{ id: "sec-sources", text: pick(T.sources, locale) }]
-      : []),
-  ];
 
   /** Official-text URL for a verdict track, when one exists. */
   const trackUrl = (track: string): string | undefined =>
@@ -780,7 +773,6 @@ export default async function CasePage({
         <div className="rail">
           <div className="lbl lbl-onpaper">{pick(T.navHandbook, locale)}</div>
           <div className="aids-grid">
-            <div className="aids-col">
               <div className="aid">
                 <div className="lbl">{pick(T.faqH, locale)}</div>
                 <div className="faq">
@@ -806,9 +798,6 @@ export default async function CasePage({
                   ))}
                 </ul>
               </div>
-            </div>
-
-            <div className="aids-col">
               <div className="aid">
                 <div className="lbl">{pick(T.whoH, locale)}</div>
                 <ul className="who">
@@ -832,21 +821,13 @@ export default async function CasePage({
                   ))}
                 </dl>
               </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* 4 — Verbatim summary, with the sticky side nav */}
+      {/* 4 — Verbatim summary. The page bar is the only navigation. */}
       <section className="readzone" id="fulltext" data-navsec>
-        <div className="rail readzone-grid">
-          <SideToc
-            sections={tocSections}
-            title={pick(T.onThisPage, locale)}
-            readTime={readTime}
-            progressLabel={pick(T.progress, locale)}
-          />
-
+        <div className="rail">
           <article className="read">
         {(() => {
           let h2i = 0;

@@ -624,82 +624,8 @@
   background: var(--paper);
   padding-block: clamp(40px, 5vw, 72px) clamp(56px, 7vw, 96px);
 }
-.casepage .readzone-grid {
-  display: grid;
-  grid-template-columns: 232px minmax(0, 1fr);
-  gap: clamp(32px, 4vw, 64px);
-  align-items: start;
-}
 
 /* sticky side nav */
-.casepage .sidetoc {
-  position: sticky;
-  top: calc(var(--pagenav-h) + 24px);
-  display: grid;
-  gap: var(--space-4);
-  padding-right: var(--space-1);
-}
-.casepage .sidetoc-toggle {
-  display: none;
-}
-.casepage .sidetoc-head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-.casepage .sidetoc-title {
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--pgold);
-}
-.casepage .sidetoc-time {
-  font: 500 var(--t-cap) var(--brand-font-body);
-  color: var(--ink3);
-}
-.casepage .sidetoc-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-1);
-  border-left: 2px solid var(--prule);
-}
-.casepage .sidetoc-list a {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-3);
-  align-items: baseline;
-  padding: var(--space-2) 0 var(--space-2) var(--space-4);
-  margin-left: -var(--space-1);
-  border-left: 2px solid transparent;
-  text-decoration: none;
-  color: var(--ink3);
-  transition: color 0.15s ease, border-color 0.15s ease;
-}
-.casepage .sidetoc-list a:hover {
-  color: var(--ink);
-}
-.casepage .sidetoc-num {
-  font: 500 10px var(--brand-font-mono);
-  letter-spacing: 0.02em;
-  color: var(--prule);
-  font-variant-numeric: tabular-nums;
-}
-.casepage .sidetoc-text {
-  font: 600 var(--t-cap) var(--brand-font-body);
-  line-height: 1.35;
-}
-.casepage .sidetoc-list li[data-active="yes"] a {
-  color: var(--pred);
-  border-left-color: var(--pred);
-}
-.casepage .sidetoc-list li[data-active="yes"] .sidetoc-num {
-  color: var(--pred);
-}
-.casepage .sidetoc-progress {
-  display: none;
-}
 
 /* reading column */
 .casepage .read {
@@ -816,15 +742,15 @@
   border-top: 1px solid var(--prule);
   padding-block: clamp(38px, 5vw, 64px);
 }
+/* Balanced columns: the four reference blocks flow and even out, so no
+   column ends with one block hanging beside a void. */
 .casepage .aids-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(30px, 4vw, 56px);
-  align-items: start;
+  columns: 2;
+  column-gap: clamp(30px, 4vw, 56px);
 }
-.casepage .aids-col {
-  display: grid;
-  gap: clamp(28px, 3.5vw, 44px);
+.casepage .aids-grid .aid {
+  break-inside: avoid;
+  margin-bottom: clamp(28px, 3.5vw, 44px);
 }
 /* labels sitting on paper rather than the dark ground */
 .casepage .aid .lbl,
@@ -1553,75 +1479,14 @@
 }
 
 /* ---- responsive ------------------------------------------------------------ */
-@media (max-width: 1000px) {
-  .casepage .readzone-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
-  /* side nav collapses into a sticky bar above the article */
-  .casepage .sidetoc {
-    position: sticky;
-    top: var(--pagenav-h);
-    z-index: 5;
-    background: var(--paper);
-    border-bottom: 1px solid var(--prule);
-    padding: var(--space-3) 0;
-    gap: 0;
-  }
-  .casepage .sidetoc-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-    width: 100%;
-    background: none;
-    border: 0;
-    padding: var(--space-2) 0;
-    cursor: pointer;
-    text-align: left;
-  }
-  .casepage .sidetoc-toggle-label {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-3);
-    font: 600 var(--t-sm) var(--brand-font-body);
-    color: var(--ink);
-  }
-  .casepage .sidetoc-toggle-label b {
-    font: 700 10px var(--brand-font-body);
-    color: var(--pred);
-  }
-  .casepage .sidetoc-chev {
-    width: 9px;
-    height: 9px;
-    border-right: 2px solid var(--ink3);
-    border-bottom: 2px solid var(--ink3);
-    transform: rotate(45deg);
-    transition: transform 0.15s ease;
-  }
-  .casepage .sidetoc[data-open="yes"] .sidetoc-chev {
-    transform: rotate(-135deg);
-  }
-  .casepage .sidetoc-head {
-    display: none;
-  }
-  .casepage .sidetoc-list {
-    display: none;
-    padding-block: var(--space-2);
-  }
-  .casepage .sidetoc[data-open="yes"] .sidetoc-list {
-    display: grid;
-  }
-  .casepage .read {
-    max-width: none;
-  }
-}
 
 @media (max-width: 820px) {
   .casepage .lede-grid,
-  .casepage .refs-grid,
-  .casepage .aids-grid {
+  .casepage .refs-grid {
     grid-template-columns: 1fr;
+  }
+  .casepage .aids-grid {
+    columns: 1;
   }
   .casepage .why {
     border-left: 0;
@@ -2017,4 +1882,94 @@
 .casepage [data-navsec],
 .casepage .read h2 {
   scroll-margin-top: calc(var(--pagenav-h) + 16px);
+}
+
+
+/* on paper the label stands alone — the trailing rule read as a stray line */
+.casepage .lbl-onpaper::after {
+  display: none;
+}
+
+
+/* ---- vertical page rail (wide screens) ------------------------------------ */
+/* The rail lives in the left margin outside the content column. It carries its
+   own night ground, so it stays legible over dark and paper bands alike. */
+.casepage .pagenav-v {
+  display: none;
+}
+@media (min-width: 1440px) {
+  .casepage .pagenav-v {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: max(16px, calc((100vw - var(--measure)) / 2 - 168px));
+    transform: translateY(-50%);
+    z-index: 6;
+    background: var(--brand-night);
+    border: 1px solid var(--brand-night-rule);
+    border-radius: var(--r-lg);
+    padding: var(--space-4) var(--space-5);
+    box-shadow: var(--shadow-md);
+  }
+  /* the top bar yields to the rail */
+  .casepage .pagenav {
+    display: none;
+  }
+}
+.casepage .pagenav-v ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+}
+/* the spine the dots sit on */
+.casepage .pagenav-v ol::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 4px;
+  width: 2px;
+  background: var(--brand-night-rule);
+}
+.casepage .pagenav-v a {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-1) 0 var(--space-1) var(--space-5);
+  font: 600 var(--t-cap) var(--brand-font-body);
+  letter-spacing: 0.03em;
+  color: var(--faint);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+.casepage .pagenav-v a i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--brand-night);
+  border: 2px solid var(--brand-night-rule);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.casepage .pagenav-v b {
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  color: var(--faint);
+}
+.casepage .pagenav-v a:hover {
+  color: var(--cream);
+}
+.casepage .pagenav-v li[data-active="yes"] a {
+  color: var(--gold);
+}
+.casepage .pagenav-v li[data-active="yes"] a i {
+  background: var(--gold);
+  border-color: var(--gold);
 }
