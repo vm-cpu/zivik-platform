@@ -116,11 +116,11 @@ export interface Metric {
 /** A sum of money the decision turns on, optionally split into parts. */
 export interface MoneyFigure {
   label: Localized;
-  /** Display value, already formatted ("≈ $1.11 billion"). */
-  display: string;
+  /** Display value, already formatted; localize when locales format it differently. */
+  display: string | Localized;
   /** Magnitude in a single unit (USD), used to scale the bars. */
   amount: number;
-  parts?: { label: Localized; display: string; amount: number }[];
+  parts?: { label: Localized; display: string | Localized; amount: number }[];
   /** Render as an open-ended / estimated bar rather than a solid one. */
   estimated?: boolean;
   note?: Localized;

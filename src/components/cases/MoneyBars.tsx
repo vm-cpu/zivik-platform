@@ -34,7 +34,7 @@ export default function MoneyBars({
           <div key={i} className="money-row">
             <div className="money-head">
               <span className="money-label">{pick(f.label, locale)}</span>
-              <b className="money-value">{f.display}</b>
+              <b className="money-value">{typeof f.display === "string" ? f.display : pick(f.display, locale)}</b>
             </div>
 
             <div
@@ -68,7 +68,7 @@ export default function MoneyBars({
                     <li key={key} data-on={picked === key ? "yes" : "no"}>
                       <button type="button" onClick={() => setPicked(picked === key ? null : key)}>
                         <i data-seg={j} />
-                        {pick(p.label, locale)} — <b>{p.display}</b>
+                        {pick(p.label, locale)} — <b>{typeof p.display === "string" ? p.display : pick(p.display, locale)}</b>
                         {picked === key && (
                           <em>
                             {" "}

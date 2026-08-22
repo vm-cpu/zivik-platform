@@ -19,6 +19,7 @@ import { icjCerdIcsft } from "@/content/summaries/icj-cerd-icsft";
 import { icjGenocide } from "@/content/summaries/icj-genocide";
 import { oschadbank } from "@/content/summaries/oschadbank";
 import { iccUkraine } from "@/content/summaries/icc-ukraine";
+import { dtekKrymenergo } from "@/content/summaries/dtek-krymenergo";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -35,6 +36,7 @@ const SUMMARIES: Record<string, DecisionSummary> = {
   "icj-genocide": icjGenocide,
   oschadbank: oschadbank,
   "icc-ukraine": iccUkraine,
+  "dtek-krymenergo": dtekKrymenergo,
 };
 
 /** Localized chrome labels (the summary body stays in its source language). */
@@ -124,6 +126,9 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
   "news/insight": { uk: "аналітика", en: "news / insight" },
   "preprint/repository": { uk: "препринт / репозиторій", en: "preprint / repository" },
   "official/ICC": { uk: "офіційний документ МКС", en: "ICC official document" },
+  "official/award": { uk: "текст рішення", en: "award text" },
+  "official/treaty": { uk: "текст договору", en: "treaty text" },
+  "official/filing": { uk: "процесуальний документ", en: "court filing" },
 };
 
 const MK = uaMap.markers as Record<string, number[]>;
@@ -277,13 +282,14 @@ function Block({ block }: { block: SummaryBlock }) {
     case "link":
       return null;
     case "dispositif":
-      // Operative items open with Finds/Rejects (EN), Встановлює/Відхиляє (UK)
-      // or, in an arbitral dispositif, "That the Respondent shall…"; the
-      // framing lines ("The Court," / "However…") stay plain paragraphs.
-      return /^(Finds|Rejects|That |Встановлює|Відхиляє|Що )/.test(block.text) ? (
-        <p className="disp">{block.text}</p>
-      ) : (
+      // Everything tagged dispositif is an operative clause except the framing
+      // lines ("For the foregoing reasons…", "The Court," / "However…") —
+      // detecting the frame is robust across courts; detecting the clause
+      // openers was not (ICJ "Finds…", PCA "That…", DTEK "Tribunal has…").
+      return /^(For the foregoing|However|The Court,|З наведених|Проте|Суд,)/.test(block.text) ? (
         <p>{block.text}</p>
+      ) : (
+        <p className="disp">{block.text}</p>
       );
     default:
       return <p>{block.text}</p>;
