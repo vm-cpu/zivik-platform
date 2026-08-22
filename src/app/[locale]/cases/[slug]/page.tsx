@@ -21,6 +21,8 @@ import { oschadbank } from "@/content/summaries/oschadbank";
 import { iccUkraine } from "@/content/summaries/icc-ukraine";
 import { dtekKrymenergo } from "@/content/summaries/dtek-krymenergo";
 import { echrUkraineNetherlands } from "@/content/summaries/echr-ukraine-netherlands";
+import { finlandTorden } from "@/content/summaries/finland-torden";
+import { hagueMh17 } from "@/content/summaries/hague-mh17";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -39,6 +41,8 @@ const SUMMARIES: Record<string, DecisionSummary> = {
   "icc-ukraine": iccUkraine,
   "dtek-krymenergo": dtekKrymenergo,
   "echr-ukraine-netherlands": echrUkraineNetherlands,
+  "finland-torden": finlandTorden,
+  "hague-mh17": hagueMh17,
 };
 
 /** Localized chrome labels (the summary body stays in its source language). */
@@ -75,6 +79,8 @@ const T = {
   granted: { uk: "Задоволено", en: "Upheld" },
   rejected: { uk: "Відхилено", en: "Rejected" },
   notDecided: { uk: "Не розглядалося", en: "Not decided" },
+  convicted: { uk: "Засуджено", en: "Convicted" },
+  acquitted: { uk: "Виправдано", en: "Acquitted" },
   grantedOf: { uk: "задоволено з", en: "granted of" },
 
   // Instruments an arbitral award earns.
@@ -120,6 +126,8 @@ const OUTCOME_LABEL: Record<Outcome, Localized> = {
   granted: T.granted,
   rejected: T.rejected,
   "not-decided": T.notDecided,
+  convicted: T.convicted,
+  acquitted: T.acquitted,
 };
 
 const TYPE_LABEL: Record<string, { uk: string; en: string }> = {

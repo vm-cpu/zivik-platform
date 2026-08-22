@@ -2068,3 +2068,19 @@
 .casepage .glossary > div {
   scroll-margin-top: calc(var(--pagenav-h) + 16px);
 }
+
+
+/* criminal outcomes reuse the breach pair's colours: a conviction reads like
+   a violation chip, an acquittal like a no-violation chip */
+.casepage .v-out[data-o="convicted"] {
+  color: var(--red);
+}
+.casepage .v-out[data-o="convicted"]::before {
+  background: var(--red);
+}
+.casepage .v-out[data-o="acquitted"] {
+  color: var(--faint);
+}
+.casepage .v-out[data-o="acquitted"]::before {
+  border: 1.5px solid var(--faint);
+}

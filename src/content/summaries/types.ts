@@ -86,7 +86,10 @@ export type Outcome =
   | "no-violation"
   | "granted"
   | "rejected"
-  | "not-decided";
+  | "not-decided"
+  // criminal verdicts (national courts trying individuals)
+  | "convicted"
+  | "acquitted";
 
 /** One row of the verdict matrix — how the court or tribunal disposed of a claim. */
 export interface Verdict {

@@ -476,8 +476,9 @@ export const registryCases: RegistryCase[] = [
     amountUsd: null,
     note: { uk: "NL · ECLI:NL:RBDHA", en: "NL · ECLI:NL:RBDHA" },
     pages: null,
-    decisionUrl: null,
-    lit: false,
+    decisionUrl: "https://uitspraken.rechtspraak.nl/details?id=ECLI:NL:RBDHA:2022:14037",
+    summarySlug: "hague-mh17",
+    lit: true,
   },
   {
     id: "nl-33",
@@ -567,7 +568,8 @@ export const registryCases: RegistryCase[] = [
     note: { uk: "Helsinki · перше UJ засудження", en: "Helsinki · first universal-jurisdiction conviction" },
     pages: null,
     decisionUrl: null,
-    lit: false,
+    summarySlug: "finland-torden",
+    lit: true,
   },
   {
     id: "lt-39",
