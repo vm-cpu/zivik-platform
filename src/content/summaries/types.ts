@@ -200,7 +200,8 @@ export interface Stage {
 /** A geographic theatre the case concerns, anchored to the map. */
 export interface Theatre {
   place: Localized;
-  treaty: string;
+  /** Short over-title tag; localize it when it is a word, not an acronym. */
+  treaty: string | Localized;
   /** Map marker key in `ukraine-map.json` this theatre highlights. */
   markerKeys: string[];
   summary: Localized;

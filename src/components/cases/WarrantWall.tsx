@@ -39,6 +39,9 @@ export default function WarrantWall({
   const flat = waves.flatMap((w, wi) => w.persons.map((p, pi) => ({ w, wi, p, key: `${wi}-${pi}` })));
   const sel = flat.find((f) => f.key === open) ?? flat[0];
 
+  // The detail renders inside the selected suspect's own rung (or wave), so a
+  // tap answers where the reader is looking — a single panel at the foot of
+  // the ladder opened off-screen and read as a dead click.
   const detail = (
     <div className="wr-detail" data-wave={sel.wi}>
       <div className="wr-detail-head">
@@ -110,9 +113,9 @@ export default function WarrantWall({
                 </li>
               ))}
             </ul>
+            {sel.wi === wi && detail}
           </section>
         ))}
-        {detail}
       </div>
     );
   }
@@ -156,13 +159,12 @@ export default function WarrantWall({
                     <span className="wr-node-date">{pick(f.w.date, locale)}</span>
                   </button>
                 ))}
+                {here.some((f) => f.key === sel.key) && detail}
               </div>
             </div>
           );
         })}
       </div>
-
-      {detail}
     </div>
   );
 }

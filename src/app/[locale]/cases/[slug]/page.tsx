@@ -103,6 +103,9 @@ const T = {
   navHandbook: { uk: "Довідник", en: "Reader's guide" },
   navFulltext: { uk: "Самері", en: "Summary" },
   navSources: { uk: "Джерела", en: "Sources" },
+  officialH: { uk: "Офіційні документи Суду", en: "Official court documents" },
+  commentaryH: { uk: "Дослідження та коментарі", en: "Research and commentary" },
+  updated: { uk: "оновлено", en: "updated" },
 } as const;
 
 /** Chrome label for each way a claim can be disposed of. */
@@ -192,7 +195,7 @@ function TheatreMap({
             // keep centred labels inside the 0..1000 viewBox
             const lx = Math.min(Math.max(cx + (t.labelDx ?? 0), 130), 860);
             return (
-              <g key={t.treaty}>
+              <g key={pick(t.place, locale)}>
                 {pts.map((p, i) => (
                   <g key={i}>
                     <circle className="zone-halo" cx={p[0]} cy={p[1]} r={40} />
@@ -200,7 +203,7 @@ function TheatreMap({
                   </g>
                 ))}
                 <text className="mk-treaty" x={lx} y={cy - 84 + (t.labelDy ?? 0)} textAnchor="middle">
-                  {t.treaty}
+                  {typeof t.treaty === "string" ? t.treaty : pick(t.treaty, locale)}
                 </text>
                 <text className="mk-label" x={lx} y={cy - 56 + (t.labelDy ?? 0)} textAnchor="middle">
                   {pick(t.place, locale)}
@@ -215,12 +218,15 @@ function TheatreMap({
           <i className="lg-court" />
           {pick(forum.name, locale)} — {pick(forum.caption, locale)}
         </span>
-        {theatres.map((t) => (
-          <span key={t.treaty}>
-            <i />
-            {pick(t.place, locale)} — <b>{t.treaty}</b>
-          </span>
-        ))}
+        {theatres.map((t, i) => {
+          const tag = typeof t.treaty === "string" ? t.treaty : pick(t.treaty, locale);
+          return (
+            <span key={i}>
+              <i />
+              {pick(t.place, locale)} — <b>{tag}</b>
+            </span>
+          );
+        })}
       </div>
     </div>
   );
@@ -484,6 +490,18 @@ export default async function CasePage({
           <span>{masthead.judgment}</span>
           <span className="dot">·</span>
           <span className="readtime">{readTime}</span>
+          {summary.asOf && (
+            <>
+              <span className="dot">·</span>
+              <span className="readtime">
+                {pick(T.updated, locale)}{" "}
+                {new Date(summary.asOf + "T00:00:00Z").toLocaleDateString(
+                  locale === "uk" ? "uk-UA" : "en-GB",
+                  { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" },
+                )}
+              </span>
+            </>
+          )}
         </div>
         <h1 className="official">{parties}</h1>
         <p className="parties">
@@ -845,24 +863,42 @@ export default async function CasePage({
         {sources.length > 0 && (
           <>
             <h2 id="sec-sources">{pick(T.sources, locale)}</h2>
-            <ol className="sources">
-              {sources.map((s, i) => {
-                const meta = [
-                  s.authors,
-                  s.publication,
-                  s.date,
-                  pick(TYPE_LABEL[s.type] ?? { uk: s.type, en: s.type }, locale),
-                ].filter(Boolean);
-                return (
-                  <li key={i}>
-                    <a href={s.url} target="_blank" rel="noopener noreferrer">
-                      {s.title}
-                    </a>
-                    <span className="cite-meta">{meta.join(" · ")}</span>
-                  </li>
-                );
-              })}
-            </ol>
+            {(() => {
+              // A 45-item wall is unusable: split the court's own record from
+              // the commentary, numbering the two lists continuously.
+              const official = sources.filter((s) => s.type.startsWith("official"));
+              const commentary = sources.filter((s) => !s.type.startsWith("official"));
+              const renderList = (items: typeof sources, start: number) => (
+                <ol className="sources" start={start}>
+                  {items.map((s, i) => {
+                    const meta = [
+                      s.authors,
+                      s.publication,
+                      s.date,
+                      pick(TYPE_LABEL[s.type] ?? { uk: s.type, en: s.type }, locale),
+                    ].filter(Boolean);
+                    return (
+                      <li key={i}>
+                        <a href={s.url} target="_blank" rel="noopener noreferrer">
+                          {s.title}
+                        </a>
+                        <span className="cite-meta">{meta.join(" · ")}</span>
+                      </li>
+                    );
+                  })}
+                </ol>
+              );
+              if (official.length === 0 || commentary.length === 0)
+                return renderList(sources, 1);
+              return (
+                <>
+                  <h3 className="sources-h">{pick(T.officialH, locale)}</h3>
+                  {renderList(official, 1)}
+                  <h3 className="sources-h">{pick(T.commentaryH, locale)}</h3>
+                  {renderList(commentary, official.length + 1)}
+                </>
+              );
+            })()}
           </>
         )}
           </article>

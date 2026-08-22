@@ -270,8 +270,18 @@
 /* KPI strip */
 .casepage .kpis {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-3);
+}
+@media (max-width: 1000px) {
+  .casepage .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 420px) {
+  .casepage .kpis {
+    grid-template-columns: 1fr;
+  }
 }
 .casepage .kpi {
   background: var(--panel);
@@ -1137,7 +1147,7 @@
 }
 .casepage .ctl-row {
   display: grid;
-  grid-template-columns: 8.5rem 8.5rem 1fr;
+  grid-template-columns: 8.5rem 8.5rem 1fr auto;
   align-items: baseline;
   gap: var(--space-4);
   width: 100%;
@@ -1150,6 +1160,11 @@
 }
 .casepage .ctl-row-static {
   cursor: default;
+}
+.casepage .ctl-more {
+  justify-self: end;
+  font: 700 var(--t-ui) var(--brand-font-body);
+  color: var(--gold);
 }
 .casepage .ctl-row:hover {
   background: var(--panel);
@@ -1170,9 +1185,10 @@
   line-height: 1.45;
   color: var(--cream);
 }
-/* the ruling itself is the one entry that carries the accent */
+/* the ruling itself carries the accent — gold, not red: on this page red is
+   reserved for a breach, and a warrant or judgment is not one */
 .casepage .ctl-list li[data-kind="judgment"] .ctl-label {
-  color: var(--red);
+  color: var(--gold);
 }
 .casepage .ctl-note {
   margin: 0;
@@ -1500,8 +1516,12 @@
   /* The timeline drops its three-column row: the date and track stack above
      the event, and the detail loses the indent it was hanging off. */
   .casepage .ctl-row {
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto 1fr;
     gap: var(--space-1) var(--space-3);
+  }
+  .casepage .ctl-more {
+    grid-row: 1;
+    grid-column: 3;
   }
   .casepage .ctl-label {
     grid-column: 1 / -1;
@@ -1972,4 +1992,45 @@
 .casepage .pagenav-v li[data-active="yes"] a i {
   background: var(--gold);
   border-color: var(--gold);
+}
+
+
+/* ---- print: a citable document, not a screen ------------------------------ */
+@media print {
+  .casepage .pagenav,
+  .casepage .pagenav-v,
+  .casepage .nsv-topbar,
+  .casepage .nsv-mobnav,
+  .casepage .nsv-foot,
+  .casepage .backlink,
+  .casepage .actions {
+    display: none !important;
+  }
+  .casepage,
+  .casepage .mast,
+  .casepage .dash,
+  .casepage .lede,
+  .casepage .refs,
+  .casepage .machinery,
+  .casepage .aids {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .casepage .official,
+  .casepage .kpi b,
+  .casepage .ctl-label,
+  .casepage .v-claim {
+    color: #000 !important;
+  }
+  .casepage a {
+    color: #000;
+  }
+}
+/* subgroup headings inside the sources list */
+.casepage .read .sources-h {
+  margin: var(--space-7) 0 var(--space-3);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pgold);
 }

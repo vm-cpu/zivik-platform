@@ -261,14 +261,14 @@ export const iccUkraine: DecisionSummary = {
   ],
 
   stats: [
-    {
-      value: "6",
-      label: { uk: "ордерів на арешт", en: "arrest warrants" },
-      em: true,
-    },
+    { value: "6", label: { uk: "ордерів на арешт", en: "arrest warrants" } },
     { value: "43", label: { uk: "держави передали ситуацію Суду", en: "States referred the situation" } },
     { value: "125", label: { uk: "держав зобов'язані виконати ордери", en: "States bound to execute the warrants" } },
-    { value: "0", label: { uk: "підозрюваних під вартою", en: "suspects in custody" } },
+    {
+      value: "0",
+      label: { uk: "підозрюваних під вартою", en: "suspects in custody" },
+      em: true,
+    },
   ],
 
   glance: [
@@ -530,8 +530,11 @@ export const iccUkraine: DecisionSummary = {
   theatres: [
     {
       place: { uk: "Окуповані території", en: "Occupied territories" },
-      treaty: "ДІТИ · CHILDREN",
+      treaty: { uk: "ДІТИ", en: "CHILDREN" },
       markerKeys: ["crimea", "donetsk", "luhansk"],
+      // keep the caption clear of the three markers it points at
+      labelDx: -40,
+      labelDy: -22,
       summary: {
         uk: "Депортація та незаконне переміщення українських дітей до РФ — перша хвиля ордерів.",
         en: "Deportation and unlawful transfer of Ukrainian children to Russia — the first wave of warrants.",
@@ -539,10 +542,11 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       place: { uk: "Енергосистема України", en: "Ukraine's power grid" },
-      treaty: "ЕНЕРГІЯ · GRID",
+      treaty: { uk: "ЕНЕРГОСИСТЕМА", en: "POWER GRID" },
       markerKeys: ["kyiv"],
-      labelDx: 0,
-      labelDy: -8,
+      // lift the label clear of the Kyiv marker and its city caption
+      labelDx: -60,
+      labelDy: -46,
       summary: {
         uk: "Ракетна кампанія проти електроінфраструктури по всій країні — друга і третя хвилі.",
         en: "The missile campaign against electric infrastructure nationwide — the second and third waves.",

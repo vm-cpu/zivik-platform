@@ -29,6 +29,7 @@ export default function Header({
   return (
     <>
       <div
+        className="nsv-topbar"
         style={{
           position: "relative",
           zIndex: 4,

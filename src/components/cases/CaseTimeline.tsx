@@ -126,6 +126,9 @@ export default function CaseTimeline({
                   <span className="ctl-date">{pick(e.date, locale)}</span>
                   {label && <span className="ctl-track">{pick(label, locale)}</span>}
                   <span className="ctl-label">{pick(e.label, locale)}</span>
+                  <span className="ctl-more" aria-hidden="true">
+                    {isOpen ? "−" : "+"}
+                  </span>
                 </button>
               ) : (
                 <div className="ctl-row ctl-row-static">
