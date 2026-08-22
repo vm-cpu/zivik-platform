@@ -7,8 +7,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import Header from "@/components/nasvitlo/Header";
 import Footer from "@/components/nasvitlo/Footer";
-import ShareBar from "@/components/nasvitlo/ShareBar";
 import SideToc from "@/components/nasvitlo/SideToc";
+import PageNav from "@/components/cases/PageNav";
 import CaseTimeline from "@/components/cases/CaseTimeline";
 import MoneyBars from "@/components/cases/MoneyBars";
 import AttributionTree from "@/components/cases/AttributionTree";
@@ -95,6 +95,15 @@ const T = {
   warCrimeLbl: { uk: "Воєнний злочин", en: "War crime" },
   cahLbl: { uk: "Злочин проти людяності", en: "Crime against humanity" },
   asOf: { uk: "станом на", en: "as of" },
+
+  // Page-level navigation and the reader's-guide band.
+  navAria: { uk: "Розділи сторінки", en: "Page sections" },
+  navWarrants: { uk: "Ордери", en: "Warrants" },
+  navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
+  navRulings: { uk: "Тлумачення", en: "Key rulings" },
+  navHandbook: { uk: "Довідник", en: "Reader's guide" },
+  navFulltext: { uk: "Повний текст", en: "Full text" },
+  navSources: { uk: "Джерела", en: "Sources" },
 } as const;
 
 /** Chrome label for each way a claim can be disposed of. */
@@ -364,6 +373,25 @@ export default async function CasePage({
   const decided = granted > 0 ? granted : violations;
   const decidedLabel = granted > 0 ? pick(T.grantedOf, locale) : pick(T.violationsOf, locale);
 
+  // Bands of the page, in reading order — the sticky nav names each one.
+  const hasMachinery = Boolean(summary.warrants || attribution || objections || afterlife);
+  const pageSections = [
+    { id: "overview", label: pick(T.overview, locale) },
+    { id: "chronology", label: pick(T.timeline, locale) },
+    ...(hasMachinery
+      ? [
+          {
+            id: "machinery",
+            label: pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale),
+          },
+        ]
+      : []),
+    { id: "rulings", label: pick(T.navRulings, locale) },
+    { id: "handbook", label: pick(T.navHandbook, locale) },
+    { id: "fulltext", label: pick(T.navFulltext, locale) },
+    ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
+  ];
+
   /**
    * Structured data. This archive exists to be cited — by journalists, in
    * filings, and increasingly by search and AI agents reading the page rather
@@ -493,6 +521,9 @@ export default async function CasePage({
         </div>
       </header>
 
+      {/* 1a — Sticky page navigation: every band, not just the article */}
+      <PageNav sections={pageSections} ariaLabel={pick(T.navAria, locale)} />
+
       {/* 1b — Plain-language lede */}
       <section className="lede">
         <div className="rail lede-grid">
@@ -508,7 +539,7 @@ export default async function CasePage({
       </section>
 
       {/* 2 — Dashboard: one column of full-width instruments */}
-      <section className="dash">
+      <section className="dash" id="overview" data-navsec>
         <div className="rail dash-stack">
           <div>
             <div className="lbl">{pick(T.overview, locale)}</div>
@@ -612,7 +643,7 @@ export default async function CasePage({
             </div>
           )}
 
-          <div>
+          <div id="chronology" data-navsec>
             <div className="lbl">{pick(T.timeline, locale)}</div>
             <CaseTimeline
               events={timeline}
@@ -627,48 +658,9 @@ export default async function CasePage({
         </div>
       </section>
 
-      {/* 2b — Reference: doctrine and the interim order, on paper */}
-      <section className="refs">
-        <div className="rail refs-grid" data-single={provisionalMeasures.length ? "no" : "yes"}>
-          <div>
-            <div className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</div>
-            {interpretations.map((it, i) => (
-              <div key={i} className="ruling">
-                <b>{pick(it.term, locale)}</b>
-                <p>{pick(it.ruling, locale)}</p>
-              </div>
-            ))}
-          </div>
-
-          {provisionalMeasures.length > 0 && (
-            <div>
-              <div className="lbl lbl-onpaper">
-                {pick(T.provMeasures, locale)}
-                <em className="lbl-sub">{pick(T.provSub, locale)}</em>
-              </div>
-              <ul className="pmeasures">
-                {provisionalMeasures.map((m, i) => (
-                  <li key={i} data-order={m.order}>
-                    <div className="pm-head">
-                      <span className="pm-measure">{pick(m.measure, locale)}</span>
-                      <span className="pm-flag">
-                        {m.order === "violated"
-                          ? pick(T.orderBreached, locale)
-                          : pick(T.orderComplied, locale)}
-                      </span>
-                    </div>
-                    {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </section>
-
       {/* 2w — The warrants, wave by wave (ICC situation pages) */}
       {warrants && (
-        <section className="machinery">
+        <section className="machinery" id="machinery" data-navsec>
           <div className="rail machinery-stack">
             <div>
               <div className="lbl lbl-onpaper">{pick(warrants.heading, locale)}</div>
@@ -692,7 +684,7 @@ export default async function CasePage({
 
       {/* 2c — Machinery of the award: attribution, objections, what followed */}
       {(attribution || objections || afterlife) && (
-        <section className="machinery">
+        <section className="machinery" id={warrants ? undefined : "machinery"} data-navsec>
           <div className="rail machinery-stack">
             {attribution && (
               <div>
@@ -742,8 +734,111 @@ export default async function CasePage({
         </section>
       )}
 
-      {/* 3 — Verbatim summary, with the sticky side nav */}
-      <section className="readzone">
+      {/* 2b — Reference: doctrine and the interim order, on paper */}
+      <section className="refs" id="rulings" data-navsec>
+        <div className="rail refs-grid" data-single={provisionalMeasures.length ? "no" : "yes"}>
+          <div>
+            <div className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</div>
+            {interpretations.map((it, i) => (
+              <div key={i} className="ruling">
+                <b>{pick(it.term, locale)}</b>
+                <p>{pick(it.ruling, locale)}</p>
+              </div>
+            ))}
+          </div>
+
+          {provisionalMeasures.length > 0 && (
+            <div>
+              <div className="lbl lbl-onpaper">
+                {pick(T.provMeasures, locale)}
+                <em className="lbl-sub">{pick(T.provSub, locale)}</em>
+              </div>
+              <ul className="pmeasures">
+                {provisionalMeasures.map((m, i) => (
+                  <li key={i} data-order={m.order}>
+                    <div className="pm-head">
+                      <span className="pm-measure">{pick(m.measure, locale)}</span>
+                      <span className="pm-flag">
+                        {m.order === "violated"
+                          ? pick(T.orderBreached, locale)
+                          : pick(T.orderComplied, locale)}
+                      </span>
+                    </div>
+                    {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 3 — Reader's guide: the reference layer, ahead of the long read.
+          Grouped by use: the question-and-answer column (common questions,
+          related decisions) beside the reference column (who's who, glossary). */}
+      <section className="aids" id="handbook" data-navsec>
+        <div className="rail">
+          <div className="lbl lbl-onpaper">{pick(T.navHandbook, locale)}</div>
+          <div className="aids-grid">
+            <div className="aids-col">
+              <div className="aid">
+                <div className="lbl">{pick(T.faqH, locale)}</div>
+                <div className="faq">
+                  {faq.map((f, i) => (
+                    <details key={i} open={i === 0}>
+                      <summary>{pick(f.q, locale)}</summary>
+                      <p>{pick(f.a, locale)}</p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+
+              <div className="aid">
+                <div className="lbl">{pick(T.relatedH, locale)}</div>
+                <ul className="related">
+                  {related.map((r, i) => (
+                    <li key={i}>
+                      <a href={`/${locale}${r.href}`}>
+                        <b>{pick(r.label, locale)}</b>
+                        <span>{pick(r.note, locale)}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="aids-col">
+              <div className="aid">
+                <div className="lbl">{pick(T.whoH, locale)}</div>
+                <ul className="who">
+                  {whoIsWho.map((w, i) => (
+                    <li key={i} data-kind={w.kind}>
+                      <b>{pick(w.name, locale)}</b>
+                      <span>{pick(w.role, locale)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="aid">
+                <div className="lbl">{pick(T.glossaryH, locale)}</div>
+                <dl className="glossary">
+                  {glossary.map((g, i) => (
+                    <div key={i}>
+                      <dt>{pick(g.term, locale)}</dt>
+                      <dd>{pick(g.def, locale)}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 4 — Verbatim summary, with the sticky side nav */}
+      <section className="readzone" id="fulltext" data-navsec>
         <div className="rail readzone-grid">
           <SideToc
             sections={tocSections}
@@ -790,76 +885,6 @@ export default async function CasePage({
           </>
         )}
           </article>
-        </div>
-      </section>
-
-      {/* 4 — Reader aids */}
-      <section className="aids">
-        <div className="rail aids-grid">
-          <div className="aids-col">
-            <div className="aid">
-              <div className="lbl">{pick(T.whoH, locale)}</div>
-              <ul className="who">
-                {whoIsWho.map((w, i) => (
-                  <li key={i} data-kind={w.kind}>
-                    <b>{pick(w.name, locale)}</b>
-                    <span>{pick(w.role, locale)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="aid">
-              <div className="lbl">{pick(T.glossaryH, locale)}</div>
-              <dl className="glossary">
-                {glossary.map((g, i) => (
-                  <div key={i}>
-                    <dt>{pick(g.term, locale)}</dt>
-                    <dd>{pick(g.def, locale)}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </div>
-
-          <div className="aids-col">
-            <div className="aid">
-              <div className="lbl">{pick(T.faqH, locale)}</div>
-              <div className="faq">
-                {faq.map((f, i) => (
-                  <details key={i} open={i === 0}>
-                    <summary>{pick(f.q, locale)}</summary>
-                    <p>{pick(f.a, locale)}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
-
-            <div className="aid">
-              <div className="lbl">{pick(T.relatedH, locale)}</div>
-              <ul className="related">
-                {related.map((r, i) => (
-                  <li key={i}>
-                    <a href={`/${locale}${r.href}`}>
-                      <b>{pick(r.label, locale)}</b>
-                      <span>{pick(r.note, locale)}</span>
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5 — Share, standing on its own */}
-      <section className="sharezone">
-        <div className="rail">
-          <ShareBar
-            locale={locale}
-            title={parties}
-            citation={`${masthead.official} (${parties}), ${judgment.court[locale]}, ${masthead.judgment}.`}
-          />
         </div>
       </section>
 

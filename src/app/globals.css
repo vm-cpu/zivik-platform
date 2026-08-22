@@ -238,7 +238,7 @@ body {
   outline-offset: 3px;
 }
 /* On dark scenes the cherry ring disappears — use the lamp gold. */
-:where(.lamp, .court, .casepage .mast, .casepage .dash, .casepage .sharezone)
+:where(.lamp, .court, .casepage .mast, .casepage .dash)
   :where(a, button, summary, [tabindex]):focus-visible {
   outline-color: var(--brand-gold-lit);
 }
