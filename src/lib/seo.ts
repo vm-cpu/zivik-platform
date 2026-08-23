@@ -67,6 +67,7 @@ export function decisionMetadata({
   description,
   ogAlt,
   siteName,
+  image,
 }: {
   locale: Locale;
   slug: string;
@@ -74,8 +75,11 @@ export function decisionMetadata({
   description: string;
   ogAlt: string;
   siteName: string;
+  /** Case-specific share card; falls back to the site card. */
+  image?: string;
 }): Metadata {
   const path = `/${locale}/cases/${slug}`;
+  const og = image ?? "/og/nasvitlo.png";
   return {
     metadataBase: new URL(siteUrl),
     title,
@@ -91,13 +95,13 @@ export function decisionMetadata({
       siteName,
       title,
       description,
-      images: [{ url: "/og/nasvitlo.png", alt: ogAlt }],
+      images: [{ url: og, alt: ogAlt }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/og/nasvitlo.png"],
+      images: [og],
     },
   };
 }

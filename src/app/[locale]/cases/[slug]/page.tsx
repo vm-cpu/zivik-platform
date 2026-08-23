@@ -329,6 +329,7 @@ export async function generateMetadata({
     description: pick(summary.plain.tldr, locale),
     ogAlt: dict.meta.ogAlt,
     siteName: dict.brand.wordmark,
+    image: `/og/cases/${slug}.png`,
   });
 }
 
