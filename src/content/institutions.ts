@@ -102,7 +102,7 @@ export const institutions: Institution[] = [
     name: { uk: "Суди Нідерландів", en: "Courts of the Netherlands" },
     seat: null,
     category: "national",
-    phase1: false,
+    phase1: true,
     order: 9,
   },
   {
@@ -111,7 +111,7 @@ export const institutions: Institution[] = [
     name: { uk: "Суди Фінляндії", en: "Courts of Finland" },
     seat: null,
     category: "national",
-    phase1: false,
+    phase1: true,
     order: 10,
   },
   {
