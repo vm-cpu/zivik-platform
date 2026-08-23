@@ -1,25 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { pick } from "@/content/types";
-import type { Locale } from "@/i18n/config";
-import type { Objection } from "@/content/summaries/types";
 
 /**
  * Jurisdiction objections, argument beside ruling.
  *
  * Each card starts on the objection — the case as the respondent put it — and
  * turns to the ruling on tap. Keeping the two on one surface is the point: a
- * reader who only ever sees the outcome cannot tell how close the argument was.
+ * reader who only ever sees the outcome cannot tell how close the argument
+ * was. Props arrive locale-resolved (see CaseTimeline for why).
  */
+export interface ObjectionR {
+  ground: string;
+  latin?: string;
+  objection: string;
+  outcome: "rejected" | "upheld";
+  reasoning: string;
+  votes?: { for: number; against: number; scope?: string }[];
+}
+
 export default function ObjectionCards({
   items,
-  locale,
   labels,
   benchSize = 0,
 }: {
-  items: Objection[];
-  locale: Locale;
+  items: ObjectionR[];
   labels: { objection: string; rejected: string; upheld: string; ruling: string };
   /** Judges sitting. With a bench, a vote draws as seats won of seats sitting. */
   benchSize?: number;
@@ -40,13 +45,13 @@ export default function ObjectionCards({
             >
               <span className="obj-head">
                 <span className="obj-n">{i + 1}</span>
-                <span className="obj-ground">{pick(o.ground, locale)}</span>
+                <span className="obj-ground">{o.ground}</span>
                 {o.latin && <em className="obj-latin">{o.latin}</em>}
               </span>
 
               <span className="obj-body">
                 <span className="obj-lbl">{labels.objection}</span>
-                {pick(o.objection, locale)}
+                {o.objection}
               </span>
 
               <span className="obj-verdict">
@@ -67,7 +72,7 @@ export default function ObjectionCards({
                       </span>
                       <span className="obj-tally">
                         {v.for}–{v.against}
-                        {v.scope && <em> {pick(v.scope, locale)}</em>}
+                        {v.scope && <em> {v.scope}</em>}
                       </span>
                     </span>
                   ))}
@@ -77,7 +82,7 @@ export default function ObjectionCards({
               {isOpen && (
                 <span className="obj-reason">
                   <span className="obj-lbl">{labels.ruling}</span>
-                  {pick(o.reasoning, locale)}
+                  {o.reasoning}
                 </span>
               )}
             </button>

@@ -1,29 +1,37 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { pick } from "@/content/types";
-import type { Locale } from "@/i18n/config";
-import type { TimelineEvent, TimelineTrack } from "@/content/summaries/types";
 
 /**
  * The case history as an instrument: a year rail, a filter per track, and rows
  * that open for detail.
  *
- * A dispute like this one runs on four clocks at once — the facts, the
- * arbitration, the set-aside litigation at the seat, and enforcement — and a
- * flat list hides that. Filtering by track lets a reader follow one clock;
- * "all" shows how they interleave. Events without a `track` (or a summary with
- * no `tracks` at all) always show, so the plain timeline still works.
+ * Props arrive locale-resolved: this is a client component, and its props are
+ * serialized into the page payload — passing the raw {uk, en} pairs shipped
+ * both languages to every reader and leaked the other locale into the HTML.
+ * The server template picks the strings; this component just renders them.
  */
+export interface TimelineEventR {
+  date: string;
+  label: string;
+  note?: string;
+  kind?: string;
+  track?: string;
+  /** Sort key, ISO 8601 — the visible `date` may be a range or a month. */
+  iso?: string;
+}
+export interface TimelineTrackR {
+  id: string;
+  label: string;
+}
+
 export default function CaseTimeline({
   events,
   tracks = [],
-  locale,
   labels,
 }: {
-  events: TimelineEvent[];
-  tracks?: TimelineTrack[];
-  locale: Locale;
+  events: TimelineEventR[];
+  tracks?: TimelineTrackR[];
   labels: { all: string; openDetail: string };
 }) {
   const [active, setActive] = useState<string>("all");
@@ -60,8 +68,7 @@ export default function CaseTimeline({
       )
     : [];
 
-  const trackLabel = (id?: string) =>
-    id ? (tracks.find((t) => t.id === id)?.label ?? null) : null;
+  const trackLabel = (id?: string) => (id ? tracks.find((t) => t.id === id)?.label : undefined);
 
   return (
     <div className="ctl">
@@ -86,7 +93,7 @@ export default function CaseTimeline({
               data-track={t.id}
               onClick={() => pickTrack(t.id)}
             >
-              {pick(t.label, locale)}
+              {t.label}
             </button>
           ))}
         </div>
@@ -110,11 +117,7 @@ export default function CaseTimeline({
             );
           })}
           {ticks.map((y) => (
-            <span
-              key={y}
-              className="ctl-tick"
-              style={{ left: `${((y - min) / span) * 100}%` }}
-            >
+            <span key={y} className="ctl-tick" style={{ left: `${((y - min) / span) * 100}%` }}>
               {y}
             </span>
           ))}
@@ -136,21 +139,21 @@ export default function CaseTimeline({
                   onClick={() => setOpen(isOpen ? null : idx)}
                   title={labels.openDetail}
                 >
-                  <span className="ctl-date">{pick(e.date, locale)}</span>
-                  {label && <span className="ctl-track">{pick(label, locale)}</span>}
-                  <span className="ctl-label">{pick(e.label, locale)}</span>
+                  <span className="ctl-date">{e.date}</span>
+                  {label && <span className="ctl-track">{label}</span>}
+                  <span className="ctl-label">{e.label}</span>
                   <span className="ctl-more" aria-hidden="true">
                     {isOpen ? "−" : "+"}
                   </span>
                 </button>
               ) : (
                 <div className="ctl-row ctl-row-static">
-                  <span className="ctl-date">{pick(e.date, locale)}</span>
-                  {label && <span className="ctl-track">{pick(label, locale)}</span>}
-                  <span className="ctl-label">{pick(e.label, locale)}</span>
+                  <span className="ctl-date">{e.date}</span>
+                  {label && <span className="ctl-track">{label}</span>}
+                  <span className="ctl-label">{e.label}</span>
                 </div>
               )}
-              {e.note && isOpen && <p className="ctl-note">{pick(e.note, locale)}</p>}
+              {e.note && isOpen && <p className="ctl-note">{e.note}</p>}
             </li>
           );
         })}

@@ -1,26 +1,25 @@
 "use client";
 
 import { useState } from "react";
-import { pick } from "@/content/types";
-import type { Locale } from "@/i18n/config";
-import type { MoneyFigure } from "@/content/summaries/types";
 
 /**
- * The money in the award, drawn to one shared scale.
- *
- * Every bar is measured against the largest figure on the page, so the reader
- * sees the relationship the numbers alone hide: what was recovered so far is a
- * sliver of what was ordered. Composite figures split into their heads of loss;
- * clicking a segment names it and gives its share. An `estimated` figure is
- * hatched rather than solid, because "more than" is not a measurement.
+ * The money in the award, drawn to one shared scale. Props arrive
+ * locale-resolved (see CaseTimeline for why).
  */
+export interface MoneyFigureR {
+  label: string;
+  display: string;
+  amount: number;
+  parts?: { label: string; display: string; amount: number }[];
+  estimated?: boolean;
+  note?: string;
+}
+
 export default function MoneyBars({
   figures,
-  locale,
   shareLabel,
 }: {
-  figures: MoneyFigure[];
-  locale: Locale;
+  figures: MoneyFigureR[];
   shareLabel: string;
 }) {
   const [picked, setPicked] = useState<string | null>(null);
@@ -33,8 +32,8 @@ export default function MoneyBars({
         return (
           <div key={i} className="money-row">
             <div className="money-head">
-              <span className="money-label">{pick(f.label, locale)}</span>
-              <b className="money-value">{typeof f.display === "string" ? f.display : pick(f.display, locale)}</b>
+              <span className="money-label">{f.label}</span>
+              <b className="money-value">{f.display}</b>
             </div>
 
             <div
@@ -52,7 +51,7 @@ export default function MoneyBars({
                     data-seg={j}
                     data-on={picked === key ? "yes" : "no"}
                     style={{ flexGrow: p.amount }}
-                    aria-label={`${pick(p.label, locale)} — ${p.display}`}
+                    aria-label={`${p.label} — ${p.display}`}
                     onClick={() => setPicked(picked === key ? null : key)}
                   />
                 );
@@ -68,7 +67,7 @@ export default function MoneyBars({
                     <li key={key} data-on={picked === key ? "yes" : "no"}>
                       <button type="button" onClick={() => setPicked(picked === key ? null : key)}>
                         <i data-seg={j} />
-                        {pick(p.label, locale)} — <b>{typeof p.display === "string" ? p.display : pick(p.display, locale)}</b>
+                        {p.label} — <b>{p.display}</b>
                         {picked === key && (
                           <em>
                             {" "}
@@ -82,7 +81,7 @@ export default function MoneyBars({
               </ul>
             )}
 
-            {f.note && <p className="money-note">{pick(f.note, locale)}</p>}
+            {f.note && <p className="money-note">{f.note}</p>}
           </div>
         );
       })}

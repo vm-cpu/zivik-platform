@@ -420,6 +420,10 @@ export default async function CasePage({
   const decided = granted > 0 ? granted : violations;
   const decidedLabel = granted > 0 ? pick(T.grantedOf, locale) : pick(T.violationsOf, locale);
 
+  /** Resolve a Localized pair for this render's locale (client-prop hygiene:
+   *  client components receive plain strings, never both languages). */
+  const L = (x: { uk: string; en: string }) => pick(x, locale);
+
   // Bands of the page, in reading order — the sticky nav names each one.
   const hasMachinery = Boolean(summary.warrants || attribution || objections || afterlife);
   const pageSections = [
@@ -694,8 +698,18 @@ export default async function CasePage({
             <div>
               <div className="lbl">{pick(T.amountsH, locale)}</div>
               <MoneyBars
-                figures={amounts.figures}
-                locale={locale}
+                figures={amounts.figures.map((f) => ({
+                  label: L(f.label),
+                  display: typeof f.display === "string" ? f.display : L(f.display),
+                  amount: f.amount,
+                  estimated: f.estimated,
+                  note: f.note && L(f.note),
+                  parts: f.parts?.map((pt) => ({
+                    label: L(pt.label),
+                    display: typeof pt.display === "string" ? pt.display : L(pt.display),
+                    amount: pt.amount,
+                  })),
+                }))}
                 shareLabel={pick(T.shareOf, locale)}
               />
               {amounts.note && <p className="dash-note">{pick(amounts.note, locale)}</p>}
@@ -705,9 +719,15 @@ export default async function CasePage({
           <div id="chronology" data-navsec>
             <div className="lbl">{pick(T.timeline, locale)}</div>
             <CaseTimeline
-              events={timeline}
-              tracks={timelineTracks}
-              locale={locale}
+              events={timeline.map((e) => ({
+                date: L(e.date),
+                label: L(e.label),
+                note: e.note && L(e.note),
+                kind: e.kind,
+                track: e.track,
+                iso: e.iso,
+              }))}
+              tracks={timelineTracks.map((t) => ({ id: t.id, label: L(t.label) }))}
               labels={{
                 all: pick(T.allEvents, locale),
                 openDetail: pick(T.openDetail, locale),
@@ -725,15 +745,33 @@ export default async function CasePage({
               <div className="lbl lbl-onpaper">{pick(warrants.heading, locale)}</div>
               <p className="mach-note">{pick(warrants.note, locale)}</p>
               <WarrantWall
-                waves={warrants.waves}
-                rungs={warrants.rungs}
-                locale={locale}
+                waves={warrants.waves.map((w) => ({
+                  date: L(w.date),
+                  iso: w.iso,
+                  theme: L(w.theme),
+                  summary: L(w.summary),
+                  url: w.url,
+                  persons: w.persons.map((per) => ({
+                    name: L(per.name),
+                    role: L(per.role),
+                    born: per.born,
+                    rung: per.rung,
+                    charges: per.charges.map((c) => ({
+                      art: c.art,
+                      label: L(c.label),
+                      kind: c.kind,
+                    })),
+                    modes: per.modes.map((m) => ({ art: m.art, label: L(m.label) })),
+                  })),
+                }))}
+                rungs={warrants.rungs?.map(L)}
                 labels={{
                   charges: pick(T.chargesLbl, locale),
                   modes: pick(T.modesLbl, locale),
                   announcement: pick(T.announcementLbl, locale),
                   warCrime: pick(T.warCrimeLbl, locale),
                   cah: pick(T.cahLbl, locale),
+                  art: locale === "uk" ? "ст." : "art.",
                 }}
               />
             </div>
@@ -751,8 +789,12 @@ export default async function CasePage({
                 <p className="mach-note">{pick(attribution.note, locale)}</p>
                 <AttributionTree
                   respondent={pick(attribution.respondent, locale)}
-                  nodes={attribution.nodes}
-                  locale={locale}
+                  nodes={attribution.nodes.map((n) => ({
+                    actor: L(n.actor),
+                    basis: n.basis,
+                    basisNote: L(n.basisNote),
+                    did: L(n.did),
+                  }))}
                 />
               </div>
             )}
@@ -762,8 +804,18 @@ export default async function CasePage({
                 <div className="lbl lbl-onpaper">{pick(objections.heading, locale)}</div>
                 <p className="mach-note">{pick(objections.note, locale)}</p>
                 <ObjectionCards
-                  items={objections.items}
-                  locale={locale}
+                  items={objections.items.map((o) => ({
+                    ground: L(o.ground),
+                    latin: o.latin,
+                    objection: L(o.objection),
+                    outcome: o.outcome,
+                    reasoning: L(o.reasoning),
+                    votes: o.votes?.map((v) => ({
+                      for: v.for,
+                      against: v.against,
+                      scope: v.scope && L(v.scope),
+                    })),
+                  }))}
                   benchSize={objections.benchSize}
                   labels={{
                     objection: pick(T.objectionLbl, locale),
