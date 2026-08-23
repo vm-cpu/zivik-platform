@@ -460,7 +460,7 @@ export const icjCerdIcsft: DecisionSummary = {
   theatres: [
     {
       place: { uk: "Східна Україна", en: "Eastern Ukraine" },
-      treaty: "ICSFT",
+      tag: "ICSFT",
       markerKeys: ["donetsk", "luhansk"],
       summary: {
         uk: "Ймовірне фінансування збройних груп «ДНР» і «ЛНР» — трек фінансування тероризму.",
@@ -469,7 +469,7 @@ export const icjCerdIcsft: DecisionSummary = {
     },
     {
       place: { uk: "Крим", en: "Crimea" },
-      treaty: "CERD",
+      tag: "CERD",
       markerKeys: ["crimea"],
       summary: {
         uk: "Ймовірна кампанія расової дискримінації проти кримських татар і етнічних українців.",

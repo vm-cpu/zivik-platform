@@ -1,0 +1,151 @@
+/* ---- 1. Masthead ---------------------------------------------------------- */
+.casepage .mast {
+  background:
+    radial-gradient(120% 90% at 50% -10%, #331311 0%, rgba(51, 19, 17, 0) 55%),
+    var(--bg);
+  color: var(--cream);
+  padding-block: clamp(30px, 4vw, 60px) clamp(28px, 3.5vw, 48px);
+}
+.casepage .backlink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 600 var(--t-cap) var(--brand-font-body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--faint);
+  text-decoration: none;
+  margin-bottom: var(--space-6);
+}
+.casepage .backlink:hover {
+  color: var(--gold);
+}
+.casepage .eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: var(--space-5);
+}
+.casepage .eyebrow .dot {
+  color: var(--rule);
+}
+.casepage .eyebrow .readtime {
+  color: var(--faint);
+  letter-spacing: 0.06em;
+}
+.casepage .official {
+  max-width: 18ch;
+  margin: 0;
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: var(--t-h1);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+  color: var(--cream);
+}
+.casepage .parties {
+  margin: var(--space-4) 0 0;
+  font-family: var(--brand-font-display), serif;
+  font-style: italic;
+  font-size: var(--t-lead);
+  color: var(--gold);
+}
+.casepage .parties a {
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(230, 182, 92, 0.35);
+}
+.casepage .parties a:hover {
+  border-bottom-color: var(--gold);
+}
+.casepage .parties .sep {
+  color: var(--faint);
+}
+.casepage .fullname {
+  max-width: 68ch;
+  margin: var(--space-4) 0 0;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--muted);
+}
+.casepage .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-7);
+}
+.casepage .btn {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  text-decoration: none;
+  font: 700 var(--t-sm) var(--brand-font-body);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--r-pill);
+  transition: transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease),
+              border-color var(--dur) var(--ease),
+              color var(--dur) var(--ease);
+}
+.casepage .btn:hover {
+  transform: translateY(-1px);
+}
+.casepage .btn em {
+  font: 500 var(--t-micro) var(--brand-font-body);
+  font-style: normal;
+  letter-spacing: 0.03em;
+  opacity: 0.85;
+}
+.casepage .btn-primary {
+  background: var(--accent);
+  color: #fbeee9;
+  box-shadow: var(--shadow-md);
+}
+.casepage .btn-ghost {
+  align-self: stretch;
+  justify-content: center;
+  border: 1px solid var(--rule);
+  color: var(--cream);
+}
+.casepage .btn-ghost:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ---- 2. Plain-language lede (paper) --------------------------------------- */
+.casepage .lede {
+  background: var(--card);
+  border-bottom: 1px solid var(--prule);
+  padding-block: clamp(32px, 4vw, 56px);
+}
+.casepage .lede-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+.casepage .tldr p {
+  margin: 0;
+  font-family: var(--brand-font-display), serif;
+  font-size: clamp(19px, 2vw, 24px);
+  line-height: 1.5;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.casepage .why {
+  border-left: 2px solid var(--pgold);
+  padding-left: var(--space-6);
+}
+.casepage .why p {
+  margin: 0;
+  font-size: var(--t-ui);
+  line-height: 1.65;
+  color: var(--ink2);
+}
+

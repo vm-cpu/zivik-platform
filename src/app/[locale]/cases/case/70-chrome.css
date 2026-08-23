@@ -1,0 +1,246 @@
+/* ---- page navigation: one sticky bar for every band --------------------- */
+.casepage .pagenav {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+.casepage .pagenav-row {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(16px, 2.5vw, 36px);
+  height: var(--pagenav-h);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.casepage .pagenav-row::-webkit-scrollbar {
+  display: none;
+}
+.casepage .pagenav a {
+  display: inline-flex;
+  align-items: center;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--faint);
+  text-decoration: none;
+  border-block: 2px solid transparent;
+  transition: color var(--dur) var(--ease);
+}
+.casepage .pagenav a:hover {
+  color: var(--cream);
+}
+.casepage .pagenav a[data-active="yes"] {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+/* anchors land below the sticky bar, not under it */
+.casepage [data-navsec],
+.casepage .read h2 {
+  scroll-margin-top: calc(var(--pagenav-h) + 16px);
+}
+
+
+/* on paper the label stands alone — the trailing rule read as a stray line */
+.casepage .lbl-onpaper::after {
+  display: none;
+}
+
+
+/* ---- vertical page rail (wide screens) ------------------------------------ */
+/* The rail lives in the left margin outside the content column. It carries its
+   own night ground, so it stays legible over dark and paper bands alike. */
+.casepage .pagenav-v {
+  display: none;
+}
+@media (min-width: 1440px) {
+  .casepage .pagenav-v {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: max(16px, calc((100vw - var(--measure)) / 2 - 168px));
+    transform: translateY(-50%);
+    z-index: 6;
+    background: var(--brand-night);
+    border: 1px solid var(--brand-night-rule);
+    border-radius: var(--r-lg);
+    padding: var(--space-4) var(--space-5);
+    box-shadow: var(--shadow-md);
+  }
+  /* the top bar yields to the rail */
+  .casepage .pagenav {
+    display: none;
+  }
+}
+.casepage .pagenav-v ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+}
+/* the spine the dots sit on */
+.casepage .pagenav-v ol::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 4px;
+  width: 2px;
+  background: var(--brand-night-rule);
+}
+.casepage .pagenav-v a {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-1) 0 var(--space-1) var(--space-5);
+  font: 600 var(--t-cap) var(--brand-font-body);
+  letter-spacing: 0.03em;
+  color: var(--faint);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease);
+}
+.casepage .pagenav-v a i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--brand-night);
+  border: 2px solid var(--brand-night-rule);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.casepage .pagenav-v b {
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  color: var(--faint);
+}
+.casepage .pagenav-v a:hover {
+  color: var(--cream);
+}
+.casepage .pagenav-v li[data-active="yes"] a {
+  color: var(--gold);
+}
+.casepage .pagenav-v li[data-active="yes"] a i {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+
+/* ---- print: a citable document, not a screen ------------------------------ */
+@media print {
+  .casepage .pagenav,
+  .casepage .pagenav-v,
+  .casepage .nsv-topbar,
+  .casepage .nsv-mobnav,
+  .casepage .nsv-foot,
+  .casepage .backlink,
+  .casepage .actions {
+    display: none !important;
+  }
+  .casepage,
+  .casepage .mast,
+  .casepage .dash,
+  .casepage .lede,
+  .casepage .refs,
+  .casepage .machinery,
+  .casepage .aids {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .casepage .official,
+  .casepage .kpi b,
+  .casepage .ctl-label,
+  .casepage .v-claim {
+    color: #000 !important;
+  }
+  .casepage a {
+    color: #000;
+  }
+}
+/* subgroup headings inside the sources list */
+.casepage .read .sources-h {
+  margin: var(--space-7) 0 var(--space-3);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+
+/* term chips at the head of the summary — one tap to a definition */
+.casepage .termchips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-7);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--prule);
+}
+.casepage .termchips-lbl {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+.casepage .termchips a {
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--ink2);
+  text-decoration: none;
+  background: var(--paper2);
+  border-radius: var(--r-pill);
+  padding: var(--space-1) var(--space-3);
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.casepage .termchips a:hover {
+  color: var(--pred);
+  background: var(--card);
+}
+/* glossary entries are jump targets now */
+.casepage .glossary > div {
+  scroll-margin-top: calc(var(--pagenav-h) + 16px);
+}
+
+
+/* criminal outcomes reuse the breach pair's colours: a conviction reads like
+   a violation chip, an acquittal like a no-violation chip */
+.casepage .v-out[data-o="convicted"] {
+  color: var(--red);
+}
+.casepage .v-out[data-o="convicted"]::before {
+  background: var(--red);
+}
+.casepage .v-out[data-o="acquitted"] {
+  color: var(--faint);
+}
+.casepage .v-out[data-o="acquitted"]::before {
+  border: 1.5px solid var(--faint);
+}
+
+/* skip link: invisible until focused, then a clear pill above everything */
+.casepage .skiplink {
+  position: absolute;
+  left: -9999px;
+  z-index: 10;
+  background: var(--brand-night);
+  color: var(--gold);
+  font: 700 var(--t-sm) var(--brand-font-body);
+  border-radius: var(--r-pill);
+  padding: var(--space-3) var(--space-6);
+  text-decoration: none;
+}
+.casepage .skiplink:focus-visible {
+  left: var(--space-4);
+  top: var(--space-4);
+}
+
+/* comfortable tap targets for the term chips */
+.casepage .termchips a {
+  padding: var(--space-2) var(--space-4);
+}

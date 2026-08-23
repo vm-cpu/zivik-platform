@@ -1,0 +1,288 @@
+/* ---- 3. Dashboard (dark) --------------------------------------------------- */
+.casepage .dash {
+  background: var(--bg);
+  color: var(--cream);
+  padding-block: clamp(34px, 4.5vw, 60px);
+}
+.casepage .dash-stack {
+  display: grid;
+  gap: clamp(34px, 4vw, 54px);
+}
+
+/* KPI strip */
+.casepage .kpis {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+@media (max-width: 1000px) {
+  .casepage .kpis {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 420px) {
+  .casepage .kpis {
+    grid-template-columns: 1fr;
+  }
+}
+.casepage .kpi {
+  background: var(--panel);
+  border-radius: var(--r-md);
+  padding: var(--space-6) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.casepage .kpi b {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: clamp(32px, 3.6vw, 44px);
+  line-height: 1;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .kpi[data-em="1"] b {
+  color: var(--red);
+}
+.casepage .kpi span {
+  font: 500 var(--t-sm) var(--brand-font-body);
+  color: var(--muted);
+}
+
+/* map */
+.casepage .map-wrap {
+  position: relative;
+}
+.casepage .map {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 460px;
+}
+.casepage .map .ctx {
+  fill: rgba(243, 232, 226, 0.04);
+  stroke: rgba(157, 130, 123, 0.3);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+}
+.casepage .map .ua-fill {
+  fill: rgba(230, 182, 92, 0.07);
+  stroke: var(--gold);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.casepage .map .reach {
+  stroke: var(--gold-dim);
+  stroke-width: 1.8;
+  stroke-dasharray: 6 8;
+  opacity: 0.45;
+}
+.casepage .map .mk-court {
+  fill: var(--gold);
+  stroke: var(--bg);
+  stroke-width: 2;
+}
+.casepage .zone {
+  fill: var(--red);
+  opacity: 0.85;
+}
+.casepage .zone-halo {
+  fill: var(--red);
+  opacity: 0.12;
+}
+.casepage .mk-city {
+  fill: var(--cream);
+}
+.casepage .mk-label {
+  font: 700 26px var(--brand-font-body);
+  fill: var(--cream);
+}
+.casepage .mk-treaty {
+  font: 700 21px var(--brand-font-body);
+  fill: var(--gold);
+  letter-spacing: 0.08em;
+}
+.casepage .mk-city-label {
+  font: 500 20px var(--brand-font-body);
+  fill: var(--muted);
+}
+.casepage .map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule-soft);
+}
+.casepage .map-legend span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 500 var(--t-sm) var(--brand-font-body);
+  color: var(--muted);
+}
+.casepage .map-legend i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--red);
+}
+.casepage .map-legend .lg-court {
+  background: var(--gold);
+}
+.casepage .map-legend b {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* verdict scorecard */
+.casepage .score-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-1);
+}
+.casepage .score-head h2 {
+  margin: 0;
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-h3);
+  font-weight: 700;
+  color: var(--cream);
+}
+.casepage .score-count {
+  font: 600 var(--t-sm) var(--brand-font-body);
+  color: var(--muted);
+}
+.casepage .score-count b {
+  color: var(--red);
+  font-weight: 700;
+}
+.casepage .verdicts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.casepage .verdicts li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.casepage .v-track,
+.casepage .v-track-link {
+  grid-column: 1 / -1;
+  margin-top: var(--space-4);
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  text-decoration: none;
+}
+.casepage .v-track-link:hover {
+  color: var(--gold);
+}
+.casepage .v-claim {
+  font-size: var(--t-ui);
+  line-height: 1.4;
+  color: var(--cream);
+}
+.casepage .v-out {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.casepage .v-out::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.casepage .v-out[data-o="violation"] {
+  color: var(--red);
+}
+.casepage .v-out[data-o="violation"]::before {
+  background: var(--red);
+}
+.casepage .v-out[data-o="no-violation"] {
+  color: var(--faint);
+}
+.casepage .v-out[data-o="no-violation"]::before {
+  border: 1.5px solid var(--faint);
+}
+/* An arbitral dispositif also grants, rejects and leaves things undecided.
+   These are outcomes, not breaches, so they run on gold — never red. */
+.casepage .v-out[data-o="granted"] {
+  color: var(--gold);
+}
+.casepage .v-out[data-o="granted"]::before {
+  background: var(--gold);
+}
+.casepage .v-out[data-o="rejected"] {
+  color: var(--gold-dim);
+}
+.casepage .v-out[data-o="rejected"]::before {
+  border: 1.5px solid var(--gold-dim);
+}
+.casepage .v-out[data-o="not-decided"] {
+  color: var(--faint);
+}
+.casepage .v-out[data-o="not-decided"]::before {
+  border: 1.5px dashed var(--faint);
+}
+
+/* timeline */
+.casepage .timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+}
+.casepage .timeline::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  height: 1px;
+  background: var(--rule);
+}
+.casepage .tl {
+  position: relative;
+  padding: var(--space-8) var(--space-5) 0 0;
+}
+.casepage .tl::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--gold-dim);
+}
+.casepage .tl[data-kind="judgment"]::before {
+  background: var(--red);
+  border-color: var(--red);
+}
+.casepage .tl-date {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.01em;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .tl-label {
+  margin: var(--space-2) 0 0;
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--muted);
+  max-width: 26ch;
+}
+

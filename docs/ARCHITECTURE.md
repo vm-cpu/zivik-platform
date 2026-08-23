@@ -101,3 +101,43 @@ src/
 3. Підняти Payload CMS (Node LTS) + БД, реалізувати `PayloadRepository`.
 4. Мігрувати `/reader`, `/atlas` під локалі.
 5. Тести (Vitest + Playwright), CI (GitHub Actions).
+
+---
+
+## Decision pages: one template, optional instruments (added 2026-08)
+
+Every decision page renders from `src/app/[locale]/cases/[slug]/page.tsx`.
+There is no per-case page code: a case is a data module in
+`src/content/summaries/<slug>.ts` that fills only the instruments it has.
+`src/content/summaries/index.ts` is the single slug→summary map — the page
+template and the sitemap both read it, and it throws at build time if the
+registry (`cases.ts` `summarySlug`) and the map disagree.
+
+A summary is two layers with a hard boundary:
+
+- **Verbatim** (`<slug>.verbatim.json`, mirrored 1:1 by `<slug>.uk.json` —
+  draft translations pending legal review): the source doc's tab, ingested
+  unedited, quirks and all. Four tabs (DTEK, ECHR, Finland, Hague) were
+  ingested before the doc marked them finalized; re-ingest when it does.
+- **Visualization** (`<slug>.ts`): everything else. Every value either
+  restates the verbatim or carries a citation in `sources`; the research
+  trail per case lives in `docs/research/<slug>-sources.md`. `asOf` stamps
+  when the context layer was last verified and feeds `dateModified` and the
+  sitemap's `lastModified`.
+
+Optional instruments → sections (each renders only if its field is set):
+`warrants` (ICC ladder of command), `objections` (+`benchSize` for bench
+votes), `attribution`, `afterlife`, `amounts`, `takings`,
+`provisionalMeasures`, `theatres` (+`mapFocus` for the seat and reach line),
+`timelineTracks` (filterable timeline; filter persists as
+`#chronology:<track>`). Outcomes cover courts (violation pair), arbitration
+(granted/rejected/not-decided) and criminal verdicts (convicted/acquitted).
+
+Client-prop hygiene: the interactive components under `src/components/cases/`
+take **locale-resolved strings**, never `{uk, en}` pairs — client props
+serialize into the page payload, and raw pairs shipped both languages to
+every reader. The template resolves with `pick()` at the call site.
+
+Share cards: `scripts/og-cards.py` regenerates `public/og/` (site card +
+one per case). The legal verification checklist source is
+`docs/verification/checklist.html`.

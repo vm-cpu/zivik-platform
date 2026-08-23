@@ -443,7 +443,7 @@ export const icjGenocide: DecisionSummary = {
   theatres: [
     {
       place: { uk: "Донеччина та Луганщина", en: "Donetsk & Luhansk oblasts" },
-      treaty: "Genocide Convention",
+      tag: "Genocide Convention",
       markerKeys: ["donetsk", "luhansk"],
       // the only theatre sits level with Kyiv — drop the label below the zones
       labelDy: 168,

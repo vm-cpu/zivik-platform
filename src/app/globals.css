@@ -253,3 +253,14 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+
+/* Disabled controls exist visually, not just semantically — the handoff's
+   longest-standing gap. Applies site-wide so the next form inherits it. */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

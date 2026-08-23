@@ -460,7 +460,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
   theatres: [
     {
       place: { uk: "Донбас із 2014", en: "The Donbas from 2014" },
-      treaty: { uk: "КОНТРОЛЬ З 11.05.2014", en: "CONTROL FROM 11 MAY 2014" },
+      tag: { uk: "КОНТРОЛЬ З 11.05.2014", en: "CONTROL FROM 11 MAY 2014" },
       markerKeys: ["donetsk", "luhansk"],
       labelDx: -40,
       labelDy: -22,
@@ -471,7 +471,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
     },
     {
       place: { uk: "Уся Україна з 2022", en: "All of Ukraine from 2022" },
-      treaty: { uk: "ВТОРГНЕННЯ", en: "INVASION" },
+      tag: { uk: "ВТОРГНЕННЯ", en: "INVASION" },
       markerKeys: ["kyiv"],
       labelDx: -60,
       labelDy: -46,

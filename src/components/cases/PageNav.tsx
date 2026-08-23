@@ -71,7 +71,7 @@ export default function PageNav({
         <ol>
           {sections.map((s, i) => (
             <li key={s.id} data-active={s.id === active ? "yes" : "no"}>
-              <a href={`#${s.id}`}>
+              <a href={`#${s.id}`} aria-current={s.id === active ? "true" : undefined}>
                 <i aria-hidden="true" />
                 <b>{String(i + 1).padStart(2, "0")}</b>
                 <span>{s.label}</span>
@@ -84,7 +84,12 @@ export default function PageNav({
       <nav className="pagenav" aria-label={ariaLabel}>
         <div className="rail pagenav-row" ref={rowRef}>
           {sections.map((s) => (
-            <a key={s.id} href={`#${s.id}`} data-active={s.id === active ? "yes" : "no"}>
+            <a
+              key={s.id}
+              href={`#${s.id}`}
+              data-active={s.id === active ? "yes" : "no"}
+              aria-current={s.id === active ? "true" : undefined}
+            >
               {s.label}
             </a>
           ))}

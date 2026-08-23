@@ -347,7 +347,7 @@ export const hagueMh17: DecisionSummary = {
   theatres: [
     {
       place: { uk: "Первомайське, Донеччина", en: "Pervomaiskyi, Donetsk region" },
-      treaty: { uk: "МІСЦЕ ПУСКУ", en: "THE LAUNCH SITE" },
+      tag: { uk: "МІСЦЕ ПУСКУ", en: "THE LAUNCH SITE" },
       markerKeys: ["donetsk"],
       labelDx: -40,
       labelDy: -22,

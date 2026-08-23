@@ -203,8 +203,12 @@ export interface Stage {
 /** A geographic theatre the case concerns, anchored to the map. */
 export interface Theatre {
   place: Localized;
-  /** Short over-title tag; localize it when it is a word, not an acronym. */
-  treaty: string | Localized;
+  /**
+   * Short over-title tag on the map — a treaty acronym ("CERD"), a campaign
+   * ("ЕНЕРГОСИСТЕМА") or a scene ("МІСЦЕ ПУСКУ"). Localize words; acronyms
+   * stay strings. (Named `treaty` until the tags outgrew treaties.)
+   */
+  tag: string | Localized;
   /** Map marker key in `ukraine-map.json` this theatre highlights. */
   markerKeys: string[];
   summary: Localized;

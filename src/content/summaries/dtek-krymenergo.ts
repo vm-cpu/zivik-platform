@@ -409,7 +409,7 @@ export const dtekKrymenergo: DecisionSummary = {
   theatres: [
     {
       place: { uk: "Крим", en: "Crimea" },
-      treaty: { uk: "ЕНЕРГОМЕРЕЖА", en: "POWER GRID" },
+      tag: { uk: "ЕНЕРГОМЕРЕЖА", en: "POWER GRID" },
       markerKeys: ["crimea"],
       summary: {
         uk: "23 районні та 2 міські мережі, 27 000 км², 780 000+ споживачів — усе вилучено у 2015 році.",

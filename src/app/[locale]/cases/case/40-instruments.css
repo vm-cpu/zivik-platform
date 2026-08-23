@@ -1,0 +1,598 @@
+/* ---- what was taken (dark) ------------------------------------------------- */
+.casepage .takings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-6) clamp(24px, 4vw, 48px);
+}
+.casepage .taking[data-shape="grid"] {
+  grid-column: 1 / -1;
+}
+.casepage .taking-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-2);
+}
+.casepage .taking-label {
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+.casepage .taking-value {
+  font: 700 var(--t-h3) var(--brand-font-display), serif;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.casepage .dotfield {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: var(--space-2);
+}
+.casepage .dotfield i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  opacity: 0.75;
+}
+.casepage .taking-bar {
+  height: 10px;
+  border-radius: var(--r-pill);
+  background: var(--panel);
+  overflow: hidden;
+}
+.casepage .taking-bar i {
+  display: block;
+  height: 100%;
+  border-radius: var(--r-pill);
+  background: var(--gold);
+}
+.casepage .taking[data-shape="plain"] .taking-head {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+.casepage .taking[data-shape="plain"] .taking-value {
+  font-size: var(--t-lead);
+}
+.casepage .taking-note {
+  margin: var(--space-2) 0 0;
+  font-size: var(--t-cap);
+  color: var(--faint);
+}
+
+/* ---- money (dark) ---------------------------------------------------------- */
+.casepage .money {
+  display: grid;
+  gap: var(--space-7);
+}
+.casepage .money-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+}
+.casepage .money-label {
+  font-size: var(--t-sm);
+  color: var(--muted);
+}
+.casepage .money-value {
+  font: 700 var(--t-h3) var(--brand-font-display), serif;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.casepage .money-bar {
+  display: flex;
+  gap: 2px;
+  height: 26px;
+  min-width: 8px;
+  border-radius: var(--r-xs);
+  overflow: hidden;
+  background: var(--gold);
+  transition: width var(--dur) var(--ease);
+}
+.casepage .money-bar[data-estimated="yes"] {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--gold-dim) 0 8px,
+    transparent 8px 16px
+  );
+  outline: 1px solid var(--gold-dim);
+  outline-offset: -1px;
+}
+.casepage .money-seg {
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: var(--gold);
+}
+.casepage .money-seg[data-seg="1"] {
+  background: var(--gold-dim);
+}
+.casepage .money-seg[data-seg="2"] {
+  background: var(--faint);
+}
+.casepage .money-seg[data-on="yes"] {
+  outline: 2px solid var(--cream);
+  outline-offset: -2px;
+}
+.casepage .money-key {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+}
+.casepage .money-key button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: 500 var(--t-cap) var(--brand-font-body);
+  color: var(--muted);
+}
+.casepage .money-key b {
+  font-family: var(--brand-font-mono), monospace;
+  font-weight: 500;
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .money-key em {
+  font-style: normal;
+  color: var(--gold);
+}
+.casepage .money-key i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--gold);
+}
+.casepage .money-key i[data-seg="1"] {
+  background: var(--gold-dim);
+}
+.casepage .money-key i[data-seg="2"] {
+  background: var(--faint);
+}
+.casepage .money-key li[data-on="yes"] button {
+  color: var(--cream);
+}
+.casepage .money-note {
+  margin: var(--space-3) 0 0;
+  max-width: 62ch;
+  font-size: var(--t-cap);
+  line-height: 1.6;
+  color: var(--faint);
+}
+
+/* ---- interactive timeline (dark) ------------------------------------------- */
+.casepage .ctl-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+.casepage .ctl-filters button {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-pill);
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--muted);
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.casepage .ctl-filters button:hover {
+  color: var(--cream);
+  border-color: var(--gold-dim);
+}
+.casepage .ctl-filters button[data-on="yes"] {
+  color: var(--bg);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.casepage .ctl-rail {
+  position: relative;
+  height: 46px;
+  margin-bottom: var(--space-4);
+}
+.casepage .ctl-rail-line {
+  position: absolute;
+  top: 7px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--rule);
+}
+.casepage .ctl-dot {
+  position: absolute;
+  top: 2px;
+  width: 11px;
+  height: 11px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.casepage .ctl-dot[data-dim="yes"] {
+  opacity: 0.28;
+}
+.casepage .ctl-tick {
+  position: absolute;
+  top: 24px;
+  transform: translateX(-50%);
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .ctl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.casepage .ctl-list li {
+  border-top: 1px solid var(--rule);
+}
+.casepage .ctl-list li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+.casepage .ctl {
+  /* one indent shared by the row grid and the detail that hangs off it */
+  --ctl-indent: calc(8.5rem + 8.5rem + var(--space-4) * 2);
+}
+.casepage .ctl-row {
+  display: grid;
+  grid-template-columns: 8.5rem 8.5rem 1fr auto;
+  align-items: baseline;
+  gap: var(--space-4);
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: var(--space-4) 0;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.casepage .ctl-row-static {
+  cursor: default;
+}
+.casepage .ctl-more {
+  justify-self: end;
+  font: 700 var(--t-ui) var(--brand-font-body);
+  color: var(--gold);
+}
+.casepage .ctl-row:hover {
+  background: var(--panel);
+}
+.casepage .ctl-date {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .ctl-track {
+  font: 600 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.casepage .ctl-label {
+  font-size: var(--t-ui);
+  line-height: 1.45;
+  color: var(--cream);
+}
+/* the ruling itself carries the accent — gold, not red: on this page red is
+   reserved for a breach, and a warrant or judgment is not one */
+.casepage .ctl-list li[data-kind="judgment"] .ctl-label {
+  color: var(--gold);
+}
+.casepage .ctl-note {
+  margin: 0;
+  padding: 0 0 var(--space-5) var(--ctl-indent);
+  max-width: calc(66ch + var(--ctl-indent));
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* ---- machinery band (paper): attribution, objections, afterlife ------------ */
+.casepage .machinery {
+  background: var(--paper);
+  border-bottom: 1px solid var(--prule);
+  padding-block: clamp(34px, 4.5vw, 60px);
+}
+.casepage .machinery-stack {
+  display: grid;
+  gap: clamp(36px, 4.5vw, 60px);
+}
+.casepage .mach-note {
+  margin: calc(var(--space-2) * -1) 0 var(--space-6);
+  max-width: 62ch;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+
+/* attribution tree */
+.casepage .attr-root {
+  margin-inline: auto;
+  width: max-content;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--r-sm);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  font: 700 var(--t-ui) var(--brand-font-display), serif;
+  color: var(--ink);
+}
+.casepage .attr-stem {
+  width: 1px;
+  height: var(--space-6);
+  margin-inline: auto;
+  background: var(--prule);
+}
+.casepage .attr-branches {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: var(--space-4) 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--space-3);
+}
+/* the bracket: one rule across the branches, a tick down into each card */
+.casepage .attr-branches::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: var(--prule);
+}
+.casepage .attr-branches li {
+  position: relative;
+}
+.casepage .attr-branches li::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--space-4) * -1);
+  left: 50%;
+  width: 1px;
+  height: var(--space-4);
+  background: var(--prule);
+}
+.casepage .attr-node {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  padding: var(--space-5);
+  border: 0;
+  border-top: 2px solid var(--prule);
+  border-radius: 0 0 var(--r-md) var(--r-md);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.casepage .attr-node:hover {
+  transform: translateY(-2px);
+}
+.casepage .attr-branches li[data-on="yes"] .attr-node {
+  border-top-color: var(--pgold);
+}
+.casepage .attr-basis {
+  font: 600 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+.casepage .attr-actor {
+  font: 700 var(--t-ui) var(--brand-font-body);
+  color: var(--ink);
+}
+.casepage .attr-did {
+  margin: var(--space-5) 0 0;
+  padding-left: var(--space-5);
+  border-left: 2px solid var(--pgold);
+  max-width: 68ch;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+
+/* jurisdiction objections */
+.casepage .objections {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+.casepage .obj-card {
+  display: grid;
+  gap: var(--space-3);
+  width: 100%;
+  height: 100%;
+  align-content: start;
+  text-align: left;
+  padding: var(--space-5) var(--space-6);
+  border: 0;
+  border-radius: var(--r-md);
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.casepage .obj-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.casepage .obj-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.casepage .obj-n {
+  font: 700 var(--t-cap) var(--brand-font-mono);
+  color: var(--ink3);
+}
+.casepage .obj-ground {
+  font: 700 var(--t-h3) var(--brand-font-display), serif;
+  color: var(--ink);
+}
+.casepage .obj-latin {
+  font: italic 500 var(--t-cap) var(--brand-font-body);
+  color: var(--ink3);
+}
+.casepage .obj-lbl {
+  display: block;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: var(--space-1);
+}
+.casepage .obj-body,
+.casepage .obj-reason {
+  display: block;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.casepage .obj-reason {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--prule);
+}
+.casepage .obj-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pred);
+}
+.casepage .obj-verdict i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pred);
+}
+.casepage .objections li[data-outcome="upheld"] .obj-verdict {
+  color: var(--pgold);
+}
+.casepage .objections li[data-outcome="upheld"] .obj-verdict i {
+  background: var(--pgold);
+}
+
+/* how the bench divided — one tick per seat, filled ticks are the majority */
+.casepage .obj-votes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.casepage .obj-vote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.casepage .obj-bench {
+  position: relative;
+  display: inline-block;
+  height: 14px;
+  flex: none;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--prule) 0 6px,
+    transparent 6px 8px
+  );
+}
+.casepage .obj-bench i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink3) 0 6px,
+    transparent 6px 8px
+  );
+}
+.casepage .objections li[data-outcome="upheld"] .obj-bench i {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--pgold) 0 6px,
+    transparent 6px 8px
+  );
+}
+.casepage .obj-tally {
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--ink2);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .obj-tally em {
+  font-style: normal;
+  color: var(--ink3);
+}
+
+/* what happened to the award afterwards */
+.casepage .afterlife {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--space-4);
+}
+.casepage .afterlife li {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding-top: var(--space-4);
+  border-top: 3px solid var(--pgold);
+}
+.casepage .afterlife li[data-standing="no"] {
+  border-top-color: var(--pred);
+}
+.casepage .af-year {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--ink3);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .af-title {
+  font: 700 var(--t-h3) var(--brand-font-display), serif;
+  color: var(--ink);
+}
+.casepage .af-note {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.casepage .af-flag {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+.casepage .afterlife li[data-standing="no"] .af-flag {
+  color: var(--pred);
+}
+
+/* a single-column reference band when there is no interim order */
+.casepage .refs-grid[data-single="yes"] {
+  grid-template-columns: 1fr;
+}
+.casepage .refs-grid[data-single="yes"] .ruling {
+  max-width: 62ch;
+}
+

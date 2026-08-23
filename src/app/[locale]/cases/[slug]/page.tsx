@@ -15,15 +15,7 @@ import ObjectionCards from "@/components/cases/ObjectionCards";
 import TakingsGrid from "@/components/cases/TakingsGrid";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
-import { icjCerdIcsft } from "@/content/summaries/icj-cerd-icsft";
-import { icjGenocide } from "@/content/summaries/icj-genocide";
-import { oschadbank } from "@/content/summaries/oschadbank";
-import { iccUkraine } from "@/content/summaries/icc-ukraine";
-import { dtekKrymenergo } from "@/content/summaries/dtek-krymenergo";
-import { echrUkraineNetherlands } from "@/content/summaries/echr-ukraine-netherlands";
-import { finlandTorden } from "@/content/summaries/finland-torden";
-import { hagueMh17 } from "@/content/summaries/hague-mh17";
-import { registryCases } from "@/content/cases";
+import { SUMMARIES } from "@/content/summaries";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -32,43 +24,18 @@ import type {
   Theatre,
 } from "@/content/summaries/types";
 import uaMap from "@/content/summaries/ukraine-map.json";
-import "../case.css";
+// One stylesheet per concern, imported in cascade order — the 2000-line
+// monolith was where parallel sessions collided. Order matters: it must
+// reproduce the original file's cascade exactly.
+import "../case/00-base.css";
+import "../case/10-bands.css";
+import "../case/20-dashboard.css";
+import "../case/30-paper.css";
+import "../case/40-instruments.css";
+import "../case/50-responsive.css";
+import "../case/60-warrants.css";
+import "../case/70-chrome.css";
 
-/** Slug → decision summary. Grows as summaries are ingested. */
-const SUMMARIES: Record<string, DecisionSummary> = {
-  "icj-cerd-icsft": icjCerdIcsft,
-  "icj-genocide": icjGenocide,
-  oschadbank: oschadbank,
-  "icc-ukraine": iccUkraine,
-  "dtek-krymenergo": dtekKrymenergo,
-  "echr-ukraine-netherlands": echrUkraineNetherlands,
-  "finland-torden": finlandTorden,
-  "hague-mh17": hagueMh17,
-};
-
-/**
- * The registry (`cases.ts`) links cases by `summarySlug`; this map is what
- * actually renders. A typo on either side used to build green and 404 in
- * production — so the module refuses to build while they disagree.
- */
-{
-  const linked = registryCases
-    .map((c) => c.summarySlug)
-    .filter((x): x is string => Boolean(x));
-  const orphanLinks = linked.filter((slug) => !(slug in SUMMARIES));
-  const orphanPages = Object.entries(SUMMARIES).filter(
-    ([, s]) => !registryCases.some((c) => c.id === s.caseId),
-  );
-  const unlinkedPages = Object.keys(SUMMARIES).filter((slug) => !linked.includes(slug));
-  if (orphanLinks.length || orphanPages.length || unlinkedPages.length) {
-    throw new Error(
-      `Registry ↔ SUMMARIES out of sync. ` +
-        `summarySlug without a page: [${orphanLinks}]; ` +
-        `page whose caseId is not in the registry: [${orphanPages.map(([k]) => k)}]; ` +
-        `page no registry row links to: [${unlinkedPages}]`,
-    );
-  }
-}
 
 /** Localized chrome labels (the summary body stays in its source language). */
 const T = {
@@ -121,6 +88,7 @@ const T = {
   standing: { uk: "Рішення чинне", en: "Award stands" },
   notStanding: { uk: "Рішення скасовано", en: "Award annulled" },
   seatLabel: { uk: "Місце арбітражу", en: "Seat" },
+  skip: { uk: "Перейти до змісту", en: "Skip to content" },
 
   // Warrant wall.
   chargesLbl: { uk: "Звинувачення", en: "Charges" },
@@ -244,7 +212,7 @@ function TheatreMap({
                   </g>
                 ))}
                 <text className="mk-treaty" x={lx} y={cy - 84 + (t.labelDy ?? 0)} textAnchor="middle">
-                  {typeof t.treaty === "string" ? t.treaty : pick(t.treaty, locale)}
+                  {typeof t.tag === "string" ? t.tag : pick(t.tag, locale)}
                 </text>
                 <text className="mk-label" x={lx} y={cy - 56 + (t.labelDy ?? 0)} textAnchor="middle">
                   {pick(t.place, locale)}
@@ -260,7 +228,7 @@ function TheatreMap({
           {pick(forum.name, locale)} — {pick(forum.caption, locale)}
         </span>
         {theatres.map((t, i) => {
-          const tag = typeof t.treaty === "string" ? t.treaty : pick(t.treaty, locale);
+          const tag = typeof t.tag === "string" ? t.tag : pick(t.tag, locale);
           return (
             <span key={i}>
               <i />
@@ -462,10 +430,12 @@ export default async function CasePage({
         url: pageUrl,
         datePublished: judgment.date,
         ...(summary.asOf ? { dateModified: summary.asOf } : {}),
+        // The decision itself is a court document, not legislation; the
+        // treaties it applies stay Legislation in `mentions` below.
         about: {
-          "@type": "Legislation",
+          "@type": "CreativeWork",
           name: masthead.official,
-          legislationJurisdiction: pick(judgment.court, locale),
+          creator: { "@type": "Organization", name: pick(judgment.court, locale) },
           datePublished: judgment.date,
           url: judgment.caseUrl ?? judgment.url,
         },
@@ -520,6 +490,9 @@ export default async function CasePage({
 
   return (
     <div className="page casepage">
+      <a className="skiplink" href="#overview">
+        {pick(T.skip, locale)}
+      </a>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

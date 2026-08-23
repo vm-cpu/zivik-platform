@@ -304,7 +304,7 @@ export const finlandTorden: DecisionSummary = {
   theatres: [
     {
       place: { uk: "Донбас, вересень 2014", en: "The Donbas, September 2014" },
-      treaty: { uk: "ЗАСІДКА НА «АЙДАР»", en: "THE AIDAR AMBUSH" },
+      tag: { uk: "ЗАСІДКА НА «АЙДАР»", en: "THE AIDAR AMBUSH" },
       markerKeys: ["luhansk"],
       labelDx: -40,
       labelDy: -22,

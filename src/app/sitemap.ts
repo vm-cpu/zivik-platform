@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { locales } from "@/i18n/config";
 import { siteUrl } from "@/lib/seo";
 import { registryCases } from "@/content/cases";
+import { summaryLastModified } from "@/content/summaries";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const homeLanguages = Object.fromEntries(
@@ -25,8 +26,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const languages = Object.fromEntries(
       locales.map((locale) => [locale, `${siteUrl}/${locale}/cases/${slug}`]),
     );
+    const lastModified = summaryLastModified(slug);
     return locales.map((locale) => ({
       url: `${siteUrl}/${locale}/cases/${slug}`,
+      ...(lastModified ? { lastModified } : {}),
       changeFrequency: "monthly" as const,
       priority: locale === "uk" ? 0.8 : 0.7,
       alternates: { languages },

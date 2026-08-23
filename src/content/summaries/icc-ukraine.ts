@@ -535,7 +535,7 @@ export const iccUkraine: DecisionSummary = {
   theatres: [
     {
       place: { uk: "Окуповані території", en: "Occupied territories" },
-      treaty: { uk: "ДІТИ", en: "CHILDREN" },
+      tag: { uk: "ДІТИ", en: "CHILDREN" },
       markerKeys: ["crimea", "donetsk", "luhansk"],
       // keep the caption clear of the three markers it points at
       labelDx: -40,
@@ -547,7 +547,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       place: { uk: "Енергосистема України", en: "Ukraine's power grid" },
-      treaty: { uk: "ЕНЕРГОСИСТЕМА", en: "POWER GRID" },
+      tag: { uk: "ЕНЕРГОСИСТЕМА", en: "POWER GRID" },
       markerKeys: ["kyiv"],
       // lift the label clear of the Kyiv marker and its city caption
       labelDx: -60,

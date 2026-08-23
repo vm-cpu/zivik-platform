@@ -1,0 +1,352 @@
+/* ---- 4. Reference band (paper): rulings + provisional measures ------------- */
+.casepage .refs {
+  background: var(--paper2);
+  border-bottom: 1px solid var(--prule);
+  padding-block: clamp(34px, 4.5vw, 60px);
+}
+.casepage .refs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 4vw, 52px);
+  align-items: start;
+}
+.casepage .ruling {
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5) var(--space-6);
+  margin-bottom: var(--space-3);
+}
+.casepage .ruling b {
+  display: block;
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-h3);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: var(--space-2);
+}
+.casepage .ruling p {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.casepage .pmeasures {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.casepage .pmeasures li {
+  position: relative;
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5) var(--space-6) var(--space-5) var(--space-6);
+  margin-bottom: var(--space-3);
+  overflow: hidden;
+}
+.casepage .pmeasures li::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--prule);
+}
+.casepage .pmeasures li[data-order="violated"]::before {
+  background: var(--pred);
+}
+.casepage .pm-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+.casepage .pm-measure {
+  font: 700 var(--t-ui) var(--brand-font-body);
+  color: var(--ink);
+}
+.casepage .pm-flag {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  white-space: nowrap;
+}
+.casepage .pmeasures li[data-order="violated"] .pm-flag {
+  color: var(--pred);
+}
+.casepage .pm-note {
+  margin: var(--space-2) 0 0;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink2);
+}
+
+/* ---- 5. Reading column + sticky side nav ---------------------------------- */
+.casepage .readzone {
+  background: var(--paper);
+  padding-block: clamp(40px, 5vw, 72px) clamp(56px, 7vw, 96px);
+}
+
+/* sticky side nav */
+
+/* reading column */
+.casepage .read {
+  max-width: 680px;
+  counter-reset: disp;
+}
+.casepage .read .lead {
+  font-family: var(--brand-font-display), serif;
+  font-size: clamp(19px, 2vw, 22px);
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 0 0 var(--space-2);
+}
+.casepage .read h2 {
+  margin: var(--space-14) 0 var(--space-2);
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--ink);
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: var(--t-h2);
+  line-height: 1.15;
+  color: var(--ink);
+  scroll-margin-top: var(--space-6);
+}
+.casepage .read h3 {
+  margin: var(--space-10) 0 0;
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  color: var(--pred);
+}
+.casepage .read h4 {
+  margin: var(--space-7) 0 0;
+  font: 700 var(--t-sm) var(--brand-font-body);
+  color: var(--ink);
+}
+.casepage .read p {
+  margin: var(--space-4) 0 0;
+  font-size: var(--t-body);
+  line-height: 1.7;
+  color: var(--ink2);
+}
+.casepage .read a {
+  color: var(--pred);
+  text-underline-offset: 2px;
+  word-break: break-word;
+}
+/* `.read p` is (0,2,1); this needs to match it to win, hence `.read p.disp`. */
+.casepage .read p.disp {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-5) var(--space-6) var(--space-5) var(--space-12);
+  position: relative;
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  border-left: 3px solid var(--pred);
+  font-size: var(--t-ui);
+  line-height: 1.6;
+  color: var(--ink);
+  counter-increment: disp;
+}
+.casepage .disp::before {
+  content: counter(disp);
+  position: absolute;
+  left: 17px;
+  top: 18px;
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--pred);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .findings {
+  margin: var(--space-5) 0 0;
+  padding: var(--space-2) var(--space-7) var(--space-6);
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+}
+.casepage .findings p {
+  font-size: var(--t-ui);
+  line-height: 1.65;
+}
+.casepage .findings .sub {
+  margin-top: var(--space-6);
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-h3);
+  font-weight: 700;
+  color: var(--ink);
+}
+.casepage .findings .pos {
+  color: var(--pred);
+  font-weight: 700;
+}
+.casepage .sources {
+  margin: var(--space-4) 0 0;
+  padding-left: var(--space-6);
+  display: grid;
+  gap: var(--space-4);
+}
+.casepage .sources li {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+}
+.casepage .cite-meta {
+  display: block;
+  margin-top: var(--space-1);
+  font-family: var(--brand-font-mono);
+  font-size: var(--t-cap);
+  color: var(--ink3);
+}
+
+/* ---- 6. Reader aids -------------------------------------------------------- */
+.casepage .aids {
+  background: var(--paper2);
+  border-top: 1px solid var(--prule);
+  padding-block: clamp(38px, 5vw, 64px);
+}
+/* Balanced columns: the four reference blocks flow and even out, so no
+   column ends with one block hanging beside a void. */
+.casepage .aids-grid {
+  columns: 2;
+  column-gap: clamp(30px, 4vw, 56px);
+}
+.casepage .aids-grid .aid {
+  break-inside: avoid;
+  margin-bottom: clamp(28px, 3.5vw, 44px);
+}
+/* labels sitting on paper rather than the dark ground */
+.casepage .aid .lbl,
+.casepage .lbl-onpaper {
+  color: var(--pgold);
+}
+.casepage .aid .lbl::after,
+.casepage .lbl-onpaper::after {
+  background: var(--prule);
+}
+.casepage .lbl-onpaper .lbl-sub {
+  color: var(--ink3);
+}
+.casepage .who {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.casepage .who li {
+  display: grid;
+  gap: var(--space-1);
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--prule);
+}
+.casepage .who li[data-kind="court"] {
+  border-left-color: var(--pgold);
+}
+.casepage .who b {
+  font: 700 var(--t-ui) var(--brand-font-body);
+  color: var(--ink);
+}
+.casepage .who span {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--ink2);
+}
+.casepage .glossary {
+  margin: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.casepage .glossary dt {
+  font: 700 var(--t-sm) var(--brand-font-body);
+  color: var(--ink);
+}
+.casepage .glossary dd {
+  margin: var(--space-1) 0 0;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink2);
+}
+.casepage .faq details {
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-3);
+}
+.casepage .faq summary {
+  cursor: pointer;
+  font: 700 var(--t-ui) var(--brand-font-body);
+  color: var(--ink);
+  list-style: none;
+}
+.casepage .faq summary::-webkit-details-marker {
+  display: none;
+}
+.casepage .faq summary::after {
+  content: "+";
+  float: right;
+  color: var(--pgold);
+  font-weight: 700;
+}
+.casepage .faq details[open] summary::after {
+  content: "–";
+}
+.casepage .faq p {
+  margin: var(--space-3) 0 0;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.casepage .related {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.casepage .related a {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+  background: var(--card);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  transition: box-shadow var(--dur) var(--ease),
+              transform var(--dur) var(--ease);
+}
+.casepage .related a:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.casepage .related b {
+  font: 700 var(--t-sm) var(--brand-font-body);
+  color: var(--ink);
+}
+.casepage .related span {
+  font-size: var(--t-cap);
+  color: var(--ink3);
+}
+
+/* ============================================================================
+   Instruments an award earns.
+
+   A judgment between States needs a map and an interim order; an investment
+   award needs money, attribution and a set-aside history. These blocks render
+   only when the summary fills them, and they keep the page's two grounds: the
+   measured instruments sit on the dark dashboard, the argument sits on paper.
+
+   Red still means a breach. The money bars run on a gold ramp, so a figure is
+   never mistaken for a finding.
+   ========================================================================== */
+
+.casepage .dash-note {
+  margin: var(--space-4) 0 0;
+  max-width: 62ch;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
