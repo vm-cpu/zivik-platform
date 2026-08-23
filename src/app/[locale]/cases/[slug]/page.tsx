@@ -23,6 +23,7 @@ import { dtekKrymenergo } from "@/content/summaries/dtek-krymenergo";
 import { echrUkraineNetherlands } from "@/content/summaries/echr-ukraine-netherlands";
 import { finlandTorden } from "@/content/summaries/finland-torden";
 import { hagueMh17 } from "@/content/summaries/hague-mh17";
+import { registryCases } from "@/content/cases";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -44,6 +45,30 @@ const SUMMARIES: Record<string, DecisionSummary> = {
   "finland-torden": finlandTorden,
   "hague-mh17": hagueMh17,
 };
+
+/**
+ * The registry (`cases.ts`) links cases by `summarySlug`; this map is what
+ * actually renders. A typo on either side used to build green and 404 in
+ * production — so the module refuses to build while they disagree.
+ */
+{
+  const linked = registryCases
+    .map((c) => c.summarySlug)
+    .filter((x): x is string => Boolean(x));
+  const orphanLinks = linked.filter((slug) => !(slug in SUMMARIES));
+  const orphanPages = Object.entries(SUMMARIES).filter(
+    ([, s]) => !registryCases.some((c) => c.id === s.caseId),
+  );
+  const unlinkedPages = Object.keys(SUMMARIES).filter((slug) => !linked.includes(slug));
+  if (orphanLinks.length || orphanPages.length || unlinkedPages.length) {
+    throw new Error(
+      `Registry ↔ SUMMARIES out of sync. ` +
+        `summarySlug without a page: [${orphanLinks}]; ` +
+        `page whose caseId is not in the registry: [${orphanPages.map(([k]) => k)}]; ` +
+        `page no registry row links to: [${unlinkedPages}]`,
+    );
+  }
+}
 
 /** Localized chrome labels (the summary body stays in its source language). */
 const T = {
@@ -378,9 +403,10 @@ export default async function CasePage({
     .filter((b) => b.kind === "h2")
     .map((b, i) => ({ id: `sec-${i}`, text: b.text.trim() }));
 
-  /** Official-text URL for a verdict track, when one exists. */
+  /** Official-text URL for a verdict track, when one exists. Only acronym
+   *  (string) abbrs double as verdict track keys. */
   const trackUrl = (track: string): string | undefined =>
-    instruments.find((i) => i.abbr === track)?.url;
+    instruments.find((i) => typeof i.abbr === "string" && i.abbr === track)?.url;
   const pagesLabel = judgment.pages
     ? pick(T.pagesPdf, locale).replace("{n}", String(judgment.pages))
     : null;
@@ -453,7 +479,7 @@ export default async function CasePage({
         mentions: instruments.map((i) => ({
           "@type": "Legislation",
           name: pick(i.name, locale),
-          alternateName: i.abbr,
+          alternateName: typeof i.abbr === "string" ? i.abbr : pick(i.abbr, locale),
           url: i.url,
         })),
       },
@@ -528,10 +554,10 @@ export default async function CasePage({
         <h1 className="official">{parties}</h1>
         <p className="parties">
           {instruments.map((inst, i) => (
-            <span key={inst.abbr}>
+            <span key={inst.url}>
               {i > 0 && <span className="sep"> · </span>}
               <a href={inst.url} target="_blank" rel="noopener noreferrer" title={pick(inst.name, locale)}>
-                {inst.abbr}
+                {typeof inst.abbr === "string" ? inst.abbr : pick(inst.abbr, locale)}
               </a>{" "}
               ({inst.year})
             </span>

@@ -1,0 +1,315 @@
+<title>Вивірка даних насвітло</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Charis+SIL:wght@700&family=Fira+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper:#faf8f5; --card:#ffffff; --ink:#211d1a; --ink2:#57504a; --faint:#8d857e;
+    --rule:#e6e0d8; --gold:#8a6e4b; --gold-soft:#f1ebe1; --red:#7f1716; --red-soft:#f6e9e7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:#16120f; --card:#211a16; --ink:#f4f1ea; --ink2:#c9beb5; --faint:#8d8279;
+      --rule:#382e27; --gold:#d9ab5e; --gold-soft:#2c231a; --red:#d9564b; --red-soft:#33201d;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#16120f; --card:#211a16; --ink:#f4f1ea; --ink2:#c9beb5; --faint:#8d8279;
+    --rule:#382e27; --gold:#d9ab5e; --gold-soft:#2c231a; --red:#d9564b; --red-soft:#33201d;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:400 15.5px/1.6 "Fira Sans",system-ui,sans-serif; }
+  .wrap { max-width:920px; margin-inline:auto; padding:44px 24px 96px; }
+  header.doc { border-bottom:3px solid var(--gold); padding-bottom:22px; margin-bottom:10px; }
+  .eyebrow { font:600 11px/1 "Fira Sans"; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+  h1 { margin:0 0 10px; font:700 clamp(28px,5vw,42px)/1.1 "Charis SIL",Georgia,serif; text-wrap:balance; }
+  .sub { color:var(--ink2); max-width:66ch; margin:0; }
+  .sub a { color:var(--gold); }
+  .meta { display:flex; flex-wrap:wrap; gap:6px 20px; margin-top:14px; font:500 12px/1.5 "IBM Plex Mono",monospace; color:var(--faint); }
+  .progress { position:sticky; top:0; z-index:3; background:var(--paper); display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--rule); margin-bottom:26px; }
+  .bar { flex:1; height:6px; background:var(--rule); border-radius:999px; overflow:hidden; }
+  .bar i { display:block; height:100%; width:0%; background:var(--gold); transition:width .2s; }
+  .count { font:500 13px/1 "IBM Plex Mono",monospace; color:var(--ink2); white-space:nowrap; }
+  .reset { font:600 11px/1 "Fira Sans"; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); background:none; border:1px solid var(--rule); border-radius:999px; padding:6px 12px; cursor:pointer; }
+  .reset:hover { color:var(--red); border-color:var(--red); }
+  .howto { background:var(--gold-soft); border-radius:12px; padding:14px 18px; color:var(--ink2); font-size:14px; margin-bottom:32px; }
+  .howto b { color:var(--ink); }
+  section { margin-bottom:36px; }
+  h2 { font:700 20px/1.3 "Charis SIL",Georgia,serif; margin:0 0 2px; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+  .pglink { font:600 11.5px/1 "Fira Sans"; letter-spacing:.04em; color:var(--gold); text-decoration:none; }
+  .h2sub { color:var(--faint); font:500 12px/1.5 "IBM Plex Mono",monospace; margin:0 0 12px; }
+  ul.check { list-style:none; margin:0; padding:0; }
+  ul.check li { display:grid; grid-template-columns:24px 1fr; gap:3px 12px; background:var(--card); border:1px solid var(--rule); border-radius:12px; padding:12px 16px; margin-bottom:8px; }
+  ul.check li[data-off="1"] { border-left:3px solid var(--red); }
+  input[type="checkbox"] { width:17px; height:17px; margin-top:3px; accent-color:var(--gold); cursor:pointer; }
+  li:has(input:checked) { opacity:.6; }
+  li:has(input:checked) .claim { text-decoration:line-through; text-decoration-color:var(--faint); text-decoration-thickness:1px; }
+  .claim { font-weight:500; font-size:14.5px; }
+  .claim .offrec { font:600 9.5px/1 "Fira Sans"; letter-spacing:.08em; text-transform:uppercase; color:var(--red); background:var(--red-soft); border-radius:999px; padding:3px 7px; margin-left:8px; white-space:nowrap; vertical-align:2px; }
+  .src { grid-column:2; font-size:13px; color:var(--ink2); }
+  .src a { color:var(--gold); text-decoration:none; border-bottom:1px solid color-mix(in srgb,var(--gold) 40%,transparent); }
+  .src a:hover { border-bottom-color:var(--gold); }
+  footer.doc { border-top:1px solid var(--rule); padding-top:18px; color:var(--faint); font-size:12.5px; }
+  @media print {
+    .progress,.reset,.howto { display:none; }
+    body { background:#fff; color:#000; }
+    ul.check li { break-inside:avoid; border-color:#ccc; }
+    li:has(input:checked) { opacity:1; }
+  }
+</style>
+
+<div class="wrap">
+<header class="doc">
+  <div class="eyebrow">насвітло · вивірка даних</div>
+  <h1>Вивірка даних насвітло</h1>
+  <p class="sub">Усі 8 сторінок рішень платформи: кожне ключове твердження візуального шару — з джерелом поруч.
+    Дослівні тексти самері звіряються з відповідними вкладками
+    «Summary of cases ZIVIK»; тег <span style="color:var(--red);font-weight:600">поза рішенням</span> позначає
+    дані не з тексту рішення (преса, НУО, подальші події) — їх перевіряють за вказаним джерелом.</p>
+  <div class="meta">
+    <span>62 пункти · 8 справ</span>
+    <span>дані станом на 21–22.08.2026</span>
+    <span>трейли: docs/research/ у репозиторії</span>
+  </div>
+</header>
+
+<div class="progress">
+  <div class="bar"><i id="fill"></i></div>
+  <span class="count" id="count">0 / 62</span>
+  <button class="reset" id="reset" type="button">Скинути</button>
+</div>
+
+<div class="howto"><b>Як користуватись:</b> відкривайте джерело, звіряйте, ставте відмітку — стан зберігається у вашому браузері (для кожного пункту окремо, тож можна працювати кількома сесіями чи розділити справи між людьми на різних машинах — потім кожен надсилає свій підсумок).</div>
+
+<section data-case="icc">
+  <h2>1 · Ситуація в Україні (МКС, ICC-01/22) <a class="pglink" href="https://zivik-platform.vercel.app/uk/cases/icc-ukraine" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="icc">0 / 20</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="icc-0"><span class="claim">6 ордерів на арешт — 17.03.2023, 05.03.2024, 24.06.2024</span>
+      <span class="src">МКС: <a href="https://www.icc-cpi.int/news/situation-ukraine-icc-judges-issue-arrest-warrants-against-vladimir-vladimirovich-putin-and" target="_blank" rel="noopener">17.03.2023</a> · <a href="https://www.icc-cpi.int/news/situation-ukraine-icc-judges-issue-arrest-warrants-against-sergei-ivanovich-kobylash-and" target="_blank" rel="noopener">05.03.2024</a> · <a href="https://www.icc-cpi.int/news/situation-ukraine-icc-judges-issue-arrest-warrants-against-sergei-kuzhugetovich-shoigu-and" target="_blank" rel="noopener">24.06.2024</a></span></li>
+    <li><input type="checkbox" data-k="icc-1"><span class="claim">43 держави передали ситуацію (38+Литва+Японія+Пн.Мак.+Чорногорія+Чилі)</span>
+      <span class="src"><a href="https://www.icc-cpi.int/Pages/item.aspx?name=2022-prosecutor-statement-referrals-ukraine" target="_blank" rel="noopener">заява 02.03.2022</a> · <a href="https://www.icc-cpi.int/Pages/item.aspx?name=20220311-prosecutor-statement-ukraine" target="_blank" rel="noopener">11.03.2022</a> · PDF: <a href="https://www.icc-cpi.int/sites/default/files/2022-04/JAPAN_referral.pdf" target="_blank" rel="noopener">JP</a> <a href="https://www.icc-cpi.int/sites/default/files/2022-04/State-Party-Referral-North-Macedonia.pdf" target="_blank" rel="noopener">MK</a> <a href="https://www.icc-cpi.int/sites/default/files/2022-04/20220321164751497-ukraine-referral-montenegro.pdf" target="_blank" rel="noopener">ME</a> <a href="https://www.icc-cpi.int/sites/default/files/2022-04/20220401-Chile-Letter-to-OTP.PDF" target="_blank" rel="noopener">CL</a></span></li>
+    <li><input type="checkbox" data-k="icc-2"><span class="claim">125 держав-учасниць зобов’язані виконати ордери</span>
+      <span class="src"><a href="https://www.icc-cpi.int/news/icc-welcomes-ukraine-new-state-party" target="_blank" rel="noopener">МКС: Україна — нова учасниця</a> · <a href="https://www.coalitionfortheicc.org/ukraine-becomes-125th-ICC-state-party" target="_blank" rel="noopener">CICC: 125-та</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="icc-3"><span class="claim">0 під вартою; МКС не судить заочно (ст. 63)<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.icc-cpi.int/sites/default/files/RS-Eng.pdf" target="_blank" rel="noopener">Римський статут (PDF)</a></span></li>
+    <li><input type="checkbox" data-k="icc-4"><span class="claim">09.04.2014 — перша заява за ст. 12(3): 21.11.2013–22.02.2014</span>
+      <span class="src"><a href="https://www.icc-cpi.int/itemsDocuments/997/declarationRecognitionJuristiction09-04-2014.pdf" target="_blank" rel="noopener">декларація (PDF)</a></span></li>
+    <li><input type="checkbox" data-k="icc-5"><span class="claim">08.09.2015 — друга заява: безстроково з 20.02.2014</span>
+      <span class="src"><a href="https://www.icc-cpi.int/iccdocs/other/Ukraine_Art_12-3_declaration_08092015.pdf" target="_blank" rel="noopener">декларація (PDF)</a></span></li>
+    <li><input type="checkbox" data-k="icc-6"><span class="claim">11.12.2020 — висновок попереднього вивчення</span>
+      <span class="src"><a href="https://www.icc-cpi.int/Pages/item.aspx?name=201211-otp-statement-ukraine" target="_blank" rel="noopener">заява OTP</a></span></li>
+    <li><input type="checkbox" data-k="icc-7"><span class="claim">28.02.2022 — Прокурор оголошує намір відкрити розслідування</span>
+      <span class="src"><a href="https://www.icc-cpi.int/Pages/item.aspx?name=20220228-prosecutor-statement-ukraine" target="_blank" rel="noopener">заява Прокурора</a></span></li>
+    <li><input type="checkbox" data-k="icc-8"><span class="claim">01–02.03.2022 — 39 звернень; розслідування відкрито без судового дозволу</span>
+      <span class="src"><a href="https://www.icc-cpi.int/Pages/item.aspx?name=2022-prosecutor-statement-referrals-ukraine" target="_blank" rel="noopener">заява 02.03.2022</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="icc-9"><span class="claim">03.09.2024 — Монголія приймає Путіна без арешту<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.asil.org/ILIB/icc-finds-mongolia-violated-rome-statute-failing-arrest-putin" target="_blank" rel="noopener">ASIL</a></span></li>
+    <li><input type="checkbox" data-k="icc-10"><span class="claim">24.10.2024 — Палата: Монголія порушила обов’язок; імунітет глави держави перед МКС не діє</span>
+      <span class="src"><a href="https://www.icc-cpi.int/news/ukraine-situation-icc-pre-trial-chamber-ii-finds-mongolia-failed-cooperate-arrest-and" target="_blank" rel="noopener">повідомлення МКС</a> · <a href="https://www.icc-cpi.int/sites/default/files/CourtRecords/0902ebd1809d1971.pdf" target="_blank" rel="noopener">рішення (PDF)</a></span></li>
+    <li><input type="checkbox" data-k="icc-11"><span class="claim">01.01.2025 — Україна 125-та учасниця; заява за ст. 124 (7 років, власні громадяни)</span>
+      <span class="src"><a href="https://www.icc-cpi.int/news/icc-welcomes-ukraine-new-state-party" target="_blank" rel="noopener">МКС</a> · <a href="https://brill.com/view/journals/icla/25/6/article-p1040_003.xml" target="_blank" rel="noopener">Intl Crim. L. Rev.</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="icc-12"><span class="claim">25.06.2025 — угода про Спецтрибунал щодо агресії (Україна–РЄ)<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.coe.int/en/web/portal/-/ukraine-and-the-council-of-europe-sign-agreement-on-establishing-a-special-tribunal-for-the-crime-of-aggression-against-ukraine" target="_blank" rel="noopener">Рада Європи</a> · <a href="https://asil.org/ilib/council-europe-and-ukraine-establish-special-tribunal-crime-aggression-against-ukraine/" target="_blank" rel="noopener">ASIL</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="icc-13"><span class="claim">жовт.–груд. 2025 — Таджикистан не виконує ордер; заочні «вироки» Хану і 8 суддям (3,5–15 р.)<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.coalitionfortheicc.org/news/tajikistans-failure-arrest-vladimir-putin-undermines-fight-against-impunity" target="_blank" rel="noopener">CICC</a> · <a href="https://www.themoscowtimes.com/2025/12/12/russia-jails-icc-judges-prosecutor-in-absentia-over-putin-arrest-warrant-a91419" target="_blank" rel="noopener">Moscow Times</a> · <a href="https://www.ohchr.org/en/press-releases/2026/02/russia-must-end-reprisals-and-intimidation-icc-prosecutor-and-judges-un" target="_blank" rel="noopener">OHCHR</a></span></li>
+    <li><input type="checkbox" data-k="icc-14"><span class="claim">Хвиля 1 (Путін, Львова-Бєлова): ст. 8(2)(a)(vii), 8(2)(b)(viii); форми 25(3)(a), 28(b)</span>
+      <span class="src"><a href="https://www.icc-cpi.int/news/situation-ukraine-icc-judges-issue-arrest-warrants-against-vladimir-vladimirovich-putin-and" target="_blank" rel="noopener">повідомлення МКС</a> + вкладка ICC у доці</span></li>
+    <li><input type="checkbox" data-k="icc-15"><span class="claim">Хвилі 2–3 (Кобилаш, Соколов, Шойгу, Герасимов): ст. 8(2)(b)(ii), 8(2)(b)(iv), 7(1)(k); кампанія ≥ 10.10.2022–09.03.2023</span>
+      <span class="src"><a href="https://www.icc-cpi.int/news/situation-ukraine-icc-judges-issue-arrest-warrants-against-sergei-ivanovich-kobylash-and" target="_blank" rel="noopener">05.03.2024</a> · <a href="https://www.icc-cpi.int/news/situation-ukraine-icc-judges-issue-arrest-warrants-against-sergei-kuzhugetovich-shoigu-and" target="_blank" rel="noopener">24.06.2024</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="icc-16"><span class="claim">19 546+ дітей у базі «Діти війни»; 1 859 повернуто (~9,5%, груд. 2025); оцінки до 150–300 тис.<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://kyivindependent.com/ukraine-says-1-859-abducted-children-have-been-returned-zelenska-tells-paris-summit/" target="_blank" rel="noopener">Kyiv Independent</a> · <a href="https://www.eeas.europa.eu/delegations/vienna-international-organisations/deportation-ukrainian-children-amidst-russia%E2%80%99s-war-aggression-how-ensure-accountability-and-children_en" target="_blank" rel="noopener">EEAS</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="icc-17"><span class="claim">~12 млн без світла взимку 2022–23 (кампанія за ордерами 2–3)<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.hrw.org/news/2024/06/26/new-icc-warrants-issued-ukraine-crimes" target="_blank" rel="noopener">HRW</a> · <a href="https://www.justsecurity.org/97300/icc-warrants-ukraines-power-grid/" target="_blank" rel="noopener">Just Security</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="icc-18"><span class="claim">Путін — перший глава держави-P5 під ордером МКС; другий чинний глава після аль-Башира<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.usip.org/publications/2023/03/how-iccs-warrant-putin-could-impact-ukraine-war" target="_blank" rel="noopener">USIP</a> · <a href="https://www.justsecurity.org/85529/the-icc-goes-straight-to-the-top-arrest-warrant-issued-for-putin/" target="_blank" rel="noopener">Just Security</a></span></li>
+    <li><input type="checkbox" data-k="icc-19"><span class="claim">EN-тіло = вкладка «ICC» дока дослівно (24 блоки); UA-переклад — чернетка; 17 лінків дока збережені</span>
+      <span class="src">звірити з вкладкою ICC · файл icc-ukraine.uk.json</span></li>
+  </ul>
+</section>
+
+<section data-case="icj166">
+  <h2>2 · МКБФТ і МКЛРД (МС ООН, справа 166) <a class="pglink" href="https://zivik-platform.vercel.app/uk/cases/icj-cerd-icsft" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="icj166">0 / 5</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="icj166-0"><span class="claim">KPI: 2 конвенції · 4 порушення · 7 років · 213 сторінок</span>
+      <span class="src"><a href="https://www.icj-cij.org/sites/default/files/case-related/166/166-20240131-jud-01-00-en.pdf" target="_blank" rel="noopener">рішення 31.01.2024 (PDF, 213 с.)</a> · <a href="https://www.icj-cij.org/case/166" target="_blank" rel="noopener">справа 166</a></span></li>
+    <li><input type="checkbox" data-k="icj166-1"><span class="claim">Вердикти: ICSFT ст. 9(1) — порушення; CERD ст. 2(1)(a)+5(e)(v) (освіта українською) — порушення; решту вимог відхилено</span>
+      <span class="src">дослівний текст розд. 4 (диспозитив) + PDF</span></li>
+    <li><input type="checkbox" data-k="icj166-2"><span class="claim">Наказ 19.04.2017: Меджліс — порушено (§392); освіта — дотримано (§395); загострення спору — порушено (§397–398)</span>
+      <span class="src">дослівний текст + PDF §§ 392–398</span></li>
+    <li><input type="checkbox" data-k="icj166-3"><span class="claim">Тлумачення: «кошти» ICSFT — лише фінансові ресурси; дискримінація за наслідком; «чисті руки» відхилено</span>
+      <span class="src">дослівний текст розд. 3 + <a href="https://www.ejiltalk.org/human-rights-reparations-and-fact-finding-quandaries-in-the-2024-icj-judgments-in-ukraine-v-russian-federation/" target="_blank" rel="noopener">EJIL:Talk!</a></span></li>
+    <li><input type="checkbox" data-k="icj166-4"><span class="claim">EN-тіло = вкладка «ICSFT and CERD» дока (✅); UA-переклад — чернетка</span>
+      <span class="src">звірити з вкладкою дока</span></li>
+  </ul>
+</section>
+
+<section data-case="icj182">
+  <h2>3 · Звинувачення у геноциді (МС ООН, справа 182) <a class="pglink" href="https://zivik-platform.vercel.app/uk/cases/icj-genocide" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="icj182">0 / 4</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="icj182-0"><span class="claim">KPI: 6 заперечень Росії — 5 відхилено, 1 задоволено; 32 держави-інтервенти</span>
+      <span class="src"><a href="https://www.icj-cij.org/sites/default/files/case-related/182/182-20240202-jud-01-00-en.pdf" target="_blank" rel="noopener">рішення 02.02.2024 (PDF, 70 с.)</a> · <a href="https://www.icj-cij.org/case/182" target="_blank" rel="noopener">справа 182</a></span></li>
+    <li><input type="checkbox" data-k="icj182-1"><span class="claim">Юрисдикція за ст. IX підтверджена щодо вимоги (b); вимоги (c) і (d) — поза юрисдикцією</span>
+      <span class="src">диспозитив у PDF</span></li>
+    <li><input type="checkbox" data-k="icj182-2"><span class="claim">Позов подано 26.02.2022; голосування Суду за пунктами диспозитиву</span>
+      <span class="src">PDF + дослівний текст</span></li>
+    <li><input type="checkbox" data-k="icj182-3"><span class="claim">EN-тіло = вкладка «Genocide Convention» дока (✅); UA-переклад — чернетка</span>
+      <span class="src">звірити з вкладкою дока</span></li>
+  </ul>
+</section>
+
+<section data-case="oschadbank">
+  <h2>4 · Ощадбанк проти РФ (PCA 2016-14) <a class="pglink" href="https://zivik-platform.vercel.app/uk/cases/oschadbank" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="oschadbank">0 / 6</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="oschadbank-0"><span class="claim">Диспозитив: $1 111 300 729 = 597 771 793 + 484 616 757 + 28 912 179; витрати $731 400,00 + $3 134 907,34; LIBOR 6м + 2% з 31.03.2014</span>
+      <span class="src"><a href="https://jusmundi.com/en/document/decision/en-oschadbank-v-russian-federation-none-currently-available-friday-1st-january-2016#decision_4484" target="_blank" rel="noopener">текст рішення 26.11.2018</a></span></li>
+    <li><input type="checkbox" data-k="oschadbank-1"><span class="claim">Масштаб філії: 294 відділення · 45% кредитування · 16,5% депозитів · 85 оренд · 32 млн грн + 605 млн ₽ у рейдах</span>
+      <span class="src">дослівний текст (факт. обставини)</span></li>
+    <li><input type="checkbox" data-k="oschadbank-2"><span class="claim">Суди Франції: скасовано 30.03.2021 → касація 07.12.2022 (№ 21-15.390) → залишено в силі 01.07.2025 (№ 24/05336)</span>
+      <span class="src"><a href="https://jusmundi.com/en/document/decision/fr-oschadbank-v-russian-federation-arret-de-la-cour-de-cassation-wednesday-7th-december-2022" target="_blank" rel="noopener">касація</a> · <a href="https://jusmundi.com/en/document/decision/fr-oschadbank-v-russian-federation-arret-de-la-cour-d-appel-de-paris-pole-5-chambre-16-24-05336-tuesday-1st-july-2025" target="_blank" rel="noopener">апеляція 2025</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="oschadbank-3"><span class="claim">≈ €87 млн активів РФ арештовано у Франції (квіт. 2025) ≈ 6% основної суми<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.iareporter.com/articles/analysis-unpacking-the-reasons-that-led-the-paris-court-of-appeal-to-dismiss-russias-bid-to-set-aside-the-oschadbank-v-russia-crimea-award/" target="_blank" rel="noopener">IAReporter</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="oschadbank-4"><span class="claim">24.07.2025 — повідомлення про другий спір (Донеччина, Луганщина, Херсонщина, Запоріжжя); склад формується<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.iareporter.com/articles/ukraines-oschadbank-submits-notice-of-treaty-dispute-to-russia-over-donbass-kherson-and-zaporizhzhia-assets/" target="_blank" rel="noopener">IAReporter</a> · <a href="https://jusmundi.com/en/document/other/en-oschadbank-v-russian-federation-ii-notice-of-dispute-thursday-24th-july-2025" target="_blank" rel="noopener">Jus Mundi (II)</a></span></li>
+    <li><input type="checkbox" data-k="oschadbank-5"><span class="claim">EN-тіло = вкладка «Oschadbank» дока (✅); UA-переклад — чернетка (104 блоки 1:1)</span>
+      <span class="src">звірити з вкладкою дока</span></li>
+  </ul>
+</section>
+
+<section data-case="dtek">
+  <h2>5 · ДТЕК Крименерго проти РФ (PCA 2018-41) <a class="pglink" href="https://zivik-platform.vercel.app/uk/cases/dtek-krymenergo" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="dtek">0 / 7</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="dtek-0"><span class="claim">Диспозитив: $207 800 000 (більшістю) + LIBOR 3м/SOFR + 1% з 22.01.2015; витрати $1 362 422,88 + $9 401 644,76; вимога ≥ $421 198 000</span>
+      <span class="src"><a href="https://www.italaw.com/sites/default/files/case-documents/180426.pdf" target="_blank" rel="noopener">рішення 01.11.2023 (PDF)</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="dtek-1"><span class="claim">≈ $267 млн з відсотками на день рішення (цифра преси)<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://kyivindependent.com/energy-giant-dtek-awarded-267-million-from-russia-in-compensation-for-seized-assets/" target="_blank" rel="noopener">Kyiv Independent</a> · <a href="https://www.iareporter.com/articles/dtek-v-russia-crimea-arbitration-concludes-with-267-million-usd-award-in-favor-of-ukrainian-claimant/" target="_blank" rel="noopener">IAReporter</a></span></li>
+    <li><input type="checkbox" data-k="dtek-2"><span class="claim">Масштаб: 27 000 км² · 780 000+ споживачів · 23+2 мережі · 57,6% частка (2006–2012)</span>
+      <span class="src">дослівний текст (факт. обставини)</span></li>
+    <li><input type="checkbox" data-k="dtek-3"><span class="claim">Голосування: «територія» = контроль — більшістю (2–1); ст. 12 «зроблено» = набуття власності після 1992 — одностайно (3–0); естопель</span>
+      <span class="src">дослівний текст + <a href="https://www.iareporter.com/articles/analysis-uncitral-tribunal-in-dtek-krymenergo-v-russia-upholds-jurisdiction-over-claim-for-expropriation-of-crimean-assets-rejects-corruptions-allegations-and-awards-200-million-usd-to-the-ukrain/" target="_blank" rel="noopener">аналіз IAReporter</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="dtek-4"><span class="claim">Стягнення-2026: США відмовили в імунітеті (лют.) і в зупинці (квіт.); Нідерланди підтвердили арешт акцій Gazprom Intl (бер.)<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.iareporter.com/arbitration-cases/dtek-krymenergo-v-russia/" target="_blank" rel="noopener">IAReporter, картка справи</a> · <a href="https://jusmundi.com/en/document/pdf/other/en-pjsc-dtek-krymenergo-v-russian-federation-petition-to-confirm-foreign-arbitration-award-tuesday-7th-november-2023" target="_blank" rel="noopener">петиція США 07.11.2023</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="dtek-5"><span class="claim">Статус реєстру змінено «Виконання зупинено» → «Виконання» (відмова в stay, квіт. 2026)<span class="offrec">поза рішенням</span></span>
+      <span class="src">обґрунтування: docs/research/dtek-krymenergo-sources.md</span></li>
+    <li><input type="checkbox" data-k="dtek-6"><span class="claim">EN-тіло = вкладка «DTEK» дока (БЕЗ ✅, диспозитив обірваний на «; and») — переінгест після фіналізації; UA — чернетка</span>
+      <span class="src">звірити з вкладкою дока</span></li>
+  </ul>
+</section>
+
+<section data-case="echr">
+  <h2>6 · Україна і Нідерланди проти Росії (ЄСПЛ) <a class="pglink" href="https://zivik-platform.vercel.app/uk/cases/echr-ukraine-netherlands" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="echr">0 / 7</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="echr-0"><span class="claim">Рішення по суті 09.07.2025, Велика палата; 4 заяви: 8019/16, 43800/14, 28525/20, 11055/22</span>
+      <span class="src"><a href="https://hudoc.echr.coe.int/eng#{%22appno%22:[%2243800/14%22],%22itemid%22:[%22001-244292%22]}" target="_blank" rel="noopener">HUDOC 001-244292</a> · <a href="https://www.echr.coe.int/w/ukraine-and-the-netherlands-v.-russia-nos.-8019/16-43800/14-and-28525/20-1" target="_blank" rel="noopener">сторінка справи</a></span></li>
+    <li><input type="checkbox" data-k="echr-1"><span class="claim">Порушення: ст. 2, 3, 4§2, 5, 9, 10, P1-1, P1-2, 14 — одностайно; діти (ст. 3, 5, 8 + P4-2) — більшістю</span>
+      <span class="src">дослівний текст (перелік висновків) + HUDOC</span></li>
+    <li><input type="checkbox" data-k="echr-2"><span class="claim">Фактичний контроль над районами «ДНР»/«ЛНР» з 11.05.2014; присвоєння автоматичне</span>
+      <span class="src">дослівний текст + HUDOC</span></li>
+    <li><input type="checkbox" data-k="echr-3"><span class="claim">Юрисдикція до 16.09.2022 (виключення з РЄ 16.03.2022)</span>
+      <span class="src">дослівний текст + <a href="https://www.twentyessex.com/grand-chamber-of-the-european-court-of-human-rights-issues-judgment-in-ukraine-and-the-netherlands-v-russian-federation/" target="_blank" rel="noopener">Twenty Essex</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="echr-4"><span class="claim">MH17: 298 загиблих, 196 — нідерландці; сатисфакцію зарезервовано<span class="offrec">поза рішенням</span></span>
+      <span class="src">сторінка справи ЄСПЛ вище</span></li>
+    <li data-off="1"><input type="checkbox" data-k="echr-5"><span class="claim">KPI «11 статей» = унікальні статті з переліку висновків (методика — в research-файлі)<span class="offrec">поза рішенням</span></span>
+      <span class="src">docs/research/echr-ukraine-netherlands-sources.md</span></li>
+    <li><input type="checkbox" data-k="echr-6"><span class="claim">EN-тіло = вкладка «ECHR mh-17» дока (БЕЗ ✅); UA — чернетка</span>
+      <span class="src">звірити з вкладкою дока</span></li>
+  </ul>
+</section>
+
+<section data-case="finland">
+  <h2>7 · Фінляндія проти Петровського (Гельсінкі) <a class="pglink" href="https://zivik-platform.vercel.app/uk/cases/finland-torden" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="finland">0 / 4</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="finland-0"><span class="claim">П’ять обвинувачень (прапор → відмова в пощаді); засідка 05.09.2014, 22+ загиблих; гл. 11 розд. 5(1) КК</span>
+      <span class="src">дослівний текст + <a href="https://www.finlex.fi/fi/laki/kaannokset/1889/en18890039" target="_blank" rel="noopener">Finlex, гл. 11</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="finland-1"><span class="claim">Вирок 14.03.2025: винен за 4 з 5 пунктів, довічне; апеляцію заявлено<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.pravda.com.ua/eng/news/2025/03/14/7502855/" target="_blank" rel="noopener">УП</a> · <a href="https://www.aljazeera.com/amp/news/2025/3/14/finnish-court-convicts-russian-man-for-war-crimes-in-ukraine" target="_blank" rel="noopener">Al Jazeera (4 з 5)</a> · <a href="https://www.themoscowtimes.com/2025/03/14/finnish-court-sentences-russian-ultranationalist-to-life-in-prison-for-war-crimes-in-ukraine-a88362" target="_blank" rel="noopener">Moscow Times</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="finland-2"><span class="claim">Раніше відмовлено у видачі Україні (умови тримання) — тому судили у Фінляндії<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.ejiltalk.org/prosecuting-members-of-russian-mercenary-groups-for-war-crimes-a-remedy-for-victims/" target="_blank" rel="noopener">EJIL:Talk! (MacLeod & Marchuk)</a></span></li>
+    <li><input type="checkbox" data-k="finland-3"><span class="claim">EN-тіло = вкладка «Finland v Yan Petrovsky» дока (БЕЗ ✅); UA — чернетка</span>
+      <span class="src">звірити з вкладкою дока</span></li>
+  </ul>
+</section>
+
+<section data-case="hague">
+  <h2>8 · Справа MH17 (Окружний суд Гааги) <a class="pglink" href="https://zivik-platform.vercel.app/uk/cases/hague-mh17" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="hague">0 / 6</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="hague-0"><span class="claim">Вирок 17.11.2022: Гіркін, Дубинський, Харченко — довічне заочно; Пулатов виправданий; два пункти (падіння + вбивство 298)</span>
+      <span class="src"><a href="https://uitspraken.rechtspraak.nl/details?id=ECLI:NL:RBDHA:2022:14037" target="_blank" rel="noopener">вирок (rechtspraak.nl)</a> · <a href="https://www.courtmh17.com/en/summaries-and-news/news/summary-of-the-day-in-court-17-november-2022-judgment.htm" target="_blank" rel="noopener">підсумок дня, courtmh17</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="hague-1"><span class="claim">Вирок остаточний: ні прокуратура, ні засуджені не оскаржили<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.prosecutionservice.nl/topics/m/mh17-plane-crash/prosecution-and-trial" target="_blank" rel="noopener">прокуратура NL</a></span></li>
+    <li data-off="1"><input type="checkbox" data-k="hague-2"><span class="claim">€16 млн+ компенсацій родинам<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://nltimes.nl/2022/11/17/three-convicted-sentenced-life-prison-downing-flight-mh17-one-acquitted" target="_blank" rel="noopener">NL Times</a> · courtmh17 (вище)</span></li>
+    <li data-off="1"><input type="checkbox" data-k="hague-3"><span class="claim">JIT: висновки про екіпаж і вертикаль 08.02.2023; розслідування призупинено<span class="offrec">поза рішенням</span></span>
+      <span class="src"><a href="https://www.prosecutionservice.nl/topics/m/mh17-plane-crash" target="_blank" rel="noopener">прокуратура NL, MH17</a></span></li>
+    <li><input type="checkbox" data-k="hague-4"><span class="claim">Хвостові виноски дока [1]–[5] — з інших вкладок, у verbatim НЕ включені</span>
+      <span class="src">docs/research/hague-mh17-sources.md</span></li>
+    <li><input type="checkbox" data-k="hague-5"><span class="claim">EN-тіло = вкладка «District Court of The Hague» дока (БЕЗ ✅); UA — чернетка</span>
+      <span class="src">звірити з вкладкою дока</span></li>
+  </ul>
+</section>
+
+<section data-case="general">
+  <h2>Загальне <a class="pglink" href="https://zivik-platform.vercel.app/uk" target="_blank" rel="noopener">сторінка ↗</a></h2>
+  <p class="h2sub"><span class="sec-count" data-sec="general">0 / 3</span></p>
+  <ul class="check">
+    <li><input type="checkbox" data-k="general-0"><span class="claim">Усі UA-переклади тіл самері — чернетки, потребують юридичної вичитки</span>
+      <span class="src">файли *.uk.json у src/content/summaries/</span></li>
+    <li><input type="checkbox" data-k="general-1"><span class="claim">Чотири вкладки дока без ✅ (DTEK, ECHR, Фінляндія, Гаага) — після фіналізації переінгестити verbatim</span>
+      <span class="src">пам’ятка в кожному модулі</span></li>
+    <li><input type="checkbox" data-k="general-2"><span class="claim">Мітки «станом на» (asOf) відповідають датам останньої перевірки джерел</span>
+      <span class="src">21–22.08.2026, research-файли в docs/research/</span></li>
+  </ul>
+</section>
+
+<footer class="doc">
+  Підготовлено для юридичної вивірки платформи насвітло · повні дослідницькі трейли — docs/research/*.md у репозиторії zivik-platform ·
+  дослівні тексти звіряються з Google-доком «Summary of cases ZIVIK».
+</footer>
+</div>
+
+<script>
+(function () {
+  var KEY = "nasvitlo-verify-v1";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+  function update() {
+    var done = 0;
+    var per = {};
+    boxes.forEach(function (b) {
+      var cid = b.dataset.k.split("-")[0];
+      per[cid] = per[cid] || [0, 0];
+      per[cid][1]++;
+      if (b.checked) { done++; per[cid][0]++; }
+    });
+    document.getElementById("count").textContent = done + " / " + boxes.length;
+    document.getElementById("fill").style.width = (100 * done / boxes.length) + "%";
+    Object.keys(per).forEach(function (cid) {
+      var el = document.querySelector('.sec-count[data-sec="' + cid + '"]');
+      if (el) el.textContent = per[cid][0] + " / " + per[cid][1];
+    });
+  }
+  boxes.forEach(function (b) {
+    if (saved[b.dataset.k]) b.checked = true;
+    b.addEventListener("change", function () {
+      saved[b.dataset.k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      update();
+    });
+  });
+  document.getElementById("reset").addEventListener("click", function () {
+    if (!confirm("Зняти всі відмітки?")) return;
+    boxes.forEach(function (b) { b.checked = false; });
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    update();
+  });
+  update();
+})();
+</script>

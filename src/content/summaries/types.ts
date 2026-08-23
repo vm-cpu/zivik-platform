@@ -215,7 +215,8 @@ export interface Theatre {
 
 /** A treaty the case turns on, linked to its official text. */
 export interface Instrument {
-  abbr: string;
+  /** Short label; localize when it is a phrase ("КК Фінляндії"), not an acronym. */
+  abbr: string | Localized;
   name: Localized;
   year: number;
   /** Official published text of the convention. */

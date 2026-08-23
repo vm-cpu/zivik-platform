@@ -197,7 +197,7 @@ export const hagueMh17: DecisionSummary = {
 
   instruments: [
     {
-      abbr: "КК Нідерландів",
+      abbr: { uk: "КК Нідерландів", en: "Dutch Criminal Code" },
       name: {
         uk: "Кримінальний кодекс Нідерландів (статті про спричинення авіакатастрофи та вбивство)",
         en: "Dutch Criminal Code (causing an aircraft to crash; murder)",

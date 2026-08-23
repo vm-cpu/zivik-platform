@@ -185,7 +185,7 @@ export const finlandTorden: DecisionSummary = {
 
   instruments: [
     {
-      abbr: "КК Фінляндії",
+      abbr: { uk: "КК Фінляндії", en: "Finnish Criminal Code" },
       name: {
         uk: "Кримінальний кодекс Фінляндії, глава 11, розділ 5(1) (212/2008)",
         en: "Finnish Criminal Code, Chapter 11, Section 5(1) (212/2008)",
