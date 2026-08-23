@@ -28,6 +28,7 @@ export const hagueMh17: DecisionSummary = {
   },
 
   asOf: "2026-08-22",
+  provisionalSource: true,
 
   forum: {
     institution: { uk: "Окружний суд Гааги", en: "District Court of The Hague" },

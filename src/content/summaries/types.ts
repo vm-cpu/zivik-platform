@@ -334,6 +334,12 @@ export interface DecisionSummary extends VerbatimSummary {
    * the structured data.
    */
   asOf?: string;
+  /**
+   * The source doc's tab for this case is not yet marked finalized: the
+   * verbatim was ingested from a working draft and will be re-ingested when
+   * the tab is done. Renders a provenance notice above the summary text.
+   */
+  provisionalSource?: boolean;
   plain: PlainLanguage;
   glossary: GlossaryTerm[];
   whoIsWho: WhoEntry[];

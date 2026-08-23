@@ -32,6 +32,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
   },
 
   asOf: "2026-08-22",
+  provisionalSource: true,
 
   forum: {
     institution: {

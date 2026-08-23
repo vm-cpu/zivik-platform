@@ -224,3 +224,19 @@ Enter/Space work without handlers. No custom key handling exists anywhere
 4. **Point interaction transitions at `--dur`**; leave illustration timings.
 5. Extend `--t-*` and `--space-*` to `home.css` and `registry.css` — they are
    adopted on the decision page only (see the design-system audit).
+
+---
+
+## Addendum (2026-08): the decision-page instrument system
+
+Everything above measured the site as of the first decision page. Since
+then the decision template grew an instrument system (warrant ladder,
+objection cards with bench votes, money bars, filterable timeline, unified
+page navigation with a vertical rail ≥1440px) and the monolithic `case.css`
+was split into `cases/case/*.css`, imported in cascade order. The rules,
+the component inventory and the content contract now live in
+[ARCHITECTURE.md](ARCHITECTURE.md#decision-pages-one-template-optional-instruments-added-2026-08)
+— measurements in this file still hold where the components they describe
+survive, but treat ARCHITECTURE.md as current where the two disagree.
+Closed since this handoff: `:disabled` styling (site-wide), the skip link,
+and the Share bar (removed with its `aria-live` gap).

@@ -350,3 +350,15 @@
   color: var(--muted);
 }
 
+
+/* provenance notice at the head of the summary text: quiet, but on record */
+.casepage .provenance {
+  margin: 0 0 var(--space-6);
+  padding: var(--space-3) var(--space-5);
+  border-left: 3px solid var(--pgold);
+  background: var(--paper2);
+  border-radius: var(--r-sm);
+  font-size: var(--t-cap);
+  line-height: 1.55;
+  color: var(--ink2);
+}

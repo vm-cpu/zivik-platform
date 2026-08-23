@@ -89,6 +89,14 @@ const T = {
   notStanding: { uk: "Рішення скасовано", en: "Award annulled" },
   seatLabel: { uk: "Місце арбітражу", en: "Seat" },
   skip: { uk: "Перейти до змісту", en: "Skip to content" },
+  provisionalNote: {
+    uk: "Текст самері — попередня версія: вкладку в робочому документі ще не фіналізовано. Після фіналізації текст на цій сторінці буде оновлено.",
+    en: "The summary text is a preliminary version: its tab in the working document is not yet finalized. This page will be updated when it is.",
+  },
+  translationNote: {
+    uk: "Український переклад — чернетка, очікує юридичної вичитки; мовою запису є англійська.",
+    en: "The Ukrainian translation is a draft pending legal review; English is the language of record.",
+  },
 
   // Warrant wall.
   chargesLbl: { uk: "Звинувачення", en: "Charges" },
@@ -920,6 +928,12 @@ export default async function CasePage({
       <section className="readzone" id="fulltext" data-navsec>
         <div className="rail">
           <article className="read">
+            {(summary.provisionalSource || (locale === "uk" && summary.blocksUk)) && (
+              <p className="provenance">
+                {summary.provisionalSource && <span>{pick(T.provisionalNote, locale)} </span>}
+                {locale === "uk" && summary.blocksUk && <span>{pick(T.translationNote, locale)}</span>}
+              </p>
+            )}
             {glossary.length > 0 && (
               <nav className="termchips" aria-label={pick(T.termsInText, locale)}>
                 <span className="termchips-lbl">{pick(T.termsInText, locale)}:</span>
