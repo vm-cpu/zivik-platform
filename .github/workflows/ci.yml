@@ -1,0 +1,26 @@
+# The only gate main has: two parallel sessions push here directly, and until
+# now the first thing to catch a broken file was the Vercel build — after the
+# push. Typecheck and build on every push and PR, so breakage is visible
+# before deploy and PRs can't land red.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run build
