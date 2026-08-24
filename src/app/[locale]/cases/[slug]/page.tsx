@@ -416,9 +416,8 @@ export default async function CasePage({
     { id: "handbook", label: pick(T.navHandbook, locale) },
     { id: "fulltext", label: pick(T.navFulltext, locale) },
     ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
-    ...(faq.length > 0 || related.length > 0
-      ? [{ id: "questions", label: pick(T.faqH, locale) }]
-      : []),
+    ...(faq.length > 0 ? [{ id: "questions", label: pick(T.faqH, locale) }] : []),
+    ...(related.length > 0 ? [{ id: "related", label: pick(T.relatedH, locale) }] : []),
   ];
 
   /**
@@ -936,20 +935,34 @@ export default async function CasePage({
               const official = sources.filter((s) => s.type.startsWith("official"));
               const commentary = sources.filter((s) => !s.type.startsWith("official"));
               const renderList = (items: typeof sources, start: number) => (
-                <ol className="sources" start={start}>
+                <ol className="sources" start={start} style={{ counterReset: `cite ${start - 1}` }}>
                   {items.map((s, i) => {
-                    const meta = [
-                      s.authors,
-                      s.publication,
-                      s.date,
-                      pick(TYPE_LABEL[s.type] ?? { uk: s.type, en: s.type }, locale),
-                    ].filter(Boolean);
+                    // Who, where and when make one quiet line; what kind of
+                    // source it is gets its own mark. In an archive meant to be
+                    // cited, the gap between the court's own record and a blog
+                    // post is the first thing a reader needs, and it used to be
+                    // the last word of a four-part grey string.
+                    const meta = [s.authors, s.publication, s.date].filter(Boolean);
+                    const kind = pick(
+                      TYPE_LABEL[s.type] ?? { uk: s.type, en: s.type },
+                      locale,
+                    );
                     return (
                       <li key={i}>
-                        <a href={s.url} target="_blank" rel="noopener noreferrer">
-                          {s.title}
-                        </a>
-                        <span className="cite-meta">{meta.join(" · ")}</span>
+                        <div className="cite-body">
+                          <a href={s.url} target="_blank" rel="noopener noreferrer">
+                            {s.title}
+                          </a>
+                          {meta.length > 0 && (
+                            <span className="cite-meta">{meta.join(" \u00b7 ")}</span>
+                          )}
+                        </div>
+                        <span
+                          className="cite-kind"
+                          data-official={s.type.startsWith("official") ? "yes" : "no"}
+                        >
+                          {kind}
+                        </span>
                       </li>
                     );
                   })}
@@ -973,43 +986,41 @@ export default async function CasePage({
       </section>
 
       {/*
-        Questions and neighbours sit at the foot of the page, after the text
-        and its sources. They used to be the first two cards of the reader's
-        guide, above the judgment itself — which put "common questions" in
-        front of a reader who had not yet read the thing they might have
-        questions about.
+        Two separate things, so two sections. Questions are read — an accordion
+        at reading width. Neighbouring decisions are navigation — cards you
+        click. They were one grid, which made the second look like more prose.
       */}
-      {(faq.length > 0 || related.length > 0) && (
-        <section className="endmatter" id="questions" aria-label={pick(T.faqH, locale)}>
-          <div className="rail endmatter-grid">
-            {faq.length > 0 && (
-              <div className="aid">
-                <div className="lbl lbl-onpaper">{pick(T.faqH, locale)}</div>
-                <div className="faq">
-                  {faq.map((f, i) => (
-                    <details key={i} open={i === 0}>
-                      <summary>{pick(f.q, locale)}</summary>
-                      <p>{pick(f.a, locale)}</p>
-                    </details>
-                  ))}
-                </div>
-              </div>
-            )}
-            {related.length > 0 && (
-              <div className="aid">
-                <div className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</div>
-                <ul className="related">
-                  {related.map((r, i) => (
-                    <li key={i}>
-                      <a href={`/${locale}${r.href}`}>
-                        <b>{pick(r.label, locale)}</b>
-                        <span>{pick(r.note, locale)}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+      {faq.length > 0 && (
+        <section className="qa" id="questions" aria-label={pick(T.faqH, locale)}>
+          <div className="rail">
+            <div className="lbl lbl-onpaper">{pick(T.faqH, locale)}</div>
+            <div className="qa-list">
+              {faq.map((f, i) => (
+                <details key={i} open={i === 0}>
+                  <summary>{pick(f.q, locale)}</summary>
+                  <p>{pick(f.a, locale)}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {related.length > 0 && (
+        <section className="neighbours" id="related" aria-label={pick(T.relatedH, locale)}>
+          <div className="rail">
+            <div className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</div>
+            <ul className="nb-grid">
+              {related.map((r, i) => (
+                <li key={i}>
+                  <a href={`/${locale}${r.href}`}>
+                    <b>{pick(r.label, locale)}</b>
+                    <span>{pick(r.note, locale)}</span>
+                    <i aria-hidden="true">→</i>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}

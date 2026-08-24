@@ -114,17 +114,26 @@
   color: var(--ink);
   scroll-margin-top: var(--space-6);
 }
+/* --t-h3 is 22.5px against a 22px body: at a glance the two were the same
+   size, so a document with eight of these read as one flat run of text. The
+   separation now comes from weight and space rather than half a pixel — the
+   red already marks it, and growing the size instead would crowd h2. */
 .casepage .read h3 {
-  margin: var(--space-10) 0 0;
+  margin: var(--space-12) 0 var(--space-1);
   font-family: var(--brand-font-display), serif;
+  font-weight: 700;
   font-size: var(--t-h3);
   line-height: 1.25;
   color: var(--pred);
 }
+/* The (a)/(b)/(c) level: a label, not a title — set apart by case and
+   tracking so it cannot be mistaken for either an h3 or a bold sentence. */
 .casepage .read h4 {
-  margin: var(--space-7) 0 0;
-  font: 700 var(--t-sm) var(--brand-font-body);
-  color: var(--ink);
+  margin: var(--space-8) 0 var(--space-1);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink2);
 }
 .casepage .read p {
   margin: var(--space-4) 0 0;
@@ -137,35 +146,53 @@
   text-underline-offset: 2px;
   word-break: break-word;
 }
+/* The operative clauses, in the same vocabulary as the verdict list at the top
+   of the page. They were rounded cards with a shadow and a red edge — nine of
+   them stacked read as nine alerts, and it meant the page presented the
+   Court's findings two different ways depending on where you met them. A
+   hanging number and a hairline is what the rest of the page uses. */
 /* `.read p` is (0,2,1); this needs to match it to win, hence `.read p.disp`. */
 .casepage .read p.disp {
-  margin: var(--space-4) 0 0;
-  padding: var(--space-5) var(--space-6) var(--space-5) var(--space-12);
-  position: relative;
-  background: var(--card);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
-  border-left: 3px solid var(--pred);
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: var(--space-4);
+  margin: 0;
+  padding: var(--space-5) 0;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  border-bottom: 1px solid var(--rule-soft);
   font-size: var(--t-ui);
   line-height: 1.6;
   color: var(--ink);
   counter-increment: disp;
 }
+/* The run reads as one instrument: no rule under the last clause. */
+.casepage .read p.disp:last-of-type {
+  border-bottom: 0;
+}
 .casepage .disp::before {
   content: counter(disp);
-  position: absolute;
-  left: 17px;
-  top: 18px;
   font: 500 var(--t-cap) var(--brand-font-mono);
   color: var(--pred);
   font-variant-numeric: tabular-nums;
+  text-align: right;
+  padding-top: 0.25em;
 }
+@media (max-width: 620px) {
+  .casepage .read p.disp {
+    grid-template-columns: 1.6rem 1fr;
+    gap: var(--space-3);
+  }
+}
+/* Same reasoning as .disp: a hairline frame, not a floating card. */
 .casepage .findings {
-  margin: var(--space-5) 0 0;
-  padding: var(--space-2) var(--space-7) var(--space-6);
-  background: var(--card);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
+  margin: var(--space-6) 0 0;
+  padding: var(--space-5) 0 var(--space-2);
+  background: none;
+  border-top: 1px solid var(--rule-soft);
+  border-radius: 0;
+  box-shadow: none;
 }
 .casepage .findings p {
   font-size: var(--t-ui);
@@ -182,15 +209,35 @@
   color: var(--pred);
   font-weight: 700;
 }
+/* A reference list, numbered in the page's own mono the way the dispositif
+   clauses are — the browser's default marker was the only place on the page
+   where a number was set by the browser rather than by us. */
 .casepage .sources {
-  margin: var(--space-4) 0 0;
-  padding-left: var(--space-6);
-  display: grid;
-  gap: var(--space-4);
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule-soft);
 }
 .casepage .sources li {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr auto;
+  align-items: baseline;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--rule-soft);
   font-size: var(--t-sm);
   line-height: 1.5;
+  counter-increment: cite;
+}
+.casepage .sources li::before {
+  content: counter(cite);
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--ink3);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.casepage .cite-body {
+  min-width: 0;
 }
 .casepage .cite-meta {
   display: block;
@@ -198,6 +245,31 @@
   font-family: var(--brand-font-mono);
   font-size: var(--t-cap);
   color: var(--ink3);
+}
+/* The one fact that changes how much weight a source carries. */
+.casepage .cite-kind {
+  justify-self: end;
+  white-space: nowrap;
+  font: 600 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  border: 1px solid var(--prule);
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+}
+.casepage .cite-kind[data-official="yes"] {
+  color: var(--pgold);
+  border-color: var(--pgold);
+}
+@media (max-width: 700px) {
+  .casepage .sources li {
+    grid-template-columns: 1.8rem 1fr;
+  }
+  .casepage .cite-kind {
+    grid-column: 2;
+    justify-self: start;
+  }
 }
 
 /* ---- 6. Reader aids -------------------------------------------------------- */

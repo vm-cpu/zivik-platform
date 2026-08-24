@@ -229,24 +229,98 @@
   padding: var(--space-2) var(--space-4);
 }
 
-/* ---- end matter: questions and neighbouring decisions ------------------
-   These were the first two cards of the reader's guide, which put "common
-   questions" above the judgment they are about. At the foot they read as
-   what they are: where to go after finishing. */
-.casepage .endmatter {
+/* ---- questions: read, so set at reading width ------------------------- */
+.casepage .qa {
   background: var(--paper2);
   border-top: 1px solid var(--prule);
-  padding: var(--space-16) 0 var(--space-24);
+  padding: var(--space-14) 0 var(--space-16);
 }
-.casepage .endmatter-grid {
+.casepage .qa-list {
+  max-width: 68ch;
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--prule);
+}
+.casepage .qa-list details {
+  border-bottom: 1px solid var(--prule);
+}
+.casepage .qa-list summary {
+  list-style: none;
+  cursor: pointer;
+  padding: var(--space-5) var(--space-8) var(--space-5) 0;
+  position: relative;
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-lead);
+  line-height: 1.35;
+  color: var(--ink);
+}
+.casepage .qa-list summary::-webkit-details-marker {
+  display: none;
+}
+.casepage .qa-list summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: var(--space-5);
+  font: 400 22px var(--brand-font-body);
+  line-height: 1;
+  color: var(--pgold);
+}
+.casepage .qa-list details[open] summary::after {
+  content: "−";
+}
+.casepage .qa-list details[open] summary {
+  color: var(--pred);
+}
+.casepage .qa-list p {
+  margin: 0;
+  padding: 0 var(--space-8) var(--space-6) 0;
+  font-size: var(--t-sm);
+  line-height: 1.7;
+  color: var(--ink2);
+}
+
+/* ---- neighbouring decisions: navigation, so cards you click ----------- */
+.casepage .neighbours {
+  background: var(--paper);
+  border-top: 1px solid var(--prule);
+  padding: var(--space-14) 0 var(--space-24);
+}
+.casepage .nb-grid {
+  list-style: none;
+  margin: var(--space-6) 0 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: var(--space-12);
-  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
 }
-@media (max-width: 820px) {
-  .casepage .endmatter-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-10);
-  }
+.casepage .nb-grid a {
+  display: grid;
+  gap: var(--space-2);
+  height: 100%;
+  padding: var(--space-5) var(--space-6);
+  background: var(--card);
+  border: 1px solid var(--prule);
+  text-decoration: none;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.casepage .nb-grid a:hover {
+  border-color: var(--pgold);
+  transform: translateY(-2px);
+}
+.casepage .nb-grid b {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--t-h3);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.casepage .nb-grid span {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--ink2);
+}
+.casepage .nb-grid i {
+  font-style: normal;
+  font-size: var(--t-ui);
+  color: var(--pred);
 }
