@@ -14,6 +14,15 @@ const ctaBase: React.CSSProperties = {
 /**
  * Hero with the industrial lamp lighting the wordmark. The lamp fixtures and
  * `.dchain` pull-cord are static markup; <LampShell/> wires the toggle + fade.
+ *
+ * It holds one statement and two ways in, and nothing else. It used to stack
+ * five centred blocks — credit line, wordmark, lead, a 240-character paragraph
+ * listing five institutions, then the buttons — which ran to 629px and pushed
+ * everything else off a 900px screen. Centred body copy that long has no left
+ * edge to return to, and the most detailed text was set smallest. The list of
+ * forums moved to <Intro/>, where it is a scannable list instead of a
+ * sentence, and the credit line moved below the buttons: it is a credit, and
+ * it reads better after the name than before it.
  */
 export default function Hero({ dict }: { dict: Dictionary }) {
   return (
@@ -53,24 +62,13 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: "196px 90px 0",
+          padding: "168px 90px 0",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
         }}
       >
-        <div
-          style={{
-            font: "700 10px var(--brand-font-body)",
-            letterSpacing: ".22em",
-            textTransform: "uppercase",
-            color: "var(--brand-muted-dark)",
-            marginBottom: 18,
-          }}
-        >
-          {dict.hero.eyebrow}
-        </div>
         <h1
           className="wm"
           style={{ fontSize: 88, letterSpacing: "-.012em", margin: "0 0 24px" }}
@@ -86,22 +84,12 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             fontSize: 20,
             lineHeight: 1.5,
             color: "var(--brand-cream)",
-            margin: "0 0 12px",
-            maxWidth: 520,
+            margin: "0 0 34px",
+            maxWidth: 560,
+            textWrap: "balance",
           }}
         >
           {dict.hero.lead}
-        </p>
-        <p
-          style={{
-            fontSize: 14,
-            lineHeight: 1.65,
-            color: "var(--brand-muted-dark)",
-            margin: "0 0 32px",
-            maxWidth: 430,
-          }}
-        >
-          {dict.hero.sub}
         </p>
         <div
           style={{
@@ -128,6 +116,24 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             {dict.hero.ctaMap}
           </a>
         </div>
+
+        {/* Whose project this is. Below the name, not above it: at 10px on the
+            lamp's brightest point it was the hardest line on the page to read,
+            and it was answering a question nobody had asked yet. */}
+        <p
+          style={{
+            font: "600 11px var(--brand-font-body)",
+            letterSpacing: ".1em",
+            textTransform: "uppercase",
+            color: "var(--brand-faint-dark)",
+            margin: "38px 0 0",
+            maxWidth: 620,
+            lineHeight: 1.7,
+            textWrap: "balance",
+          }}
+        >
+          {dict.hero.eyebrow}
+        </p>
       </div>
     </div>
   );

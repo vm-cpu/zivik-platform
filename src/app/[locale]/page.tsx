@@ -66,7 +66,7 @@ export default async function HomePage({
       <LampShell>
         <Header locale={locale} dict={dict} />
         <Hero dict={dict} />
-        <Intro locale={locale} dict={dict} stats={stats} />
+        <Intro locale={locale} dict={dict} stats={stats} institutions={institutions} />
         <About
           locale={locale}
           dict={dict}

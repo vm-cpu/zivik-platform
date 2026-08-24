@@ -28,7 +28,6 @@ const en: Dictionary = {
   hero: {
     eyebrow: "A project of the Louis B. Sohn Research Centre, UCU Faculty of Law",
     lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice.",
-    sub: "An online collection of international case-law — the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration — and of foreign national courts, arising from Ukraine’s efforts to hold Russia accountable for violations committed during the war against Ukraine.",
     ctaRegistry: "Library of decisions",
     ctaMap: "Map",
     chainHint: "pull the cord",
@@ -51,6 +50,10 @@ const en: Dictionary = {
   quote: {
     text: "The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine.",
     source: "International Court of Justice · Provisional Measures · 16 March 2022",
+  },
+  forums: {
+    label: "Where they are heard",
+    note: "The international courts and tribunals, and the national courts of other states, hearing Ukraine’s proceedings against Russia.",
   },
   mapSection: {
     close: "Close card",
