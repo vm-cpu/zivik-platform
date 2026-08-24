@@ -2,7 +2,6 @@ import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import SinceCounter from "./SinceCounter";
 import { pick, type Stat } from "@/content/types";
-import type { Institution } from "@/content/types";
 
 /** Intro sentence + the headline figures. */
 /**
@@ -25,12 +24,10 @@ export default function Intro({
   locale,
   dict,
   stats,
-  institutions,
 }: {
   locale: Locale;
   dict: Dictionary;
   stats: Stat[];
-  institutions: Institution[];
 }) {
   return (
     <div
@@ -91,26 +88,6 @@ export default function Intro({
         ))}
       </div>
 
-      {/*
-        The forums, as a list. This was a 240-character sentence inside the
-        hero, centred and set at 14px — the most detailed text on the page in
-        the smallest type, with no left edge to scan down. It reads from the
-        same institutions the registry does, so it cannot drift out of date.
-      */}
-      <div className="nsv-forums">
-        <div className="nsv-forums-head">
-          <span className="nsv-forums-label">{dict.forums.label}</span>
-          <p>{dict.forums.note}</p>
-        </div>
-        <ul>
-          {institutions.map((i) => (
-            <li key={i.id}>
-              <span className="fx-abbr">{pick(i.abbr, locale)}</span>
-              <span className="fx-name">{pick(i.name, locale)}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }

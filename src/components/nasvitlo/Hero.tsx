@@ -4,14 +4,10 @@ import type { Dictionary } from "@/i18n/dictionaries";
  * Hero with the industrial lamp lighting the wordmark. The lamp fixtures and
  * `.dchain` pull-cord are static markup; <LampShell/> wires the toggle + fade.
  *
- * It holds one statement and two ways in, and nothing else. It used to stack
- * five centred blocks — credit line, wordmark, lead, a 240-character paragraph
- * listing five institutions, then the buttons — which ran to 629px and pushed
- * everything else off a 900px screen. Centred body copy that long has no left
- * edge to return to, and the most detailed text was set smallest. The list of
- * forums moved to <Intro/>, where it is a scannable list instead of a
- * sentence, and the credit line moved below the buttons: it is a credit, and
- * it reads better after the name than before it.
+ * Order follows the content brief: wordmark, lead, the collection's scope,
+ * then the two ways in. The credit sits below them rather than above the name
+ * — at 10px on the lamp's brightest point it was the hardest line here to
+ * read, and it answered a question nobody had asked yet.
  */
 export default function Hero({ dict }: { dict: Dictionary }) {
   return (
@@ -73,12 +69,23 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             fontSize: 20,
             lineHeight: 1.5,
             color: "var(--brand-cream)",
-            margin: "0 0 34px",
+            margin: "0 0 16px",
             maxWidth: 560,
             textWrap: "balance",
           }}
         >
           {dict.hero.lead}
+        </p>
+        <p
+          style={{
+            fontSize: 14.5,
+            lineHeight: 1.65,
+            color: "var(--brand-muted-dark)",
+            margin: "0 0 34px",
+            maxWidth: 620,
+          }}
+        >
+          {dict.hero.sub}
         </p>
         <div
           style={{
