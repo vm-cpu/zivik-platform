@@ -87,7 +87,7 @@ export default async function HomePage({
         />
         <Newsletter dict={dict} />
         <Partners locale={locale} dict={dict} partners={partners} />
-        <Footer dict={dict} />
+        <Footer dict={dict} locale={locale} />
       </LampShell>
     </div>
   );

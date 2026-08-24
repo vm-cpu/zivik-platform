@@ -53,19 +53,8 @@ export default function MapSection({ dict }: { dict: Dictionary }) {
             {dict.mapSection.description}
           </p>
         </div>
-        <a
-          href="#"
-          style={{
-            font: "700 11px var(--brand-font-body)",
-            letterSpacing: ".06em",
-            textTransform: "uppercase",
-            color: "var(--red)",
-            textDecoration: "none",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {dict.mapSection.fullMap}
-        </a>
+        {/* A "full map" link returns with a localised map page; /atlas is
+            still unlocalised and on the old caseflows brand. */}
       </div>
       <div className="nsv-map">
         <div className="nsv-map-frame">

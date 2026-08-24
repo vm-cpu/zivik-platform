@@ -32,9 +32,20 @@ export default function Newsletter({ dict }: { dict: Dictionary }) {
           {dict.newsletter.text}
         </div>
       </div>
+      {/* Until there is a sign-up form and a donation route, both CTAs go to
+          the project address — a real destination that works today, and one
+          line to repoint once the pages exist. */}
       <div className="nsv-news-links">
-        <a href="#">{dict.newsletter.subscribe} →</a>
-        <a href="#">{dict.newsletter.support} →</a>
+        <a
+          href={`mailto:${dict.footer.email}?subject=${encodeURIComponent(dict.newsletter.subscribe)}`}
+        >
+          {dict.newsletter.subscribe} →
+        </a>
+        <a
+          href={`mailto:${dict.footer.email}?subject=${encodeURIComponent(dict.newsletter.support)}`}
+        >
+          {dict.newsletter.support} →
+        </a>
       </div>
     </div>
   );

@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { type Locale } from "@/i18n/config";
+import { usePathname } from "next/navigation";
+import { locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import ThemeToggle from "./ThemeToggle";
 import "./header.css";
@@ -16,15 +17,32 @@ export default function Header({
   dict: Dictionary;
 }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const home = `/${locale}`;
 
+  /* Anchors are absolute, not bare "#registry". As fragments they only worked
+     on the home page — on a decision page or the registry those ids do not
+     exist, so four of the six items did nothing. Team and Blog are gone until
+     the pages exist; a nav item that cannot go anywhere is worse than one
+     that is not there. */
   const nav = [
-    { label: dict.nav.home, href: `/${locale}`, active: true },
-    { label: dict.nav.decisions, href: "#registry" },
-    { label: dict.nav.map, href: "#map" },
-    { label: dict.nav.team, href: "#" },
-    { label: dict.nav.partners, href: "#partners" },
-    { label: dict.nav.blog, href: "#" },
+    { label: dict.nav.home, href: home, active: pathname === home },
+    { label: dict.nav.decisions, href: `${home}#registry`, active: false },
+    { label: dict.nav.map, href: `${home}#map`, active: false },
+    { label: dict.nav.partners, href: `${home}#partners`, active: false },
   ];
+
+  /* Same page, other language. Switching used to drop the reader on the home
+     page even though the translated page exists — and hreflang was already
+     promising search engines the pair. */
+  const localeHref = (next: Locale) => {
+    const segments = pathname.split("/").filter(Boolean);
+    if (segments.length && locales.includes(segments[0] as Locale)) {
+      segments[0] = next;
+      return `/${segments.join("/")}`;
+    }
+    return `/${next}`;
+  };
 
   return (
     <>
@@ -99,7 +117,9 @@ export default function Header({
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <span style={{ font: "600 12px var(--brand-font-body)", color: "var(--brand-faint-dark)" }}>
             <Link
-              href="/uk"
+              href={localeHref("uk")}
+              hrefLang="uk"
+              aria-current={locale === "uk" ? "true" : undefined}
               style={{
                 color: locale === "uk" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
                 fontWeight: locale === "uk" ? 700 : 600,
@@ -109,7 +129,9 @@ export default function Header({
             </Link>{" "}
             /{" "}
             <Link
-              href="/en"
+              href={localeHref("en")}
+              hrefLang="en"
+              aria-current={locale === "en" ? "true" : undefined}
               style={{
                 color: locale === "en" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
                 fontWeight: locale === "en" ? 700 : 600,

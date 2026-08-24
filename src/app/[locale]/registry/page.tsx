@@ -182,7 +182,7 @@ export default async function RegistryPage({
         />
       </main>
 
-      <Footer dict={dict} />
+      <Footer dict={dict} locale={locale} />
     </div>
   );
 }

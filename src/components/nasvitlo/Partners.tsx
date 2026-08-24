@@ -53,19 +53,7 @@ export default function Partners({
             {dict.partners.heading}
           </h2>
         </div>
-        <a
-          href="#"
-          style={{
-            font: "700 11px var(--brand-font-body)",
-            letterSpacing: ".06em",
-            textTransform: "uppercase",
-            color: "var(--red)",
-            textDecoration: "none",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {dict.partners.all}
-        </a>
+        {/* No partners page yet; the full row is directly below. */}
       </div>
 
       <div className="nsv-partnerrow">

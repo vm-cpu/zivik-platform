@@ -1,3 +1,5 @@
+import Link from "next/link";
+import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 const colHead: React.CSSProperties = {
@@ -12,29 +14,43 @@ const footLink: React.CSSProperties = {
   color: "var(--brand-muted-dark)",
   textDecoration: "none",
 };
-const socialBox: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  width: 32,
-  height: 32,
-  border: "1px solid rgba(243,232,226,.2)",
-  font: "700 10px var(--brand-font-body)",
-  color: "var(--brand-muted-dark)",
-  textDecoration: "none",
+
+/** One footer entry. Without `href` there is no page yet, so it renders as
+ *  plain text: the column still shows what the archive will hold, but nothing
+ *  claims to be clickable when it would only land back on the same page. */
+type FootEntry = { label: string; href?: string };
+
+/** Not-yet-a-link. Set apart by colour rather than opacity — dimming the link
+ *  colour to 55% took it to 3.53:1, under the AA floor. This token is a
+ *  designed value and clears it at 4.62:1 on the footer ground. */
+const footPending: React.CSSProperties = {
+  fontSize: 13,
+  color: "var(--brand-faint-dark)",
 };
 
 /** Dark site footer: brand, link columns, contacts, legal bar. */
-export default function Footer({ dict }: { dict: Dictionary }) {
+export default function Footer({
+  dict,
+  locale,
+}: {
+  dict: Dictionary;
+  locale: Locale;
+}) {
   const f = dict.footer;
-  const column = (head: string, links: string[]) => (
+  const column = (head: string, entries: FootEntry[]) => (
     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <div style={colHead}>{head}</div>
-      {links.map((label) => (
-        <a key={label} href="#" style={footLink}>
-          {label}
-        </a>
-      ))}
+      {entries.map(({ label, href }) =>
+        href ? (
+          <Link key={label} href={href} style={footLink}>
+            {label}
+          </Link>
+        ) : (
+          <span key={label} style={footPending}>
+            {label}
+          </span>
+        ),
+      )}
     </div>
   );
 
@@ -97,16 +113,16 @@ export default function Footer({ dict }: { dict: Dictionary }) {
         </div>
 
         {column(f.colArchive, [
-          f.linkRegistry,
-          f.linkMap,
-          f.linkCourts,
-          f.linkDocs,
+          { label: f.linkRegistry, href: `/${locale}/registry` },
+          { label: f.linkMap, href: `/${locale}#map` },
+          { label: f.linkCourts },
+          { label: f.linkDocs },
         ])}
         {column(f.colCenter, [
-          f.linkAbout,
-          f.linkTeam,
-          f.linkPartners,
-          f.linkBlog,
+          { label: f.linkAbout, href: `/${locale}#about` },
+          { label: f.linkTeam },
+          { label: f.linkPartners, href: `/${locale}#partners` },
+          { label: f.linkBlog },
         ])}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -115,17 +131,8 @@ export default function Footer({ dict }: { dict: Dictionary }) {
             {f.email}
           </a>
           <span style={footLink}>{f.address}</span>
-          <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
-            <a href="#" style={socialBox}>
-              FB
-            </a>
-            <a href="#" style={socialBox}>
-              X
-            </a>
-            <a href="#" style={socialBox}>
-              IN
-            </a>
-          </div>
+          {/* Social boxes return when there are real accounts to point at.
+              Three squares linking to "#" read as a broken footer. */}
         </div>
       </div>
 
@@ -140,14 +147,19 @@ export default function Footer({ dict }: { dict: Dictionary }) {
           flexWrap: "wrap",
         }}
       >
-        <span style={{ fontSize: 11, color: "var(--brand-muted-brown)" }}>{f.rights}</span>
+        {/* --brand-muted-brown is 3.01:1 on this ground — under AA at 11px, so
+            the whole legal bar reads in --brand-faint-dark (4.62:1) instead. */}
+        <span style={{ fontSize: 11, color: "var(--brand-faint-dark)" }}>{f.rights}</span>
+        {/* Plain text until the pages exist. The newsletter sign-off collects
+            an address, so a real privacy policy is owed here — a dead link to
+            one is the worst of both worlds. */}
         <span style={{ display: "flex", gap: 18 }}>
-          <a href="#" style={{ fontSize: 11, color: "var(--brand-muted-brown)", textDecoration: "none" }}>
+          <span style={{ fontSize: 11, color: "var(--brand-faint-dark)" }}>
             {f.privacy}
-          </a>
-          <a href="#" style={{ fontSize: 11, color: "var(--brand-muted-brown)", textDecoration: "none" }}>
+          </span>
+          <span style={{ fontSize: 11, color: "var(--brand-faint-dark)" }}>
             {f.terms}
-          </a>
+          </span>
         </span>
       </div>
     </div>
