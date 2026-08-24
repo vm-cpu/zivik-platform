@@ -337,8 +337,16 @@
   .page{--red:var(--brand-red);--redd:var(--brand-red-dark);--gold:var(--brand-gold);--paper:var(--brand-paper);--paper2:var(--brand-paper-2);--surface:var(--brand-surface);--ink:var(--brand-ink);--ink2:var(--brand-ink-2);--muted:var(--brand-ink-2);--faint:var(--brand-faint);--rule:var(--brand-rule);
     width:100%;max-width:none;margin:0 auto;background:var(--paper);color:var(--ink);font-family:var(--brand-font-body),sans-serif;font-size:14px;line-height:1.55;box-shadow:none}
   .page h1,.page h2,.page h3,.page h4{font-family:var(--brand-font-display),Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
-  .page a{color:var(--red);text-decoration:none}
-  .page a:hover{color:var(--redd)}
+  /* Content links only. As a blanket `.page a` this reached into the header
+     and footer too, and at (0,1,1) it outranked anything they set with a
+     single class: it repainted the mobile menu, the skip link and the hero
+     buttons over the course of one afternoon, each time winning a fight the
+     chrome did not know it was in. Naming the exclusions keeps the trap from
+     being reset by the next surface that adds a link. */
+  .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn){
+    color:var(--red);text-decoration:none
+  }
+  .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn):hover{color:var(--redd)}
   /* the lamp gradient is the header's ground on this page, so the bar itself
      stays transparent — everywhere else it supplies its own dark */
   .page .lmp{border:0;--nsv-header-bg:transparent}
