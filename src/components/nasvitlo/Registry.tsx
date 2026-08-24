@@ -209,7 +209,9 @@ export default function Registry({
                   </a>
                   );
                 })}
-                <a className="more">
+                {/* This had no href, so it was not clickable and not
+                    focusable — it only looked like a link. */}
+                <a className="more" href={`/${locale}/registry?court=${inst.id}`}>
                   {fmt(dict.registry.allCases, {
                     count: cases.length,
                     court: pick(inst.abbr, locale),

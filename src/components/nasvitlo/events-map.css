@@ -8,6 +8,7 @@
    ========================================================================== */
 
 .emap {
+  padding-bottom: 28px;
   --hr: var(--brand-red);
   --war: var(--brand-gold);
   --asset: #6e97be;
@@ -31,15 +32,18 @@
   border: 1px solid var(--brand-night-rule);
 }
 
+/* Softer than it was: the country fill sat almost black against a near-black
+   ground and the outline read as a hard edge. The map is context for the
+   markers, not the subject. */
 .emap-ctx {
-  fill: #1e1815;
-  stroke: #2b221e;
-  stroke-width: 0.6;
+  fill: #221b18;
+  stroke: #2e2521;
+  stroke-width: 0.5;
 }
 .emap-ua {
-  fill: #2a1f1a;
-  stroke: var(--brand-gold-lamp);
-  stroke-width: 1.1;
+  fill: #2b211c;
+  stroke: rgba(214, 162, 75, 0.55);
+  stroke-width: 0.9;
 }
 
 .emap-reach {
@@ -59,7 +63,7 @@
   stroke-width: 1.4;
 }
 .emap-court text {
-  font: 600 11px var(--brand-font-body);
+  font: 600 10px var(--brand-font-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   fill: var(--brand-muted-dark);
@@ -234,6 +238,7 @@
 }
 
 .emap-courts {
+  margin-bottom: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 6px 14px;

@@ -105,7 +105,7 @@ const en: Dictionary = {
   footer: {
     tagline:
       "An open archive of international court decisions on Russia's aggression against Ukraine.",
-    org: "Louis Sohn Center",
+    org: "The Louis B. Sohn Research Centre",
     faculty: "UCU Faculty of Law",
     colArchive: "Archive",
     colCenter: "Center",

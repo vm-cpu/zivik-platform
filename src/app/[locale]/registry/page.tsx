@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import Link from "next/link";
 import {
   isLocale,
@@ -163,6 +164,11 @@ export default async function RegistryPage({
           </div>
         </header>
 
+        {/* RegistryTable reads ?court= so the home page can link in
+            pre-filtered; useSearchParams needs a boundary for the page to stay
+            prerendered. The fallback is never seen in practice — the shell
+            around it is static and hydration is immediate. */}
+        <Suspense fallback={null}>
         <RegistryTable
           rows={rows}
           courts={courts}
@@ -180,6 +186,7 @@ export default async function RegistryPage({
             emptyBody: pick(T.emptyBody, locale),
           }}
         />
+        </Suspense>
       </main>
 
       <Footer dict={dict} locale={locale} />

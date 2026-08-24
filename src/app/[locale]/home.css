@@ -497,10 +497,14 @@
      into five sparse columns. The paper background lives on .page, so capping
      the bands leaves it full-bleed and only the content centres. */
   .page > .lmp > div:not(.pj):not(.acc){
-    padding-left:clamp(28px, 5vw, 96px) !important;
-    padding-right:clamp(28px, 5vw, 96px) !important;
-    max-width:calc(var(--measure) + 2 * clamp(28px, 5vw, 96px));
-    margin-inline:auto;
+    /* The gutter grows to whatever it takes to keep the content within
+       --measure. Capping the band itself (max-width + margin:auto) looked
+       identical on the paper sections and broke every band that carries its
+       own colour — the footer, the newsletter and the slogan stopped 130px
+       short of each edge and showed page paper down both sides. Padding keeps
+       the band full-bleed and moves only the content. */
+    padding-left:max(clamp(28px, 5vw, 96px), calc((100% - var(--measure)) / 2)) !important;
+    padding-right:max(clamp(28px, 5vw, 96px), calc((100% - var(--measure)) / 2)) !important;
   }
   .nsv-map{
     margin-left:calc(-1 * clamp(28px, 5vw, 96px)) !important;
@@ -514,10 +518,8 @@
      same fluid margin as the other sections) */
   .acc summary,
   .acc .body{
-    padding-left:clamp(28px, 5vw, 96px) !important;
-    padding-right:clamp(28px, 5vw, 96px) !important;
-    max-width:calc(var(--measure) + 2 * clamp(28px, 5vw, 96px));
-    margin-inline:auto;
+    padding-left:max(clamp(28px, 5vw, 96px), calc((100% - var(--measure)) / 2)) !important;
+    padding-right:max(clamp(28px, 5vw, 96px), calc((100% - var(--measure)) / 2)) !important;
   }
 }
 

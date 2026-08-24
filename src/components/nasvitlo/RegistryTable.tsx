@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import type { CaseStatusKey } from "@/content/types";
 
 /** Status → the global badge class defined in home.css (.st-*). */
@@ -56,8 +57,14 @@ export default function RegistryTable({
   statuses: Array<{ key: CaseStatusKey; label: string }>;
   t: RegistryLabels;
 }) {
+  /* The home page's "Усі N справ ICJ →" links arrive with ?court=<id>, so the
+     table opens already filtered instead of dropping the reader into all 39. */
+  const params = useSearchParams();
+  const initialCourt = params.get("court");
   const [q, setQ] = useState("");
-  const [court, setCourt] = useState("all");
+  const [court, setCourt] = useState(
+    initialCourt && courts.some((c) => c.id === initialCourt) ? initialCourt : "all",
+  );
   const [status, setStatus] = useState<"all" | CaseStatusKey>("all");
   const [sort, setSort] = useState<SortKey>("new");
 

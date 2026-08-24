@@ -416,6 +416,9 @@ export default async function CasePage({
     { id: "handbook", label: pick(T.navHandbook, locale) },
     { id: "fulltext", label: pick(T.navFulltext, locale) },
     ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
+    ...(faq.length > 0 || related.length > 0
+      ? [{ id: "questions", label: pick(T.faqH, locale) }]
+      : []),
   ];
 
   /**
@@ -871,31 +874,6 @@ export default async function CasePage({
           <div className="lbl lbl-onpaper">{pick(T.navHandbook, locale)}</div>
           <div className="aids-grid">
               <div className="aid">
-                <div className="lbl">{pick(T.faqH, locale)}</div>
-                <div className="faq">
-                  {faq.map((f, i) => (
-                    <details key={i} open={i === 0}>
-                      <summary>{pick(f.q, locale)}</summary>
-                      <p>{pick(f.a, locale)}</p>
-                    </details>
-                  ))}
-                </div>
-              </div>
-
-              <div className="aid">
-                <div className="lbl">{pick(T.relatedH, locale)}</div>
-                <ul className="related">
-                  {related.map((r, i) => (
-                    <li key={i}>
-                      <a href={`/${locale}${r.href}`}>
-                        <b>{pick(r.label, locale)}</b>
-                        <span>{pick(r.note, locale)}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="aid">
                 <div className="lbl">{pick(T.whoH, locale)}</div>
                 <ul className="who">
                   {whoIsWho.map((w, i) => (
@@ -926,12 +904,6 @@ export default async function CasePage({
       <section className="readzone" id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
         <div className="rail">
           <article className="read">
-            {(summary.provisionalSource || (locale === "uk" && summary.blocksUk)) && (
-              <p className="provenance">
-                {summary.provisionalSource && <span>{pick(T.provisionalNote, locale)} </span>}
-                {locale === "uk" && summary.blocksUk && <span>{pick(T.translationNote, locale)}</span>}
-              </p>
-            )}
             {glossary.length > 0 && (
               <nav className="termchips" aria-label={pick(T.termsInText, locale)}>
                 <span className="termchips-lbl">{pick(T.termsInText, locale)}:</span>
@@ -999,6 +971,48 @@ export default async function CasePage({
           </article>
         </div>
       </section>
+
+      {/*
+        Questions and neighbours sit at the foot of the page, after the text
+        and its sources. They used to be the first two cards of the reader's
+        guide, above the judgment itself — which put "common questions" in
+        front of a reader who had not yet read the thing they might have
+        questions about.
+      */}
+      {(faq.length > 0 || related.length > 0) && (
+        <section className="endmatter" id="questions" aria-label={pick(T.faqH, locale)}>
+          <div className="rail endmatter-grid">
+            {faq.length > 0 && (
+              <div className="aid">
+                <div className="lbl lbl-onpaper">{pick(T.faqH, locale)}</div>
+                <div className="faq">
+                  {faq.map((f, i) => (
+                    <details key={i} open={i === 0}>
+                      <summary>{pick(f.q, locale)}</summary>
+                      <p>{pick(f.a, locale)}</p>
+                    </details>
+                  ))}
+                </div>
+              </div>
+            )}
+            {related.length > 0 && (
+              <div className="aid">
+                <div className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</div>
+                <ul className="related">
+                  {related.map((r, i) => (
+                    <li key={i}>
+                      <a href={`/${locale}${r.href}`}>
+                        <b>{pick(r.label, locale)}</b>
+                        <span>{pick(r.note, locale)}</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       <Footer dict={dict} locale={locale} />
     </div>

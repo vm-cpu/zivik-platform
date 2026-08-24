@@ -5,9 +5,9 @@ import type { Dictionary } from "@/i18n/dictionaries";
  * `.dchain` pull-cord are static markup; <LampShell/> wires the toggle + fade.
  *
  * Order follows the content brief: wordmark, lead, the collection's scope,
- * then the two ways in. The credit sits below them rather than above the name
- * — at 10px on the lamp's brightest point it was the hardest line here to
- * read, and it answered a question nobody had asked yet.
+ * then the two ways in — and nothing after them. The credit moved out
+ * entirely: the footer already names the centre and the faculty, so carrying
+ * it here too was three more lines on a first screen that was already dense.
  */
 export default function Hero({ dict }: { dict: Dictionary }) {
   return (
@@ -103,22 +103,6 @@ export default function Hero({ dict }: { dict: Dictionary }) {
           </a>
         </div>
 
-        {/*
-          Provenance, as a signature rather than a caption. It was one
-          62-character uppercase line floating alone below the buttons —
-          nothing to anchor it, and the two institutions in it read as one
-          run-on. For a legal archive provenance is credibility, so it gets a
-          rule to sit on and the centre is named before the faculty that
-          houses it.
-        */}
-        <div className="nsv-credit">
-          <span className="nsv-credit-rule" aria-hidden="true" />
-          <p>
-            <span className="cr-lead">{dict.hero.credit}</span>
-            <span className="cr-centre">{dict.hero.creditCentre}</span>
-            <span className="cr-faculty">{dict.hero.creditFaculty}</span>
-          </p>
-        </div>
       </div>
     </div>
   );
