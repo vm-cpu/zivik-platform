@@ -1,6 +1,18 @@
 import path from "node:path";
 import type { NextConfig } from "next";
 
+/**
+ * Search engines are kept out until SITE_INDEXABLE=true. Announced on every
+ * build: the expensive mistake is not blocking a test site, it is launching
+ * one that is still blocked, and a silent flag is how that happens.
+ */
+const indexable = process.env.SITE_INDEXABLE === "true";
+console.log(
+  indexable
+    ? "  SITE_INDEXABLE=true — this build may be indexed by search engines"
+    : "  SITE_INDEXABLE is not set — this build serves noindex to search engines",
+);
+
 const nextConfig: NextConfig = {
   /**
    * Pin the Turbopack root to this package.
@@ -48,6 +60,11 @@ const nextConfig: NextConfig = {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
           },
+          // Kept out of search until launch. See `isIndexable` in lib/seo.ts
+          // for why this is a noindex rather than a robots.txt Disallow.
+          ...(indexable
+            ? []
+            : [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]),
         ],
       },
     ];

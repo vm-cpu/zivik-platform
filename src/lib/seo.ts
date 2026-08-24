@@ -13,6 +13,22 @@ export const siteUrl =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "http://localhost:3000");
 
+/**
+ * Whether this deployment may be indexed by search engines.
+ *
+ * Defaults to NO. The archive is still filling — 8 of 39 proceedings have a
+ * summary — and a half-built version of a legal reference sits in Google's
+ * catalogue for months after you fix it. Set SITE_INDEXABLE=true in the Vercel
+ * project when the site is ready to be found.
+ *
+ * Note the mechanism: robots.txt keeps *allowing* the crawl even while this is
+ * false, and the noindex is carried by a header and a meta tag instead.
+ * Disallowing would be the intuitive move and the wrong one — a blocked
+ * crawler cannot read the noindex, so Google may still list the bare URL it
+ * found linked somewhere else.
+ */
+export const isIndexable = process.env.SITE_INDEXABLE === "true";
+
 /** `hreflang` map pointing each locale at its localized home, plus x-default. */
 function languageAlternates(): Record<string, string> {
   const languages: Record<string, string> = {};

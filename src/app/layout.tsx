@@ -6,6 +6,7 @@ import {
   Charis_SIL,
   Fira_Sans,
 } from "next/font/google";
+import { isIndexable } from "@/lib/seo";
 import "./globals.css";
 
 /**
@@ -55,6 +56,9 @@ const fraunces = Fraunces({
  * name — an English product label leaked onto real pages once already.
  */
 export const metadata: Metadata = {
+  // Doubles the X-Robots-Tag header from next.config.ts — cheap, and it still
+  // applies if anything between Vercel and the reader drops the header.
+  ...(isIndexable ? {} : { robots: { index: false, follow: false } }),
   title: "насвітло",
   description:
     "Рішення міжнародних судів щодо агресії проти України — винесені на світло.",
