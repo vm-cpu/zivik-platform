@@ -33,6 +33,7 @@ export default function Header({
     { label: dict.nav.home, href: home, active: pathname === home },
     { label: dict.nav.decisions, href: `${home}#registry`, active: false },
     { label: dict.nav.map, href: `${home}#map`, active: false },
+    { label: dict.nav.team, href: `${home}/team`, active: pathname === `${home}/team` },
     { label: dict.nav.partners, href: `${home}#partners`, active: false },
   ];
 
@@ -63,9 +64,12 @@ export default function Header({
           justifyContent: "space-between",
           gap: 24,
           padding: "15px 30px",
-          // Transparent over the homepage lamp gradient; pages without the lamp
-          // (e.g. a decision page) set --nsv-header-bg to supply their own dark.
-          background: "var(--nsv-header-bg, transparent)",
+          // Dark by default, because that is what the bar is on every surface
+          // but one. The home page sets it transparent so the lamp gradient
+          // shows through. It used to default the other way, and any page that
+          // forgot to set a ground got cream text on paper — 1.16:1 in light
+          // theme on the registry.
+          background: "var(--nsv-header-bg, var(--brand-night))",
           borderBottom: "1px solid rgba(243,232,226,.1)",
         }}
       >

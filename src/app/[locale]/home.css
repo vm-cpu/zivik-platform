@@ -330,7 +330,9 @@
   .page h1,.page h2,.page h3,.page h4{font-family:var(--brand-font-display),Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   .page a{color:var(--red);text-decoration:none}
   .page a:hover{color:var(--redd)}
-  .page .lmp{border:0}
+  /* the lamp gradient is the header's ground on this page, so the bar itself
+     stays transparent — everywhere else it supplies its own dark */
+  .page .lmp{border:0;--nsv-header-bg:transparent}
   /* lamp geometry is authored against a 900px stage — centre that stage in the wider page */
   .page .pj{width:900px;margin:0 auto}
 

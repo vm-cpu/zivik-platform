@@ -14,8 +14,8 @@ const en: Dictionary = {
   },
   nav: {
     skip: "Skip to content",
-    home: "Home",
-    decisions: "Decisions",
+    home: "About us",
+    decisions: "Library of decisions",
     map: "Map",
     team: "Team",
     partners: "Partners",
@@ -26,11 +26,11 @@ const en: Dictionary = {
     wordmark: "nasvitlo",
   },
   hero: {
-    eyebrow: "A project of the UCU Faculty of Law",
-    lead: "International court decisions on the aggression against Ukraine — brought to light.",
-    sub: "39 proceedings against Russia: from the International Court of Justice and the ECtHR to ICC warrants and maritime arbitration.",
-    ctaRegistry: "Case registry",
-    ctaMap: "Events map",
+    eyebrow: "A project of the Louis B. Sohn Research Centre, UCU Faculty of Law",
+    lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice.",
+    sub: "An online collection of international case-law — the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration — and of foreign national courts, arising from Ukraine’s efforts to hold Russia accountable for violations committed during the war against Ukraine.",
+    ctaRegistry: "Library of decisions",
+    ctaMap: "Map",
     chainHint: "pull the cord",
     lampLabel: "Turn the lamp on or off",
   },
@@ -55,9 +55,9 @@ const en: Dictionary = {
   mapSection: {
     close: "Close card",
     label: "Map",
-    heading: "Events and the courts that hear them",
+    heading: "Alleged violations and the courts assessing them",
     description:
-      "Shelling, deportations and seizures — linked by a dotted line to the courtroom where they are argued.",
+      "Alleged violations — shelling, deportations and seizures — linked by a dotted line to the court where their legal assessment is made.",
     fullMap: "Full map →",
     legendHr: "Human rights",
     legendWar: "War crimes",
@@ -66,8 +66,8 @@ const en: Dictionary = {
     courtsSeat: "The courts sit in",
   },
   registry: {
-    label: "Registry",
-    heading: "Courts hearing cases against Russia",
+    label: "Library of decisions",
+    heading: "An online collection of international case-law",
     description:
       "Here the light is already on. The registry grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
     fullRegistry: "Full registry ({count})",

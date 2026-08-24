@@ -60,5 +60,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
-  return [...homes, ...registry, ...cases];
+  const teamLanguages = languagesFor((l) => `/${l}/team`);
+  const team: MetadataRoute.Sitemap = locales.map((locale) => ({
+    url: `${siteUrl}/${locale}/team`,
+    changeFrequency: "yearly",
+    priority: 0.5,
+    alternates: { languages: teamLanguages },
+  }));
+
+  return [...homes, ...registry, ...team, ...cases];
 }

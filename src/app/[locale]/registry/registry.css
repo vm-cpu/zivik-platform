@@ -33,8 +33,17 @@
   font-size:14px;
   line-height:1.55;
 }
-.registrypage a{color:var(--red);text-decoration:none}
-.registrypage a:hover{color:var(--redd)}
+/* Scoped to the page body, not the whole surface. As `.registrypage a` this
+   tied on specificity with `.nsv-mobnav a` in header.css and won on source
+   order, repainting the mobile menu red on its dark ground — 1.82:1 in
+   light theme, and invisible on the one layout that uses that menu. */
+.registrypage .reg-wrap a {
+  color: var(--red);
+  text-decoration: none;
+}
+.registrypage .reg-wrap a:hover {
+  color: var(--redd);
+}
 
 .registrypage .reg-wrap{
   max-width:1120px;margin:0 auto;
