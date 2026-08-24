@@ -18,6 +18,7 @@ const ctaBase: React.CSSProperties = {
 export default function Hero({ dict }: { dict: Dictionary }) {
   return (
     <div
+      id="content"
       className="pj"
       style={{
         position: "relative",

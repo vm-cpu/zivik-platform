@@ -88,7 +88,6 @@ const T = {
   standing: { uk: "Рішення чинне", en: "Award stands" },
   notStanding: { uk: "Рішення скасовано", en: "Award annulled" },
   seatLabel: { uk: "Місце арбітражу", en: "Seat" },
-  skip: { uk: "Перейти до змісту", en: "Skip to content" },
   provisionalNote: {
     uk: "Текст самері — попередня версія: вкладку в робочому документі ще не фіналізовано. Після фіналізації текст на цій сторінці буде оновлено.",
     en: "The summary text is a preliminary version: its tab in the working document is not yet finalized. This page will be updated when it is.",
@@ -498,14 +497,11 @@ export default async function CasePage({
 
   return (
     <div className="page casepage">
-      <a className="skiplink" href="#overview">
-        {pick(T.skip, locale)}
-      </a>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header locale={locale} dict={dict} />
+      <Header locale={locale} dict={dict} skipTo="#overview" />
 
       {/* 1 — Masthead. The band is full-bleed; the rail sits inside it, like
           every other band on the page. Merging the two capped the dark ground
@@ -583,7 +579,7 @@ export default async function CasePage({
       </section>
 
       {/* 2 — Dashboard: one column of full-width instruments */}
-      <section className="dash" id="overview" data-navsec>
+      <section className="dash" id="overview" data-navsec aria-label={pick(T.overview, locale)}>
         <div className="rail dash-stack">
           <div>
             <div className="lbl">{pick(T.overview, locale)}</div>
@@ -697,7 +693,7 @@ export default async function CasePage({
             </div>
           )}
 
-          <div id="chronology" data-navsec>
+          <section id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
             <div className="lbl">{pick(T.timeline, locale)}</div>
             <CaseTimeline
               events={timeline.map((e) => ({
@@ -714,13 +710,14 @@ export default async function CasePage({
                 openDetail: pick(T.openDetail, locale),
               }}
             />
-          </div>
+          </section>
         </div>
       </section>
 
       {/* 2w — The warrants, wave by wave (ICC situation pages) */}
       {warrants && (
-        <section className="machinery" id="machinery" data-navsec>
+        <section className="machinery" id="machinery" data-navsec
+          aria-label={pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale)}>
           <div className="rail machinery-stack">
             <div>
               <div className="lbl lbl-onpaper">{pick(warrants.heading, locale)}</div>
@@ -762,7 +759,8 @@ export default async function CasePage({
 
       {/* 2c — Machinery of the award: attribution, objections, what followed */}
       {(attribution || objections || afterlife) && (
-        <section className="machinery" id={warrants ? undefined : "machinery"} data-navsec>
+        <section className="machinery" id={warrants ? undefined : "machinery"} data-navsec
+          aria-label={pick(T.navAnatomy, locale)}>
           <div className="rail machinery-stack">
             {attribution && (
               <div>
@@ -827,7 +825,7 @@ export default async function CasePage({
       )}
 
       {/* 2b — Reference: doctrine and the interim order, on paper */}
-      <section className="refs" id="rulings" data-navsec>
+      <section className="refs" id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
         <div className="rail refs-grid" data-single={provisionalMeasures.length ? "no" : "yes"}>
           <div>
             <div className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</div>
@@ -868,7 +866,7 @@ export default async function CasePage({
       {/* 3 — Reader's guide: the reference layer, ahead of the long read.
           Grouped by use: the question-and-answer column (common questions,
           related decisions) beside the reference column (who's who, glossary). */}
-      <section className="aids" id="handbook" data-navsec>
+      <section className="aids" id="handbook" data-navsec aria-label={pick(T.navHandbook, locale)}>
         <div className="rail">
           <div className="lbl lbl-onpaper">{pick(T.navHandbook, locale)}</div>
           <div className="aids-grid">
@@ -925,7 +923,7 @@ export default async function CasePage({
       </section>
 
       {/* 4 — Verbatim summary. The page bar is the only navigation. */}
-      <section className="readzone" id="fulltext" data-navsec>
+      <section className="readzone" id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
         <div className="rail">
           <article className="read">
             {(summary.provisionalSource || (locale === "uk" && summary.blocksUk)) && (

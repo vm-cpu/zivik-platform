@@ -48,10 +48,16 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
+/**
+ * Fallback only. Every page a reader can reach lives under `[locale]` and
+ * sets its own title and description through `generateMetadata`; this covers
+ * the bare root, which redirects, and the 404. It stays in the project's own
+ * name — an English product label leaked onto real pages once already.
+ */
 export const metadata: Metadata = {
-  title: "Zivik — Legal Cases Platform",
+  title: "насвітло",
   description:
-    "Reader's guide to international legal cases between Ukraine and Russia",
+    "Рішення міжнародних судів щодо агресії проти України — винесені на світло.",
 };
 
 /**

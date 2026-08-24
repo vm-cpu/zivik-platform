@@ -140,7 +140,7 @@ export default async function RegistryPage({
     <div className="page registrypage">
       <Header locale={locale} dict={dict} />
 
-      <main className="reg-wrap">
+      <main id="content" className="reg-wrap">
         <header className="reg-mast">
           <Link href={`/${locale}`} className="reg-back">
             {pick(T.back, locale)}

@@ -12,9 +12,13 @@ import "./header.css";
 export default function Header({
   locale,
   dict,
+  /** Where "skip to content" lands. Each surface names the first thing a
+   *  reader actually came for — the decision page skips to its overview. */
+  skipTo = "#content",
 }: {
   locale: Locale;
   dict: Dictionary;
+  skipTo?: string;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -46,6 +50,9 @@ export default function Header({
 
   return (
     <>
+      <a className="nsv-skiplink" href={skipTo}>
+        {dict.nav.skip}
+      </a>
       <div
         className="nsv-topbar"
         style={{

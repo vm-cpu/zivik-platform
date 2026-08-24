@@ -11,6 +11,28 @@
    button ended up wearing a 2px border in the colour we reserve for breaches.
    ========================================================================== */
 
+/* Skip link ---------------------------------------------------------------
+   Rendered by Header, so it exists on every surface. It used to live only on
+   the decision page, which left keyboard users tabbing through the whole top
+   bar — brand, six nav items, language switch, theme toggle — on the home page
+   and the registry before reaching anything they came for. Invisible until
+   focused, then a clear pill above everything. */
+.nsv-skiplink {
+  position: absolute;
+  left: -9999px;
+  z-index: 10;
+  background: var(--brand-night);
+  color: var(--brand-gold-lit);
+  font: 700 14px var(--brand-font-body);
+  border-radius: var(--r-pill);
+  padding: 12px 24px;
+  text-decoration: none;
+}
+.nsv-skiplink:focus-visible {
+  left: 16px;
+  top: 16px;
+}
+
 /* Status badge ------------------------------------------------------------ */
 .chip {
   display: inline-flex;

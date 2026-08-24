@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# насвітло
 
-## Getting Started
+Відкритий архів рішень міжнародних судів щодо збройної агресії Росії проти
+України. Проєкт факультету права Українського католицького університету.
 
-First, run the development server:
+Ми читаємо рішення міжнародних судів і переказуємо їх людською мовою — щоб на
+них можна було спертися в аргументі, статті чи позові. Кожна сторінка рішення
+поєднує переказ, хронологію, розбір диспозитиву й повний текст, українською та
+англійською.
+
+Наразі в реєстрі 39 проваджень, з них опрацьовано 8.
+
+## Запуск
+
+Потрібен **Node 22 LTS**. На Node 23 `next dev` і `next build` зависають.
+Версію закріплено в `.node-version`; тут вона стоїть keg-only через Homebrew:
 
 ```bash
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Сайт підніметься на http://localhost:3000 і відкриється на `/uk`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Команди
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Команда | Що робить |
+| --- | --- |
+| `npm run dev` | Сервер розробки |
+| `npm run build` | Продакшн-збірка (те саме, що перевіряє CI) |
+| `npm start` | Запустити зібране |
+| `npm run lint` | ESLint |
+| `npx tsc --noEmit` | Перевірка типів (те саме, що перевіряє CI) |
 
-## Learn More
+## Структура
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/app/[locale]/          сторінки: головна, реєстр, рішення
+src/components/nasvitlo/   спільні секції сайту
+src/components/cases/      інструменти сторінки рішення
+src/content/               контент: реєстр справ і конспекти
+src/i18n/                  словники UA / EN
+src/lib/seo.ts             canonical, hreflang, Open Graph
+docs/                      архітектура, дизайн-контракт, звірка
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Детальніше — у `docs/ARCHITECTURE.md`. Перед будь-якою візуальною зміною
+читайте `docs/DESIGN.md`: це контракт на колір, тип, форму й доступність.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Як додати справу
 
-## Deploy on Vercel
+1. Дописати рядок у `src/content/cases.ts` і проставити йому `summarySlug`.
+2. Створити конспект у `src/content/summaries/<slug>.ts`.
+3. Зареєструвати його в `src/content/summaries/index.ts`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Реєстр і конспекти звіряються на етапі збірки: якщо `summarySlug` вказує в
+нікуди або сторінка ні з чим не пов'язана, збірка впаде з поясненням, а не
+задеплоїть 404.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Деплой
+
+Пуш у `main` — Vercel збирає й публікує. CI (`.github/workflows/ci.yml`)
+проганяє `tsc --noEmit` і `next build` на кожен пуш і PR.
+
+Продакшн-адреса задається змінною `NEXT_PUBLIC_SITE_URL`; з неї беруться
+canonical, sitemap, Open Graph і структуровані дані. Поки її не виставлено,
+використовується домен проєкту у Vercel.

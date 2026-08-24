@@ -223,22 +223,6 @@
   border: 1.5px solid var(--faint);
 }
 
-/* skip link: invisible until focused, then a clear pill above everything */
-.casepage .skiplink {
-  position: absolute;
-  left: -9999px;
-  z-index: 10;
-  background: var(--brand-night);
-  color: var(--gold);
-  font: 700 var(--t-sm) var(--brand-font-body);
-  border-radius: var(--r-pill);
-  padding: var(--space-3) var(--space-6);
-  text-decoration: none;
-}
-.casepage .skiplink:focus-visible {
-  left: var(--space-4);
-  top: var(--space-4);
-}
 
 /* comfortable tap targets for the term chips */
 .casepage .termchips a {

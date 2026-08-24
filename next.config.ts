@@ -18,6 +18,40 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
+
+  /**
+   * Baseline security headers.
+   *
+   * Nothing here is exploitable today — the site is static and takes no user
+   * input — but this is an archive meant to be cited in filings, and these are
+   * the headers a reader's security team expects to find. Vercel already sends
+   * HSTS.
+   *
+   * No Content-Security-Policy yet: the theme script and the JSON-LD blocks
+   * are inlined, so a real policy needs per-request nonces, which turns every
+   * page dynamic. That trade is worth its own decision, not a drive-by.
+   */
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          // Stop browsers second-guessing declared content types.
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          // Send the origin to other sites, the full path only to our own —
+          // decision-page URLs name the case being read.
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // The map is a same-origin iframe; nobody else needs to frame us.
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // No page here uses a camera, a microphone or a location.
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

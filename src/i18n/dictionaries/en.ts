@@ -13,6 +13,7 @@ const en: Dictionary = {
     ogAlt: "nasvitlo — archive of international court decisions",
   },
   nav: {
+    skip: "Skip to content",
     home: "Home",
     decisions: "Decisions",
     map: "Map",
