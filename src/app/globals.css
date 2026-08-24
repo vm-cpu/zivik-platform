@@ -117,16 +117,6 @@
   --accent: #1c2bd6;
   --accent-soft: #1c2bd61f;
 
-  /* Atlas (caseflows) palette */
-  --atlas-bg: var(--brand-paper);
-  --atlas-ink: #1c1814;
-  --atlas-ink-soft: #4a443a;
-  --atlas-muted: #8a8270;
-  --atlas-gold: #b88a3a;
-  --atlas-red: #a83426;
-  --atlas-green: #5e7a64;
-  --atlas-rule: var(--brand-rule);
-  --atlas-header-bg: var(--brand-paper);
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -201,15 +191,6 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
 
-  /* Atlas colors */
-  --color-atlas-bg: var(--atlas-bg);
-  --color-atlas-ink: var(--atlas-ink);
-  --color-atlas-ink-soft: var(--atlas-ink-soft);
-  --color-atlas-muted: var(--atlas-muted);
-  --color-atlas-gold: var(--atlas-gold);
-  --color-atlas-red: var(--atlas-red);
-  --color-atlas-green: var(--atlas-green);
-  --color-atlas-rule: var(--atlas-rule);
 
   /* Fonts */
   --font-serif: var(--font-newsreader);
@@ -220,23 +201,6 @@
 body {
   background: var(--bg);
   color: var(--ink);
-}
-
-/* Leaflet overrides */
-.leaflet-container {
-  background: var(--brand-paper-2) !important;
-  font-family: inherit;
-}
-
-.leaflet-control-zoom a {
-  background: var(--atlas-bg) !important;
-  color: var(--atlas-ink) !important;
-  border-color: var(--atlas-rule) !important;
-}
-
-.leaflet-popup-content-wrapper {
-  border-radius: var(--r-md) !important;
-  box-shadow: var(--shadow-md) !important;
 }
 
 /* ─────────────────────────────────────────────────────────────
