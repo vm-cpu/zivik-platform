@@ -99,6 +99,15 @@
      archive from reading like a brochure. */
   --brand-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 
+  /* Case status — the registry's primary signal, so it has to survive both
+     themes. These were hex literals in shared.css and did not follow the
+     theme: composited over the dark ground they measured 2.26–2.85:1, below
+     the 4.5:1 AA floor. The dark values below are lifted the same way the
+     --brand-gold/--brand-red accents are. Warrant reuses the brand red. */
+  --status-decided: #3f6144;
+  --status-progress: #8a5d1f;
+  --status-enforce: #3a5670;
+
   /* Reader (caseworks) palette — surfaces follow the brand neutrals */
   --bg: var(--brand-paper);
   --bg-2: var(--brand-paper-2);
@@ -146,6 +155,9 @@
     /* accents lift so they stay legible on a dark ground */
     --brand-gold: #d9ab5e;
     --brand-red: #d9564b;
+    --status-decided: #7ec49a;
+    --status-progress: #d9ab5e;
+    --status-enforce: #8fb4d8;
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
     --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.5), 0 18px 48px rgba(0, 0, 0, 0.45);
@@ -163,6 +175,9 @@
   --brand-rule: #322c26;
   --brand-gold: #d9ab5e;
   --brand-red: #d9564b;
+  --status-decided: #7ec49a;
+  --status-progress: #d9ab5e;
+  --status-enforce: #8fb4d8;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.5), 0 18px 48px rgba(0, 0, 0, 0.45);

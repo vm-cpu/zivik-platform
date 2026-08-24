@@ -23,12 +23,15 @@
   border-radius: var(--r-pill);
   white-space: nowrap;
 }
+/* Colours come from --status-* in globals.css so they follow the theme; the
+   tint behind them stays a low-alpha wash of the same hue, which works on
+   either ground. */
 .st-decided {
-  color: #3f6144;
+  color: var(--status-decided);
   background: rgba(63, 97, 68, 0.13);
 }
 .st-progress {
-  color: #8a5d1f;
+  color: var(--status-progress);
   background: rgba(148, 100, 40, 0.15);
 }
 .st-warrant {
@@ -36,6 +39,6 @@
   background: rgba(127, 23, 22, 0.11);
 }
 .st-enforce {
-  color: #3a5670;
+  color: var(--status-enforce);
   background: rgba(58, 86, 112, 0.13);
 }
