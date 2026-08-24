@@ -75,7 +75,7 @@ export default async function HomePage({
           institutionCount={institutions.length}
         />
         <Slogan dict={dict} />
-        <MapSection dict={dict} />
+        <MapSection locale={locale} dict={dict} />
         <Quote dict={dict} />
         <Registry
           locale={locale}

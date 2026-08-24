@@ -1,0 +1,302 @@
+/* ============================================================================
+   Events map — where the harm happened and which courts are hearing it.
+
+   Colour is semantic here and nowhere else on the home page: three categories
+   of harm, each with its own hue. Everything comes from --brand-* tokens, so
+   the map follows the theme; the old iframe was painted dark whatever the
+   reader had chosen.
+   ========================================================================== */
+
+.emap {
+  --hr: var(--brand-red);
+  --war: var(--brand-gold);
+  --asset: #6e97be;
+  position: relative;
+}
+
+/* ---- the drawing ---- */
+/* The card is absolutely placed against the drawing, so the drawing — not the
+   whole block — is the positioning context. Anchored to .emap it floated over
+   the text list below it. */
+.emap-figure {
+  position: relative;
+}
+.emap-svg {
+  display: block;
+  width: 100%;
+  /* aspect-ratio rather than a fixed height, so "meet" never letterboxes and
+     "slice" never crops the Black Sea markers out of the frame. */
+  aspect-ratio: 1200 / 460;
+  background: var(--brand-night);
+  border: 1px solid var(--brand-night-rule);
+}
+
+.emap-ctx {
+  fill: #1e1815;
+  stroke: #2b221e;
+  stroke-width: 0.6;
+}
+.emap-ua {
+  fill: #2a1f1a;
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1.1;
+}
+
+.emap-reach {
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+  opacity: 0.28;
+  transition: opacity var(--dur) var(--ease);
+}
+.emap-reach[data-on="yes"] {
+  opacity: 0.85;
+}
+
+.emap-court circle {
+  fill: none;
+  stroke: var(--brand-cream);
+  stroke-width: 1.4;
+}
+.emap-court text {
+  font: 600 11px var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--brand-muted-dark);
+}
+
+.emap-site[data-cat="hr"] {
+  --c: var(--hr);
+}
+.emap-site[data-cat="war"] {
+  --c: var(--war);
+}
+.emap-site[data-cat="asset"] {
+  --c: var(--asset);
+}
+
+.emap-halo {
+  fill: var(--c);
+  opacity: 0.16;
+  pointer-events: none;
+}
+.emap-dot {
+  fill: var(--c);
+  cursor: pointer;
+  transition: r var(--dur) var(--ease);
+}
+.emap-dot[data-on="yes"] {
+  stroke: var(--brand-cream-warm);
+  stroke-width: 2;
+}
+.emap-dot:hover {
+  r: 8;
+}
+.emap-dot:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 3px;
+}
+
+/* ---- the card ---- */
+.emap-card {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: min(300px, calc(100% - 32px));
+  padding: 14px 16px 15px;
+  background: var(--brand-night-2);
+  border: 1px solid var(--brand-night-rule);
+  border-left: 3px solid var(--c, var(--brand-gold));
+  box-shadow: var(--shadow-dark);
+}
+.emap-card[data-cat="hr"] {
+  --c: var(--hr);
+}
+.emap-card[data-cat="war"] {
+  --c: var(--war);
+}
+.emap-card[data-cat="asset"] {
+  --c: var(--asset);
+}
+.emap-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: 0;
+  padding: 4px 6px;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--brand-faint-dark);
+  cursor: pointer;
+}
+.emap-close:hover {
+  color: var(--brand-cream);
+}
+.emap-when {
+  font: 600 10px var(--brand-font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--c);
+  margin-bottom: 5px;
+}
+.emap-title {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: 17px;
+  line-height: 1.2;
+  color: var(--brand-cream);
+  margin-bottom: 6px;
+}
+.emap-note {
+  margin: 0 0 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--brand-muted-dark);
+}
+.emap-forums {
+  font: 500 11.5px var(--brand-font-body);
+  color: var(--brand-gold-pale);
+  margin-bottom: 3px;
+}
+.emap-count {
+  font: 600 10.5px var(--brand-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  /* --brand-faint-dark measured 4.01:1 on the card ground — under AA at this
+     size. --brand-muted-dark is the next step up and clears it. */
+  color: var(--brand-muted-dark);
+}
+
+/* ---- the same content as text ---- */
+.emap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1px;
+  background: var(--brand-rule);
+  border: 1px solid var(--brand-rule);
+  border-top: 0;
+}
+.emap-list li {
+  background: var(--brand-surface);
+}
+.emap-list button {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  height: 100%;
+  padding: 13px 15px;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.emap-list li[data-cat="hr"] button {
+  border-left-color: var(--hr);
+}
+.emap-list li[data-cat="war"] button {
+  border-left-color: var(--war);
+}
+.emap-list li[data-cat="asset"] button {
+  border-left-color: var(--asset);
+}
+.emap-list button:hover,
+.emap-list button[aria-pressed="true"] {
+  background: var(--brand-paper-2);
+}
+.emap-li-when {
+  font: 600 9.5px var(--brand-font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-faint);
+}
+.emap-li-title {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: 15px;
+  line-height: 1.25;
+  color: var(--brand-ink);
+}
+.emap-li-forums {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--brand-ink-2);
+}
+.emap-li-count {
+  font: 600 10px var(--brand-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-faint);
+}
+
+.emap-courts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--brand-ink-2);
+}
+.emap-courts span:first-child {
+  font: 600 10px var(--brand-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-faint);
+  align-self: center;
+}
+.emap-courts span + span {
+  border-bottom: 1px dotted var(--brand-rule);
+  cursor: help;
+}
+
+/* On a narrow screen the drawing stops carrying the detail — the reach lines
+   and the card crowd each other — so the list becomes the map. */
+@media (max-width: 640px) {
+  .emap-svg {
+    aspect-ratio: 4 / 3;
+  }
+  .emap-card {
+    position: static;
+    width: auto;
+    margin-top: 1px;
+  }
+}
+
+/* ---- legend ---- */
+.emap-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 12px;
+}
+.emap-key {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 12px var(--brand-font-body);
+  color: var(--brand-ink-2);
+}
+.emap-key i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: block;
+  background: var(--c);
+}
+.emap-key[data-cat="hr"] {
+  --c: var(--hr);
+}
+.emap-key[data-cat="war"] {
+  --c: var(--war);
+}
+.emap-key[data-cat="asset"] {
+  --c: var(--asset);
+}
+.emap-key-court i {
+  background: none;
+  border: 1.5px solid var(--brand-ink-2);
+}

@@ -1,18 +1,22 @@
+import { pick } from "@/content/types";
+import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-
-const legendItem: React.CSSProperties = {
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  font: "500 12px var(--brand-font-body)",
-  color: "var(--brand-muted-dark)",
-};
+import { MAP_EVENTS, MAP_COURTS } from "@/content/map";
+import geo from "@/content/europe-map.json";
+import EventsMap from "./EventsMap";
 
 /**
- * Events map. Currently embeds the self-contained d3 map via iframe; a native
- * `d3-geo` React component is the planned replacement (see docs/ARCHITECTURE).
+ * Events map band. Geometry is projected at build time and rendered as plain
+ * SVG by <EventsMap>; strings are resolved here, on the server, so the client
+ * component never receives both languages.
  */
-export default function MapSection({ dict }: { dict: Dictionary }) {
+export default function MapSection({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: Dictionary;
+}) {
   return (
     <div
       id="map"
@@ -57,39 +61,39 @@ export default function MapSection({ dict }: { dict: Dictionary }) {
             still unlocalised and on the old caseflows brand. */}
       </div>
       <div className="nsv-map">
-        <div className="nsv-map-frame">
-          <iframe
-            src="/nasvitlo/map-dark.html"
-            title={dict.mapSection.heading}
-          />
-        </div>
-        <div className="nsv-map-legend">
-          <span style={legendItem}>
-            <i
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "var(--brand-cherry)",
-                display: "block",
-              }}
-            />
-            {dict.mapSection.legendEvent}
-          </span>
-          <span style={legendItem}>
-            <i
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: "50%",
-                background: "var(--brand-gold-pale)",
-                display: "block",
-                boxShadow: "0 0 8px rgba(240,221,168,.7)",
-              }}
-            />
-            {dict.mapSection.legendCourt}
-          </span>
-        </div>
+        <EventsMap
+          geo={geo}
+          events={MAP_EVENTS.map((e) => ({
+            key: e.key,
+            category: e.category,
+            size: e.size,
+            when: pick(e.when, locale),
+            title: pick(e.title, locale),
+            note: pick(e.note, locale),
+            courts: e.courts,
+            forums: pick(e.forums, locale),
+            count: pick(e.count, locale),
+            open: e.open,
+          }))}
+          courts={MAP_COURTS.map((c) => ({
+            key: c.key,
+            city: pick(c.city, locale),
+            seats: c.seats
+              .map((s) => `${s.abbr} — ${pick(s.name, locale)}`)
+              .join(" · "),
+          }))}
+          labels={{
+            alt: dict.mapSection.heading,
+            close: dict.mapSection.close,
+            courtsSeat: dict.mapSection.courtsSeat,
+            court: dict.mapSection.legendCourt,
+            categories: {
+              hr: dict.mapSection.legendHr,
+              war: dict.mapSection.legendWar,
+              asset: dict.mapSection.legendAsset,
+            },
+          }}
+        />
       </div>
     </div>
   );

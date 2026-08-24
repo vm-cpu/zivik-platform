@@ -53,13 +53,17 @@ const en: Dictionary = {
     source: "International Court of Justice · Provisional Measures · 16 March 2022",
   },
   mapSection: {
+    close: "Close card",
     label: "Map",
     heading: "Events and the courts that hear them",
     description:
       "Shelling, deportations and seizures — linked by a dotted line to the courtroom where they are argued.",
     fullMap: "Full map →",
-    legendEvent: "Event: shelling, deportation, seizure",
-    legendCourt: "The court that hears it",
+    legendHr: "Human rights",
+    legendWar: "War crimes",
+    legendAsset: "Seizure of assets",
+    legendCourt: "The court hearing it",
+    courtsSeat: "The courts sit in",
   },
   registry: {
     label: "Registry",
