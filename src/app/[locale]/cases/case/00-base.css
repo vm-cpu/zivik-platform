@@ -39,17 +39,9 @@
   --pgold: var(--brand-gold);
   --pred: var(--brand-red);
 
-  /* Type ramp. Steps sit ~1.11–1.14 apart through the UI/prose range (fine
-     gradations where density matters) and open up at the top so display type
-     reads as a different register, not just "bigger body". */
-  --t-micro: 11px;   /* uppercase labels */
-  --t-cap: 12.5px;   /* captions, citations */
-  --t-sm: 14px;      /* secondary prose */
-  --t-ui: 15.5px;    /* UI rows, list items */
-  --t-body: 17.5px;  /* long-form reading */
-  --t-lead: 20px;    /* standfirst */
-  --t-h3: 22.5px;    /* card titles */
-  --t-h2: clamp(23px, 2.4vw, 29px);
+  /* Steps shared with the rest of the site live in globals.css; these two
+     exist only here — a display figure and the masthead. */
+  --t-fig: clamp(29px, 3.6vw, 44px);
   --t-h1: clamp(32px, 5vw, 68px);
 
   /* rhythm */

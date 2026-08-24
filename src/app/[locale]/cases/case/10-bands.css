@@ -133,7 +133,7 @@
 .casepage .tldr p {
   margin: 0;
   font-family: var(--brand-font-display), serif;
-  font-size: clamp(19px, 2vw, 24px);
+  font-size: clamp(var(--t-lead), 2vw, var(--t-h3));
   line-height: 1.5;
   color: var(--ink);
   text-wrap: pretty;

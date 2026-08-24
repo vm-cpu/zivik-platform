@@ -55,12 +55,17 @@
 .casepage .pagenav-v {
   display: none;
 }
-@media (min-width: 1440px) {
+/* The rail only appears when the gutter can actually hold it. At 1440px the
+   box is 203px wide and the content starts at 130px, so it sat on top of the
+   text; the old threshold assumed a narrower rail. 1700px is the first width
+   where 203px plus a gap fits beside a 1180px column, and the horizontal bar
+   covers everything below that. */
+@media (min-width: 1700px) {
   .casepage .pagenav-v {
     display: block;
     position: fixed;
     top: 50%;
-    left: max(16px, calc((100vw - var(--measure)) / 2 - 168px));
+    left: max(24px, calc((100vw - var(--measure)) / 2 - 227px));
     transform: translateY(-50%);
     z-index: 6;
     background: var(--brand-night);
@@ -261,7 +266,7 @@
   position: absolute;
   right: 0;
   top: var(--space-5);
-  font: 400 22px var(--brand-font-body);
+  font: 400 var(--t-lead) var(--brand-font-body);
   line-height: 1;
   color: var(--pgold);
 }

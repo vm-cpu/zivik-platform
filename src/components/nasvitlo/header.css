@@ -37,7 +37,7 @@
 }
 .nsv-mobnav a {
   padding: 11px 0;
-  font: 500 15px var(--brand-font-body);
+  font: 500 var(--t-ui) var(--brand-font-body);
   color: var(--brand-cream);
   text-decoration: none;
   border-bottom: 1px solid rgba(243, 232, 226, 0.07);

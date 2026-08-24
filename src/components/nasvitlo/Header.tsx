@@ -101,7 +101,7 @@ export default function Header({
           <span
             style={{
               fontFamily: "var(--brand-font-display),serif",
-              fontSize: 19,
+              fontSize: "var(--t-lead)",
               color: "var(--brand-gold-pale)",
               lineHeight: 1,
             }}
@@ -112,7 +112,7 @@ export default function Header({
 
         <nav
           className="nsv-nav"
-          style={{ display: "flex", gap: 20, font: "500 13px var(--brand-font-body)" }}
+          style={{ display: "flex", gap: 20, font: "500 var(--t-sm) var(--brand-font-body)" }}
         >
           {nav.map((item) => (
             <Link
@@ -126,7 +126,7 @@ export default function Header({
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <span style={{ font: "600 12px var(--brand-font-body)", color: "var(--brand-faint-dark)" }}>
+          <span style={{ font: "600 var(--t-cap) var(--brand-font-body)", color: "var(--brand-faint-dark)" }}>
             <Link
               href={localeHref("uk")}
               hrefLang="uk"

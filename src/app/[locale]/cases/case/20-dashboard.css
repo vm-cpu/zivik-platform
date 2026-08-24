@@ -36,7 +36,7 @@
 .casepage .kpi b {
   font-family: var(--brand-font-display), serif;
   font-weight: 700;
-  font-size: clamp(32px, 3.6vw, 44px);
+  font-size: var(--t-fig);
   line-height: 1;
   color: var(--gold);
   font-variant-numeric: tabular-nums;
@@ -94,16 +94,16 @@
   fill: var(--cream);
 }
 .casepage .mk-label {
-  font: 700 26px var(--brand-font-body);
+  font: 700 var(--t-body) var(--brand-font-body);
   fill: var(--cream);
 }
 .casepage .mk-treaty {
-  font: 700 21px var(--brand-font-body);
+  font: 700 var(--t-sm) var(--brand-font-body);
   fill: var(--gold);
   letter-spacing: 0.08em;
 }
 .casepage .mk-city-label {
-  font: 500 20px var(--brand-font-body);
+  font: 500 var(--t-cap) var(--brand-font-body);
   fill: var(--muted);
 }
 .casepage .map-legend {

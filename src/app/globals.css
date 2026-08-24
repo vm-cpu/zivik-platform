@@ -99,6 +99,22 @@
      archive from reading like a brochure. */
   --brand-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 
+  /* ── Type scale ─────────────────────────────────────────────────
+     One ramp for the whole site. It existed only inside .casepage, so
+     the header, footer and page nav each invented their own sizes —
+     a single decision page rendered nineteen different values, ten of
+     them off any scale, which is what "sometimes huge, sometimes tiny"
+     actually was. Steps sit ~1.11–1.14 apart through the reading range
+     and open up at the top so display type reads as another register. */
+  --t-micro: 11px;    /* uppercase labels */
+  --t-cap: 12.5px;    /* captions, citations, metadata */
+  --t-sm: 14px;       /* secondary prose */
+  --t-ui: 15.5px;     /* UI rows, list items, nav */
+  --t-body: 17.5px;   /* long-form reading */
+  --t-lead: 20px;     /* standfirst, wordmark in the bar */
+  --t-h3: 22.5px;
+  --t-h2: clamp(23px, 2.4vw, 29px);
+
   /* Case status — the registry's primary signal, so it has to survive both
      themes. These were hex literals in shared.css and did not follow the
      theme: composited over the dark ground they measured 2.26–2.85:1, below

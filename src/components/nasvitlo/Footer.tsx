@@ -3,14 +3,14 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 const colHead: React.CSSProperties = {
-  font: "700 10px var(--brand-font-body)",
+  font: "700 var(--t-micro) var(--brand-font-body)",
   letterSpacing: ".14em",
   textTransform: "uppercase",
   color: "var(--brand-gold-pale)",
   marginBottom: 3,
 };
 const footLink: React.CSSProperties = {
-  fontSize: 13,
+  fontSize: "var(--t-sm)",
   color: "var(--brand-muted-dark)",
   textDecoration: "none",
 };
@@ -24,7 +24,7 @@ type FootEntry = { label: string; href?: string };
  *  colour to 55% took it to 3.53:1, under the AA floor. This token is a
  *  designed value and clears it at 4.62:1 on the footer ground. */
 const footPending: React.CSSProperties = {
-  fontSize: 13,
+  fontSize: "var(--t-sm)",
   color: "var(--brand-faint-dark)",
 };
 
@@ -78,7 +78,7 @@ export default function Footer({
             <span
               style={{
                 fontFamily: "var(--brand-font-display),serif",
-                fontSize: 24,
+                fontSize: "var(--t-h3)",
                 color: "var(--brand-cream-warm)",
                 textShadow:
                   "0 0 18px rgba(255,238,196,.55),0 0 44px rgba(240,221,168,.28)",
@@ -89,7 +89,7 @@ export default function Footer({
           </div>
           <p
             style={{
-              fontSize: 13,
+              fontSize: "var(--t-sm)",
               lineHeight: 1.6,
               color: "var(--brand-faint-dark)",
               margin: "0 0 16px",
@@ -100,7 +100,7 @@ export default function Footer({
           </p>
           <div
             style={{
-              font: "600 10px/1.8 var(--brand-font-body)",
+              font: "600 var(--t-micro)/1.8 var(--brand-font-body)",
               letterSpacing: ".13em",
               textTransform: "uppercase",
               color: "var(--brand-muted-brown)",

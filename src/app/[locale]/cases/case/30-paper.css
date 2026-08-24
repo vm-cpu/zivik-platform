@@ -98,15 +98,19 @@
 }
 .casepage .read .lead {
   font-family: var(--brand-font-display), serif;
-  font-size: clamp(19px, 2vw, 22px);
+  font-size: clamp(var(--t-lead), 2vw, var(--t-h3));
   line-height: 1.55;
   color: var(--ink);
   margin: 0 0 var(--space-2);
 }
+/* A 2px black rule was the heaviest mark on the page — heavier than the
+   headings it belonged to — so it read as a divider dropped between sections
+   rather than part of the heading. A hairline in the page's own rule colour
+   does the same job quietly. */
 .casepage .read h2 {
   margin: var(--space-14) 0 var(--space-2);
   padding-top: var(--space-5);
-  border-top: 2px solid var(--ink);
+  border-top: 1px solid var(--prule);
   font-family: var(--brand-font-display), serif;
   font-weight: 700;
   font-size: var(--t-h2);
