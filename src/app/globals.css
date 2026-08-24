@@ -108,8 +108,14 @@
      and open up at the top so display type reads as another register. */
   --t-micro: 11px;    /* uppercase labels */
   --t-cap: 12.5px;    /* captions, citations, metadata */
-  --t-sm: 14px;       /* secondary prose */
-  --t-ui: 15.5px;     /* UI rows, list items, nav */
+  --t-sm: 14px;       /* secondary prose, list items, UI rows */
+  /* --t-ui was 15.5px, a fourth step inside the 11–15.5 band. Four sizes
+     within four and a half pixels do not read as hierarchy — they read as
+     carelessness, and the same role kept landing on different ones: a name in
+     one list at 15.5, a name in another at 22.5. It is an alias now, so the
+     small end is three clearly separated steps and title-vs-description is
+     carried by weight, which those pairs already use. */
+  --t-ui: var(--t-sm);
   --t-body: 17.5px;   /* long-form reading */
   --t-lead: 20px;     /* standfirst, wordmark in the bar */
   --t-h3: 22.5px;

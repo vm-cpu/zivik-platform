@@ -166,7 +166,10 @@
   border-radius: 0;
   box-shadow: none;
   border-bottom: 1px solid var(--rule-soft);
-  font-size: var(--t-ui);
+    /* Reading-zone prose is one size. These clauses were --t-ui, two steps
+       under the narrative they sit among — the most citable text on the
+       page set smaller than the sentences leading up to it. */
+    font-size: var(--t-body);
   line-height: 1.6;
   color: var(--ink);
   counter-increment: disp;
@@ -198,8 +201,10 @@
   border-radius: 0;
   box-shadow: none;
 }
+/* Findings are grouped body prose, not a caption: same size as everything
+   else in the column. */
 .casepage .findings p {
-  font-size: var(--t-ui);
+  font-size: var(--t-body);
   line-height: 1.65;
 }
 .casepage .findings .sub {
