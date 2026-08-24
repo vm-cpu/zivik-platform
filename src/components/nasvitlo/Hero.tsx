@@ -96,23 +96,22 @@ export default function Hero({ dict }: { dict: Dictionary }) {
           </a>
         </div>
 
-        {/* Whose project this is. Below the name, not above it: at 10px on the
-            lamp's brightest point it was the hardest line on the page to read,
-            and it was answering a question nobody had asked yet. */}
-        <p
-          style={{
-            font: "600 11px var(--brand-font-body)",
-            letterSpacing: ".1em",
-            textTransform: "uppercase",
-            color: "var(--brand-faint-dark)",
-            margin: "38px 0 0",
-            maxWidth: 620,
-            lineHeight: 1.7,
-            textWrap: "balance",
-          }}
-        >
-          {dict.hero.eyebrow}
-        </p>
+        {/*
+          Provenance, as a signature rather than a caption. It was one
+          62-character uppercase line floating alone below the buttons —
+          nothing to anchor it, and the two institutions in it read as one
+          run-on. For a legal archive provenance is credibility, so it gets a
+          rule to sit on and the centre is named before the faculty that
+          houses it.
+        */}
+        <div className="nsv-credit">
+          <span className="nsv-credit-rule" aria-hidden="true" />
+          <p>
+            <span className="cr-lead">{dict.hero.credit}</span>
+            <span className="cr-centre">{dict.hero.creditCentre}</span>
+            <span className="cr-faculty">{dict.hero.creditFaculty}</span>
+          </p>
+        </div>
       </div>
     </div>
   );

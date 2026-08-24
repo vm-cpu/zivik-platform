@@ -335,6 +335,7 @@
   .regm .mrow:active{border-color:var(--gold)}
   .regm .tok{min-height:34px}
   .page{--red:var(--brand-red);--redd:var(--brand-red-dark);--gold:var(--brand-gold);--paper:var(--brand-paper);--paper2:var(--brand-paper-2);--surface:var(--brand-surface);--ink:var(--brand-ink);--ink2:var(--brand-ink-2);--muted:var(--brand-ink-2);--faint:var(--brand-faint);--rule:var(--brand-rule);
+    --measure:1180px;
     width:100%;max-width:none;margin:0 auto;background:var(--paper);color:var(--ink);font-family:var(--brand-font-body),sans-serif;font-size:14px;line-height:1.55;box-shadow:none}
   .page h1,.page h2,.page h3,.page h4{font-family:var(--brand-font-display),Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   /* Content links only. As a blanket `.page a` this reached into the header
@@ -489,9 +490,17 @@
   /* .acc is excluded: its white rows must span full width; only their content
      is inset (below). Padding the .acc container would expose the dark hero
      gradient behind it as side strips. */
+  /* Padding insets the content from the edge; it does not cap how wide the
+     content gets. At 1920px every band still ran 1728px across — which is why
+     the figure row huddled on the left, the "Про проєкт" button sat most of a
+     screen away from the sentence it belongs to, and the forum list spread
+     into five sparse columns. The paper background lives on .page, so capping
+     the bands leaves it full-bleed and only the content centres. */
   .page > .lmp > div:not(.pj):not(.acc){
     padding-left:clamp(28px, 5vw, 96px) !important;
     padding-right:clamp(28px, 5vw, 96px) !important;
+    max-width:calc(var(--measure) + 2 * clamp(28px, 5vw, 96px));
+    margin-inline:auto;
   }
   .nsv-map{
     margin-left:calc(-1 * clamp(28px, 5vw, 96px)) !important;
@@ -507,6 +516,8 @@
   .acc .body{
     padding-left:clamp(28px, 5vw, 96px) !important;
     padding-right:clamp(28px, 5vw, 96px) !important;
+    max-width:calc(var(--measure) + 2 * clamp(28px, 5vw, 96px));
+    margin-inline:auto;
   }
 }
 
@@ -551,4 +562,33 @@
 @media (max-width:760px){
   .nsv-forums{padding:0 20px 26px}
   .nsv-forums ul{grid-template-columns:1fr}
+}
+
+/* ---- hero credit: who stands behind the archive ------------------------ */
+.nsv-credit{
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+  margin-top:52px;
+}
+/* A short rule, not a full divider: it ends the hero rather than splitting it. */
+.nsv-credit-rule{
+  width:44px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(240,221,168,.45),transparent);
+}
+.nsv-credit p{
+  margin:0;display:flex;flex-direction:column;gap:3px;text-align:center;
+}
+/* --brand-faint-dark measured 4.29:1 here, just under AA at 9.5px. Hierarchy
+   comes from size and tracking instead: this reads as a label because it is
+   tiny and letterspaced, not because it is dim. */
+.cr-lead{
+  font:600 9.5px var(--brand-font-body);letter-spacing:.22em;
+  text-transform:uppercase;color:var(--brand-muted-dark);
+}
+.cr-centre{
+  font-family:var(--brand-font-display),Georgia,serif;
+  font-size:15px;line-height:1.3;color:var(--brand-gold-pale);
+}
+.cr-faculty{
+  font:500 12px var(--brand-font-body);letter-spacing:.04em;
+  color:var(--brand-muted-dark);
 }

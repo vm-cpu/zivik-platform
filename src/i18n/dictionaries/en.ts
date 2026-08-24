@@ -26,7 +26,9 @@ const en: Dictionary = {
     wordmark: "nasvitlo",
   },
   hero: {
-    eyebrow: "A project of the Louis B. Sohn Research Centre, UCU Faculty of Law",
+    credit: "A project of",
+    creditCentre: "the Louis B. Sohn Research Centre",
+    creditFaculty: "UCU Faculty of Law",
     lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice.",
     ctaRegistry: "Library of decisions",
     ctaMap: "Map",
@@ -35,7 +37,7 @@ const en: Dictionary = {
   },
   intro: {
     text: "We read the decisions of international courts and retell them in plain language — so you can rely on them in an argument, an article, or a claim.",
-    about: "About the project",
+    about: "About the Library",
   },
   slogan: "We research · We explain · We bring to light",
   aboutRail: {
