@@ -2,9 +2,40 @@
    Registry page — full, filterable case listing.
    Structure follows conventional application-UI patterns (page heading,
    filter toolbar, list rows, empty state, stats) but is built in the
-   насвітло token system, not Tailwind utilities. Shares the .page palette
-   and the global .chip / .st-* status badges from home.css.
+   насвітло token system, not Tailwind utilities.
    ============================================================ */
+
+/* Own palette, like .casepage has in cases/case/00-base.css.
+   This page used to borrow the .page scale from home.css. When home.css was
+   scoped to the home page (it was putting 399 unscoped rules on every other
+   surface), the borrow broke silently: --ink fell through to the legacy
+   #0c0c0d literal in globals.css and the rest went undefined, so the whole
+   page rendered near-black on near-black in dark mode — the h1 measured
+   1.05:1. Every value below is a --brand-* token, so it follows the theme;
+   nothing here is a literal, and nothing here depends on another surface's
+   stylesheet loading first. */
+.registrypage{
+  --red:var(--brand-red);
+  --redd:var(--brand-red-dark);
+  --gold:var(--brand-gold);
+  --paper:var(--brand-paper);
+  --paper2:var(--brand-paper-2);
+  --surface:var(--brand-surface);
+  --ink:var(--brand-ink);
+  --ink2:var(--brand-ink-2);
+  --muted:var(--brand-ink-2);
+  --faint:var(--brand-faint);
+  --rule:var(--brand-rule);
+
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--brand-font-body),sans-serif;
+  font-size:14px;
+  line-height:1.55;
+}
+.registrypage a{color:var(--red);text-decoration:none}
+.registrypage a:hover{color:var(--redd)}
+
 .registrypage .reg-wrap{
   max-width:1120px;margin:0 auto;
   padding:0 clamp(20px,5vw,44px) 80px;

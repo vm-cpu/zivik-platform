@@ -71,7 +71,10 @@ export default function CaseTimeline({
   const trackLabel = (id?: string) => (id ? tracks.find((t) => t.id === id)?.label : undefined);
 
   return (
-    <div className="ctl">
+    // data-tracks drives the row grid: with no tracks at all there is no
+    // track column to reserve, and the event text takes the width the track
+    // column would have had. See .ctl-row in 40-instruments.css.
+    <div className="ctl" data-tracks={tracks.length > 0 ? "yes" : "no"}>
       {tracks.length > 0 && (
         <div className="ctl-filters" role="tablist" aria-label={labels.all}>
           <button

@@ -243,9 +243,18 @@
 .casepage .ctl-list li:last-child {
   border-bottom: 1px solid var(--rule);
 }
+/* The row grid has a track column only when the timeline actually has tracks.
+   .ctl-track is rendered conditionally, so a fixed four-column template put
+   the event text into the 8.5rem track slot on every track-less case and left
+   the 1fr column empty — the whole chronology wrapped one word per line on
+   icj-genocide, icj-cerd-icsft, hague-mh17 and finland-torden. CaseTimeline
+   sets data-tracks; the two shapes below are the only ones that exist. */
 .casepage .ctl {
   /* one indent shared by the row grid and the detail that hangs off it */
   --ctl-indent: calc(8.5rem + 8.5rem + var(--space-4) * 2);
+}
+.casepage .ctl[data-tracks="no"] {
+  --ctl-indent: calc(8.5rem + var(--space-4));
 }
 .casepage .ctl-row {
   display: grid;
@@ -262,6 +271,21 @@
 }
 .casepage .ctl-row-static {
   cursor: default;
+}
+/* Guarded to the wide layout: below 760px the rows restack and 50-responsive
+   places .ctl-label across the full row, which these would otherwise outrank. */
+@media (min-width: 761px) {
+  .casepage .ctl[data-tracks="no"] .ctl-row {
+    grid-template-columns: 8.5rem 1fr auto;
+  }
+  /* Pin the cells by column so a single event without a track inside an
+     otherwise tracked timeline cannot shift the row either. */
+  .casepage .ctl[data-tracks="yes"] .ctl-label {
+    grid-column: 3;
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-more {
+    grid-column: 4;
+  }
 }
 .casepage .ctl-more {
   justify-self: end;

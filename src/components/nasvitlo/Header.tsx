@@ -44,7 +44,18 @@ export default function Header({
           borderBottom: "1px solid rgba(243,232,226,.1)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {/* The whole brand cluster is one link home — the convention every
+            reader expects of a logo. */}
+        <Link
+          href={`/${locale}`}
+          aria-label={dict.brand.wordmark}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            textDecoration: "none",
+          }}
+        >
           {/* White Faculty-of-Law mark on the dark bar. eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/logos/fp-logo-white-${locale}.svg`}
@@ -68,7 +79,7 @@ export default function Header({
           >
             {dict.brand.wordmark}
           </span>
-        </div>
+        </Link>
 
         <nav
           className="nsv-nav"
