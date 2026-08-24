@@ -6,23 +6,19 @@ import type { Institution } from "@/content/types";
 
 /** Intro sentence + the headline figures. */
 /**
- * Years and months since a date, computed on the server so the tile is never
- * blank and a reader without JavaScript still sees a figure. <SinceCounter>
- * recomputes it in the browser, because this value is baked in at build time
- * and this archive can go weeks between deploys.
+ * Whole years and months since a date, computed on the server so the tile is
+ * never blank and a reader without JavaScript still sees a figure.
+ * <SinceCounter> recomputes it in the browser: this value is baked in at build
+ * time and the archive can go weeks between deploys.
  */
-function elapsed(since: string, locale: Locale): string {
+function elapsed(since: string): { years: number; months: number } {
   const start = new Date(since);
   const now = new Date();
   let months =
     (now.getFullYear() - start.getFullYear()) * 12 +
     (now.getMonth() - start.getMonth());
   if (now.getDate() < start.getDate()) months -= 1;
-  const years = Math.floor(months / 12);
-  const rest = months % 12;
-  const y = locale === "uk" ? "р." : "yr";
-  const m = locale === "uk" ? "міс." : "mo";
-  return rest === 0 ? `${years} ${y}` : `${years} ${y} ${rest} ${m}`;
+  return { years: Math.floor(months / 12), months: months % 12 };
 }
 
 export default function Intro({
@@ -81,7 +77,8 @@ export default function Intro({
               {stat.since ? (
                 <SinceCounter
                   since={stat.since}
-                  initial={elapsed(stat.since, locale)}
+                  initialYears={elapsed(stat.since).years}
+                  initialMonths={elapsed(stat.since).months}
                   unitYears={locale === "uk" ? "р." : "yr"}
                   unitMonths={locale === "uk" ? "міс." : "mo"}
                 />

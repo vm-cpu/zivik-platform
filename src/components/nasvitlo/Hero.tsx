@@ -1,16 +1,5 @@
 import type { Dictionary } from "@/i18n/dictionaries";
 
-const ctaBase: React.CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 8,
-  font: "700 11px var(--brand-font-body)",
-  letterSpacing: ".07em",
-  textTransform: "uppercase",
-  padding: "12px 20px",
-  textDecoration: "none",
-};
-
 /**
  * Hero with the industrial lamp lighting the wordmark. The lamp fixtures and
  * `.dchain` pull-cord are static markup; <LampShell/> wires the toggle + fade.
@@ -99,20 +88,10 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             justifyContent: "center",
           }}
         >
-          <a
-            href="#registry"
-            style={{ ...ctaBase, background: "var(--brand-cherry)", color: "#fff" }}
-          >
+          <a href="#registry" className="btn btn-lit">
             {dict.hero.ctaRegistry}
           </a>
-          <a
-            href="#map"
-            style={{
-              ...ctaBase,
-              border: "2px solid rgba(240,221,168,.5)",
-              color: "var(--brand-gold-pale)",
-            }}
-          >
+          <a href="#map" className="btn btn-ghost">
             {dict.hero.ctaMap}
           </a>
         </div>

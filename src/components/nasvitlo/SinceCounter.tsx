@@ -2,23 +2,15 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 
-/** Years and months between `since` and now, in the reader's language. */
-function elapsed(
-  since: string,
-  unitYears: string,
-  unitMonths: string,
-): string {
+/** Whole years and months between `since` and now, as "years|months". */
+function snapshot(since: string): string {
   const start = new Date(since);
   const now = new Date();
   let months =
     (now.getFullYear() - start.getFullYear()) * 12 +
     (now.getMonth() - start.getMonth());
   if (now.getDate() < start.getDate()) months -= 1;
-  const years = Math.floor(months / 12);
-  const rest = months % 12;
-  return rest === 0
-    ? `${years} ${unitYears}`
-    : `${years} ${unitYears} ${rest} ${unitMonths}`;
+  return `${Math.floor(months / 12)}|${months % 12}`;
 }
 
 /** Nothing to subscribe to: the figure is read once per mount, not streamed. */
@@ -29,28 +21,51 @@ const noop = () => () => {};
  *
  * The page is prerendered, so a figure computed on the server is frozen at
  * whatever the last deploy said — and this archive can go weeks between
- * deploys. `useSyncExternalStore` is the right shape for exactly this split:
- * it renders `initial` (computed at build time, so a reader without
- * JavaScript still sees a figure) during SSR and hydration, then reads the
- * live value on the client. Doing it with setState inside an effect would
- * work too, but it triggers a cascading render and React lints against it.
+ * deploys. `useSyncExternalStore` fits that split exactly: it renders the
+ * build-time value during SSR and hydration, so a reader without JavaScript
+ * still sees a figure, then reads the live one on the client.
+ *
+ * The snapshot is a string because React compares it with Object.is; returning
+ * an object would make every render look like a change.
+ *
+ * Units render as their own element so they can be set quieter than the
+ * figures — "12 р. 6 міс." in one 46px display serif read as four numerals.
  */
 export default function SinceCounter({
   since,
-  initial,
+  initialYears,
+  initialMonths,
   unitYears,
   unitMonths,
 }: {
   since: string;
-  initial: string;
+  initialYears: number;
+  initialMonths: number;
   unitYears: string;
   unitMonths: string;
 }) {
-  const getSnapshot = useCallback(
-    () => elapsed(since, unitYears, unitMonths),
-    [since, unitYears, unitMonths],
+  const getSnapshot = useCallback(() => snapshot(since), [since]);
+  const getServerSnapshot = useCallback(
+    () => `${initialYears}|${initialMonths}`,
+    [initialYears, initialMonths],
   );
-  const getServerSnapshot = useCallback(() => initial, [initial]);
 
-  return <>{useSyncExternalStore(noop, getSnapshot, getServerSnapshot)}</>;
+  const [years, months] = useSyncExternalStore(
+    noop,
+    getSnapshot,
+    getServerSnapshot,
+  ).split("|");
+
+  return (
+    <>
+      {years}
+      <span className="unit">{unitYears}</span>
+      {months !== "0" && (
+        <>
+          <span className="num-part">{months}</span>
+          <span className="unit">{unitMonths}</span>
+        </>
+      )}
+    </>
+  );
 }

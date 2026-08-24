@@ -94,6 +94,15 @@
   .btn-f{background:var(--red);color:#fff}
   .btn.btn-f,.page .btn.btn-f{color:#FFF8EA}
   .btn-o{background:transparent;color:var(--red)}
+  /* On the lamp scene the paper red is too dark to read, and a saturated red
+     rectangle was the only jarring note in a warm gold composition — red also
+     means "breach" on the decision pages, which a navigation button is not.
+     The lit pair borrows the lamp's own light instead. Same pill, same border,
+     same type: only the colours change. */
+  .page a.btn-lit{background:var(--brand-gold-lit);border-color:var(--brand-gold-lit);color:var(--brand-night)}
+  .page a.btn-lit:hover{background:var(--brand-gold-bright);border-color:var(--brand-gold-bright)}
+  .page a.btn-ghost{background:transparent;border-color:rgba(240,221,168,.45);color:var(--brand-gold-pale)}
+  .page a.btn-ghost:hover{border-color:var(--brand-gold-pale);color:var(--brand-cream-warm)}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:15px 30px;background:var(--surface);border-bottom:1px solid var(--rule)}
   .brand{display:flex;align-items:center;gap:12px}
   .brand img{height:32px;width:auto;display:block}
@@ -343,8 +352,18 @@
 .nsv-statline{display:flex;align-items:flex-end;flex-wrap:wrap;row-gap:20px}
 .nsv-statline .stat{display:flex;flex-direction:column;gap:6px;padding:0 30px;border-left:1px solid var(--rule)}
 .nsv-statline .stat:first-child{padding-left:0;border-left:0}
-.nsv-statline .num{font-family:var(--brand-font-display),Georgia,serif;font-size:40px;line-height:.9;color:var(--ink);font-variant-numeric:tabular-nums}
-.nsv-statline .stat:first-child .num{font-size:66px;color:var(--gold)}
+/* One size for every figure. The first used to be 66px against the others' 40,
+   which with line-height:.9 put three different baselines in a row that reads
+   as one line — and it stopped working entirely once the third value became
+   "12 р. 6 міс." rather than a numeral. The headline figure keeps its emphasis
+   through colour. */
+.nsv-statline .num{font-family:var(--brand-font-display),Georgia,serif;font-size:46px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap}
+.nsv-statline .stat:first-child .num{color:var(--gold)}
+/* "р." and "міс." are units, not figures: same line, quieter register. */
+/* Spacing in px, not em: an em here resolves against the unit's own .42em,
+   which made the gaps two pixels wide. */
+.nsv-statline .unit{font-family:var(--brand-font-body),sans-serif;font-size:.4em;font-weight:600;color:var(--faint);margin-left:3px}
+.nsv-statline .num-part{margin-left:var(--space-2)}
 .nsv-statline .cap{font:600 10.5px var(--brand-font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
 
 /* partner marks — restrained row, no empty placeholder boxes */
@@ -440,8 +459,7 @@
   .regprog{flex-direction:column !important;align-items:flex-start !important;gap:12px !important}
   .legend{flex-direction:column;gap:10px}
   .nsv-statline .stat{padding:0 16px}
-  .nsv-statline .num{font-size:32px}
-  .nsv-statline .stat:first-child .num{font-size:52px}
+  .nsv-statline .num{font-size:34px}
   .nsv-slogan{gap:14px;padding:24px 18px}
   .nsv-slogan .rule{display:none}
   .nsv-about-grid{grid-template-columns:1fr;gap:26px}
