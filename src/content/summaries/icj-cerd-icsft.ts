@@ -169,7 +169,7 @@ export const icjCerdIcsft: DecisionSummary = {
         en: "Allegations of Genocide (Ukraine v. Russian Federation)",
       },
       note: { uk: "МС ООН · 32 держави-інтервенти", en: "ICJ · 32 States intervening" },
-      href: "#registry",
+      href: "/cases/icj-genocide",
     },
     {
       label: { uk: "Ордери МКС на арешт", en: "ICC arrest warrants" },

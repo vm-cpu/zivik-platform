@@ -242,7 +242,7 @@ export const oschadbank: DecisionSummary = {
         uk: "PCA 2018-41 · енергомережа Криму",
         en: "PCA 2018-41 · Crimea's power grid",
       },
-      href: "#registry",
+      href: "/cases/dtek-krymenergo",
     },
     {
       label: {

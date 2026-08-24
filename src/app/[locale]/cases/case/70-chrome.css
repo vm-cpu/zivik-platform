@@ -295,22 +295,44 @@
   margin: var(--space-6) 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--space-4);
 }
 .casepage .nb-grid a {
   display: grid;
+  align-content: start;
   gap: var(--space-2);
   height: 100%;
-  padding: var(--space-5) var(--space-6);
+  padding: var(--space-6);
   background: var(--card);
   border: 1px solid var(--prule);
   text-decoration: none;
-  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  position: relative;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+/* The forum leads: with a set of neighbours the first question is which court. */
+.casepage .nb-forum {
+  font: 600 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+/* A rule that draws itself on hover, rather than a card that lifts off. */
+.casepage .nb-grid a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 0;
+  background: var(--pred);
+  transition: width var(--dur) var(--ease);
+}
+.casepage .nb-grid a:hover::after {
+  width: 100%;
 }
 .casepage .nb-grid a:hover {
-  border-color: var(--pgold);
-  transform: translateY(-2px);
+  background: var(--paper2);
 }
 .casepage .nb-grid b {
   font-family: var(--brand-font-display), Georgia, serif;
@@ -319,13 +341,30 @@
   line-height: 1.2;
   color: var(--ink);
 }
-.casepage .nb-grid span {
+.casepage .nb-grid .nb-note {
   font-size: var(--t-sm);
   line-height: 1.5;
   color: var(--ink2);
 }
-.casepage .nb-grid i {
-  font-style: normal;
-  font-size: var(--t-ui);
-  color: var(--pred);
+
+/* ---- provisional measures: its own section, its own ground ------------- */
+.casepage .pmeas {
+  background: var(--paper2);
+  border-top: 1px solid var(--prule);
+  padding: var(--space-14) 0 var(--space-16);
+}
+/* Interpretations flow as a column set now that they no longer share the band
+   with the measures list. */
+.casepage .rulings-grid {
+  margin-top: var(--space-6);
+  columns: 2;
+  column-gap: clamp(30px, 4vw, 56px);
+}
+.casepage .rulings-grid .ruling {
+  break-inside: avoid;
+}
+@media (max-width: 820px) {
+  .casepage .rulings-grid {
+    columns: 1;
+  }
 }

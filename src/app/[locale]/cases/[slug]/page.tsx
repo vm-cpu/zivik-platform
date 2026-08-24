@@ -110,7 +110,7 @@ const T = {
   navWarrants: { uk: "Ордери", en: "Warrants" },
   navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
   navRulings: { uk: "Тлумачення", en: "Key rulings" },
-  navHandbook: { uk: "Довідник", en: "Reader's guide" },
+  navHandbook: { uk: "Що варто знати", en: "What to know" },
   navFulltext: { uk: "Самері", en: "Summary" },
   navSources: { uk: "Джерела", en: "Sources" },
   officialH: { uk: "Офіційні документи Суду", en: "Official court documents" },
@@ -413,6 +413,9 @@ export default async function CasePage({
         ]
       : []),
     { id: "rulings", label: pick(T.navRulings, locale) },
+    ...(provisionalMeasures.length > 0
+      ? [{ id: "measures", label: pick(T.provMeasures, locale) }]
+      : []),
     { id: "handbook", label: pick(T.navHandbook, locale) },
     { id: "fulltext", label: pick(T.navFulltext, locale) },
     ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
@@ -828,9 +831,9 @@ export default async function CasePage({
 
       {/* 2b — Reference: doctrine and the interim order, on paper */}
       <section className="refs" id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
-        <div className="rail refs-grid" data-single={provisionalMeasures.length ? "no" : "yes"}>
-          <div>
-            <div className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</div>
+        <div className="rail">
+          <div className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</div>
+          <div className="rulings-grid">
             {interpretations.map((it, i) => (
               <div key={i} className="ruling">
                 <b>{pick(it.term, locale)}</b>
@@ -838,39 +841,46 @@ export default async function CasePage({
               </div>
             ))}
           </div>
-
-          {provisionalMeasures.length > 0 && (
-            <div>
-              <div className="lbl lbl-onpaper">
-                {pick(T.provMeasures, locale)}
-                <em className="lbl-sub">{pick(T.provSub, locale)}</em>
-              </div>
-              <ul className="pmeasures">
-                {provisionalMeasures.map((m, i) => (
-                  <li key={i} data-order={m.order}>
-                    <div className="pm-head">
-                      <span className="pm-measure">{pick(m.measure, locale)}</span>
-                      <span className="pm-flag">
-                        {m.order === "violated"
-                          ? pick(T.orderBreached, locale)
-                          : pick(T.orderComplied, locale)}
-                      </span>
-                    </div>
-                    {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </section>
+
+      {/* How the Court read the law and whether its interim orders were obeyed
+          are different subjects; they were sharing one section and one nav
+          entry, so the second was invisible. */}
+      {provisionalMeasures.length > 0 && (
+        <section className="pmeas" id="measures" data-navsec aria-label={pick(T.provMeasures, locale)}>
+          <div className="rail">
+            <div className="lbl lbl-onpaper">
+              {pick(T.provMeasures, locale)}
+              <em className="lbl-sub">{pick(T.provSub, locale)}</em>
+            </div>
+            <ul className="pmeasures">
+              {provisionalMeasures.map((m, i) => (
+                <li key={i} data-order={m.order}>
+                  <div className="pm-head">
+                    <span className="pm-measure">{pick(m.measure, locale)}</span>
+                    <span className="pm-flag">
+                      {m.order === "violated"
+                        ? pick(T.orderBreached, locale)
+                        : pick(T.orderComplied, locale)}
+                    </span>
+                  </div>
+                  {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* 3 — Reader's guide: the reference layer, ahead of the long read.
           Grouped by use: the question-and-answer column (common questions,
           related decisions) beside the reference column (who's who, glossary). */}
       <section className="aids" id="handbook" data-navsec aria-label={pick(T.navHandbook, locale)}>
         <div className="rail">
-          <div className="lbl lbl-onpaper">{pick(T.navHandbook, locale)}</div>
+          {/* No label above the two column headings: "Довідник / Хто є хто /
+              Словник" was three levels of naming for one lookup panel. The nav
+              names the section; the columns name themselves. */}
           <div className="aids-grid">
               <div className="aid">
                 <div className="lbl">{pick(T.whoH, locale)}</div>
@@ -1011,15 +1021,25 @@ export default async function CasePage({
           <div className="rail">
             <div className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</div>
             <ul className="nb-grid">
-              {related.map((r, i) => (
-                <li key={i}>
-                  <a href={`/${locale}${r.href}`}>
-                    <b>{pick(r.label, locale)}</b>
-                    <span>{pick(r.note, locale)}</span>
-                    <i aria-hidden="true">→</i>
-                  </a>
-                </li>
-              ))}
+              {related.map((r, i) => {
+                // The note is "court · detail"; the court leads the card so the
+                // set can be scanned by forum. I tried the generated share
+                // cards here first — at 240px their headline is illegible and
+                // repeats the title underneath, for 130kB each.
+                const note = pick(r.note, locale);
+                const [forum, ...rest] = note.split("·").map((x) => x.trim());
+                return (
+                  <li key={i}>
+                    <a href={`/${locale}${r.href}`}>
+                      <span className="nb-forum">{forum}</span>
+                      <b>{pick(r.label, locale)}</b>
+                      {rest.length > 0 && (
+                        <span className="nb-note">{rest.join(" · ")}</span>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </section>
