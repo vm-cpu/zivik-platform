@@ -35,6 +35,55 @@ export const siteUrl =
  */
 export const isIndexable = process.env.SITE_INDEXABLE === "true";
 
+/**
+ * The `robots` metadata field while the archive is closed.
+ *
+ * The comment above says the noindex is carried "by a header and a meta tag";
+ * only the header existed — `curl https://zivik-platform.vercel.app/uk | grep
+ * 'name="robots"'` came back empty on every route. One header, set in
+ * `next.config.ts`, was the whole defence. That is one misconfiguration away
+ * from an indexed half-built archive: a header is a property of how the file
+ * is served, so it is lost the moment a page is fetched and re-served by
+ * anything else — a preview proxy, a mirror, an AMP-style cache, a
+ * `wget -r` someone hosts. The meta tag travels inside the document.
+ *
+ * Undefined once SITE_INDEXABLE=true, so the resolved metadata simply has no
+ * robots directive and the default (index, follow) applies.
+ *
+ * Set on `homeMetadata`, which the `[locale]` layout returns, so every page
+ * under it inherits the tag — no page overrides `robots`.
+ */
+export const robotsMetadata: Metadata["robots"] = isIndexable
+  ? undefined
+  : { index: false, follow: false };
+
+/**
+ * Serialise a JSON-LD graph for a `<script type="application/ld+json">` body.
+ *
+ * `JSON.stringify` alone is not safe here and both call sites used it. A
+ * `<script>` element's content is *raw text*: the parser scans it for `</`
+ * and for `<!--`, not for JSON syntax. So a string anywhere in the graph that
+ * contains `</script>` closes the element early and everything after it is
+ * parsed as markup — a case title, a party name or an FAQ answer quoting a
+ * document is all it would take. Nothing in `src/content/` contains one today
+ * (checked), so this is a latent defect rather than a live hole, but the graph
+ * is built from free-text editorial fields and the next contributor has no
+ * reason to know that a `<` in a title is dangerous.
+ *
+ * Escaping `<` is sufficient and minimal: it is the first character of both
+ * `</script` and `<!--`, and `<` is the same character to a JSON parser.
+ * U+2028/U+2029 go too — legal in JSON strings, but line terminators to the
+ * JS parsers some consumers still run `ld+json` through.
+ */
+export function jsonLdHtml(graph: unknown): { __html: string } {
+  return {
+    __html: JSON.stringify(graph).replace(
+      /[<\u2028\u2029]/g,
+      (c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0"),
+    ),
+  };
+}
+
 /** The site-wide share card, used by every page that has no card of its own. */
 export const defaultOgImage = "/og/nasvitlo.png";
 
@@ -78,6 +127,9 @@ export function homeMetadata(locale: Locale, dict: Dictionary): Metadata {
     metadataBase: new URL(siteUrl),
     title,
     description,
+    // Inherited by every page under the [locale] layout — none of them set
+    // `robots`, so this one tag closes the whole tree until launch.
+    robots: robotsMetadata,
     alternates: {
       canonical: path,
       languages: languageAlternates(),
@@ -134,6 +186,9 @@ export function decisionMetadata({
     metadataBase: new URL(siteUrl),
     title,
     description,
+    // Redundant with the layout's inherited value, and deliberately so: the
+    // decision pages are the ones that must not be indexed half-finished.
+    robots: robotsMetadata,
     alternates: {
       canonical: path,
       languages: pathAlternates((l) => `/${l}/cases/${slug}`),

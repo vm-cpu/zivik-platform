@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { decisionMetadata, siteUrl } from "@/lib/seo";
+import { decisionMetadata, jsonLdHtml, siteUrl } from "@/lib/seo";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
@@ -603,7 +603,7 @@ export default async function CasePage({
     <div className="page casepage">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={jsonLdHtml(jsonLd)}
       />
 
       {/* The content region. There was none: the skip link pointed at

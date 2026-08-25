@@ -12,6 +12,14 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# This job only reads the tree. Without this block the GITHUB_TOKEN handed to
+# every step inherits the repository default, which on many repos is still
+# read *and write* for contents, packages, issues and pull requests — so any
+# compromised dependency running under `npm ci` or `next build` would get a
+# token that can push to main. Nothing here needs more than checkout.
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest

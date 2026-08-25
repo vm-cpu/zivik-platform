@@ -6,7 +6,7 @@ import {
   getCasesByInstitution,
   getContentRepository,
 } from "@/content/repository";
-import { siteUrl } from "@/lib/seo";
+import { jsonLdHtml, siteUrl } from "@/lib/seo";
 import "./home.css";
 import LampShell from "@/components/nasvitlo/LampShell";
 import Hero from "@/components/nasvitlo/Hero";
@@ -59,7 +59,7 @@ export default async function HomePage({
     <div className="page">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={jsonLdHtml(jsonLd)}
       />
       {/* The one content region on the page. Without it there is no landmark
           for a screen reader to jump to. */}

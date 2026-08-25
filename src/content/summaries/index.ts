@@ -13,17 +13,43 @@ import { hagueMh17 } from "./hague-mh17";
  * Slug → decision summary: the one list of pages that exist. The page
  * template renders from it, the sitemap enumerates it — one place to add a
  * case, one place for both consumers to see it.
+ *
+ * SECURITY — the null prototype is load-bearing, not a style choice.
+ *
+ * `app/[locale]/cases/[slug]/page.tsx` does `SUMMARIES[slug]` with `slug`
+ * straight off the URL, and this route has `dynamicParams` on, so a slug that
+ * was never built still reaches the lookup. On an ordinary object literal that
+ * lookup walks up to `Object.prototype`, so five URLs a visitor can simply
+ * type — /cases/constructor, /cases/toString, /cases/valueOf,
+ * /cases/hasOwnProperty, /cases/__proto__ — returned a *truthy* inherited
+ * value instead of undefined. The page took that as a real summary, skipped
+ * the `if (!summary)` branch that renders the pending page, and died on
+ * `masthead.parties`: HTTP 500, verified against the built server.
+ *
+ * Not an injection — the body is Next's bare "Internal Server Error" and
+ * nothing of the object is rendered — but it is an unauthenticated 500 on a
+ * public route of a site meant to be cited, one server invocation per request,
+ * reachable by anyone who can type a URL.
+ *
+ * `Object.create(null)` has no prototype, so those five keys are absent like
+ * any other unknown slug and the pending/404 path handles them. It also fixes
+ * `slug in SUMMARIES`, used in content/map-links.ts and content/legal.ts,
+ * which had the same blind spot. Keep the null prototype if this map is ever
+ * rebuilt.
  */
-export const SUMMARIES: Record<string, DecisionSummary> = {
-  "icj-cerd-icsft": icjCerdIcsft,
-  "icj-genocide": icjGenocide,
-  oschadbank: oschadbank,
-  "icc-ukraine": iccUkraine,
-  "dtek-krymenergo": dtekKrymenergo,
-  "echr-ukraine-netherlands": echrUkraineNetherlands,
-  "finland-torden": finlandTorden,
-  "hague-mh17": hagueMh17,
-};
+export const SUMMARIES: Record<string, DecisionSummary> = Object.assign(
+  Object.create(null) as Record<string, DecisionSummary>,
+  {
+    "icj-cerd-icsft": icjCerdIcsft,
+    "icj-genocide": icjGenocide,
+    oschadbank: oschadbank,
+    "icc-ukraine": iccUkraine,
+    "dtek-krymenergo": dtekKrymenergo,
+    "echr-ukraine-netherlands": echrUkraineNetherlands,
+    "finland-torden": finlandTorden,
+    "hague-mh17": hagueMh17,
+  },
+);
 
 /**
  * The registry (`cases.ts`) links cases by `summarySlug`; SUMMARIES is what
