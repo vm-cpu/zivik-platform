@@ -139,10 +139,21 @@
   text-transform: uppercase;
   color: var(--ink2);
 }
+/* The judgment reads in Charis SIL, not Fira Sans.
+   Fira was drawn by Mozilla as an interface face for Firefox OS — short
+   strings on a phone — and it was carrying sixty-line runs of legal prose. It
+   is legible, but a grotesque tires the eye over that distance, which is what
+   made 17.5px feel oversized: the size was fine, the face was working out of
+   its register. Charis SIL was drawn by SIL for exactly this — long-form
+   reading, with the fullest Cyrillic of the three — and it was already loaded,
+   set on headings only. The roles were the wrong way round.
+   Line-height comes in slightly from 1.7: Charis has a large x-height and
+   needs less air than the sans did. */
 .casepage .read p {
   margin: var(--space-4) 0 0;
+  font-family: var(--brand-font-display), Georgia, serif;
   font-size: var(--t-body);
-  line-height: 1.7;
+  line-height: 1.62;
   color: var(--ink2);
 }
 .casepage .read a {
@@ -204,8 +215,9 @@
 /* Findings are grouped body prose, not a caption: same size as everything
    else in the column. */
 .casepage .findings p {
+  font-family: var(--brand-font-display), Georgia, serif;
   font-size: var(--t-body);
-  line-height: 1.65;
+  line-height: 1.62;
 }
 .casepage .findings .sub {
   margin-top: var(--space-6);
