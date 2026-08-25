@@ -324,6 +324,7 @@ export default function EventsMap({
                 data-cat={e.category}
                 data-on={isLit(e) ? "yes" : "no"}
                 data-off={isHidden(e) ? "" : undefined}
+                data-lit={e.cases.length > 0 ? "yes" : "no"}
               >
               <circle className="emap-halo" cx={x} cy={y} r={e.size / 2} />
                 {/* The drawn dot is r=6, which renders 14.4px wide on a

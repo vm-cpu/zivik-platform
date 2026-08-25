@@ -655,3 +655,65 @@
   flex-wrap: wrap;
   gap: 8px 26px;
 }
+
+/* ---- light as the map's own language ---- */
+/* The registry already says this: a worked-up case is a gold dot with a glow,
+   a merely registered one a hollow ring. The map now says it too, so a reader
+   can see at a glance which places lead somewhere. */
+.emap-site[data-lit="no"] .emap-dot {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 1.6;
+}
+.emap-site[data-lit="no"] .emap-halo {
+  opacity: 0.06;
+}
+
+/* Selection is the light coming on, not a ring being drawn. The halo widens
+   and warms; the dot picks up the blur filter so it reads as a source rather
+   than a disc. */
+.emap-halo,
+.emap-dot {
+  transition:
+    opacity var(--dur) var(--ease),
+    r var(--dur) var(--ease);
+}
+.emap-site[data-on="yes"] .emap-halo {
+  opacity: 0.42;
+}
+.emap-site[data-on="yes"] .emap-dot {
+  /* drop-shadow, not an SVG <filter> reference: a url() pointing at a filter
+     that is not in the document is a rendering hazard, and this needs no defs
+     block to exist. It is also the same idiom as the registry's lit dot, which
+     glows with a box-shadow. */
+  filter: drop-shadow(0 0 5px var(--c)) drop-shadow(0 0 12px var(--c));
+}
+.emap-site:hover .emap-halo {
+  opacity: 0.3;
+}
+
+/* A selected court is a lamp too. */
+.emap-court[data-on="yes"] .emap-court-dot {
+  filter: drop-shadow(0 0 5px var(--brand-gold-pale))
+    drop-shadow(0 0 11px var(--brand-gold-pale));
+}
+
+/* The reach line stops being a hairline and becomes the beam between the two.
+   Same dash, brighter and thicker, so the eye follows it rather than hunting
+   for which of eleven lines changed. */
+.emap-reach {
+  transition:
+    opacity var(--dur) var(--ease),
+    stroke-width var(--dur) var(--ease);
+}
+.emap-reach[data-on="yes"] {
+  stroke-width: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emap-halo,
+  .emap-dot,
+  .emap-reach {
+    transition: none;
+  }
+}
