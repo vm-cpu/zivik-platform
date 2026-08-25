@@ -18,6 +18,7 @@
   --redd: var(--brand-red-dark);
   --gold: var(--brand-gold-ink);
   --paper: var(--brand-paper);
+  --paper2: var(--brand-paper-2);
   --surface: var(--brand-surface);
   --ink: var(--brand-ink);
   --ink2: var(--brand-ink-2);
@@ -279,5 +280,80 @@
   }
   .abt-steps li {
     padding-left: var(--space-8);
+  }
+}
+
+/* ---- the Centre ---------------------------------------------------------- */
+/* Its mission, in the four points it states itself, and its head's own words.
+   Both are quoted material rather than this page's prose, so they are set
+   apart from it: the mission as a marked list on the paper's second tone, the
+   quotation with the lit left rule the site uses wherever a source speaks. */
+.aboutpage .abt-mission {
+  margin: var(--space-7) 0 0;
+  padding: var(--space-6) var(--space-7);
+  background: var(--paper2);
+  border: 1px solid var(--rule);
+}
+.aboutpage .abt-mission h3 {
+  margin: 0 0 var(--space-4);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.aboutpage .abt-mission ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-4);
+}
+.aboutpage .abt-mission li {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  color: var(--ink);
+}
+.aboutpage .abt-mission li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.aboutpage .abt-voice {
+  margin: var(--space-7) 0 0;
+  padding: 0 0 0 var(--space-6);
+  border-left: 2px solid var(--gold);
+}
+.aboutpage .abt-voice blockquote {
+  margin: 0;
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: var(--ink);
+}
+.aboutpage .abt-voice figcaption {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-3);
+  align-items: baseline;
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--ink2);
+}
+.aboutpage .abt-voice figcaption span {
+  font-weight: 400;
+  color: var(--faint);
+}
+
+@media (max-width: 560px) {
+  .aboutpage .abt-mission {
+    padding: var(--space-5) var(--space-5);
   }
 }

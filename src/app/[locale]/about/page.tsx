@@ -62,7 +62,44 @@ const T = {
     uk: "Проєкт веде Дослідницький центр імені Луї Б. Зона Факультету права Українського католицького університету, Львів.",
     en: "The project is run by the Louis B. Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, Lviv.",
   },
-  whoLink: { uk: "Хто працює над бібліотекоюю", en: "Who works on the library" },
+  whoLink: { uk: "Хто працює над бібліотекою", en: "Who works on the library" },
+
+  /* The Centre in its own words. Taken from its page on the faculty site
+     (lawmigration.ucu.org.ua/doslidnyczkyj-czentr-luyi-zona), condensed but
+     not paraphrased into something it does not say; the English is a
+     translation of that Ukrainian, not a separate text. Nothing here is
+     inferred — until now this page said nothing about the Centre at all,
+     because the repository recorded nothing to say. */
+  centre: {
+    uk: "Дослідницький центр імені Луї Бруно Зона Факультету права УКУ — експертна платформа з дослідження, осмислення та подолання правових викликів, спричинених війною та повоєнним відновленням України. Центр зʼявився з переконання, що право не може мовчати, коли йдеться про порушення справедливості та гідності людини.",
+    en: "The Louis Bruno Sohn Research Centre at the UCU Faculty of Law is an expert platform for researching, making sense of and answering the legal challenges caused by the war and by Ukraine’s post-war recovery. The Centre grew out of a conviction that the law cannot stay silent where justice and human dignity are violated.",
+  },
+  centre2: {
+    uk: "Центр поєднує науковий аналіз із практичними правовими рішеннями: тут проводять дослідження, ведуть публічний діалог і сприяють професійному розвитку правників, готових шукати відповіді на найскладніші виклики свого часу. Ця бібліотека — одна з таких відповідей.",
+    en: "The Centre joins scholarly analysis to practical legal work: it conducts research, holds public debate, and supports the professional development of lawyers willing to take on the hardest questions of their time. This library is one of those answers.",
+  },
+  missionH: { uk: "Місія Центру", en: "The Centre’s mission" },
+  mission: {
+    uk: [
+      "Розвиток національного права України на засадах верховенства права, прав людини та конституційної демократії",
+      "Фахове осмислення сучасного стану міжнародного права та викликів, зумовлених досвідом російської агресії проти України",
+      "Формування обґрунтованих, ціннісно вкорінених публічних політик",
+      "Створення спільноти правників, залучених у формування правових відповідей на виклики війни та складні суспільні трансформації",
+    ],
+    en: [
+      "Developing Ukraine’s national law on the foundations of the rule of law, human rights and constitutional democracy",
+      "Expert assessment of the present state of international law and of the challenges thrown up by Russia’s aggression against Ukraine",
+      "Shaping public policy that is well-founded and rooted in values",
+      "Building a community of lawyers engaged in forming legal answers to the challenges of the war and to difficult social change",
+    ],
+  },
+  /* A direct quotation, so it is attributed and not trimmed mid-thought. */
+  voice: {
+    uk: "Університет має своєю місією суспільне служіння. Факультет права має це служіння не лише у вихованні правників нової генерації, але й у тому, аби долучатися до процесів трансформації суспільства. Дослідницький центр є тим експертним майданчиком, тим осередком, де будуть формуватися та осмислюватися правові відповіді на виклики, які повʼязані з війною.",
+    en: "The university’s mission is service to society. For the Faculty of Law that service lies not only in bringing up a new generation of lawyers, but in taking part in the transformation of society itself. The Research Centre is the expert forum, the place where legal answers to the challenges of the war will be formed and thought through.",
+  },
+  voiceBy: { uk: "Ольга Денькович", en: "Olha Denkovych" },
+  voiceRole: { uk: "керівниця Центру Луї Зона", en: "Head of the Louis Sohn Centre" },
 
   methodH: {
     uk: "Як рішення потрапляє в бібліотеку",
@@ -285,8 +322,29 @@ export default async function AboutPage({
           <h2>{L(T.whoH)}</h2>
           <div className="abt-prose">
             <p>{L(T.who)}</p>
-            <p className="abt-addr">{dict.footer.address}</p>
+            <p>{L(T.centre)}</p>
+            <p>{L(T.centre2)}</p>
           </div>
+
+          {/* The Centre's mission, in the four points it states itself. */}
+          <div className="abt-mission">
+            <h3>{L(T.missionH)}</h3>
+            <ul>
+              {T.mission[locale].map((m) => (
+                <li key={m}>{m}</li>
+              ))}
+            </ul>
+          </div>
+
+          <figure className="abt-voice">
+            <blockquote>{L(T.voice)}</blockquote>
+            <figcaption>
+              <b>{L(T.voiceBy)}</b>
+              <span>{L(T.voiceRole)}</span>
+            </figcaption>
+          </figure>
+
+          <p className="abt-addr">{dict.footer.address}</p>
           <p className="abt-more">
             <Link href={`/${locale}/team`}>{L(T.whoLink)} →</Link>
           </p>
