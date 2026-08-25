@@ -1,4 +1,4 @@
-.nsv-root{background:#0C0504;min-height:100dvh;overflow-x:clip}
+.nsv-root{background:var(--brand-ink-black);min-height:100dvh;overflow-x:clip}
 .nsv-root *,.nsv-root *::before,.nsv-root *::after{box-sizing:border-box}
   a{color:inherit}
 
@@ -139,7 +139,21 @@
   .pj .rc:hover{border-color:rgba(226,238,252,.45);box-shadow:0 0 38px 4px rgba(216,230,246,.12)}
   @media (prefers-reduced-motion: reduce){ .pj .rig,.pj .tgt{transition-duration:1ms !important} }
   /* ---- turn 12: interrogation lamp ---- */
-  .lmp{--px:0px;position:relative;overflow:hidden;color:var(--brand-cream);background:radial-gradient(120% 95% at 50% -12%,#2A1412 0%,#180A09 44%,#0C0504 100%)}
+  /* ---------------------------------------------------------------------------
+   Hex literals below this point are the lamp illustration, not the palette.
+
+   AGENTS.md forbids colour literals in section stylesheets because they do not
+   follow the theme. The lamp — its brass collar, its glass, the cone of light,
+   the cord — is a drawing, not a surface: it is the same object under any
+   theme, the way a photograph would be, and its highlights are mixed against
+   each other rather than against the page. Forty-one of the forty-six literals
+   that were in this file are that drawing. The two that were real surfaces —
+   .nsv-root's ground and the pull-quote band — are tokens now.
+
+   If a third theme ever arrives, the lamp is repainted as a unit, not
+   retinted variable by variable.
+   --------------------------------------------------------------------------- */
+.lmp{--px:0px;position:relative;overflow:hidden;color:var(--brand-cream);background:radial-gradient(120% 95% at 50% -12%,#2A1412 0%,#180A09 44%,#0C0504 100%)}
   /* desk lamp lighting the wordmark */
   /* industrial articulated lamp: matte black, dome shade with an Edison bulb over the wordmark */
   .lmp .dcord{position:absolute;left:449px;top:0;width:2px;height:52px;background:linear-gradient(180deg,rgba(214,198,168,.15),#B7A585);z-index:4}
@@ -214,7 +228,7 @@
 .nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:16px}
 
 /* judgment pull-quote — dark band in the court's own words */
-.nsv-quote{margin:0;padding:66px 28px;background:#1E0C0B;position:relative}
+.nsv-quote{margin:0;padding:66px 28px;background:var(--brand-quote);position:relative}
 .nsv-quote::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,var(--brand-gold-mark) 50%,transparent)}
 .nsv-quote-text{max-width:940px;margin:0 auto;font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(21px,3vw,33px);line-height:1.42;color:var(--brand-cream);text-align:center;text-wrap:balance}
 .nsv-quote-src{max-width:940px;margin:20px auto 0;text-align:center;font:700 11px var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:var(--brand-gold-lit)}

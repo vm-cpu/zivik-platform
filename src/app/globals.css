@@ -111,6 +111,7 @@
   --brand-muted-brown: #6e574f;/* footer legal / low-emphasis */
   --brand-cream-warm: #fff8ea; /* text on solid red buttons */
   --brand-ink-black: #0e0504;  /* darkest surface (footer) */
+  --brand-quote: #1e0c0b;    /* the pull-quote band, its own ground */
   /* Brand faces are self-hosted via next/font (see app/layout.tsx); the
      literal names stay as fallbacks for anyone with them installed locally.
      Own namespace avoids Tailwind's @theme --font-display. */

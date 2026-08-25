@@ -20,8 +20,15 @@ never in a component or a section stylesheet.
 ### Colour
 
 The single source of truth is `:root` in `src/app/globals.css`. Everything else
-reads `var(--brand-*)`. Dark mode flips these same tokens, so the whole site
-follows without any component owning a dark variant.
+reads `var(--brand-*)`.
+
+**The site has one theme.** There was a dark variant that flipped these tokens
+under `prefers-color-scheme` and a `[data-theme]` override; it is gone, along
+with the lamp-shaped toggle that drove it. `color-scheme: light` is pinned on
+`:root` so a dark-OS browser does not repaint scrollbars and form controls
+against a light page. The "Dark" column below is kept only where a token still
+has a lit counterpart used on the dark scenes — the lamp stage, the map, the
+court mastheads — which are dark in the design, not in a theme.
 
 | Token | Light | Dark | Role |
 | --- | --- | --- | --- |
@@ -37,13 +44,18 @@ follows without any component owning a dark variant.
 | `--brand-ink-2` | `#55524d` | `#c2bab0` | secondary text |
 | `--brand-faint` | `#8a8681` | `#8f877d` | muted, captions |
 | `--brand-rule` | `#e7e5e1` | `#322c26` | hairline dividers |
-| `--brand-night` | `#17110f` | — | scenes dark in *both* themes |
+| `--brand-night` | `#17110f` | — | scenes that are dark by design |
 
 **Rules**
 
 - **Never introduce a hex in a component or section file.** If a value is
-  missing, add a token. Literals do not follow the theme — that is exactly how
-  `--pgold`/`--pred` ended up at 3.3:1 and 2.7:1 on the dark ground.
+  missing, add a token. One documented exception: the lamp illustration in
+  `home.css` (`.lmp`, `.pj`) mixes its own highlights — brass, glass, the cone
+  of light — against each other rather than against the page, and is repainted
+  as a unit if it is ever repainted. Nothing else.
+  This rule exists because literals drift: `--pgold`/`--pred` ended up at 3.3:1
+  and 2.7:1 on the dark ground, and `--brand-faint` and `--brand-faint-dark`
+  each shipped below AA on every ground they were named for.
 - **Red means a finding of breach.** Not decoration, not emphasis, not section
   furniture. Everything structural is gold; prose is ink or cream. Red used
   decoratively is what made the decision page unreadable.
@@ -179,10 +191,15 @@ from both. Two definitions of one class name is always a bug in waiting.
 ## 3. Components
 
 - **Header** owns its chrome (`components/nasvitlo/header.css`) so any page
-  that renders it gets the responsive collapse and the drawer. Pages without
-  the lamp backdrop set `--nsv-header-bg`.
-- **Theme toggle** is a lamp that is lit or out — the site's own metaphor, not
-  a generic sun/moon. Applied before first paint by an inline script.
+  that renders it gets the responsive collapse and the drawer. It is rendered
+  once, in the locale layout, with one ground on every page — it used to be
+  transparent over the home page's lamp and `#14100e` on the decision pages,
+  which is three different headers on one site.
+- **Light is the site's semantics, not a switch.** There is no theme toggle.
+  A decision that has been written up glows — a filled gold dot with a halo, in
+  the registry and on the map alike — and one still in preparation is a hollow
+  ring. Selecting a marker turns its light up rather than drawing a box round
+  it.
 - **Side nav** (`SideToc`) is sticky with scrollspy, collapsing to a sticky bar
   under 1000px.
 - **Buttons** are pills; primary is cherry with elevation, ghost is a hairline

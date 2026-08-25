@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { defaultLocale, locales } from "@/i18n/config";
 
@@ -14,6 +15,22 @@ import { defaultLocale, locales } from "@/i18n/config";
  * surface's own stylesheet, including when the failure is a route that never
  * matched anything.
  */
+/**
+ * The root 404 — unmatched URLs that never reach a locale.
+ *
+ * Without this it inherits the root layout's fallback title and description, so
+ * the two 404s on this site announced themselves differently: the localized one
+ * (src/app/[locale]/not-found.tsx) says it is a 404, this one said "насвітло".
+ * Neither should be indexed and neither should claim to be a page that exists.
+ */
+export const metadata: Metadata = {
+  title: "Сторінку не знайдено · Page not found",
+  robots: { index: false, follow: false },
+  alternates: null,
+  openGraph: null,
+  twitter: null,
+};
+
 const link: React.CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
