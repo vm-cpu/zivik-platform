@@ -105,7 +105,7 @@ export default async function HomePage({
           totalCases={totalCases}
           analysedCases={analysedCases}
         />
-        <Newsletter dict={dict} />
+        <Newsletter dict={dict} locale={locale} />
         <Partners locale={locale} dict={dict} partners={partners} />
         </LampShell>
       </main>

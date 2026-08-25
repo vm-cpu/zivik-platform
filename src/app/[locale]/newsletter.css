@@ -32,7 +32,9 @@
    instead of fighting it (it is dead CSS now — see the report). */
 .nsv-newsletter .nsv-news-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(248px, 320px);
+  /* Two asks of comparable width now, not copy plus a narrow action rail:
+     each column carries its own heading, sentence and control. */
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   align-items: start;
   gap: var(--space-8) clamp(32px, 5vw, 72px);
 }
@@ -75,10 +77,17 @@
   gap: var(--space-3);
   min-height: 44px;
   padding: var(--space-3) var(--space-6);
-  border: 0;
+  /* The lit gold fill is only 1.7:1 against the paper band, so the pill's own
+     shape would not be identifiable — WCAG 1.4.11 wants 3:1 for the boundary
+     of a control. A darker gold hairline supplies it without turning the
+     button back into the near-black blob it used to be. */
+  border: 1px solid var(--brand-gold-ink);
   border-radius: var(--r-pill);
-  background: var(--brand-night);
-  color: var(--brand-gold-lit);
+  /* The site's own lit button: gold fill, dark text — the same idiom as
+     `.btn-lit` in the hero. This was inverted (near-black fill, gold label),
+     which on paper read as a black blob rather than as something lit. */
+  background: var(--brand-gold-lit);
+  color: var(--brand-night);
   font: 700 var(--t-cap) / 1 var(--brand-font-body), sans-serif;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -96,8 +105,8 @@
 }
 
 .page .nsv-newsletter a.nsv-news-cta:hover {
-  background: var(--brand-night-2);
-  color: var(--brand-gold-bright);
+  background: var(--brand-gold-bright);
+  color: var(--brand-night);
   transform: translateY(-1px);
   box-shadow:
     0 2px 4px color-mix(in srgb, var(--brand-ink) 18%, transparent),
@@ -181,5 +190,33 @@
   }
   .nsv-newsletter .nsv-news-actions {
     align-self: stretch;
+  }
+}
+
+
+/* ---- two asks, side by side --------------------------------------------- */
+/* Support leads and the letter follows. Each control sits under the sentence
+   that explains it: a prominent button beside copy about something else is
+   how a reader clicks the wrong thing. */
+.nsv-news-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  max-width: 46ch;
+}
+.nsv-news-block-2 {
+  /* Quieter, and set apart rather than paired: a hairline rather than a
+     second column of equal weight. */
+  padding-top: var(--space-2);
+}
+.nsv-news-heading-2 {
+  font-size: var(--t-body);
+}
+@media (min-width: 900px) {
+  .nsv-news-block-2 {
+    padding-top: 0;
+    padding-left: clamp(24px, 4vw, 56px);
+    border-left: 1px solid var(--brand-rule);
   }
 }

@@ -1,52 +1,86 @@
+import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import "@/app/[locale]/newsletter.css";
 
 /**
- * The sign-off band: one invitation, one primary control, one quiet aside.
+ * The sign-off band: two asks, side by side, with supporting the collection
+ * given the primary control.
  *
- * It used to be two bare text links ending in an arrow, side by side and
- * identically weighted — which is not a hierarchy, it is a menu. Getting the
- * letter is the action this band exists for, so it is a control you can see
- * (a lamp-dark pill with a lit label and a warm pool of light under it, the
- * same "lit" mark the registry legend directly above uses for an analysed
- * decision). Supporting the collection is a real but secondary ask, so it
- * stays a link — quieter in size, weight and colour, and set apart from the
- * subscribe group rather than paired with it.
+ * Earlier versions got the hierarchy wrong twice. First it was two bare arrow
+ * links of identical weight, which is a menu rather than a hierarchy. Then the
+ * newsletter took the one visible control and rendered it as a near-black pill
+ * on paper — an inversion of the site's own lit button, which is a gold fill
+ * with dark text (`.btn-lit` in home.css). Both are fixed here: the button
+ * uses the established lit idiom, and it belongs to the support ask, which is
+ * the more important of the two.
+ *
+ * Each action sits next to the sentence that explains it. A prominent button
+ * floating beside copy about something else is how a reader ends up clicking
+ * the wrong thing.
  */
-export default function Newsletter({ dict }: { dict: Dictionary }) {
-  // Until there is a sign-up form and a donation route, both actions go to
-  // the project address — a real destination that works today, and one line
-  // to repoint once the pages exist. Deliberately not a fake email field:
-  // an input that posts nowhere is worse than an honest mailto.
+
+/**
+ * The support ask, held here rather than in the dictionaries — the same
+ * convention the team, registry, map and about pages use for page prose,
+ * keeping the dictionaries to UI chrome.
+ */
+const SUPPORT = {
+  heading: {
+    uk: "Архів тримається на людях",
+    en: "The archive is kept by people",
+  },
+  text: {
+    uk: "Кожен конспект — це тижні читання рішень, звірки документів і перекладу. Підтримка дає змогу опрацювати наступне.",
+    en: "Every summary is weeks of reading decisions, checking documents and translating. Support is what lets us take on the next one.",
+  },
+} as const;
+
+export default function Newsletter({
+  dict,
+  locale,
+}: {
+  dict: Dictionary;
+  locale: Locale;
+}) {
+  // Both actions go to the project address until there is a donation route and
+  // a sign-up list. A real destination that works today, and one line to
+  // repoint once either exists. Deliberately not a fake email field: an input
+  // that posts nowhere is worse than an honest mailto.
   const mailto = (subject: string) =>
     `mailto:${dict.footer.email}?subject=${encodeURIComponent(subject)}`;
 
   return (
     <div className="nsv-newsletter">
       <div className="nsv-news-grid">
-        <div className="nsv-news-copy">
-          <h2 className="nsv-news-heading">{dict.newsletter.heading}</h2>
-          <p className="nsv-news-text">{dict.newsletter.text}</p>
+        {/* Primary: supporting the collection. */}
+        <div className="nsv-news-block">
+          <h2 className="nsv-news-heading">{SUPPORT.heading[locale]}</h2>
+          <p className="nsv-news-text">{SUPPORT.text[locale]}</p>
+          <a className="nsv-news-cta" href={mailto(dict.newsletter.support)}>
+            <span className="nsv-news-lit" aria-hidden="true" />
+            {dict.newsletter.support}
+          </a>
         </div>
 
-        <div className="nsv-news-actions">
-          <a className="nsv-news-cta" href={mailto(dict.newsletter.subscribe)}>
-            <span className="nsv-news-lit" aria-hidden="true" />
-            {dict.newsletter.subscribe}
-          </a>
-          {/* Fine print sits under the primary action, where the doubt is. */}
-          <p className="nsv-news-assurance">{dict.newsletter.assurance}</p>
+        {/* Secondary: the monthly letter. Quieter control, same clarity. */}
+        <div className="nsv-news-block nsv-news-block-2">
+          <h2 className="nsv-news-heading nsv-news-heading-2">
+            {dict.newsletter.heading}
+          </h2>
+          <p className="nsv-news-text">{dict.newsletter.text}</p>
           <a
             className="nsv-news-support"
-            href={mailto(dict.newsletter.support)}
+            href={mailto(dict.newsletter.subscribe)}
           >
             <span className="nsv-news-support-label">
-              {dict.newsletter.support}
+              {dict.newsletter.subscribe}
             </span>
             <span className="nsv-news-arrow" aria-hidden="true">
               →
             </span>
           </a>
+          {/* Fine print sits under the action it reassures about. */}
+          <p className="nsv-news-assurance">{dict.newsletter.assurance}</p>
         </div>
       </div>
     </div>
