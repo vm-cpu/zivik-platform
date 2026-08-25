@@ -471,7 +471,7 @@ export default function EventsMap({
           live region a screen-reader user hears nothing at all. */}
       <div className="emap-live" aria-live="polite" aria-atomic="true">
       {selected && (
-        <div className="emap-card" data-cat={selected.category}>
+        <div className="emap-card">
           <button
             type="button"
             className="emap-close"
