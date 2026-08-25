@@ -13,6 +13,11 @@ export default function Hero({ dict }: { dict: Dictionary }) {
   return (
     <div
       id="content"
+      /* The skip link's landing place. Without it the fragment moves the
+         scroll position but leaves document.activeElement on <body>, so a
+         screen reader's virtual cursor never follows and "skip to content"
+         does nothing for the readers it exists for. */
+      tabIndex={-1}
       className="pj"
       style={{
         position: "relative",

@@ -308,7 +308,7 @@ export default async function RegistryPage({
   return (
     <div className="page registrypage">
 
-      <main id="content" className="reg-wrap">
+      <main id="content" tabIndex={-1} className="reg-wrap">
         <header className="reg-mast">
           <Link href={`/${locale}`} className="reg-back">
             {pick(T.back, locale)}
@@ -344,6 +344,7 @@ export default async function RegistryPage({
           t={{
             search: pick(T.search, locale),
             searchLabel: pick(T.searchLabel, locale),
+            tableLabel: pick(T.title, locale),
             courts: pick(T.courts, locale),
             courtsAll: pick(T.courtsAll, locale),
             stages: pick(T.stages, locale),

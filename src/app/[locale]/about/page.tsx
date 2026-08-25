@@ -252,7 +252,7 @@ export default async function AboutPage({
 
   return (
     <div className="page aboutpage">
-      <main id="content" className="abt-wrap">
+      <main id="content" tabIndex={-1} className="abt-wrap">
         <header className="abt-mast">
           <Link href={`/${locale}`} className="abt-back">
             ← {L(T.back)}

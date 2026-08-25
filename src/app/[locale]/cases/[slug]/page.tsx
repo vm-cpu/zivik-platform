@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { decisionMetadata, jsonLdHtml, siteUrl } from "@/lib/seo";
-import { isLocale, type Locale } from "@/i18n/config";
+import { foreignLang, isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import PageNav from "@/components/cases/PageNav";
@@ -87,6 +87,16 @@ const T = {
   faqH: { uk: "Часті запитання", en: "Common questions" },
   relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
   fullSummary: { uk: "Повне самері", en: "Full summary" },
+
+  /* The theatre map's text alternative. It was the literal string "Map of
+     Europe" — English on a Ukrainian page, so a Ukrainian voice spoke it
+     phonetically, and it said nothing about what the drawing shows. The
+     legend under the map already carries the seat and the places as text;
+     this says what kind of drawing they belong to. */
+  mapAlt: {
+    uk: "Мапа Європи: місце розгляду справи та території, яких вона стосується — перелічені під мапою",
+    en: "Map of Europe: the seat of the proceedings and the territories concerned — listed below the map",
+  },
 
   // Outcomes beyond the court-style violation / no-violation pair.
   granted: { uk: "Задоволено", en: "Upheld" },
@@ -242,7 +252,7 @@ function TheatreMap({
   const reach = MK[forum.reachTo] ?? MK.kyiv;
   return (
     <div className="map-wrap">
-      <svg className="map" viewBox={frame} role="img" aria-label="Map of Europe">
+      <svg className="map" viewBox={frame} role="img" aria-label={pick(T.mapAlt, locale)}>
         <defs>
           <clipPath id="mapclip">
             <rect x={vw0} y={vh0} width={vw} height={vh} />
@@ -609,7 +619,7 @@ export default async function CasePage({
       {/* The content region. There was none: the skip link pointed at
           #overview — the dashboard, past the h1 and the case caption — and a
           screen reader had no main landmark on any of the eight pages. */}
-      <main id="content">
+      <main id="content" tabIndex={-1}>
 
       {/* 1 — Masthead. The band is full-bleed; the rail sits inside it, like
           every other band on the page. Merging the two capped the dark ground
@@ -650,7 +660,11 @@ export default async function CasePage({
             </>
           )}
         </div>
-        <h1 className="official">{parties}</h1>
+        {/* Latin-script case names on a Ukrainian page need their own lang,
+            or a Ukrainian voice reads them phonetically. See foreignLang(). */}
+        <h1 className="official" lang={foreignLang(parties, locale)}>
+          {parties}
+        </h1>
         <p className="parties">
           {instruments.map((inst, i) => (
             <span key={inst.url}>

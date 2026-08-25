@@ -27,6 +27,23 @@
   box-shadow: 0 6px 0 currentColor, 0 -6px 0 currentColor;
 }
 
+/* UA / EN. The glyph pair is 15×15 — under the 24×24 floor of WCAG 2.5.8,
+   and there is no larger control on the page that switches language. An
+   inline-flex box with a min size grows the target without moving the type:
+   the centres stay 28px apart, so two 24px targets still do not touch. */
+.nsv-langsw {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.nsv-langsw a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+}
+
 .nsv-mobnav {
   display: none;
   flex-direction: column;

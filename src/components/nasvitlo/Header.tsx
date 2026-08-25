@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { locales, type Locale } from "@/i18n/config";
+import { locales, localeNames, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 /**
@@ -30,8 +30,23 @@ export default function Header({
   skipTo?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const burgerRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const home = `/${locale}`;
+
+  /* The drawer is a popup, so Escape has to shut it — and hand the keyboard
+     back to the control that opened it, rather than leaving focus inside a
+     panel that is now display:none (which drops it on <body>). */
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      burgerRef.current?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   /* Every item is a page. The menu used to mix pages with fragments of the
      home page (#about, #registry, #partners): from anywhere but the home page
@@ -174,10 +189,22 @@ export default function Header({
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <span style={{ font: "600 var(--t-cap) var(--brand-font-body)", color: "var(--brand-faint-dark)" }}>
+          {/* Two two-letter links measured 15×15 — under the 24×24 floor of
+              WCAG 2.5.8, with no larger control anywhere that does the same
+              job. `.nsv-langsw a` in header.css gives each one a 24px box
+              without moving the glyphs. The `lang` attribute matters as much:
+              "EN" inside a lang="uk" document is spoken with Ukrainian
+              phonetics, and `aria-label` names the language in the language
+              being offered rather than leaving a bare code. */}
+          <span
+            className="nsv-langsw"
+            style={{ font: "600 var(--t-cap) var(--brand-font-body)", color: "var(--brand-faint-dark)" }}
+          >
             <Link
               href={localeHref("uk")}
               hrefLang="uk"
+              lang="uk"
+              aria-label={localeNames.uk}
               aria-current={locale === "uk" ? "true" : undefined}
               style={{
                 color: locale === "uk" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
@@ -185,11 +212,13 @@ export default function Header({
               }}
             >
               UA
-            </Link>{" "}
-            /{" "}
+            </Link>
+            <span aria-hidden="true">/</span>
             <Link
               href={localeHref("en")}
               hrefLang="en"
+              lang="en"
+              aria-label={localeNames.en}
               aria-current={locale === "en" ? "true" : undefined}
               style={{
                 color: locale === "en" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
@@ -202,8 +231,10 @@ export default function Header({
           <button
             type="button"
             className="nsv-burger"
+            ref={burgerRef}
             aria-label={dict.nav.menu}
             aria-expanded={open}
+            aria-controls="nsv-mobnav"
             onClick={() => setOpen((v) => !v)}
           >
             <span />
@@ -211,7 +242,7 @@ export default function Header({
         </div>
       </header>
 
-      <div className="nsv-mobnav" data-open={open ? "yes" : "no"}>
+      <div id="nsv-mobnav" className="nsv-mobnav" data-open={open ? "yes" : "no"}>
         {nav.map((item) => (
           <Link key={item.label} href={item.href} onClick={() => setOpen(false)}>
             {item.label}

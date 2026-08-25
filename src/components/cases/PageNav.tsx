@@ -61,8 +61,17 @@ export default function PageNav({
     if (!row || !chip) return;
     const left = chip.offsetLeft - 24;
     const right = chip.offsetLeft + chip.offsetWidth + 24 - row.clientWidth;
-    if (row.scrollLeft > left) row.scrollTo({ left, behavior: "smooth" });
-    else if (row.scrollLeft < right) row.scrollTo({ left: right, behavior: "smooth" });
+    /* globals.css forces `scroll-behavior: auto` under prefers-reduced-motion,
+       but that only governs CSS-driven scrolling — a scrollTo() that names
+       "smooth" itself animates regardless. Asked directly, so the chip snaps
+       for a reader who has said they do not want motion. */
+    const behavior: ScrollBehavior = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches
+      ? "auto"
+      : "smooth";
+    if (row.scrollLeft > left) row.scrollTo({ left, behavior });
+    else if (row.scrollLeft < right) row.scrollTo({ left: right, behavior });
   }, [active]);
 
   return (

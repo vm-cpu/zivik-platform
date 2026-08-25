@@ -11,7 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { defaultLocale, isLocale } from "@/i18n/config";
+import { defaultLocale, foreignLang, isLocale } from "@/i18n/config";
 import type { CaseDate, CaseOutcomeKey, CaseStageKey } from "@/content/types";
 
 /* ============================================================================
@@ -260,6 +260,9 @@ export function plural(n: number, forms: PluralForms, locale: string): string {
 export interface RegistryLabels {
   search: string;
   searchLabel: string;
+  /** The grid's own name. It used to borrow `searchLabel`, so the table
+   *  announced itself as "Search the registry, table". */
+  tableLabel: string;
   courts: string;
   courtsAll: string;
   stages: string;
@@ -803,7 +806,7 @@ export default function RegistryTable({
           </button>
         </div>
       ) : (
-        <div className="reg-list" role="table" aria-label={t.searchLabel}>
+        <div className="reg-list" role="table" aria-label={t.tableLabel}>
           <div role="rowgroup" className="reg-thead">
             <div role="row" className="reg-row reg-hrow">
               {head("court", "asc", t.colCourt)}
@@ -833,11 +836,21 @@ export default function RegistryTable({
                     {/* The link sits in the case cell and its ::after covers
                         the row, so the whole row stays clickable without a
                         link wrapping table rows. */}
-                    <a className="reg-name" href={href}>
+                    {/* `lang` where the row's own text is not the page's
+                        language — see foreignLang(). Thirty-five of thirty-
+                        nine names are Latin-script, and a Ukrainian voice
+                        reading them phonetically is unintelligible. */}
+                    <a
+                      className="reg-name"
+                      href={href}
+                      lang={foreignLang(r.name, locale)}
+                    >
                       {highlight(r.name, tokens)}
                     </a>
                     {r.note && (
-                      <span className="reg-note">{highlight(r.note, tokens)}</span>
+                      <span className="reg-note" lang={foreignLang(r.note, locale)}>
+                        {highlight(r.note, tokens)}
+                      </span>
                     )}
                     {reasons.length > 0 && (
                       <span className="reg-why">

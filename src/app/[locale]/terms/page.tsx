@@ -83,7 +83,7 @@ export default async function TermsPage({
 
   return (
     <div className="page legalpage">
-      <main id="content" className="legal-wrap">
+      <main id="content" tabIndex={-1} className="legal-wrap">
         <header className="legal-mast">
           <Link href={`/${locale}`} className="legal-back">
             {pick(T.back, locale)}

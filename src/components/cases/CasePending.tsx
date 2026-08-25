@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import type { Locale } from "@/i18n/config";
+import { foreignLang, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { decisionMetadata } from "@/lib/seo";
 import { pick } from "@/content/types";
@@ -102,7 +102,7 @@ export default function CasePending({
 
   return (
     <div className="page pendingpage">
-      <main id="content" className="pend">
+      <main id="content" tabIndex={-1} className="pend">
         <div className="pend-lamp" aria-hidden="true">
           <span className="pend-bulb" />
         </div>
@@ -112,7 +112,9 @@ export default function CasePending({
           {entry.year ? ` · ${entry.year}` : ""}
         </p>
 
-        <h1 className="pend-name">{entry.name}</h1>
+        <h1 className="pend-name" lang={foreignLang(entry.name, locale)}>
+          {entry.name}
+        </h1>
 
         <p className="pend-status">{t.title}</p>
         <p className="pend-say">{t.body}</p>

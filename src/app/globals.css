@@ -216,6 +216,19 @@ body {
   outline: 2px solid var(--brand-red);
   outline-offset: 3px;
 }
+/* The skip link's landing place. It carries tabindex="-1" so that activating
+   "skip to content" actually moves focus — without it the fragment scrolls the
+   page and leaves document.activeElement on <body>, which is why the link did
+   nothing for a screen reader. It is not a tab stop, so 2.4.7 asks for no ring
+   on it, and the ring it would otherwise inherit from the rule above is drawn
+   around the whole of <main>: two thousand pixels of cherry outline, clipped
+   by the hero's overflow on the home page and 1.85:1 against the lamp scene.
+   The jump and the landmark announcement are the feedback. */
+#content:focus,
+#content:focus-visible {
+  outline: none;
+}
+
 /* On dark scenes the cherry ring disappears — use the lamp gold. */
 :where(.lamp, .court, .casepage .mast, .casepage .dash)
   :where(a, button, summary, [tabindex]):focus-visible {

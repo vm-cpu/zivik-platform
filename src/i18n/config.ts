@@ -29,6 +29,31 @@ export const localeShortNames: Record<Locale, string> = {
   en: "EN",
 };
 
+/**
+ * The `lang` a run of text needs when it is not in the page's language.
+ *
+ * Thirty-five of the registry's thirty-nine case names are Latin-script and
+ * carry no Cyrillic at all — "Allegations of Genocide under the Convention…",
+ * "Russia v Belbek/Kolomoisky (Hoge Raad)". On a `lang="uk"` page a screen
+ * reader speaks those with Ukrainian phonetics, which is not English with an
+ * accent: it is unintelligible. WCAG 3.1.2 (AA) asks for the change of
+ * language to be marked, and marking it is all a synthesiser needs to switch
+ * voice.
+ *
+ * Script, not language detection. A name that mixes the two scripts —
+ * "Lithuania v Gadzhimagomedov (UJ, катування)" — is left alone: tagging the
+ * whole string would be a worse lie than tagging none of it, and the Cyrillic
+ * half is the half the Ukrainian voice gets right. Returns `undefined` when
+ * the page's own language is already correct, so it can be spread straight
+ * into a `lang` attribute.
+ */
+const CYRILLIC = /[Ѐ-ӿ]/;
+const LATIN = /[A-Za-z]/;
+export function foreignLang(text: string, locale: Locale): "en" | undefined {
+  if (locale !== "uk") return undefined;
+  return LATIN.test(text) && !CYRILLIC.test(text) ? "en" : undefined;
+}
+
 /** BCP-47 tags for the `<html lang>` attribute and `hreflang` alternates. */
 export const localeHtmlLang: Record<Locale, string> = {
   uk: "uk",

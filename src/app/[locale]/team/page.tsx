@@ -82,7 +82,7 @@ export default async function TeamPage({
   return (
     <div className="page teampage">
 
-      <main id="content" className="team-wrap">
+      <main id="content" tabIndex={-1} className="team-wrap">
         <header className="team-mast">
           <Link href={`/${locale}`} className="team-back">
             ← {L(T.back)}

@@ -69,12 +69,12 @@
   gap: var(--space-3);
 }
 
-/* The primary control. Specificity (0,3,1) clears the page-wide
-   `.page a:not(…)` link colour at (0,2,2). */
-
-/* The lit mark — the registry legend's "analysed" dot, inside the button. */
-.nsv-newsletter 
-
+/* A dangling `.nsv-newsletter` selector fragment used to sit here — the
+   leftover of a deleted rule. CSS joined it to the next selector with a
+   descendant combinator, so the assurance rule below became
+   `.nsv-newsletter .nsv-newsletter .nsv-news-assurance`, matched nothing, and
+   the sentence inherited --brand-cream from the band: 1.09:1 on
+   --brand-paper-2, i.e. invisible. Restored, it is 4.95:1. */
 .nsv-newsletter .nsv-news-assurance {
   margin: 0;
   max-width: 36ch;
