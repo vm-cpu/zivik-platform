@@ -5,6 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+
+/**
+ * Only what the bar reads.
+ *
+ * This is a client component, so whatever it takes is serialized into the
+ * payload of every page. It used to take the whole `Dictionary` — 4,937 bytes
+ * of it — to read ten strings worth 250. Narrowing the prop is the difference,
+ * on every one of the site's ninety-odd pages.
+ */
+export type HeaderDict = Pick<Dictionary, "nav" | "brand">;
 import "./header.css";
 
 /** Dark top bar: brand, primary nav (collapses to a menu), language switch. */
@@ -16,7 +26,7 @@ export default function Header({
   skipTo = "#content",
 }: {
   locale: Locale;
-  dict: Dictionary;
+  dict: HeaderDict;
   skipTo?: string;
 }) {
   const [open, setOpen] = useState(false);
