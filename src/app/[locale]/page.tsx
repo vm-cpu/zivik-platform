@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import {
@@ -73,6 +74,26 @@ export default async function HomePage({
           totalCases={totalCases}
           institutionCount={institutions.length}
         />
+        {/* The section stays — a home page for an archive has to say what the
+            archive is — but it is now a summary with somewhere to go. The full
+            account, including the editorial method, lives at /{locale}/about,
+            which is where the primary navigation points. This block continues
+            the About band's ground rather than opening a new one; the negative
+            margin pulls it back under the band's own 50px foot so the link
+            sits a normal 24px below the last paragraph. */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 3,
+            marginTop: -26,
+            padding: "0 28px 50px",
+            background: "var(--surface)",
+          }}
+        >
+          <Link className="btn btn-o" href={`/${locale}/about`}>
+            {dict.about.more}
+          </Link>
+        </div>
         <Slogan dict={dict} />
         <MapSection locale={locale} dict={dict} />
         <Quote dict={dict} locale={locale} />

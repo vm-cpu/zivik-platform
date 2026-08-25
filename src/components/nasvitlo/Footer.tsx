@@ -28,6 +28,22 @@ const footPending: React.CSSProperties = {
   color: "var(--brand-faint-dark)",
 };
 
+/** Left inset of the site chrome.
+ *
+ *  The footer sat at a flat 28px while the bar above it had moved to a fluid
+ *  inset, so the wordmark in the header and the wordmark in the footer did not
+ *  share a left edge — on a wide screen the footer hugged the window. This is
+ *  the same expression the header uses (`components/nasvitlo/Header.tsx`),
+ *  named once here rather than pasted as a literal. It wants to be a token in
+ *  globals.css the day the chrome gutter gets one; until then the two values
+ *  are kept identical by hand.
+ */
+const chromeInsetLeft = "clamp(28px, 4vw, 56px)";
+
+/** The legal bar reads at 11px, so its links are footLink at that size —
+ *  same colour and same no-underline as every other link in the footer. */
+const legalLink: React.CSSProperties = { ...footLink, fontSize: 11 };
+
 /** Dark site footer: brand, link columns, contacts, legal bar. */
 export default function Footer({
   dict,
@@ -61,7 +77,7 @@ export default function Footer({
         zIndex: 3,
         background: "var(--brand-ink-black)",
         borderTop: "3px solid var(--brand-gold-mark)",
-        padding: "44px 28px 0",
+        padding: `44px 28px 0 ${chromeInsetLeft}`,
       }}
     >
       <footer
@@ -114,14 +130,14 @@ export default function Footer({
 
         {column(f.colArchive, [
           { label: f.linkRegistry, href: `/${locale}/registry` },
-          { label: f.linkMap, href: `/${locale}#map` },
+          { label: f.linkMap, href: `/${locale}/map` },
           { label: f.linkCourts },
           { label: f.linkDocs },
         ])}
         {column(f.colCenter, [
-          { label: f.linkAbout, href: `/${locale}#about` },
+          { label: f.linkAbout, href: `/${locale}/about` },
           { label: f.linkTeam, href: `/${locale}/team` },
-          { label: f.linkPartners, href: `/${locale}#partners` },
+          { label: f.linkPartners, href: `/${locale}/about#partners` },
           { label: f.linkBlog },
         ])}
 
@@ -150,16 +166,13 @@ export default function Footer({
         {/* --brand-muted-brown is 3.01:1 on this ground — under AA at 11px, so
             the whole legal bar reads in --brand-faint-dark (4.62:1) instead. */}
         <span style={{ fontSize: 11, color: "var(--brand-faint-dark)" }}>{f.rights}</span>
-        {/* Plain text until the pages exist. The newsletter sign-off collects
-            an address, so a real privacy policy is owed here — a dead link to
-            one is the worst of both worlds. */}
         <span style={{ display: "flex", gap: 18 }}>
-          <span style={{ fontSize: 11, color: "var(--brand-faint-dark)" }}>
+          <Link href={`/${locale}/privacy`} style={legalLink}>
             {f.privacy}
-          </span>
-          <span style={{ fontSize: 11, color: "var(--brand-faint-dark)" }}>
+          </Link>
+          <Link href={`/${locale}/terms`} style={legalLink}>
             {f.terms}
-          </span>
+          </Link>
         </span>
       </div>
     </div>

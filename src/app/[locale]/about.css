@@ -1,0 +1,283 @@
+/* ============================================================================
+   About page.
+
+   Own palette, like .teampage and .registrypage: every surface carries its own
+   scale from the --brand-* tokens rather than borrowing one from another
+   stylesheet. No hex literals — a literal does not follow the tokens, which is
+   the whole reason the contract forbids them.
+
+   This page renders <Partners/>, which is inline-styled against --paper /
+   --surface / --ink / --rule and the .lbl, .nsv-partnerrow and .pmark classes.
+   Those classes are defined in home.css, which this page does not load, so
+   they are restated here scoped under .aboutpage. Scoped, not shared: two
+   unscoped definitions of one class name is the bug the design contract keeps
+   warning about.
+   ========================================================================== */
+.aboutpage {
+  --red: var(--brand-red);
+  --redd: var(--brand-red-dark);
+  --gold: var(--brand-gold-ink);
+  --paper: var(--brand-paper);
+  --surface: var(--brand-surface);
+  --ink: var(--brand-ink);
+  --ink2: var(--brand-ink-2);
+  --faint: var(--brand-faint);
+  --rule: var(--brand-rule);
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--brand-font-body), sans-serif;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+}
+/* Scoped to the page body, not the whole surface: as `.aboutpage a` this ties
+   with `.nsv-mobnav a` in header.css and wins on source order, which repaints
+   the mobile menu red on its dark ground. */
+.aboutpage .abt-wrap a {
+  color: var(--red);
+  text-decoration: none;
+}
+.aboutpage .abt-wrap a:hover {
+  color: var(--redd);
+}
+
+/* One column, one left edge. The horizontal padding bottoms out at 28px on
+   purpose — that is exactly the inline padding <Partners/> carries, so the
+   negative margin below lets the partner band bleed wide while its content
+   stays on the same left edge as the prose at every width. */
+.abt-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 clamp(28px, 5vw, 44px) var(--space-16);
+}
+
+.abt-mast {
+  padding: var(--space-12) 0 var(--space-7);
+  border-bottom: 1px solid var(--rule);
+}
+.abt-back {
+  display: inline-block;
+  margin-bottom: var(--space-5);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.abt-back:hover {
+  color: var(--red);
+}
+.abt-mast h1 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.08;
+  color: var(--ink);
+  margin: 0 0 var(--space-3);
+}
+.abt-lede {
+  max-width: 62ch;
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: var(--ink2);
+  margin: 0;
+}
+
+/* Sections ---------------------------------------------------------------- */
+.abt-sec {
+  padding: var(--space-10) 0 0;
+}
+.abt-sec h2 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--t-h2);
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 var(--space-4);
+}
+.abt-sec h3 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0 0 var(--space-2);
+}
+
+/* Reading measure: 16px body face, 60-70 characters. */
+.abt-prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 68ch;
+}
+.abt-prose p {
+  margin: 0;
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink2);
+}
+.abt-prose p:first-child {
+  color: var(--ink);
+}
+.abt-addr {
+  font-family: var(--brand-font-mono), monospace;
+  font-size: var(--t-cap) !important;
+  letter-spacing: 0.01em;
+  color: var(--faint) !important;
+}
+.abt-standfirst {
+  max-width: 68ch;
+  margin: 0 0 var(--space-6);
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink2);
+}
+
+/* "What you will not find here" — statements, not bullets. A disc in front of
+   a disclaimer reads as a feature list. */
+.abt-plain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 68ch;
+}
+.abt-plain li {
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.abt-plain li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+/* The method, numbered. The counter is the machinery of the page, so it is in
+   the mono face like every other figure on the site. */
+.abt-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: abt-step;
+  max-width: 72ch;
+}
+.abt-steps li {
+  counter-increment: abt-step;
+  position: relative;
+  padding: 0 0 var(--space-6) var(--space-10);
+}
+.abt-steps li::before {
+  content: counter(abt-step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 3px;
+  font: 500 var(--t-cap) var(--brand-font-mono), monospace;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+.abt-steps li p {
+  margin: 0;
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink2);
+}
+
+/* Three figures, counted off the content layer — same shape as the registry
+   masthead so the same numbers look like the same numbers. */
+.abt-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin: 0 0 var(--space-6);
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.abt-meta .m {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.abt-meta .mv {
+  font: 400 clamp(26px, 4vw, 34px) var(--brand-font-display), Georgia, serif;
+  line-height: 1;
+  color: var(--ink);
+}
+.abt-meta .gilt .mv {
+  color: var(--gold);
+}
+.abt-meta .ml {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.abt-more {
+  margin: var(--space-6) 0 0;
+}
+.abt-more a {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Partner band ------------------------------------------------------------
+   <Partners/> supplies its own 28px inline padding and its own ground. Pulling
+   the wrapper 28px out on each side puts the marks on the reading column's
+   left edge while the band's rule runs wider than the column. */
+.abt-partners {
+  margin: var(--space-10) -28px 0;
+}
+/* Section label and partner row: defined in home.css, which this page does not
+   load. Scoped to .aboutpage so nothing leaks back to the surfaces that do. */
+.aboutpage .lbl {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: var(--space-3);
+}
+.aboutpage .lbl::before {
+  content: "";
+  width: 34px;
+  height: 3px;
+  background: var(--red);
+  flex: none;
+}
+.aboutpage .lbl span {
+  font: 700 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.aboutpage .nsv-partnerrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  row-gap: var(--space-3);
+}
+.aboutpage .nsv-partnerrow .pmark {
+  padding: 0 22px;
+  border-left: 1px solid var(--rule);
+  font: 700 var(--t-cap) var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  text-decoration: none;
+}
+.aboutpage .nsv-partnerrow .pmark:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.aboutpage .nsv-partnerrow a.pmark:hover {
+  color: var(--red);
+}
+
+@media (max-width: 560px) {
+  .abt-meta {
+    gap: var(--space-6);
+  }
+  .abt-steps li {
+    padding-left: var(--space-8);
+  }
+}

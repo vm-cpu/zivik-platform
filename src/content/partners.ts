@@ -20,4 +20,17 @@ export const partners: Partner[] = [
     id: "louis-sohn",
     name: { uk: "Дослідницький центр імені Луї Б. Зона", en: "Louis B. Sohn Research Centre" },
   },
+  {
+    /* The logo file is not in the repo yet. ifa supplies its own mark and a
+       prescribed wording for the funding line — both must come from them
+       rather than be redrawn or paraphrased here. Drop the file at
+       /public/logos/partners/ifa.svg and add `logo` below; until then the row
+       renders the name, which is what the other three entries do. */
+    id: "ifa",
+    name: {
+      uk: "Інститут зовнішніх зв’язків (ifa)",
+      en: "Institut für Auslandsbeziehungen (ifa)",
+    },
+    url: "https://www.ifa.de",
+  },
 ];

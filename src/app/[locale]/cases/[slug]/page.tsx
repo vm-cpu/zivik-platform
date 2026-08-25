@@ -591,7 +591,7 @@ export default async function CasePage({
             "@type": "ListItem",
             position: 2,
             name: dict.nav.decisions,
-            item: `${siteUrl}/${locale}#registry`,
+            item: `${siteUrl}/${locale}/registry`,
           },
           { "@type": "ListItem", position: 3, name: parties },
         ],
@@ -616,7 +616,9 @@ export default async function CasePage({
           at the rail's 1180px and left paper down both edges on a wide screen. */}
       <header className="mast">
         <div className="rail">
-        <Link href={`/${locale}#registry`} className="backlink">
+        {/* The registry page, not the home page's preview of it: a reader
+            leaving a decision wants the full 39 with the filters. */}
+        <Link href={`/${locale}/registry`} className="backlink">
           ← {pick(T.back, locale)}
         </Link>
         <div className="eyebrow">

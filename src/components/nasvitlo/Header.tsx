@@ -33,23 +33,31 @@ export default function Header({
   const pathname = usePathname();
   const home = `/${locale}`;
 
-  /* Anchors are absolute, not bare "#registry". As fragments they only worked
-     on the home page — on a decision page or the registry those ids do not
-     exist, so four of the six items did nothing. Team and Blog are gone until
-     the pages exist; a nav item that cannot go anywhere is worse than one
-     that is not there. */
+  /* Every item is a page. The menu used to mix pages with fragments of the
+     home page (#about, #registry, #partners): from anywhere but the home page
+     those ids do not exist, so the item scrolled nowhere and then, once Next
+     had navigated, left the reader at the top of the home page instead. The
+     archive has real routes for all of them now, so the menu points at routes.
+     Partners has no page of its own — it is a band on /about, which is a page,
+     so the fragment travels with a real destination rather than instead of
+     one. */
+  const about = `${home}/about`;
   const nav = [
     // `home` used to be labelled "About us" while pointing at `/uk`, so the
     // menu had no entry for the home page itself and the about section had no
     // link of its own. They are two destinations, so they are two items.
     { label: dict.nav.home, href: home, active: pathname === home },
-    { label: dict.nav.about, href: `${home}#about`, active: false },
-    { label: dict.nav.decisions, href: `${home}#registry`, active: false },
+    { label: dict.nav.about, href: about, active: pathname === about },
+    {
+      label: dict.nav.decisions,
+      href: `${home}/registry`,
+      active: pathname === `${home}/registry`,
+    },
     // The map has its own page now — full screen, zoom and pan — so the menu
     // points at it rather than at the band on the home page.
     { label: dict.nav.map, href: `${home}/map`, active: pathname === `${home}/map` },
     { label: dict.nav.team, href: `${home}/team`, active: pathname === `${home}/team` },
-    { label: dict.nav.partners, href: `${home}#partners`, active: false },
+    { label: dict.nav.partners, href: `${about}#partners`, active: false },
   ];
 
   /* Same page, other language. Switching used to drop the reader on the home
@@ -78,7 +86,14 @@ export default function Header({
           alignItems: "center",
           justifyContent: "space-between",
           gap: 24,
-          padding: "15px 30px",
+          /* The bar's left gutter is deeper than its right: the faculty mark
+             is the first thing on the page and was sitting 30px off the edge,
+             tighter than any other left edge on the site. 56px at desktop
+             width, easing down to 28px on a phone so the mark keeps its air
+             without pushing the language switch off the bar. The footer takes
+             the same value on its own left edge — one left edge top and
+             bottom, which is the point. */
+          padding: "15px 30px 15px clamp(28px, 4vw, 56px)",
           // Dark by default, because that is what the bar is on every surface
           // but one. The home page sets it transparent so the lamp gradient
           // shows through. It used to default the other way, and any page that
@@ -108,12 +123,25 @@ export default function Header({
           <img
             src={`/logos/fp-logo-white-${locale}.svg`}
             alt={dict.brand.facultyAlt}
-            style={{ height: 40, width: "auto", display: "block" }}
+            /* 40px until now, which put the faculty's own name — the second
+               line of the mark — at the edge of legibility on the dark bar.
+               The wordmark beside it is the archive's; this one is the
+               institution's, and it carries the credibility.
+               Fluid, not a flat 56: the mark is nearly two to one, so 56px
+               costs 108px of bar width, and at 375px that was enough to wrap
+               the UA / EN switch onto two lines. 46px is the widest the mark
+               goes before that happens, and it is still larger than what was
+               there. */
+            style={{
+              height: "clamp(46px, 5vw, 56px)",
+              width: "auto",
+              display: "block",
+            }}
           />
           <span
             style={{
               width: 1,
-              height: 36,
+              height: "clamp(36px, 4vw, 44px)",
               background: "rgba(243,232,226,.16)",
             }}
           />

@@ -44,7 +44,7 @@ export default function Intro({
         >
           {dict.intro.text}
         </p>
-        <a className="btn btn-o" href={`/${locale}#about`} style={{ flex: "none" }}>
+        <a className="btn btn-o" href={`/${locale}/about`} style={{ flex: "none" }}>
           {dict.intro.about}
         </a>
       </div>

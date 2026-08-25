@@ -41,6 +41,9 @@ const en: Dictionary = {
     text: "An online collection of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, arising from Ukraine's initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
     about: "About the Library",
   },
+  about: {
+    more: "More about the project",
+  },
   slogan: "We research · We explain · We bring to light",
   aboutRail: {
     title: "At a glance",
@@ -65,7 +68,7 @@ const en: Dictionary = {
   quote: {
     text: "The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine.",
     source: "International Court of Justice · Provisional Measures · 16 March 2022",
-    read: "The decision this comes from",
+    read: "Read the decision",
   },
   mapSection: {
     close: "Close card",
@@ -78,8 +81,8 @@ const en: Dictionary = {
     legendWar: "War crimes",
     legendAsset: "Seizure of assets",
     legendCourt: "The court hearing it",
-    legendLit: "Decision written up",
-    legendUnlit: "Summary in preparation",
+    legendLit: "The decision is written up",
+    legendUnlit: "Still being researched",
     courtsSeat: "The courts sit in",
     courtHears: "Hears",
     caseload: "{n} proceedings in the registry",
@@ -90,8 +93,8 @@ const en: Dictionary = {
     zoomOut: "Zoom out",
     reads: "Decisions written up",
     pending: "Summary in preparation",
-    legendWhat: "What is marked",
-    legendHow: "How to read it",
+    legendWhat: "Places",
+    legendHow: "Courts and links",
     legendLine: "A dashed line runs to the court hearing it",
     sizeKey: "A bigger circle means more proceedings",
     pageTitle: "The map of violations and courts",
@@ -106,8 +109,8 @@ const en: Dictionary = {
     fullRegistry: "Full registry",
     allCases: "All {count} {court} {cases} →",
     caseWord: { one: "case", few: "cases", many: "cases" },
-    legendLit: "Processed decision: summary, timeline, documents",
-    legendQueued: "Queued: added, summary in preparation",
+    legendLit: "Ready to read: summary, timeline, documents",
+    legendQueued: "Only the case record so far — the summary is being written",
     status: {
       decided: "Decided",
       progress: "Pending",
@@ -119,10 +122,11 @@ const en: Dictionary = {
     },
   },
   newsletter: {
-    heading: "Want to receive new summaries?",
-    text: "One email a month: what the courts decided and what it means.",
-    subscribe: "Subscribe",
-    support: "Support the project",
+    heading: "Each month, a few more decisions brought to light",
+    text: "A letter on the decisions we summarised over the month: what the court found, and what it will support.",
+    subscribe: "Get the letter",
+    support: "Support the collection",
+    assurance: "Summaries only. Unsubscribe from any letter.",
   },
   partners: {
     label: "Partners",
@@ -147,7 +151,9 @@ const en: Dictionary = {
     linkPartners: "Partners",
     linkBlog: "Blog",
     email: "nasvitlo@ucu.edu.ua",
-    address: "Lviv, 2a Kozelnytska St.",
+    /* "Svientsitskoho" is the transliteration content/legal.ts already
+       uses; the two must not spell the same street two ways. */
+    address: "17 Svientsitskoho St., Lviv, 79011",
     rights: "© 2026 the Louis B. Sohn Research Centre, UCU. Materials — CC BY 4.0.",
     privacy: "Privacy policy",
     terms: "Terms of use",
