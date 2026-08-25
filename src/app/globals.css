@@ -24,18 +24,6 @@
   --brand-gold-lit: #e6b65c;   /* luminous gold in dark / glow contexts */
   --brand-gold-lamp: #d6a24b;  /* lamp-scene gold */
 
-  /* Events-map categories. The map is the one dark scene where colour carries
-     meaning, and the paper hues do not survive it: --brand-red as the card's
-     over-title measured 1.69:1 on --brand-night-2 and its dot was barely
-     visible on the drawing. These are the lit variants, checked as text on
-     both dark grounds (5.13 / 7.59 / 5.68 on night-2).
-     They lived as `--hr/--war/--asset` inside events-map.css, one of them a
-     bare hex — a literal in a component stylesheet is exactly what the design
-     contract forbids. */
-  --brand-map-hr: #e0665a;     /* human rights */
-  --brand-map-war: #d6a24b;    /* war crimes */
-  --brand-map-asset: #6e97be;  /* seizure of assets */
-
   /* Light surfaces. A near-neutral ramp with only a whisper of warmth, so the
      cherry and gold carry all the colour. (Replaced the beige/cream paper —
      it dated the whole site and muddied the accents.) */
@@ -58,6 +46,21 @@
   --brand-night: #17110f;      /* darkest ground */
   --brand-night-2: #201815;    /* raised panel on dark */
   --brand-night-rule: #332622; /* hairline on dark */
+
+  /* Events-map ground. The map is a dark scene of its own, and its three
+     greys sit between --brand-night (the sea, #17110f) and --brand-night-2
+     (the raised panel, #201815) — neither is a substitute: swapping either in
+     visibly lifts the land off the sea or flattens Ukraine into its
+     neighbours. Measured before and after this move: unchanged.
+     They were bare hexes in events-map.css, which the contract forbids; only
+     their home has changed.
+     (Three category hues — --brand-map-hr/war/asset — used to live here too.
+     The map no longer colour-codes categories: every marker takes
+     --brand-gold-lamp and the one distinction drawn is lit vs unlit, so those
+     tokens and the legend strings that named them are gone.) */
+  --brand-map-land: #221b18;      /* every country but Ukraine */
+  --brand-map-land-edge: #2e2521; /* the hairline between them */
+  --brand-map-ua: #2b211c;        /* Ukraine, a shade above its neighbours */
 
   /* ── Shape & depth ──────────────────────────────────────────────
      The site read as boxy because everything was a 1px hairline

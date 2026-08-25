@@ -4,6 +4,11 @@ import type { Dictionary } from "./uk";
  * English UI dictionary. Typed as `Dictionary`, so it must mirror the exact
  * shape of the canonical Ukrainian dictionary — a missing or renamed key is a
  * compile error.
+ *
+ * The library/registry distinction the Ukrainian file sets out applies here
+ * word for word: "the library" is the site, "the registry" is the list of
+ * proceedings, and every link into that list says "Case registry" — the name
+ * the page gives itself in its title and its H1.
  */
 const en: Dictionary = {
   meta: {
@@ -17,7 +22,7 @@ const en: Dictionary = {
     menu: "Menu",
     home: "Home",
       about: "About us",
-    decisions: "Library of decisions",
+    decisions: "Case registry",
     map: "Map",
     team: "Team",
     partners: "Partners",
@@ -32,28 +37,19 @@ const en: Dictionary = {
     creditCentre: "the Louis B. Sohn Research Centre",
     creditFaculty: "UCU Faculty of Law",
     lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice.",
-    ctaRegistry: "Library of decisions",
+    ctaRegistry: "Case registry",
     ctaMap: "Map",
     chainHint: "pull the cord",
     lampLabel: "Turn the lamp on or off",
   },
   intro: {
     text: "An online library of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, arising from Ukraine's initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
-    about: "About the Library",
+    about: "About us",
   },
   about: {
     more: "More about the project",
   },
   slogan: "We research · We explain · We bring to light",
-  aboutRail: {
-    title: "At a glance",
-    scope: "Scope",
-    scopeVal: "since 2014",
-    proceedings: "Proceedings",
-    institutions: "Instances",
-    audience: "Audience",
-    audienceVal: "scholars, practitioners, interested readers",
-  },
   pending: {
     title: "Still being researched",
     body: "This proceeding is in the registry, but its summary is not written yet — we are working on it. Below is what is already known, and a link to the court's own document where one is public.",
@@ -77,9 +73,6 @@ const en: Dictionary = {
     description:
       "Alleged violations — shelling, deportations and seizures — linked by a dotted line to the court where their legal assessment is made.",
     fullMap: "Full map →",
-    legendHr: "Human rights",
-    legendWar: "War crimes",
-    legendAsset: "Seizure of assets",
     legendCourt: "The court hearing it",
     legendLit: "The decision is written up",
     legendUnlit: "Still being researched",
@@ -98,12 +91,12 @@ const en: Dictionary = {
     legendLine: "Dashed line — the link between a court and an event",
     sizeKey: "A bigger circle means more proceedings",
     pageTitle: "The map of violations and courts",
-    pageLede: "The violations happened in Ukraine; they are being judged thousands of kilometres away. The map holds both ends together: the place, and the court hearing it.",
+    pageLede: "The violations happened in Ukraine; they are judged thousands of kilometres away. The map holds both ends: the place, and the court hearing it.",
     backHome: "Home",
   },
   registry: {
-    label: "Library of decisions",
-    heading: "An online library of international case-law",
+    label: "Case registry",
+    heading: "Every proceeding against Russia, in one registry",
     description:
       "Here the light is already on. The registry grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
     fullRegistry: "Full registry",
@@ -140,7 +133,7 @@ const en: Dictionary = {
   },
   newsletter: {
     heading: "Each month, a few more decisions brought to light",
-    text: "A letter on the decisions we summarised over the month: what the court found, and what it will support.",
+    text: "A letter on the decisions we summarised over the month: what the court found, and what of it can be relied on.",
     subscribe: "Get the letter",
     support: "Support the library",
     assurance: "Summaries only. Unsubscribe from any letter.",
@@ -161,9 +154,9 @@ const en: Dictionary = {
     colContacts: "Contacts",
     linkRegistry: "Case registry",
     linkMap: "Events map",
-    linkCourts: "Courts and instances",
+    linkCourts: "Courts and institutions",
     linkDocs: "Documents",
-    linkAbout: "About the Library",
+    linkAbout: "About us",
     linkTeam: "Team",
     linkPartners: "Partners",
     linkBlog: "Blog",

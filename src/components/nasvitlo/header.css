@@ -44,20 +44,28 @@
   min-height: 24px;
 }
 
+/* The drawer is the bar continued, so it takes the bar's ground rather than a
+   near-black of its own. It was #1a0f0d — a literal, and a fourth dark that no
+   token names, on a site whose contract says the header has one ground on
+   every page. Measured: rgb(26,15,13) → rgb(23,17,15), the same value
+   Header.tsx already sets on the bar above it, so the two now meet without a
+   seam instead of almost matching. */
 .nsv-mobnav {
   display: none;
   flex-direction: column;
   gap: 2px;
   padding: 8px 30px 16px;
-  background: #1a0f0d;
-  border-bottom: 1px solid rgba(243, 232, 226, 0.1);
+  background: var(--brand-night);
+  /* --brand-cream at 10% / 7%, mixed rather than written out as rgba: the
+     literals held the token's own value and would not have followed it. */
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-cream) 10%, transparent);
 }
 .nsv-mobnav a {
   padding: 11px 0;
   font: 500 var(--t-ui) var(--brand-font-body);
   color: var(--brand-cream);
   text-decoration: none;
-  border-bottom: 1px solid rgba(243, 232, 226, 0.07);
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-cream) 7%, transparent);
 }
 .nsv-mobnav[data-open="yes"] {
   display: flex;

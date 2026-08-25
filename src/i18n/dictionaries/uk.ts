@@ -4,6 +4,28 @@
  *
  * UI *chrome* strings live here. Domain content (courts, cases, events,
  * partners) lives in the content layer (`src/content/`) with per-locale fields.
+ *
+ * ── Two words, one distinction ──────────────────────────────────────────────
+ * The thing had three names and the reader met all three: «Бібліотека рішень»
+ * in the nav, the hero CTA and `registry.label`; «Реєстр рішень» in the page
+ * title, the H1 and `footer.linkRegistry`; «Онлайн-бібліотека міжнародної
+ * судової практики» in `registry.heading`. Both words are right, but not of
+ * the same thing:
+ *
+ *   **бібліотека / the library** — the site. What насвітло *is*: the whole
+ *   collection, its summaries, its method, the project behind it. It names the
+ *   project (`intro.text`, `footer.tagline`, `newsletter.support`), never a
+ *   page or a destination.
+ *
+ *   **реєстр / the registry** — the list of proceedings and nothing else, at
+ *   `/registry` and previewed by the band on the home page. Anything that
+ *   *points at that list* says «Реєстр рішень» / "Case registry", which is the
+ *   name the page already gives itself in its `<title>` and its H1: the nav
+ *   item, the hero CTA, the band's label, the footer link.
+ *
+ * So: you read the library; you search the registry. A link never promises one
+ * and opens the other.
+ * ────────────────────────────────────────────────────────────────────────────
  */
 const uk = {
   meta: {
@@ -17,7 +39,7 @@ const uk = {
     menu: "Меню",
     home: "Головна",
       about: "Про нас",
-    decisions: "Бібліотека рішень",
+    decisions: "Реєстр рішень",
     map: "Мапа",
     team: "Команда",
     partners: "Партнери",
@@ -32,14 +54,14 @@ const uk = {
     creditCentre: "Дослідницького центру імені Луї Б. Зона",
     creditFaculty: "Факультету права УКУ",
     lead: "Бібліотека відповідальності та правосуддя для України — освітлюємо правовий шлях, яким Україна крокує до справедливості.",
-    ctaRegistry: "Бібліотека рішень",
+    ctaRegistry: "Реєстр рішень",
     ctaMap: "Мапа",
     chainHint: "потягніть за ланцюжок",
     lampLabel: "Увімкнути або вимкнути лампу",
   },
   intro: {
     text: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів, що стосується українських ініціатив для притягнення Росії до відповідальності за порушення, вчинені під час війни проти України.",
-    about: "Про Бібліотеку",
+    about: "Про нас",
   },
   about: {
     /* The home page keeps a two-paragraph summary of the collection; the full
@@ -48,15 +70,6 @@ const uk = {
     more: "Докладніше про проєкт",
   },
   slogan: "Досліджуємо · Пояснюємо · Висвітлюємо",
-  aboutRail: {
-    title: "Коротко",
-    scope: "Охоплення",
-    scopeVal: "з 2014 року",
-    proceedings: "Проваджень",
-    institutions: "Інстанцій",
-    audience: "Для кого",
-    audienceVal: "науковці, практики, зацікавлені",
-  },
   pending: {
     title: "Ще досліджуємо",
     body: "Цю справу вже внесено до реєстру, але конспекту ще немає — ми над ним працюємо. Нижче те, що вже відомо, і посилання на документ суду, якщо він у відкритому доступі.",
@@ -80,9 +93,6 @@ const uk = {
     description:
       "Заявлені порушення — обстріли, депортації та захоплення — зʼєднані пунктиром із судом, де здійснюється їх правова оцінка.",
     fullMap: "Повна карта →",
-    legendHr: "Права людини",
-    legendWar: "Воєнні злочини",
-    legendAsset: "Захоплення активів",
     legendCourt: "Суд, який розглядає",
     legendLit: "Є конспект рішення",
     legendUnlit: "Ще досліджуємо",
@@ -105,8 +115,12 @@ const uk = {
     backHome: "На головну",
   },
   registry: {
-    label: "Бібліотека рішень",
-    heading: "Онлайн-бібліотека міжнародної судової практики",
+    /* The band on the home page previews the registry, so it is labelled with
+       the registry's name — the same name the page, the nav item and the
+       footer link carry. The heading used to be the first eight words of
+       `intro.text` and named the library instead. */
+    label: "Реєстр рішень",
+    heading: "Кожне провадження проти Росії — в одному реєстрі",
     description:
       "Тут уже світло. Реєстр поповнюється поступово: спершу справу вносимо, потім готуємо конспект, таймлайн і документи.",
     fullRegistry: "Повний реєстр",
@@ -174,7 +188,7 @@ const uk = {
     linkMap: "Карта подій",
     linkCourts: "Суди та інстанції",
     linkDocs: "Документи",
-    linkAbout: "Про Бібліотеку",
+    linkAbout: "Про нас",
     linkTeam: "Команда",
     linkPartners: "Партнери",
     linkBlog: "Блог",
@@ -184,8 +198,8 @@ const uk = {
        Україна». Same address, footer-length: no country line. */
     address: "вул. Іларіона Свєнціцького, 17, Львів, 79011",
     rights: "© 2026 Дослідницький центр імені Луї Б. Зона, УКУ. Матеріали — CC BY 4.0.",
-    privacy: "Політика приватності",
-    terms: "Умови використання",
+    privacy: "Політика конфіденційності",
+    terms: "Умови користування",
   },
 };
 

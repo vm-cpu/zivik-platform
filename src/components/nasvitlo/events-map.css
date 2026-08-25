@@ -1,9 +1,10 @@
 /* ============================================================================
    Events map — where the harm happened and which courts are hearing it.
 
-   Colour is semantic here and nowhere else on the home page: three categories
-   of harm, each with its own hue. Everything comes from --brand-* tokens, so
-   the map follows the theme; the old iframe was painted dark whatever the
+   Colour carries one distinction and one only: whether there is a decision to
+   read. The three category hues this file once held are gone — see the note on
+   `--c` below — so nothing on the drawing is classified by hue. Every value
+   comes from a --brand-* token; the old iframe was painted dark whatever the
    reader had chosen.
    ========================================================================== */
 
@@ -79,12 +80,14 @@
    ground and the outline read as a hard edge. The map is context for the
    markers, not the subject. */
 .emap-ctx {
-  fill: #221b18;
-  stroke: #2e2521;
+  /* Tokens, not literals: three greys of the map's own ground, defined and
+     explained in globals.css. Same values, one source. */
+  fill: var(--brand-map-land);
+  stroke: var(--brand-map-land-edge);
   stroke-width: 0.5;
 }
 .emap-ua {
-  fill: #2b211c;
+  fill: var(--brand-map-ua);
   /* The same gold the markers and the oblast mesh are drawn in, mixed rather
      than written out: an rgba() literal here would not follow the token. */
   stroke: color-mix(in srgb, var(--brand-gold-lamp) 55%, transparent);

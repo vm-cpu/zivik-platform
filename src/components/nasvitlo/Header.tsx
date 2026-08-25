@@ -119,7 +119,12 @@ export default function Header({
              different headers on one site, and one of them a hex literal in a
              component stylesheet, which the design contract forbids. */
           background: "var(--brand-night)",
-          borderBottom: "1px solid rgba(243,232,226,.1)",
+          /* --brand-cream at 10%, mixed rather than written out: rgba(243,232,226,…)
+             is that token's own value spelled as a literal, which is what the
+             design contract forbids — it holds still while the token moves. The
+             drawer in header.css takes the same hairline. */
+          borderBottom:
+            "1px solid color-mix(in srgb, var(--brand-cream) 10%, transparent)",
         }}
       >
         {/* The whole brand cluster is one link home — the convention every
@@ -157,7 +162,10 @@ export default function Header({
             style={{
               width: 1,
               height: "clamp(36px, 4vw, 44px)",
-              background: "rgba(243,232,226,.16)",
+              /* --brand-cream at 16% — the divider between the faculty mark and
+                 the wordmark. Mixed from the token, not spelled as a literal. */
+              background:
+                "color-mix(in srgb, var(--brand-cream) 16%, transparent)",
             }}
           />
           <span

@@ -33,9 +33,23 @@ import "./registry.css";
 /** Localized page chrome (the case data itself is localized from content). */
 const T = {
   title: { uk: "Реєстр рішень", en: "Case registry" },
+  /* The standfirst on the page. It runs to 222 characters in Ukrainian and 279
+     in English because it does a job on the page — it tells the reader that a
+     row's date is the year the proceeding opened, not the year of the
+     judgment, and that the tags run on two axes. Both facts stop the table
+     from being misread, so neither is cut.
+     It used to double as the meta description, which put 279 characters into a
+     field that is truncated at about 160. They are two strings now, the way
+     /about already splits them. */
   lede: {
     uk: "Усі провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Теги розділено на дві осі: етап розгляду і те, що суд ухвалив.",
     en: "Every proceeding against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Tags run on two axes: the stage of the proceedings, and what the court issued.",
+  },
+  /* The meta description: 133 / 147 characters, both inside the ~160 a search
+     result shows. Says what the page holds and what can be done with it. */
+  metaDesc: {
+    uk: "39 проваджень проти Росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, етапом розгляду і тим, що суд ухвалив.",
+    en: "39 proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage, and by what the court issued.",
   },
   // The wordmark is lowercase everywhere, and the English one is "nasvitlo".
   // Team and map both say "Home"/"На головну" — so does this now.
@@ -98,7 +112,12 @@ const T = {
   decidedOn: { uk: "рішення", en: "decided" },
   noDate: { uk: "—", en: "—" },
   mProceedings: { uk: "проваджень", en: "proceedings" },
-  mCourts: { uk: "інстанцій", en: "courts" },
+  /* Twelve bodies, and one of them — EU / Belgium enforcement measures — is
+     not a court: `content/institutions.ts` files it as `executive`. "Courts"
+     counted them wrongly and "instances" is a false friend for «інстанція»
+     (a court instance is a level of jurisdiction, not an item). "Institutions"
+     is the noun `content/institutions.ts` and `content/stats.ts` already use. */
+  mInstitutions: { uk: "інстанцій", en: "institutions" },
   mAnalysed: { uk: "опрацьовано", en: "analysed" },
 } as const;
 
@@ -183,7 +202,7 @@ export async function generateMetadata({
   const dict = await getDictionary(locale);
   const path = `/${locale}/registry`;
   const title = pick(T.title, locale);
-  const description = pick(T.lede, locale);
+  const description = pick(T.metaDesc, locale);
   /*
    * `openGraph` and `twitter` are replaced wholesale, not merged, by the
    * nearest generateMetadata that sets them. This block used to set og:title,
@@ -322,7 +341,7 @@ export default async function RegistryPage({
             </div>
             <div className="m">
               <span className="mv">{courts.length}</span>
-              <span className="ml">{pick(T.mCourts, locale)}</span>
+              <span className="ml">{pick(T.mInstitutions, locale)}</span>
             </div>
             <div className="m">
               <span className="mv">{analysed}</span>
