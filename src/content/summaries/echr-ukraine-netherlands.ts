@@ -187,6 +187,21 @@ export const echrUkraineNetherlands: DecisionSummary = {
   ],
 
   related: [
+
+    {
+      // hague-mh17 names this judgment as its sequel; the link ran one way
+      // only, on a page whose second applicant State is a party because of
+      // MH17.
+      label: {
+        uk: "Справа MH17: вирок у Гаазі",
+        en: "The MH17 case: the verdict in The Hague",
+      },
+      note: {
+        uk: "Окружний суд Гааги · кримінальний вирок, 2022",
+        en: "The Hague District Court · criminal verdict, 2022",
+      },
+      href: "/cases/hague-mh17",
+    },
     {
       label: {
         uk: "МКБФТ і МКЛРД (Україна проти РФ)",
@@ -198,19 +213,23 @@ export const echrUkraineNetherlands: DecisionSummary = {
     {
       label: { uk: "Ситуація в Україні (МКС)", en: "Situation in Ukraine (ICC)" },
       note: {
-        uk: "кримінальна відповідальність осіб — ті самі кампанії",
-        en: "individual criminal responsibility — the same campaigns",
+        uk: "МКС · кримінальна відповідальність осіб за ті самі кампанії",
+        en: "ICC · individual criminal responsibility for the same campaigns",
       },
       href: "/cases/icc-ukraine",
     },
     {
       label: { uk: "Україна проти Росії (Крим) [ВП]", en: "Ukraine v. Russia (re Crimea) [GC]" },
       note: { uk: "ЄСПЛ · кримська гілка", en: "ECtHR · the Crimea branch" },
-      href: "#registry",
+      href: "/cases/ecthr-4",
     },
   ],
 
   judgment: {
+
+    // cases.ts records 304; without it the button omits "PDF, N pp."
+
+    pages: 304,
     court: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
     url: "https://hudoc.echr.coe.int/eng#{%22appno%22:[%2243800/14%22],%22itemid%22:[%22001-244292%22]}",
     caseUrl: "https://www.echr.coe.int/w/ukraine-and-the-netherlands-v.-russia-nos.-8019/16-43800/14-and-28525/20-1",
