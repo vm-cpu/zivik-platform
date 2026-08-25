@@ -218,6 +218,12 @@
 .nsv-quote::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,var(--brand-gold-mark) 50%,transparent)}
 .nsv-quote-text{max-width:940px;margin:0 auto;font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(21px,3vw,33px);line-height:1.42;color:var(--brand-cream);text-align:center;text-wrap:balance}
 .nsv-quote-src{max-width:940px;margin:20px auto 0;text-align:center;font:700 11px var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:var(--brand-gold-lit)}
+/* The citation is the link: one target, and the source line stays the thing
+   you click rather than growing a second control beside it. */
+.page a.nsv-quote-link{display:inline-flex;flex-direction:column;gap:7px;align-items:center;color:inherit;text-decoration:none}
+.page a.nsv-quote-link em{font:700 10px var(--brand-font-body);letter-spacing:.12em;font-style:normal;color:var(--brand-muted-dark);transition:color var(--dur) var(--ease)}
+.page a.nsv-quote-link:hover em,.page a.nsv-quote-link:focus-visible em{color:var(--brand-gold-pale)}
+.page a.nsv-quote-link:hover span{text-decoration:underline;text-underline-offset:4px}
 
 /* ============================================================
    Keep the lamp centred on the now-fluid hero stage at any width.

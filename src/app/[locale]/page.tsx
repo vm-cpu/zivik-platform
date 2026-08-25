@@ -75,7 +75,7 @@ export default async function HomePage({
         />
         <Slogan dict={dict} />
         <MapSection locale={locale} dict={dict} />
-        <Quote dict={dict} />
+        <Quote dict={dict} locale={locale} />
         <Registry
           locale={locale}
           dict={dict}

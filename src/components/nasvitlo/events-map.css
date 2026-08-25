@@ -64,12 +64,16 @@
   fill: transparent;
   stroke: none;
   cursor: pointer;
+  /* Unconditionally, not only under :focus-visible. The browser draws its own
+     ring around the bounding box of an SVG circle — a blue square with a white
+     halo around a round marker — and scoping the reset to one state left that
+     square showing in the others. */
+  outline: none;
 }
 /* `outline` on an SVG circle is drawn as a rectangle — a square box around a
    round marker, which is what made the selected court look wrong. A stroke
    follows the shape. */
-.emap-court-hit:focus-visible {
-  outline: none;
+.emap-court-hit:focus {
   fill: none;
   stroke: var(--brand-gold-pale);
   stroke-width: 2;
@@ -134,9 +138,9 @@
   fill: transparent;
   stroke: none;
   cursor: pointer;
-}
-.emap-hit:focus-visible {
   outline: none;
+}
+.emap-hit:focus {
   fill: none;
   stroke: var(--brand-gold-pale);
   stroke-width: 2;

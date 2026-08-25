@@ -55,6 +55,7 @@ const en: Dictionary = {
   quote: {
     text: "The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine.",
     source: "International Court of Justice · Provisional Measures · 16 March 2022",
+    read: "The decision this comes from",
   },
   mapSection: {
     close: "Close card",
