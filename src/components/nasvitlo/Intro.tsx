@@ -31,8 +31,8 @@ export default function Intro({
       >
         <p
           style={{
-            fontFamily: "var(--brand-font-display),serif",
-            fontSize: 19,
+            fontFamily: "var(--brand-font-body),sans-serif",
+            fontSize: 16,
             lineHeight: 1.5,
             color: "var(--ink)",
             margin: 0,

@@ -34,6 +34,20 @@ export const icjGenocide: DecisionSummary = {
     en: "Ukraine v. Russian Federation: 32 States intervening",
   },
 
+  /**
+   * Explicit rather than relying on the page template's default. That default
+   * is invisible from the data, so every other consumer has to know about it —
+   * and map-links.ts did not, which is why this decision showed no forum on
+   * the events map.
+   */
+  forum: {
+    institution: {
+      uk: "Міжнародний суд ООН",
+      en: "International Court of Justice",
+    },
+    seat: { uk: "Гаага", en: "The Hague" },
+  },
+
   plain: {
     tldr: {
       uk: "Росія виправдовувала вторгнення вигаданим «геноцидом на Донбасі». Україна пішла до Міжнародного суду ООН, щоб той офіційно засвідчив: геноциду не було. Суд погодився розглядати саме це — і відхилив п'ять із шести заперечень Росії. Але вимоги визнати незаконними визнання «ДНР/ЛНР» і саму «спецоперацію» Суд розглядати відмовився: це поза межами Конвенції про геноцид.",

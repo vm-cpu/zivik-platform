@@ -39,9 +39,12 @@ export default function About({
             key={i}
             style={{
               margin: 0,
-              fontFamily: i === 0 ? "var(--brand-font-display),serif" : undefined,
-              fontSize: i === 0 ? 18 : 14.5,
-              lineHeight: i === 0 ? 1.6 : 1.75,
+              /* All prose, so one face and one size. The opening paragraph
+                 used to lead at 18px in the display serif with the rest at
+                 14.5 — a step and a half of difference reads as an accident
+                 rather than a hierarchy. It leads by colour instead. */
+              fontSize: 16,
+              lineHeight: 1.65,
               color: i === 0 ? "var(--ink)" : "var(--ink2)",
             }}
           >

@@ -31,6 +31,20 @@ export const icjCerdIcsft: DecisionSummary = {
     en: "Ukraine v. Russian Federation",
   },
 
+  /**
+   * Explicit rather than relying on the page template's default. That default
+   * is invisible from the data, so every other consumer has to know about it —
+   * and map-links.ts did not, which is why this decision showed no forum on
+   * the events map.
+   */
+  forum: {
+    institution: {
+      uk: "Міжнародний суд ООН",
+      en: "International Court of Justice",
+    },
+    seat: { uk: "Гаага", en: "The Hague" },
+  },
+
   plain: {
     tldr: {
       uk: "Україна судилася з Росією у Міжнародному суді ООН за двома договорами — про фінансування тероризму (події на сході) і про расову дискримінацію (Крим). Суд визнав лише два порушення: Росія не розслідувала ймовірне фінансування тероризму й згорнула шкільну освіту українською мовою в Криму. Більшість вимог України відхилено.",

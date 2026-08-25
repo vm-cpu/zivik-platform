@@ -133,7 +133,10 @@
      small end is three clearly separated steps and title-vs-description is
      carried by weight, which those pairs already use. */
   --t-ui: var(--t-sm);
-  --t-body: 17.5px;   /* long-form reading */
+  /* 17.5px until now. Reading prose is 16px Fira Sans across the site: the
+     serif and the extra pixel and a half belong to the document furniture —
+     headings, case names, figures — which still carry them. */
+  --t-body: 16px;     /* long-form reading */
   --t-lead: 20px;     /* standfirst, wordmark in the bar */
   --t-h3: 22.5px;
   --t-h2: clamp(23px, 2.4vw, 29px);

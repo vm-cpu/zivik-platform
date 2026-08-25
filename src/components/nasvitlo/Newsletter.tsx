@@ -20,8 +20,8 @@ export default function Newsletter({ dict }: { dict: Dictionary }) {
       <div>
         <div
           style={{
-            fontFamily: "var(--brand-font-display),serif",
-            fontSize: 19,
+            fontFamily: "var(--brand-font-body),sans-serif",
+            fontSize: 16,
             color: "var(--ink)",
             marginBottom: 5,
           }}

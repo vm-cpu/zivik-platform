@@ -132,8 +132,9 @@
 }
 .casepage .tldr p {
   margin: 0;
-  font-family: var(--brand-font-display), serif;
-  font-size: clamp(var(--t-lead), 2vw, var(--t-h3));
+  /* The tl;dr is prose, so it takes the prose face and size. */
+  font-family: var(--brand-font-body), sans-serif;
+  font-size: var(--t-body);
   line-height: 1.5;
   color: var(--ink);
   text-wrap: pretty;

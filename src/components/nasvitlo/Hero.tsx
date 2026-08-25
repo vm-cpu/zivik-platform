@@ -65,8 +65,10 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         </h1>
         <p
           style={{
-            fontFamily: "var(--brand-font-display),serif",
-            fontSize: 20,
+            // Prose, so it takes the prose face and size like every other
+            // paragraph on the site; the wordmark above carries the display face.
+            fontFamily: "var(--brand-font-body),sans-serif",
+            fontSize: 16,
             lineHeight: 1.5,
             color: "var(--brand-cream)",
             margin: "0 0 16px",
