@@ -217,27 +217,12 @@
 .nsv-slogan .motto{font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(15px,2.3vw,21px);letter-spacing:.16em;text-transform:uppercase;color:var(--red);text-align:center}
 
 /* newsletter — quieter editorial sign-off */
-.nsv-news-links{display:flex;align-items:center;gap:20px;flex:none;flex-wrap:wrap}
-.nsv-news-links a{font:700 11px var(--brand-font-body);letter-spacing:.06em;text-transform:uppercase;color:var(--red);text-decoration:none;white-space:nowrap}
-.nsv-news-links a:hover{color:var(--redd)}
 
 /* The map band carries no side padding of its own any more, so the negative
    margins that used to punch through it now overshoot the viewport by exactly
    the gutter they were cancelling. */
 .nsv-map{margin:22px 0 0;background:var(--brand-night);border-top:1px solid var(--brand-night-rule);border-bottom:1px solid var(--brand-night-rule)}
 .nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:16px}
-
-/* judgment pull-quote — dark band in the court's own words */
-.nsv-quote{margin:0;padding:66px 28px;background:var(--brand-quote);position:relative}
-.nsv-quote::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,transparent,var(--brand-gold-mark) 50%,transparent)}
-.nsv-quote-text{max-width:940px;margin:0 auto;font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(21px,3vw,33px);line-height:1.42;color:var(--brand-cream);text-align:center;text-wrap:balance}
-.nsv-quote-src{max-width:940px;margin:20px auto 0;text-align:center;font:700 11px var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:var(--brand-gold-lit)}
-/* The citation is the link: one target, and the source line stays the thing
-   you click rather than growing a second control beside it. */
-.page a.nsv-quote-link{display:inline-flex;flex-direction:column;gap:7px;align-items:center;color:inherit;text-decoration:none}
-.page a.nsv-quote-link em{font:700 10px var(--brand-font-body);letter-spacing:.12em;font-style:normal;color:var(--brand-muted-dark);transition:color var(--dur) var(--ease)}
-.page a.nsv-quote-link:hover em,.page a.nsv-quote-link:focus-visible em{color:var(--brand-gold-pale)}
-.page a.nsv-quote-link:hover span{text-decoration:underline;text-underline-offset:4px}
 
 /* ============================================================
    Keep the lamp centred on the now-fluid hero stage at any width.
@@ -270,7 +255,6 @@
 @media (max-width:760px){
   .nsv-foot{grid-template-columns:1fr 1fr !important;gap:26px !important}
   .nsv-intro{flex-direction:column !important;align-items:flex-start !important;gap:18px !important}
-  .nsv-newsletter{flex-direction:column !important;align-items:flex-start !important;gap:16px !important}
   .lmp .wm{font-size:clamp(46px,15vw,88px) !important}
   .nsv-hero{padding:158px 18px 0 !important}
   .pj{min-height:auto !important;padding-bottom:44px !important}
@@ -291,7 +275,6 @@
   .legend{flex-direction:column;gap:10px}
   .nsv-slogan{gap:14px;padding:24px 18px}
   .nsv-slogan .rule{display:none}
-  .nsv-quote{padding:44px 20px}
 }
 
 @media (max-width:760px){
@@ -315,7 +298,11 @@
      screen away from the sentence it belongs to, and the forum list spread
      into five sparse columns. The paper background lives on .page, so capping
      the bands leaves it full-bleed and only the content centres. */
-  .page .lmp > div:not(.pj):not(.acc):not(.nsv-mapband){
+  /* Any element, not just a div. The selector used to say `> div`, which
+     silently skipped every band that is not one — the quote band is a
+     <figure> and sat 100px left of its neighbours for as long as it had been
+     one, with nothing to show that a rule had simply missed it. */
+  .page .lmp > :not(.pj):not(.acc):not(.nsv-mapband){
     /* The gutter grows to whatever it takes to keep the content within
        --measure. Capping the band itself (max-width + margin:auto) looked
        identical on the paper sections and broke every band that carries its
@@ -383,6 +370,23 @@
 .page .nsv-mapband > .nsv-sechead{
   padding-inline:max(clamp(28px,5vw,96px), calc((100% - var(--measure)) / 2));
 }
+
+/* The map band carries its own dark ground, so its heading cannot keep the
+   colours the paper bands use: measured on --brand-night the h2 came out at
+   1.06:1, the description at 2.40 and both the label and the full-map link at
+   1.81 — the heading was, in the user's words, simply not visible. These are
+   the same values the footer uses on its dark ground: cream 17.68:1, muted
+   9.06:1, gold 7.22 and 13.9. The wordmark's lamp glow goes on the heading so
+   it belongs to the map rather than sitting on top of it. */
+.page .nsv-mapband > .nsv-sechead h2{
+  color:var(--brand-cream-warm);
+  text-shadow:0 0 18px rgba(255,238,196,.4),0 0 44px rgba(240,221,168,.2);
+}
+.page .nsv-mapband > .nsv-sechead p{color:var(--brand-muted-dark)}
+.page .nsv-mapband > .nsv-sechead .lbl span{color:var(--brand-gold-mark)}
+.page .nsv-mapband > .nsv-sechead .lbl::before{background:var(--brand-gold-mark)}
+.page .nsv-mapband a.nsv-map-full{color:var(--brand-gold-pale)}
+.page .nsv-mapband a.nsv-map-full:hover{color:var(--brand-cream-warm)}
 .page a.nsv-map-full{
   align-self:flex-end;flex:none;
   font:700 var(--t-micro)/1 var(--brand-font-body);

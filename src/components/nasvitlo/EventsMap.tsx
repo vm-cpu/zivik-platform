@@ -284,7 +284,16 @@ export default function EventsMap({
   const [coarse, setCoarse] = useState(false);
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px)");
-    const sync = () => setCoarse(mq.matches);
+    const sync = () => {
+      // A width of zero is not a small screen — it is a browser that has not
+      // laid the page out yet (a background tab, a hidden frame, a tab
+      // restored on startup). Believing it made every marker inert, and
+      // because nothing resizes afterwards there was no second event to bring
+      // the map back: the drawing sat there looking interactive and answered
+      // no clicks at all.
+      const w = window.innerWidth;
+      setCoarse(w > 0 ? w <= 640 : false);
+    };
     sync();
     // Both, deliberately: the MediaQueryList change event does not fire in
     // every environment that changes the viewport, and a stale value here
@@ -365,7 +374,7 @@ export default function EventsMap({
     sel?.kind === "site" ? sel.key === e.key : sel?.kind === "court" ? e.courts.includes(sel.key) : false;
 
   return (
-    <div className="emap" data-variant={variant}>
+    <div className="emap" data-variant={variant} data-coarse={coarse ? "yes" : "no"}>
       <div className="emap-figure">
         {/* Not a pan-and-zoom rig: two named framings, because there are only
             two questions — how far the courts are, and which site is which. */}
@@ -767,35 +776,39 @@ export default function EventsMap({
               </svg>
               {labels.legendUnlit}
             </li>
+          </ul>
+        </div>
+
+        {/* On the home band the second group renders too: without it the reader
+            sees three site marks and no key to the rings the courts are drawn
+            as, which are half the picture. */}
+        <div className="emap-leg-group">
+            <h3>{labels.legendHow}</h3>
+            <ul>
             <li className="emap-key">
               <svg viewBox="0 0 22 22" aria-hidden="true">
                 <circle className="k-court" cx="11" cy="11" r="5.5" />
               </svg>
               {labels.court}
             </li>
-          </ul>
-        </div>
-
-        {variant === "full" && (
-          <div className="emap-leg-group">
-            <h3>{labels.legendHow}</h3>
-            <ul>
               <li className="emap-key">
                 <svg viewBox="0 0 22 22" aria-hidden="true">
                   <line className="k-line" x1="1" y1="11" x2="21" y2="11" />
                 </svg>
                 {labels.legendLine}
               </li>
-              <li className="emap-key">
-                <svg viewBox="0 0 22 22" aria-hidden="true">
-                  <circle className="k-lit" cx="5" cy="11" r="3" />
-                  <circle className="k-lit" cx="15" cy="11" r="6" />
-                </svg>
-                {labels.sizeKey}
-              </li>
+              {variant === "full" && (
+                <li className="emap-key">
+                  <svg viewBox="0 0 22 22" aria-hidden="true">
+                    <circle className="k-lit" cx="5" cy="11" r="3" />
+                    <circle className="k-lit" cx="15" cy="11" r="6" />
+                  </svg>
+                  {labels.sizeKey}
+                </li>
+              )}
             </ul>
           </div>
-        )}
+
 
         {variant === "full" && (
           <div className="emap-leg-group emap-leg-seats">

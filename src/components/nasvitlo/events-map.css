@@ -316,11 +316,13 @@
      top one would always win: a target you cannot aim at is worse than no
      target. The list below is six full-width rows and was always the
      interface here; the drawing reflects the selection rather than taking it.
-     `pointer-events` is set on the group so the courts go quiet too. */
-  .emap-hit,
-  .emap-court-hit {
-    pointer-events: none;
-  }
+     `pointer-events` is set on the group so the courts go quiet too.
+
+     The rule itself moved out of this media query and onto [data-coarse]
+     below: deciding it here as well as in the component gave the map two
+     sources of truth for one question, and when they disagreed — a browser
+     reporting a zero width before layout matches `max-width:640px` — the CSS
+     made every marker inert while nothing was left to switch it back. */
   .emap-svg {
     aspect-ratio: 4 / 3;
   }
@@ -708,4 +710,13 @@
   letter-spacing: 0.11em;
   text-transform: uppercase;
   color: var(--brand-gold-pale);
+}
+
+
+/* One source of truth for "the drawing is too small to aim at". The component
+   owns the decision (and refuses to believe a zero width); the drawing follows
+   it. See the note in the max-width:640px block above. */
+.emap[data-coarse="yes"] .emap-hit,
+.emap[data-coarse="yes"] .emap-court-hit {
+  pointer-events: none;
 }

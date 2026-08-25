@@ -27,8 +27,14 @@ export default function MapSection({
         position: "relative",
         zIndex: 3,
         /* No side padding: the drawing runs edge to edge and only the heading
-           is inset. The measure cap in home.css skips this band. */
-        padding: "10px 0 40px",
+           is inset. The measure cap in home.css skips this band.
+
+           No bottom padding either: those 40px were empty ground between the
+           map and the quote below it, and because both bands are near-black
+           (measured 1.007:1 apart) the space read as one continuous void
+           rather than as two sections meeting. The quote band now opens with
+           a lit seam instead. */
+        padding: "10px 0 0",
         /* The band is the map. A paper heading over a black drawing read as
              two things stacked; now the whole section is one dark object and
              the heading sits inside it. */
@@ -54,10 +60,12 @@ export default function MapSection({
             {dict.mapSection.heading}
           </h2>
           <p
+            /* No colour here: the band is dark, and an inline colour beats
+               the stylesheet that knows that. home.css sets the whole heading
+               for the dark ground. */
             style={{
               fontSize: 13.5,
               lineHeight: 1.6,
-              color: "var(--ink2)",
               margin: 0,
               maxWidth: 520,
             }}
