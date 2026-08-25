@@ -11,6 +11,15 @@ import type { Localized } from "./types";
 export interface TeamMember {
   name: Localized;
   role: Localized;
+  /**
+   * Portrait, as a path under `/public/team/` — e.g. "/team/denkovych.jpg".
+   *
+   * Optional on purpose. Photographs arrive one at a time, and a row of
+   * placeholder silhouettes next to two real faces looks worse than no faces
+   * at all; a member without this field simply renders without a portrait,
+   * and the list stays even. Square source, 400×400 or larger.
+   */
+  photo?: string;
 }
 
 export const team: TeamMember[] = [

@@ -82,11 +82,32 @@
 .team-list li {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+/* The name and role keep the baseline-aligned, spread-apart arrangement the
+   row had before portraits existed; the portrait sits outside that pair so a
+   row with a photograph and a row without still read as the same list. */
+.team-who {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
   gap: 4px 24px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--rule);
+  min-width: 0;
+}
+.team-photo {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* A hairline rather than a hard edge: portraits vary in background and a
+     bare circle on paper can read as a hole. */
+  box-shadow: 0 0 0 1px var(--rule);
 }
 .team-name {
   font-family: var(--brand-font-display), Georgia, serif;

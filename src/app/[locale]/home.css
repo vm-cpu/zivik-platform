@@ -367,8 +367,31 @@
 
 /* The map band runs edge to edge; only its heading and its link keep the
    gutter the other bands get from the measure cap. */
+/* Below 900px the heading stays in flow above the drawing: a floating panel
+   on a 390px screen would cover most of the map it is introducing. */
 .page .nsv-mapband > .nsv-sechead{
-  padding-inline:max(clamp(28px,5vw,96px), calc((100% - var(--measure)) / 2));
+  flex-direction:column;align-items:flex-start;gap:10px;
+  padding:22px max(clamp(28px,5vw,96px), calc((100% - var(--measure)) / 2)) 18px;
+}
+
+/* At desktop widths it becomes the same panel the map's own page uses — dark,
+   ruled, blurred, sitting over the drawing rather than stacked above it. The
+   user asked for this heading to match that one. */
+@media (min-width:900px){
+  .page .nsv-mapband{position:relative}
+  .page .nsv-mapband > .nsv-sechead{
+    position:absolute;z-index:4;top:18px;
+    left:max(clamp(28px,5vw,96px), calc((100% - var(--measure)) / 2));
+    width:min(440px, calc(100% - 36px));
+    padding:16px 20px 18px;
+    background:color-mix(in srgb, var(--brand-night) 88%, transparent);
+    border:1px solid var(--brand-night-rule);
+    backdrop-filter:blur(6px);
+  }
+  .page .nsv-mapband > .nsv-sechead h2{font-size:25px}
+  .page .nsv-mapband > .nsv-sechead p{max-width:none}
+  /* The drawing runs to the band's top edge, under the panel. */
+  .page .nsv-mapband .nsv-map{margin-top:0;border-top:0}
 }
 
 /* The map band carries its own dark ground, so its heading cannot keep the

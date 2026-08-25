@@ -34,7 +34,10 @@ export default function MapSection({
            (measured 1.007:1 apart) the space read as one continuous void
            rather than as two sections meeting. The quote band now opens with
            a lit seam instead. */
-        padding: "10px 0 0",
+        /* No padding at all above 900px: the heading becomes a panel floating
+           over the drawing (see home.css), so the map starts at the band's
+           top edge the way it does on the map's own page. */
+        padding: 0,
         /* The band is the map. A paper heading over a black drawing read as
              two things stacked; now the whole section is one dark object and
              the heading sits inside it. */
@@ -49,7 +52,6 @@ export default function MapSection({
           alignItems: "baseline",
           justifyContent: "space-between",
           gap: 20,
-          marginBottom: 18,
         }}
       >
         <div>

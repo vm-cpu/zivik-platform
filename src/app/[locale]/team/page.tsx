@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
@@ -93,8 +94,23 @@ export default async function TeamPage({
         <ul className="team-list">
           {team.map((m) => (
             <li key={m.name.en}>
-              <span className="team-name">{L(m.name)}</span>
-              <span className="team-role">{L(m.role)}</span>
+              {/* The portrait is optional and the row is built to survive its
+                  absence: no placeholder silhouette, no reserved empty square.
+                  Photographs arrive one at a time, and a half-filled grid of
+                  grey avatars reads worse than a clean list of names. */}
+              {m.photo && (
+                <Image
+                  className="team-photo"
+                  src={m.photo}
+                  alt=""
+                  width={112}
+                  height={112}
+                />
+              )}
+              <span className="team-who">
+                <span className="team-name">{L(m.name)}</span>
+                <span className="team-role">{L(m.role)}</span>
+              </span>
             </li>
           ))}
         </ul>

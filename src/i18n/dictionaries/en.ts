@@ -73,9 +73,9 @@ const en: Dictionary = {
   mapSection: {
     close: "Close card",
     label: "Map",
-    heading: "Alleged violations and the courts assessing them",
+    heading: "Where it happened — and where it is being judged",
     description:
-      "Alleged violations — shelling, deportations and seizures — linked by a dotted line to the court where their legal assessment is made.",
+      "Shelling, deportations, seizures of assets — all of it happened in Ukraine. It is being heard in The Hague, Strasbourg, Hamburg. The dashed lines join the two ends.",
     fullMap: "Full map →",
     legendHr: "Human rights",
     legendWar: "War crimes",
@@ -98,7 +98,7 @@ const en: Dictionary = {
     legendLine: "A dashed line runs to the court hearing it",
     sizeKey: "A bigger circle means more proceedings",
     pageTitle: "The map of violations and courts",
-    pageLede: "Every dot is an alleged violation. The dashed line runs to the court weighing it in law, and the card leads on to the decision itself.",
+    pageLede: "The violations happened in Ukraine; they are being judged thousands of kilometres away. The map holds both ends together: the place, and the court hearing it.",
     backHome: "Home",
   },
   registry: {
