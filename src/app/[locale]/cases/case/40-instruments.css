@@ -325,6 +325,23 @@
   color: var(--muted);
 }
 
+/* ---- chronology band ------------------------------------------------------
+   The chronology used to be the last child of .dash-stack: a <div class="lbl">
+   and the timeline, sharing the dashboard's band and following the money bars
+   and the objections row, with no heading of its own. The page nav's second
+   entry therefore landed in the middle of another section and heading
+   navigation skipped the chronology entirely. It is a section now, with its
+   own ground: --panel, the raised night, so the band reads as its own even
+   though the timeline's colours (gold dates, cream labels) need dark. */
+.casepage .chron {
+  background: var(--panel);
+  color: var(--cream);
+  padding-block: clamp(34px, 4.5vw, 60px);
+}
+/* the row highlight has to travel the other way on the raised ground */
+.casepage .chron .ctl-row:hover {
+  background: var(--bg);
+}
 /* ---- machinery band (paper): attribution, objections, afterlife ------------ */
 .casepage .machinery {
   background: var(--paper);

@@ -144,15 +144,15 @@ export default function Registry({
               </summary>
               <div className="body">
                 {cases.map((c) => {
-                  // Only ever navigate to our own decision pages — never to
-                  // external PDFs. Cases without a published summary are inert.
-                  const href = c.summarySlug
-                    ? `/${locale}/cases/${c.summarySlug}`
-                    : undefined;
+                  // Only ever navigate to our own case pages — never to
+                  // external PDFs. Every proceeding has one: the eight with a
+                  // summary open the decision page, the rest open the pending
+                  // page that names the stage and links the court's document.
+                  const href = `/${locale}/cases/${c.summarySlug ?? c.id}`;
                   return (
                   <a
                     key={c.id}
-                    className={`arow ${c.lit ? "lit" : "dim"}${href ? "" : " inert"}`}
+                    className={`arow ${c.lit ? "lit" : "dim"}`}
                     href={href}
                   >
                     <span className="mk" />

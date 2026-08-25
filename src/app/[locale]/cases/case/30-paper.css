@@ -295,15 +295,20 @@
   border-top: 1px solid var(--prule);
   padding-block: clamp(38px, 5vw, 64px);
 }
-/* Balanced columns: the four reference blocks flow and even out, so no
-   column ends with one block hanging beside a void. */
+/* Two blocks, two jobs, two shapes.
+   `columns: 2` poured both into one balanced flow, which is part of why they
+   read as the same panel printed twice: identical measure, identical 14px
+   bold-plus-grey pair, no way to tell a cast list from a dictionary. The
+   roster is a narrow column of named actors; the glossary is a wide two-column
+   term/definition table that needs the room. */
 .casepage .aids-grid {
-  columns: 2;
-  column-gap: clamp(30px, 4vw, 56px);
+  display: grid;
+  grid-template-columns: minmax(240px, 21rem) 1fr;
+  gap: clamp(30px, 4vw, 56px);
+  align-items: start;
 }
 .casepage .aids-grid .aid {
-  break-inside: avoid;
-  margin-bottom: clamp(28px, 3.5vw, 44px);
+  min-width: 0;
 }
 /* labels sitting on paper rather than the dark ground */
 .casepage .aid .lbl,
@@ -317,45 +322,88 @@
 .casepage .lbl-onpaper .lbl-sub {
   color: var(--ink3);
 }
+/* Who's who — a cast list. Each entry names what the actor IS before it names
+   them: the kind was previously encoded only as a gold left border on the
+   court, which told the reader nothing. Name in the display serif, because
+   these are proper names of parties and forums, the same register as the case
+   title; role beneath in body type. Entries are separated by a hairline, so
+   the block reads as a list of people rather than a list of definitions. */
 .casepage .who {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: var(--space-3);
 }
 .casepage .who li {
   display: grid;
   gap: var(--space-1);
-  padding-left: var(--space-4);
-  border-left: 2px solid var(--prule);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--prule);
 }
-.casepage .who li[data-kind="court"] {
-  border-left-color: var(--pgold);
+.casepage .who li:first-child {
+  padding-top: 0;
+  border-top: 0;
 }
-.casepage .who b {
-  font: 700 var(--t-ui) var(--brand-font-body);
+.casepage .who li:last-child {
+  padding-bottom: 0;
+}
+/* --ink3 measures 3.28:1 on the --paper2 ground and --pgold 4.32:1, both under
+   AA for an 11px label, so the kind runs on --ink2 (7.06:1) and the forum is
+   marked by weight of contrast — --ink, 15.95:1 — rather than by hue. */
+.casepage .who-kind {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink2);
+}
+.casepage .who li[data-kind="court"] .who-kind {
   color: var(--ink);
 }
-.casepage .who span {
+.casepage .who b {
+  font: 700 var(--t-body) var(--brand-font-display), serif;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.casepage .who-role {
   font-size: var(--t-sm);
   line-height: 1.5;
   color: var(--ink2);
 }
+
+/* Glossary — a dictionary. Term and definition sit side by side in ruled rows,
+   the term in the mono face this system already reserves for the machinery of
+   a judgment (paragraph refs, docket numbers, citations); a term of art is
+   the same kind of object. Nothing here repeats the roster's shape. */
 .casepage .glossary {
   margin: 0;
   display: grid;
-  gap: var(--space-3);
+  border-bottom: 1px solid var(--prule);
+}
+.casepage .glossary > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 13rem) 1fr;
+  gap: var(--space-1) var(--space-6);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--prule);
 }
 .casepage .glossary dt {
-  font: 700 var(--t-sm) var(--brand-font-body);
+  font: 600 var(--t-sm) var(--brand-font-mono);
+  line-height: 1.4;
+  letter-spacing: 0.01em;
   color: var(--ink);
 }
 .casepage .glossary dd {
-  margin: var(--space-1) 0 0;
+  margin: 0;
   font-size: var(--t-sm);
   line-height: 1.55;
   color: var(--ink2);
+}
+/* Below the split the definition drops under its term — a 8rem column beside
+   a 60-character definition is not a table any more, it is two ragged strips. */
+@media (max-width: 620px) {
+  .casepage .glossary > div {
+    grid-template-columns: 1fr;
+  }
 }
 .casepage .faq details {
   background: var(--card);

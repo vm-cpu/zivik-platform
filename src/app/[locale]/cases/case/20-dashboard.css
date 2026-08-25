@@ -33,11 +33,18 @@
   flex-direction: column;
   gap: var(--space-2);
 }
+/* The figure was --t-fig, clamp(29px, 3.6vw, 44px) — 44px against a 14px
+   caption from 1223px up, a headline sitting in a data strip. --t-h2 is the
+   top of the shared ramp (23 → 29px) and the only step that keeps the pair
+   reading as figure-and-caption: 2.07:1 at 1440 instead of 3.14:1, still a
+   clear register above the caption, and still fluid the way --t-fig was.
+   --t-h3 (22.5px flat) was the alternative and lands too close to the caption
+   for the figure to carry the strip. */
 .casepage .kpi b {
   font-family: var(--brand-font-display), serif;
   font-weight: 700;
-  font-size: var(--t-fig);
-  line-height: 1;
+  font-size: var(--t-h2);
+  line-height: 1.05;
   color: var(--gold);
   font-variant-numeric: tabular-nums;
 }
@@ -49,6 +56,38 @@
   color: var(--muted);
 }
 
+/* ---- map band -------------------------------------------------------------
+   Wide-format section, built the way the home page builds .nsv-mapband: the
+   band carries no side padding at all, so the drawing runs from edge to edge,
+   and only its heading and its legend keep the rail's gutter. Inside the
+   reading column the map was 1036px of a 1990px screen and, because the
+   atlas is 1000×560 and .map capped the height at 460px, the drawing itself
+   was letterboxed to 821px with 107px of dead ground down each side.
+
+   There is no max-height any more. With `xMidYMid meet` any cap letterboxes
+   horizontally, which is exactly the void the band exists to remove; the
+   aspect ratio of the frame therefore sets the height: on the default
+   1000x560 atlas, 806px at 1440 and 1114px at 1990. The map is the one
+   instrument on the page that earns it — its place names are drawn in viewBox
+   units, so full width is also the only thing that makes them legible. At
+   1440 the scale went from 0.82 to 1.24, which takes a 14-unit marker label
+   from 11.5px to 17.4px and a 16-unit place name from 13.1px to 19.9px. */
+.casepage .mapband {
+  background: var(--bg);
+  color: var(--cream);
+  padding-block: 0 clamp(34px, 4.5vw, 60px);
+}
+/* heading and legend keep the gutter the rail gives every other band */
+.casepage .mapband > .lbl,
+.casepage .mapband .map-legend {
+  max-width: calc(var(--measure) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.casepage .mapband > .lbl {
+  margin-bottom: var(--space-5);
+}
+
 /* map */
 .casepage .map-wrap {
   position: relative;
@@ -57,7 +96,6 @@
   width: 100%;
   height: auto;
   display: block;
-  max-height: 460px;
 }
 .casepage .map .ctx {
   fill: rgba(243, 232, 226, 0.04);

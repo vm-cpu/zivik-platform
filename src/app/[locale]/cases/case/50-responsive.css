@@ -6,7 +6,7 @@
     grid-template-columns: 1fr;
   }
   .casepage .aids-grid {
-    columns: 1;
+    grid-template-columns: 1fr;
   }
   .casepage .why {
     border-left: 0;

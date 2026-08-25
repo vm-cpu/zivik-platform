@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
+import { defaultLocale, isLocale } from "@/i18n/config";
 import type { CaseStatusKey } from "@/content/types";
 
 /** Status → the global badge class defined in home.css (.st-*). */
@@ -28,6 +29,7 @@ export interface RegRow {
   status: string;
   year: number | null;
   lit: boolean;
+  /** Decision page, when a summary is published. Otherwise `/cases/{id}`. */
   href: string | null;
 }
 
@@ -61,6 +63,12 @@ export default function RegistryTable({
      table opens already filtered instead of dropping the reader into all 39. */
   const params = useSearchParams();
   const initialCourt = params.get("court");
+  /* Rows without a summary link to `/[locale]/cases/{id}`, and the row data is
+     already localized to strings, so the locale comes off the path this table
+     is mounted on (`/uk/registry`) rather than a prop the server would have to
+     thread through. */
+  const seg = usePathname().split("/")[1];
+  const locale = isLocale(seg) ? seg : defaultLocale;
   const [q, setQ] = useState("");
   const [court, setCourt] = useState(
     initialCourt && courts.some((c) => c.id === initialCourt) ? initialCourt : "all",
@@ -191,16 +199,15 @@ export default function RegistryTable({
                 <span className="reg-year">{year(r)}</span>
               </>
             );
-            const cls = `reg-row ${r.lit ? "is-lit" : ""}`;
+            // Every proceeding is addressable: a summary opens the decision
+            // page, the rest open the pending page. The lit/unlit dot, not a
+            // dead row, is what says which is which.
+            const href = r.href ?? `/${locale}/cases/${r.id}`;
             return (
               <li key={r.id}>
-                {r.href ? (
-                  <a className={cls} href={r.href}>
-                    {cols}
-                  </a>
-                ) : (
-                  <div className={`${cls} is-inert`}>{cols}</div>
-                )}
+                <a className={`reg-row ${r.lit ? "is-lit" : ""}`} href={href}>
+                  {cols}
+                </a>
               </li>
             );
           })}

@@ -9,12 +9,25 @@
    Own palette from the --brand-* tokens, like every other surface.
    ========================================================================== */
 .pendingpage {
+  /* The band has to reach the footer: the body ground is paper, so a short
+     proceeding (no docket, no amount) would otherwise end in a pale stripe
+     under the dark page. */
+  min-height: 100vh;
   background: var(--brand-night);
   color: var(--brand-cream);
   font-family: var(--brand-font-body), sans-serif;
 }
 
+/* The cherry focus ring in globals.css is scoped to the dark scenes that
+   existed when it was written (.lamp, .court, the case masthead); on this
+   ground it measures 1.81:1 and is effectively invisible. Same lamp gold the
+   other dark scenes switch to — 9.98:1 here. */
+.pendingpage :where(a, button, summary, [tabindex]):focus-visible {
+  outline-color: var(--brand-gold-lit);
+}
+
 .pend {
+  display: block;
   max-width: 680px;
   margin: 0 auto;
   padding: clamp(56px, 9vw, 104px) clamp(20px, 5vw, 44px) clamp(72px, 10vw, 120px);
@@ -24,7 +37,7 @@
 .pend-lamp {
   display: flex;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: var(--space-10);
 }
 .pend-bulb {
   width: 13px;
@@ -32,45 +45,57 @@
   border-radius: 50%;
   background: var(--brand-gold-lamp);
   opacity: 0.28;
-  box-shadow: 0 0 22px 6px rgb(214 162 75 / 0.16);
+  box-shadow: 0 0 22px 6px color-mix(in srgb, var(--brand-gold-lamp) 16%, transparent);
 }
 
 .pend-eyebrow {
-  margin: 0 0 14px;
+  margin: 0 0 var(--space-3);
   font: 700 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--brand-gold-pale);
 }
 .pend-name {
-  margin: 0 0 22px;
+  margin: 0 0 var(--space-5);
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
   font-size: clamp(23px, 3.4vw, 31px);
   line-height: 1.22;
   color: var(--brand-cream);
   text-wrap: balance;
+  overflow-wrap: break-word;
+}
+/* The one-line statement of where this case stands, above the explanation. */
+.pend-status {
+  margin: 0 0 var(--space-3);
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-lead);
+  line-height: 1.35;
+  color: var(--brand-gold-pale);
 }
 .pend-say {
-  margin: 0 0 38px;
+  margin: 0 0 var(--space-10);
   font-size: var(--t-body);
   line-height: 1.62;
   color: var(--brand-muted-dark);
 }
 
 .pend-facts {
-  margin: 0 0 38px;
+  margin: 0 0 var(--space-10);
   padding: 0;
   display: grid;
   gap: 1px;
   background: var(--brand-night-rule);
   border: 1px solid var(--brand-night-rule);
+  /* A panel, so --r-md per the shape table. */
+  border-radius: var(--r-md);
+  overflow: hidden;
 }
 .pend-facts > div {
   display: grid;
   grid-template-columns: minmax(120px, 34%) 1fr;
-  gap: 18px;
-  padding: 13px 16px;
+  gap: var(--space-5);
+  padding: var(--space-3) var(--space-4);
   background: var(--brand-night);
 }
 .pend-facts dt {
@@ -81,29 +106,39 @@
 }
 .pend-facts dd {
   margin: 0;
-  font-size: var(--t-cap);
+  /* Was --t-cap (12.5px). The contract's floor for anything a reader must
+     read is 14px, and these are the facts the page exists to carry. */
+  font-size: var(--t-sm);
   line-height: 1.5;
   color: var(--brand-cream);
+  overflow-wrap: break-word;
 }
 .pend-mono {
   font-family: var(--brand-font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .pend-ways {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 26px;
+  gap: var(--space-3) var(--space-6);
   align-items: center;
 }
 .pendingpage .pend-ways a {
+  /* An 11px label is a 14px-tall target; WCAG 2.5.8 wants 24. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.09em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: color var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
 }
 .pendingpage .pend-doc {
-  padding: 12px 20px;
+  /* Buttons are pills, per the shape table. */
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--r-pill);
   background: var(--brand-gold-pale);
   color: var(--brand-night);
 }
@@ -120,6 +155,6 @@
 @media (max-width: 520px) {
   .pend-facts > div {
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: var(--space-1);
   }
 }

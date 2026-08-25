@@ -307,7 +307,22 @@ export const finlandTorden: DecisionSummary = {
 
   theatresHeading: { uk: "Де це сталося", en: "Where it happened" },
 
-  mapFocus: { forumKey: "hague", reachTo: "luhansk" },
+  /*
+   * The seat is Helsinki, not The Hague. It was "hague", so the map drew a
+   * gold dot on the Dutch coast, captioned it "Гельсінкі · Окружний суд
+   * Гельсінкі", and ran the universal-jurisdiction reach line to the Donbas
+   * from the wrong country — on a page whose whole subject is the distance
+   * between the forum and the crime.
+   *
+   * Helsinki sits 171px above the atlas's default 0 0 1000 560 frame, so the
+   * frame opens northwards to 215px above it (room for the seat label) and
+   * closes at y = 425, below the Donbas theatre and its halo — Crimea and the
+   * Mediterranean are not part of this case. The width grows to 1160 so the
+   * band keeps roughly the atlas's landscape proportion (1.81 against 1.79)
+   * instead of turning into a portrait.
+   */
+  mapFocus: { forumKey: "helsinki", reachTo: "luhansk" },
+  mapViewBox: "-80 -215 1160 640",
 
   theatres: [
     {
