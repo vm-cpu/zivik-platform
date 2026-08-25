@@ -37,7 +37,12 @@
   --brand-surface: #ffffff;    /* cards / rows — float above the page */
   --brand-ink: #1a1917;        /* primary text */
   --brand-ink-2: #55524d;      /* secondary text */
-  --brand-faint: #8a8681;      /* muted / captions */
+  /* #8a8681 until now, which measured 3.62 / 3.49 / 3.28 against white,
+     --brand-paper and --brand-paper-2 — under AA on every light ground it
+     is used on, across seventeen selectors on the decision pages. The dark
+     twin had the same defect and was fixed the same way. Now 5.45 / 5.26
+     / 4.95. */
+  --brand-faint: #6d6964;      /* muted / captions */
   --brand-rule: #e7e5e1;       /* hairline dividers */
   --brand-cream: #f3e8e2;      /* text on dark scenes */
 

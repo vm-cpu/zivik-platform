@@ -16,7 +16,13 @@ import "./globals.css";
 const charis = Charis_SIL({
   weight: ["400", "700"],
   style: ["normal", "italic"],
-  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
+  /* latin-ext dropped: measured across every route in both locales,
+     the rendered text contains zero characters in U+0100–024F, and the
+     subset was preloaded on all 24 pages regardless. cyrillic-ext stays —
+     it carries ґ (U+0491), which appears 23 times. Dropping a subset from
+     `subsets` only drops the preload; the @font-face survives, so anything
+     in that range would still render, just fetched on demand. */
+  subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-charis",
   display: "swap",
 });
@@ -24,7 +30,13 @@ const charis = Charis_SIL({
 const firaSans = Fira_Sans({
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
+  /* latin-ext dropped: measured across every route in both locales,
+     the rendered text contains zero characters in U+0100–024F, and the
+     subset was preloaded on all 24 pages regardless. cyrillic-ext stays —
+     it carries ґ (U+0491), which appears 23 times. Dropping a subset from
+     `subsets` only drops the preload; the @font-face survives, so anything
+     in that range would still render, just fetched on demand. */
+  subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-fira",
   display: "swap",
 });

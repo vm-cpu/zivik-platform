@@ -14,6 +14,7 @@ const en: Dictionary = {
   },
   nav: {
     skip: "Skip to content",
+    menu: "Menu",
     home: "Home",
       about: "About us",
     decisions: "Library of decisions",

@@ -158,7 +158,7 @@ export default function Header({
           <button
             type="button"
             className="nsv-burger"
-            aria-label="Menu"
+            aria-label={dict.nav.menu}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
