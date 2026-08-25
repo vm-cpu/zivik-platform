@@ -35,7 +35,9 @@ export default function Header({
     { label: dict.nav.home, href: home, active: pathname === home },
     { label: dict.nav.about, href: `${home}#about`, active: false },
     { label: dict.nav.decisions, href: `${home}#registry`, active: false },
-    { label: dict.nav.map, href: `${home}#map`, active: false },
+    // The map has its own page now — full screen, zoom and pan — so the menu
+    // points at it rather than at the band on the home page.
+    { label: dict.nav.map, href: `${home}/map`, active: pathname === `${home}/map` },
     { label: dict.nav.team, href: `${home}/team`, active: pathname === `${home}/team` },
     { label: dict.nav.partners, href: `${home}#partners`, active: false },
   ];
@@ -72,7 +74,11 @@ export default function Header({
           // shows through. It used to default the other way, and any page that
           // forgot to set a ground got cream text on paper — 1.16:1 in light
           // theme on the registry.
-          background: "var(--nsv-header-bg, var(--brand-night))",
+          /* One bar on every page. It used to be transparent over the home
+             page's lamp scene and #14100e on the decision pages — three
+             different headers on one site, and one of them a hex literal in a
+             component stylesheet, which the design contract forbids. */
+          background: "var(--brand-night)",
           borderBottom: "1px solid rgba(243,232,226,.1)",
         }}
       >

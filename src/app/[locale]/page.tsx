@@ -8,7 +8,6 @@ import {
 import { siteUrl } from "@/lib/seo";
 import "./home.css";
 import LampShell from "@/components/nasvitlo/LampShell";
-import Header from "@/components/nasvitlo/Header";
 import Hero from "@/components/nasvitlo/Hero";
 import Intro from "@/components/nasvitlo/Intro";
 import About from "@/components/nasvitlo/About";
@@ -18,7 +17,6 @@ import Quote from "@/components/nasvitlo/Quote";
 import Registry from "@/components/nasvitlo/Registry";
 import Newsletter from "@/components/nasvitlo/Newsletter";
 import Partners from "@/components/nasvitlo/Partners";
-import Footer from "@/components/nasvitlo/Footer";
 
 export default async function HomePage({
   params,
@@ -62,8 +60,10 @@ export default async function HomePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <LampShell>
-        <Header locale={locale} dict={dict} />
+      {/* The one content region on the page. Without it there is no landmark
+          for a screen reader to jump to. */}
+      <main>
+        <LampShell>
         <Hero dict={dict} />
         <Intro locale={locale} dict={dict} />
         <About
@@ -86,8 +86,8 @@ export default async function HomePage({
         />
         <Newsletter dict={dict} />
         <Partners locale={locale} dict={dict} partners={partners} />
-        <Footer dict={dict} locale={locale} />
-      </LampShell>
+        </LampShell>
+      </main>
     </div>
   );
 }

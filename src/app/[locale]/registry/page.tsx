@@ -12,8 +12,6 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { getContentRepository } from "@/content/repository";
 import { pick, type CaseStatusKey } from "@/content/types";
 import { siteUrl } from "@/lib/seo";
-import Header from "@/components/nasvitlo/Header";
-import Footer from "@/components/nasvitlo/Footer";
 import RegistryTable, {
   type RegRow,
 } from "@/components/nasvitlo/RegistryTable";
@@ -139,7 +137,6 @@ export default async function RegistryPage({
 
   return (
     <div className="page registrypage">
-      <Header locale={locale} dict={dict} />
 
       <main id="content" className="reg-wrap">
         <header className="reg-mast">
@@ -188,8 +185,6 @@ export default async function RegistryPage({
         />
         </Suspense>
       </main>
-
-      <Footer dict={dict} locale={locale} />
     </div>
   );
 }

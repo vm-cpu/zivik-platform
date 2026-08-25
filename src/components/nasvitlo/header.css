@@ -5,7 +5,7 @@
    The bar itself is inline-styled in Header.tsx (it needs the
    brand tokens); this file carries the responsive collapse and
    the mobile drawer. Pages without the lamp backdrop set
-   --nsv-header-bg to supply their own dark ground.
+   the same dark ground on every page.
    ============================================================ */
 
 .nsv-burger {

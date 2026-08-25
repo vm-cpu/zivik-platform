@@ -9,8 +9,6 @@ import { MAP_EVENTS, MAP_COURTS } from "@/content/map";
 import { caseLinksFor } from "@/content/map-links";
 import geo from "@/content/europe-map.json";
 import EventsMap from "@/components/nasvitlo/EventsMap";
-import Header from "@/components/nasvitlo/Header";
-import Footer from "@/components/nasvitlo/Footer";
 import "./map-page.css";
 
 /**
@@ -65,7 +63,6 @@ export default async function MapPage({
 
   return (
     <div className="page mappage">
-      <Header locale={locale} dict={dict} />
 
       <main id="content">
         {/* The masthead rides over the drawing rather than pushing it down the
@@ -125,8 +122,6 @@ export default async function MapPage({
           />
         </div>
       </main>
-
-      <Footer dict={dict} locale={locale} />
     </div>
   );
 }

@@ -6,8 +6,6 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import { siteUrl, pathAlternates } from "@/lib/seo";
 import { team } from "@/content/team";
-import Header from "@/components/nasvitlo/Header";
-import Footer from "@/components/nasvitlo/Footer";
 import "./team.css";
 
 const T = {
@@ -66,7 +64,6 @@ export default async function TeamPage({
 
   return (
     <div className="page teampage">
-      <Header locale={locale} dict={dict} />
 
       <main id="content" className="team-wrap">
         <header className="team-mast">
@@ -90,8 +87,6 @@ export default async function TeamPage({
           <a href={`mailto:${dict.footer.email}`}>{L(T.contact)} →</a>
         </p>
       </main>
-
-      <Footer dict={dict} locale={locale} />
     </div>
   );
 }

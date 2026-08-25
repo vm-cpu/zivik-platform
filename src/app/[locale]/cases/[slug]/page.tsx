@@ -5,8 +5,6 @@ import { decisionMetadata, siteUrl } from "@/lib/seo";
 import { isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
-import Header from "@/components/nasvitlo/Header";
-import Footer from "@/components/nasvitlo/Footer";
 import PageNav from "@/components/cases/PageNav";
 import CaseTimeline from "@/components/cases/CaseTimeline";
 import MoneyBars from "@/components/cases/MoneyBars";
@@ -506,7 +504,11 @@ export default async function CasePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Header locale={locale} dict={dict} skipTo="#overview" />
+
+      {/* The content region. There was none: the skip link pointed at
+          #overview — the dashboard, past the h1 and the case caption — and a
+          screen reader had no main landmark on any of the eight pages. */}
+      <main id="content">
 
       {/* 1 — Masthead. The band is full-bleed; the rail sits inside it, like
           every other band on the page. Merging the two capped the dark ground
@@ -1044,8 +1046,7 @@ export default async function CasePage({
           </div>
         </section>
       )}
-
-      <Footer dict={dict} locale={locale} />
+      </main>
     </div>
   );
 }

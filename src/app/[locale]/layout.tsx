@@ -4,6 +4,8 @@ import { isLocale, locales, localeHtmlLang } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { homeMetadata } from "@/lib/seo";
 import HtmlLang from "@/components/nasvitlo/HtmlLang";
+import Header from "@/components/nasvitlo/Header";
+import Footer from "@/components/nasvitlo/Footer";
 // Only cross-surface primitives load for every page. home.css is the home
 // page's own stylesheet and is imported there — loading it here put 399
 // unscoped rules on the registry and decision pages too.
@@ -32,13 +34,22 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
+  const dict = await getDictionary(locale);
 
   return (
     <>
       <HtmlLang lang={localeHtmlLang[locale]} />
       {/* Brand faces come from next/font in the root layout — self-hosted and
           preloaded, so there is no mid-render swap to fetch them. */}
-      <div className="nsv-root">{children}</div>
+      {/* One header and one footer for the whole locale. Every page used to
+          render its own pair, which is how the site ended up with three
+          different header grounds and a decision-page skip link that pointed
+          somewhere different from every other page. */}
+      <div className="nsv-root">
+        <Header locale={locale} dict={dict} />
+        {children}
+        <Footer dict={dict} locale={locale} />
+      </div>
     </>
   );
 }

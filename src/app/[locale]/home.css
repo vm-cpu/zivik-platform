@@ -186,7 +186,7 @@
   .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn):hover{color:var(--redd)}
   /* the lamp gradient is the header's ground on this page, so the bar itself
      stays transparent — everywhere else it supplies its own dark */
-  .page .lmp{border:0;--nsv-header-bg:transparent}
+  .page .lmp{border:0}
   /* lamp geometry is authored against a 900px stage — centre that stage in the wider page */
   .page .pj{width:900px;margin:0 auto}
 

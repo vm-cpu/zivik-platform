@@ -54,7 +54,6 @@
   font-family: var(--brand-font-body), sans-serif;
 
   /* the header has no lamp backdrop here — give it its own ground */
-  --nsv-header-bg: #14100e;
 }
 
 /* the single shared rail */
