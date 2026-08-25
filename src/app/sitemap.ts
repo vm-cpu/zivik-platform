@@ -96,5 +96,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: mapLanguages },
   }));
 
-  return [...homes, ...registry, ...map, ...team, ...cases];
+  /* The about page carries what the archive is, who runs it and how a
+     decision becomes a summary — the page a reader checks before trusting
+     anything else here, so it belongs in the map. */
+  const aboutLanguages = languagesFor((l) => `/${l}/about`);
+  const about: MetadataRoute.Sitemap = locales.map((locale) => ({
+    url: `${siteUrl}/${locale}/about`,
+    changeFrequency: "monthly",
+    priority: 0.6,
+    alternates: { languages: aboutLanguages },
+  }));
+
+  /* Privacy and terms are linked from every page's footer. They rarely
+     change, and a crawler that cannot find them reads the footer links as
+     dangling. */
+  const legal: MetadataRoute.Sitemap = ["privacy", "terms"].flatMap((doc) => {
+    const languages = languagesFor((l) => `/${l}/${doc}`);
+    return locales.map((locale) => ({
+      url: `${siteUrl}/${locale}/${doc}`,
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+      alternates: { languages },
+    }));
+  });
+
+  return [...homes, ...registry, ...map, ...about, ...team, ...cases, ...legal];
 }

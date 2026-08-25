@@ -1,0 +1,176 @@
+/* ============================================================================
+   Legal pages — the privacy policy and the terms of use share this sheet.
+
+   Both are reading pages and nothing else: a masthead, a revision date and a
+   run of numbered clauses. Own palette, like .casepage, .registrypage and
+   .teampage — every value is a --brand-* token so nothing here depends on
+   another surface's stylesheet having loaded first, and there is not a hex
+   literal in the file (see docs/DESIGN.md).
+
+   Clause numbers are drawn by a CSS counter, so the content file never
+   authors "7." into a heading and inserting a clause cannot leave the
+   numbering wrong in one language and right in the other.
+   ========================================================================== */
+.legalpage {
+  --red: var(--brand-red);
+  --redd: var(--brand-red-dark);
+  --gold: var(--brand-gold-ink);
+  --paper: var(--brand-paper);
+  --ink: var(--brand-ink);
+  --ink2: var(--brand-ink-2);
+  --faint: var(--brand-faint);
+  --rule: var(--brand-rule);
+
+  /* Reading measure, not page width: 680px of prose at 16px is the 60–70
+     characters the design contract asks for. The cap goes on the content and
+     the gutter is added on top, the same way .casepage .rail does it. */
+  --measure: 680px;
+  --gutter: clamp(24px, 5vw, 72px);
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--brand-font-body), sans-serif;
+  font-size: var(--t-body);
+  line-height: 1.7;
+}
+
+/* Scoped to the reading column, not to the surface: as `.legalpage a` this
+   would tie on specificity with `.nsv-mobnav a` in header.css and win on
+   source order, repainting the mobile drawer red on its dark ground. */
+.legalpage .legal-wrap a {
+  color: var(--red);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+.legalpage .legal-wrap a:hover {
+  color: var(--redd);
+}
+
+.legal-wrap {
+  max-width: calc(var(--measure) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding: 0 var(--gutter) var(--space-24);
+}
+
+/* ---- masthead ------------------------------------------------------------ */
+.legal-mast {
+  padding: var(--space-12) 0 var(--space-7);
+  border-bottom: 1px solid var(--rule);
+}
+.legalpage .legal-wrap .legal-back {
+  display: inline-block;
+  margin-bottom: var(--space-5);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+  text-decoration: none;
+}
+.legalpage .legal-wrap .legal-back:hover {
+  color: var(--red);
+}
+.legal-mast h1 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 var(--space-3);
+}
+.legal-lede {
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: var(--ink2);
+  margin: 0 0 var(--space-5);
+}
+/* The revision date is machinery, so it takes the mono face, like every other
+   date and docket reference on the site. */
+.legal-revised {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 0;
+}
+
+/* ---- clauses ------------------------------------------------------------- */
+.legal-doc {
+  counter-reset: legal-sec;
+}
+.legal-sec {
+  counter-increment: legal-sec;
+  padding: var(--space-10) 0 0;
+  /* an anchored clause must not land under the site header */
+  scroll-margin-top: var(--space-16);
+}
+.legal-sec h2 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 700;
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0 0 var(--space-4);
+}
+.legal-sec h2::before {
+  content: counter(legal-sec) ".";
+  margin-right: var(--space-2);
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  vertical-align: 0.14em;
+  color: var(--gold);
+}
+
+.legal-sec p {
+  margin: 0 0 var(--space-4);
+  color: var(--ink);
+}
+.legal-sec p:last-child {
+  margin-bottom: 0;
+}
+
+.legal-sec ul {
+  margin: 0 0 var(--space-4);
+  padding-left: var(--space-5);
+  list-style: disc;
+}
+.legal-sec ul:last-child {
+  margin-bottom: 0;
+}
+.legal-sec li {
+  margin-bottom: var(--space-3);
+  color: var(--ink);
+}
+.legal-sec li:last-child {
+  margin-bottom: 0;
+}
+.legal-sec li::marker {
+  color: var(--gold);
+}
+
+/* A clause that points at the other document or at the registry ends with one
+   link on its own line, so the eye finds it without the paragraph turning
+   into a run of underlines. */
+.legal-jump {
+  display: inline-block;
+  margin-top: var(--space-1);
+  font-weight: 600;
+}
+
+/* ---- foot ---------------------------------------------------------------- */
+.legal-foot {
+  margin-top: var(--space-12);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+  font-size: var(--t-sm);
+  color: var(--faint);
+}
+
+@media (max-width: 560px) {
+  .legal-mast {
+    padding-top: var(--space-8);
+  }
+  .legal-sec {
+    padding-top: var(--space-8);
+  }
+}
