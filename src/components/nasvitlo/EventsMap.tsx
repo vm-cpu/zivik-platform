@@ -77,6 +77,10 @@ export default function EventsMap({
     legendLine: string;
     /** Heading over the sites a selected court hears. */
     courtHears: string;
+    /** The two framings. */
+    zoomLabel: string;
+    zoomWide: string;
+    zoomClose: string;
   };
   locale: string;
 }) {
@@ -144,6 +148,40 @@ export default function EventsMap({
       return next;
     });
 
+  /**
+   * Two framings of the same projection.
+   *
+   * Wide is the argument the map makes: the distance between where the harm
+   * happened and where it is being weighed. But Ukraine is 24% of that frame,
+   * and inside it MH17 and eastern Ukraine sit 20px apart on a 1440px screen —
+   * their haloes overlap and the hit targets nearly touch. Close reframes on
+   * the sites at x2.35, which opens that gap to 47px. Nothing is reprojected;
+   * only the viewBox changes.
+   */
+  const [close, setClose] = useState(false);
+  /**
+   * Below 640px the markers are decoration, not controls — see the note in
+   * events-map.css. pointer-events alone would leave them in the tab order and
+   * still announced as buttons, so the DOM has to agree with the stylesheet.
+   */
+  const [coarse, setCoarse] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px)");
+    const sync = () => setCoarse(mq.matches);
+    sync();
+    // Both, deliberately: the MediaQueryList change event does not fire in
+    // every environment that changes the viewport, and a stale value here
+    // leaves ten circles announced as buttons that no longer accept a tap.
+    // setCoarse with an unchanged value is a no-op, so the overlap is free.
+    mq.addEventListener("change", sync);
+    window.addEventListener("resize", sync);
+    return () => {
+      mq.removeEventListener("change", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, []);
+  const viewBox = close ? "556 254 511 196" : geo.viewBox;
+
   const at = (key: string) => geo.markers[key] ?? [0, 0];
   const selected = sel?.kind === "site" ? events.find((e) => e.key === sel.key) ?? null : null;
   const selectedCourt =
@@ -162,9 +200,27 @@ export default function EventsMap({
   return (
     <div className="emap">
       <div className="emap-figure">
+        {/* Not a pan-and-zoom rig: two named framings, because there are only
+            two questions — how far the courts are, and which site is which. */}
+        <div className="emap-zoom" role="group" aria-label={labels.zoomLabel}>
+          <button
+            type="button"
+            aria-pressed={!close}
+            onClick={() => setClose(false)}
+          >
+            {labels.zoomWide}
+          </button>
+          <button
+            type="button"
+            aria-pressed={close}
+            onClick={() => setClose(true)}
+          >
+            {labels.zoomClose}
+          </button>
+        </div>
       <svg
         className="emap-svg"
-        viewBox={geo.viewBox}
+          viewBox={viewBox}
         preserveAspectRatio="xMidYMid meet"
         role="img"
         aria-label={labels.alt}
@@ -228,10 +284,11 @@ export default function EventsMap({
                   cx={x}
                   cy={y}
                   r={13}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={c.city}
-                  aria-pressed={on}
+                  role={coarse ? undefined : "button"}
+                  aria-hidden={coarse || undefined}
+                  tabIndex={coarse ? -1 : 0}
+                  aria-label={coarse ? undefined : c.city}
+                  aria-pressed={coarse ? undefined : on}
                   onClick={() => toggleCourt(c.key)}
                   onKeyDown={(ev) => {
                     if (ev.key === "Enter" || ev.key === " ") {
@@ -261,16 +318,21 @@ export default function EventsMap({
                 data-off={isHidden(e) ? "" : undefined}
               >
               <circle className="emap-halo" cx={x} cy={y} r={e.size / 2} />
+                {/* The drawn dot is r=6, which renders 14.4px wide on a
+                    1440px screen — under the 24px minimum target size. The
+                    interaction sits on its own circle so the drawing keeps
+                    the scale it wants. */}
               <circle
-                className="emap-dot"
+                  className="emap-hit"
                 cx={x}
                 cy={y}
-                r={6}
-                role="button"
-                aria-label={e.title}
+                  r={11}
+                role={coarse ? undefined : "button"}
+                aria-hidden={coarse || undefined}
+                aria-label={coarse ? undefined : e.title}
                   aria-pressed={sel?.kind === "site" && sel.key === e.key}
                   data-on={isLit(e) ? "yes" : "no"}
-                  tabIndex={isHidden(e) ? -1 : 0}
+                  tabIndex={coarse || isHidden(e) ? -1 : 0}
                   onClick={() => !isHidden(e) && toggleSite(e.key)}
                   onKeyDown={(ev) => {
                     if (ev.key === "Enter" || ev.key === " ") {
@@ -279,6 +341,7 @@ export default function EventsMap({
                     }
                   }}
               />
+                <circle className="emap-dot" cx={x} cy={y} r={6} />
             </g>
           );
         })}

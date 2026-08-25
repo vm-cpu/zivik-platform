@@ -101,6 +101,9 @@ export default function MapSection({
             legendHow: dict.mapSection.legendHow,
             legendLine: dict.mapSection.legendLine,
             courtHears: dict.mapSection.courtHears,
+            zoomLabel: dict.mapSection.zoomLabel,
+            zoomWide: dict.mapSection.zoomWide,
+            zoomClose: dict.mapSection.zoomClose,
             categories: {
               hr: dict.mapSection.legendHr,
               war: dict.mapSection.legendWar,

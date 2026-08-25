@@ -122,6 +122,21 @@
   stroke: var(--brand-cream-warm);
   stroke-width: 2;
 }
+/* The interaction lives on its own circle so the drawn dot keeps the size the
+   map wants. At r=6 the dot rendered 14.4px wide on a 1440px screen — under
+   the 24px minimum; r=11 renders 26.4px. */
+.emap-hit {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+}
+.emap-hit:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 2px;
+}
+.emap-dot {
+  pointer-events: none;
+}
 .emap-dot:hover {
   r: 8;
 }
@@ -285,6 +300,18 @@
 /* On a narrow screen the drawing stops carrying the detail — the reach lines
    and the card crowd each other — so the list becomes the map. */
 @media (max-width: 640px) {
+  /* The markers stop pretending to be buttons. At 390px the drawing is 390px
+     wide, which puts a hit target at 7.1px with 5px between neighbours — 16.8
+     and 13 even in the close framing, against a 24px minimum. Growing the
+     circles to 24px would make each one cover its neighbour entirely, so the
+     top one would always win: a target you cannot aim at is worse than no
+     target. The list below is six full-width rows and was always the
+     interface here; the drawing reflects the selection rather than taking it.
+     `pointer-events` is set on the group so the courts go quiet too. */
+  .emap-hit,
+  .emap-court-hit {
+    pointer-events: none;
+  }
   .emap-svg {
     aspect-ratio: 4 / 3;
   }
@@ -549,4 +576,51 @@
    own — the cards are absolutely placed against .emap-figure. */
 .emap-live {
   display: contents;
+}
+
+/* ---- framing control ---- */
+.emap-zoom {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  gap: 1px;
+  background: var(--brand-night-rule);
+  border: 1px solid var(--brand-night-rule);
+}
+.emap-zoom button {
+  padding: 7px 13px;
+  background: var(--brand-night);
+  border: 0;
+  cursor: pointer;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-muted-dark);
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+.emap-zoom button[aria-pressed="true"] {
+  background: var(--brand-gold-pale);
+  color: var(--brand-night);
+}
+.emap-zoom button:not([aria-pressed="true"]):hover {
+  color: var(--brand-cream);
+}
+.emap-zoom button:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 2px;
+}
+
+/* The frame moves rather than cuts, so the eye can follow a marker across the
+   change instead of relocating it. */
+.emap-svg {
+  transition: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .emap-svg {
+    transition: all var(--dur) var(--ease);
+  }
 }
