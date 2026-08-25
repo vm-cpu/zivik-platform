@@ -72,11 +72,7 @@ const en: Dictionary = {
     heading: "An online collection of international case-law",
     description:
       "Here the light is already on. The registry grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
-    fullRegistry: "Full registry ({count})",
-    processed: "Processed",
-    of: "of",
-    queuedRest: "the rest are queued",
-    onlyAnalysed: "Analysed only ({count})",
+    fullRegistry: "Full registry",
     allCases: "All {count} {court} cases →",
     legendLit: "Processed decision: summary, timeline, documents",
     legendQueued: "Queued: added, summary in preparation",

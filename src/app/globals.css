@@ -215,8 +215,6 @@
 
 
   /* Fonts */
-  --font-serif: var(--font-newsreader);
-  --font-display: var(--font-fraunces);
   --font-mono: var(--font-ibm-plex-mono);
 }
 

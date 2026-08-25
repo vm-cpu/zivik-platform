@@ -30,10 +30,9 @@ export default async function HomePage({
 
   const dict = await getDictionary(locale);
   const repo = getContentRepository();
-  const [institutions, stats, partners, cases, casesByInstitution, about] =
+  const [institutions, partners, cases, casesByInstitution, about] =
     await Promise.all([
       repo.getInstitutions(),
-      repo.getStats(),
       repo.getPartners(),
       repo.getCases(),
       getCasesByInstitution(repo),
@@ -66,7 +65,7 @@ export default async function HomePage({
       <LampShell>
         <Header locale={locale} dict={dict} />
         <Hero dict={dict} />
-        <Intro locale={locale} dict={dict} stats={stats} />
+        <Intro locale={locale} dict={dict} />
         <About
           locale={locale}
           dict={dict}

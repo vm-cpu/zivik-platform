@@ -107,17 +107,9 @@ export interface MapEvent {
 
 /** A headline statistic in the intro band. */
 export interface Stat {
-  /** Fixed figure. Omitted when the tile counts from a date instead. */
-  value?: string;
+  value: string;
   label: Localized;
   gilt?: boolean;
-  /**
-   * ISO date this tile counts from, for a figure that changes on its own.
-   * The page is prerendered, so a duration computed on the server would
-   * freeze at build time; a tile with `since` is rendered by a small client
-   * component that recomputes it in the reader's browser.
-   */
-  since?: string;
 }
 
 /** A partner organisation. */

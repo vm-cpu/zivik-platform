@@ -43,7 +43,6 @@ export default function Registry({
   totalCases: number;
   analysedCases: number;
 }) {
-  const pct = totalCases ? Math.round((analysedCases / totalCases) * 100) : 0;
 
   const caseDate = (c: RegistryCase) => {
     if (c.year == null) return "—";
@@ -100,64 +99,9 @@ export default function Registry({
         </div>
       </div>
 
-      <div
-        className="regprog"
-        style={{
-          position: "relative",
-          zIndex: 3,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 24,
-          padding: "15px 28px",
-          background: "var(--paper2)",
-          borderTop: "1px solid var(--rule)",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <span style={{ font: "600 12.5px var(--brand-font-body)", color: "var(--ink)" }}>
-            {dict.registry.processed}{" "}
-            <b
-              style={{
-                fontFamily: "var(--brand-font-display),serif",
-                fontSize: 17,
-                fontWeight: 400,
-              }}
-            >
-              {analysedCases}
-            </b>{" "}
-            {dict.registry.of} {totalCases}
-          </span>
-          <span
-            style={{
-              position: "relative",
-              display: "block",
-              width: 190,
-              height: 5,
-              borderRadius: 3,
-              background: "var(--rule)",
-              overflow: "hidden",
-            }}
-          >
-            <span
-              style={{
-                position: "absolute",
-                inset: "0 auto 0 0",
-                width: `${pct}%`,
-                background: "linear-gradient(90deg,var(--brand-gold-mark),var(--brand-gold-bright))",
-                boxShadow: "0 0 9px rgba(199,154,60,.6)",
-              }}
-            />
-          </span>
-          <span style={{ fontSize: 12, color: "var(--faint)" }}>
-            {dict.registry.queuedRest}
-          </span>
-        </div>
-        <label className="swonly">
-          <input type="checkbox" />
-          {fmt(dict.registry.onlyAnalysed, { count: analysedCases })}
-        </label>
-      </div>
+        {/* The "8 of 39 processed" strip and its progress bar are gone: the
+           brief takes the counts off this page, and a half-full bar over a
+           registry reads as an apology for it. */}
 
       <div className="acc" style={{ position: "relative", zIndex: 3 }}>
         {institutions.map((inst, index) => {

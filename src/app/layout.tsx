@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Newsreader,
-  IBM_Plex_Mono,
-  Fraunces,
-  Charis_SIL,
-  Fira_Sans,
-} from "next/font/google";
+import { IBM_Plex_Mono, Charis_SIL, Fira_Sans } from "next/font/google";
 import { isIndexable } from "@/lib/seo";
 import "./globals.css";
 
@@ -13,6 +7,11 @@ import "./globals.css";
  * Brand faces, self-hosted by next/font so they are preloaded and shipped with
  * metric-matched fallbacks — no flash of a different face on load (the old
  * <link> to fonts.googleapis.com swapped visibly mid-render).
+ *
+ * Three, not five. Newsreader and Fraunces came with the starter and were
+ * still being downloaded by every visitor although nothing read them: they
+ * reached globals.css as --font-serif and --font-display, and no rule and no
+ * class ever used either.
  */
 const charis = Charis_SIL({
   weight: ["400", "700"],
@@ -30,22 +29,10 @@ const firaSans = Fira_Sans({
   display: "swap",
 });
 
-const newsreader = Newsreader({
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-newsreader",
-  display: "swap",
-});
-
 const ibmPlexMono = IBM_Plex_Mono({
   weight: ["400", "500"],
   subsets: ["latin"],
   variable: "--font-ibm-plex-mono",
-  display: "swap",
-});
-
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  variable: "--font-fraunces",
   display: "swap",
 });
 
@@ -81,7 +68,7 @@ export default function RootLayout({
   return (
     <html
       lang="uk"
-      className={`${newsreader.variable} ${ibmPlexMono.variable} ${fraunces.variable} ${charis.variable} ${firaSans.variable} h-full antialiased`}
+      className={`${charis.variable} ${firaSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
