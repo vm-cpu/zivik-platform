@@ -33,34 +33,49 @@
   top: 16px;
 }
 
-/* Status badge ------------------------------------------------------------ */
+/* Case tags ---------------------------------------------------------------
+   One badge used to carry «У розгляді», «Ордер» and «Рішення» from a single
+   flat union, which mixed two questions: where the proceedings stand, and what
+   the forum issued. They are two dimensions now, so `.chip` is the *group* —
+   home.css positions it in the accordion row by that name — and `.tag` is the
+   pill inside it. `.st-decided/.st-progress/.st-warrant/.st-enforce` are gone
+   with the union they coloured; nothing referenced them any more.
+
+   Colour is never the only carrier: the stage tag is unfilled and the outcome
+   tag is filled, each tag names its own dimension to assistive technology, and
+   the words themselves say which is which. Every ground below is an opaque
+   color-mix of brand tokens, so a tag measures the same on the row's paper as
+   on its hover ground. */
 .chip {
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 5px;
-  font: 700 10px var(--brand-font-body), sans-serif;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  padding: 4px 10px;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font: 600 var(--t-micro) / 1.2 var(--brand-font-body), sans-serif;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
   border-radius: var(--r-pill);
+  border: 1px solid transparent;
   white-space: nowrap;
 }
-/* Colours come from --status-* in globals.css so they follow the theme; the
-   tint behind them stays a low-alpha wash of the same hue, which works on
-   either ground. */
-.st-decided {
-  color: var(--status-decided);
-  background: rgba(63, 97, 68, 0.13);
+/* Stage — unfilled: where the proceedings stand is context, not a holding. */
+.tag-stage {
+  color: var(--brand-ink-2);
+  background: transparent;
+  /* The unfilled/filled contrast between the two dimensions is a redundant
+     cue — the words and the assistive-technology prefix already say which is
+     which — but it is still a boundary that carries information, so both
+     outlines are measured against the paper and the hover ground: 3.40:1 and
+     3.21:1 here, 4.58:1 and 4.32:1 for the gold below. */
+  border-color: color-mix(in srgb, var(--brand-ink-2) 68%, var(--brand-paper));
 }
-.st-progress {
-  color: var(--status-progress);
-  background: rgba(148, 100, 40, 0.15);
-}
-.st-warrant {
-  color: var(--brand-red);
-  background: rgba(127, 23, 22, 0.11);
-}
-.st-enforce {
-  color: var(--status-enforce);
-  background: rgba(58, 86, 112, 0.13);
+/* Outcome — filled in ink gold: what the forum actually issued is the record. */
+.tag-outcome {
+  color: var(--brand-gold-ink);
+  background: color-mix(in srgb, var(--brand-gold) 10%, var(--brand-surface));
+  border-color: var(--brand-gold);
 }

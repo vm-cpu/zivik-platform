@@ -29,6 +29,54 @@ export type CaseStatusKey =
   | "frozen"
   | "rejected";
 
+/**
+ * Where the proceedings stand — the first of the two tag dimensions.
+ *
+ * `CaseStatusKey` above mixed procedural posture with disposition ("progress"
+ * and "warrant" answer different questions), so a row could only ever carry
+ * one of the two facts. Every key here is a phrase the source `status` text
+ * actually uses; a case whose record does not fix a stage carries none.
+ */
+export type CaseStageKey =
+  | "preliminary" // «попередній етап»
+  | "investigation" // «розслідування»
+  | "merits" // «розгляд по суті»
+  | "satisfaction" // «очікує сатисфакції»
+  | "appeal" // «оскаржується»
+  | "remitted" // «повернуто на новий розгляд»
+  | "enforcement" // «виконання»
+  | "suspended" // «призупинено»
+  | "frozen" // «заморожено»
+  | "upcoming" // «до арбітражу» / «до суду»
+  | "concluded"; // the record states a final disposition
+
+/**
+ * What the court, tribunal or prosecutor actually issued — the second tag
+ * dimension. Absent where the record names no act.
+ */
+export type CaseOutcomeKey =
+  | "judgment" // «рішення винесено»
+  | "award" // «остаточне рішення» (arbitration)
+  | "verdict" // «вирок»
+  | "liability" // «відповідальність встановлена»
+  | "warrant" // «ордер видано»
+  | "order" // «процедурні ордери»
+  | "upheld" // «арбітраж залишено»
+  | "settlement" // «врегульовано»
+  | "rejected"; // «відхилено»
+
+/**
+ * A date whose precision is part of the fact.
+ *
+ * The archive records a bare year for most proceedings and an exact day only
+ * where a document fixes one. Widening a year into `YYYY-01-01` would invent a
+ * date and corrupt any sort built on it, so the two are different shapes and a
+ * consumer has to decide what to do with each.
+ */
+export type CaseDate =
+  | { precision: "day"; iso: string; year: number }
+  | { precision: "year"; year: number };
+
 export type InstitutionCategory =
   | "international"
   | "arbitration"
@@ -62,9 +110,20 @@ export interface RegistryCase {
   type: Localized;
   /** Normalised status for the chip. */
   statusKey: CaseStatusKey;
+  /** Procedural posture. Omitted where the record does not fix one. */
+  stage?: CaseStageKey;
+  /** What the forum issued. Omitted where the record names no act. */
+  outcome?: CaseOutcomeKey;
   /** Full status wording. */
   status: Localized;
+  /** Year the proceeding was commenced (docket year), not the decision year. */
   year: number | null;
+  /**
+   * Date of the operative decision, where the record fixes one on this row.
+   * For the summarised cases the date comes from the summary's `judgment.date`
+   * instead, so it is never transcribed twice; nothing sets this today.
+   */
+  decidedOn?: CaseDate;
   /** Amount at stake in USD, if applicable. */
   amountUsd: number | null;
   /** Short context / docket reference. */

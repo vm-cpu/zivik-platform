@@ -1,24 +1,6 @@
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import {
-  pick,
-  type CaseStatusKey,
-  type Institution,
-  type RegistryCase,
-} from "@/content/types";
-
-const CHIP_CLASS: Record<CaseStatusKey, string> = {
-  decided: "st-decided",
-  progress: "st-progress",
-  warrant: "st-warrant",
-  settled: "st-enforce",
-  enforcement: "st-enforce",
-  frozen: "st-enforce",
-  rejected: "st-progress",
-};
-
-/** Statuses that read as "still moving" get an arrow after the year. */
-const ONGOING: ReadonlySet<CaseStatusKey> = new Set(["progress", "warrant"]);
+import { pick, type Institution, type RegistryCase } from "@/content/types";
 
 /**
  * Ukrainian agreement: 1 справа, 2–4 справи, 5+ справ, with the teens taking
@@ -58,10 +40,11 @@ export default function Registry({
   analysedCases: number;
 }) {
 
-  const caseDate = (c: RegistryCase) => {
-    if (c.year == null) return "—";
-    return ONGOING.has(c.statusKey) ? `${c.year} →` : String(c.year);
-  };
+  /* The year used to trail a "→" whenever the status read as still moving.
+     That arrow was the only place the row said "these proceedings are open",
+     and the stage tag now says it in words — so the arrow is redundant
+     furniture on a year that means "commenced", not "ongoing since". */
+  const caseDate = (c: RegistryCase) => (c.year == null ? "—" : String(c.year));
 
   return (
     <>
@@ -160,8 +143,23 @@ export default function Registry({
                       <span className="at">{c.name}</span>
                       <span className="an">{pick(c.note, locale)}</span>
                     </span>
-                    <span className={`chip ${CHIP_CLASS[c.statusKey]}`}>
-                      {dict.registry.status[c.statusKey]}
+                    <span className="chip">
+                      {c.stage && (
+                        <span className="tag tag-stage">
+                          <span className="sr-only">
+                            {dict.registry.stageName}:{" "}
+                          </span>
+                          {dict.registry.stage[c.stage]}
+                        </span>
+                      )}
+                      {c.outcome && (
+                        <span className="tag tag-outcome">
+                          <span className="sr-only">
+                            {dict.registry.outcomeName}:{" "}
+                          </span>
+                          {dict.registry.outcome[c.outcome]}
+                        </span>
+                      )}
                     </span>
                     <span className="ad">{caseDate(c)}</span>
                   </a>
