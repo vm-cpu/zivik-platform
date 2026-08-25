@@ -1,4 +1,6 @@
-import type { Localized } from "./types";
+import { pick, type Localized } from "./types";
+import type { Locale } from "@/i18n/config";
+import geo from "./europe-map.json";
 
 /**
  * What the events map shows.
@@ -67,8 +69,23 @@ export interface MapCourt {
    * unrepresented without the build saying so.
    */
   institutionIds: string[];
-  /** Outside the projection's frame — named in the legend, not drawn. */
+  /**
+   * Outside the projection's frame. Drawn all the same: docked against the
+   * frame's edge on the bearing of `offAt`, with a tail running off the
+   * picture. The comment here used to claim such a city was "named in the
+   * legend and not drawn" — it was neither. `EventsMap` filtered it out of the
+   * drawing and nothing else rendered it, so the ICAO Council, which decided
+   * the MH17 case the ICJ is now hearing on appeal, appeared nowhere at all.
+   */
   offMap?: boolean;
+  /**
+   * Where the city really projects to, in the same units as
+   * europe-map.json — off the 0…1200 × 0…460 frame, which is the whole point.
+   * Computed with the projection in scripts/europe-map.mjs rather than
+   * guessed; the marker list in that script only carries points that land
+   * inside the frame, so an off-map seat has to say where it is here.
+   */
+  offAt?: { x: number; y: number };
   /** Nudge the label off a collision with a neighbouring city. */
   labelDy?: number;
   city: Localized;
@@ -175,10 +192,14 @@ export const MAP_COURTS: MapCourt[] = [
   {
     key: "montreal",
     institutionIds: ["icao"],
-    // Montreal projects to x = -937 on a frame that runs 0…1200: it is on
-    // another continent, so it is named in the legend and not drawn. The
-    // appeal against its decision went to the ICJ, which is on the map.
+    // Montreal projects to (-937, 407) on a frame that runs 0…1200 × 0…460:
+    // it is on another continent, and widening the projection to reach it
+    // would shrink Europe to nothing. So it is docked against the frame's
+    // western edge, on that bearing, with a tail running off the picture —
+    // the same mechanism any other off-map seat would get. The appeal against
+    // its decision went to the ICJ, which is on the map.
     offMap: true,
+    offAt: { x: -937, y: 407 },
     city: { uk: "Монреаль", en: "Montreal" },
     seats: [
       {
@@ -265,10 +286,17 @@ export const MAP_EVENTS: MapEvent[] = [
       uk: "ЄСПЛ, суд Нідерландів та апеляція на рішення Ради ICAO до Міжнародного суду ООН.",
       en: "The ECtHR, a Dutch court, and an appeal from the ICAO Council to the ICJ.",
     },
-    courts: ["strasbourg", "hague"],
+    // Montreal was missing, and the count already knew it: three decisions,
+    // two of them summarised here, the third the ICAO Council's own — the
+    // registry's icao-16, "Australia and the Netherlands v. Russian
+    // Federation … under Article 84 of the Chicago Convention". The note below
+    // has always named it. The map drew no line to it because the Council sits
+    // off the frame; it is docked at the western edge now, so the chain the
+    // note describes — Council, then appeal to the ICJ — can be seen.
+    courts: ["strasbourg", "hague", "montreal"],
     forums: {
-      uk: "ЄСПЛ (Страсбург) · ICJ і суд Нідерландів (Гаага)",
-      en: "ECtHR (Strasbourg) · ICJ and the Dutch courts (The Hague)",
+      uk: "ЄСПЛ (Страсбург) · ICJ і суд Нідерландів (Гаага) · Рада ICAO (Монреаль)",
+      en: "ECtHR (Strasbourg) · ICJ and the Dutch courts (The Hague) · the ICAO Council (Montreal)",
     },
     count: { uk: "3 рішення", en: "3 decisions" },
     open: true,
@@ -324,3 +352,64 @@ export const MAP_EVENTS: MapEvent[] = [
     count: { uk: "6 ордерів", en: "6 warrants" },
   },
 ];
+
+/**
+ * The short name a city's court wears on the drawing when it lights up.
+ *
+ * The map labelled its cities and nothing else, so "ГААГА" stood for four
+ * institutions and said none of them. Only the abbreviations are used, because
+ * those are what the case citations carry; where a city has none at all — a
+ * national court, an enforcement body — the clause before the em dash in its
+ * own name stands in, which is the shortest true name this file already
+ * records. Nothing here is invented, and a seat that has neither is simply not
+ * badged: the card and the legend still spell every institution out.
+ */
+export function courtBadges(c: MapCourt, locale: Locale): string[] {
+  const abbrs = c.seats.map((s) => s.abbr).filter((a): a is string => !!a);
+  if (abbrs.length) return abbrs;
+  const first = c.seats[0];
+  return first ? [pick(first.name, locale).split(" — ")[0].trim()] : [];
+}
+
+/**
+ * Everything the drawing needs about a court that its card does not.
+ *
+ * Returned as one object so a render site adds a single spread rather than a
+ * line per field — `EventsMap` is a client component and its props are
+ * resolved on the server, so anything the SVG needs has to come through here.
+ */
+export function courtMarks(c: MapCourt, locale: Locale) {
+  return { badges: courtBadges(c, locale), offAt: c.offAt };
+}
+
+/**
+ * Nothing on this map may vanish without the build saying so.
+ *
+ * `map-links.ts` already refuses to build when a linked decision or a seated
+ * institution disagrees with the registry. It could not catch the failure that
+ * actually shipped: Montreal had a court entry, a comment claiming it was
+ * "named in the legend", and no point in europe-map.json — so it rendered
+ * nowhere, and nothing complained. This is the geometry half of that check,
+ * next to the data it guards.
+ */
+{
+  const markers = geo.markers as Record<string, number[]>;
+  const keys = new Set(MAP_COURTS.map((c) => c.key));
+  const wrong: string[] = [];
+  for (const c of MAP_COURTS) {
+    if (c.offMap) {
+      if (!c.offAt) wrong.push(`court "${c.key}" is offMap and has no offAt to dock it by`);
+    } else if (!(c.key in markers)) {
+      wrong.push(`court "${c.key}" has no point in europe-map.json and is not offMap`);
+    }
+  }
+  for (const e of MAP_EVENTS) {
+    if (!(e.key in markers)) wrong.push(`event "${e.key}" has no point in europe-map.json`);
+    for (const k of e.courts) {
+      if (!keys.has(k)) wrong.push(`event "${e.key}" draws a line to unknown court "${k}"`);
+    }
+  }
+  if (wrong.length) {
+    throw new Error(`the map would silently drop something:\n  ${wrong.join("\n  ")}`);
+  }
+}

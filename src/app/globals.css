@@ -243,3 +243,32 @@ textarea:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* ==========================================================================
+   One left edge for the whole site.
+
+   The header, the footer and the content bands each computed their own inset
+   and landed in three different places: measured at 1990px the bands began at
+   405px and the chrome at 56px, a 349px disagreement that ran the length of
+   every page. They share one value now, so a single line runs down the left
+   edge of the site and only the deliberately full-bleed sections — the map
+   drawing, the accordion rows — cross it.
+
+   Below the cap it is a flat gutter; above it, the gutter grows to whatever
+   keeps the content inside the measure. `100%` resolves against .nsv-root,
+   which is full-viewport width, the same basis the bands use.
+   ========================================================================== */
+:root {
+  --measure-page: 1180px;
+}
+.nsv-root {
+  --page-gutter: var(--space-7);
+}
+@media (min-width: 1024px) {
+  .nsv-root {
+    --page-gutter: max(
+      clamp(28px, 5vw, 96px),
+      calc((100% - var(--measure-page)) / 2)
+    );
+  }
+}

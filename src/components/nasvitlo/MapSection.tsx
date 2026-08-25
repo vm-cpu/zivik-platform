@@ -1,7 +1,7 @@
 import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { MAP_EVENTS, MAP_COURTS } from "@/content/map";
+import { MAP_EVENTS, MAP_COURTS, courtMarks } from "@/content/map";
 import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
 import Link from "next/link";
 import geo from "@/content/europe-map.json";
@@ -104,6 +104,7 @@ export default function MapSection({
             seats: c.seats
               .map((s) => (s.abbr ? `${s.abbr} — ${pick(s.name, locale)}` : pick(s.name, locale)))
               .join(" · "),
+            ...courtMarks(c, locale),
           }))}
           labels={{
             alt: dict.mapSection.heading,

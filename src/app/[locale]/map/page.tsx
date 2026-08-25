@@ -11,7 +11,7 @@ import {
 } from "@/lib/seo";
 import { localeOpenGraph, alternateOpenGraphLocales } from "@/i18n/config";
 import { pick } from "@/content/types";
-import { MAP_EVENTS, MAP_COURTS } from "@/content/map";
+import { MAP_EVENTS, MAP_COURTS, courtMarks } from "@/content/map";
 import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
 import geo from "@/content/europe-map.json";
 import EventsMap from "@/components/nasvitlo/EventsMap";
@@ -116,6 +116,7 @@ export default async function MapPage({
             seats: c.seats
                 .map((s) => (s.abbr ? `${s.abbr} — ${pick(s.name, locale)}` : pick(s.name, locale)))
                 .join(" · "),
+            ...courtMarks(c, locale),
             }))}
             labels={{
               alt: dict.mapSection.heading,

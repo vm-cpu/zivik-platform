@@ -76,12 +76,27 @@
   min-height: 460px;
 }
 .mp-stage .emap-svg {
-  /* No aspect ratio here: the frame is whatever the viewport gives it, and
-     `slice` fills that rather than letterboxing the projection into it. */
+  /* No aspect ratio here: the frame is whatever the viewport gives it. The
+     drawing takes that shape rather than being cropped into it — `slice` used
+     to fill the box by cutting whatever did not fit, and on a 1000x900 window
+     what it cut was the west: The Hague, which seats the ICJ, the ICC, the PCA
+     and the MH17 trial court, and Paris, which holds the largest award in the
+     collection, were both outside the frame with no way to reach them. */
   aspect-ratio: auto;
   width: 100%;
   height: 100%;
   border: 0;
+}
+/* The masthead floats over the drawing here, so it says how much of the
+   drawing it has taken and the projection is framed inside what is left. It
+   covered Stockholm at every width between 900 and 1000px — a court that
+   could not be clicked at all — and moving it by a few pixels would only have
+   moved the collision, because the markers travel with the viewport's shape.
+   206px is the panel's own height plus its 18px offset and a little air,
+   measured in both locales; it costs nothing at the shapes this page is read
+   at, where the fit is bound by the width. */
+.mp-stage .emap-figure {
+  --emap-safe-top: 206px;
 }
 
 .mp-mast {
@@ -150,6 +165,11 @@
     max-height: none;
     border-inline: 0;
     backdrop-filter: none;
+  }
+  /* In flow, above the drawing: it takes none of it, so it reserves none of
+     it and the frame falls back to the strip the framing buttons need. */
+  .mp-stage .emap-figure {
+    --emap-safe-top: 60px;
   }
 }
 

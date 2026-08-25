@@ -24,6 +24,46 @@
    the text list below it. */
 .emap-figure {
   position: relative;
+  /* The strips the floating panels have spoken for. EventsMap reads these and
+     frames the projection inside what is left, so a marker never lands under a
+     panel. They are declared here, beside the rules that place the panels,
+     rather than as numbers inside the component.
+
+     Top is the framing strip: 14px of offset, ~34px of buttons, air.
+
+     Right is the info card, and it is a function of the width rather than a
+     number, because the card is a fixed 300px while the drawing is not. The
+     frame's right edge is the projection's right edge; the easternmost marker,
+     MH17, sits at 73.1% of it, so a wide drawing already puts the card over
+     empty east and needs to give up nothing. Solving
+
+       0.731·(W−R) + 11·(W−R)/1200 + 6 ≤ W − 316
+
+     for R — the marker, its hit radius, six pixels of air, and the card's 300px
+     plus its 16px offset — gives R ≥ 436px − 35.2%. Above about 1240px that is
+     negative and the reserve is nothing, which is why the markers keep the
+     26.4px they had; at 1000px it is 84px, and at 641px, the narrowest width
+     where the card still floats, 210px. */
+  --emap-safe-top: 60px;
+  --emap-safe-right: max(0px, 436px - 35.2%);
+  --emap-safe-bottom: 0px;
+  --emap-safe-left: 0px;
+}
+/* Not drawn: it carries the reserved strips as padding, which is what makes
+   them resolve to pixels — a custom property read back through
+   getComputedStyle is still the tokens it was written with, calc and all.
+   Percentages in padding resolve against the containing block's width, which
+   here is the figure. */
+.emap-safe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  padding: var(--emap-safe-top) var(--emap-safe-right) var(--emap-safe-bottom)
+    var(--emap-safe-left);
+  visibility: hidden;
+  pointer-events: none;
 }
 .emap-svg {
   display: block;
@@ -95,7 +135,12 @@
 .emap-court-hit:focus {
   fill: none;
   stroke: var(--brand-gold-pale);
-  stroke-width: 2;
+  /* non-scaling-stroke, so this is 2.5 real pixels rather than 2.5 projection
+     units: the frame now takes the container's shape, so one unit is 1.2px on
+     a wide window and 0.76px on a narrow one, and a focus ring that thins with
+     the drawing is the one indicator that must not. */
+  vector-effect: non-scaling-stroke;
+  stroke-width: 2.5;
 }
 .emap-court-dot {
   fill: none;
@@ -114,7 +159,11 @@
   stroke: var(--brand-gold-pale);
 }
 .emap-court text {
-  font: 600 10px var(--brand-font-body);
+  /* No font-size here: it is set on the element in projection units computed
+     from the rendered scale, the same way the site labels are, so a city name
+     stays 11px whatever the framing and however far the reader has zoomed. */
+  font-family: var(--brand-font-body), sans-serif;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   fill: var(--brand-muted-dark);
@@ -137,10 +186,9 @@
   cursor: pointer;
   transition: r var(--dur) var(--ease);
 }
-.emap-dot[data-on="yes"] {
-  stroke: var(--brand-cream-warm);
-  stroke-width: 2;
-}
+/* `.emap-dot[data-on]` used to live here and matched nothing: the attribute is
+   on .emap-hit, its sibling. The rule it meant to write is with the rest of
+   the selection states below, where it can be read against them. */
 /* The interaction lives on its own circle so the drawn dot keeps the size the
    map wants. At r=6 the dot rendered 14.4px wide on a 1440px screen — under
    the 24px minimum; r=11 renders 26.4px. */
@@ -153,7 +201,8 @@
 .emap-hit:focus {
   fill: none;
   stroke: var(--brand-gold-pale);
-  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  stroke-width: 2.5;
 }
 .emap-dot {
   pointer-events: none;
@@ -340,6 +389,11 @@
     position: static;
     width: auto;
     margin-top: 1px;
+  }
+  /* Nothing floats over the drawing here, so nothing is reserved: the frame
+     gets the whole box back. */
+  .emap-figure {
+    --emap-safe-right: 0px;
   }
 }
 
@@ -567,15 +621,35 @@
     display: none;
   }
 }
+/* On the home band the legend stops being a band of its own. It was a full
+   ruled strip under the drawing with two stacked headed groups, which read as
+   a second section rather than as a caption to the map above it. One line of
+   keys, no box, no rule, no group headings — the six words are enough. */
 .emap-legend[data-variant="band"] {
-  grid-template-columns: 1fr;
-  padding-block: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 26px;
+  padding-block: 13px;
+  background: none;
+  border: 0;
 }
-.emap-legend[data-variant="band"] .emap-leg-group ul {
-  flex-direction: row;
+.emap-legend[data-variant="band"] .emap-leg-group {
+  display: contents;
+}
+.emap-legend[data-variant="band"] .emap-leg-group h3 {
+  display: none;
+}
+.emap-legend[data-variant="band"] .emap-leg-seats {
+  display: none;
+}
+.emap-legend[data-variant="band"] ul {
+  display: flex;
   flex-wrap: wrap;
   gap: 8px 26px;
+  margin: 0;
 }
+
 
 /* ---- light as the map's own language ---- */
 /* The registry already says this: a worked-up case is a gold dot with a glow,
@@ -631,11 +705,138 @@
   stroke-width: 1.6;
 }
 
+/* ---- the light travelling to the court ---- */
+/* The map's whole claim is a relation between two places, and until now a
+   click stated it in a card 800px away while the drawing barely moved. This is
+   the claim drawn: one short bright segment runs the length of the connector,
+   from the place where the harm happened to the court weighing it, and stops.
+
+   It runs once, on --ease rather than --ease-out: measured, --ease-out puts
+   65% of the travel into the first 80ms, which reads as a flash rather than as
+   something crossing a distance. Nothing loops; when it has arrived, the
+   steady lit line above and the lit marker at the far end are what remain.
+
+   pathLength="100" on the element normalises every connector to the same
+   length, so these are constants: the dash is 11% of any line, and the run
+   from 11 to -100 carries it from just before the site to just past the
+   court. */
+.emap-glint {
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 11 100;
+  stroke-dashoffset: 11;
+  opacity: 0;
+  pointer-events: none;
+}
+.emap-glint[data-on="yes"] {
+  animation: emap-glint 680ms var(--ease) both;
+}
+@keyframes emap-glint {
+  0% {
+    stroke-dashoffset: 11;
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.92;
+  }
+  72% {
+    opacity: 0.92;
+  }
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+
+/* ---- the far end ---- */
+/* Both ends of the relation light, not just the one under the cursor. A site
+   selection lights the courts hearing it; a court selection lights the sites
+   it hears. The reader's own pick keeps the brighter halo and the wider rim,
+   so "which one did I click" survives. */
+.emap-site[data-rel="yes"] .emap-halo {
+  opacity: 0.32;
+}
+.emap-site[data-rel="yes"] .emap-dot {
+  filter: drop-shadow(0 0 4px var(--c));
+}
+.emap-site[data-on="yes"] .emap-dot {
+  stroke: var(--brand-cream-warm);
+  stroke-width: 1.8;
+}
+.emap-court[data-rel="yes"] .emap-court-dot {
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2.4;
+  filter: drop-shadow(0 0 4px var(--brand-gold-pale));
+}
+.emap-court[data-rel="yes"] text {
+  fill: var(--brand-gold-pale);
+}
+
+/* The court's name at its city, while that court is the one being looked at.
+   Mono, because these are the abbreviations the citations carry, and the site
+   labels beside them are the serif. The night-coloured stroke is a halo behind
+   the glyphs (paint-order), not an outline: it is what keeps the badge legible
+   where it crosses a lit halo or a country fill. Size and stroke width are set
+   on the element in projection units recomputed from the rendered scale, so
+   the badge stays 10px however far the reader has zoomed. */
+.emap-court-abbr {
+  font-family: var(--brand-font-mono), monospace;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  fill: var(--brand-gold-pale);
+  stroke: var(--brand-night);
+  paint-order: stroke fill;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+/* ---- a seat off the frame ---- */
+/* Montreal projects to x = -937 on a frame that runs 0…1200, and the ICAO
+   Council decided the MH17 case the ICJ is now hearing on appeal. It used to
+   be filtered out of the drawing under a comment claiming the legend named it;
+   the legend did not. It is docked against the frame's western edge now, and
+   the tail and the chevron say the city is not there — they point along the
+   real bearing and run off the picture, which the SVG clips. */
+.emap-court-tail {
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.3;
+  pointer-events: none;
+}
+.emap-court-bearing {
+  fill: none;
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.55;
+  pointer-events: none;
+}
+.emap-court[data-on="yes"] .emap-court-tail,
+.emap-court[data-rel="yes"] .emap-court-tail {
+  stroke: var(--brand-gold-pale);
+  opacity: 0.8;
+}
+.emap-court[data-on="yes"] .emap-court-bearing,
+.emap-court[data-rel="yes"] .emap-court-bearing {
+  stroke: var(--brand-gold-pale);
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .emap-halo,
   .emap-dot,
-  .emap-reach {
+  .emap-reach,
+  .emap-court-dot,
+  .emap-court text {
     transition: none;
+  }
+  /* The highlight still applies — the line brightens, both ends light, the
+     badge appears — it simply arrives instead of travelling. */
+  .emap-glint[data-on="yes"] {
+    animation: none;
   }
 }
 

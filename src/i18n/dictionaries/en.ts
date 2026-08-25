@@ -95,7 +95,7 @@ const en: Dictionary = {
     pending: "Summary in preparation",
     legendWhat: "Places",
     legendHow: "Courts and links",
-    legendLine: "A dashed line runs to the court hearing it",
+    legendLine: "Dashed line — the link between a court and an event",
     sizeKey: "A bigger circle means more proceedings",
     pageTitle: "The map of violations and courts",
     pageLede: "The violations happened in Ukraine; they are being judged thousands of kilometres away. The map holds both ends together: the place, and the court hearing it.",

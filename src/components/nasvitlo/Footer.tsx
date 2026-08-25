@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "./footer.css";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
@@ -38,7 +39,9 @@ const footPending: React.CSSProperties = {
  *  globals.css the day the chrome gutter gets one; until then the two values
  *  are kept identical by hand.
  */
-const chromeInsetLeft = "clamp(28px, 4vw, 56px)";
+/* The site's shared left edge — see the note in globals.css. Header, footer
+   and every content band read this one value. */
+const chromeInsetLeft = "var(--page-gutter)";
 
 /** The legal bar reads at 11px, so its links are footLink at that size —
  *  same colour and same no-underline as every other link in the footer. */

@@ -1,0 +1,26 @@
+/* ==========================================================================
+   Footer — its own stylesheet, like header.css.
+
+   These two rules used to live in [locale]/home.css, which only the home page
+   loads. The footer is rendered by the root layout on every page, so on every
+   page but the home one its four columns never collapsed: measured at 390px,
+   /uk/registry, /uk/about, /uk/team, /uk/privacy and /uk/map all ran 131px
+   past the viewport, and the home page did not. A component that appears
+   everywhere has to carry its own responsive rules.
+
+   The !important flags come with them: the grid is set as an inline style in
+   Footer.tsx, which no plain selector can beat.
+   ========================================================================== */
+
+@media (max-width: 760px) {
+  .nsv-foot {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 26px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .nsv-foot {
+    grid-template-columns: 1fr !important;
+  }
+}

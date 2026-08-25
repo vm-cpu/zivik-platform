@@ -93,7 +93,7 @@ export default function Header({
              without pushing the language switch off the bar. The footer takes
              the same value on its own left edge — one left edge top and
              bottom, which is the point. */
-          padding: "15px 30px 15px clamp(28px, 4vw, 56px)",
+          padding: "15px 30px 15px var(--page-gutter)",
           // Dark by default, because that is what the bar is on every surface
           // but one. The home page sets it transparent so the lamp gradient
           // shows through. It used to default the other way, and any page that

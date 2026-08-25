@@ -40,8 +40,23 @@ export interface MapCourtR {
   key: string;
   city: string;
   seats: string;
-  /** Where it sits on the drawing; absent when the city is off the frame. */
+  /**
+   * The city is off the projection's frame, so it has no point in
+   * europe-map.json and is docked against the frame's edge instead.
+   */
   offMap?: boolean;
+  /**
+   * Where an off-map city really projects to. Outside the frame by
+   * definition — it is the bearing that matters, not the position.
+   */
+  offAt?: { x: number; y: number };
+  /**
+   * Short names — the abbreviations the citations use — shown under the city
+   * once the court lights up. `courtBadges` in src/content/map.ts derives
+   * them; they are required rather than optional so that a render site which
+   * forgets them fails the type-check instead of quietly labelling nothing.
+   */
+  badges: string[];
   labelDy?: number;
   /** What the registry says this court is hearing, and which of it is readable. */
   caseload: { total: number; written: { slug: string; title: string }[] };
@@ -117,6 +132,37 @@ const shortLabel = (when: string) => when.split("·")[0].trim();
  */
 const LABEL_MIN_SCALE = 2.6;
 
+/**
+ * Hit targets, in projection units, once the scale is known.
+ *
+ * 24 CSS pixels is the floor, and the drawing no longer has one fixed scale to
+ * meet it at: the frame follows the container's shape now, so the same r=11
+ * that rendered 26.4px on a 1440px home band renders 16.8px on a 1000×650
+ * window. So the radius is whatever 24px works out to — but no smaller than it
+ * was, and no larger than the closest pair can bear. MH17 and eastern Ukraine
+ * sit 16.9 units apart, and a circle wider than that would swallow its
+ * neighbour's centre: the top one would always win, and a target you cannot
+ * aim at is worse than a small one. The court seats are further apart — The
+ * Hague and Brussels, the tightest, are 32 — so they can grow further.
+ */
+/**
+ * A label's size in projection units, so it renders at `want` CSS pixels.
+ *
+ * The court labels were the one thing on the drawing still measured in
+ * projection units, which meant their size was whatever the framing happened
+ * to give them: 12.6px on the map's own page when it filled the viewport by
+ * cropping, 7.6px once it stopped cropping, and 3.2px on a phone. `cap` is the
+ * floor of that trade — past it the label would be larger than the country it
+ * names, so it stops growing and shrinks with the drawing instead.
+ */
+const labelSize = (want: number, cap: number, px: number) =>
+  Math.min(cap, want * (px || 1));
+
+const hitR = (min: number, max: number, px: number) =>
+  // 12.4 rather than 12: a circle asked for exactly 24px measures 23.9 once
+  // the browser has rounded its box, and 24 is a floor, not a target.
+  Math.min(max, Math.max(min, 12.4 * (px || 1)));
+
 /** Keep a frame inside the projection: never wider than it, never outside it. */
 function clamp(
   v: { x: number; y: number; w: number; h: number },
@@ -131,6 +177,83 @@ function clamp(
     y: Math.min(Math.max(v.y, full.y), full.y + full.h - h),
   };
 }
+
+/** The element, and the strip of it each floating panel has spoken for. */
+interface Box {
+  w: number;
+  h: number;
+  t: number;
+  r: number;
+  b: number;
+  l: number;
+}
+
+/** How far in the reader may zoom. Past this the projection's rounding shows. */
+const MIN_W = 120;
+
+/**
+ * The viewBox that puts `content` where the reader can actually reach it.
+ *
+ * Two bugs came out of one assumption — that the drawing may use every pixel
+ * of its box.
+ *
+ *   The map's own page filled the viewport with `preserveAspectRatio: slice`,
+ *   which crops whatever does not fit the container's shape. On a 1000×900
+ *   window that cropped the west: The Hague — the ICJ, the ICC, the PCA and
+ *   the MH17 trial court — and Paris, which holds the largest award in the
+ *   collection, were both outside the frame with no way to reach them.
+ *
+ *   And the panels that float over the drawing — the masthead, the info card,
+ *   the framing buttons — sat on top of markers. The card covered four of the
+ *   six sites until it moved; the masthead still covered Stockholm, which
+ *   could not be clicked at any width between 900 and 1000px.
+ *
+ * So the frame is computed rather than declared. It always takes the
+ * container's own aspect ratio, which means `meet` and `slice` agree and
+ * nothing is ever cropped; and `content` is fitted into the box *minus* the
+ * strips the panels have claimed, so a marker never lands under one. The
+ * frame still covers the whole element — the projection is drawn far past the
+ * 1200×460 window (the atlas runs -2658…3162 across), so what the panels sit
+ * on is more of Europe, not a black bar.
+ */
+function fitView(
+  content: { x: number; y: number; w: number; h: number },
+  box: Box,
+) {
+  if (!(box.w > 0) || !(box.h > 0)) return content;
+  const uw = Math.max(1, box.w - box.l - box.r);
+  const uh = Math.max(1, box.h - box.t - box.b);
+  const s = Math.min(uw / content.w, uh / content.h);
+  return {
+    w: box.w / s,
+    h: box.h / s,
+    x: content.x + content.w / 2 - (box.l + uw / 2) / s,
+    y: content.y + content.h / 2 - (box.t + uh / 2) / s,
+  };
+}
+
+/**
+ * Where the reader has zoomed to, as a ratio and a centre rather than a rect.
+ *
+ * The frame changes shape whenever the container does, so a stored rect goes
+ * stale: it was fitted to a window that no longer exists. A ratio and a centre
+ * survive the change — the view is derived from whatever the frame is now.
+ */
+type Nav = { z: number; cx: number; cy: number } | null;
+
+function viewFrom(nav: Nav, full: { x: number; y: number; w: number; h: number }) {
+  if (!nav) return full;
+  const w = Math.min(full.w, Math.max(MIN_W, full.w * nav.z));
+  const h = w * (full.h / full.w);
+  return clamp({ w, h, x: nav.cx - w / 2, y: nav.cy - h / 2 }, full);
+}
+
+/** A view rect, back as the ratio and centre the state holds. */
+const navOf = (v: { x: number; y: number; w: number; h: number }, fullW: number): Nav => ({
+  z: v.w / fullW,
+  cx: v.x + v.w / 2,
+  cy: v.y + v.h / 2,
+});
 
 export default function EventsMap({
   geo,
@@ -258,26 +381,40 @@ export default function EventsMap({
    * inside a long document, and a map that swallows the scroll wheel traps the
    * reader mid-page. Buttons, drag and double-click instead.
    */
-  const FULL = useMemo(() => {
+  const BASE = useMemo(() => {
     const [x, y, w, h] = geo.viewBox.split(" ").map(Number);
     return { x, y, w, h };
   }, [geo.viewBox]);
-  const CLOSE = useMemo(() => clamp({ x: 556, y: 234, w: 511, h: 213 }, FULL), [FULL]);
-  const MIN_W = 120; // about x10; past this the projection's own rounding shows
-  const [view, setView] = useState(FULL);
+  /**
+   * Measured, not assumed: the element's size and the strips the floating
+   * panels have claimed, which the stylesheets declare as --emap-safe-* so the
+   * file that knows where a panel sits is the file that reserves room for it.
+   */
+  const [box, setBox] = useState<Box>({ w: 0, h: 0, t: 0, r: 0, b: 0, l: 0 });
+  const FULL = useMemo(() => fitView(BASE, box), [BASE, box]);
+  const CLOSE = useMemo(
+    () => clamp(fitView({ x: 556, y: 234, w: 511, h: 213 }, box), FULL),
+    [box, FULL],
+  );
+  const [nav, setNav] = useState<Nav>(null);
+  const view = useMemo(() => viewFrom(nav, FULL), [nav, FULL]);
   const close = view.w <= CLOSE.w + 1;
 
   /** Scale about a point in viewBox units, holding that point still. */
   const zoomBy = useCallback(
     (factor: number, ax?: number, ay?: number) =>
-      setView((v) => {
+      setNav((prev) => {
+        const v = viewFrom(prev, FULL);
         const w = Math.min(FULL.w, Math.max(MIN_W, v.w * factor));
         const h = w * (FULL.h / FULL.w);
         const px = ax ?? v.x + v.w / 2;
         const py = ay ?? v.y + v.h / 2;
-        return clamp(
-          { w, h, x: px - ((px - v.x) / v.w) * w, y: py - ((py - v.y) / v.h) * h },
-          FULL,
+        return navOf(
+          clamp(
+            { w, h, x: px - ((px - v.x) / v.w) * w, y: py - ((py - v.y) / v.h) * h },
+            FULL,
+          ),
+          FULL.w,
         );
       }),
     [FULL],
@@ -316,6 +453,8 @@ export default function EventsMap({
 
   /** Pointer position in viewBox units — what both drag and double-click need. */
   const svgRef = useRef<SVGSVGElement | null>(null);
+  /** Carries the reserved strips as padding so they resolve to pixels. */
+  const safeRef = useRef<HTMLSpanElement | null>(null);
   const atPointer = useCallback(
     (ev: { clientX: number; clientY: number }) => {
       const el = svgRef.current;
@@ -344,26 +483,73 @@ export default function EventsMap({
    * and zero suppresses the labels, so nothing is drawn at the wrong size
    * during hydration.
    */
-  const [scale, setScale] = useState(0);
   useEffect(() => {
     const el = svgRef.current;
     if (!el) return;
     const measure = () => {
       const r = el.getBoundingClientRect();
       if (!r.width || !r.height) return;
-      // preserveAspectRatio picks one scale for both axes: "meet" fits the
-      // viewBox inside the box, "slice" fills it.
-      const fit = variant === "full" ? Math.max : Math.min;
-      setScale(fit(r.width / view.w, r.height / view.h));
+      // The reserved strips come from the stylesheet, so a panel is declared
+      // once, where it is positioned, instead of being a number in here that
+      // nobody updates when the panel moves. They are read off the padding of
+      // a hidden sentinel rather than from the custom properties directly:
+      // getComputedStyle hands back an unregistered custom property as the
+      // tokens it was written with, so `max(0px, 436px - 35.2%)` would come
+      // back as that string. As padding it comes back resolved, in pixels,
+      // against the figure's own width — which is what lets the reserve be a
+      // function of the width instead of one number for every screen.
+      const cs = getComputedStyle(safeRef.current ?? el);
+      const safe = (side: string) =>
+        Math.max(0, parseFloat(cs.getPropertyValue(`padding-${side}`)) || 0);
+      setBox((prev) => {
+        const next = {
+          w: r.width,
+          h: r.height,
+          t: safe("top"),
+          r: safe("right"),
+          b: safe("bottom"),
+          l: safe("left"),
+        };
+        return prev.w === next.w &&
+          prev.h === next.h &&
+          prev.t === next.t &&
+          prev.r === next.r &&
+          prev.b === next.b &&
+          prev.l === next.l
+          ? prev
+          : next;
+      });
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    return () => ro.disconnect();
-  }, [view, variant]);
+    // A media query can change the reserved strips without changing the
+    // element's size — the masthead stops floating below 900px — and a
+    // ResizeObserver never fires for that.
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
+  /**
+   * One number, because the frame now carries the container's own aspect
+   * ratio: `meet` and `slice` resolve to the same scale, and neither crops.
+   */
+  const scale = box.w > 0 && view.w > 0 ? box.w / view.w : 0;
   /** One CSS pixel, in projection units. */
   const px = scale > 0 ? 1 / scale : 0;
   const labelled = scale >= LABEL_MIN_SCALE;
+  /**
+   * Court badges are sized in real pixels rather than projection units, like
+   * the site labels and unlike the city names beside them, so the answer to a
+   * click is legible at the framing the reader is actually in. They are held
+   * back only where the markers themselves are: below 640px the drawing is not
+   * the interface and nine cities are 3px apart.
+   */
+  const badged = !coarse && scale > 0;
+  /** The city labels, in projection units, aiming at 11 CSS pixels. */
+  const cityF = labelSize(11, 14, px);
 
   const at = (key: string) => geo.markers[key] ?? [0, 0];
   const selected = sel?.kind === "site" ? events.find((e) => e.key === sel.key) ?? null : null;
@@ -376,26 +562,60 @@ export default function EventsMap({
     [selectedCourt, events],
   );
 
-  const isLit = (e: MapEventR) =>
-    sel?.kind === "site" ? sel.key === e.key : sel?.kind === "court" ? e.courts.includes(sel.key) : false;
+  /**
+   * The two ends of one relation.
+   *
+   * A selection used to light its own marker and leave the other end alone: a
+   * court's ring only warmed when the court itself was picked, so clicking a
+   * site told you nothing about who is hearing it — which is the single thing
+   * this drawing exists to say. `on` is what the reader picked; `rel` is the
+   * far end of every line running out of it, and both are lit.
+   */
+  const relCourts = new Set(selected?.courts ?? []);
+  const relSites = new Set(courtSites.map((e) => e.key));
+
+  /**
+   * Where a court sits. Almost always its point in europe-map.json; for a city
+   * off the frame, the nearest place on the frame's edge along the bearing of
+   * the real one, so the line to it runs the right way and stops at the border
+   * instead of disappearing into a corner. The margin is in CSS pixels, so the
+   * marker hugs the edge by the same amount however far the reader has zoomed.
+   */
+  const dockMargin = 26 * (px || 1);
+  const courtXY: Record<string, [number, number]> = {};
+  for (const c of courts) {
+    if (c.offMap && c.offAt) {
+      courtXY[c.key] = [
+        Math.min(Math.max(c.offAt.x, view.x + dockMargin), view.x + view.w - dockMargin),
+        Math.min(Math.max(c.offAt.y, view.y + dockMargin), view.y + view.h - dockMargin),
+      ];
+    } else {
+      const [x, y] = at(c.key);
+      courtXY[c.key] = [x, y];
+    }
+  }
 
   return (
     <div className="emap" data-variant={variant} data-coarse={coarse ? "yes" : "no"}>
       <div className="emap-figure">
+        {/* Not drawn and not reachable: it exists so the stylesheet can state
+            how much of the drawing each floating panel has taken, in any CSS
+            the stylesheet likes, and have it come back as pixels. */}
+        <span className="emap-safe" ref={safeRef} aria-hidden="true" />
         {/* Not a pan-and-zoom rig: two named framings, because there are only
             two questions — how far the courts are, and which site is which. */}
         <div className="emap-zoom" role="group" aria-label={labels.zoomLabel}>
           <button
             type="button"
             aria-pressed={!close}
-            onClick={() => setView(FULL)}
+            onClick={() => setNav(null)}
           >
             {labels.zoomWide}
           </button>
           <button
             type="button"
             aria-pressed={close}
-            onClick={() => setView(CLOSE)}
+            onClick={() => setNav(navOf(CLOSE, FULL.w))}
           >
             {labels.zoomClose}
           </button>
@@ -423,7 +643,10 @@ export default function EventsMap({
           className="emap-svg"
           data-dragging={dragging ? "yes" : undefined}
           viewBox={viewBox}
-          preserveAspectRatio={variant === "full" ? "xMidYMid slice" : "xMidYMid meet"}
+          /* The frame is built to the container's aspect ratio, so meet and
+             slice are the same fit — and meet cannot crop during the one
+             render before the element has been measured. */
+          preserveAspectRatio="xMidYMid meet"
           role="img"
           aria-label={labels.alt}
           onPointerDown={(ev) => {
@@ -440,7 +663,10 @@ export default function EventsMap({
             const dx = ((ev.clientX - d.x) / r.width) * view.w;
             const dy = ((ev.clientY - d.y) / r.height) * view.h;
             drag.current = { ...d, x: ev.clientX, y: ev.clientY };
-            setView((v) => clamp({ ...v, x: v.x - dx, y: v.y - dy }, FULL));
+            setNav((prev) => {
+              const v = viewFrom(prev, FULL);
+              return navOf(clamp({ ...v, x: v.x - dx, y: v.y - dy }, FULL), FULL.w);
+            });
           }}
           onPointerUp={(ev) => {
             if (drag.current?.id === ev.pointerId) {
@@ -498,29 +724,45 @@ export default function EventsMap({
           {events.map((e) =>
             e.courts.map((c) => {
               const [x1, y1] = at(e.key);
-              const [x2, y2] = at(c);
+              const [x2, y2] = courtXY[c] ?? at(c);
+              /* A court selection lights only the lines that end at that
+                 court: picking The Hague must not light Crimea's line to
+                 Strasbourg just because Crimea is also heard in The Hague. */
+              const on =
+                sel?.kind === "site"
+                  ? sel.key === e.key
+                  : sel?.kind === "court"
+                    ? sel.key === c
+                    : false;
               return (
-                <line
-                  key={`${e.key}-${c}`}
-                  className="emap-reach"
-                    /* A court selection lights only the lines that end at
-                       that court: picking The Hague must not light Crimea's
-                       line to Strasbourg just because Crimea is also heard in
-                       The Hague. */
-                    data-on={
-                      (sel?.kind === "site"
-                        ? sel.key === e.key
-                        : sel?.kind === "court"
-                          ? sel.key === c
-                          : false)
-                        ? "yes"
-                        : "no"
-                    }
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                />
+                <g key={`${e.key}-${c}`} data-pair={`${e.key}-${c}`}>
+                  <line
+                    className="emap-reach"
+                    data-on={on ? "yes" : "no"}
+                    x1={x1}
+                    y1={y1}
+                    x2={x2}
+                    y2={y2}
+                  />
+                  {/* The light itself: one short bright segment that runs the
+                      length of the line, from the place where the harm
+                      happened to the court weighing it, and is gone. It is
+                      always drawn from the site outwards, whichever end the
+                      reader picked, because that is the direction the case
+                      travelled. pathLength normalises every line to 100, so a
+                      run to Strasbourg and a run to Montreal take the same
+                      time however far apart they are, and the dash figures
+                      below are constants rather than nine measurements. */}
+                  <line
+                    className="emap-glint"
+                    data-on={on ? "yes" : "no"}
+                    pathLength={100}
+                    x1={x1}
+                    y1={y1}
+                    x2={x2}
+                    y2={y2}
+                  />
+                </g>
               );
             }),
           )}
@@ -532,16 +774,48 @@ export default function EventsMap({
               The map's subject is the relation between a place where harm
               happened and a court weighing it, and only one end of it could be
               interrogated. Selecting a court lights every site it hears. */}
-          {courts.filter((c) => !c.offMap).map((c) => {
-            const [x, y] = at(c.key);
+          {courts.map((c) => {
+            const [x, y] = courtXY[c.key] ?? at(c.key);
             const on = sel?.kind === "court" && sel.key === c.key;
+            const rel = relCourts.has(c.key);
+            /* An off-map city gets a bearing as well as a place: the chevron
+               and the tail point at where it really is and run off the
+               picture, so a marker pinned to the border does not read as a
+               city sitting in the Atlantic. */
+            const off = c.offMap && c.offAt ? c.offAt : null;
+            const bx = off ? off.x - x : 0;
+            const by = off ? off.y - y : 0;
+            const bl = Math.hypot(bx, by) || 1;
             return (
-              <g key={c.key} className="emap-court" data-on={on ? "yes" : "no"}>
+              <g
+                key={c.key}
+                className="emap-court"
+                data-key={c.key}
+                data-on={on ? "yes" : "no"}
+                data-rel={rel ? "yes" : "no"}
+                data-off={off ? "yes" : "no"}
+              >
+                {off && (
+                  <>
+                    <line
+                      className="emap-court-tail"
+                      x1={x}
+                      y1={y}
+                      x2={x + (bx / bl) * view.w}
+                      y2={y + (by / bl) * view.w}
+                    />
+                    <path
+                      className="emap-court-bearing"
+                      d="M0,-4.5 L5,0 L0,4.5"
+                      transform={`translate(${x + (bx / bl) * 13} ${y + (by / bl) * 13}) rotate(${(Math.atan2(by, bx) * 180) / Math.PI})`}
+                    />
+                  </>
+                )}
                 <circle
                   className="emap-court-hit"
                   cx={x}
                   cy={y}
-                  r={13}
+                  r={hitR(13, 19, px)}
                   role={coarse ? undefined : "button"}
                   aria-hidden={coarse || undefined}
                   tabIndex={coarse ? -1 : 0}
@@ -556,9 +830,31 @@ export default function EventsMap({
                   }}
                 />
                 <circle className="emap-court-dot" cx={x} cy={y} r={5} />
-                <text x={x + 12} y={y + 4 + (c.labelDy ?? 0)}>
+                <text
+                  x={x + 12}
+                  y={y + 0.4 * cityF + (c.labelDy ?? 0)}
+                  fontSize={cityF}
+                >
                   {c.city}
                 </text>
+                {/* The court's own name, at its city, once it is lit. Not
+                    always: The Hague alone seats four institutions and the
+                    names run to sixty characters, so every city named at once
+                    would bury the drawing. Only the abbreviations the
+                    citations use, and only while the reader is looking at
+                    that relation. */}
+                {(on || rel) && badged && c.badges.length > 0 && (
+                  <text
+                    className="emap-court-abbr"
+                    aria-hidden="true"
+                    x={x + 12}
+                    y={y + 0.4 * cityF + (c.labelDy ?? 0) + 1.15 * cityF}
+                    fontSize={labelSize(9.5, 12.5, px)}
+                    strokeWidth={2.6 * px}
+                  >
+                    {c.badges.join(" · ")}
+                  </text>
+                )}
               </g>
             );
           })}
@@ -572,7 +868,9 @@ export default function EventsMap({
               <g
                 key={e.key}
                 className="emap-site"
-                data-on={isLit(e) ? "yes" : "no"}
+                data-key={e.key}
+                data-on={sel?.kind === "site" && sel.key === e.key ? "yes" : "no"}
+                data-rel={relSites.has(e.key) ? "yes" : "no"}
                 data-lit={e.cases.length > 0 ? "yes" : "no"}
               >
               <circle className="emap-halo" cx={x} cy={y} r={e.size / 2} />
@@ -584,12 +882,11 @@ export default function EventsMap({
                   className="emap-hit"
                 cx={x}
                 cy={y}
-                  r={11}
+                  r={hitR(11, 16, px)}
                 role={coarse ? undefined : "button"}
                 aria-hidden={coarse || undefined}
                 aria-label={coarse ? undefined : e.title}
                   aria-pressed={sel?.kind === "site" && sel.key === e.key}
-                  data-on={isLit(e) ? "yes" : "no"}
                   tabIndex={coarse ? -1 : 0}
                   onClick={() => toggleSite(e.key)}
                   onKeyDown={(ev) => {

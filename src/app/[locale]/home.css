@@ -185,7 +185,7 @@
   .lmp .rc:hover{border-color:rgba(240,221,168,.5);box-shadow:0 0 34px 4px rgba(255,238,196,.1)}
   .lmp .rc.line{flex-direction:row;align-items:center;gap:16px;padding:14px 18px}
   .page{--red:var(--brand-red);--redd:var(--brand-red-dark);--gold:var(--brand-gold);--paper:var(--brand-paper);--paper2:var(--brand-paper-2);--surface:var(--brand-surface);--ink:var(--brand-ink);--ink2:var(--brand-ink-2);--muted:var(--brand-ink-2);--faint:var(--brand-faint);--rule:var(--brand-rule);
-    --measure:1180px;
+    --measure:var(--measure-page);
     width:100%;max-width:none;margin:0 auto;background:var(--paper);color:var(--ink);font-family:var(--brand-font-body),sans-serif;font-size:14px;line-height:1.55;box-shadow:none}
   .page h1,.page h2,.page h3,.page h4{font-family:var(--brand-font-display),Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   /* Content links only. As a blanket `.page a` this reached into the header
@@ -253,7 +253,6 @@
 }
 
 @media (max-width:760px){
-  .nsv-foot{grid-template-columns:1fr 1fr !important;gap:26px !important}
   .nsv-intro{flex-direction:column !important;align-items:flex-start !important;gap:18px !important}
   .lmp .wm{font-size:clamp(46px,15vw,88px) !important}
   .nsv-hero{padding:158px 18px 0 !important}
@@ -280,10 +279,6 @@
 @media (max-width:760px){
   .nsv-sechead{flex-wrap:wrap;gap:14px !important}
   .nsv-sechead > a{flex:none}
-}
-
-@media (max-width:480px){
-  .nsv-foot{grid-template-columns:1fr !important}
 }
 
 /* fluid side padding that grows on wider screens (28 → 96px). The map margin
@@ -371,17 +366,23 @@
    on a 390px screen would cover most of the map it is introducing. */
 .page .nsv-mapband > .nsv-sechead{
   flex-direction:column;align-items:flex-start;gap:10px;
-  padding:22px max(clamp(28px,5vw,96px), calc((100% - var(--measure)) / 2)) 18px;
+  padding:22px var(--page-gutter) 18px;
 }
 
-/* At desktop widths it becomes the same panel the map's own page uses — dark,
-   ruled, blurred, sitting over the drawing rather than stacked above it. The
-   user asked for this heading to match that one. */
-@media (min-width:900px){
+/* At wide widths it becomes the same panel the map's own page uses — dark,
+   ruled, blurred, sitting over the drawing rather than stacked above it.
+
+   1100px, not 900. The panel is a constant 229px tall, and the band is only
+   417px tall at 1000px and 375px at 901px — so below about 1100 it stops
+   floating over open sea and starts covering markers: Hamburg at 1000px, and
+   The Hague, Hamburg, Vilnius, Helsinki and Stockholm at 901px. Measured, with
+   every one of the 15 markers reachable again once the heading returns to the
+   flow. Above 1100 the panel costs nothing. */
+@media (min-width:1100px){
   .page .nsv-mapband{position:relative}
   .page .nsv-mapband > .nsv-sechead{
     position:absolute;z-index:4;top:18px;
-    left:max(clamp(28px,5vw,96px), calc((100% - var(--measure)) / 2));
+    left:var(--page-gutter);
     width:min(440px, calc(100% - 36px));
     padding:16px 20px 18px;
     background:color-mix(in srgb, var(--brand-night) 88%, transparent);
