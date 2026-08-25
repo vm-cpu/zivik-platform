@@ -14,7 +14,7 @@ import { SUMMARIES } from "./summaries";
  * forms at all — the only personal data it can receive is an email address
  * someone chooses to send us, so the policy says that and nothing more.
  *
- * Two clauses the source lacked are added here because this archive needs
+ * Two clauses the source lacked are added here because this library needs
  * them: an accuracy / "not legal advice" clause (a summary is not the
  * decision), and an intellectual-property clause that separates the court
  * acts we merely link to — which are not ours — from the summaries,
@@ -39,7 +39,7 @@ import { SUMMARIES } from "./summaries";
 export const legalEmail = "nasvitlo@ucu.edu.ua";
 
 /**
- * How much of the archive is written, counted rather than typed.
+ * How much of the library is written, counted rather than typed.
  *
  * These two numbers were hardcoded in the prose ("39 проваджень, з яких
  * опрацьовано 8"). That is a bad thing to hardcode in a document that carries
@@ -60,7 +60,7 @@ export const legalPhone = "+38 (032) 240-99-40";
  *
  * NOT used in the prose: both documents refer to the site by name («насвітло»
  * / the Site) precisely because the final domain is unsettled — today the
- * archive answers on a Vercel preview host. This constant exists only so
+ * library answers on a Vercel preview host. This constant exists only so
  * there is one place to correct if a clause ever has to name the host.
  *
  * MUST BE CONFIRMED BEFORE LAUNCH — and if it changes, the revision date of
@@ -131,8 +131,8 @@ export const privacy: LegalDocument = {
   slug: "privacy",
   title: { uk: "Політика конфіденційності", en: "Privacy policy" },
   lede: {
-    uk: "Читати архів можна, не залишаючи про себе жодних даних. Персональні дані потрапляють до нас лише тоді, коли ви самі нам пишете.",
-    en: "You can read the archive without leaving any data about yourself. Personal data reaches us only when you write to us yourself.",
+    uk: "Користуватися бібліотекою можна, не залишаючи про себе жодних даних. Персональні дані потрапляють до нас лише тоді, коли ви самі нам пишете.",
+    en: "You can read the library without leaving any data about yourself. Personal data reaches us only when you write to us yourself.",
   },
   sections: [
     {
@@ -142,15 +142,15 @@ export const privacy: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Ця Політика конфіденційності (далі — Політика) пояснює, які персональні дані збирає та обробляє Факультет права Українського католицького університету (далі — Факультет, ми) через вебсайт архіву «насвітло» (далі — Сайт), з якою метою та на яких підставах.",
-            en: "This Privacy Policy (the Policy) explains what personal data the Faculty of Law of the Ukrainian Catholic University (the Faculty, we) collects and processes through the website of the насвітло archive (the Site), for what purposes and on what grounds.",
+            uk: "Ця Політика конфіденційності (далі — Політика) пояснює, які персональні дані збирає та обробляє Факультет права Українського католицького університету (далі — Факультет, ми) через вебсайт бібліотеки «насвітло» (далі — Сайт), з якою метою та на яких підставах.",
+            en: "This Privacy Policy (the Policy) explains what personal data the Faculty of Law of the Ukrainian Catholic University (the Faculty, we) collects and processes through the website of the насвітло library (the Site), for what purposes and on what grounds.",
           },
         },
         {
           kind: "p",
           text: {
-            uk: "Володільцем персональних даних є Український католицький університет, Факультет права, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна. Архів веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
-            en: "The controller of personal data is the Ukrainian Catholic University, Faculty of Law, 17 Svientsitskoho St., Lviv, 79011, Ukraine. The archive is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
+            uk: "Володільцем персональних даних є Український католицький університет, Факультет права, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна. Бібліотеку веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
+            en: "The controller of personal data is the Ukrainian Catholic University, Faculty of Law, 17 Svientsitskoho St., Lviv, 79011, Ukraine. The library is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
           },
         },
         {
@@ -169,19 +169,19 @@ export const privacy: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "На Сайті немає ані реєстрації, ані особистого кабінету, ані будь-яких форм: більшість читачів користується архівом, не надаючи про себе нічого. Ми можемо обробляти лише дві категорії даних.",
-            en: "The Site has no registration, no user account and no forms of any kind: most readers use the archive without providing anything about themselves. There are only two categories of data we may process.",
+            uk: "На Сайті немає ані реєстрації, ані особистого кабінету, ані будь-яких форм: більшість читачів користується бібліотекою, не надаючи про себе нічого. Ми можемо обробляти лише дві категорії даних.",
+            en: "The Site has no registration, no user account and no forms of any kind: most readers use the library without providing anything about themselves. There are only two categories of data we may process.",
           },
         },
         {
           kind: "ul",
           items: {
             uk: [
-              "Електронна адреса та зміст листа — якщо ви пишете нам або просите надсилати вам щомісячний лист архіву. Підписка сьогодні оформлена як звичайний лист: посилання «Підписатися» відкриває ваш поштовий застосунок, тож ваша адреса надходить до нас у складі листа, який надсилаєте ви самі, разом із тим, що додає до нього ваш поштовий клієнт (ім'я відправника, дата, службові заголовки). Жодної форми, яка передавала б дані на Сайт, не існує.",
+              "Електронна адреса та зміст листа — якщо ви пишете нам або просите надсилати вам щомісячний лист бібліотеки. Підписка сьогодні оформлена як звичайний лист: посилання «Підписатися» відкриває ваш поштовий застосунок, тож ваша адреса надходить до нас у складі листа, який надсилаєте ви самі, разом із тим, що додає до нього ваш поштовий клієнт (ім'я відправника, дата, службові заголовки). Жодної форми, яка передавала б дані на Сайт, не існує.",
               "Технічні дані про відвідування — IP-адреса, тип пристрою та браузера, запитані сторінки, час звернення. Їх у службових журналах фіксує постачальник хостингу, як це робить кожен вебсервер; ці записи потрібні для роботи та безпеки Сайту, ми не пов'язуємо їх з особою і не використовуємо для спостереження за читачами.",
             ],
             en: [
-              "Your email address and the content of your message — if you write to us, or ask to receive the archive’s monthly letter. The subscription is currently an ordinary email: the “Subscribe” link opens your mail application, so your address reaches us inside a message you send yourself, together with whatever your mail client adds to it (sender name, date, technical headers). There is no form on the Site that transmits data to us.",
+              "Your email address and the content of your message — if you write to us, or ask to receive the library’s monthly letter. The subscription is currently an ordinary email: the “Subscribe” link opens your mail application, so your address reaches us inside a message you send yourself, together with whatever your mail client adds to it (sender name, date, technical headers). There is no form on the Site that transmits data to us.",
               "Ordinary technical data about your visit — IP address, device and browser type, pages requested, time of the request. These are recorded in server logs by the hosting provider, as every web server does; the records are needed to keep the Site running and secure, we do not link them to a person and we do not use them to watch readers.",
             ],
           },
@@ -207,13 +207,13 @@ export const privacy: LegalDocument = {
           items: {
             uk: [
               "Відповісти на ваше звернення — обробка потрібна, щоб розглянути лист, який ви надіслали з власної ініціативи, і відповісти на нього.",
-              "Надсилати щомісячний лист архіву — виключно на підставі вашої згоди, яку ви даєте, попросивши про підписку, і можете відкликати будь-коли.",
-              "Забезпечувати роботу, доступність і безпеку Сайту — на підставі законного інтересу Факультету підтримувати публічний архів у робочому стані.",
+              "Надсилати щомісячний лист бібліотеки — виключно на підставі вашої згоди, яку ви даєте, попросивши про підписку, і можете відкликати будь-коли.",
+              "Забезпечувати роботу, доступність і безпеку Сайту — на підставі законного інтересу Факультету підтримувати публічну бібліотеку в робочому стані.",
             ],
             en: [
               "To answer your message — processing is needed to consider and reply to correspondence you sent on your own initiative.",
-              "To send the archive’s monthly letter — solely on the basis of your consent, given when you ask to be subscribed and withdrawable at any time.",
-              "To keep the Site working, available and secure — on the basis of the Faculty’s legitimate interest in maintaining a public archive in working order.",
+              "To send the library’s monthly letter — solely on the basis of your consent, given when you ask to be subscribed and withdrawable at any time.",
+              "To keep the Site working, available and secure — on the basis of the Faculty’s legitimate interest in maintaining a public library in working order.",
             ],
           },
         },
@@ -337,8 +337,8 @@ export const privacy: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Архів читають і в Європейському Союзі: якщо до обробки ваших даних застосовний Загальний регламент ЄС про захист даних (GDPR), ми розглянемо ваш запит у тих межах, у яких регламент застосовний.",
-            en: "The archive is read in the European Union too: where the EU General Data Protection Regulation (GDPR) applies to the processing of your data, we will deal with your request to the extent that it applies.",
+            uk: "Бібліотекою користуються і в Європейському Союзі: якщо до обробки ваших даних застосовний Загальний регламент ЄС про захист даних (GDPR), ми розглянемо ваш запит у тих межах, у яких регламент застосовний.",
+            en: "The library is read in the European Union too: where the EU General Data Protection Regulation (GDPR) applies to the processing of your data, we will deal with your request to the extent that it applies.",
           },
         },
       ],
@@ -415,8 +415,8 @@ export const terms: LegalDocument = {
   slug: "terms",
   title: { uk: "Умови користування", en: "Terms of use" },
   lede: {
-    uk: "Архів відкритий і безкоштовний. Головне, про що просимо пам'ятати: конспект — це не рішення, і ніщо тут не є юридичною консультацією.",
-    en: "The archive is open and free to use. The main things to keep in mind: a summary is not the decision, and nothing here is legal advice.",
+    uk: "Бібліотека відкрита і безкоштовна. Головне, про що просимо пам'ятати: конспект — це не рішення, і ніщо тут не є юридичною консультацією.",
+    en: "The library is open and free to use. The main things to keep in mind: a summary is not the decision, and nothing here is legal advice.",
   },
   sections: [
     {
@@ -426,8 +426,8 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Ці Умови користування (далі — Умови) регулюють доступ до вебсайту архіву «насвітло» (далі — Сайт) і користування ним. Сайт веде Дослідницький центр імені Луї Б. Зона Факультету права Українського католицького університету, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна.",
-            en: "These Terms of use (the Terms) govern access to and use of the website of the насвітло archive (the Site). The Site is run by the Louis B. Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, 17 Svientsitskoho St., Lviv, 79011, Ukraine.",
+            uk: "Ці Умови користування (далі — Умови) регулюють доступ до вебсайту бібліотеки «насвітло» (далі — Сайт) і користування ним. Сайт веде Дослідницький центр імені Луї Б. Зона Факультету права Українського католицького університету, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна.",
+            en: "These Terms of use (the Terms) govern access to and use of the website of the насвітло library (the Site). The Site is run by the Louis B. Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, 17 Svientsitskoho St., Lviv, 79011, Ukraine.",
           },
         },
         {
@@ -446,15 +446,15 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Сайт — це відкритий архів проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: реєстр справ, конспекти рішень, хронології, карта подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
-            en: "The Site is an open archive of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a case registry, decision summaries, chronologies, an events map and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
+            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: реєстр справ, конспекти рішень, хронології, карта подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
+            en: "The Site is an open library of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a case registry, decision summaries, chronologies, an events map and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
           },
         },
         {
           kind: "p",
           text: {
-            uk: `Архів наповнюється: у реєстрі ${registryTotal} проваджень, з яких опрацьовано ${registrySummarised}. Відсутність справи, документа чи конспекту не означає, що провадження не існує, що воно завершилося або що воно неважливе.`,
-            en: `The archive is still being filled: the registry holds ${registryTotal} proceedings, of which ${registrySummarised} have been summarised. The absence of a case, a document or a summary does not mean that the proceeding does not exist, that it has ended, or that it is unimportant.`,
+            uk: `Бібліотека наповнюється: у реєстрі ${registryTotal} проваджень, з яких опрацьовано ${registrySummarised}. Відсутність справи, документа чи конспекту не означає, що провадження не існує, що воно завершилося або що воно неважливе.`,
+            en: `The library is still being filled: the registry holds ${registryTotal} proceedings, of which ${registrySummarised} have been summarised. The absence of a case, a document or a summary does not mean that the proceeding does not exist, that it has ended, or that it is unimportant.`,
           },
           link: { label: { uk: "Переглянути реєстр", en: "Open the registry" }, to: "registry" },
         },
@@ -563,8 +563,8 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Це відкритий архів, і читати його машиною ми не забороняємо. Якщо ви плануєте систематично завантажувати матеріали для дослідження — напишіть нам, і ми домовимося, як зробити це без шкоди для Сайту.",
-            en: "This is an open archive and we do not forbid reading it by machine. If you plan to download material systematically for research, write to us and we will agree a way to do it that does not hurt the Site.",
+            uk: "Це відкрита бібліотека, і читати її машиною ми не забороняємо. Якщо ви плануєте систематично завантажувати матеріали для дослідження — напишіть нам, і ми домовимося, як зробити це без шкоди для Сайту.",
+            en: "This is an open library and we do not forbid reading it by machine. If you plan to download material systematically for research, write to us and we will agree a way to do it that does not hurt the Site.",
           },
         },
       ],
@@ -629,8 +629,8 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Ми можемо змінювати ці Умови — зокрема в міру того, як архів наповнюється. Чинна редакція завжди опублікована на цій сторінці із зазначенням дати оновлення.",
-            en: "We may amend these Terms — in particular as the archive grows. The current revision is always published on this page with the date of the update.",
+            uk: "Ми можемо змінювати ці Умови — зокрема в міру того, як бібліотека наповнюється. Чинна редакція завжди опублікована на цій сторінці із зазначенням дати оновлення.",
+            en: "We may amend these Terms — in particular as the library grows. The current revision is always published on this page with the date of the update.",
           },
         },
       ],

@@ -26,8 +26,8 @@ import "@/app/[locale]/newsletter.css";
  */
 const SUPPORT = {
   heading: {
-    uk: "Архів тримається на людях",
-    en: "The archive is kept by people",
+    uk: "Бібліотека тримається на людях",
+    en: "The library is kept by people",
   },
   text: {
     uk: "Кожен конспект — це тижні читання рішень, звірки документів і перекладу. Підтримка дає змогу опрацювати наступне.",
@@ -56,8 +56,11 @@ export default function Newsletter({
         <div className="nsv-news-block">
           <h2 className="nsv-news-heading">{SUPPORT.heading[locale]}</h2>
           <p className="nsv-news-text">{SUPPORT.text[locale]}</p>
-          <a className="nsv-news-cta" href={mailto(dict.newsletter.support)}>
-            <span className="nsv-news-lit" aria-hidden="true" />
+          {/* The site's own button, not a second one invented beside it.
+              `.btn .btn-o` is what the intro and the registry already use on
+              paper; a bespoke pill here read as a different control from the
+              ones above it on the same page. */}
+          <a className="btn btn-o" href={mailto(dict.newsletter.support)}>
             {dict.newsletter.support}
           </a>
         </div>

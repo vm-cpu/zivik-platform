@@ -1,36 +1,28 @@
 import type { Partner } from "./types";
 
 /**
- * Real partner organisations only (no placeholder boxes). Add entries — with a
- * `logo` under `/public/logos/partners/` once files arrive — as partnerships
- * are confirmed.
+ * Partners — organisations the project works *with*.
+ *
+ * The university, its Faculty of Law and the Louis B. Sohn Research Centre
+ * were listed here and have been removed: they run the archive, they are not
+ * partners of it. They are named where they belong — in the footer, on the
+ * about page and as the controller in the legal pages — and listing them
+ * alongside a genuine external partner both padded the row and misdescribed
+ * everyone in it.
+ *
+ * Add entries — with a `logo` under `/public/logos/partners/`, supplied by the
+ * partner — as partnerships are confirmed.
  */
 export const partners: Partner[] = [
   {
-    id: "uku",
-    name: { uk: "Український католицький університет", en: "Ukrainian Catholic University" },
-    url: "https://ucu.edu.ua",
-  },
-  {
-    id: "law-faculty",
-    name: { uk: "Факультет права УКУ", en: "UCU Faculty of Law" },
-    url: "https://law.ucu.edu.ua",
-  },
-  {
-    id: "louis-sohn",
-    name: { uk: "Дослідницький центр імені Луї Б. Зона", en: "Louis B. Sohn Research Centre" },
-  },
-  {
-    /* The logo file is not in the repo yet. ifa supplies its own mark and a
-       prescribed wording for the funding line — both must come from them
-       rather than be redrawn or paraphrased here. Drop the file at
-       /public/logos/partners/ifa.svg and add `logo` below; until then the row
-       renders the name, which is what the other three entries do. */
+    /* Mark supplied by ifa. Their prescribed wording for the funding line
+       still has to come from them — it is not something to paraphrase. */
     id: "ifa",
     name: {
       uk: "Інститут зовнішніх зв’язків (ifa)",
       en: "Institut für Auslandsbeziehungen (ifa)",
     },
     url: "https://www.ifa.de",
+    logo: "/logos/partners/ifa.png",
   },
 ];

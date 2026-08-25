@@ -80,7 +80,12 @@
   margin: 0 0 var(--space-3);
 }
 .legal-lede {
-  font-size: var(--t-lead);
+  /* Was --t-lead (20px). A standfirst that size on a document whose body is
+     16px turns three lines of preamble into the loudest thing on the page,
+     above the title's own subject matter. Body size, set apart by colour and
+     measure instead. */
+  font-size: var(--t-body);
+  max-width: 52ch;
   line-height: 1.5;
   color: var(--ink2);
   margin: 0 0 var(--space-5);
@@ -113,12 +118,31 @@
   color: var(--ink);
   margin: 0 0 var(--space-4);
 }
+/* The clause number hangs in the margin, the way a numbered legal document
+   sets one, rather than sitting inline as a small raised mono glyph beside a
+   22.5px serif heading — two faces, two sizes and two baselines competing
+   inside one line. Hanging it leaves the headings flush with the prose below
+   them and gives the numbers a column of their own to be scanned down. */
+.legal-sec h2 {
+  position: relative;
+}
 .legal-sec h2::before {
-  content: counter(legal-sec) ".";
-  margin-right: var(--space-2);
-  font: 500 var(--t-cap) var(--brand-font-mono);
-  vertical-align: 0.14em;
+  content: counter(legal-sec);
+  position: absolute;
+  right: calc(100% + var(--space-3));
+  top: 0.06em;
+  font: 400 var(--t-h3) var(--brand-font-display), Georgia, serif;
+  font-variant-numeric: tabular-nums;
   color: var(--gold);
+}
+/* Below the point where the margin runs out there is nowhere to hang it, so
+   it returns inline — still the display face, still on the heading's own
+   baseline. */
+@media (max-width: 900px) {
+  .legal-sec h2::before {
+    position: static;
+    margin-right: var(--space-3);
+  }
 }
 
 .legal-sec p {

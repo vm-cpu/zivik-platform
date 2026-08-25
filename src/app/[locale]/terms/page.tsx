@@ -23,7 +23,7 @@ import "../legal.css";
 const T = {
   back: { uk: "← На головну", en: "← Home" },
   revised: { uk: "Редакція від", en: "Revised" },
-  also: { uk: "Див. також", en: "See also" },
+  also: { uk: "Які персональні дані ми отримуємо й що з ними робимо — про це", en: "What personal data reaches us and what we do with it —" },
   privacy: { uk: "Політика конфіденційності", en: "Privacy policy" },
 } as const;
 
@@ -129,7 +129,7 @@ export default async function TermsPage({
         </div>
 
         <p className="legal-foot">
-          {pick(T.also, locale)}:{" "}
+          {pick(T.also, locale)}{" "}
           <Link href={`/${locale}/privacy`}>{pick(T.privacy, locale)}</Link>
         </p>
       </main>

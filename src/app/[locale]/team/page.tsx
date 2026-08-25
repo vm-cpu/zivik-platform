@@ -91,28 +91,42 @@ export default async function TeamPage({
           <p className="team-lede">{L(T.lede)}</p>
         </header>
 
-        <ul className="team-list">
-          {team.map((m) => (
-            <li key={m.name.en}>
-              {/* The portrait is optional and the row is built to survive its
-                  absence: no placeholder silhouette, no reserved empty square.
-                  Photographs arrive one at a time, and a half-filled grid of
-                  grey avatars reads worse than a clean list of names. */}
-              {m.photo && (
-                <Image
-                  className="team-photo"
-                  src={m.photo}
-                  alt=""
-                  width={112}
-                  height={112}
-                />
-              )}
-              <span className="team-who">
-                <span className="team-name">{L(m.name)}</span>
+        {/* A grid, not a line-per-person list: the portraits are half-body
+            photographs, so they need room to be legible. Everyone gets the
+            same square cell whether or not their photograph has arrived. */}
+        <ul className="team-grid">
+          {team.map((m) => {
+            const name = L(m.name);
+            return (
+              <li key={m.name.en}>
+                <div className="team-frame">
+                  {m.photo ? (
+                    <Image
+                      className="team-photo"
+                      src={m.photo}
+                      alt=""
+                      width={900}
+                      height={900}
+                      sizes="(max-width: 560px) 90vw, (max-width: 900px) 44vw, 280px"
+                    />
+                  ) : (
+                    /* Not a silhouette. Initials in the display face keep the
+                       grid even while the remaining photographs arrive, and
+                       they say who is missing rather than drawing a stranger. */
+                    <span className="team-initials" aria-hidden="true">
+                      {name
+                        .split(/\s+/)
+                        .slice(0, 2)
+                        .map((w) => w[0])
+                        .join("")}
+                    </span>
+                  )}
+                </div>
+                <span className="team-name">{name}</span>
                 <span className="team-role">{L(m.role)}</span>
-              </span>
-            </li>
-          ))}
+              </li>
+            );
+          })}
         </ul>
 
         <p className="team-contact">

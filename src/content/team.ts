@@ -26,14 +26,17 @@ export const team: TeamMember[] = [
   {
     name: { uk: "Ольга Денькович", en: "Olha Denkovych" },
     role: { uk: "Координаторка проєкту", en: "Project Coordinator" },
+    photo: "/team/denkovych.jpg",
   },
   {
     name: { uk: "Тарас Лешкович", en: "Taras Leshkovych" },
     role: { uk: "Старший дослідник", en: "Component Lead" },
+    photo: "/team/leshkovych.jpg",
   },
   {
     name: { uk: "Марта Яциніна", en: "Marta Yatsynina" },
     role: { uk: "Старша дослідниця", en: "Component Lead" },
+    photo: "/team/yatsynina.jpg",
   },
   {
     name: { uk: "Марія Грицишин", en: "Mariia Hrytsyshyn" },
@@ -46,9 +49,11 @@ export const team: TeamMember[] = [
   {
     name: { uk: "Віола Мартинюк", en: "Viola Martyniuk" },
     role: { uk: "Технічна експертка", en: "Technical Expert" },
+    photo: "/team/martyniuk.jpg",
   },
   {
     name: { uk: "Андрій Удовиченко", en: "Andrii Udovychenko" },
     role: { uk: "Технічний експерт", en: "Technical Expert" },
+    photo: "/team/udovychenko.jpg",
   },
 ];

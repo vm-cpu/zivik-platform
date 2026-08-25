@@ -26,7 +26,7 @@ import "../about.css";
  * The home page keeps a two-paragraph summary of the same material; this is
  * the full account, and the only place on the site that describes the
  * editorial method. Every statement here is traceable to something in the
- * repository: the collection text comes from `content/about.ts` verbatim, the
+ * repository: the library text comes from `content/about.ts` verbatim, the
  * figures are counted off `content/cases.ts`, and the method restates how
  * `content/summaries/` is actually built. Nothing about the Centre's history
  * or funding is asserted, because nothing in the record supports it.
@@ -35,12 +35,12 @@ const T = {
   back: { uk: "На головну", en: "Home" },
   title: { uk: "Про нас", en: "About us" },
   lede: {
-    uk: "«Насвітло» — колекція рішень міжнародних судів і трибуналів, що постали з українських ініціатив притягнути Росію до відповідальності. Проєкт веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
-    en: "nasvitlo is a collection of decisions of the international courts and tribunals arising from Ukraine's initiatives to hold Russia accountable. It is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
+    uk: "«Насвітло» — бібліотека рішень міжнародних судів і трибуналів, що постали з українських ініціатив притягнути Росію до відповідальності. Проєкт веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
+    en: "nasvitlo is a library of decisions of the international courts and tribunals arising from Ukraine's initiatives to hold Russia accountable. It is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
   },
   metaDesc: {
-    uk: "Хто веде архів «насвітло», як готуємо конспекти рішень і в якому стані колекція.",
-    en: "Who runs the nasvitlo archive, how a decision summary is prepared, and how far the collection has got.",
+    uk: "Хто веде бібліотеку «насвітло», як готуємо конспекти рішень і в якому стані бібліотека.",
+    en: "Who runs the nasvitlo library, how a decision summary is prepared, and how far the library has got.",
   },
 
   notH: { uk: "Чого тут немає", en: "What you will not find here" },
@@ -48,12 +48,12 @@ const T = {
     uk: [
       "Конспект не заміняє рішення. Першоджерелом лишається текст суду, і посилання на нього стоїть на сторінці кожної справи, де документ у відкритому доступі.",
       "Ми не додаємо оцінок, яких немає в самому рішенні. Хронологія, таблиця висновків і цифри на сторінці справи переказують те, що вже сказано в конспекті; якщо якесь значення взяте поза ним — із протоколу чи повідомлення суду, — це зафіксовано в джерелі сторінки.",
-      "Це довідковий архів, а не юридична консультація.",
+      "Це довідкова бібліотека, а не юридична консультація.",
     ],
     en: [
       "A summary does not replace the decision. The court's own text remains the source, and every case page carries a link to it where the document is public.",
       "We add no assessment that is not in the decision itself. The timeline, the table of findings and the figures on a case page restate what the summary already says; where a value comes from outside it — from the court's record or its press release — that is recorded in the page's source.",
-      "This is a reference archive, not legal advice.",
+      "This is a reference library, not legal advice.",
     ],
   },
 
@@ -62,11 +62,11 @@ const T = {
     uk: "Проєкт веде Дослідницький центр імені Луї Б. Зона Факультету права Українського католицького університету, Львів.",
     en: "The project is run by the Louis B. Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, Lviv.",
   },
-  whoLink: { uk: "Хто працює над колекцією", en: "Who works on the collection" },
+  whoLink: { uk: "Хто працює над бібліотекоюю", en: "Who works on the library" },
 
   methodH: {
-    uk: "Як рішення потрапляє в архів",
-    en: "How a decision gets into the archive",
+    uk: "Як рішення потрапляє в бібліотеку",
+    en: "How a decision gets into the library",
   },
   methodLede: {
     uk: "Порядок той самий для кожної справи. Ми описуємо його тут, щоб читач міг перевірити нас за першоджерелом, а не повірити на слово.",
@@ -92,7 +92,7 @@ const T = {
       },
       {
         h: "Перевірка за джерелом",
-        p: "На сторінці справи лишаються офіційна назва, дата й посилання на документ суду. Архів існує для того, щоб на нього посилалися, тож перевірка має бути в один клік.",
+        p: "На сторінці справи лишаються офіційна назва, дата й посилання на документ суду. Бібліотека існує для того, щоб на неї посилалися, тож перевірка має бути в один клік.",
       },
     ],
     en: [
@@ -114,12 +114,12 @@ const T = {
       },
       {
         h: "Checking against the source",
-        p: "Each case page keeps the official case name, the date and the link to the court's document. The archive exists to be cited, so checking it should take one click.",
+        p: "Each case page keeps the official case name, the date and the link to the court's document. The library exists to be cited, so checking it should take one click.",
       },
     ],
   },
 
-  stateH: { uk: "Стан архіву", en: "Where the archive stands" },
+  stateH: { uk: "Стан бібліотеки", en: "Where the library stands" },
   state: {
     uk: "Сайт працює в тестовому режимі. Реєстр повний, конспекти — ні: справи опрацьовуємо поступово, і кожна, до якої ще не дійшли руки, позначена в реєстрі та на мапі як така.",
     en: "The site is in test mode. The registry is complete; the summaries are not. Cases are written up one at a time, and every case we have not reached yet is marked as such in the registry and on the map.",
@@ -224,7 +224,7 @@ export default async function AboutPage({
           <p className="abt-lede">{L(T.lede)}</p>
         </header>
 
-        {/* The collection's own description, from the content layer, so the
+        {/* The library's own description, from the content layer, so the
             home page section and this page cannot drift apart. */}
         <section className="abt-sec">
           <h2>{L(about.title)}</h2>

@@ -74,45 +74,52 @@
 
 /* One row per person: the name carries the weight, the role sits opposite it
    on the same baseline. A card grid would imply photographs we do not have. */
-.team-list {
+/* ---- the grid ----------------------------------------------------------- */
+
+.team-grid {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: clamp(24px, 3vw, 40px) clamp(20px, 2.4vw, 32px);
 }
-.team-list li {
+.team-grid li {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 20px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--rule);
+  flex-direction: column;
+  gap: 4px;
 }
-/* The name and role keep the baseline-aligned, spread-apart arrangement the
-   row had before portraits existed; the portrait sits outside that pair so a
-   row with a photograph and a row without still read as the same list. */
-.team-who {
-  flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 4px 24px;
-  min-width: 0;
+/* The frame owns the square so a cell keeps its shape whether it holds a
+   photograph or a set of initials. */
+.team-frame {
+  position: relative;
+  aspect-ratio: 1;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: var(--paper2);
+  /* A hairline rather than a hard edge: these portraits were shot against a
+     pale window, and without it the image bleeds into the page. */
+  box-shadow: inset 0 0 0 1px var(--rule);
 }
 .team-photo {
-  flex: none;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  /* A hairline rather than a hard edge: portraits vary in background and a
-     bare circle on paper can read as a hole. */
-  box-shadow: 0 0 0 1px var(--rule);
+  display: block;
+}
+.team-initials {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: clamp(34px, 5vw, 46px);
+  color: var(--faint);
 }
 .team-name {
   font-family: var(--brand-font-display), Georgia, serif;
   font-size: 19px;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--ink);
 }
 .team-role {
@@ -131,9 +138,11 @@
   text-transform: uppercase;
 }
 
+/* Two up on a phone rather than one: at 220px minimum the auto-fill grid
+   would drop to a single very tall column and the page would become a scroll
+   of full-width faces. */
 @media (max-width: 520px) {
-  .team-list li {
-    flex-direction: column;
-    gap: 4px;
+  .team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

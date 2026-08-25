@@ -9,8 +9,8 @@ const en: Dictionary = {
   meta: {
     title: "nasvitlo — international court decisions on the aggression against Ukraine",
     description:
-      "An open archive of international court decisions on Russia's aggression against Ukraine: ECtHR, the International Court of Justice, the ICC, maritime arbitration. A project of the UCU Faculty of Law.",
-    ogAlt: "nasvitlo — archive of international court decisions",
+      "An open library of international court decisions on Russia's aggression against Ukraine: the ECtHR, ICJ, ICC and arbitral tribunals. UCU Faculty of Law.",
+    ogAlt: "nasvitlo — library of international court decisions",
   },
   nav: {
     skip: "Skip to content",
@@ -38,7 +38,7 @@ const en: Dictionary = {
     lampLabel: "Turn the lamp on or off",
   },
   intro: {
-    text: "An online collection of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, arising from Ukraine's initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
+    text: "An online library of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, arising from Ukraine's initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
     about: "About the Library",
   },
   about: {
@@ -73,9 +73,9 @@ const en: Dictionary = {
   mapSection: {
     close: "Close card",
     label: "Map",
-    heading: "Where it happened — and where it is being judged",
+    heading: "Alleged violations and the courts assessing them",
     description:
-      "Shelling, deportations, seizures of assets — all of it happened in Ukraine. It is being heard in The Hague, Strasbourg, Hamburg. The dashed lines join the two ends.",
+      "Alleged violations — shelling, deportations and seizures — linked by a dotted line to the court where their legal assessment is made.",
     fullMap: "Full map →",
     legendHr: "Human rights",
     legendWar: "War crimes",
@@ -103,7 +103,7 @@ const en: Dictionary = {
   },
   registry: {
     label: "Library of decisions",
-    heading: "An online collection of international case-law",
+    heading: "An online library of international case-law",
     description:
       "Here the light is already on. The registry grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
     fullRegistry: "Full registry",
@@ -111,13 +111,30 @@ const en: Dictionary = {
     caseWord: { one: "case", few: "cases", many: "cases" },
     legendLit: "Ready to read: summary, timeline, documents",
     legendQueued: "Only the case record so far — the summary is being written",
-    status: {
-      decided: "Decided",
-      progress: "Pending",
-      warrant: "Warrant",
-      settled: "Settled",
+    stageName: "Stage",
+    outcomeName: "Outcome",
+    stage: {
+      preliminary: "Preliminary stage",
+      investigation: "Investigation",
+      merits: "Merits pending",
+      satisfaction: "Awaiting satisfaction",
+      appeal: "Under appeal",
+      remitted: "Remitted",
       enforcement: "Enforcement",
+      suspended: "Suspended",
       frozen: "Frozen",
+      upcoming: "Yet to be heard",
+      concluded: "Concluded",
+    },
+    outcome: {
+      judgment: "Judgment",
+      award: "Final award",
+      verdict: "Verdict",
+      liability: "Liability established",
+      warrant: "Warrant",
+      order: "Procedural orders",
+      upheld: "Arbitration upheld",
+      settlement: "Settled",
       rejected: "Rejected",
     },
   },
@@ -125,7 +142,7 @@ const en: Dictionary = {
     heading: "Each month, a few more decisions brought to light",
     text: "A letter on the decisions we summarised over the month: what the court found, and what it will support.",
     subscribe: "Get the letter",
-    support: "Support the collection",
+    support: "Support the library",
     assurance: "Summaries only. Unsubscribe from any letter.",
   },
   partners: {
@@ -136,10 +153,10 @@ const en: Dictionary = {
   },
   footer: {
     tagline:
-      "An open archive of international court decisions on Russia's aggression against Ukraine.",
+      "A library of international court decisions on Russia's aggression against Ukraine. We shed light on what they say.",
     org: "The Louis B. Sohn Research Centre",
     faculty: "UCU Faculty of Law",
-    colArchive: "Archive",
+    colArchive: "Library",
     colCenter: "Centre",
     colContacts: "Contacts",
     linkRegistry: "Case registry",
