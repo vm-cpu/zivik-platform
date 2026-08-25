@@ -110,6 +110,7 @@ export default async function MapPage({
               legendWhat: dict.mapSection.legendWhat,
               legendHow: dict.mapSection.legendHow,
               legendLine: dict.mapSection.legendLine,
+            courtHears: dict.mapSection.courtHears,
               categories: {
                 hr: dict.mapSection.legendHr,
                 war: dict.mapSection.legendWar,

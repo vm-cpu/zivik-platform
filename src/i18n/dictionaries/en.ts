@@ -67,6 +67,7 @@ const en: Dictionary = {
     legendAsset: "Seizure of assets",
     legendCourt: "The court hearing it",
     courtsSeat: "The courts sit in",
+    courtHears: "Hears",
     reads: "Decisions written up",
     pending: "Summary in preparation",
     legendWhat: "What is marked",

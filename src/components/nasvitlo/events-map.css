@@ -57,16 +57,45 @@
   opacity: 0.85;
 }
 
-.emap-court circle {
+/* Courts answer to the pointer and the keyboard now. The ring is 5px, which
+   is far under the 24px target size, so an invisible hit circle carries the
+   interaction and the visible ring stays the size the drawing wants. */
+.emap-court-hit {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+}
+.emap-court-hit:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 2px;
+}
+.emap-court-dot {
   fill: none;
   stroke: var(--brand-cream);
   stroke-width: 1.4;
+  pointer-events: none;
+  transition:
+    stroke var(--dur) var(--ease),
+    stroke-width var(--dur) var(--ease);
+}
+.emap-court[data-on="yes"] .emap-court-dot {
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2.4;
+}
+.emap-court:hover .emap-court-dot {
+  stroke: var(--brand-gold-pale);
 }
 .emap-court text {
   font: 600 10px var(--brand-font-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   fill: var(--brand-muted-dark);
+  pointer-events: none;
+  transition: fill var(--dur) var(--ease);
+}
+.emap-court[data-on="yes"] text,
+.emap-court:hover text {
+  fill: var(--brand-gold-pale);
 }
 
 .emap-site[data-cat="hr"] {
@@ -429,4 +458,95 @@
   border-top: 1px solid var(--brand-night-rule);
   font: 500 var(--t-cap) var(--brand-font-body);
   color: var(--brand-faint-dark);
+}
+
+/* ---- filtered out ---- */
+/* Dimmed, not removed: a marker that vanishes takes its position with it, and
+   the reader loses the shape of the map they were just looking at. */
+.emap-site[data-off] {
+  opacity: 0.12;
+  pointer-events: none;
+}
+.emap-reach[data-off] {
+  opacity: 0.05;
+}
+
+/* ---- legend keys as filters ---- */
+/* Reset the button chrome only. `font: inherit` and `color: inherit` were
+   here too, and being later in the file they beat .emap-key on the same
+   element — the keys came out at the browser's 16px in the inherited colour,
+   which on this ground measured 1.01:1. */
+.emap-key-btn {
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+.emap-key-btn[aria-pressed="false"] {
+  color: var(--brand-faint-dark);
+}
+.emap-key-btn[aria-pressed="false"] i {
+  background: none;
+  box-shadow: inset 0 0 0 1.5px var(--brand-faint-dark);
+}
+.emap-key-btn:hover {
+  color: var(--brand-cream);
+}
+.emap-key-btn:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 3px;
+}
+
+/* ---- court card ---- */
+.emap-card-court {
+  border-left-color: var(--brand-gold-pale);
+}
+/* The site cards take their over-title colour from --c, set by data-cat. A
+   court has no category, so the variable was empty and the line fell back to
+   the inherited colour — invisible. */
+.emap-card-court .emap-when {
+  color: var(--brand-gold-pale);
+}
+.emap-seats-full {
+  margin: 0 0 4px;
+  font: 400 11px/1.5 var(--brand-font-mono);
+  color: var(--brand-muted-dark);
+}
+/* Same row as a decision link, but it moves the selection rather than
+   navigating — so it is a button, and says so by not being underlined. */
+.emap-court-site {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--brand-night);
+  border: 0;
+  border-left: 2px solid var(--c);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.emap-court-site[data-cat="hr"] {
+  --c: var(--hr);
+}
+.emap-court-site[data-cat="war"] {
+  --c: var(--war);
+}
+.emap-court-site[data-cat="asset"] {
+  --c: var(--asset);
+}
+.emap-court-site:hover,
+.emap-court-site:focus-visible {
+  background: var(--brand-night-2);
+}
+.emap-court-site .emap-read-t {
+  color: var(--brand-cream);
+}
+
+/* The live region wraps both cards and must not become a layout box of its
+   own — the cards are absolutely placed against .emap-figure. */
+.emap-live {
+  display: contents;
 }

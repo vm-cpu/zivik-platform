@@ -67,6 +67,7 @@ const uk = {
     legendAsset: "Захоплення активів",
     legendCourt: "Суд, який розглядає",
     courtsSeat: "Суди засідають у",
+    courtHears: "Розглядає справи",
     reads: "Опрацьовані рішення",
     pending: "Конспект у підготовці",
     legendWhat: "Що позначено",

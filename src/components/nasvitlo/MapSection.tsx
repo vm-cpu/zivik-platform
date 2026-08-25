@@ -100,6 +100,7 @@ export default function MapSection({
             legendWhat: dict.mapSection.legendWhat,
             legendHow: dict.mapSection.legendHow,
             legendLine: dict.mapSection.legendLine,
+            courtHears: dict.mapSection.courtHears,
             categories: {
               hr: dict.mapSection.legendHr,
               war: dict.mapSection.legendWar,
