@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { EventCategory } from "@/content/map";
 import "./events-map.css";
@@ -48,6 +48,21 @@ export interface MapGeometry {
   markers: Record<string, number[]>;
 }
 
+/** Keep a frame inside the projection: never wider than it, never outside it. */
+function clamp(
+  v: { x: number; y: number; w: number; h: number },
+  full: { x: number; y: number; w: number; h: number },
+) {
+  const w = Math.min(v.w, full.w);
+  const h = Math.min(v.h, full.h);
+  return {
+    w,
+    h,
+    x: Math.min(Math.max(v.x, full.x), full.x + full.w - w),
+    y: Math.min(Math.max(v.y, full.y), full.y + full.h - h),
+  };
+}
+
 export default function EventsMap({
   geo,
   events,
@@ -63,7 +78,9 @@ export default function EventsMap({
     alt: string;
     close: string;
     courtsSeat: string;
-    categories: { hr: string; war: string; asset: string };
+    /** The two states a site can be in: written up, or not yet. */
+    legendLit: string;
+    legendUnlit: string;
     court: string;
     /** Heading above the decision links inside a card. */
     reads: string;
@@ -82,6 +99,8 @@ export default function EventsMap({
     zoomLabel: string;
     zoomWide: string;
     zoomClose: string;
+    zoomIn: string;
+    zoomOut: string;
   };
   locale: string;
   /**
@@ -102,10 +121,6 @@ export default function EventsMap({
       const first = events.find((e) => e.open)?.key;
       return first ? { kind: "site", key: first } : null;
     },
-  );
-  /** Categories currently shown. Empty set is not reachable — see toggle(). */
-  const [shown, setShown] = useState<Set<EventCategory>>(
-    () => new Set(["hr", "war", "asset"] as const),
   );
 
   /**
@@ -145,16 +160,6 @@ export default function EventsMap({
   const toggleCourt = (key: string) =>
     select(sel?.kind === "court" && sel.key === key ? null : { kind: "court", key });
 
-  /** Last category standing stays on: an empty map is a dead end, not a filter. */
-  const toggleCategory = (cat: EventCategory) =>
-    setShown((prev) => {
-      const next = new Set(prev);
-      if (next.has(cat)) {
-        if (next.size === 1) return prev;
-        next.delete(cat);
-      } else next.add(cat);
-      return next;
-    });
 
   /**
    * Two framings of the same projection.
@@ -166,7 +171,40 @@ export default function EventsMap({
    * the sites at x2.35, which opens that gap to 47px. Nothing is reprojected;
    * only the viewBox changes.
    */
-  const [close, setClose] = useState(false);
+  /**
+   * The frame, as numbers rather than two strings. Two named framings were not
+   * enough: between them the sites still crowd each other, and a reader who
+   * wants one corner of the Donbas had no way to get there. Zoom and pan are
+   * arithmetic on the viewBox — no library, no reprojection.
+   *
+   * The wheel is deliberately not bound. On the home page the map is a band
+   * inside a long document, and a map that swallows the scroll wheel traps the
+   * reader mid-page. Buttons, drag and double-click instead.
+   */
+  const FULL = useMemo(() => {
+    const [x, y, w, h] = geo.viewBox.split(" ").map(Number);
+    return { x, y, w, h };
+  }, [geo.viewBox]);
+  const CLOSE = useMemo(() => clamp({ x: 556, y: 234, w: 511, h: 213 }, FULL), [FULL]);
+  const MIN_W = 120; // about x10; past this the projection's own rounding shows
+  const [view, setView] = useState(FULL);
+  const close = view.w <= CLOSE.w + 1;
+
+  /** Scale about a point in viewBox units, holding that point still. */
+  const zoomBy = useCallback(
+    (factor: number, ax?: number, ay?: number) =>
+      setView((v) => {
+        const w = Math.min(FULL.w, Math.max(MIN_W, v.w * factor));
+        const h = w * (FULL.h / FULL.w);
+        const px = ax ?? v.x + v.w / 2;
+        const py = ay ?? v.y + v.h / 2;
+        return clamp(
+          { w, h, x: px - ((px - v.x) / v.w) * w, y: py - ((py - v.y) / v.h) * h },
+          FULL,
+        );
+      }),
+    [FULL],
+  );
   /**
    * Below 640px the markers are decoration, not controls — see the note in
    * events-map.css. pointer-events alone would leave them in the tab order and
@@ -188,7 +226,25 @@ export default function EventsMap({
       window.removeEventListener("resize", sync);
     };
   }, []);
-  const viewBox = close ? "556 254 511 196" : geo.viewBox;
+  const viewBox = `${view.x} ${view.y} ${view.w} ${view.h}`;
+
+  /** Pointer position in viewBox units — what both drag and double-click need. */
+  const svgRef = useRef<SVGSVGElement | null>(null);
+  const atPointer = useCallback(
+    (ev: { clientX: number; clientY: number }) => {
+      const el = svgRef.current;
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return {
+        x: view.x + ((ev.clientX - r.left) / r.width) * view.w,
+        y: view.y + ((ev.clientY - r.top) / r.height) * view.h,
+      };
+    },
+    [view],
+  );
+
+  const drag = useRef<{ id: number; x: number; y: number } | null>(null);
+  const [dragging, setDragging] = useState(false);
 
   const at = (key: string) => geo.markers[key] ?? [0, 0];
   const selected = sel?.kind === "site" ? events.find((e) => e.key === sel.key) ?? null : null;
@@ -203,10 +259,9 @@ export default function EventsMap({
 
   const isLit = (e: MapEventR) =>
     sel?.kind === "site" ? sel.key === e.key : sel?.kind === "court" ? e.courts.includes(sel.key) : false;
-  const isHidden = (e: MapEventR) => !shown.has(e.category);
 
   return (
-    <div className="emap">
+    <div className="emap" data-variant={variant}>
       <div className="emap-figure">
         {/* Not a pan-and-zoom rig: two named framings, because there are only
             two questions — how far the courts are, and which site is which. */}
@@ -214,24 +269,84 @@ export default function EventsMap({
           <button
             type="button"
             aria-pressed={!close}
-            onClick={() => setClose(false)}
+            onClick={() => setView(FULL)}
           >
             {labels.zoomWide}
           </button>
           <button
             type="button"
             aria-pressed={close}
-            onClick={() => setClose(true)}
+            onClick={() => setView(CLOSE)}
           >
             {labels.zoomClose}
           </button>
+          <button
+            type="button"
+            className="emap-zoom-step"
+            aria-label={labels.zoomOut}
+            onClick={() => zoomBy(1 / 0.7)}
+            disabled={view.w >= FULL.w}
+          >
+            −
+          </button>
+          <button
+            type="button"
+            className="emap-zoom-step"
+            aria-label={labels.zoomIn}
+            onClick={() => zoomBy(0.7)}
+            disabled={view.w <= MIN_W}
+          >
+            +
+          </button>
         </div>
       <svg
-        className="emap-svg"
+          ref={svgRef}
+          className="emap-svg"
+          data-dragging={dragging ? "yes" : undefined}
           viewBox={viewBox}
-        preserveAspectRatio="xMidYMid meet"
-        role="img"
-        aria-label={labels.alt}
+          preserveAspectRatio={variant === "full" ? "xMidYMid slice" : "xMidYMid meet"}
+          role="img"
+          aria-label={labels.alt}
+          onPointerDown={(ev) => {
+            // Only the ground drags; the markers are buttons.
+            if ((ev.target as Element).closest("[role='button']")) return;
+            drag.current = { id: ev.pointerId, x: ev.clientX, y: ev.clientY };
+            ev.currentTarget.setPointerCapture(ev.pointerId);
+            setDragging(true);
+          }}
+          onPointerMove={(ev) => {
+            const d = drag.current;
+            if (!d || d.id !== ev.pointerId) return;
+            const r = ev.currentTarget.getBoundingClientRect();
+            const dx = ((ev.clientX - d.x) / r.width) * view.w;
+            const dy = ((ev.clientY - d.y) / r.height) * view.h;
+            drag.current = { ...d, x: ev.clientX, y: ev.clientY };
+            setView((v) => clamp({ ...v, x: v.x - dx, y: v.y - dy }, FULL));
+          }}
+          onPointerUp={(ev) => {
+            if (drag.current?.id === ev.pointerId) {
+              drag.current = null;
+              setDragging(false);
+            }
+          }}
+          onPointerCancel={() => {
+            drag.current = null;
+            setDragging(false);
+          }}
+          onWheel={
+            variant === "full"
+              ? (ev) => {
+                  // Only where the map owns the viewport. In the home band this
+                  // would swallow the page scroll and trap the reader mid-page.
+                  const p = atPointer(ev);
+                  zoomBy(ev.deltaY > 0 ? 1.12 : 1 / 1.12, p?.x, p?.y);
+                }
+              : undefined
+          }
+          onDoubleClick={(ev) => {
+            const p = atPointer(ev);
+            zoomBy(0.6, p?.x, p?.y);
+          }}
       >
         {/* Base geography is decoration: the information is in the markers,
             which are listed as real text below for anyone not reading pixels. */}
@@ -256,7 +371,6 @@ export default function EventsMap({
                        line to Strasbourg just because Crimea is also heard in
                        The Hague. */
                     data-on={
-                      !isHidden(e) &&
                       (sel?.kind === "site"
                         ? sel.key === e.key
                         : sel?.kind === "court"
@@ -265,7 +379,6 @@ export default function EventsMap({
                         ? "yes"
                         : "no"
                     }
-                    data-off={isHidden(e) ? "" : undefined}
                   x1={x1}
                   y1={y1}
                   x2={x2}
@@ -321,9 +434,7 @@ export default function EventsMap({
               <g
                 key={e.key}
                 className="emap-site"
-                data-cat={e.category}
                 data-on={isLit(e) ? "yes" : "no"}
-                data-off={isHidden(e) ? "" : undefined}
                 data-lit={e.cases.length > 0 ? "yes" : "no"}
               >
               <circle className="emap-halo" cx={x} cy={y} r={e.size / 2} />
@@ -341,12 +452,12 @@ export default function EventsMap({
                 aria-label={coarse ? undefined : e.title}
                   aria-pressed={sel?.kind === "site" && sel.key === e.key}
                   data-on={isLit(e) ? "yes" : "no"}
-                  tabIndex={coarse || isHidden(e) ? -1 : 0}
-                  onClick={() => !isHidden(e) && toggleSite(e.key)}
+                  tabIndex={coarse ? -1 : 0}
+                  onClick={() => toggleSite(e.key)}
                   onKeyDown={(ev) => {
                     if (ev.key === "Enter" || ev.key === " ") {
                       ev.preventDefault();
-                      if (!isHidden(e)) toggleSite(e.key);
+                      toggleSite(e.key);
                     }
                   }}
               />
@@ -421,8 +532,7 @@ export default function EventsMap({
                   <button
                     type="button"
                     className="emap-court-site"
-                    data-cat={e.category}
-                    onClick={() => toggleSite(e.key)}
+                        onClick={() => toggleSite(e.key)}
                   >
                     <span className="emap-read-t">{e.title}</span>
                     <span className="emap-read-f">{e.count}</span>
@@ -443,7 +553,7 @@ export default function EventsMap({
       */}
       <ul className="emap-list" data-variant={variant}>
         {events.map((e) => (
-          <li key={e.key} data-cat={e.category}>
+          <li key={e.key}>
             <button
               type="button"
               onClick={() => toggleSite(e.key)}
@@ -464,70 +574,70 @@ export default function EventsMap({
         ))}
       </ul>
 
-      {/* The legend named the four colours and stopped there, which left the
-          three things a reader has to decode unexplained: the dashed line, the
-          size of a dot, and what a city on the rim is. The court seats were a
-          `title` tooltip — invisible on a touch screen and to a screen reader
-          — so they are written out. */}
+      {/* A legend that draws the marks instead of naming them. Every glyph
+          below is the same shape the map uses, at the same size, so the reader
+          matches by sight rather than by reading a colour word. */}
       <div className="emap-legend" data-variant={variant}>
         <div className="emap-leg-group">
           <h3>{labels.legendWhat}</h3>
           <ul>
-            {/* The legend named the categories; now it filters by them. The
-                last one standing cannot be switched off — an empty map is a
-                dead end, not a filter. */}
-            {(["hr", "war", "asset"] as const).map((cat) => (
-              <li key={cat}>
-                <button
-                  type="button"
-                  className="emap-key emap-key-btn"
-                  data-cat={cat}
-                  aria-pressed={shown.has(cat)}
-                  onClick={() => toggleCategory(cat)}
-                >
-                  <i />
-                  {labels.categories[cat]}
-                </button>
-              </li>
-            ))}
+            <li className="emap-key">
+              <svg viewBox="0 0 22 22" aria-hidden="true">
+                <circle className="k-halo" cx="11" cy="11" r="9" />
+                <circle className="k-lit" cx="11" cy="11" r="5" />
+              </svg>
+              {labels.legendLit}
+            </li>
+            <li className="emap-key">
+              <svg viewBox="0 0 22 22" aria-hidden="true">
+                <circle className="k-unlit" cx="11" cy="11" r="5" />
+              </svg>
+              {labels.legendUnlit}
+            </li>
+            <li className="emap-key">
+              <svg viewBox="0 0 22 22" aria-hidden="true">
+                <circle className="k-court" cx="11" cy="11" r="5.5" />
+              </svg>
+              {labels.court}
+            </li>
           </ul>
         </div>
 
         {variant === "full" && (
-        <div className="emap-leg-group">
-          <h3>{labels.legendHow}</h3>
-          <ul>
-            <li className="emap-key emap-key-court">
-              <i />
-              {labels.court}
-            </li>
-            <li className="emap-key emap-key-line">
-              <i />
-              {labels.legendLine}
-            </li>
-            <li className="emap-key emap-key-size">
-              <i>
-                <b />
-                <b />
-              </i>
-              {labels.sizeKey}
-            </li>
-          </ul>
-        </div>
+          <div className="emap-leg-group">
+            <h3>{labels.legendHow}</h3>
+            <ul>
+              <li className="emap-key">
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <line className="k-line" x1="1" y1="11" x2="21" y2="11" />
+                </svg>
+                {labels.legendLine}
+              </li>
+              <li className="emap-key">
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <circle className="k-lit" cx="5" cy="11" r="3" />
+                  <circle className="k-lit" cx="15" cy="11" r="6" />
+                </svg>
+                {labels.sizeKey}
+              </li>
+            </ul>
+          </div>
         )}
 
         {variant === "full" && (
-        <div className="emap-leg-group emap-leg-seats">
-          <h3>{labels.courtsSeat}</h3>
-          <ul>
-            {courts.map((c) => (
-              <li key={c.key}>
-                <span className="emap-seat-city">{c.city}</span>
-                <span className="emap-seat-list">{c.seats}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+          <div className="emap-leg-group emap-leg-seats">
+            <h3>{labels.courtsSeat}</h3>
+            <ul>
+              {courts.map((c) => (
+                <li key={c.key}>
+                  <button type="button" onClick={() => toggleCourt(c.key)}>
+                    <span className="emap-seat-city">{c.city}</span>
+                    <span className="emap-seat-list">{c.seats}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
       </div>
     </div>

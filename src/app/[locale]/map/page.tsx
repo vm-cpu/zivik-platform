@@ -68,15 +68,17 @@ export default async function MapPage({
       <Header locale={locale} dict={dict} />
 
       <main id="content">
-        <header className="mp-mast">
-          <Link href={`/${locale}`} className="mp-back">
-            ← {dict.mapSection.backHome}
-          </Link>
-          <h1>{dict.mapSection.pageTitle}</h1>
-          <p className="mp-lede">{dict.mapSection.pageLede}</p>
-        </header>
-
+        {/* The masthead rides over the drawing rather than pushing it down the
+            page: this is the map's own page, so the map gets the viewport. */}
         <div className="mp-stage">
+          <header className="mp-mast">
+            <Link href={`/${locale}`} className="mp-back">
+              ← {dict.mapSection.backHome}
+            </Link>
+            <h1>{dict.mapSection.pageTitle}</h1>
+            <p className="mp-lede">{dict.mapSection.pageLede}</p>
+          </header>
+
           <EventsMap
             geo={geo}
             events={MAP_EVENTS.map((e) => ({
@@ -104,6 +106,8 @@ export default async function MapPage({
               close: dict.mapSection.close,
               courtsSeat: dict.mapSection.courtsSeat,
               court: dict.mapSection.legendCourt,
+              legendLit: dict.mapSection.legendLit,
+              legendUnlit: dict.mapSection.legendUnlit,
               reads: dict.mapSection.reads,
               pending: dict.mapSection.pending,
               sizeKey: dict.mapSection.sizeKey,
@@ -114,11 +118,8 @@ export default async function MapPage({
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,
-              categories: {
-                hr: dict.mapSection.legendHr,
-                war: dict.mapSection.legendWar,
-                asset: dict.mapSection.legendAsset,
-              },
+            zoomIn: dict.mapSection.zoomIn,
+            zoomOut: dict.mapSection.zoomOut,
             }}
             locale={locale}
           />

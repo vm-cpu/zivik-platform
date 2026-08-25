@@ -57,23 +57,105 @@
   color: var(--ink2);
 }
 
-/* The point of the page: the drawing gets the width the home band cannot
-   spare, and a taller frame with it. */
+/* ---- the map takes the screen ---- */
+/* This is the map's own page, so the drawing gets the viewport rather than a
+   slot inside a scrolling document. The masthead rides over it as a panel: the
+   title still has to be readable and the page still has to say what it is, but
+   neither needs 200px of paper above the thing they describe. */
 .mp-stage {
-  padding-bottom: 64px;
+  position: relative;
+}
+/* The drawing takes the screen; the legend and the text list follow beneath
+   it, a scroll away. 71px is the measured height of the top bar at desktop
+   widths — below 900px the stage stops being viewport-height anyway, so the
+   constant never has to hold at the sizes where the bar wraps. */
+.mp-stage .emap-figure {
+  height: calc(100dvh - 71px);
+  min-height: 460px;
 }
 .mp-stage .emap-svg {
-  aspect-ratio: 1200 / 660;
-  border-left: 0;
-  border-right: 0;
+  /* No aspect ratio here: the frame is whatever the viewport gives it, and
+     `slice` fills that rather than letterboxing the projection into it. */
+  aspect-ratio: auto;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
-.mp-stage .emap-list,
+
+.mp-mast {
+  position: absolute;
+  z-index: 4;
+  top: 18px;
+  left: 18px;
+  max-width: min(420px, calc(100% - 36px));
+  padding: 16px 20px 18px;
+  background: color-mix(in srgb, var(--brand-night) 88%, transparent);
+  border: 1px solid var(--brand-night-rule);
+  backdrop-filter: blur(6px);
+}
+.mp-mast h1 {
+  margin: 0 0 8px;
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: 25px;
+  line-height: 1.12;
+  color: var(--brand-cream);
+}
+.mp-lede {
+  margin: 0;
+  font-size: var(--t-cap);
+  line-height: 1.55;
+  color: var(--brand-muted-dark);
+}
+.mappage .mp-mast a {
+  color: var(--brand-gold-pale);
+}
+.mappage .mp-mast a:hover {
+  color: var(--brand-cream);
+}
+.mp-back {
+  display: inline-block;
+  margin-bottom: 12px;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/* The legend sits on the map, bottom left, and folds away. */
 .mp-stage .emap-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 22px 34px;
+  padding: 22px max(clamp(20px, 4vw, 56px), 0px);
+  border-inline: 0;
+}
+
+/* The text list is the map as prose: it lives below the fold, where it does
+   not compete with the drawing but is still on the page for a reader who
+   wants the whole thing at once, and for anyone not using a pointer. */
+.mp-list {
+  padding: 0 0 64px;
+  background: var(--brand-night);
+}
+.mp-list .emap-list {
   border-left: 0;
   border-right: 0;
 }
-@media (max-width: 640px) {
+
+@media (max-width: 900px) {
+  .mp-stage {
+    height: auto;
+    min-height: 0;
+  }
   .mp-stage .emap-svg {
     aspect-ratio: 4 / 3;
+  }
+  .mp-mast {
+    position: static;
+    width: auto;
+    max-width: none;
+    max-height: none;
+    border-inline: 0;
+    backdrop-filter: none;
   }
 }

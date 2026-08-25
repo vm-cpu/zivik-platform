@@ -9,9 +9,12 @@
 
 .emap {
   padding-bottom: 28px;
-  --hr: var(--brand-map-hr);
-  --war: var(--brand-map-war);
-  --asset: var(--brand-map-asset);
+  /* One colour for every site. Three category hues used to live here, but the
+     criterion behind them did not hold — see the note in EventsMap.tsx — so
+     colour no longer classifies anything. The markers take the lamp's gold,
+     and the only distinction the map draws is the one it can justify: whether
+     there is a decision to read. */
+  --c: var(--brand-gold-lamp);
   position: relative;
 }
 
@@ -107,15 +110,6 @@
   fill: var(--brand-gold-pale);
 }
 
-.emap-site[data-cat="hr"] {
-  --c: var(--hr);
-}
-.emap-site[data-cat="war"] {
-  --c: var(--war);
-}
-.emap-site[data-cat="asset"] {
-  --c: var(--asset);
-}
 
 .emap-halo {
   fill: var(--c);
@@ -164,15 +158,6 @@
   border: 1px solid var(--brand-night-rule);
   border-left: 3px solid var(--c, var(--brand-gold));
   box-shadow: var(--shadow-dark);
-}
-.emap-card[data-cat="hr"] {
-  --c: var(--hr);
-}
-.emap-card[data-cat="war"] {
-  --c: var(--war);
-}
-.emap-card[data-cat="asset"] {
-  --c: var(--asset);
 }
 .emap-close {
   position: absolute;
@@ -254,15 +239,6 @@
   border-left: 2px solid transparent;
   cursor: pointer;
   transition: background var(--dur) var(--ease);
-}
-.emap-list li[data-cat="hr"] button {
-  border-left-color: var(--hr);
-}
-.emap-list li[data-cat="war"] button {
-  border-left-color: var(--war);
-}
-.emap-list li[data-cat="asset"] button {
-  border-left-color: var(--asset);
 }
 .emap-list button:hover,
 .emap-list button[aria-pressed="true"] {
@@ -365,60 +341,6 @@
   font: 500 var(--t-cap) var(--brand-font-body);
   color: var(--brand-muted-dark);
 }
-.emap-key i {
-  flex: none;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: block;
-  background: var(--c);
-}
-.emap-key[data-cat="hr"] {
-  --c: var(--hr);
-}
-.emap-key[data-cat="war"] {
-  --c: var(--war);
-}
-.emap-key[data-cat="asset"] {
-  --c: var(--asset);
-}
-.emap-key-court i {
-  background: none;
-  border: 1.5px solid var(--brand-muted-dark);
-}
-/* A short piece of the same dashed stroke the drawing uses, so the key is the
-   thing itself rather than a description of it. */
-.emap-key-line i {
-  width: 22px;
-  height: 0;
-  border-radius: 0;
-  background: none;
-  border-top: 1px dashed var(--brand-gold-lamp);
-  opacity: 0.85;
-}
-/* Two dots at the sizes the drawing actually uses, small then large. */
-.emap-key-size i {
-  width: 24px;
-  height: 12px;
-  border-radius: 0;
-  background: none;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-}
-.emap-key-size b {
-  display: block;
-  border-radius: 50%;
-  background: var(--brand-muted-dark);
-}
-.emap-key-size b:first-child {
-  width: 6px;
-  height: 6px;
-}
-.emap-key-size b:last-child {
-  width: 11px;
-  height: 11px;
-}
 
 /* The seats, written out. The abbreviations are what appear in case names, so
    they carry the mono face the rest of the site gives to citations. */
@@ -495,51 +417,14 @@
   color: var(--brand-faint-dark);
 }
 
-/* ---- filtered out ---- */
-/* Dimmed, not removed: a marker that vanishes takes its position with it, and
-   the reader loses the shape of the map they were just looking at. */
-.emap-site[data-off] {
-  opacity: 0.12;
-  pointer-events: none;
-}
-.emap-reach[data-off] {
-  opacity: 0.05;
-}
 
-/* ---- legend keys as filters ---- */
-/* Reset the button chrome only. `font: inherit` and `color: inherit` were
-   here too, and being later in the file they beat .emap-key on the same
-   element — the keys came out at the browser's 16px in the inherited colour,
-   which on this ground measured 1.01:1. */
-.emap-key-btn {
-  padding: 0;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  text-align: left;
-}
-.emap-key-btn[aria-pressed="false"] {
-  color: var(--brand-faint-dark);
-}
-.emap-key-btn[aria-pressed="false"] i {
-  background: none;
-  box-shadow: inset 0 0 0 1.5px var(--brand-faint-dark);
-}
-.emap-key-btn:hover {
-  color: var(--brand-cream);
-}
-.emap-key-btn:focus-visible {
-  outline: 2px solid var(--brand-gold-pale);
-  outline-offset: 3px;
-}
 
 /* ---- court card ---- */
 .emap-card-court {
   border-left-color: var(--brand-gold-pale);
 }
-/* The site cards take their over-title colour from --c, set by data-cat. A
-   court has no category, so the variable was empty and the line fell back to
-   the inherited colour — invisible. */
+/* The court card has no site colour of its own, so its over-title is named
+   explicitly rather than inheriting one. */
 .emap-card-court .emap-when {
   color: var(--brand-gold-pale);
 }
@@ -562,15 +447,6 @@
   text-align: left;
   cursor: pointer;
   transition: background var(--dur) var(--ease);
-}
-.emap-court-site[data-cat="hr"] {
-  --c: var(--hr);
-}
-.emap-court-site[data-cat="war"] {
-  --c: var(--war);
-}
-.emap-court-site[data-cat="asset"] {
-  --c: var(--asset);
 }
 .emap-court-site:hover,
 .emap-court-site:focus-visible {
@@ -716,4 +592,84 @@
   .emap-reach {
     transition: none;
   }
+}
+
+/* ---- zoom and pan ---- */
+.emap-svg {
+  cursor: grab;
+  touch-action: pan-y;
+}
+.emap-svg[data-dragging] {
+  cursor: grabbing;
+}
+/* The markers are buttons; only the ground drags. */
+.emap-hit,
+.emap-court-hit {
+  cursor: pointer;
+}
+.emap-zoom-step {
+  min-width: 34px;
+  font-size: 15px;
+  line-height: 1;
+  font-family: var(--brand-font-body);
+}
+.emap-zoom-step:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+
+/* ---- legend marks ---- */
+/* Drawn, not described: the same shapes at the same proportions the map uses,
+   so a reader matches by sight. */
+.emap-key svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  overflow: visible;
+}
+.emap-key .k-halo {
+  fill: var(--brand-gold-lamp);
+  opacity: 0.22;
+}
+.emap-key .k-lit {
+  fill: var(--brand-gold-lamp);
+}
+.emap-key .k-unlit {
+  fill: none;
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1.6;
+  opacity: 0.7;
+}
+.emap-key .k-court {
+  fill: none;
+  stroke: var(--brand-cream);
+  stroke-width: 1.4;
+}
+.emap-key .k-line {
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1.4;
+  stroke-dasharray: 4 4;
+}
+
+/* Seats are buttons: the legend is also the way to interrogate a court, which
+   is otherwise only reachable by finding a 5px ring on the drawing. */
+.emap-leg-seats button {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 5px 8px;
+  margin-left: -8px;
+  background: none;
+  border: 0;
+  border-left: 2px solid transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.emap-leg-seats button:hover,
+.emap-leg-seats button:focus-visible {
+  background: var(--brand-night);
+  border-left-color: var(--brand-gold-pale);
 }

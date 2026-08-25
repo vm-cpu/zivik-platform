@@ -94,6 +94,8 @@ export default function MapSection({
             close: dict.mapSection.close,
             courtsSeat: dict.mapSection.courtsSeat,
             court: dict.mapSection.legendCourt,
+            legendLit: dict.mapSection.legendLit,
+            legendUnlit: dict.mapSection.legendUnlit,
             reads: dict.mapSection.reads,
             pending: dict.mapSection.pending,
             sizeKey: dict.mapSection.sizeKey,
@@ -104,11 +106,8 @@ export default function MapSection({
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,
-            categories: {
-              hr: dict.mapSection.legendHr,
-              war: dict.mapSection.legendWar,
-              asset: dict.mapSection.legendAsset,
-            },
+            zoomIn: dict.mapSection.zoomIn,
+            zoomOut: dict.mapSection.zoomOut,
           }}
           locale={locale}
           variant="band"
