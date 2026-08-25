@@ -72,6 +72,7 @@ const uk = {
     legendUnlit: "Конспект у підготовці",
     courtsSeat: "Суди засідають у",
     courtHears: "Розглядає справи",
+    caseload: "{n} проваджень у реєстрі",
     zoomLabel: "Масштаб",
     zoomWide: "Європа",
     zoomClose: "Україна",

@@ -673,3 +673,12 @@
   background: var(--brand-night);
   border-left-color: var(--brand-gold-pale);
 }
+
+/* The court's own caseload, from the registry. */
+.emap-caseload {
+  margin: 10px 0 0;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--brand-gold-pale);
+}

@@ -42,6 +42,19 @@ export interface MapEvent {
 
 export interface MapCourt {
   key: string;
+  /**
+   * Registry institutions seated in this city. The map draws six places where
+   * harm happened, but the archive holds 39 proceedings, and the ones not tied
+   * to those six places had nowhere to appear. Naming the institutions here
+   * lets a court answer for its own caseload — and the union of these lists is
+   * checked against the registry at build time, so no proceeding can go
+   * unrepresented without the build saying so.
+   */
+  institutionIds: string[];
+  /** Outside the projection's frame — named in the legend, not drawn. */
+  offMap?: boolean;
+  /** Nudge the label off a collision with a neighbouring city. */
+  labelDy?: number;
   city: Localized;
   /**
    * Abbreviation → full name. `abbr` is optional: the international courts go
@@ -55,6 +68,7 @@ export interface MapCourt {
 export const MAP_COURTS: MapCourt[] = [
   {
     key: "hague",
+    institutionIds: ["icj", "icc", "pca", "nl"],
     city: { uk: "Гаага", en: "The Hague" },
     seats: [
       { abbr: "ICJ", name: { uk: "Міжнародний суд ООН", en: "International Court of Justice" } },
@@ -64,6 +78,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   {
     key: "strasbourg",
+    institutionIds: ["ecthr"],
     city: { uk: "Страсбург", en: "Strasbourg" },
     seats: [
       { abbr: "ЄСПЛ / ECtHR", name: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" } },
@@ -71,6 +86,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   {
     key: "hamburg",
+    institutionIds: ["itlos"],
     city: { uk: "Гамбург", en: "Hamburg" },
     seats: [
       { abbr: "ITLOS", name: { uk: "Міжнародний трибунал з морського права", en: "International Tribunal for the Law of the Sea" } },
@@ -78,6 +94,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   {
     key: "paris",
+    institutionIds: ["icc-arb"],
     city: { uk: "Париж", en: "Paris" },
     seats: [
       {
@@ -87,10 +104,67 @@ export const MAP_COURTS: MapCourt[] = [
           en: "Permanent Court of Arbitration — seat of the Oschadbank arbitration",
         },
       },
+      {
+        abbr: "ICC",
+        name: {
+          uk: "Міжнародний арбітражний суд Міжнародної торгової палати",
+          en: "International Court of Arbitration of the International Chamber of Commerce",
+        },
+      },
+    ],
+  },
+  {
+    key: "vilnius",
+    institutionIds: ["lt"],
+    city: { uk: "Вільнюс", en: "Vilnius" },
+    seats: [
+      {
+        name: {
+          uk: "Суди Литви — універсальна юрисдикція",
+          en: "The courts of Lithuania — universal jurisdiction",
+        },
+      },
+    ],
+  },
+  {
+    key: "brussels",
+    institutionIds: ["eu"],
+    // Not a court. Euroclear is where the Russian central-bank assets are
+    // immobilised, and the archive tracks it as an enforcement measure rather
+    // than a proceeding. It is on the map because the money is the point of
+    // several of these cases, and it is labelled for what it is.
+    labelDy: 13,
+    city: { uk: "Брюссель", en: "Brussels" },
+    seats: [
+      {
+        name: {
+          uk: "ЄС і Бельгія — знерухомлення активів (Euroclear), не судовий орган",
+          en: "The EU and Belgium — asset immobilisation (Euroclear), not a court",
+        },
+      },
+    ],
+  },
+  {
+    key: "montreal",
+    institutionIds: ["icao"],
+    // Montreal projects to x = -937 on a frame that runs 0…1200: it is on
+    // another continent, so it is named in the legend and not drawn. The
+    // appeal against its decision went to the ICJ, which is on the map.
+    offMap: true,
+    city: { uk: "Монреаль", en: "Montreal" },
+    seats: [
+      {
+        abbr: "ICAO",
+        name: {
+          uk: "Рада Міжнародної організації цивільної авіації — поза кадром мапи",
+          en: "Council of the International Civil Aviation Organization — outside the map's frame",
+        },
+      },
     ],
   },
   {
     key: "helsinki",
+    institutionIds: ["fi"],
     city: { uk: "Гельсінкі", en: "Helsinki" },
     seats: [
       {
@@ -103,6 +177,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   {
     key: "stockholm",
+    institutionIds: ["scc"],
     city: { uk: "Стокгольм", en: "Stockholm" },
     seats: [
       { abbr: "SCC", name: { uk: "Арбітражний інститут Торгової палати", en: "Arbitration Institute of the Stockholm Chamber of Commerce" } },

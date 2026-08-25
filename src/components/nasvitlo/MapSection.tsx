@@ -2,7 +2,7 @@ import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { MAP_EVENTS, MAP_COURTS } from "@/content/map";
-import { caseLinksFor } from "@/content/map-links";
+import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
 import Link from "next/link";
 import geo from "@/content/europe-map.json";
 import EventsMap from "./EventsMap";
@@ -85,6 +85,9 @@ export default function MapSection({
           courts={MAP_COURTS.map((c) => ({
             key: c.key,
             city: pick(c.city, locale),
+            offMap: c.offMap,
+            labelDy: c.labelDy,
+            caseload: courtCaseloadFor(c.key, locale),
             seats: c.seats
               .map((s) => (s.abbr ? `${s.abbr} — ${pick(s.name, locale)}` : pick(s.name, locale)))
               .join(" · "),
@@ -103,6 +106,7 @@ export default function MapSection({
             legendHow: dict.mapSection.legendHow,
             legendLine: dict.mapSection.legendLine,
             courtHears: dict.mapSection.courtHears,
+            caseload: dict.mapSection.caseload,
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,

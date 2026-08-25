@@ -40,6 +40,11 @@ export interface MapCourtR {
   key: string;
   city: string;
   seats: string;
+  /** Where it sits on the drawing; absent when the city is off the frame. */
+  offMap?: boolean;
+  labelDy?: number;
+  /** What the registry says this court is hearing, and which of it is readable. */
+  caseload: { total: number; written: { slug: string; title: string }[] };
 }
 export interface MapGeometry {
   viewBox: string;
@@ -95,6 +100,8 @@ export default function EventsMap({
     legendLine: string;
     /** Heading over the sites a selected court hears. */
     courtHears: string;
+    /** "{n} proceedings in the registry" — the court's own caseload. */
+    caseload: string;
     /** The two framings. */
     zoomLabel: string;
     zoomWide: string;
@@ -395,7 +402,7 @@ export default function EventsMap({
               The map's subject is the relation between a place where harm
               happened and a court weighing it, and only one end of it could be
               interrogated. Selecting a court lights every site it hears. */}
-          {courts.map((c) => {
+          {courts.filter((c) => !c.offMap).map((c) => {
             const [x, y] = at(c.key);
             const on = sel?.kind === "court" && sel.key === c.key;
             return (
@@ -419,7 +426,7 @@ export default function EventsMap({
                   }}
                 />
                 <circle className="emap-court-dot" cx={x} cy={y} r={5} />
-                <text x={x + 12} y={y + 4}>
+                <text x={x + 12} y={y + 4 + (c.labelDy ?? 0)}>
                   {c.city}
                 </text>
               </g>
@@ -524,6 +531,28 @@ export default function EventsMap({
           <div className="emap-when">{labels.courtsSeat}</div>
           <div className="emap-title">{selectedCourt.city}</div>
           <p className="emap-seats-full">{selectedCourt.seats}</p>
+            {/* What the registry says this court is hearing. The map draws six
+                places where harm happened; the archive holds 39 proceedings,
+                and the ten heard by the Dutch courts, the ICAO Council, the
+                ICC arbitration court, Lithuania and the EU were tied to none
+                of those six places, so they appeared nowhere at all. */}
+            <p className="emap-caseload">
+              {labels.caseload.replace("{n}", String(selectedCourt.caseload.total))}
+            </p>
+            {selectedCourt.caseload.written.length > 0 && (
+              <div className="emap-reads">
+                <div className="emap-reads-h">{labels.reads}</div>
+                <ul>
+                  {selectedCourt.caseload.written.map((w) => (
+                    <li key={w.slug}>
+                      <Link href={`/${locale}/cases/${w.slug}`}>
+                        <span className="emap-read-t">{w.title}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           <div className="emap-reads">
             <div className="emap-reads-h">{labels.courtHears}</div>
             <ul>

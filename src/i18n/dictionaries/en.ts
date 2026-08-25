@@ -72,6 +72,7 @@ const en: Dictionary = {
     legendUnlit: "Summary in preparation",
     courtsSeat: "The courts sit in",
     courtHears: "Hears",
+    caseload: "{n} proceedings in the registry",
     zoomLabel: "Framing",
     zoomWide: "Europe",
     zoomClose: "Ukraine",

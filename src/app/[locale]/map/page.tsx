@@ -6,7 +6,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { siteUrl, pathAlternates } from "@/lib/seo";
 import { pick } from "@/content/types";
 import { MAP_EVENTS, MAP_COURTS } from "@/content/map";
-import { caseLinksFor } from "@/content/map-links";
+import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
 import geo from "@/content/europe-map.json";
 import EventsMap from "@/components/nasvitlo/EventsMap";
 import "./map-page.css";
@@ -94,7 +94,10 @@ export default async function MapPage({
             courts={MAP_COURTS.map((c) => ({
               key: c.key,
               city: pick(c.city, locale),
-              seats: c.seats
+              offMap: c.offMap,
+              labelDy: c.labelDy,
+              caseload: courtCaseloadFor(c.key, locale),
+            seats: c.seats
                 .map((s) => (s.abbr ? `${s.abbr} — ${pick(s.name, locale)}` : pick(s.name, locale)))
                 .join(" · "),
             }))}
@@ -112,6 +115,7 @@ export default async function MapPage({
               legendHow: dict.mapSection.legendHow,
               legendLine: dict.mapSection.legendLine,
             courtHears: dict.mapSection.courtHears,
+            caseload: dict.mapSection.caseload,
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,
