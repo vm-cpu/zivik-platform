@@ -24,7 +24,9 @@ const T = {
     uk: "Усі провадження проти РФ у міжнародних судах, трибуналах та арбітражах — з можливістю фільтрувати за судом і статусом. Опрацьовані справи ведуть до конспекту рішення.",
     en: "Every proceeding against Russia across international courts, tribunals and arbitrations — filter by court and status. Analysed cases link through to a decision summary.",
   },
-  back: { uk: "← Насвітло", en: "← насвітло" },
+  // The wordmark is lowercase everywhere, and the English one is "nasvitlo".
+  // Team and map both say "Home"/"На головну" — so does this now.
+  back: { uk: "← На головну", en: "← Home" },
   search: {
     uk: "Пошук за назвою, судом, контекстом…",
     en: "Search by name, court, context…",

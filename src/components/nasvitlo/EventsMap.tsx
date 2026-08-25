@@ -528,9 +528,12 @@ export default function EventsMap({
           >
             ×
           </button>
-          <div className="emap-when">{labels.courtsSeat}</div>
-          <div className="emap-title">{selectedCourt.city}</div>
-          <p className="emap-seats-full">{selectedCourt.seats}</p>
+            {/* The court leads and the city locates it, mirroring the event
+                card where the date tag sits above and the event is the heading.
+                This opened with the legend's own wording ("the courts sit in")
+                and put the city where the name belongs. */}
+            <div className="emap-when">{selectedCourt.city}</div>
+            <div className="emap-title emap-court-name">{selectedCourt.seats}</div>
             {/* What the registry says this court is hearing. The map draws six
                 places where harm happened; the archive holds 39 proceedings,
                 and the ten heard by the Dutch courts, the ICAO Council, the

@@ -428,10 +428,12 @@
 .emap-card-court .emap-when {
   color: var(--brand-gold-pale);
 }
-.emap-seats-full {
-  margin: 0 0 4px;
-  font: 400 11px/1.5 var(--brand-font-mono);
-  color: var(--brand-muted-dark);
+/* Several institutions can share one city, so this heading is a list rather
+   than a name; it takes a smaller size and a tighter leading than an event
+   title, which is always one thing. */
+.emap-court-name {
+  font-size: var(--t-sm);
+  line-height: 1.35;
 }
 /* Same row as a decision link, but it moves the selection rather than
    navigating — so it is a button, and says so by not being underlined. */

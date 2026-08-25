@@ -73,7 +73,19 @@ export const MAP_COURTS: MapCourt[] = [
     seats: [
       { abbr: "ICJ", name: { uk: "Міжнародний суд ООН", en: "International Court of Justice" } },
       { abbr: "ICC", name: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" } },
-      { abbr: "PCA", name: { uk: "Постійна палата арбітражу", en: "Permanent Court of Arbitration" } },
+      { abbr: "PCA", name: { uk: "Постійна палата третейського суду", en: "Permanent Court of Arbitration" } },
+      {
+        // Six proceedings — the MH17 verdict and four Hoge Raad cassations —
+        // and the map named none of them. The Supreme Court of the Netherlands
+        // sits in The Hague (Korte Voorhout 8), as does the District Court
+        // whose ECLI the MH17 judgment carries (RBDHA); that trial was heard
+        // in the Schiphol justice complex for security, but the court is the
+        // Hague one.
+        name: {
+          uk: "Окружний суд Гааги та Верховний суд Нідерландів",
+          en: "The Hague District Court and the Supreme Court of the Netherlands",
+        },
+      },
     ],
   },
   {

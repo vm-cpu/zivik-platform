@@ -232,7 +232,7 @@ export const registryCases: RegistryCase[] = [
     status: { uk: "Рішення (оскаржується)", en: "Decision (under appeal)" },
     year: 2022,
     amountUsd: null,
-    note: { uk: "MH17 · Чиказька конвенція, ст. 84", en: "MH17 · Чиказька конвенція, ст. 84" },
+    note: { uk: "MH17 · Чиказька конвенція, ст. 84", en: "MH17 · Chicago Convention, art. 84" },
     pages: null,
     decisionUrl: "https://www.icao.int/Newsroom/Pages/RU/icao-council-vote-on-flight-mh17-case.aspx",
     lit: false,

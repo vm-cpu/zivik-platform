@@ -55,7 +55,7 @@ export const institutions: Institution[] = [
     id: "pca",
     abbr: { uk: "PCA", en: "PCA" },
     name: {
-      uk: "Постійна палата арбітражу",
+      uk: "Постійна палата третейського суду",
       en: "Permanent Court of Arbitration",
     },
     seat: { uk: "Гаага", en: "The Hague" },

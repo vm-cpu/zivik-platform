@@ -15,8 +15,10 @@
   --faint: var(--brand-faint);
   --rule: var(--brand-rule);
 
-  background: var(--paper);
-  color: var(--ink);
+  /* The whole page is the map, so the page is dark. It was paper, which
+     showed as a white band between the legend and the footer. */
+  background: var(--brand-night);
+  color: var(--brand-cream);
   font-family: var(--brand-font-body), sans-serif;
 }
 /* Scoped to the masthead, not the whole surface: as `.mappage a` this ties on
@@ -122,25 +124,16 @@
 }
 
 /* The legend sits on the map, bottom left, and folds away. */
+/* Two short groups share a row; the seats get their own, because nine cities
+   stacked beside a three-line column left two thirds of the block empty. */
 .mp-stage .emap-legend {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 22px 34px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 26px 40px;
   padding: 22px max(clamp(20px, 4vw, 56px), 0px);
   border-inline: 0;
 }
 
-/* The text list is the map as prose: it lives below the fold, where it does
-   not compete with the drawing but is still on the page for a reader who
-   wants the whole thing at once, and for anyone not using a pointer. */
-.mp-list {
-  padding: 0 0 64px;
-  background: var(--brand-night);
-}
-.mp-list .emap-list {
-  border-left: 0;
-  border-right: 0;
-}
 
 @media (max-width: 900px) {
   .mp-stage {
@@ -158,4 +151,15 @@
     border-inline: 0;
     backdrop-filter: none;
   }
+}
+
+.mp-stage .emap-leg-seats {
+  grid-column: 1 / -1;
+  padding-top: 22px;
+  border-top: 1px solid var(--brand-night-rule);
+}
+.mp-stage .emap-leg-seats ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 4px 28px;
 }

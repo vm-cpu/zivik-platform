@@ -44,7 +44,7 @@ const T = {
   violation: { uk: "Порушення", en: "Violation" },
   noViolation: { uk: "Немає", en: "No violation" },
   violationsOf: { uk: "порушення з", en: "violations of" },
-  sources: { uk: "Джерела та коментарі", en: "Researches and other materials" },
+  sources: { uk: "Джерела та коментарі", en: "Sources and commentary" },
   back: { uk: "До реєстру", en: "Back to registry" },
   readJudgment: { uk: "Читати рішення", en: "Read the judgment" },
   caseFile: { uk: "Справа на сайті Суду", en: "Case file at the Court" },

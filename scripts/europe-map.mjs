@@ -68,6 +68,10 @@ const POINTS = {
   // `forum.seat` each summary already declares, not assigned by hand.
   paris: [2.35, 48.86],
   helsinki: [24.94, 60.17],
+  // Added with their court entries in map.ts but not here, so both projected
+  // to [0, 0] and piled up in the frame's top-left corner.
+  vilnius: [25.28, 54.69],
+  brussels: [4.35, 50.85],
   // the ground the cases are about
   crimea: [34.55, 45.15],
   kerch: [36.5, 45.3],
