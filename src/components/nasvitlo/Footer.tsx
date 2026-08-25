@@ -64,7 +64,7 @@ export default function Footer({
         padding: "44px 28px 0",
       }}
     >
-      <div
+      <footer
         className="nsv-foot"
         style={{
           display: "grid",
@@ -134,7 +134,7 @@ export default function Footer({
           {/* Social boxes return when there are real accounts to point at.
               Three squares linking to "#" read as a broken footer. */}
         </div>
-      </div>
+      </footer>
 
       <div
         style={{

@@ -84,8 +84,10 @@ display type reads as a different register, not just bigger body text.
 | `--t-micro` | 11px | uppercase labels |
 | `--t-cap` | 12.5px | captions, citations |
 | `--t-sm` | 14px | secondary prose |
-| `--t-ui` | 15.5px | UI rows, list items |
-| `--t-body` | 17.5px | long-form reading |
+| `--t-ui` | = `--t-sm` (14px) | UI rows, list items. Kept as an alias: four
+  steps inside four and a half pixels read as carelessness, not hierarchy |
+| `--t-body` | 16px | long-form reading, in the body face — the serif and the
+  extra pixel and a half belong to headings, case names and figures |
 | `--t-lead` | 20px | standfirst |
 | `--t-h3` | 22.5px | card titles |
 | `--t-h2` | `clamp(23px, 2.4vw, 29px)` | section headings |

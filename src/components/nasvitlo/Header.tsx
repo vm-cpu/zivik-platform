@@ -69,7 +69,7 @@ export default function Header({
       <a className="nsv-skiplink" href={skipTo}>
         {dict.nav.skip}
       </a>
-      <div
+      <header
         className="nsv-topbar"
         style={{
           position: "relative",
@@ -181,7 +181,7 @@ export default function Header({
             <span />
           </button>
         </div>
-      </div>
+      </header>
 
       <div className="nsv-mobnav" data-open={open ? "yes" : "no"}>
         {nav.map((item) => (
