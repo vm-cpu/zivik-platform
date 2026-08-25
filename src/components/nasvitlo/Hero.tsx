@@ -92,12 +92,15 @@ export default function Hero({ dict }: { dict: Dictionary }) {
           </a>
         </div>
 
-        {/* One line, under the buttons. It was a three-line signature block
-            here, then nothing at all when I moved it to the footer — which is
-            true but a long scroll away, so on the first screen the project
-            looked unattributed. */}
-        <p className="nsv-credit-line">
-          {dict.hero.credit} {dict.hero.creditCentre} · {dict.hero.creditFaculty}
+        {/* A colophon, not a sentence. Run on one line the two names read as
+            two peers separated by a bullet, when the centre is in fact part of
+            the faculty — in Ukrainian they are a genitive chain, so they stack
+            and the separator goes. Faculty last and faintest: its mark already
+            sits in the top bar, so here it is context, not the headline. */}
+        <p className="nsv-credit">
+          <span className="cr-label">{dict.hero.credit}</span>
+          <span className="cr-centre">{dict.hero.creditCentre}</span>
+          <span className="cr-faculty">{dict.hero.creditFaculty}</span>
         </p>
 
       </div>
