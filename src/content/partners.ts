@@ -18,6 +18,6 @@ export const partners: Partner[] = [
   },
   {
     id: "louis-sohn",
-    name: { uk: "Центр Луї Зона", en: "Louis Sohn Center" },
+    name: { uk: "Дослідницький центр імені Луї Б. Зона", en: "Louis B. Sohn Research Centre" },
   },
 ];

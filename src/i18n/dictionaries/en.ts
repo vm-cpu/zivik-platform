@@ -14,7 +14,8 @@ const en: Dictionary = {
   },
   nav: {
     skip: "Skip to content",
-    home: "About us",
+    home: "Home",
+      about: "About us",
     decisions: "Library of decisions",
     map: "Map",
     team: "Team",
@@ -37,7 +38,7 @@ const en: Dictionary = {
     lampLabel: "Turn the lamp on or off",
   },
   intro: {
-    text: "We read the decisions of international courts and retell them in plain language — so you can rely on them in an argument, an article, or a claim.",
+    text: "An online collection of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, arising from Ukraine's initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
     about: "About the Library",
   },
   slogan: "We research · We explain · We bring to light",
@@ -110,7 +111,7 @@ const en: Dictionary = {
     linkMap: "Events map",
     linkCourts: "Courts and instances",
     linkDocs: "Documents",
-    linkAbout: "About the project",
+    linkAbout: "About the Library",
     linkTeam: "Team",
     linkPartners: "Partners",
     linkBlog: "Blog",

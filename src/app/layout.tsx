@@ -51,14 +51,6 @@ export const metadata: Metadata = {
     "Рішення міжнародних судів щодо агресії проти України — винесені на світло.",
 };
 
-/**
- * Applies the saved theme before the first paint. Without this the page paints
- * in the OS theme and then snaps to the saved one — the flash we just removed
- * from the fonts. Kept tiny and dependency-free on purpose.
- */
-const themeScript = `(function(){try{var t=localStorage.getItem("nsv-theme");
-if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);
-}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -69,11 +61,7 @@ export default function RootLayout({
     <html
       lang="uk"
       className={`${charis.variable} ${firaSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
-      suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body className="min-h-full">{children}</body>
     </html>
   );

@@ -36,7 +36,10 @@ export default function Intro({
             lineHeight: 1.5,
             color: "var(--ink)",
             margin: 0,
-            maxWidth: 560,
+            /* 560px measured a two-line sentence. The scope statement that
+               replaced it is 310 characters — at 560 it stacked to six lines
+               at 52 per line, a column too narrow for 19px type. */
+            maxWidth: 780,
           }}
         >
           {dict.intro.text}

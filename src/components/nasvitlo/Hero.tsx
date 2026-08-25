@@ -76,17 +76,6 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         >
           {dict.hero.lead}
         </p>
-        <p
-          style={{
-            fontSize: 14.5,
-            lineHeight: 1.65,
-            color: "var(--brand-muted-dark)",
-            margin: "0 0 34px",
-            maxWidth: 620,
-          }}
-        >
-          {dict.hero.sub}
-        </p>
         <div
           style={{
             display: "flex",
@@ -102,6 +91,14 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             {dict.hero.ctaMap}
           </a>
         </div>
+
+        {/* One line, under the buttons. It was a three-line signature block
+            here, then nothing at all when I moved it to the footer — which is
+            true but a long scroll away, so on the first screen the project
+            looked unattributed. */}
+        <p className="nsv-credit-line">
+          {dict.hero.credit} {dict.hero.creditCentre} · {dict.hero.creditFaculty}
+        </p>
 
       </div>
     </div>

@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  /* one palette, no OS-driven variant */
+  color-scheme: light;
   /* ─────────────────────────────────────────────────────────────
      Насвітло brand tokens — SINGLE SOURCE OF TRUTH (UCU brandbook).
      Every section palette in [locale]/home.css references these,
@@ -141,64 +143,11 @@
 
 }
 
-/* ─────────────────────────────────────────────────────────────
-   Dark theme — the lamp metaphor made a real site preference.
-
-   Because every surface on the site already reads from the
-   --brand-* tokens, flipping them here flips the whole site; no
-   component needs a dark variant of its own. Scenes that are
-   *intentionally* dark in both themes (the lamp stage, the court
-   masthead) keep their own --brand-night ground.
-
-   Order matters: the media query is the OS default, and the
-   [data-theme] attributes must be able to override it in BOTH
-   directions, so they come last. Every pair below was checked
-   for WCAG AA (lowest is 4.78:1).
-   ───────────────────────────────────────────────────────────── */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --brand-paper: #14120f;
-    --brand-paper-2: #1a1714;
-    --brand-surface: #201c18;
-    --brand-ink: #f4f1ea;
-    --brand-ink-2: #c2bab0;
-    --brand-faint: #8f877d;
-    --brand-rule: #322c26;
-    /* accents lift so they stay legible on a dark ground */
-    --brand-gold: #d9ab5e;
-    --brand-red: #d9564b;
-    --status-decided: #7ec49a;
-    --status-progress: #d9ab5e;
-    --status-enforce: #8fb4d8;
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
-    --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.5), 0 18px 48px rgba(0, 0, 0, 0.45);
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme="dark"] {
-  --brand-paper: #14120f;
-  --brand-paper-2: #1a1714;
-  --brand-surface: #201c18;
-  --brand-ink: #f4f1ea;
-  --brand-ink-2: #c2bab0;
-  --brand-faint: #8f877d;
-  --brand-rule: #322c26;
-  --brand-gold: #d9ab5e;
-  --brand-red: #d9564b;
-  --status-decided: #7ec49a;
-  --status-progress: #d9ab5e;
-  --status-enforce: #8fb4d8;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.5), 0 18px 48px rgba(0, 0, 0, 0.45);
-  color-scheme: dark;
-}
-
-:root[data-theme="light"] {
-  color-scheme: light;
-}
+/* The site has one theme: paper. A dark variant used to ride on the lamp
+   metaphor, with an OS media query and a [data-theme] override, but the
+   project keeps a single palette, so the switch and both dark blocks are
+   gone. `color-scheme: light` is declared on :root above — without it a
+   dark-OS browser still paints scrollbars and form controls dark. */
 
 @theme inline {
   --color-background: var(--background);

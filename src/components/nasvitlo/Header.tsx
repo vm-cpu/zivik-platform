@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import ThemeToggle from "./ThemeToggle";
 import "./header.css";
 
 /** Dark top bar: brand, primary nav (collapses to a menu), language switch. */
@@ -30,7 +29,11 @@ export default function Header({
      the pages exist; a nav item that cannot go anywhere is worse than one
      that is not there. */
   const nav = [
+    // `home` used to be labelled "About us" while pointing at `/uk`, so the
+    // menu had no entry for the home page itself and the about section had no
+    // link of its own. They are two destinations, so they are two items.
     { label: dict.nav.home, href: home, active: pathname === home },
+    { label: dict.nav.about, href: `${home}#about`, active: false },
     { label: dict.nav.decisions, href: `${home}#registry`, active: false },
     { label: dict.nav.map, href: `${home}#map`, active: false },
     { label: dict.nav.team, href: `${home}/team`, active: pathname === `${home}/team` },
@@ -118,6 +121,7 @@ export default function Header({
             <Link
               key={item.label}
               href={item.href}
+              aria-current={item.active ? "page" : undefined}
               style={{ color: item.active ? "var(--brand-gold-pale)" : "var(--brand-cream)" }}
             >
               {item.label}
@@ -151,13 +155,6 @@ export default function Header({
               EN
             </Link>
           </span>
-          <ThemeToggle
-            label={
-              locale === "uk"
-                ? "Перемкнути світлу або темну тему"
-                : "Switch between light and dark theme"
-            }
-          />
           <button
             type="button"
             className="nsv-burger"
