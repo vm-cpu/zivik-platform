@@ -256,7 +256,7 @@ export const registryCases: RegistryCase[] = [
     amountUsd: null,
     note: { uk: "MH17 · Чиказька конвенція, ст. 84", en: "MH17 · Chicago Convention, art. 84" },
     pages: null,
-    decisionUrl: "https://www.icao.int/Newsroom/Pages/RU/icao-council-vote-on-flight-mh17-case.aspx",
+    decisionUrl: "https://www.icao.int/news/icao-council-vote-flight-mh17-case",
     lit: false,
   },
   {

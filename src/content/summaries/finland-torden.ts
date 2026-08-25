@@ -192,7 +192,7 @@ export const finlandTorden: DecisionSummary = {
         en: "Finnish Criminal Code, Chapter 11, Section 5(1) (212/2008)",
       },
       year: 2008,
-      url: "https://www.finlex.fi/fi/laki/kaannokset/1889/en18890039",
+      url: "https://www.finlex.fi/en/legislation/translations/1889/eng/39-001",
     },
   ],
 
@@ -404,7 +404,7 @@ export const finlandTorden: DecisionSummary = {
       type: "news/insight",
     },
     {
-      url: "https://www.finlex.fi/fi/laki/kaannokset/1889/en18890039",
+      url: "https://www.finlex.fi/en/legislation/translations/1889/eng/39-001",
       title: "The Criminal Code of Finland (translation) — Chapter 11",
       authors: "",
       publication: "Finlex",
