@@ -3,15 +3,21 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
 import {
+  alternateOpenGraphLocales,
   isLocale,
   locales,
-  defaultLocale,
+  localeOpenGraph,
   type Locale,
 } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContentRepository } from "@/content/repository";
 import { pick, type CaseStatusKey } from "@/content/types";
-import { siteUrl } from "@/lib/seo";
+import {
+  defaultOgImage,
+  ogImage,
+  pathAlternates,
+  siteUrl,
+} from "@/lib/seo";
 import RegistryTable, {
   type RegRow,
 } from "@/components/nasvitlo/RegistryTable";
@@ -70,21 +76,43 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
+  const dict = await getDictionary(locale);
   const path = `/${locale}/registry`;
-  const languages: Record<string, string> = {};
-  for (const l of locales) languages[l] = `/${l}/registry`;
-  languages["x-default"] = `/${defaultLocale}/registry`;
+  const title = pick(T.title, locale);
+  const description = pick(T.lede, locale);
+  /*
+   * `openGraph` and `twitter` are replaced wholesale, not merged, by the
+   * nearest generateMetadata that sets them. This block used to set og:title,
+   * og:description, og:url and og:type only — which dropped the layout's
+   * og:image and og:site_name — and set no twitter key at all, so the Twitter
+   * card fell all the way back to the layout's home-page card: the home
+   * title, the home description and the home image on a link to the registry.
+   * Same shape as /map and /team, plus the twitter block they are also
+   * missing.
+   */
   return {
     metadataBase: new URL(siteUrl),
-    title: pick(T.title, locale),
-    description: pick(T.lede, locale),
-    alternates: { canonical: path, languages },
+    title,
+    description,
+    alternates: {
+      canonical: path,
+      languages: pathAlternates((l) => `/${l}/registry`),
+    },
     openGraph: {
       type: "website",
-      locale,
+      locale: localeOpenGraph[locale],
+      alternateLocale: alternateOpenGraphLocales(locale),
       url: path,
-      title: pick(T.title, locale),
-      description: pick(T.lede, locale),
+      siteName: dict.brand.wordmark,
+      title,
+      description,
+      images: [ogImage(defaultOgImage, dict.meta.ogAlt)],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [defaultOgImage],
     },
   };
 }

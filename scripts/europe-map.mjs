@@ -82,6 +82,23 @@ const POINTS = {
   kyiv: [30.52, 50.45],
 };
 
+/**
+ * Crimea and Sevastopol, as Ukraine.
+ *
+ * The world atlas this script draws from assigns them to Russia: the Ukraine
+ * outline it returns stops at the Perekop isthmus, and the peninsula came out
+ * in the same colour as the surrounding foreign context. On an archive whose
+ * subject is the occupation — a dozen of its proceedings are Crimean
+ * expropriations — that is not a cartographic quibble.
+ *
+ * Coordinates are Natural Earth's own admin-1 units UA-43 and UA-40, whose ISO
+ * codes are Ukrainian even in the datasets that file them under Russia. Two
+ * polygons, 91 points, rounded to three decimals (about 100 m — far finer than
+ * a 1200-unit frame resolves). Embedded rather than fetched so the build does
+ * not depend on a second network source.
+ */
+const CRIMEA = [[[[33.746,44.402],[33.852,44.432],[33.806,44.527],[33.713,44.582],[33.709,44.666],[33.611,44.721],[33.675,44.792],[33.588,44.842],[33.612,44.908],[33.601,44.981],[33.555,45.098],[33.392,45.188],[33.262,45.171],[33.187,45.195],[32.919,45.348],[32.773,45.359],[32.611,45.328],[32.552,45.35],[32.508,45.404],[32.828,45.593],[33.142,45.749],[33.28,45.765],[33.466,45.838],[33.665,45.947],[33.637,46.033],[33.594,46.096],[33.654,46.146],[33.66,46.22],[33.807,46.208],[34.027,46.107],[34.128,46.09],[34.224,46.101],[34.354,46.062],[34.45,45.966],[34.523,45.977],[34.687,45.977],[34.794,45.892],[34.8,45.791],[34.946,45.729],[35.002,45.733],[35.023,45.701],[35.26,45.447],[35.374,45.354],[35.458,45.316],[35.558,45.311],[35.751,45.389],[35.833,45.402],[36.013,45.372],[36.077,45.424],[36.171,45.453],[36.29,45.457],[36.427,45.433],[36.575,45.394],[36.514,45.304],[36.451,45.232],[36.428,45.153],[36.393,45.065],[36.23,45.026],[36.055,45.031],[35.87,45.005],[35.804,45.04],[35.759,45.071],[35.678,45.102],[35.57,45.119],[35.473,45.098],[35.358,44.978],[35.155,44.896],[35.088,44.803],[34.888,44.824],[34.717,44.807],[34.47,44.722],[34.282,44.538],[34.074,44.424],[33.91,44.388],[33.756,44.399],[33.746,44.402]]],[[[33.588,44.842],[33.675,44.792],[33.611,44.721],[33.709,44.666],[33.713,44.582],[33.806,44.527],[33.852,44.432],[33.746,44.402],[33.733,44.407],[33.656,44.433],[33.451,44.554],[33.463,44.597],[33.491,44.619],[33.53,44.681],[33.588,44.842]]]];
+
 const ATLAS =
   "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json";
 
@@ -120,9 +137,23 @@ const context = countries.features
   .map((f) => path(f))
   .filter(Boolean);
 
-const ukraine = countries.features.filter(isUkraine).map((f) => path(f))[0];
+const atlasUkraine = countries.features.filter(isUkraine).map((f) => path(f))[0];
 
-if (!ukraine) throw new Error("Ukraine not found in the atlas — check the property name");
+/**
+ * The outline the atlas returns stops at the Perekop isthmus. Appending the
+ * peninsula's own subpaths to the same `d` makes one shape, so the fill is
+ * continuous and the stroke traces the whole coast — Crimea is drawn as
+ * Ukraine, not merely coloured like it.
+ */
+const crimeaPath = path({
+  type: "Feature",
+  geometry: { type: "MultiPolygon", coordinates: CRIMEA },
+  properties: {},
+});
+const ukraine = `${atlasUkraine} ${crimeaPath}`;
+
+if (!atlasUkraine) throw new Error("Ukraine not found in the atlas — check the property name");
+if (!crimeaPath) throw new Error("Crimea did not project — the map must not ship without it");
 
 const markers = Object.fromEntries(
   Object.entries(POINTS).map(([key, lonLat]) => {
@@ -148,5 +179,6 @@ writeFileSync(
 );
 
 console.log(
-  `wrote ${OUT}\n  ${context.length} country paths, ${Object.keys(markers).length} markers`,
+  `wrote ${OUT}\n  ${context.length} country paths, ${Object.keys(markers).length} markers` +
+    `\n  Ukraine outline includes Crimea and Sevastopol`,
 );
