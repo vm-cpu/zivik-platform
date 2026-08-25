@@ -1,0 +1,125 @@
+/* ============================================================================
+   A proceeding in the registry whose summary is not written yet.
+
+   The site's own metaphor carries the page: насвітло is about bringing
+   decisions into the light, and this is a case the light has not reached. So
+   it is a dark page with one dim lamp, rather than an error — nothing has gone
+   wrong here, the work simply is not finished.
+
+   Own palette from the --brand-* tokens, like every other surface.
+   ========================================================================== */
+.pendingpage {
+  background: var(--brand-night);
+  color: var(--brand-cream);
+  font-family: var(--brand-font-body), sans-serif;
+}
+
+.pend {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: clamp(56px, 9vw, 104px) clamp(20px, 5vw, 44px) clamp(72px, 10vw, 120px);
+}
+
+/* One bulb, barely on. The hero's lamp is lit; this one is not. */
+.pend-lamp {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.pend-bulb {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--brand-gold-lamp);
+  opacity: 0.28;
+  box-shadow: 0 0 22px 6px rgb(214 162 75 / 0.16);
+}
+
+.pend-eyebrow {
+  margin: 0 0 14px;
+  font: 700 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand-gold-pale);
+}
+.pend-name {
+  margin: 0 0 22px;
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(23px, 3.4vw, 31px);
+  line-height: 1.22;
+  color: var(--brand-cream);
+  text-wrap: balance;
+}
+.pend-say {
+  margin: 0 0 38px;
+  font-size: var(--t-body);
+  line-height: 1.62;
+  color: var(--brand-muted-dark);
+}
+
+.pend-facts {
+  margin: 0 0 38px;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--brand-night-rule);
+  border: 1px solid var(--brand-night-rule);
+}
+.pend-facts > div {
+  display: grid;
+  grid-template-columns: minmax(120px, 34%) 1fr;
+  gap: 18px;
+  padding: 13px 16px;
+  background: var(--brand-night);
+}
+.pend-facts dt {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-faint-dark);
+}
+.pend-facts dd {
+  margin: 0;
+  font-size: var(--t-cap);
+  line-height: 1.5;
+  color: var(--brand-cream);
+}
+.pend-mono {
+  font-family: var(--brand-font-mono);
+}
+
+.pend-ways {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 26px;
+  align-items: center;
+}
+.pendingpage .pend-ways a {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color var(--dur) var(--ease);
+}
+.pendingpage .pend-doc {
+  padding: 12px 20px;
+  background: var(--brand-gold-pale);
+  color: var(--brand-night);
+}
+.pendingpage .pend-doc:hover {
+  background: var(--brand-cream);
+}
+.pendingpage .pend-back {
+  color: var(--brand-muted-dark);
+}
+.pendingpage .pend-back:hover {
+  color: var(--brand-gold-pale);
+}
+
+@media (max-width: 520px) {
+  .pend-facts > div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

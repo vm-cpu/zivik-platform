@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { defaultLocale, locales, type Locale } from "@/i18n/config";
+import {
+  alternateOpenGraphLocales,
+  defaultLocale,
+  localeOpenGraph,
+  locales,
+  type Locale,
+} from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 
 /**
@@ -29,6 +35,33 @@ export const siteUrl =
  */
 export const isIndexable = process.env.SITE_INDEXABLE === "true";
 
+/** The site-wide share card, used by every page that has no card of its own. */
+export const defaultOgImage = "/og/nasvitlo.png";
+
+/**
+ * Real pixel size of the share cards in `public/og/`, measured off the files
+ * on disk (all nine PNGs are exactly 1200x630 — `scripts/og-cards.py` renders
+ * at 2x and downsamples to this size).
+ *
+ * These are worth emitting: without og:image:width/height a crawler has to
+ * fetch the image before it can decide how to lay the card out, so the first
+ * unfurl of a link — the one the reader sees — often falls back to the small
+ * square thumbnail. 1200x630 is also what tells Twitter/X the card really is
+ * `summary_large_image`.
+ */
+export const ogImageSize = { width: 1200, height: 630 } as const;
+
+/** An Open Graph image descriptor carrying the card's true dimensions. */
+export function ogImage(url: string, alt: string) {
+  return {
+    url,
+    alt,
+    width: ogImageSize.width,
+    height: ogImageSize.height,
+    type: "image/png",
+  };
+}
+
 /** `hreflang` map pointing each locale at its localized home, plus x-default. */
 function languageAlternates(): Record<string, string> {
   const languages: Record<string, string> = {};
@@ -51,18 +84,19 @@ export function homeMetadata(locale: Locale, dict: Dictionary): Metadata {
     },
     openGraph: {
       type: "website",
-      locale,
+      locale: localeOpenGraph[locale],
+      alternateLocale: alternateOpenGraphLocales(locale),
       url: path,
       siteName: dict.brand.wordmark,
       title,
       description,
-      images: [{ url: "/og/nasvitlo.png", alt: ogAlt }],
+      images: [ogImage(defaultOgImage, ogAlt)],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: ["/og/nasvitlo.png"],
+      images: [defaultOgImage],
     },
   };
 }
@@ -95,7 +129,7 @@ export function decisionMetadata({
   image?: string;
 }): Metadata {
   const path = `/${locale}/cases/${slug}`;
-  const og = image ?? "/og/nasvitlo.png";
+  const og = image ?? defaultOgImage;
   return {
     metadataBase: new URL(siteUrl),
     title,
@@ -106,12 +140,13 @@ export function decisionMetadata({
     },
     openGraph: {
       type: "article",
-      locale,
+      locale: localeOpenGraph[locale],
+      alternateLocale: alternateOpenGraphLocales(locale),
       url: path,
       siteName,
       title,
       description,
-      images: [{ url: og, alt: ogAlt }],
+      images: [ogImage(og, ogAlt)],
     },
     twitter: {
       card: "summary_large_image",

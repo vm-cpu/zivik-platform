@@ -595,12 +595,6 @@ export default function EventsMap({
               <span className="emap-li-title">{e.title}</span>
               <span className="emap-li-forums">{e.forums}</span>
               <span className="emap-li-count">{e.count}</span>
-              <span
-                className="emap-li-reads"
-                data-empty={e.cases.length === 0 ? "" : undefined}
-              >
-                {e.cases.length > 0 ? `${labels.reads} · ${e.cases.length}` : labels.pending}
-              </span>
             </button>
           </li>
         ))}

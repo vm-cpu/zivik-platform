@@ -301,7 +301,7 @@
      screen away from the sentence it belongs to, and the forum list spread
      into five sparse columns. The paper background lives on .page, so capping
      the bands leaves it full-bleed and only the content centres. */
-  .page > .lmp > div:not(.pj):not(.acc):not(.nsv-mapband){
+  .page .lmp > div:not(.pj):not(.acc):not(.nsv-mapband){
     /* The gutter grows to whatever it takes to keep the content within
        --measure. Capping the band itself (max-width + margin:auto) looked
        identical on the paper sections and broke every band that carries its

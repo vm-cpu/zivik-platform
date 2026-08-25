@@ -13,6 +13,9 @@ import ObjectionCards from "@/components/cases/ObjectionCards";
 import TakingsGrid from "@/components/cases/TakingsGrid";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
+import { registryCases } from "@/content/cases";
+import CasePending from "@/components/cases/CasePending";
+import "./pending.css";
 import { SUMMARIES } from "@/content/summaries";
 import type { Localized } from "@/content/types";
 import type {
@@ -304,8 +307,21 @@ function Block({ block }: { block: SummaryBlock }) {
   }
 }
 
+/**
+ * Every proceeding in the registry is addressable, not only the eight with a
+ * summary. The other thirty-one were inert rows with no URL, so nothing could
+ * link to them and the fifteen official court documents recorded against them
+ * appeared nowhere on the site. Registry ids and summary slugs do not collide
+ * — checked below — so one route serves both.
+ */
 export function generateStaticParams() {
-  return Object.keys(SUMMARIES).map((slug) => ({ slug }));
+  const slugs = Object.keys(SUMMARIES);
+  const pending = registryCases.filter((c) => !c.summarySlug).map((c) => c.id);
+  const clash = pending.filter((id) => slugs.includes(id));
+  if (clash.length) {
+    throw new Error(`registry id collides with a summary slug: ${clash.join(", ")}`);
+  }
+  return [...slugs, ...pending].map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({

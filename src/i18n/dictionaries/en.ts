@@ -51,6 +51,17 @@ const en: Dictionary = {
     audience: "Audience",
     audienceVal: "scholars, practitioners, interested readers",
   },
+  pending: {
+    title: "Still being researched",
+    body: "This proceeding is in the registry, but its summary is not written yet — we are working on it. Below is what is already known, and a link to the court's own document where one is public.",
+    forum: "Court",
+    status: "Stage",
+    kind: "Field",
+    docket: "Docket",
+    official: "The court's document",
+    toRegistry: "The full registry",
+    toMap: "The map",
+  },
   quote: {
     text: "The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine.",
     source: "International Court of Justice · Provisional Measures · 16 March 2022",

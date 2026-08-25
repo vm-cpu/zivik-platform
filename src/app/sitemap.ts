@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { defaultLocale, locales } from "@/i18n/config";
-import { siteUrl } from "@/lib/seo";
+import { isIndexable, siteUrl } from "@/lib/seo";
 import { registryCases } from "@/content/cases";
 import { summaryLastModified } from "@/content/summaries";
 
@@ -19,6 +19,23 @@ function languagesFor(path: (locale: string) => string) {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  /*
+   * While the site is closed, hand out nothing.
+   *
+   * `app/robots.ts` already withholds the `Sitemap:` line and its comment says
+   * the site "stops handing out a map" — but not advertising a file is not the
+   * same as not serving it. /sitemap.xml is a well-known path; anyone who
+   * guesses it (and every crawler does) got the complete list of 24 URLs,
+   * including the eight decision pages, straight out of a deployment that is
+   * meant to be unfindable. The noindex still applied, but the URLs were out.
+   *
+   * Empty list rather than a 404: this is a statically generated metadata
+   * route, so there is no clean way to fail the request without failing the
+   * build, and an empty <urlset> discloses nothing. Flip SITE_INDEXABLE=true
+   * and the full map returns.
+   */
+  if (!isIndexable) return [];
+
   const homeLanguages = languagesFor((l) => `/${l}`);
 
   const homes: MetadataRoute.Sitemap = locales.map((locale) => ({
