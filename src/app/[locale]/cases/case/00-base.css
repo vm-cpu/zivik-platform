@@ -36,7 +36,12 @@
   /* Accents on the light ground must follow the theme too — as literals they
      dropped to 3.3:1 and 2.7:1 on the dark ground. The brand tokens lift
      automatically in dark mode. */
-  --pgold: var(--brand-gold);
+  /* The text variant, not the brand mark. --brand-gold is Pantone 874 C and
+     measures 4.32:1 on --brand-paper-2 and 4.26:1 on --brand-surface — under
+     AA for the 11px labels that use it, which is most section labels here.
+     --pgold also draws hairlines, and a slightly darker gold on a 1px rule is
+     no loss; the brand colour itself is untouched and still available. */
+  --pgold: var(--brand-gold-ink);
   --pred: var(--brand-red);
 
   /* Steps shared with the rest of the site live in globals.css; this one
@@ -63,7 +68,7 @@
    is what it means on the home page, where each band's padding grows to
    max(gutter, (100% - measure) / 2) and every band therefore carries 1180px
    of content. Here the cap sat on the rail's border box, so the content was
-   measure - 2 × gutter: 1036px at every width from 1324px up. The decision
+   measure - 2 × gutter: 1036px at every width from 1440px up. The decision
    page was 144px narrower than the same content on the home page and on the
    registry, and on a 1990px screen it left a 477px void down each side while
    the site header and footer ran to a 28px gutter above and below it. */

@@ -14,7 +14,7 @@ import TakingsGrid from "@/components/cases/TakingsGrid";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
 import { registryCases } from "@/content/cases";
-import CasePending from "@/components/cases/CasePending";
+import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
 import { SUMMARIES } from "@/content/summaries";
 import type { Localized } from "@/content/types";
@@ -46,7 +46,22 @@ const T = {
   found: { uk: "Що встановив Суд", en: "What the Court found" },
   violation: { uk: "Порушення", en: "Violation" },
   noViolation: { uk: "Немає", en: "No violation" },
-  violationsOf: { uk: "порушення з", en: "violations of" },
+  /* The scorecard's noun has to agree with the number printed in front of it,
+     and the number depends on what kind of dispositif this is. Three
+     Ukrainian forms; English reads the same three keys. */
+  ofTotal: { uk: "з", en: "of" },
+  violationWord: {
+    uk: { one: "порушення", few: "порушення", many: "порушень" },
+    en: { one: "violation", few: "violations", many: "violations" },
+  },
+  convictionWord: {
+    uk: { one: "засудження", few: "засудження", many: "засуджень" },
+    en: { one: "conviction", few: "convictions", many: "convictions" },
+  },
+  grantedWord: {
+    uk: { one: "вимогу задоволено", few: "вимоги задоволено", many: "вимог задоволено" },
+    en: { one: "claim upheld", few: "claims upheld", many: "claims upheld" },
+  },
   sources: { uk: "Джерела та коментарі", en: "Sources and commentary" },
   back: { uk: "До реєстру", en: "Back to registry" },
   readJudgment: { uk: "Читати рішення", en: "Read the judgment" },
@@ -64,6 +79,11 @@ const T = {
   minRead: { uk: "{n} хв читання", en: "{n} min read" },
   glossaryH: { uk: "Словник", en: "Glossary" },
   whoH: { uk: "Хто є хто", en: "Who's who" },
+  /* What each actor IS. It used to be carried only by a gold left border on
+     the court, which is not a label a reader can read. */
+  whoKindParty: { uk: "Сторона", en: "Party" },
+  whoKindCourt: { uk: "Суд", en: "Court" },
+  whoKindActor: { uk: "Учасник", en: "Actor" },
   faqH: { uk: "Часті запитання", en: "Common questions" },
   relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
   fullSummary: { uk: "Повне самері", en: "Full summary" },
@@ -74,7 +94,6 @@ const T = {
   notDecided: { uk: "Не розглядалося", en: "Not decided" },
   convicted: { uk: "Засуджено", en: "Convicted" },
   acquitted: { uk: "Виправдано", en: "Acquitted" },
-  grantedOf: { uk: "задоволено з", en: "granted of" },
 
   // Instruments an arbitral award earns.
   allEvents: { uk: "Усе", en: "All" },
@@ -120,6 +139,28 @@ const T = {
   termsInText: { uk: "Терміни в цьому тексті", en: "Terms in this text" },
 } as const;
 
+/**
+ * Ukrainian agreement: 1 порушення, 2–4 порушення, 5+ порушень, with the teens
+ * taking the "many" form and 21 taking "one". English keeps a singular and a
+ * plural and reads the same three keys. Same shape as the registry's helper —
+ * copied rather than imported, because the two surfaces do not share a module.
+ */
+function plural(n: number, forms: { one: string; few: string; many: string }) {
+  const mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 14) return forms.many;
+  const mod10 = n % 10;
+  if (mod10 === 1) return forms.one;
+  if (mod10 >= 2 && mod10 <= 4) return forms.few;
+  return forms.many;
+}
+
+/** What each entry in the cast list is. */
+const WHO_KIND: Record<"party" | "court" | "actor", Localized> = {
+  party: T.whoKindParty,
+  court: T.whoKindCourt,
+  actor: T.whoKindActor,
+};
+
 /** Chrome label for each way a claim can be disposed of. */
 const OUTCOME_LABEL: Record<Outcome, Localized> = {
   violation: T.violation,
@@ -142,7 +183,31 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
   "official/filing": { uk: "процесуальний документ", en: "court filing" },
 };
 
-const MK = uaMap.markers as Record<string, number[]>;
+/**
+ * Markers the atlas does not carry, in the atlas's own projection.
+ *
+ * ukraine-map.json is owned by another process, so these live here instead of
+ * in the asset. They are fitted, not guessed: the asset is a Mercator
+ * projection, and a least-squares fit over its four unambiguous city markers
+ * (hague, kyiv, donetsk, luhansk) recovers it as
+ *
+ *   x = 1449.14 · λ + (−44.24)              λ, φ in radians
+ *   y = 1746.36 − 1449.14 · ln(tan(π/4 + φ/2))
+ *
+ * which reproduces those four to within 1.5px and the two approximate
+ * region markers (paris, simferopol) to within 7px. Helsinki
+ * (60.1699 N, 24.9384 E) therefore lands at (586.5, −170.7) — 171px above the
+ * default 0 0 1000 560 frame, which is why a summary that uses it has to widen
+ * the frame with `mapViewBox`.
+ */
+const EXTRA_MK: Record<string, number[]> = {
+  helsinki: [586.5, -170.7],
+};
+
+const MK: Record<string, number[]> = {
+  ...(uaMap.markers as Record<string, number[]>),
+  ...EXTRA_MK,
+};
 
 const mapContext = (uaMap as { context?: string[] }).context ?? [];
 
@@ -158,6 +223,7 @@ function TheatreMap({
   theatres,
   locale,
   forum,
+  viewBox,
 }: {
   theatres: Theatre[];
   locale: Locale;
@@ -167,13 +233,16 @@ function TheatreMap({
     caption: Localized;
     reachTo: string;
   };
+  /** Per-summary frame override. Omitted, every page keeps the atlas frame. */
+  viewBox?: string;
 }) {
-  const [vw0, vh0, vw, vh] = uaMap.viewBox.split(" ").map(Number);
+  const frame = viewBox ?? uaMap.viewBox;
+  const [vw0, vh0, vw, vh] = frame.split(" ").map(Number);
   const seat = MK[forum.key] ?? MK.hague;
   const reach = MK[forum.reachTo] ?? MK.kyiv;
   return (
     <div className="map-wrap">
-      <svg className="map" viewBox={uaMap.viewBox} role="img" aria-label="Map of Europe">
+      <svg className="map" viewBox={frame} role="img" aria-label="Map of Europe">
         <defs>
           <clipPath id="mapclip">
             <rect x={vw0} y={vh0} width={vw} height={vh} />
@@ -330,9 +399,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
+  if (!isLocale(locale)) return {};
   const summary = SUMMARIES[slug];
-  if (!isLocale(locale) || !summary) return {};
   const dict = await getDictionary(locale);
+  if (!summary) return pendingMetadata({ slug, locale, dict });
   const parties = summary.title
     ? pick(summary.title, locale)
     : summary.masthead.parties.replace(/^\(|\)$/g, "");
@@ -355,9 +425,10 @@ export default async function CasePage({
   const { locale, slug } = await params;
   if (!isLocale(locale)) notFound();
   const summary = SUMMARIES[slug];
-  if (!summary) notFound();
-
   const dict = await getDictionary(locale);
+  // Registry ids without a summary render the pending page; anything else 404s.
+  if (!summary) return <CasePending slug={slug} locale={locale} dict={dict} />;
+
   const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
   const { interpretations, plain, glossary, whoIsWho, faq, related } = summary;
   const { theatres = [], provisionalMeasures = [], timelineTracks = [] } = summary;
@@ -404,10 +475,24 @@ export default async function CasePage({
    * judgment turns on breaches, so it counts violations. An arbitral award
    * turns on what was granted — counting its single expropriation finding as
    * "1 of 9" would badly understate an award the claimant won outright.
+   *
+   * A criminal judgment turns on convictions, and that branch did not exist:
+   * the Outcome union gained convicted/acquitted, OUTCOME_LABEL and the chip
+   * colours were updated, this counter was not. So it fell through to the
+   * inter-State branch and printed Petrovsky's life sentence as "0 порушення
+   * з 3", and MH17's three convictions in absentia as "0 порушення з 4" — a
+   * legal archive stating, in red, that nothing was found. The noun agrees
+   * with the number as well; "0 порушення" was not Ukrainian either.
    */
   const granted = verdicts.filter((v) => v.outcome === "granted").length;
-  const decided = granted > 0 ? granted : violations;
-  const decidedLabel = granted > 0 ? pick(T.grantedOf, locale) : pick(T.violationsOf, locale);
+  const convictions = verdicts.filter((v) => v.outcome === "convicted").length;
+  const [decided, decidedForms] =
+    convictions > 0
+      ? ([convictions, T.convictionWord] as const)
+      : granted > 0
+        ? ([granted, T.grantedWord] as const)
+        : ([violations, T.violationWord] as const);
+  const decidedLabel = `${plural(decided, decidedForms[locale])} ${pick(T.ofTotal, locale)}`;
 
   /** Resolve a Localized pair for this render's locale (client-prop hygiene:
    *  client components receive plain strings, never both languages). */
@@ -536,15 +621,23 @@ export default async function CasePage({
         </Link>
         <div className="eyebrow">
           <span>{pick(forum.institution, locale)}</span>
-          <span className="dot">·</span>
+          <span className="dot" aria-hidden="true">
+            ·
+          </span>
           <span>{pick(forum.seat, locale)}</span>
-          <span className="dot">·</span>
+          <span className="dot" aria-hidden="true">
+            ·
+          </span>
           <span>{masthead.judgment}</span>
-          <span className="dot">·</span>
+          <span className="dot" aria-hidden="true">
+            ·
+          </span>
           <span className="readtime">{readTime}</span>
           {summary.asOf && (
             <>
-              <span className="dot">·</span>
+              <span className="dot" aria-hidden="true">
+            ·
+          </span>
               <span className="readtime">
                 {pick(T.updated, locale)}{" "}
                 {new Date(summary.asOf + "T00:00:00Z").toLocaleDateString(
@@ -605,7 +698,7 @@ export default async function CasePage({
       <section className="dash" id="overview" data-navsec aria-label={pick(T.overview, locale)}>
         <div className="rail dash-stack">
           <div>
-            <div className="lbl">{pick(T.overview, locale)}</div>
+            <h2 className="lbl">{pick(T.overview, locale)}</h2>
             <div className="kpis">
               {stats.map((s, i) => (
                 <div
@@ -619,19 +712,6 @@ export default async function CasePage({
               ))}
             </div>
           </div>
-
-          {theatres.length > 0 && (
-            <div>
-              <div className="lbl">
-                {pick(
-                  summary.theatresHeading ??
-                    (theatres.length > 1 ? T.tracks : T.seatLabel),
-                  locale,
-                )}
-              </div>
-              <TheatreMap theatres={theatres} locale={locale} forum={mapForum} />
-            </div>
-          )}
 
           <div>
             <div className="score-head">
@@ -716,24 +796,52 @@ export default async function CasePage({
             </div>
           )}
 
-          <section id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
-            <div className="lbl">{pick(T.timeline, locale)}</div>
-            <CaseTimeline
-              events={timeline.map((e) => ({
-                date: L(e.date),
-                label: L(e.label),
-                note: e.note && L(e.note),
-                kind: e.kind,
-                track: e.track,
-                iso: e.iso,
-              }))}
-              tracks={timelineTracks.map((t) => ({ id: t.id, label: L(t.label) }))}
-              labels={{
-                all: pick(T.allEvents, locale),
-                openDetail: pick(T.openDetail, locale),
-              }}
-            />
-          </section>
+        </div>
+      </section>
+
+      {/* 2m — Where it was decided and what ground it is about.
+          A wide-format band of its own: the drawing runs edge to edge and only
+          the heading and legend keep the gutter, the way the events map does
+          on the home page. Inside .dash-stack it was a 1036px picture in the
+          middle of the reading column, letterboxed down to 821px of drawing. */}
+      {theatres.length > 0 && (
+        <section className="mapband" aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}>
+          <h2 className="lbl">
+            {pick(
+              summary.theatresHeading ??
+                (theatres.length > 1 ? T.tracks : T.seatLabel),
+              locale,
+            )}
+          </h2>
+          <TheatreMap
+            theatres={theatres}
+            locale={locale}
+            forum={mapForum}
+            viewBox={summary.mapViewBox}
+          />
+        </section>
+      )}
+
+      {/* 2t — Chronology. Its own band, its own heading: it used to be the
+          tail of the dashboard, below the money bars, under a <div> label. */}
+      <section className="chron" id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
+        <div className="rail">
+          <h2 className="lbl">{pick(T.timeline, locale)}</h2>
+          <CaseTimeline
+            events={timeline.map((e) => ({
+              date: L(e.date),
+              label: L(e.label),
+              note: e.note && L(e.note),
+              kind: e.kind,
+              track: e.track,
+              iso: e.iso,
+            }))}
+            tracks={timelineTracks.map((t) => ({ id: t.id, label: L(t.label) }))}
+            labels={{
+              all: pick(T.allEvents, locale),
+              openDetail: pick(T.openDetail, locale),
+            }}
+          />
         </div>
       </section>
 
@@ -900,20 +1008,25 @@ export default async function CasePage({
               Словник" was three levels of naming for one lookup panel. The nav
               names the section; the columns name themselves. */}
           <div className="aids-grid">
-              <div className="aid">
-                <div className="lbl">{pick(T.whoH, locale)}</div>
+              {/* Who's who is a cast list: what each actor is, who they are,
+                  what they did. The glossary below is a dictionary. They used
+                  to be the same bold-name-plus-grey-line pair poured into one
+                  two-column flow, which is why they read as one panel twice. */}
+              <div className="aid aid-who">
+                <h2 className="lbl">{pick(T.whoH, locale)}</h2>
                 <ul className="who">
                   {whoIsWho.map((w, i) => (
                     <li key={i} data-kind={w.kind}>
+                      <span className="who-kind">{pick(WHO_KIND[w.kind], locale)}</span>
                       <b>{pick(w.name, locale)}</b>
-                      <span>{pick(w.role, locale)}</span>
+                      <span className="who-role">{pick(w.role, locale)}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="aid">
-                <div className="lbl">{pick(T.glossaryH, locale)}</div>
+              <div className="aid aid-glossary">
+                <h2 className="lbl">{pick(T.glossaryH, locale)}</h2>
                 <dl className="glossary">
                   {glossary.map((g, i) => (
                     <div key={i} id={`term-${i}`}>

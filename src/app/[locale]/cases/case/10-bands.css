@@ -31,8 +31,11 @@
   color: var(--gold);
   margin-bottom: var(--space-5);
 }
+/* Was var(--rule) — a hairline colour used as text, 1.28:1 on the masthead
+   ground. It is punctuation between two facts, so it needs to be seen, and
+   it is aria-hidden in the markup so it is not read aloud as "middle dot". */
 .casepage .eyebrow .dot {
-  color: var(--rule);
+  color: var(--brand-faint-dark);
 }
 .casepage .eyebrow .readtime {
   color: var(--faint);

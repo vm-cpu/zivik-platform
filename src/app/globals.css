@@ -14,6 +14,13 @@
   --brand-cherry: #c23b32;     /* lit accent on dark scenes */
   --brand-gold: #8a6e4b;       /* ink gold on paper — Pantone 874 C (brandbook
                                   metal accent), 4.60:1 on paper: AA for text */
+  /* The gold as a text colour on the recessed paper bands. Pantone 874 C
+     measures 4.32:1 on --brand-paper-2 and 4.26:1 on --brand-surface — under
+     AA for the 11px labels that carry it, which is most section labels on the
+     site. The brand colour above is not changed; this is the variant for
+     small text, and it clears every paper ground here: 5.61 / 5.42 / 5.10 /
+     5.02 against white, paper, paper-2 and surface. */
+  --brand-gold-ink: #7d6344;
   --brand-gold-lit: #e6b65c;   /* luminous gold in dark / glow contexts */
   --brand-gold-lamp: #d6a24b;  /* lamp-scene gold */
 
