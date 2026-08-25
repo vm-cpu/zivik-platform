@@ -3,7 +3,13 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { isLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import { siteUrl, pathAlternates } from "@/lib/seo";
+import {
+  siteUrl,
+  pathAlternates,
+  ogImage,
+  defaultOgImage,
+} from "@/lib/seo";
+import { localeOpenGraph, alternateOpenGraphLocales } from "@/i18n/config";
 import { pick } from "@/content/types";
 import { MAP_EVENTS, MAP_COURTS } from "@/content/map";
 import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
@@ -42,12 +48,22 @@ export async function generateMetadata({
     },
     openGraph: {
       type: "website",
-      locale,
+      // Open Graph wants language_TERRITORY; a bare "uk" is ignored.
+      locale: localeOpenGraph[locale],
+      alternateLocale: alternateOpenGraphLocales(locale),
       url: `/${locale}/map`,
       siteName: dict.brand.wordmark,
       title,
       description,
-      images: [{ url: "/og/nasvitlo.png", alt: dict.meta.ogAlt }],
+      images: [ogImage(defaultOgImage, dict.meta.ogAlt)],
+    },
+    // A page that sets openGraph and no twitter inherits the layout's card —
+    // so this page used to share as the home page, title, text and image.
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [defaultOgImage],
     },
   };
 }
