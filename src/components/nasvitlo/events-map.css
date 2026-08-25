@@ -85,7 +85,9 @@
 }
 .emap-ua {
   fill: #2b211c;
-  stroke: rgba(214, 162, 75, 0.55);
+  /* The same gold the markers and the oblast mesh are drawn in, mixed rather
+     than written out: an rgba() literal here would not follow the token. */
+  stroke: color-mix(in srgb, var(--brand-gold-lamp) 55%, transparent);
   stroke-width: 0.9;
 }
 
@@ -123,6 +125,17 @@
   fill: transparent;
   stroke: none;
   cursor: pointer;
+  /* `all`, not the default `visiblePainted`. Under `visiblePainted` a shape is
+     only hit-tested where it is actually painted, so the hit circle answers
+     the pointer only for as long as it keeps a fill — and any rule that takes
+     the fill away silently turns the marker into a hole in the drawing. That
+     is exactly what happened: `:focus` below set `fill: none`, the browser
+     focuses an SVG shape on mousedown, and the mouseup then landed on the
+     country underneath. Two different targets means no `click` is delivered to
+     either, so every marker on the map answered the keyboard and ignored the
+     mouse. `all` makes the target's geometry, not its paint, the thing the
+     pointer is tested against. */
+  pointer-events: all;
   /* Unconditionally, not only under :focus-visible. The browser draws its own
      ring around the bounding box of an SVG circle — a blue square with a white
      halo around a round marker — and scoping the reset to one state left that
@@ -131,9 +144,8 @@
 }
 /* `outline` on an SVG circle is drawn as a rectangle — a square box around a
    round marker, which is what made the selected court look wrong. A stroke
-   follows the shape. */
+   follows the shape. The fill stays `transparent` here: see above. */
 .emap-court-hit:focus {
-  fill: none;
   stroke: var(--brand-gold-pale);
   /* non-scaling-stroke, so this is 2.5 real pixels rather than 2.5 projection
      units: the frame now takes the container's shape, so one unit is 1.2px on
@@ -196,10 +208,12 @@
   fill: transparent;
   stroke: none;
   cursor: pointer;
+  /* See .emap-court-hit: the pointer is tested against the circle's geometry,
+     not against whether it currently has paint in it. */
+  pointer-events: all;
   outline: none;
 }
 .emap-hit:focus {
-  fill: none;
   stroke: var(--brand-gold-pale);
   vector-effect: non-scaling-stroke;
   stroke-width: 2.5;
@@ -249,6 +263,17 @@
   top: var(--emap-card-top, 16px);
   max-height: calc(100% - var(--emap-card-top, 16px) - 16px);
   overflow-y: auto;
+  /* A card can be taller than the drawing it floats over — measured, the
+     tallest is The Hague's at 733px, which seats four institutions and lists
+     eight decisions, against 524px of home band at 1440px — and it has always
+     scrolled. What it did not do is say so: macOS draws an overlay scrollbar
+     that is invisible until something moves, so the card simply ended
+     mid-decision and read as broken rather than as scrollable. Asking for a
+     thin, coloured scrollbar opts out of the overlay and leaves a visible
+     track. */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--brand-gold-lamp) 70%, transparent)
+    var(--brand-night-rule);
   width: min(300px, calc(100% - 32px));
   padding: 14px 16px 15px;
   background: var(--brand-night-2);
@@ -256,13 +281,22 @@
   border-left: 3px solid var(--c, var(--brand-gold));
   box-shadow: var(--shadow-dark);
 }
+/* 20×24 measured, so the width was under the 24×24 floor of WCAG 2.5.8 and
+   there is no second control that dismisses the card (Escape is a keyboard
+   route, not a pointer target). A centred flex box of 26px keeps the glyph
+   where it was and clears the floor on both axes. */
 .emap-close {
   position: absolute;
   top: 6px;
   right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  min-height: 26px;
   background: none;
   border: 0;
-  padding: 4px 6px;
+  padding: 0;
   font-size: 16px;
   line-height: 1;
   color: var(--brand-faint-dark);
@@ -410,7 +444,7 @@
   border: 1px solid var(--brand-night-rule);
   border-top: 0;
 }
-.emap-leg-group h3 {
+.emap-leg-group :is(h2, h3) {
   margin: 0 0 9px;
   font: 700 var(--t-micro) / 1 var(--brand-font-body);
   letter-spacing: 0.14em;
@@ -613,12 +647,43 @@
    the card a click opens, and the key to the three colours; the seat list, the
    how-to-read column and the six site cards move to the map's own page.
 
-   The site cards are not merely decoration, though — below 640px the markers
-   are not tappable (see the note above) and this list is the only way in. So
-   it is hidden on the band only where the drawing can actually be used. */
-@media (min-width: 641px) {
+   The site cards are not merely decoration, though — where the markers are not
+   aimable this list is the only way in, so it is hidden on the band only where
+   the drawing can actually be used.
+
+   1000px, not 641px. Measured on the band, in the wide framing the map opens
+   in: a site's hit target renders 24.3px at 1000px, 20.7px at 900, 17.1px at
+   800 and 11.4px at 641 — under the 24px minimum everywhere below about
+   990px — and the two closest markers, MH17 and eastern Ukraine, are 12.8px
+   apart at 1000px and 7.1px at 700. So between 641 and 1000 the old rule hid
+   the only usable interface and left the reader a drawing they could not aim
+   at. The threshold is a media query rather than the component's own
+   [data-coarse], because that attribute is only correct once the client has
+   measured the drawing: keyed off it, this list would flash in and out on
+   every load, and a reader with no JavaScript would never see it at all. */
+@media (min-width: 1000px) {
   .emap-list[data-variant="band"] {
     display: none;
+  }
+}
+
+/* Below the same width, the card stops floating over the drawing and takes its
+   own place under it — the answer a phone already gets, for the same reason.
+   The band's drawing is as tall as its width × 500/1200, so the room the card
+   has shrinks with the window while the card does not: measured, the tallest
+   site card is 408px and the band gives it 339px at 1000px, 297 at 900, 255 at
+   800 and 189 at 641, and what gets cut off is the list of decisions the card
+   exists to carry. Nothing floats here any more, so the frame gets the strip
+   back that was reserved for the card. */
+@media (max-width: 999px) {
+  .emap[data-variant="band"] .emap-card {
+    position: static;
+    width: auto;
+    max-height: none;
+    margin-top: 1px;
+  }
+  .emap[data-variant="band"] .emap-figure {
+    --emap-safe-right: 0px;
   }
 }
 /* On the home band the legend stops being a band of its own. It was a full
@@ -637,7 +702,7 @@
 .emap-legend[data-variant="band"] .emap-leg-group {
   display: contents;
 }
-.emap-legend[data-variant="band"] .emap-leg-group h3 {
+.emap-legend[data-variant="band"] .emap-leg-group :is(h2, h3) {
   display: none;
 }
 .emap-legend[data-variant="band"] .emap-leg-seats {

@@ -80,7 +80,7 @@ export default async function MapPage({
   return (
     <div className="page mappage">
 
-      <main id="content">
+      <main id="content" tabIndex={-1}>
         {/* The masthead rides over the drawing rather than pushing it down the
             page: this is the map's own page, so the map gets the viewport. */}
         <div className="mp-stage">

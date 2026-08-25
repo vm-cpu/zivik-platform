@@ -1,6 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import Link from "next/link";
 import type { EventCategory } from "@/content/map";
 import "./events-map.css";
@@ -192,6 +199,15 @@ interface Box {
 const MIN_W = 120;
 
 /**
+ * How far a press may travel and still count as a click, in CSS pixels.
+ *
+ * Small, because the drawing is not a scrolling surface and a reader aiming at
+ * a marker holds still; large enough that the two or three pixels a hand moves
+ * while pressing a mouse button do not turn a selection into a pan.
+ */
+const DRAG_SLOP = 4;
+
+/**
  * The viewBox that puts `content` where the reader can actually reach it.
  *
  * Two bugs came out of one assumption — that the drawing may use every pixel
@@ -254,6 +270,29 @@ const navOf = (v: { x: number; y: number; w: number; h: number }, fullW: number)
   cx: v.x + v.w / 2,
   cy: v.y + v.h / 2,
 });
+
+/**
+ * The legend's group headings.
+ *
+ * On the home band the map sits under the section's own <h2>, so h3 is the
+ * right level. On the map's own page there is nothing between them and the
+ * <h1>, and h1 → h3 is a skipped level: a reader stepping the outline is told
+ * a rank is missing that never existed. Same headings, the level the surface
+ * it is on actually needs.
+ *
+ * Declared here rather than inside the component: a component defined during
+ * render is a new type on every render, so React unmounts and remounts the
+ * heading each time the selection changes.
+ */
+function LegendH({
+  variant,
+  children,
+}: {
+  variant: "band" | "full";
+  children: ReactNode;
+}) {
+  return variant === "full" ? <h2>{children}</h2> : <h3>{children}</h3>;
+}
 
 export default function EventsMap({
   geo,
@@ -325,6 +364,24 @@ export default function EventsMap({
    * Suspense boundary into client-side rendering, and the whole point of
    * replacing the old iframe was that this map's text ships in the HTML.
    */
+  /**
+   * Write the selection into the address bar, leaving every other parameter
+   * alone. replaceState rather than pushState: a card is a view of the page,
+   * not a page, and six clicks around the drawing should not cost a reader six
+   * presses of Back to leave.
+   */
+  const syncUrl = useCallback((next: { kind: "site" | "court"; key: string } | null) => {
+    const q = new URLSearchParams(window.location.search);
+    q.delete("site");
+    q.delete("court");
+    if (next) q.set(next.kind, next.key);
+    const qs = q.toString();
+    const url = `${window.location.pathname}${qs ? `?${qs}` : ""}${window.location.hash}`;
+    if (url !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
+      window.history.replaceState(null, "", url);
+    }
+  }, []);
+
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const site = q.get("site");
@@ -333,27 +390,62 @@ export default function EventsMap({
     // survives a reload and can be shared as a link. The query string is only
     // legible in the browser — useSearchParams would pull this prerendered
     // page into client rendering to learn it a render earlier.
-    /* eslint-disable react-hooks/set-state-in-effect */
-    if (site && events.some((e) => e.key === site)) setSel({ kind: "site", key: site });
-    else if (court && courts.some((c) => c.key === court)) setSel({ kind: "court", key: court });
-    /* eslint-enable react-hooks/set-state-in-effect */
+    const from =
+      site && events.some((e) => e.key === site)
+        ? ({ kind: "site", key: site } as const)
+        : court && courts.some((c) => c.key === court)
+          ? ({ kind: "court", key: court } as const)
+          : null;
+    /* eslint-disable-next-line react-hooks/set-state-in-effect */
+    if (from) setSel(from);
+    // A parameter that names nothing — a typo, a link to a site that has since
+    // been renamed, or ?site= and ?court= both set, where only the first can
+    // win — used to be left standing in the address bar describing something
+    // the page was not showing. ?site=atlantis drew MH17 and still said
+    // atlantis, and that is the URL the reader would have copied. So the
+    // address bar is rewritten to whatever is actually drawn, which for a
+    // parameter that resolves to nothing is the page's own default: no
+    // parameter at all.
+    if (site !== null || court !== null) syncUrl(from);
     // events/courts are stable per render of the server component
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const select = useCallback((next: { kind: "site" | "court"; key: string } | null) => {
-    setSel(next);
-    const q = new URLSearchParams(window.location.search);
-    q.delete("site");
-    q.delete("court");
-    if (next) q.set(next.kind, next.key);
-    const qs = q.toString();
-    window.history.replaceState(
-      null,
-      "",
-      `${window.location.pathname}${qs ? `?${qs}` : ""}${window.location.hash}`,
-    );
-  }, []);
+  /**
+   * The control that opened the current card.
+   *
+   * Dismissing a card unmounts everything inside it, the close button
+   * included. If the keyboard was in there, the browser drops focus on
+   * <body> — measured: pressing the card's × left activeElement === body, so
+   * the next Tab restarted at the top of the document. Remembering the opener
+   * lets the card hand the keyboard back where it came from.
+   */
+  const openerRef = useRef<HTMLElement | null>(null);
+  const liveRef = useRef<HTMLDivElement>(null);
+
+  const select = useCallback(
+    (next: { kind: "site" | "court"; key: string } | null) => {
+      if (next) {
+        openerRef.current = document.activeElement as HTMLElement | null;
+      } else if (liveRef.current?.contains(document.activeElement)) {
+        openerRef.current?.focus?.();
+      }
+      setSel(next);
+      syncUrl(next);
+    },
+    [syncUrl],
+  );
+
+  /* A card is a popup, and a popup closes on Escape. Until now the only way
+     out was to Tab to the × — and the × dropped focus on <body>. */
+  useEffect(() => {
+    if (!sel) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") select(null);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [sel, select]);
 
   const toggleSite = (key: string) =>
     select(sel?.kind === "site" && sel.key === key ? null : { kind: "site", key });
@@ -398,7 +490,20 @@ export default function EventsMap({
   );
   const [nav, setNav] = useState<Nav>(null);
   const view = useMemo(() => viewFrom(nav, FULL), [nav, FULL]);
-  const close = view.w <= CLOSE.w + 1;
+  /**
+   * Which of the two named framings the reader is actually in, if either.
+   *
+   * "Close" used to mean anything at least as tight as the close framing, so
+   * every step of the plus button past it left "Україна" reading as pressed:
+   * at full zoom, on one corner of one oblast, the control still announced the
+   * whole-country framing as the current one. A control that answers a
+   * question about state has to answer it about the state that exists — zoom
+   * or pan away from a preset and neither preset is what you are looking at.
+   */
+  const near = (a: { x: number; y: number; w: number }, b: { x: number; y: number; w: number }) =>
+    Math.abs(a.w - b.w) < 1 && Math.abs(a.x - b.x) < 1 && Math.abs(a.y - b.y) < 1;
+  const atFull = near(view, FULL);
+  const atClose = near(view, CLOSE);
 
   /** Scale about a point in viewBox units, holding that point still. */
   const zoomBy = useCallback(
@@ -419,36 +524,6 @@ export default function EventsMap({
       }),
     [FULL],
   );
-  /**
-   * Below 640px the markers are decoration, not controls — see the note in
-   * events-map.css. pointer-events alone would leave them in the tab order and
-   * still announced as buttons, so the DOM has to agree with the stylesheet.
-   */
-  const [coarse, setCoarse] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px)");
-    const sync = () => {
-      // A width of zero is not a small screen — it is a browser that has not
-      // laid the page out yet (a background tab, a hidden frame, a tab
-      // restored on startup). Believing it made every marker inert, and
-      // because nothing resizes afterwards there was no second event to bring
-      // the map back: the drawing sat there looking interactive and answered
-      // no clicks at all.
-      const w = window.innerWidth;
-      setCoarse(w > 0 ? w <= 640 : false);
-    };
-    sync();
-    // Both, deliberately: the MediaQueryList change event does not fire in
-    // every environment that changes the viewport, and a stale value here
-    // leaves ten circles announced as buttons that no longer accept a tap.
-    // setCoarse with an unchanged value is a no-op, so the overlap is free.
-    mq.addEventListener("change", sync);
-    window.addEventListener("resize", sync);
-    return () => {
-      mq.removeEventListener("change", sync);
-      window.removeEventListener("resize", sync);
-    };
-  }, []);
   const viewBox = `${view.x} ${view.y} ${view.w} ${view.h}`;
 
   /** Pointer position in viewBox units — what both drag and double-click need. */
@@ -468,8 +543,34 @@ export default function EventsMap({
     [view],
   );
 
-  const drag = useRef<{ id: number; x: number; y: number } | null>(null);
+  /**
+   * A press in progress. `ox`/`oy` is where it began and `x`/`y` where it was
+   * last seen; `on` says whether it has travelled far enough to be a drag
+   * rather than a click.
+   */
+  const drag = useRef<{
+    id: number;
+    x: number;
+    y: number;
+    ox: number;
+    oy: number;
+    on: boolean;
+  } | null>(null);
   const [dragging, setDragging] = useState(false);
+  /**
+   * The last press moved the map, so the click that follows it is the tail of
+   * a drag and must not also pick whatever the pointer came to rest on.
+   * Cleared by the next press, not by the drag ending: the click arrives after
+   * the pointerup, so it has to still be able to see this.
+   */
+  const panned = useRef(false);
+
+  /** End a press, whether it turned into a drag or not. */
+  const endDrag = useCallback((el: Element | null, id: number) => {
+    drag.current = null;
+    setDragging(false);
+    if (el && el.hasPointerCapture(id)) el.releasePointerCapture(id);
+  }, []);
 
   /**
    * How many CSS pixels one projection unit currently renders as.
@@ -533,6 +634,19 @@ export default function EventsMap({
     };
   }, []);
   /**
+   * Is the reader pointing with a finger? Asked of the input device rather
+   * than of the viewport: a narrow desktop window is not a phone, and a tablet
+   * held in landscape is not a desktop.
+   */
+  const [touch, setTouch] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: coarse)");
+    const sync = () => setTouch(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  /**
    * One number, because the frame now carries the container's own aspect
    * ratio: `meet` and `slice` resolve to the same scale, and neither crops.
    */
@@ -541,13 +655,62 @@ export default function EventsMap({
   const px = scale > 0 ? 1 / scale : 0;
   const labelled = scale >= LABEL_MIN_SCALE;
   /**
+   * How wide a site's hit target actually comes out, in CSS pixels.
+   *
+   * The radius is asked for in projection units and rendered at whatever the
+   * container makes of them, and past a point the answer is a target nobody
+   * can hit: measured on the map's own page in the wide framing it comes out
+   * 26.4px at 1440, 24.4 at 1000, 20.8 at 900, 17.2 at 800 and 11.5 at 641 —
+   * and the two closest markers, MH17 and eastern Ukraine, are 12.9px apart at
+   * 1000 and 7.2px at 700, so below about 1000px there is no radius that would
+   * let a reader pick one of the two rather than the other.
+   */
+  const targetPx = 2 * scale * hitR(11, 16, px);
+  /**
+   * How far apart the two closest markers come out, in CSS pixels.
+   *
+   * Targets that overlap are the accepted trade here — MH17 and eastern
+   * Ukraine are 16.9 projection units apart and no radius that clears 24px
+   * also fits between them — and what makes it survivable is that a hit circle
+   * never covers its neighbour's *centre*, so each marker keeps a crescent of
+   * its own. A mouse can aim at a crescent. A finger cannot, and that, not the
+   * viewport width, is what the old `max-width: 640px` was really about.
+   */
+  const gapPx = 16.9 * scale;
+  /**
+   * Whether the drawing is a control surface at all, or a picture of one.
+   *
+   * This used to be `max-width: 640px`, on the reasoning that a phone cannot
+   * aim at the markers — true, but the width was never what made it true. The
+   * scale is. At 800px in the wide framing the targets are 17.2px and two of
+   * them are 9.1px apart, which is no more aimable than a phone; in the close
+   * framing at the same 800px they are 27.8px and 21.4px apart, which is fine.
+   * So the question is asked of the rendered target, exactly as it is for the
+   * labels above: below the 24px floor the drawing stops answering the pointer
+   * and the list underneath is the interface, and pressing "Україна" or the
+   * plus button hands the drawing back.
+   *
+   * On a touch device the two closest markers have to clear the same 24px as
+   * the targets themselves, because a finger has no crescent to aim at: a
+   * phone at 390px in the close framing renders 24.4px targets 12.9px apart,
+   * which passes the first test and fails this one, so the list stays the
+   * interface there exactly as it did before. A tablet in the same framing has
+   * room for both and keeps the drawing.
+   *
+   * It also starts out true, before anything has been measured — which is what
+   * a reader with no JavaScript keeps. That reader cannot select anything, and
+   * fifteen circles announcing themselves as buttons and answering nothing was
+   * the map lying about what it could do.
+   */
+  const coarse = !(targetPx >= 24 && (!touch || gapPx >= 24));
+  /**
    * Court badges are sized in real pixels rather than projection units, like
    * the site labels and unlike the city names beside them, so the answer to a
    * click is legible at the framing the reader is actually in. They are held
-   * back only where the markers themselves are: below 640px the drawing is not
-   * the interface and nine cities are 3px apart.
+   * back where the markers themselves are: a drawing too small to aim at is
+   * too small to carry nine more labels.
    */
-  const badged = !coarse && scale > 0;
+  const badged = !coarse;
   /** The city labels, in projection units, aiming at 11 CSS pixels. */
   const cityF = labelSize(11, 14, px);
 
@@ -607,14 +770,14 @@ export default function EventsMap({
         <div className="emap-zoom" role="group" aria-label={labels.zoomLabel}>
           <button
             type="button"
-            aria-pressed={!close}
+            aria-pressed={atFull}
             onClick={() => setNav(null)}
           >
             {labels.zoomWide}
           </button>
           <button
             type="button"
-            aria-pressed={close}
+            aria-pressed={atClose}
             onClick={() => setNav(navOf(CLOSE, FULL.w))}
           >
             {labels.zoomClose}
@@ -650,45 +813,87 @@ export default function EventsMap({
           role="img"
           aria-label={labels.alt}
           onPointerDown={(ev) => {
-            // Only the ground drags; the markers are buttons.
-            if ((ev.target as Element).closest("[role='button']")) return;
-            drag.current = { id: ev.pointerId, x: ev.clientX, y: ev.clientY };
-            ev.currentTarget.setPointerCapture(ev.pointerId);
-            setDragging(true);
+            // The markers drag too. They used to be excluded — "only the
+            // ground drags" — but a marker's hit circle is measured in
+            // projection units, so it is 26px wide at the opening framing and
+            // 264px wide at full zoom, and at that point most of the picture
+            // is marker: pressing anywhere near the Donbas and pulling simply
+            // did nothing, and the reader could not reach the part of the
+            // country they had zoomed in to see. A press is still a click
+            // until it has travelled; only then does it become a drag.
+            if (ev.button !== 0) return;
+            drag.current = {
+              id: ev.pointerId,
+              x: ev.clientX,
+              y: ev.clientY,
+              ox: ev.clientX,
+              oy: ev.clientY,
+              on: false,
+            };
+            panned.current = false;
           }}
           onPointerMove={(ev) => {
             const d = drag.current;
             if (!d || d.id !== ev.pointerId) return;
+            // Nothing is held down any more, so this is not a drag: the up
+            // went somewhere we never heard about it. Belt and braces beside
+            // onLostPointerCapture below — a released button that still pans
+            // the map is the failure this guards, and neither guard was here
+            // before. Chrome rewrites `buttons` from its own press state, so
+            // this path could not be provoked in a headless test; it costs a
+            // comparison and closes the case that pointercancel does not.
+            if (ev.buttons === 0) {
+              endDrag(ev.currentTarget, ev.pointerId);
+              return;
+            }
+            if (!d.on) {
+              if (Math.hypot(ev.clientX - d.ox, ev.clientY - d.oy) < DRAG_SLOP) return;
+              d.on = true;
+              panned.current = true;
+              // Capture only now. Taken at the press it would retarget the
+              // click that follows onto the <svg>, which is the whole element
+              // — and a marker would never be selectable by mouse again.
+              ev.currentTarget.setPointerCapture(ev.pointerId);
+              setDragging(true);
+            }
             const r = ev.currentTarget.getBoundingClientRect();
             const dx = ((ev.clientX - d.x) / r.width) * view.w;
             const dy = ((ev.clientY - d.y) / r.height) * view.h;
-            drag.current = { ...d, x: ev.clientX, y: ev.clientY };
+            d.x = ev.clientX;
+            d.y = ev.clientY;
             setNav((prev) => {
               const v = viewFrom(prev, FULL);
               return navOf(clamp({ ...v, x: v.x - dx, y: v.y - dy }, FULL), FULL.w);
             });
           }}
           onPointerUp={(ev) => {
+            if (drag.current?.id === ev.pointerId) endDrag(ev.currentTarget, ev.pointerId);
+          }}
+          onPointerCancel={(ev) => endDrag(ev.currentTarget, ev.pointerId)}
+          onLostPointerCapture={(ev) => {
             if (drag.current?.id === ev.pointerId) {
               drag.current = null;
               setDragging(false);
             }
           }}
-          onPointerCancel={() => {
-            drag.current = null;
-            setDragging(false);
-          }}
-          onWheel={
-            variant === "full"
-              ? (ev) => {
-                  // Only where the map owns the viewport. In the home band this
-                  // would swallow the page scroll and trap the reader mid-page.
-                  const p = atPointer(ev);
-                  zoomBy(ev.deltaY > 0 ? 1.12 : 1 / 1.12, p?.x, p?.y);
-                }
-              : undefined
-          }
+          /* No wheel handler, on either variant.
+             It used to zoom on the map's own page, on the reasoning that there
+             the map owns the viewport. It does not: the legend and the list of
+             six sit below the drawing, so the page scrolls — and because a
+             React wheel listener is passive, the scroll could not be
+             suppressed even in principle. Measured, one wheel notch over the
+             drawing zoomed the map out *and* scrolled the page 120px, so a
+             reader on their way down to the legend arrived there having lost
+             the framing they had chosen. Binding it properly would mean
+             swallowing the wheel over an element that fills the screen, which
+             is the trap the band was careful to avoid. The two framings, the
+             plus and minus buttons, double-click and drag remain, and both
+             variants now behave the same way. */
           onDoubleClick={(ev) => {
+            // Not on a marker: two clicks there have already selected it and
+            // deselected it again, and zooming into a card that just closed
+            // itself is the worst of both answers.
+            if ((ev.target as Element).closest("[role='button']")) return;
             const p = atPointer(ev);
             zoomBy(0.6, p?.x, p?.y);
           }}
@@ -821,8 +1026,18 @@ export default function EventsMap({
                   tabIndex={coarse ? -1 : 0}
                   aria-label={coarse ? undefined : c.city}
                   aria-pressed={coarse ? undefined : on}
-                  onClick={() => toggleCourt(c.key)}
+                  onClick={() => {
+                    // The tail of a drag, not a pick: the press began here and
+                    // the pointer travelled before it came up.
+                    if (panned.current) return;
+                    toggleCourt(c.key);
+                  }}
                   onKeyDown={(ev) => {
+                    // Not on auto-repeat. Held down, Enter toggled the
+                    // selection thirty times a second: the card blinked in and
+                    // out and the light ran the connectors again on every
+                    // frame, which is a strobe, not a control.
+                    if (ev.repeat) return;
                     if (ev.key === "Enter" || ev.key === " ") {
                       ev.preventDefault();
                       toggleCourt(c.key);
@@ -888,8 +1103,12 @@ export default function EventsMap({
                 aria-label={coarse ? undefined : e.title}
                   aria-pressed={sel?.kind === "site" && sel.key === e.key}
                   tabIndex={coarse ? -1 : 0}
-                  onClick={() => toggleSite(e.key)}
+                  onClick={() => {
+                    if (panned.current) return;
+                    toggleSite(e.key);
+                  }}
                   onKeyDown={(ev) => {
+                    if (ev.repeat) return;
                     if (ev.key === "Enter" || ev.key === " ") {
                       ev.preventDefault();
                       toggleSite(e.key);
@@ -935,7 +1154,7 @@ export default function EventsMap({
 
       {/* Clicking a dot changes a panel that can be 800px away. Without a
           live region a screen-reader user hears nothing at all. */}
-      <div className="emap-live" aria-live="polite" aria-atomic="true">
+      <div className="emap-live" ref={liveRef} aria-live="polite" aria-atomic="true">
       {selected && (
         <div className="emap-card">
           <button
@@ -1064,7 +1283,7 @@ export default function EventsMap({
           matches by sight rather than by reading a colour word. */}
       <div className="emap-legend" data-variant={variant}>
         <div className="emap-leg-group">
-          <h3>{labels.legendWhat}</h3>
+          <LegendH variant={variant}>{labels.legendWhat}</LegendH>
           <ul>
             <li className="emap-key">
               <svg viewBox="0 0 22 22" aria-hidden="true">
@@ -1086,7 +1305,7 @@ export default function EventsMap({
             sees three site marks and no key to the rings the courts are drawn
             as, which are half the picture. */}
         <div className="emap-leg-group">
-            <h3>{labels.legendHow}</h3>
+            <LegendH variant={variant}>{labels.legendHow}</LegendH>
             <ul>
             <li className="emap-key">
               <svg viewBox="0 0 22 22" aria-hidden="true">
@@ -1115,7 +1334,7 @@ export default function EventsMap({
 
         {variant === "full" && (
           <div className="emap-leg-group emap-leg-seats">
-            <h3>{labels.courtsSeat}</h3>
+            <LegendH variant={variant}>{labels.courtsSeat}</LegendH>
             <ul>
               {courts.map((c) => (
                 <li key={c.key}>
