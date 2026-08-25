@@ -1,0 +1,185 @@
+/* ============================================================
+   Newsletter — the sign-off band.
+
+   Scope: every rule is under `.nsv-newsletter`, so nothing here can reach
+   another surface. Imported by the component that renders it
+   (components/nasvitlo/Newsletter.tsx), never by a layout.
+
+   Ground: the band stays on paper. Inverting it to --brand-night was the
+   obvious way to let the primary control glow, but the footer immediately
+   below Partners is already --brand-ink-black, so a dark band here would
+   read paper / dark / paper / dark down the last screen of the page — the
+   stripe problem the brief warns about. The light lives in the control
+   instead: the pill is the lamp (night shade, lit-gold label, a warm pool
+   spilling onto the paper under it), which is the same idiom as the hero's
+   .btn-lit and the registry legend's lit mark, borrowed at control scale.
+
+   Colour: --brand-* tokens only. No literals — every value below is a token
+   or a color-mix() of one, so it follows the palette.
+   ============================================================ */
+
+.nsv-newsletter {
+  position: relative;
+  z-index: 3;
+  padding: var(--space-10) var(--space-7);
+  background: var(--brand-paper-2);
+  border-top: 1px solid var(--brand-rule);
+}
+
+/* The grid lives on an inner element on purpose. home.css still carries a
+   `.nsv-newsletter{flex-direction:column !important;gap:16px !important}` rule
+   from the old flex row; leaving the root a plain block makes that rule inert
+   instead of fighting it (it is dead CSS now — see the report). */
+.nsv-newsletter .nsv-news-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(248px, 320px);
+  align-items: start;
+  gap: var(--space-8) clamp(32px, 5vw, 72px);
+}
+
+/* ---- invitation ---------------------------------------------------- */
+
+/* (0,2,0) beats the `.page h2` reset at (0,1,1). */
+.nsv-newsletter .nsv-news-heading {
+  margin: 0 0 var(--space-3);
+  max-width: 24ch;
+  font: 400 var(--t-h3) / 1.25 var(--brand-font-display), Georgia, serif;
+  letter-spacing: -0.012em;
+  color: var(--brand-ink);
+  text-wrap: balance;
+}
+
+.nsv-newsletter .nsv-news-text {
+  margin: 0;
+  max-width: 46ch;
+  font: 400 var(--t-sm) / 1.6 var(--brand-font-body), sans-serif;
+  color: var(--brand-ink-2);
+}
+
+/* ---- actions --------------------------------------------------------
+   One column, in the order a reader decides in: do the thing, be reassured
+   about doing it, then the other thing. */
+
+.nsv-newsletter .nsv-news-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+/* The primary control. Specificity (0,3,1) clears the page-wide
+   `.page a:not(…)` link colour at (0,2,2). */
+.page .nsv-newsletter a.nsv-news-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-3) var(--space-6);
+  border: 0;
+  border-radius: var(--r-pill);
+  background: var(--brand-night);
+  color: var(--brand-gold-lit);
+  font: 700 var(--t-cap) / 1 var(--brand-font-body), sans-serif;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  /* A seated shadow plus the warm pool the lamp casts on the page. */
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--brand-ink) 16%, transparent),
+    0 12px 28px -14px color-mix(in srgb, var(--brand-gold-lamp) 90%, transparent);
+  transition:
+    background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+.page .nsv-newsletter a.nsv-news-cta:hover {
+  background: var(--brand-night-2);
+  color: var(--brand-gold-bright);
+  transform: translateY(-1px);
+  box-shadow:
+    0 2px 4px color-mix(in srgb, var(--brand-ink) 18%, transparent),
+    0 16px 34px -12px var(--brand-gold-lamp);
+}
+
+.page .nsv-newsletter a.nsv-news-cta:active {
+  transform: none;
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--brand-ink) 20%, transparent),
+    0 8px 20px -14px color-mix(in srgb, var(--brand-gold-lamp) 90%, transparent);
+}
+
+/* The lit mark — the registry legend's "analysed" dot, inside the button. */
+.nsv-newsletter .nsv-news-lit {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--brand-gold-lit);
+  box-shadow: 0 0 10px 1px color-mix(in srgb, var(--brand-gold-lit) 75%, transparent);
+}
+
+.nsv-newsletter .nsv-news-assurance {
+  margin: 0;
+  max-width: 36ch;
+  font: 400 var(--t-cap) / 1.5 var(--brand-font-body), sans-serif;
+  color: var(--brand-faint);
+}
+
+/* The secondary ask. A link, not a second button: quieter face, quieter
+   colour, and set off from the subscribe group by space rather than a rule
+   (a hairline here reads as a band divider once the column goes full width). */
+.page .nsv-newsletter a.nsv-news-support {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 24px;
+  margin-top: var(--space-3);
+  padding-block: var(--space-2);
+  font: 400 var(--t-sm) / 1.4 var(--brand-font-body), sans-serif;
+  color: var(--brand-gold-ink);
+  /* The rule belongs to the words, not to the arrow: underlining the whole
+     inline-flex drew a second stub under the glyph with a gap in between. */
+  text-decoration: none;
+  transition: color var(--dur) var(--ease);
+}
+
+.nsv-newsletter .nsv-news-support-label {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, var(--brand-gold-ink) 42%, transparent);
+  transition: text-decoration-color var(--dur) var(--ease);
+}
+
+.nsv-newsletter .nsv-news-arrow {
+  transition: transform var(--dur) var(--ease);
+}
+
+.page .nsv-newsletter a.nsv-news-support:hover {
+  color: var(--brand-ink);
+}
+
+.page .nsv-newsletter a.nsv-news-support:hover .nsv-news-support-label {
+  text-decoration-color: currentColor;
+}
+
+.page .nsv-newsletter a.nsv-news-support:hover .nsv-news-arrow {
+  transform: translateX(3px);
+}
+
+/* ---- narrow --------------------------------------------------------- */
+/* One column before the 320px action rail starts squeezing the invitation.
+   The gutter stays at --space-7 so this band shares a left edge with the
+   registry and partners bands above and below it. */
+@media (max-width: 820px) {
+  .nsv-newsletter .nsv-news-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  .nsv-newsletter .nsv-news-actions {
+    align-self: stretch;
+  }
+}
