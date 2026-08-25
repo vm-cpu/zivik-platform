@@ -343,6 +343,10 @@ export const hagueMh17: DecisionSummary = {
     },
   ],
 
+  /* Same as finland-torden: a criminal trial captioned "seat of arbitration". */
+
+  theatresHeading: { uk: "Де це сталося", en: "Where it happened" },
+
   mapFocus: { forumKey: "hague", reachTo: "donetsk" },
 
   theatres: [

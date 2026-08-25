@@ -59,13 +59,18 @@
    box is 203px wide and the content starts at 130px, so it sat on top of the
    text; the old threshold assumed a narrower rail. 1700px is the first width
    where 203px plus a gap fits beside a 1180px column, and the horizontal bar
-   covers everything below that. */
+   covers everything below that.
+   The offset is 203 (the rail) + 32 (--space-8, the gap to the text). It used
+   to be 203 + 24, which was measured against a content edge that sat one
+   gutter inside the rail box; now that --measure is the content width the
+   text edge moved 72px left, and 24px would have put the rail's border a
+   hair off the first character of every line. */
 @media (min-width: 1700px) {
   .casepage .pagenav-v {
     display: block;
     position: fixed;
     top: 50%;
-    left: max(24px, calc((100vw - var(--measure)) / 2 - 227px));
+    left: max(24px, calc((100vw - var(--measure)) / 2 - 235px));
     transform: translateY(-50%);
     z-index: 6;
     background: var(--brand-night);

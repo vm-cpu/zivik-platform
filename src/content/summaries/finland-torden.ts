@@ -300,6 +300,13 @@ export const finlandTorden: DecisionSummary = {
     },
   ],
 
+  /* A district court trying an individual for war crimes has no "seat of
+   arbitration". With one theatre and no heading of its own the template fell
+   back to that label, so a criminal conviction was captioned with the
+   vocabulary of an investor-state dispute. */
+
+  theatresHeading: { uk: "Де це сталося", en: "Where it happened" },
+
   mapFocus: { forumKey: "hague", reachTo: "luhansk" },
 
   theatres: [
