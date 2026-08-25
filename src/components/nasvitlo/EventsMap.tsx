@@ -54,6 +54,7 @@ export default function EventsMap({
   courts,
   labels,
   locale,
+  variant = "full",
 }: {
   geo: MapGeometry;
   events: MapEventR[];
@@ -83,6 +84,13 @@ export default function EventsMap({
     zoomClose: string;
   };
   locale: string;
+  /**
+   * "band" is the home page: the drawing, a card when a dot is picked, and a
+   * key to the three colours. Nothing else — the seat list, the how-to-read
+   * column and the row of six site cards belong on the map's own page, where
+   * there is room to read them.
+   */
+  variant?: "band" | "full";
 }) {
   /**
    * One selection, of either kind. Sites and courts are two ends of the same
@@ -432,7 +440,7 @@ export default function EventsMap({
         engines and to anyone not using a pointing device; this list is the
         map's actual payload, and on a narrow screen it is the whole map.
       */}
-      <ul className="emap-list">
+      <ul className="emap-list" data-variant={variant}>
         {events.map((e) => (
           <li key={e.key} data-cat={e.category}>
             <button
@@ -460,7 +468,7 @@ export default function EventsMap({
           size of a dot, and what a city on the rim is. The court seats were a
           `title` tooltip — invisible on a touch screen and to a screen reader
           — so they are written out. */}
-      <div className="emap-legend">
+      <div className="emap-legend" data-variant={variant}>
         <div className="emap-leg-group">
           <h3>{labels.legendWhat}</h3>
           <ul>
@@ -484,6 +492,7 @@ export default function EventsMap({
           </ul>
         </div>
 
+        {variant === "full" && (
         <div className="emap-leg-group">
           <h3>{labels.legendHow}</h3>
           <ul>
@@ -504,7 +513,9 @@ export default function EventsMap({
             </li>
           </ul>
         </div>
+        )}
 
+        {variant === "full" && (
         <div className="emap-leg-group emap-leg-seats">
           <h3>{labels.courtsSeat}</h3>
           <ul>
@@ -516,6 +527,7 @@ export default function EventsMap({
             ))}
           </ul>
         </div>
+        )}
       </div>
     </div>
   );

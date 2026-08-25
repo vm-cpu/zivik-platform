@@ -111,6 +111,7 @@ export default function MapSection({
             },
           }}
           locale={locale}
+          variant="band"
         />
       </div>
     </div>

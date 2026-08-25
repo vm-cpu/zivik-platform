@@ -27,7 +27,7 @@
   width: 100%;
   /* aspect-ratio rather than a fixed height, so "meet" never letterboxes and
      "slice" never crops the Black Sea markers out of the frame. */
-  aspect-ratio: 1200 / 460;
+  aspect-ratio: 1200 / 500;
   background: var(--brand-night);
   border: 1px solid var(--brand-night-rule);
 }
@@ -65,9 +65,14 @@
   stroke: none;
   cursor: pointer;
 }
+/* `outline` on an SVG circle is drawn as a rectangle — a square box around a
+   round marker, which is what made the selected court look wrong. A stroke
+   follows the shape. */
 .emap-court-hit:focus-visible {
-  outline: 2px solid var(--brand-gold-pale);
-  outline-offset: 2px;
+  outline: none;
+  fill: none;
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2;
 }
 .emap-court-dot {
   fill: none;
@@ -131,8 +136,10 @@
   cursor: pointer;
 }
 .emap-hit:focus-visible {
-  outline: 2px solid var(--brand-gold-pale);
-  outline-offset: 2px;
+  outline: none;
+  fill: none;
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2;
 }
 .emap-dot {
   pointer-events: none;
@@ -140,10 +147,7 @@
 .emap-dot:hover {
   r: 8;
 }
-.emap-dot:focus-visible {
-  outline: 2px solid var(--brand-gold-pale);
-  outline-offset: 3px;
-}
+
 
 /* ---- the card ---- */
 .emap-card {
@@ -623,4 +627,27 @@
   .emap-svg {
     transition: all var(--dur) var(--ease);
   }
+}
+
+/* ---- the home band ---- */
+/* On the home page the map is one section among a dozen. It keeps the drawing,
+   the card a click opens, and the key to the three colours; the seat list, the
+   how-to-read column and the six site cards move to the map's own page.
+
+   The site cards are not merely decoration, though — below 640px the markers
+   are not tappable (see the note above) and this list is the only way in. So
+   it is hidden on the band only where the drawing can actually be used. */
+@media (min-width: 641px) {
+  .emap-list[data-variant="band"] {
+    display: none;
+  }
+}
+.emap-legend[data-variant="band"] {
+  grid-template-columns: 1fr;
+  padding-block: 15px;
+}
+.emap-legend[data-variant="band"] .emap-leg-group ul {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px 26px;
 }
