@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { EventCategory } from "@/content/map";
 import "./events-map.css";
 
@@ -32,6 +33,8 @@ export interface MapEventR {
   forums: string;
   count: string;
   open?: boolean;
+  /** Decisions this site leads to. Empty means nothing is summarised yet. */
+  cases: { slug: string; title: string; forum: string }[];
 }
 export interface MapCourtR {
   key: string;
@@ -50,6 +53,7 @@ export default function EventsMap({
   events,
   courts,
   labels,
+  locale,
 }: {
   geo: MapGeometry;
   events: MapEventR[];
@@ -60,7 +64,19 @@ export default function EventsMap({
     courtsSeat: string;
     categories: { hr: string; war: string; asset: string };
     court: string;
+    /** Heading above the decision links inside a card. */
+    reads: string;
+    /** Shown where a site has no summarised decision yet. */
+    pending: string;
+    /** Marker-size key: a bigger dot means more proceedings. */
+    sizeKey: string;
+    /** Legend group headings. */
+    legendWhat: string;
+    legendHow: string;
+    /** What the dashed line means. */
+    legendLine: string;
   };
+  locale: string;
 }) {
   const [active, setActive] = useState<string | null>(
     events.find((e) => e.open)?.key ?? null,
@@ -164,6 +180,27 @@ export default function EventsMap({
           <p className="emap-note">{selected.note}</p>
           <div className="emap-forums">{selected.forums}</div>
           <div className="emap-count">{selected.count}</div>
+
+          {/* The point of the map. Until now a reader could see that MH17 is
+              heard in Strasbourg and The Hague and had no way to reach either
+              decision from here. */}
+          {selected.cases.length > 0 ? (
+            <div className="emap-reads">
+              <div className="emap-reads-h">{labels.reads}</div>
+              <ul>
+                {selected.cases.map((c) => (
+                  <li key={c.slug}>
+                    <Link href={`/${locale}/cases/${c.slug}`}>
+                      <span className="emap-read-t">{c.title}</span>
+                      {c.forum && <span className="emap-read-f">{c.forum}</span>}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="emap-pending">{labels.pending}</p>
+          )}
         </div>
       )}
       </div>
@@ -185,35 +222,68 @@ export default function EventsMap({
               <span className="emap-li-title">{e.title}</span>
               <span className="emap-li-forums">{e.forums}</span>
               <span className="emap-li-count">{e.count}</span>
+              <span
+                className="emap-li-reads"
+                data-empty={e.cases.length === 0 ? "" : undefined}
+              >
+                {e.cases.length > 0 ? `${labels.reads} · ${e.cases.length}` : labels.pending}
+              </span>
             </button>
           </li>
         ))}
       </ul>
 
-      {/* Legend for what the colours mean. The old one described the map
-          this replaced — one kind of event and one kind of court — and had
-          stopped matching what is drawn. */}
+      {/* The legend named the four colours and stopped there, which left the
+          three things a reader has to decode unexplained: the dashed line, the
+          size of a dot, and what a city on the rim is. The court seats were a
+          `title` tooltip — invisible on a touch screen and to a screen reader
+          — so they are written out. */}
       <div className="emap-legend">
-        {(["hr", "war", "asset"] as const).map((cat) => (
-          <span key={cat} className="emap-key" data-cat={cat}>
-            <i />
-            {labels.categories[cat]}
-          </span>
-        ))}
-        <span className="emap-key emap-key-court">
-          <i />
-          {labels.court}
-        </span>
-      </div>
+        <div className="emap-leg-group">
+          <h3>{labels.legendWhat}</h3>
+          <ul>
+            {(["hr", "war", "asset"] as const).map((cat) => (
+              <li key={cat} className="emap-key" data-cat={cat}>
+                <i />
+                {labels.categories[cat]}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <p className="emap-courts">
-        <span>{labels.courtsSeat}</span>
-        {courts.map((c) => (
-          <span key={c.key} title={c.seats}>
-            {c.city}
-          </span>
-        ))}
-      </p>
+        <div className="emap-leg-group">
+          <h3>{labels.legendHow}</h3>
+          <ul>
+            <li className="emap-key emap-key-court">
+              <i />
+              {labels.court}
+            </li>
+            <li className="emap-key emap-key-line">
+              <i />
+              {labels.legendLine}
+            </li>
+            <li className="emap-key emap-key-size">
+              <i>
+                <b />
+                <b />
+              </i>
+              {labels.sizeKey}
+            </li>
+          </ul>
+        </div>
+
+        <div className="emap-leg-group emap-leg-seats">
+          <h3>{labels.courtsSeat}</h3>
+          <ul>
+            {courts.map((c) => (
+              <li key={c.key}>
+                <span className="emap-seat-city">{c.city}</span>
+                <span className="emap-seat-list">{c.seats}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

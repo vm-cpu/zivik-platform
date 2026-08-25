@@ -2,6 +2,8 @@ import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { MAP_EVENTS, MAP_COURTS } from "@/content/map";
+import { caseLinksFor } from "@/content/map-links";
+import Link from "next/link";
 import geo from "@/content/europe-map.json";
 import EventsMap from "./EventsMap";
 
@@ -20,10 +22,13 @@ export default function MapSection({
   return (
     <div
       id="map"
+      className="nsv-mapband"
       style={{
         position: "relative",
         zIndex: 3,
-        padding: "10px 28px 40px",
+        /* No side padding: the drawing runs edge to edge and only the heading
+           is inset. The measure cap in home.css skips this band. */
+        padding: "10px 0 40px",
         background: "var(--paper)",
         scrollMarginTop: 16,
       }}
@@ -57,8 +62,9 @@ export default function MapSection({
             {dict.mapSection.description}
           </p>
         </div>
-        {/* A "full map" link returns with a localised map page; /atlas is
-            still unlocalised and on the old caseflows brand. */}
+        <Link href={`/${locale}/map`} className="nsv-map-full">
+          {dict.mapSection.fullMap}
+        </Link>
       </div>
       <div className="nsv-map">
         <EventsMap
@@ -74,6 +80,7 @@ export default function MapSection({
             forums: pick(e.forums, locale),
             count: pick(e.count, locale),
             open: e.open,
+            cases: caseLinksFor(e.key, locale),
           }))}
           courts={MAP_COURTS.map((c) => ({
             key: c.key,
@@ -87,12 +94,19 @@ export default function MapSection({
             close: dict.mapSection.close,
             courtsSeat: dict.mapSection.courtsSeat,
             court: dict.mapSection.legendCourt,
+            reads: dict.mapSection.reads,
+            pending: dict.mapSection.pending,
+            sizeKey: dict.mapSection.sizeKey,
+            legendWhat: dict.mapSection.legendWhat,
+            legendHow: dict.mapSection.legendHow,
+            legendLine: dict.mapSection.legendLine,
             categories: {
               hr: dict.mapSection.legendHr,
               war: dict.mapSection.legendWar,
               asset: dict.mapSection.legendAsset,
             },
           }}
+          locale={locale}
         />
       </div>
     </div>

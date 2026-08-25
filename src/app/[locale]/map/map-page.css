@@ -1,0 +1,79 @@
+/* ============================================================================
+   The map on its own page.
+
+   Own palette, like .casepage, .registrypage and .teampage: every surface
+   reads from --brand-* rather than borrowing a scale from another stylesheet.
+   Borrowing is what left the registry unreadable when home.css stopped
+   loading everywhere.
+   ========================================================================== */
+.mappage {
+  --red: var(--brand-red);
+  --redd: var(--brand-red-dark);
+  --paper: var(--brand-paper);
+  --ink: var(--brand-ink);
+  --ink2: var(--brand-ink-2);
+  --faint: var(--brand-faint);
+  --rule: var(--brand-rule);
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--brand-font-body), sans-serif;
+}
+/* Scoped to the masthead, not the whole surface: as `.mappage a` this ties on
+   specificity with `.nsv-mobnav a` and repaints the mobile menu red on its
+   dark ground. */
+.mappage .mp-mast a {
+  color: var(--red);
+  text-decoration: none;
+}
+.mappage .mp-mast a:hover {
+  color: var(--redd);
+}
+
+.mp-mast {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 42px clamp(20px, 5vw, 44px) 26px;
+}
+.mp-back {
+  display: inline-block;
+  margin-bottom: 18px;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.mp-mast h1 {
+  margin: 0 0 12px;
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(28px, 4.4vw, 40px);
+  line-height: 1.1;
+  color: var(--ink);
+}
+.mp-lede {
+  margin: 0;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+
+/* The point of the page: the drawing gets the width the home band cannot
+   spare, and a taller frame with it. */
+.mp-stage {
+  padding-bottom: 64px;
+}
+.mp-stage .emap-svg {
+  aspect-ratio: 1200 / 620;
+  border-left: 0;
+  border-right: 0;
+}
+.mp-stage .emap-list,
+.mp-stage .emap-legend {
+  border-left: 0;
+  border-right: 0;
+}
+@media (max-width: 640px) {
+  .mp-stage .emap-svg {
+    aspect-ratio: 4 / 3;
+  }
+}

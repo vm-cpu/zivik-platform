@@ -30,6 +30,14 @@ export interface MapEvent {
   count: Localized;
   /** Opened by default — the card the map leads with. */
   open?: boolean;
+  /**
+   * Slugs in SUMMARIES this site leads to. Assigned from what each decision is
+   * actually about, not from the forum: Oschadbank is a Crimea case but its
+   * arbitration sat in Paris, so the seat on the map says nothing about it.
+   * Checked at build time in `map-links.ts` — a typo would otherwise render a
+   * link to a 404.
+   */
+  cases?: string[];
 }
 
 export interface MapCourt {
@@ -75,6 +83,7 @@ export const MAP_COURTS: MapCourt[] = [
 export const MAP_EVENTS: MapEvent[] = [
   {
     key: "crimea",
+    cases: ["icj-cerd-icsft", "oschadbank", "dtek-krymenergo"],
     category: "hr",
     size: 26,
     when: { uk: "Окупація · 2014", en: "Occupation · 2014" },
@@ -92,6 +101,8 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "kerch",
+    // No `cases`: ITLOS and the PCA arbitration over the vessels are both
+    // still unwritten. The card says so rather than linking nowhere.
     category: "asset",
     size: 22,
     when: { uk: "Затримання · 2018", en: "Seizure · 2018" },
@@ -109,6 +120,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "mh17",
+    cases: ["hague-mh17", "echr-ukraine-netherlands"],
     category: "war",
     size: 24,
     when: { uk: "MH17 · 17.07.2014", en: "MH17 · 17 July 2014" },
@@ -127,6 +139,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "donbas",
+    cases: ["echr-ukraine-netherlands", "icj-cerd-icsft", "icj-genocide", "finland-torden"],
     category: "war",
     size: 19,
     when: { uk: "Схід · 2014", en: "The east · 2014" },
@@ -141,6 +154,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "energy",
+    cases: ["dtek-krymenergo"],
     category: "asset",
     size: 19,
     when: { uk: "Енергетика · 2020", en: "Energy · 2020" },
@@ -155,6 +169,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "mariupol",
+    cases: ["icc-ukraine"],
     category: "war",
     size: 18,
     when: { uk: "2022", en: "2022" },

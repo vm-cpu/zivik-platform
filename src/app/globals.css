@@ -17,6 +17,18 @@
   --brand-gold-lit: #e6b65c;   /* luminous gold in dark / glow contexts */
   --brand-gold-lamp: #d6a24b;  /* lamp-scene gold */
 
+  /* Events-map categories. The map is the one dark scene where colour carries
+     meaning, and the paper hues do not survive it: --brand-red as the card's
+     over-title measured 1.69:1 on --brand-night-2 and its dot was barely
+     visible on the drawing. These are the lit variants, checked as text on
+     both dark grounds (5.13 / 7.59 / 5.68 on night-2).
+     They lived as `--hr/--war/--asset` inside events-map.css, one of them a
+     bare hex — a literal in a component stylesheet is exactly what the design
+     contract forbids. */
+  --brand-map-hr: #e0665a;     /* human rights */
+  --brand-map-war: #d6a24b;    /* war crimes */
+  --brand-map-asset: #6e97be;  /* seizure of assets */
+
   /* Light surfaces. A near-neutral ramp with only a whisper of warmth, so the
      cherry and gold carry all the colour. (Replaced the beige/cream paper —
      it dated the whole site and muddied the accents.) */
@@ -87,7 +99,10 @@
   --brand-gold-mark: #c79a3c;  /* "analysed / lit" indicator gold */
   --brand-gold-bright: #e3bc6a;/* bright end of gold gradient */
   --brand-muted-dark: #c9afa8; /* muted text on cherry / dark scenes */
-  --brand-faint-dark: #8e736c; /* faint text on dark */
+  /* Measured against both dark grounds the site actually uses: 4.90:1 on
+     --brand-night and 4.58:1 on --brand-night-2. It was #8e736c, which is
+     4.43 and 4.29 — under AA on every dark surface it was named for. */
+  --brand-faint-dark: #9c8279; /* faint text on dark */
   --brand-muted-brown: #6e574f;/* footer legal / low-emphasis */
   --brand-cream-warm: #fff8ea; /* text on solid red buttons */
   --brand-ink-black: #0e0504;  /* darkest surface (footer) */
