@@ -309,16 +309,21 @@ export const icjCerdIcsft: DecisionSummary = {
     },
     {
       track: "Provisional measures",
+      // Without this the Ukrainian page prints the English key as a section
+      // heading in the middle of the verdict matrix.
+      trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
       claim: { uk: "Збереження заборони Меджлісу", en: "Maintaining the ban on the Mejlis" },
       outcome: "violation",
     },
     {
       track: "Provisional measures",
+      trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
       claim: { uk: "Загострення спору", en: "Aggravating / extending the dispute" },
       outcome: "violation",
     },
     {
       track: "Provisional measures",
+      trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
       claim: { uk: "Інші вимоги", en: "All other submissions" },
       outcome: "no-violation",
     },

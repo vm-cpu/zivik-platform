@@ -51,7 +51,26 @@ export default function CaseTimeline({
   };
 
   const shown = useMemo(
-    () => events.filter((e) => active === "all" || !e.track || e.track === active),
+    () =>
+      events
+        .filter((e) => active === "all" || !e.track || e.track === active)
+        // The rail places its dots from `iso`, but the list printed the array
+        // in authoring order — so oschadbank showed 24 July 2025 above 1 July,
+        // a chronology out of chronological order. Sorting here fixes it for
+        // every page and cannot be undone by the next person to append an
+        // event. Entries without `iso` keep their authored position relative
+        // to each other and sort last, since they carry no date to place.
+        .map((e, i) => ({ e, i }))
+        .sort((a, b) =>
+          a.e.iso && b.e.iso
+            ? a.e.iso.localeCompare(b.e.iso) || a.i - b.i
+            : a.e.iso
+              ? -1
+              : b.e.iso
+                ? 1
+                : a.i - b.i,
+        )
+        .map(({ e }) => e),
     [events, active],
   );
 
