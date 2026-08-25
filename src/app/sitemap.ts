@@ -68,5 +68,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: teamLanguages },
   }));
 
-  return [...homes, ...registry, ...team, ...cases];
+  /* The map page is a second way into the same 39 proceedings — worth
+     indexing in its own right, and it changes whenever a site gains a
+     summarised decision. */
+  const mapLanguages = languagesFor((l) => `/${l}/map`);
+  const map: MetadataRoute.Sitemap = locales.map((locale) => ({
+    url: `${siteUrl}/${locale}/map`,
+    changeFrequency: "monthly",
+    priority: 0.6,
+    alternates: { languages: mapLanguages },
+  }));
+
+  return [...homes, ...registry, ...map, ...team, ...cases];
 }

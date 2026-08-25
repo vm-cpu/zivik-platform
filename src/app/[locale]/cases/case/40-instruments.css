@@ -612,11 +612,3 @@
   color: var(--pred);
 }
 
-/* a single-column reference band when there is no interim order */
-.casepage .refs-grid[data-single="yes"] {
-  grid-template-columns: 1fr;
-}
-.casepage .refs-grid[data-single="yes"] .ruling {
-  max-width: 62ch;
-}
-

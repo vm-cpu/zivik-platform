@@ -79,22 +79,6 @@
 }
 .reg-meta .m.gilt .mv{color:var(--gold)}
 .reg-meta .ml{font:600 10.5px var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:var(--faint)}
-
-/* ---- filter toolbar (search + select menus + sort) ---- */
-.reg-toolbar{
-  position:sticky;top:0;z-index:5;
-  display:flex;flex-wrap:wrap;align-items:center;gap:10px;
-  padding:16px 0;margin-top:8px;
-  background:var(--paper);border-bottom:1px solid var(--rule);
-}
-.reg-search{
-  flex:1 1 240px;min-width:0;
-  font:400 14px var(--brand-font-body);color:var(--ink);
-  background:var(--surface);border:1px solid var(--rule);border-radius:2px;
-  padding:11px 14px;outline:none;
-}
-.reg-search:focus{border-color:var(--red)}
-.reg-search::placeholder{color:var(--faint)}
 .reg-sel{
   flex:0 0 auto;
   font:600 12px var(--brand-font-body);letter-spacing:.02em;color:var(--ink);
@@ -145,7 +129,6 @@ a.reg-row:hover .reg-name{color:var(--red)}
   justify-self:end;font:500 13px var(--brand-font-body);color:var(--faint);
   font-variant-numeric:tabular-nums;
 }
-.reg-go{justify-self:end;color:var(--gold);font-size:15px;line-height:1}
 
 /* ---- empty state ---- */
 .reg-empty{
@@ -157,8 +140,6 @@ a.reg-row:hover .reg-name{color:var(--red)}
 
 /* ---- responsive: stack rows and toolbar on narrow screens ---- */
 @media (max-width:720px){
-  .reg-toolbar{gap:8px}
-  .reg-search{flex:1 1 100%}
   .reg-sel{flex:1 1 calc(50% - 4px)}
   .reg-row{
     grid-template-columns:1fr auto;grid-auto-rows:auto;gap:6px 12px;padding:15px 4px;
@@ -167,5 +148,4 @@ a.reg-row:hover .reg-name{color:var(--red)}
   .reg-year{grid-column:2;grid-row:1}
   .reg-main{grid-column:1 / 3;grid-row:2}
   .reg-status{grid-column:1;grid-row:3}
-  .reg-go{grid-column:2;grid-row:3}
 }

@@ -253,27 +253,6 @@
   font-weight: 500;
 }
 
-.emap-courts {
-  margin-bottom: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 14px;
-  margin: 12px 0 0;
-  font-size: 12px;
-  color: var(--brand-ink-2);
-}
-.emap-courts span:first-child {
-  font: 600 10px var(--brand-font-body);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand-faint);
-  align-self: center;
-}
-.emap-courts span + span {
-  border-bottom: 1px dotted var(--brand-rule);
-  cursor: help;
-}
-
 /* On a narrow screen the drawing stops carrying the detail — the reach lines
    and the card crowd each other — so the list becomes the map. */
 @media (max-width: 640px) {

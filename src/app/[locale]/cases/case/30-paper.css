@@ -4,12 +4,6 @@
   border-bottom: 1px solid var(--prule);
   padding-block: clamp(34px, 4.5vw, 60px);
 }
-.casepage .refs-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(28px, 4vw, 52px);
-  align-items: start;
-}
 .casepage .ruling {
   background: var(--card);
   border-radius: var(--r-md);
@@ -442,7 +436,6 @@
   line-height: 1.6;
   color: var(--muted);
 }
-
 
 /* provenance notice at the head of the summary text: quiet, but on record */
 .casepage .provenance {
