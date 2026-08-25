@@ -49,6 +49,22 @@
   stroke-width: 0.9;
 }
 
+/* The 27 oblasts, drawn as the lines between them rather than as 27 shapes.
+   Deliberately far quieter than the outer border above: that stroke is gold at
+   55% over 0.9 units, this one is the same gold at 26% over 0.45 — a third of
+   the weight and half the width, so the country still reads as one shape and
+   the regions as its inside. They are the reason the six markers no longer sit
+   in a blank silhouette, and Crimea is one of them, on the same terms as
+   Kherson or Donetsk: the mesh knows nothing about which unit is which. */
+.emap-regions {
+  fill: none;
+  stroke: color-mix(in srgb, var(--brand-gold-lamp) 26%, transparent);
+  stroke-width: 0.45;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+
 .emap-reach {
   stroke: var(--brand-gold-lamp);
   stroke-width: 1;
@@ -144,6 +160,28 @@
 }
 .emap-dot:hover {
   r: 8;
+}
+
+/* The site's name on the drawing. Charis SIL and sentence case, so it does not
+   read as a second court label — the courts are uppercase Fira Sans, and the
+   two layers should not be confusable.
+
+   `font-size` and `stroke-width` are set on the element, not here: they are in
+   projection units and have to be recomputed from the rendered scale so the
+   type stays 11px however far the reader has zoomed. The stroke is a halo, not
+   an outline — paint-order puts it behind the fill, which keeps the label at
+   14.0:1 against --brand-night wherever it lands. Without it a label crossing a
+   lit halo sits at 4.99:1: still AA, but only just, and only by measurement. */
+.emap-site-label {
+  font-family: var(--brand-font-display), Georgia, serif;
+  fill: var(--brand-gold-pale);
+  stroke: var(--brand-night);
+  paint-order: stroke fill;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.emap-site[data-lit="no"] .emap-site-label {
+  fill: var(--brand-muted-dark);
 }
 
 

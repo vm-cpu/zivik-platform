@@ -29,7 +29,10 @@ export default function MapSection({
         /* No side padding: the drawing runs edge to edge and only the heading
            is inset. The measure cap in home.css skips this band. */
         padding: "10px 0 40px",
-        background: "var(--paper)",
+        /* The band is the map. A paper heading over a black drawing read as
+             two things stacked; now the whole section is one dark object and
+             the heading sits inside it. */
+          background: "var(--brand-night)",
         scrollMarginTop: 16,
       }}
     >

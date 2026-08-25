@@ -50,8 +50,72 @@ export interface MapGeometry {
   viewBox: string;
   context: string[];
   ukraine: string;
+  /**
+   * Ukraine's internal oblast boundaries, as one mesh of open polylines — the
+   * edges two of the 27 admin-1 units share, and nothing else. See the note in
+   * scripts/europe-map.mjs for why this is a mesh and not 27 outlines.
+   */
+  regions: string;
   markers: Record<string, number[]>;
 }
+
+/**
+ * Which way a site's label leans off its marker.
+ *
+ * Pure layout, so it lives with the renderer rather than in the content file:
+ * it answers a question about pixels, and it would have to change if the frame
+ * or a marker moved. Measured in the close framing at 1440px, where the drawing
+ * renders 1420px wide and one unit of the projection is 2.78px:
+ *
+ *   MH17 and eastern Ukraine are 16.9 units apart — 47px — so one goes up and
+ *   the other right. Crimea and the Kerch strait are 31.7 apart on a near-
+ *   horizontal line, so they go opposite ways. Energy sits due west of
+ *   Mariupol, 48.6 apart, and takes the west side; Mariupol drops below,
+ *   clear of the Sea of Azov coast where its own halo already sits.
+ *
+ * The offsets themselves are not here: a label is placed just outside its
+ * marker's halo, which is drawn in projection units, plus a gap measured in
+ * screen pixels. Both parts are computed below, so the placement holds at any
+ * zoom instead of being tuned for one.
+ */
+const LABEL_SIDE: Record<string, "left" | "right" | "above" | "below"> = {
+  crimea: "left",
+  kerch: "right",
+  energy: "left",
+  mariupol: "below",
+  mh17: "right",
+  donbas: "above",
+};
+
+/**
+ * A marker label, derived from the site's own date tag.
+ *
+ * NEEDS THE OWNER'S REVIEW — see the note on `when` in src/content/map.ts.
+ * Every tag but one reads "<noun> · <date>", and that noun is the shortest
+ * true name the archive already gives the site: Окупація / Occupation,
+ * Затримання / Seizure, Схід / The east, Енергетика / Energy, MH17. The sixth
+ * has no noun — its tag is bare "2022" — so that is what it says. Nothing here
+ * is invented: a label a reader could mistake for a place name we assigned
+ * would be worse than a date.
+ *
+ * The full title is never far: it is in the card the marker opens and in the
+ * list of six below the drawing, at 15px.
+ */
+const shortLabel = (when: string) => when.split("·")[0].trim();
+
+/**
+ * Below this many CSS pixels per projection unit, the labels are not drawn.
+ *
+ * The tightest pair on the map is MH17 and eastern Ukraine at 16.9 units. At
+ * 2.6px per unit that is 44px between the two markers, which is what the
+ * placement above needs to keep two labels apart; below it they touch. The
+ * threshold is on the rendered scale rather than on a framing or a breakpoint
+ * because that is the thing legibility actually depends on — the wide framing
+ * at 1440px gives 1.18px per unit and the close one 2.78, and a phone in the
+ * close framing gives 0.76, so the same rule covers all three without naming
+ * any of them.
+ */
+const LABEL_MIN_SCALE = 2.6;
 
 /** Keep a frame inside the projection: never wider than it, never outside it. */
 function clamp(
@@ -253,6 +317,39 @@ export default function EventsMap({
   const drag = useRef<{ id: number; x: number; y: number } | null>(null);
   const [dragging, setDragging] = useState(false);
 
+  /**
+   * How many CSS pixels one projection unit currently renders as.
+   *
+   * The labels are the only thing on the drawing that must not scale with the
+   * zoom: a country outline is still a country outline at half size, but 11px
+   * of Charis SIL at half size is 5.5px, which nobody reads. So they are sized
+   * and offset in real pixels, converted back into projection units through
+   * this number — which means measuring the element, since the scale depends on
+   * the container width as much as on the viewBox. Zero until the effect runs,
+   * and zero suppresses the labels, so nothing is drawn at the wrong size
+   * during hydration.
+   */
+  const [scale, setScale] = useState(0);
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const measure = () => {
+      const r = el.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      // preserveAspectRatio picks one scale for both axes: "meet" fits the
+      // viewBox inside the box, "slice" fills it.
+      const fit = variant === "full" ? Math.max : Math.min;
+      setScale(fit(r.width / view.w, r.height / view.h));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [view, variant]);
+  /** One CSS pixel, in projection units. */
+  const px = scale > 0 ? 1 / scale : 0;
+  const labelled = scale >= LABEL_MIN_SCALE;
+
   const at = (key: string) => geo.markers[key] ?? [0, 0];
   const selected = sel?.kind === "site" ? events.find((e) => e.key === sel.key) ?? null : null;
   const selectedCourt =
@@ -358,10 +455,28 @@ export default function EventsMap({
         {/* Base geography is decoration: the information is in the markers,
             which are listed as real text below for anyone not reading pixels. */}
         <g aria-hidden="true">
+          {/* The oblast mesh is clipped to the outline it belongs inside. The
+              boundaries come from Natural Earth at 10m and the outline from a
+              110m atlas, so where an internal line runs out to meet the coast
+              the two disagree by a pixel or two — 21 of the mesh's 1063 points
+              fall marginally outside. Clipping is cheaper and more honest than
+              pretending two sources at different scales agree. */}
+          <defs>
+            <clipPath id="emap-ua-clip">
+              <path d={geo.ukraine} />
+            </clipPath>
+          </defs>
           {geo.context.map((d, i) => (
             <path key={i} className="emap-ctx" d={d} />
           ))}
           <path className="emap-ua" d={geo.ukraine} />
+          {/* The 27 regions, as the lines between them. Six unlabelled dots
+              inside a blank country said nothing about where anything was;
+              the oblasts are the frame a Ukrainian reader already has, and a
+              foreign one can at least see that Crimea is a piece of this
+              country and not a neighbour of it. Quieter than the outer border
+              by a wide margin — that stroke is the shape that matters. */}
+          <path className="emap-regions" d={geo.regions} clipPath="url(#emap-ua-clip)" />
 
           {/* Reach lines: from each site to the courts hearing it. Drawn
               before the markers so they pass under, not over. */}
@@ -437,6 +552,7 @@ export default function EventsMap({
             site it stands for. The old map answered only to the mouse. */}
         {events.map((e) => {
           const [x, y] = at(e.key);
+          const side = LABEL_SIDE[e.key] ?? "right";
           return (
               <g
                 key={e.key}
@@ -469,6 +585,37 @@ export default function EventsMap({
                   }}
               />
                 <circle className="emap-dot" cx={x} cy={y} r={6} />
+                {/* The name, once the drawing is big enough to hold it. The
+                    label clears the marker's own halo — drawn in projection
+                    units, so it grows with the zoom — plus a 5px gap and an
+                    11px face, both of which do not. */}
+                {labelled && (
+                  <text
+                    className="emap-site-label"
+                    aria-hidden="true"
+                    x={
+                      side === "left"
+                        ? x - e.size / 2 - 5 * px
+                        : side === "right"
+                          ? x + e.size / 2 + 5 * px
+                          : x
+                    }
+                    y={
+                      side === "above"
+                        ? y - e.size / 2 - 5 * px
+                        : side === "below"
+                          ? y + e.size / 2 + 5 * px + 8.5 * px
+                          : y + 3.8 * px
+                    }
+                    textAnchor={
+                      side === "left" ? "end" : side === "right" ? "start" : "middle"
+                    }
+                    fontSize={11 * px}
+                    strokeWidth={2.6 * px}
+                  >
+                    {shortLabel(e.when)}
+                  </text>
+                )}
             </g>
           );
         })}

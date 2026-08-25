@@ -2,8 +2,9 @@
  * Regenerate the events map geometry.
  *
  * Outputs src/content/europe-map.json: country outlines already projected to
- * SVG path strings, plus one projected point per marker. Run from the repo
- * root when the frame, the size or the marker list changes:
+ * SVG path strings, the mesh of Ukraine's internal oblast boundaries, and one
+ * projected point per marker. Run from the repo root when the frame, the size
+ * or the marker list changes:
  *
  *     node scripts/europe-map.mjs
  *
@@ -102,6 +103,38 @@ const CRIMEA = [[[[33.746,44.402],[33.852,44.432],[33.806,44.527],[33.713,44.582
 const ATLAS =
   "https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json";
 
+/**
+ * Ukraine's 27 first-level units — 24 oblasts, the Autonomous Republic of
+ * Crimea, Sevastopol and the city of Kyiv.
+ *
+ * Source: Natural Earth 10m admin-1 (`ne_10m_admin_1_states_provinces`), taken
+ * from the project's own repository at nvkelso/natural-earth-vector. Natural
+ * Earth is public domain — "no permission needed" — so it can be redistributed
+ * inside the committed output with attribution given here rather than in the
+ * page.
+ *
+ * The 50m file at the same path is no use: it carries only Crimea and
+ * Sevastopol for Ukraine and files both under Russia. The 10m file has all 27,
+ * and files Crimea and Sevastopol under Russia too — `admin` reads "Russia" for
+ * UA-43 and UA-40 — but its own `iso_3166_2` codes are Ukrainian, which is what
+ * the filter below selects on. That is the same discrepancy, and the same fix,
+ * as the CRIMEA constant above.
+ *
+ * The download is 40.7 MB. That is fine for a script run by hand whose output
+ * is committed, and nothing but this script ever sees it.
+ */
+const ADMIN1 =
+  "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_10m_admin_1_states_provinces.geojson";
+
+/**
+ * How far a simplified internal boundary may stray from the real one, in units
+ * of the 1200-wide drawing. Ukraine is 291 units across here, so 0.35 is about
+ * 1/830th of the country's width — under half a pixel at the framings the map
+ * actually offers, and the reason the region layer costs 12 kB instead of the
+ * 233 kB the raw 10m geometry projects to.
+ */
+const REGION_TOLERANCE = 0.35;
+
 const round = (n) => Math.round(n * 10) / 10;
 
 const topo = await (await fetch(ATLAS)).json();
@@ -155,6 +188,164 @@ const ukraine = `${atlasUkraine} ${crimeaPath}`;
 if (!atlasUkraine) throw new Error("Ukraine not found in the atlas — check the property name");
 if (!crimeaPath) throw new Error("Crimea did not project — the map must not ship without it");
 
+/* ---------------------------------------------------------------------------
+ * The oblasts, as internal boundaries only.
+ *
+ * Not 27 outlines. Every unit's outline includes its share of the national
+ * border and the coast, so drawing them whole would trace Ukraine's edge 27
+ * times — in 10m detail, on top of a 110m outline that disagrees with it by a
+ * pixel or two, and in competition with the one stroke on this map that has to
+ * win. Instead every edge is counted: an edge two units share is internal and
+ * is kept, an edge only one unit owns is the country's own edge and is dropped.
+ *
+ * Natural Earth's admin-1 topology is exact here — 20 084 directed edges reduce
+ * to 11 539 distinct ones, 8 545 of them shared by precisely two units and none
+ * by three — so this needs no tolerance and no snapping.
+ * ------------------------------------------------------------------------- */
+
+/** Vertex identity. Natural Earth's coordinates match exactly across units. */
+const vkey = (p) => `${p[0].toFixed(6)},${p[1].toFixed(6)}`;
+const ekey = (a, b) => (a < b ? `${a}|${b}` : `${b}|${a}`);
+
+const admin1 = await (await fetch(ADMIN1)).json();
+/**
+ * `iso_3166_2`, not `admin`: the latter says "Russia" for Crimea and
+ * Sevastopol. Their codes are UA-43 and UA-40 in the same record.
+ */
+const oblasts = admin1.features.filter((f) =>
+  String(f.properties?.iso_3166_2 ?? "").startsWith("UA-"),
+);
+if (oblasts.length !== 27) {
+  throw new Error(`expected Ukraine's 27 admin-1 units, got ${oblasts.length}`);
+}
+for (const code of ["UA-43", "UA-40"]) {
+  if (!oblasts.some((f) => f.properties.iso_3166_2 === code)) {
+    throw new Error(`${code} missing — the map must not ship without Crimea`);
+  }
+}
+
+const rings = [];
+for (const f of oblasts) {
+  const polys =
+    f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+  for (const poly of polys) for (const ring of poly) rings.push(ring);
+}
+
+const shareCount = new Map();
+for (const ring of rings) {
+  for (let i = 0; i + 1 < ring.length; i++) {
+    const k = ekey(vkey(ring[i]), vkey(ring[i + 1]));
+    shareCount.set(k, (shareCount.get(k) ?? 0) + 1);
+  }
+}
+
+/** Adjacency over the internal edges only. */
+const nodes = new Map();
+const taken = new Set();
+for (const ring of rings) {
+  for (let i = 0; i + 1 < ring.length; i++) {
+    const a = vkey(ring[i]);
+    const b = vkey(ring[i + 1]);
+    const k = ekey(a, b);
+    if (shareCount.get(k) !== 2 || taken.has(k)) continue;
+    taken.add(k);
+    if (!nodes.has(a)) nodes.set(a, { pt: ring[i], nbrs: new Set() });
+    if (!nodes.has(b)) nodes.set(b, { pt: ring[i + 1], nbrs: new Set() });
+    nodes.get(a).nbrs.add(b);
+    nodes.get(b).nbrs.add(a);
+  }
+}
+
+/**
+ * Chain the edges into the longest runs that do not fork, so the output is a
+ * handful of polylines rather than 8 545 two-point stubs. Junctions (where
+ * three oblasts meet) and loose ends are started from first; anything left over
+ * is a closed ring — the Kyiv city boundary, for one, which is an enclave.
+ */
+const walked = new Set();
+const chains = [];
+const walkFrom = (start) => {
+  for (const first of nodes.get(start).nbrs) {
+    if (walked.has(ekey(start, first))) continue;
+    walked.add(ekey(start, first));
+    const chain = [nodes.get(start).pt, nodes.get(first).pt];
+    let prev = start;
+    let cur = first;
+    while (nodes.get(cur).nbrs.size === 2) {
+      const next = [...nodes.get(cur).nbrs].find((n) => n !== prev);
+      if (next === undefined || walked.has(ekey(cur, next))) break;
+      walked.add(ekey(cur, next));
+      chain.push(nodes.get(next).pt);
+      prev = cur;
+      cur = next;
+    }
+    chains.push(chain);
+  }
+};
+for (const [k, n] of nodes) if (n.nbrs.size !== 2) walkFrom(k);
+for (const k of nodes.keys()) walkFrom(k);
+
+/**
+ * Douglas–Peucker, applied once per chain *after* projection so the tolerance
+ * is in the units the drawing is measured in. Once, not once per oblast: a
+ * shared boundary simplified twice from two sides would come apart and show as
+ * a double line.
+ */
+const simplify = (pts, tol) => {
+  if (pts.length < 3) return pts;
+  const keep = new Uint8Array(pts.length);
+  keep[0] = 1;
+  keep[pts.length - 1] = 1;
+  const stack = [[0, pts.length - 1]];
+  while (stack.length) {
+    const [i, j] = stack.pop();
+    if (j <= i + 1) continue;
+    const [x1, y1] = pts[i];
+    const [x2, y2] = pts[j];
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len2 = dx * dx + dy * dy;
+    let far = -1;
+    let at = -1;
+    for (let m = i + 1; m < j; m++) {
+      const [px, py] = pts[m];
+      let d;
+      if (len2 === 0) d = Math.hypot(px - x1, py - y1);
+      else {
+        const t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / len2));
+        d = Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
+      }
+      if (d > far) {
+        far = d;
+        at = m;
+      }
+    }
+    if (far > tol) {
+      keep[at] = 1;
+      stack.push([i, at], [at, j]);
+    }
+  }
+  return pts.filter((_, i) => keep[i]);
+};
+
+let regionPoints = 0;
+const regions = chains
+  .map((chain) => {
+    const projected = chain.map((p) => projection(p)).filter(Boolean);
+    if (projected.length < 2) return "";
+    const pts = simplify(projected, REGION_TOLERANCE)
+      .map((p) => [round(p[0]), round(p[1])])
+      // Rounding to a tenth collapses neighbours the tolerance already kept.
+      .filter((p, i, a) => i === 0 || p[0] !== a[i - 1][0] || p[1] !== a[i - 1][1]);
+    if (pts.length < 2) return "";
+    regionPoints += pts.length;
+    return `M${pts.map((p) => `${p[0]},${p[1]}`).join("L")}`;
+  })
+  .filter(Boolean)
+  .join("");
+
+if (!regions) throw new Error("the oblast mesh came out empty");
+
 const markers = Object.fromEntries(
   Object.entries(POINTS).map(([key, lonLat]) => {
     const xy = projection(lonLat);
@@ -171,6 +362,7 @@ writeFileSync(
       viewBox: `0 0 ${W} ${H}`,
       context,
       ukraine,
+      regions,
       markers,
     },
     null,
@@ -180,5 +372,7 @@ writeFileSync(
 
 console.log(
   `wrote ${OUT}\n  ${context.length} country paths, ${Object.keys(markers).length} markers` +
-    `\n  Ukraine outline includes Crimea and Sevastopol`,
+    `\n  Ukraine outline includes Crimea and Sevastopol` +
+    `\n  ${oblasts.length} admin-1 units → ${chains.length} internal boundary chains,` +
+    ` ${regionPoints} points, ${regions.length} chars`,
 );

@@ -18,7 +18,23 @@ export interface MapEvent {
   category: EventCategory;
   /** Marker radius. Bigger means more proceedings, not more harm. */
   size: number;
-  /** Date or period, shown above the title. */
+  /**
+   * Date or period, shown above the title — and, since the map gained oblast
+   * boundaries, the source of the marker's own label on the drawing.
+   *
+   * NEEDS THE OWNER'S REVIEW. Every tag but one reads "<noun> · <date>", and
+   * the map takes the part before the interpunct as the shortest true name the
+   * archive already gives that site: Окупація / Occupation, Затримання /
+   * Seizure, Схід / The east, Енергетика / Energy, MH17. "Воєнні злочини" has
+   * no such noun — its tag is a bare "2022" — so its marker is labelled 2022.
+   * Nothing on the drawing is a place name we invented; the alternative was to
+   * name six places ourselves, on an archive whose whole subject is who has
+   * the right to name them.
+   *
+   * The consequence is that editing a tag edits the map. If a tag ever needs
+   * to grow past about ten characters before the interpunct, the labels want a
+   * field of their own rather than a longer derivation.
+   */
   when: Localized;
   title: Localized;
   note: Localized;
