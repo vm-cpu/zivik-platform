@@ -43,8 +43,13 @@ export interface MapEvent {
 export interface MapCourt {
   key: string;
   city: Localized;
-  /** Abbreviation → full name, for the tooltip. */
-  seats: { abbr: string; name: Localized }[];
+  /**
+   * Abbreviation → full name. `abbr` is optional: the international courts go
+   * by acronyms that appear in the case citations themselves, but a national
+   * court has none, and inventing one for an archive of citations would be
+   * worse than leaving it out.
+   */
+  seats: { abbr?: string; name: Localized }[];
 }
 
 export const MAP_COURTS: MapCourt[] = [
@@ -72,6 +77,31 @@ export const MAP_COURTS: MapCourt[] = [
     ],
   },
   {
+    key: "paris",
+    city: { uk: "Париж", en: "Paris" },
+    seats: [
+      {
+        abbr: "PCA",
+        name: {
+          uk: "Постійна палата третейського суду — місце арбітражу у справі Ощадбанку",
+          en: "Permanent Court of Arbitration — seat of the Oschadbank arbitration",
+        },
+      },
+    ],
+  },
+  {
+    key: "helsinki",
+    city: { uk: "Гельсінкі", en: "Helsinki" },
+    seats: [
+      {
+        name: {
+          uk: "Окружний суд Гельсінкі — універсальна юрисдикція",
+          en: "Helsinki District Court — universal jurisdiction",
+        },
+      },
+    ],
+  },
+  {
     key: "stockholm",
     city: { uk: "Стокгольм", en: "Stockholm" },
     seats: [
@@ -92,10 +122,13 @@ export const MAP_EVENTS: MapEvent[] = [
       uk: "Порушення прав людини, націоналізація активів.",
       en: "Human-rights violations and the seizure of assets.",
     },
-    courts: ["strasbourg", "hague"],
+    // Paris because the Oschadbank award — the largest here at $1.1bn — was
+    // made there. The map listed Oschadbank among the decisions this site
+    // leads to while drawing no line to where it was decided.
+    courts: ["strasbourg", "hague", "paris"],
     forums: {
-      uk: "ЄСПЛ (Страсбург) · PCA (Гаага)",
-      en: "ECtHR (Strasbourg) · PCA (The Hague)",
+      uk: "ЄСПЛ (Страсбург) · PCA (Гаага і Париж)",
+      en: "ECtHR (Strasbourg) · PCA (The Hague and Paris)",
     },
     count: { uk: "8 проваджень", en: "8 proceedings" },
   },
@@ -148,8 +181,13 @@ export const MAP_EVENTS: MapEvent[] = [
       uk: "Збройний конфлікт — міждержавні заяви.",
       en: "Armed conflict, brought as inter-State applications.",
     },
-    courts: ["strasbourg"],
-    forums: { uk: "ЄСПЛ (Страсбург)", en: "ECtHR (Strasbourg)" },
+    // Helsinki: Finland tried Petrovsky for the Aidar ambush under universal
+    // jurisdiction, and that judgment is one of the eight written up here.
+    courts: ["strasbourg", "helsinki"],
+    forums: {
+      uk: "ЄСПЛ (Страсбург) · Окружний суд Гельсінкі",
+      en: "ECtHR (Strasbourg) · Helsinki District Court",
+    },
     count: { uk: "2 провадження", en: "2 proceedings" },
   },
   {

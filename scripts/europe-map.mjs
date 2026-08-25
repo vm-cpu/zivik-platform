@@ -61,6 +61,13 @@ const POINTS = {
   strasbourg: [7.75, 48.58],
   hamburg: [9.99, 53.55],
   stockholm: [18.07, 59.33],
+  // Two more seats the map was missing. Both are where a decision already in
+  // the collection was actually made: the Oschadbank arbitration — the largest
+  // award here at $1.1bn — sat in Paris, and Finland tried Petrovsky in the
+  // Helsinki District Court under universal jurisdiction. Taken from the
+  // `forum.seat` each summary already declares, not assigned by hand.
+  paris: [2.35, 48.86],
+  helsinki: [24.94, 60.17],
   // the ground the cases are about
   crimea: [34.55, 45.15],
   kerch: [36.5, 45.3],

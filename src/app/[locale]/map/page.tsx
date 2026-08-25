@@ -96,7 +96,7 @@ export default async function MapPage({
               key: c.key,
               city: pick(c.city, locale),
               seats: c.seats
-                .map((s) => `${s.abbr} — ${pick(s.name, locale)}`)
+                .map((s) => (s.abbr ? `${s.abbr} — ${pick(s.name, locale)}` : pick(s.name, locale)))
                 .join(" · "),
             }))}
             labels={{
