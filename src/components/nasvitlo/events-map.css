@@ -186,10 +186,20 @@
 
 
 /* ---- the card ---- */
+/* Top-anchored, not bottom-anchored. At `bottom: 16px; right: 16px` the card
+   sat exactly where Ukraine is drawn, so opening one site covered four of the
+   six markers — probed live: Затримання was under one of the card's own
+   links, MH17 under .emap-forums, Схід under .emap-note, Воєнні злочини under
+   the card itself. Only Крим and Енергоактиви stayed clickable, which is why
+   the map appeared stuck on whichever site you opened first and could only be
+   changed from the list underneath. The card clears the drawing's lower right
+   now; `--emap-card-top` leaves room for the zoom controls above it. */
 .emap-card {
   position: absolute;
   right: 16px;
-  bottom: 16px;
+  top: var(--emap-card-top, 16px);
+  max-height: calc(100% - var(--emap-card-top, 16px) - 16px);
+  overflow-y: auto;
   width: min(300px, calc(100% - 32px));
   padding: 14px 16px 15px;
   background: var(--brand-night-2);
@@ -492,6 +502,12 @@
 }
 
 /* ---- framing control ---- */
+/* The card sits below this control strip: 14px of offset, the strip's own
+   ~34px, and 12px of air. Both live in the top-right corner and the card is
+   the taller of the two, so it is the one that yields. */
+.emap-figure {
+  --emap-card-top: 60px;
+}
 .emap-zoom {
   position: absolute;
   z-index: 2;

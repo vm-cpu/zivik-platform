@@ -41,6 +41,11 @@ export default function CaseTimeline({
   // view survives reload and can be shared as a link.
   useEffect(() => {
     const m = window.location.hash.match(/^#chronology:(\w[\w-]*)$/);
+    // Setting state in an effect costs one extra render, and here that is the
+    // price of the feature: the hash exists only in the browser, this page is
+    // prerendered, and reading it any earlier would drag the subtree into
+    // client rendering. Render the default, then correct it.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (m && tracks.some((t) => t.id === m[1])) setActive(m[1]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

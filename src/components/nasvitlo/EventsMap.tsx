@@ -206,8 +206,14 @@ export default function EventsMap({
     const q = new URLSearchParams(window.location.search);
     const site = q.get("site");
     const court = q.get("court");
+    // Same trade as CaseTimeline: one extra render buys a selection that
+    // survives a reload and can be shared as a link. The query string is only
+    // legible in the browser — useSearchParams would pull this prerendered
+    // page into client rendering to learn it a render earlier.
+    /* eslint-disable react-hooks/set-state-in-effect */
     if (site && events.some((e) => e.key === site)) setSel({ kind: "site", key: site });
     else if (court && courts.some((c) => c.key === court)) setSel({ kind: "court", key: court });
+    /* eslint-enable react-hooks/set-state-in-effect */
     // events/courts are stable per render of the server component
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
