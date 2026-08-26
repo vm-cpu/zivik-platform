@@ -353,7 +353,8 @@ export interface DecisionSummary extends VerbatimSummary {
    * The source doc's tab for this case is not yet marked finalized: the
    * verbatim was ingested from a working draft and will be re-ingested when
    * the tab is done. Renders a provenance notice high on the page and again
-   * above the verbatim text — see components/cases/ProvenanceNotice.
+   * above the verbatim text; that notice has been removed at the user's
+   * instruction and the flag is data only.
    */
   provisionalSource?: boolean;
   /**

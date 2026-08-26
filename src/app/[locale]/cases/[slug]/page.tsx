@@ -15,7 +15,6 @@ import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
 import GlanceFacts from "@/components/cases/GlanceFacts";
 import TheatreLegend from "@/components/cases/TheatreLegend";
-import ProvenanceNotice, { type ProvenanceNote } from "@/components/cases/ProvenanceNotice";
 import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
@@ -128,36 +127,6 @@ const T = {
   standing: { uk: "Рішення чинне", en: "Award stands" },
   notStanding: { uk: "Рішення скасовано", en: "Award annulled" },
   seatLabel: { uk: "Місце арбітражу", en: "Seat" },
-  /*
-   * Provenance notices. Both strings existed here already and were referenced
-   * nowhere, so four pages served preliminary text and all eight served a
-   * draft translation with no notice at all. They are now rendered by
-   * components/cases/ProvenanceNotice, twice: as a band under the masthead
-   * and again above the verbatim text.
-   *
-   * Both were reworded. The old provisional note said the summary's "tab in
-   * the working document is not yet finalized" — true, and meaningless to a
-   * reader who has never seen the working document; it also told them what
-   * we would do about it rather than what they should do about it. The old
-   * translation note stated the facts in one clause and left the reader to
-   * work out the consequence. Each now says what the text is, and what to
-   * rely on instead.
-   */
-  noteAria: { uk: "Про цей текст", en: "About this text" },
-  provisionalTag: { uk: "Попередня редакція", en: "Preliminary text" },
-  provisionalNote: {
-    uk: "Цей конспект перенесено з робочої чернетки, яку ще не фіналізовано: формулювання можуть змінитися. Перед цитуванням звіряйтеся з документом суду, а не з цією сторінкою.",
-    en: "This summary was carried across from a working draft that has not been finalized: its wording may change. Before citing, check against the court's own document rather than this page.",
-  },
-  /* The third provenance case: the court's own text is not published anywhere
-     this page can link to, so the two buttons in the masthead lead to
-     commentary and reporting instead. The library says the same thing in its
-     own way — `decisionUrl: null`. */
-  unpublishedTag: { uk: "Рішення не опубліковано", en: "Decision not published" },
-  unpublishedNote: {
-    uk: "Суд не оприлюднив тексту цього рішення, і в бібліотеці за ним не значиться жодного судового документа. Посилання нижче ведуть на фаховий коментар і на репортаж — це не текст рішення.",
-    en: "The court has not published the text of this decision, and the library records no court document for it. The links below lead to expert commentary and to news reporting — neither is the decision itself.",
-  },
 
   // Warrant wall.
   chargesLbl: { uk: "Звинувачення", en: "Charges" },
@@ -548,38 +517,7 @@ export default async function CasePage({
    */
   const readSrc = linkProvenance(judgment.url, judgment.urlType, sources, locale);
   const fileSrc = linkProvenance(judgment.caseUrl, judgment.caseUrlType, sources, locale);
-  const noOfficialText = !readSrc.official && !fileSrc.official;
 
-  /*
-   * The provenance notices, in the order a reader needs them: what this text
-   * is (a draft), what language it is in (a draft translation), and what the
-   * links at the top of the page will and will not give them.
-   *
-   * The translation notice is Ukrainian-only on purpose. English is the
-   * language of record on all eight pages — an English reader is looking at
-   * the source text, not at a translation of it — so the English page has
-   * nothing to warn about and does not pretend to.
-   */
-  const provenanceNotes: ProvenanceNote[] = [
-    ...(summary.provisionalSource
-      ? [
-          {
-            kind: "provisional" as const,
-            tag: pick(T.provisionalTag, locale),
-            text: pick(T.provisionalNote, locale),
-          },
-        ]
-      : []),
-    ...(noOfficialText
-      ? [
-          {
-            kind: "unpublished" as const,
-            tag: pick(T.unpublishedTag, locale),
-            text: pick(T.unpublishedNote, locale),
-          },
-        ]
-      : []),
-  ];
 
   // Body in the reader's language; English is the source of truth.
   const rawBlocks = locale === "uk" && summary.blocksUk ? summary.blocksUk : summary.blocks;
@@ -844,7 +782,6 @@ export default async function CasePage({
           lede is written from the same provisional summary the notice is
           about; a reader meets the caveat before the first sentence they
           might quote. Nothing renders on a page whose flags set no notice. */}
-      <ProvenanceNotice notes={provenanceNotes} label={pick(T.noteAria, locale)} />
 
       {/* 1b — Plain-language lede */}
       <section className="lede">
@@ -1229,11 +1166,6 @@ export default async function CasePage({
             {/* The same caveat, again, at the head of the text it is about —
                 the page nav lets a reader jump straight here and skip the
                 band under the masthead. */}
-            <ProvenanceNotice
-              notes={provenanceNotes}
-              label={pick(T.noteAria, locale)}
-              variant="inline"
-            />
             {glossary.length > 0 && (
               <nav className="termchips" aria-label={pick(T.termsInText, locale)}>
                 <span className="termchips-lbl">{pick(T.termsInText, locale)}:</span>
