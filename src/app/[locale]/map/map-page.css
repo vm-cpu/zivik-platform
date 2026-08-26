@@ -176,10 +176,37 @@
 /* The legend sits on the map, bottom left, and folds away. */
 /* Two short groups share a row; the seats get their own, because nine cities
    stacked beside a three-line column left two thirds of the block empty. */
+/* The legend is one column on the left, and the six places stand beside it.
+   It used to be two wide groups laid across the whole page — the keys spread
+   over 1400px with the right half of the row empty, which read as a band of
+   its own rather than as a caption to the drawing above. In a column it is a
+   caption: narrow, scanned down, and the six site cards get the space it was
+   wasting. */
+@media (min-width: 901px) {
+  .mp-stage .emap {
+    display: grid;
+    grid-template-columns: minmax(240px, 300px) 1fr;
+    align-items: start;
+  }
+  /* The drawing, the axis and the seat index are the width of the page. */
+  .mp-stage .emap-figure,
+  .mp-stage .emap-rail,
+  .mp-stage .emap-index {
+    grid-column: 1 / -1;
+  }
+  .mp-stage .emap-legend {
+    grid-column: 1;
+    border-right: 0;
+  }
+  .mp-stage .emap-list {
+    grid-column: 2;
+    border-left: 1px solid var(--brand-night-rule);
+  }
+}
 .mp-stage .emap-legend {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 26px 40px;
+  grid-template-columns: 1fr;
+  gap: 22px;
   padding: 22px max(clamp(20px, 4vw, 56px), 0px);
   border-inline: 0;
 }

@@ -101,8 +101,8 @@ const uk = {
     description:
       "Заявлені порушення — обстріли, депортації та захоплення — зʼєднані пунктиром із судом, де здійснюється їх правова оцінка.",
     fullMap: "Повна мапа →",
-    legendCourt: "Суд, який розглядає",
-    legendLit: "Є конспект рішення",
+    legendCourt: "Суд",
+    legendLit: "Є конспект",
     legendUnlit: "Ще досліджуємо",
     courtsSeat: "Суди засідають у",
     courtHears: "Розглядає справи",
@@ -149,23 +149,23 @@ const uk = {
     amountLabel: "Сума у спорі",
     legendWhat: "Місця подій",
     legendHow: "Суди й звʼязки",
-    legendLine: "Пунктир — звʼязок між судом та подією",
+    legendLine: "Звʼязок суду з подією",
     /* The chevron and the tail on a seat the frame cannot hold. Rendered only
        where some seat is actually off the projection's window — today
        Montreal, and by data rather than by name. It was planned when the
        dock was built and never written: the type carried the comment with no
        field under it, so the one genuinely unfamiliar glyph on the drawing
        was the one thing the legend did not explain. */
-    legendOffMap: "Суд поза кадром — стрілка вказує напрямок",
-    legendRegions: "Тонкі лінії — межі областей України",
+    legendOffMap: "Суд поза кадром",
+    legendRegions: "Межі областей",
     /* The ground a mark speaks for, where a point is not the whole truth
        about it — the ICC's situation is the whole country, not Mariupol.
        Rendered only where some site actually declares one. */
-    legendArea: "Підсвічена територія — подія стосується її всієї",
+    legendArea: "Подія — про всю підсвічену територію",
     /* The map's whole mechanic, and it was nowhere in the legend: a reader
        had to guess that the marks answer at all. */
-    legendPick: "Оберіть подію — засвітяться суди, які її розглядають. Оберіть суд — засвітяться його події.",
-    sizeKey: "Більше коло — більше проваджень",
+    legendPick: "Оберіть подію або суд — засвітиться другий кінець.",
+    sizeKey: "Більше коло — більше справ",
     pageTitle: "Мапа порушень і судів",
     pageLede: "Порушення сталися в Україні, а судять їх за тисячі кілометрів звідти. Мапа тримає обидва кінці разом: місце події — і суд, який його розглядає.",
     backHome: "На головну",
