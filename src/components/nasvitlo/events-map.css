@@ -1427,7 +1427,7 @@
   overflow: hidden;
 }
 /* And the way to all of it. */
-.emap-more {
+.emap-card a.emap-more {
   display: inline-block;
   margin-top: 12px;
   padding: 7px 0;
@@ -1437,7 +1437,7 @@
   color: var(--brand-gold-pale);
   text-decoration: none;
 }
-.emap-more:hover {
+.emap-card a.emap-more:hover {
   color: var(--brand-cream);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -1631,8 +1631,10 @@ button.emap-key[aria-pressed="true"]::after {
 /* The figure alone, not «28 проваджень у бібліотеці» nine times over: the
    heading of the column is the sentence, and repeating it on every row was
    three words of chrome for one digit of content. It is the way through to
-   those rows — `/registry` opens filtered on every institution this seat
-   holds. */
+   those rows — the library opens filtered on every institution this seat
+   holds. `a.` for the same reason as `.emap-more` above: a class alone loses
+   to a page's own `a`. */
+.emap-index a.emap-seat-count,
 .emap-index .emap-seat-count {
   font: 600 15px var(--brand-font-mono);
   font-variant-numeric: tabular-nums;
@@ -2013,10 +2015,16 @@ a.emap-seat-count:focus-visible {
   margin-top: 5px;
 }
 
-/* The way through to the registry. It was the same gold as the decision links
-   above it and sat in the same column, so it read as one more case rather than
-   as the door out of the list. A rule above it, and the arrow doing the work. */
-.emap-more {
+/* The way out of the list. It was the same gold as the decision links above it
+   and sat in the same column, so it read as one more case rather than as the
+   door out. A rule above it, and the arrow doing the work.
+
+   `.emap-card a.emap-more`, not `.emap-more`: this is an anchor inside a page
+   that styles its own anchors, and a class on its own does not outweigh a
+   `<surface> a` rule. Measured before this: --brand-red on --brand-night-2,
+   1.69:1, which is a link you cannot read. The sibling `.emap-reads a` was
+   never affected because it already carries a descendant `a`. */
+.emap-card a.emap-more {
   display: block;
   margin-top: 11px;
   padding-top: 10px;
@@ -2026,8 +2034,8 @@ a.emap-seat-count:focus-visible {
   text-transform: uppercase;
   color: var(--brand-muted-dark);
 }
-.emap-more:hover,
-.emap-more:focus-visible {
+.emap-card a.emap-more:hover,
+.emap-card a.emap-more:focus-visible {
   color: var(--brand-gold-pale);
   text-decoration: none;
 }
