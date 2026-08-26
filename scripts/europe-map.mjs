@@ -154,21 +154,62 @@ const projection = geoMercator().fitExtent(
  */
 const path = geoPath(projection).digits(1);
 
-/** Does this shape land anywhere inside the drawing at all? */
-const visible = (f) => {
+/**
+ * The two windows the context layer is generated for.
+ *
+ * NEAR is the 1200 x 460 drawing itself, plus a 20-unit skirt — the frame the
+ * viewBox declares and the two original framings live inside.
+ *
+ * WIDE is the Atlantic framing added later: the reader can now put Montreal,
+ * where the ICAO Council sits, beside Europe. The projection already reaches
+ * that far — Montreal lands at (-936.9, 407.1) on a frame that runs 0…1200 —
+ * so the framing was only ever a viewBox question. But the context layer was
+ * generated for NEAR, so zooming out showed an ocean where North America is.
+ *
+ * The numbers are the widest view the component can be driven to, measured
+ * rather than guessed: `EventsMap` fits the span from Montreal to Ukraine's
+ * eastern edge into the element minus the strips the floating panels claim,
+ * and the tallest result across the widths the site is read at — a 1000px
+ * window on the map's own page, where the element is nearly square and the fit
+ * is bound by the width — is about 2400 x 1990 units centred near (200, -20).
+ * These bounds cover that with room to spare, and panning is clamped inside
+ * the same rect, so nothing the reader can reach falls outside them.
+ *
+ * NOTHING ABOUT THE PROJECTION CHANGES. fitExtent, FRAME, W, H and the marker
+ * list are exactly as they were, so `ukraine`, `regions`, `markers` and
+ * `viewBox` regenerate byte-identical and Europe's framing does not move. Only
+ * `context` grows — and it grows by appending, so its first entries are the
+ * same strings in the same order they have always been.
+ */
+const NEAR = { x0: -20, y0: -20, x1: W + 20, y1: H + 20 };
+const WIDE = { x0: -1030, y0: -1060, x1: 1430, y1: 1030 };
+
+/** Does this shape land anywhere inside the given window at all? */
+const within = (f, b) => {
   const [[x0, y0], [x1, y1]] = path.bounds(f);
-  return x1 > -20 && x0 < W + 20 && y1 > -20 && y0 < H + 20;
+  return x1 > b.x0 && x0 < b.x1 && y1 > b.y0 && y0 < b.y1;
 };
 
 /** Ukraine is drawn on top of the rest, so it is split out here. */
 const isUkraine = (f) => f.properties?.name === "Ukraine";
 
-// Most of the world is nowhere near this frame; drawing it costs bytes and
-// shows nothing.
-const context = countries.features
-  .filter((f) => !isUkraine(f) && visible(f))
-  .map((f) => path(f))
-  .filter(Boolean);
+// Most of the world is nowhere near even the wide window; drawing it costs
+// bytes and shows nothing. The near ring is emitted first and unchanged, so
+// the committed output grows at the end rather than being reshuffled.
+const rest = countries.features.filter((f) => !isUkraine(f));
+const nearRing = rest.filter((f) => within(f, NEAR));
+const farRing = rest.filter((f) => !within(f, NEAR) && within(f, WIDE));
+const context = [...nearRing, ...farRing].map((f) => path(f)).filter(Boolean);
+
+/**
+ * The Atlantic framing exists to show one thing, and it must not ship without
+ * it — the same guard, and the same reasoning, as Crimea below.
+ */
+for (const name of ["Canada", "United States of America"]) {
+  if (!farRing.some((f) => f.properties?.name === name)) {
+    throw new Error(`${name} did not project — the Atlantic framing must not ship without it`);
+  }
+}
 
 const atlasUkraine = countries.features.filter(isUkraine).map((f) => path(f))[0];
 
@@ -346,6 +387,17 @@ const regions = chains
 
 if (!regions) throw new Error("the oblast mesh came out empty");
 
+/**
+ * Deliberately not in POINTS: Montreal.
+ *
+ * It projects to (-936.9, 407.1), which is off the 0…1200 frame, and
+ * `src/content/map.ts` carries that as the ICAO Council's `offAt`. Adding it
+ * here would put a fifteenth entry in `markers` — a field the map's other
+ * consumers and this file's own regeneration check both treat as fixed — for
+ * no gain: `offAt` is the projected point, and the drawing reads it directly.
+ * Recompute it with `projection([-73.5673, 45.5017])` if the frame ever moves.
+ */
+
 const markers = Object.fromEntries(
   Object.entries(POINTS).map(([key, lonLat]) => {
     const xy = projection(lonLat);
@@ -371,7 +423,9 @@ writeFileSync(
 );
 
 console.log(
-  `wrote ${OUT}\n  ${context.length} country paths, ${Object.keys(markers).length} markers` +
+  `wrote ${OUT}\n  ${context.length} country paths` +
+    ` (${nearRing.length} inside the frame, ${farRing.length} for the Atlantic framing),` +
+    ` ${Object.keys(markers).length} markers` +
     `\n  Ukraine outline includes Crimea and Sevastopol` +
     `\n  ${oblasts.length} admin-1 units → ${chains.length} internal boundary chains,` +
     ` ${regionPoints} points, ${regions.length} chars`,

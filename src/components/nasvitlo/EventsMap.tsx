@@ -151,6 +151,11 @@ const LABEL_MIN_SCALE = 2.6;
  * neighbour's centre: the top one would always win, and a target you cannot
  * aim at is worse than a small one. The court seats are further apart — The
  * Hague and Brussels, the tightest, are 32 — so they can grow further.
+ *
+ * `cap` is that room, and it is measured per marker rather than per family
+ * now: see `gap` in the component. Those two figures are what it comes out at
+ * for the two crowded pairs; a marker with a continent to itself gets what it
+ * needs instead of what its most crowded neighbour could bear.
  */
 /**
  * A label's size in projection units, so it renders at `want` CSS pixels.
@@ -257,11 +262,85 @@ function fitView(
  */
 type Nav = { z: number; cx: number; cy: number } | null;
 
-function viewFrom(nav: Nav, full: { x: number; y: number; w: number; h: number }) {
+/**
+ * Keep something to look at on screen.
+ *
+ * The pan bound is the whole projected span now, and the span is mostly ocean:
+ * measured, a drag west from the opening framing followed by nine notches of
+ * zoom put the reader on an empty black rectangle in the middle of the North
+ * Atlantic, with no marker, no coast and nothing to say which way back was.
+ * Clamping to the bound cannot catch that — the mid-Atlantic is inside it.
+ *
+ * So the last word belongs to the markers: if the view holds none of them, it
+ * slides the shortest distance that brings the nearest one to its edge.
+ * Everywhere else this returns the view untouched, which is every framing and
+ * almost every drag.
+ *
+ * To the edge, and not a margin inside it. A margin looks kinder and is not:
+ * the Atlantic is 1227 units across, which at the opening framing is the width
+ * of the whole view, so Paris and Montreal are never both in frame and are
+ * only just ever either. An eighth of the frame in hand — tried, measured —
+ * opened a band in the middle of the ocean that neither city could be held
+ * from, and the reader who dragged west to look for Montreal was pushed back
+ * to Paris every time. At zero the crossing is 0.6 units wide and a drag step
+ * is fifty times that.
+ */
+function hold(
+  v: { x: number; y: number; w: number; h: number },
+  pts: [number, number][],
+) {
+  if (!pts.length) return v;
+  const has = pts.some(
+    ([x, y]) => x >= v.x && x <= v.x + v.w && y >= v.y && y <= v.y + v.h,
+  );
+  if (has) return v;
+  const cx = v.x + v.w / 2;
+  const cy = v.y + v.h / 2;
+  let bx = pts[0][0];
+  let by = pts[0][1];
+  let best = Infinity;
+  for (const [x, y] of pts) {
+    const d = (x - cx) ** 2 + (y - cy) ** 2;
+    if (d < best) {
+      best = d;
+      bx = x;
+      by = y;
+    }
+  }
+  return {
+    ...v,
+    x: Math.min(Math.max(v.x, bx - v.w), bx),
+    y: Math.min(Math.max(v.y, by - v.h), by),
+  };
+}
+
+/** Clamp to the bound, keep a marker, and stay inside the bound doing it. */
+const settle = (
+  v: { x: number; y: number; w: number; h: number },
+  outer: { x: number; y: number; w: number; h: number },
+  pts: [number, number][],
+) => clamp(hold(clamp(v, outer), pts), outer);
+
+/**
+ * `full` sets the unit the zoom ratio is measured in — 1 is the framing the
+ * map opens at — and `outer` is how far out and how far sideways the reader
+ * may go. They used to be the same rect, which is why the map could not be
+ * dragged at all until it had been zoomed in: at the opening framing the view
+ * already filled its own bound, so every pan clamped straight back and the
+ * `grab` cursor was describing something that could not happen. `outer` is the
+ * whole projected span now — Montreal included — so a ratio above 1 is a real
+ * framing and a press on the ground always moves something.
+ */
+function viewFrom(
+  nav: Nav,
+  full: { x: number; y: number; w: number; h: number },
+  outer: { x: number; y: number; w: number; h: number },
+  pts: [number, number][],
+) {
   if (!nav) return full;
-  const w = Math.min(full.w, Math.max(MIN_W, full.w * nav.z));
+  const w = Math.min(outer.w, Math.max(MIN_W, full.w * nav.z));
   const h = w * (full.h / full.w);
-  return clamp({ w, h, x: nav.cx - w / 2, y: nav.cy - h / 2 }, full);
+  return settle({ w, h, x: nav.cx - w / 2, y: nav.cy - h / 2 }, outer, pts);
 }
 
 /** A view rect, back as the ratio and centre the state holds. */
@@ -328,12 +407,19 @@ export default function EventsMap({
     courtHears: string;
     /** "{n} proceedings in the registry" — the court's own caseload. */
     caseload: string;
-    /** The two framings. */
+    /** The three framings. */
     zoomLabel: string;
     zoomWide: string;
     zoomClose: string;
+    /** North America beside Europe — the framing that holds the ICAO Council. */
+    zoomAtlantic: string;
     zoomIn: string;
     zoomOut: string;
+    /**
+     * What the home band says when the wheel scrolled the page instead of
+     * zooming the map. Never shown on the map's own page, where it does zoom.
+     */
+    wheelHint: string;
   };
   locale: string;
   /**
@@ -469,9 +555,12 @@ export default function EventsMap({
    * wants one corner of the Donbas had no way to get there. Zoom and pan are
    * arithmetic on the viewBox — no library, no reprojection.
    *
-   * The wheel is deliberately not bound. On the home page the map is a band
-   * inside a long document, and a map that swallows the scroll wheel traps the
-   * reader mid-page. Buttons, drag and double-click instead.
+   * The wheel is bound on both variants now, but not the same way, and not
+   * through React's `onWheel`: that prop is registered passively, so
+   * `preventDefault` is unavailable and one notch over the map's own page both
+   * zoomed the drawing and scrolled the page 120px away from it. It is a
+   * non-passive listener in an effect instead. See the note on that effect for
+   * what each variant does.
    */
   const BASE = useMemo(() => {
     const [x, y, w, h] = geo.viewBox.split(" ").map(Number);
@@ -488,8 +577,74 @@ export default function EventsMap({
     () => clamp(fitView({ x: 556, y: 234, w: 511, h: 213 }, box), FULL),
     [box, FULL],
   );
+  /**
+   * Everything the projection actually holds, not just the window the viewBox
+   * declares.
+   *
+   * Derived from the courts rather than written down: any seat that says it is
+   * off the frame contributes where it really projects to, so the span grows
+   * by itself if a second one is ever added. Today that is Montreal, at
+   * x = -936.9 on a frame that runs 0…1200 — the ICAO Council, which decided
+   * the MH17 case the ICJ is hearing on appeal. 64 units of margin, so the
+   * city is inside the picture rather than on its edge.
+   */
+  const SPAN = useMemo(() => {
+    let x0 = BASE.x;
+    let y0 = BASE.y;
+    let x1 = BASE.x + BASE.w;
+    let y1 = BASE.y + BASE.h;
+    for (const c of courts) {
+      if (!c.offAt) continue;
+      x0 = Math.min(x0, c.offAt.x - 64);
+      y0 = Math.min(y0, c.offAt.y - 64);
+      x1 = Math.max(x1, c.offAt.x + 64);
+      y1 = Math.max(y1, c.offAt.y + 64);
+    }
+    return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+  }, [BASE, courts]);
+  /** The third framing: North America beside Europe. */
+  const WIDE = useMemo(() => fitView(SPAN, box), [SPAN, box]);
+  /**
+   * Every place the drawing has something to look at. What `hold` keeps in
+   * frame — the true positions, not the docked ones, so the set does not
+   * change under the reader as they pan.
+   */
+  const ANCHORS = useMemo(() => {
+    const pts: [number, number][] = [];
+    for (const e of events) {
+      const p = geo.markers[e.key];
+      if (p) pts.push([p[0], p[1]]);
+    }
+    for (const c of courts) {
+      const p = geo.markers[c.key];
+      if (p) pts.push([p[0], p[1]]);
+      else if (c.offAt) pts.push([c.offAt.x, c.offAt.y]);
+    }
+    return pts;
+  }, [events, courts, geo.markers]);
+  /** Is there anything out there to frame? Nothing off the frame, no button. */
+  const hasWide = SPAN.w > BASE.w + 1 || SPAN.h > BASE.h + 1;
+  /**
+   * How far the reader may get, by any means — the smallest rect of the
+   * element's own shape that holds both named framings. Grown from their
+   * union rather than taken from the wider of the two: the Atlantic framing is
+   * centred on the span from Montreal to Ukraine, so its eastern edge stops a
+   * few units short of Europe's own, and clamping to it alone would shave a
+   * sliver off the framing the map opens at.
+   */
+  const OUTER = useMemo(() => {
+    if (!hasWide) return FULL;
+    const x0 = Math.min(FULL.x, WIDE.x);
+    const y0 = Math.min(FULL.y, WIDE.y);
+    const x1 = Math.max(FULL.x + FULL.w, WIDE.x + WIDE.w);
+    const y1 = Math.max(FULL.y + FULL.h, WIDE.y + WIDE.h);
+    const a = FULL.h / FULL.w;
+    const w = Math.max(x1 - x0, (y1 - y0) / a);
+    const h = w * a;
+    return { w, h, x: (x0 + x1) / 2 - w / 2, y: (y0 + y1) / 2 - h / 2 };
+  }, [FULL, WIDE, hasWide]);
   const [nav, setNav] = useState<Nav>(null);
-  const view = useMemo(() => viewFrom(nav, FULL), [nav, FULL]);
+  const view = useMemo(() => viewFrom(nav, FULL, OUTER, ANCHORS), [nav, FULL, OUTER, ANCHORS]);
   /**
    * Which of the two named framings the reader is actually in, if either.
    *
@@ -504,25 +659,27 @@ export default function EventsMap({
     Math.abs(a.w - b.w) < 1 && Math.abs(a.x - b.x) < 1 && Math.abs(a.y - b.y) < 1;
   const atFull = near(view, FULL);
   const atClose = near(view, CLOSE);
+  const atWide = hasWide && near(view, WIDE);
 
   /** Scale about a point in viewBox units, holding that point still. */
   const zoomBy = useCallback(
     (factor: number, ax?: number, ay?: number) =>
       setNav((prev) => {
-        const v = viewFrom(prev, FULL);
-        const w = Math.min(FULL.w, Math.max(MIN_W, v.w * factor));
+        const v = viewFrom(prev, FULL, OUTER, ANCHORS);
+        const w = Math.min(OUTER.w, Math.max(MIN_W, v.w * factor));
         const h = w * (FULL.h / FULL.w);
         const px = ax ?? v.x + v.w / 2;
         const py = ay ?? v.y + v.h / 2;
         return navOf(
-          clamp(
+          settle(
             { w, h, x: px - ((px - v.x) / v.w) * w, y: py - ((py - v.y) / v.h) * h },
-            FULL,
+            OUTER,
+            ANCHORS,
           ),
           FULL.w,
         );
       }),
-    [FULL],
+    [FULL, OUTER, ANCHORS],
   );
   const viewBox = `${view.x} ${view.y} ${view.w} ${view.h}`;
 
@@ -557,6 +714,89 @@ export default function EventsMap({
     on: boolean;
   } | null>(null);
   const [dragging, setDragging] = useState(false);
+  /**
+   * The band tells the reader why its wheel did not zoom. Shown only after a
+   * bare wheel over the drawing, and only there: it is an answer to something
+   * the reader just did, not a permanent instruction printed on the map.
+   */
+  const [hint, setHint] = useState(false);
+  const hintOff = useRef<number | null>(null);
+  useEffect(() => () => {
+    if (hintOff.current) window.clearTimeout(hintOff.current);
+  }, []);
+
+  /**
+   * Whatever the last render worked out. The wheel listener below is attached
+   * once and must not be rebuilt on every zoom step, so it reads the current
+   * frame from here instead of from a closure that would go stale after the
+   * first notch.
+   */
+  const now = useRef({ view, OUTER, atPointer, zoomBy });
+  useEffect(() => {
+    now.current = { view, OUTER, atPointer, zoomBy };
+  });
+
+  /**
+   * The wheel.
+   *
+   * Attached here rather than as React's `onWheel`, which registers passively:
+   * `preventDefault` is simply unavailable on a passive listener, so the last
+   * time this was bound one notch over the map's own page zoomed the drawing
+   * *and* scrolled the page 120px, and three notches took the reader away from
+   * the map with a framing they had not chosen.
+   *
+   * The two surfaces get different answers because they are different things.
+   *
+   *   On the map's own page the drawing is the page: it fills the viewport,
+   *   the reader came here to move around it, and a wheel notch means zoom.
+   *   The page scroll is suppressed — except at the ends of the zoom, where
+   *   there is nothing left to do with the notch and swallowing it would trap
+   *   the reader in a viewport-filling element with the legend and the list of
+   *   six unreachable below it. Zoom out to the edge and the page moves on.
+   *
+   *   On the home band the map is one section inside a long document, and a
+   *   band that swallows the wheel is the classic trap: a reader on their way
+   *   down the page cannot get past it. So a bare wheel scrolls the page, as
+   *   it would over any other band, and the map says why; Ctrl or ⌘ zooms.
+   *   That is also the gesture a Mac trackpad pinch already sends, so pinching
+   *   the band zooms it without anything extra.
+   *
+   * Anchored at the pointer, not the centre: zooming towards Ukraine keeps
+   * Ukraine under the cursor.
+   */
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const onWheel = (ev: WheelEvent) => {
+      const held = ev.ctrlKey || ev.metaKey;
+      if (variant === "band" && !held) {
+        setHint(true);
+        if (hintOff.current) window.clearTimeout(hintOff.current);
+        hintOff.current = window.setTimeout(() => setHint(false), 1800);
+        // No preventDefault: the page scrolls past the band, which it must
+        // always be able to do.
+        return;
+      }
+      // deltaMode 1 is lines and 2 is pages; both are rare, and both would
+      // otherwise read as a wheel that barely moved.
+      const unit = ev.deltaMode === 1 ? 16 : ev.deltaMode === 2 ? 400 : 1;
+      const dy = Math.max(-240, Math.min(240, ev.deltaY * unit));
+      const factor = Math.exp(dy * 0.0015);
+      const { view: v, OUTER: o } = now.current;
+      const w = Math.min(o.w, Math.max(MIN_W, v.w * factor));
+      const moved = Math.abs(w - v.w) > 0.01;
+      // Held down, the modifier is the reader asking for the map and not the
+      // browser's own page zoom, so it is swallowed either way.
+      if (!moved && !held) return;
+      ev.preventDefault();
+      if (!moved) return;
+      setHint(false);
+      const p = now.current.atPointer(ev);
+      now.current.zoomBy(factor, p?.x, p?.y);
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [variant]);
   /**
    * The last press moved the map, so the click that follows it is the tail of
    * a drag and must not also pick whatever the pointer came to rest on.
@@ -654,6 +894,101 @@ export default function EventsMap({
   /** One CSS pixel, in projection units. */
   const px = scale > 0 ? 1 / scale : 0;
   const labelled = scale >= LABEL_MIN_SCALE;
+  const at = (key: string) => geo.markers[key] ?? [0, 0];
+
+  /**
+   * Where a court sits. Almost always its point in europe-map.json; for a city
+   * off the frame, the nearest place on the frame's edge along the bearing of
+   * the real one, so the line to it runs the right way and stops at the border
+   * instead of disappearing into a corner. The margin is in CSS pixels, so the
+   * marker hugs the edge by the same amount however far the reader has zoomed.
+   */
+  const dockMargin = 26 * (px || 1);
+  const courtXY: Record<string, [number, number]> = {};
+  /**
+   * Which seats are being shown at the frame's edge rather than where they
+   * are. `offMap` says a city has no point in europe-map.json; it does not say
+   * the reader cannot see it. The Atlantic framing puts Montreal inside the
+   * picture, and there it is an ordinary court marker with an ordinary
+   * connector running to it — no chevron, no tail, nothing claiming it is
+   * somewhere off to the west. The dock is what happens when the city really
+   * is outside the view, which is still every other framing and will be
+   * whatever other seat needs it next; the clamp below decides by whether it
+   * had to move the point, so neither the framing nor the city is named here.
+   */
+  const docked: Record<string, boolean> = {};
+  for (const c of courts) {
+    if (c.offMap && c.offAt) {
+      // Outside the view, not merely near its edge. Asked this way round
+      // because the dock margin is measured in pixels and so grows, in the
+      // units this comparison is in, as the reader zooms out: at 1000px the
+      // Atlantic framing puts Montreal 65.0 units inside the frame and the
+      // margin at 65.5, and the city was being pulled half a unit and given
+      // a chevron and a tail pointing at where it already was.
+      const out =
+        c.offAt.x < view.x ||
+        c.offAt.x > view.x + view.w ||
+        c.offAt.y < view.y ||
+        c.offAt.y > view.y + view.h;
+      courtXY[c.key] = out
+        ? [
+            Math.min(Math.max(c.offAt.x, view.x + dockMargin), view.x + view.w - dockMargin),
+            Math.min(Math.max(c.offAt.y, view.y + dockMargin), view.y + view.h - dockMargin),
+          ]
+        : [c.offAt.x, c.offAt.y];
+      docked[c.key] = out;
+    } else {
+      const [x, y] = at(c.key);
+      courtXY[c.key] = [x, y];
+      docked[c.key] = false;
+    }
+  }
+
+  /**
+   * How much room each marker has, in projection units: the distance to the
+   * nearest other marker it is drawn beside.
+   *
+   * This used to be two constants — 16.9 for the sites, 32 for the courts —
+   * measured once and written into the two calls below as the largest radius
+   * each family could bear before a circle swallowed its neighbour's centre.
+   * They were the right numbers, and they are the numbers this still produces:
+   * MH17 and eastern Ukraine are 16.9 apart and The Hague and Brussels 32. But
+   * a constant per family is a fact about the crowded members of it, and the
+   * Atlantic framing put a marker on the map that has 1259 units of ocean
+   * around it. Capping Montreal's target at what The Hague and Brussels can
+   * bear made the one framing that shows Montreal a framing in which Montreal
+   * measured 22px and answered nothing.
+   *
+   * Where the old caps bound, nothing moves: they only ever bit below about
+   * 0.65 CSS pixels per unit, which is further out than either of the original
+   * framings goes at any width. Computed from the drawn positions, so a docked
+   * seat is measured where it is actually shown.
+   */
+  const room: Record<string, number> = {};
+  {
+    const pts: [string, number, number][] = [
+      ...events.map((e) => [e.key, ...at(e.key)] as [string, number, number]),
+      ...courts.map((c) => [c.key, ...courtXY[c.key]] as [string, number, number]),
+    ];
+    for (const [k, x, y] of pts) {
+      let m = Infinity;
+      for (const [k2, x2, y2] of pts) {
+        if (k2 === k) continue;
+        m = Math.min(m, Math.hypot(x - x2, y - y2));
+      }
+      // 95% of it, not all of it. At exactly the neighbour's distance a hit
+      // circle reaches its neighbour's centre and which of the two answers a
+      // click at that point is decided by the order they are painted in and by
+      // a rounding — measured, MH17's own centre returned eastern Ukraine's
+      // circle. The old constants had this margin baked in: 16 against a
+      // 16.9-unit pair is 95% of it.
+      room[k] = Number.isFinite(m) ? 0.95 * m : 1e6;
+    }
+  }
+  /** The most crowded member of each family — what the family's floor is set by. */
+  const siteRoom = Math.min(...events.map((e) => room[e.key]));
+  const courtRoom = Math.min(...courts.map((c) => room[c.key]));
+
   /**
    * How wide a site's hit target actually comes out, in CSS pixels.
    *
@@ -665,7 +1000,7 @@ export default function EventsMap({
    * 1000 and 7.2px at 700, so below about 1000px there is no radius that would
    * let a reader pick one of the two rather than the other.
    */
-  const targetPx = 2 * scale * hitR(11, 16, px);
+  const targetPx = 2 * scale * hitR(11, siteRoom, px);
   /**
    * How far apart the two closest markers come out, in CSS pixels.
    *
@@ -676,7 +1011,7 @@ export default function EventsMap({
    * its own. A mouse can aim at a crescent. A finger cannot, and that, not the
    * viewport width, is what the old `max-width: 640px` was really about.
    */
-  const gapPx = 16.9 * scale;
+  const gapPx = (siteRoom / 0.95) * scale;
   /**
    * Whether the drawing is a control surface at all, or a picture of one.
    *
@@ -704,17 +1039,36 @@ export default function EventsMap({
    */
   const coarse = !(targetPx >= 24 && (!touch || gapPx >= 24));
   /**
+   * The same question, asked of the courts, which are not as crowded.
+   *
+   * It used to be asked once, of the sites, and answered for everything on the
+   * drawing. That held while the two framings were both framings of Europe.
+   * The Atlantic framing broke it: at 1440 it renders a site target at 20.9px
+   * — under the floor, correctly inert — and a court target at 24.8px, and the
+   * one thing that framing exists to show is a court. Answering the sites'
+   * question for Montreal would have made the new button open a picture of a
+   * city nobody could click.
+   *
+   * Nothing about the rule changes, only which numbers it is asked about. The
+   * radii already differed — 11…16 units for a site, 13…19 for a court —
+   * because the closest pair of each differs: MH17 and eastern Ukraine are
+   * 16.9 units apart, The Hague and Brussels 32. Those are the two constants
+   * below, and each family is now measured against its own.
+   */
+  const courtTargetPx = 2 * scale * hitR(13, courtRoom, px);
+  const courtGapPx = (courtRoom / 0.95) * scale;
+  const coarseCourts = !(courtTargetPx >= 24 && (!touch || courtGapPx >= 24));
+  /**
    * Court badges are sized in real pixels rather than projection units, like
    * the site labels and unlike the city names beside them, so the answer to a
    * click is legible at the framing the reader is actually in. They are held
    * back where the markers themselves are: a drawing too small to aim at is
    * too small to carry nine more labels.
    */
-  const badged = !coarse;
+  const badged = !coarseCourts;
   /** The city labels, in projection units, aiming at 11 CSS pixels. */
   const cityF = labelSize(11, 14, px);
 
-  const at = (key: string) => geo.markers[key] ?? [0, 0];
   const selected = sel?.kind === "site" ? events.find((e) => e.key === sel.key) ?? null : null;
   const selectedCourt =
     sel?.kind === "court" ? courts.find((c) => c.key === sel.key) ?? null : null;
@@ -737,37 +1091,32 @@ export default function EventsMap({
   const relCourts = new Set(selected?.courts ?? []);
   const relSites = new Set(courtSites.map((e) => e.key));
 
-  /**
-   * Where a court sits. Almost always its point in europe-map.json; for a city
-   * off the frame, the nearest place on the frame's edge along the bearing of
-   * the real one, so the line to it runs the right way and stops at the border
-   * instead of disappearing into a corner. The margin is in CSS pixels, so the
-   * marker hugs the edge by the same amount however far the reader has zoomed.
-   */
-  const dockMargin = 26 * (px || 1);
-  const courtXY: Record<string, [number, number]> = {};
-  for (const c of courts) {
-    if (c.offMap && c.offAt) {
-      courtXY[c.key] = [
-        Math.min(Math.max(c.offAt.x, view.x + dockMargin), view.x + view.w - dockMargin),
-        Math.min(Math.max(c.offAt.y, view.y + dockMargin), view.y + view.h - dockMargin),
-      ];
-    } else {
-      const [x, y] = at(c.key);
-      courtXY[c.key] = [x, y];
-    }
-  }
-
   return (
-    <div className="emap" data-variant={variant} data-coarse={coarse ? "yes" : "no"}>
+    <div
+      className="emap"
+      data-variant={variant}
+      data-coarse={coarse ? "yes" : "no"}
+      data-coarse-courts={coarseCourts ? "yes" : "no"}
+    >
       <div className="emap-figure">
         {/* Not drawn and not reachable: it exists so the stylesheet can state
             how much of the drawing each floating panel has taken, in any CSS
             the stylesheet likes, and have it come back as pixels. */}
         <span className="emap-safe" ref={safeRef} aria-hidden="true" />
-        {/* Not a pan-and-zoom rig: two named framings, because there are only
-            two questions — how far the courts are, and which site is which. */}
+        {/* Three named framings, because there are three questions: how far
+            the courts are, which site is which, and — since the ICAO Council
+            sits in Montreal — how far one of them really is. Everything
+            between them is the wheel, the drag and the two steppers. */}
         <div className="emap-zoom" role="group" aria-label={labels.zoomLabel}>
+          {hasWide && (
+            <button
+              type="button"
+              aria-pressed={atWide}
+              onClick={() => setNav(navOf(WIDE, FULL.w))}
+            >
+              {labels.zoomAtlantic}
+            </button>
+          )}
           <button
             type="button"
             aria-pressed={atFull}
@@ -787,7 +1136,7 @@ export default function EventsMap({
             className="emap-zoom-step"
             aria-label={labels.zoomOut}
             onClick={() => zoomBy(1 / 0.7)}
-            disabled={view.w >= FULL.w}
+            disabled={view.w >= OUTER.w - 0.5}
           >
             −
           </button>
@@ -801,6 +1150,14 @@ export default function EventsMap({
             +
           </button>
         </div>
+        {/* Why the wheel did not zoom. Only on the band, only just after a
+            bare wheel over the drawing, and never in the accessibility tree:
+            a reader who is not using a wheel is not being told about one. */}
+        {variant === "band" && (
+          <div className="emap-hint" data-on={hint ? "yes" : "no"} aria-hidden="true">
+            {labels.wheelHint}
+          </div>
+        )}
       <svg
           ref={svgRef}
           className="emap-svg"
@@ -862,8 +1219,8 @@ export default function EventsMap({
             d.x = ev.clientX;
             d.y = ev.clientY;
             setNav((prev) => {
-              const v = viewFrom(prev, FULL);
-              return navOf(clamp({ ...v, x: v.x - dx, y: v.y - dy }, FULL), FULL.w);
+              const v = viewFrom(prev, FULL, OUTER, ANCHORS);
+              return navOf(settle({ ...v, x: v.x - dx, y: v.y - dy }, OUTER, ANCHORS), FULL.w);
             });
           }}
           onPointerUp={(ev) => {
@@ -983,11 +1340,13 @@ export default function EventsMap({
             const [x, y] = courtXY[c.key] ?? at(c.key);
             const on = sel?.kind === "court" && sel.key === c.key;
             const rel = relCourts.has(c.key);
-            /* An off-map city gets a bearing as well as a place: the chevron
-               and the tail point at where it really is and run off the
-               picture, so a marker pinned to the border does not read as a
-               city sitting in the Atlantic. */
-            const off = c.offMap && c.offAt ? c.offAt : null;
+            /* A city the frame cannot hold gets a bearing as well as a place:
+               the chevron and the tail point at where it really is and run off
+               the picture, so a marker pinned to the border does not read as a
+               city sitting in the Atlantic. Once a framing brings it inside,
+               both go: it is where it is, and saying otherwise would be a lie
+               the reader can see through. */
+            const off = docked[c.key] && c.offAt ? c.offAt : null;
             const bx = off ? off.x - x : 0;
             const by = off ? off.y - y : 0;
             const bl = Math.hypot(bx, by) || 1;
@@ -1020,12 +1379,12 @@ export default function EventsMap({
                   className="emap-court-hit"
                   cx={x}
                   cy={y}
-                  r={hitR(13, 19, px)}
-                  role={coarse ? undefined : "button"}
-                  aria-hidden={coarse || undefined}
-                  tabIndex={coarse ? -1 : 0}
-                  aria-label={coarse ? undefined : c.city}
-                  aria-pressed={coarse ? undefined : on}
+                  r={hitR(13, room[c.key], px)}
+                  role={coarseCourts ? undefined : "button"}
+                  aria-hidden={coarseCourts || undefined}
+                  tabIndex={coarseCourts ? -1 : 0}
+                  aria-label={coarseCourts ? undefined : c.city}
+                  aria-pressed={coarseCourts ? undefined : on}
                   onClick={() => {
                     // The tail of a drag, not a pick: the press began here and
                     // the pointer travelled before it came up.
@@ -1097,7 +1456,7 @@ export default function EventsMap({
                   className="emap-hit"
                 cx={x}
                 cy={y}
-                  r={hitR(11, 16, px)}
+                  r={hitR(11, room[e.key], px)}
                 role={coarse ? undefined : "button"}
                 aria-hidden={coarse || undefined}
                 aria-label={coarse ? undefined : e.title}

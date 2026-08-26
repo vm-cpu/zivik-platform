@@ -136,8 +136,10 @@ export default async function MapPage({
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,
+            zoomAtlantic: dict.mapSection.zoomAtlantic,
             zoomIn: dict.mapSection.zoomIn,
             zoomOut: dict.mapSection.zoomOut,
+            wheelHint: dict.mapSection.wheelHint,
             }}
             locale={locale}
           />

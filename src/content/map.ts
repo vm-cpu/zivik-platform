@@ -70,12 +70,18 @@ export interface MapCourt {
    */
   institutionIds: string[];
   /**
-   * Outside the projection's frame. Drawn all the same: docked against the
-   * frame's edge on the bearing of `offAt`, with a tail running off the
-   * picture. The comment here used to claim such a city was "named in the
-   * legend and not drawn" — it was neither. `EventsMap` filtered it out of the
-   * drawing and nothing else rendered it, so the ICAO Council, which decided
-   * the MH17 case the ICJ is now hearing on appeal, appeared nowhere at all.
+   * Outside the projection's declared frame, so it has no entry in
+   * europe-map.json's `markers` and says where it is in `offAt` instead.
+   *
+   * Whether it is drawn *as* off the map is a question about the framing, not
+   * about this flag: where the view cannot hold the city it is docked against
+   * the frame's edge on the bearing of `offAt`, with a tail running off the
+   * picture, and where a framing can hold it — the Atlantic one — it is drawn
+   * where it is, like any other seat. The comment here used to claim such a
+   * city was "named in the legend and not drawn"; it was neither. `EventsMap`
+   * filtered it out of the drawing and nothing else rendered it, so the ICAO
+   * Council, which decided the MH17 case the ICJ is now hearing on appeal,
+   * appeared nowhere at all.
    */
   offMap?: boolean;
   /**
@@ -84,6 +90,10 @@ export interface MapCourt {
    * Computed with the projection in scripts/europe-map.mjs rather than
    * guessed; the marker list in that script only carries points that land
    * inside the frame, so an off-map seat has to say where it is here.
+   *
+   * It is a position and not merely a bearing: the Atlantic framing draws the
+   * marker at it, and the widest view the reader can reach is derived from it,
+   * so a second off-map seat would widen that framing by itself.
    */
   offAt?: { x: number; y: number };
   /** Nudge the label off a collision with a neighbouring city. */
@@ -192,14 +202,19 @@ export const MAP_COURTS: MapCourt[] = [
   {
     key: "montreal",
     institutionIds: ["icao"],
-    // Montreal projects to (-937, 407) on a frame that runs 0…1200 × 0…460:
-    // it is on another continent, and widening the projection to reach it
+    // Montreal projects to (-936.9, 407.1) on a frame that runs 0…1200 × 0…460:
+    // it is on another continent, and widening the *projection* to reach it
     // would shrink Europe to nothing. So it is docked against the frame's
     // western edge, on that bearing, with a tail running off the picture —
     // the same mechanism any other off-map seat would get. The appeal against
     // its decision went to the ICJ, which is on the map.
+    //
+    // Widening the *view* is a different thing, and the map now offers it: the
+    // Atlantic framing puts this point inside the picture, where it draws as
+    // an ordinary court marker with an ordinary connector. The dock is what
+    // the other framings do, not what this seat is.
     offMap: true,
-    offAt: { x: -937, y: 407 },
+    offAt: { x: -936.9, y: 407.1 },
     city: { uk: "Монреаль", en: "Montreal" },
     seats: [
       {

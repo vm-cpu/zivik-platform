@@ -102,8 +102,10 @@ const uk = {
     zoomLabel: "Масштаб",
     zoomWide: "Європа",
     zoomClose: "Україна",
+    zoomAtlantic: "Атлантика",
     zoomIn: "Наблизити",
     zoomOut: "Віддалити",
+    wheelHint: "Ctrl або ⌘ + прокручування — масштаб",
     reads: "Опрацьовані рішення",
     pending: "Конспект у підготовці",
     legendWhat: "Місця подій",
@@ -136,8 +138,11 @@ const uk = {
        forum issued. They are two tag dimensions now. Every label below is the
        wording the source `status` text uses — a case whose record fixes only
        one of the two carries only one tag. */
-    stageName: "Етап",
-    outcomeName: "Що ухвалено",
+    /* The registry names these two dimensions the way the columns and the
+       filters over them do: «стан розгляду» and «тип рішення». They used to
+       read «Етап» and «Що ухвалено», which agreed with nothing on the page. */
+    stageName: "Стан розгляду",
+    outcomeName: "Тип рішення",
     stage: {
       preliminary: "Попередній етап",
       investigation: "Розслідування",

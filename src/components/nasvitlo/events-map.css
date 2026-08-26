@@ -44,7 +44,21 @@
      plus its 16px offset — gives R ≥ 436px − 35.2%. Above about 1240px that is
      negative and the reserve is nothing, which is why the markers keep the
      26.4px they had; at 1000px it is 84px, and at 641px, the narrowest width
-     where the card still floats, 210px. */
+     where the card still floats, 210px.
+
+     This solves the two framings of Europe, and it is as far as it can be
+     pushed. The Atlantic framing fits a span two and a half times as wide, so
+     Europe lands in the right quarter of the picture and the card covers
+     Vilnius at 1280px and Vilnius and Helsinki at 1000px. Solving for that
+     framing too gives R ≥ 450px − 32.45%, and it was tried: the extra 42px at
+     1000px drops the drawing to 0.729 CSS pixels per unit, which puts a site
+     target at 23.4px and takes the whole band below the 24px floor at exactly
+     the width the list's own media query says it is usable at. The Atlantic
+     framing at 1000px has no slack either — its court targets come out at
+     24.7px, and any reserve at all takes them under. So the two courts stay
+     under the card while a card is open, which closing it or pressing
+     «Європа» undoes, and the seat list on the map's own page reaches them
+     regardless. */
   --emap-safe-top: 60px;
   --emap-safe-right: max(0px, 436px - 35.2%);
   --emap-safe-bottom: 0px;
@@ -669,6 +683,15 @@
     display: none;
   }
 }
+/* Except where the drawing has stopped answering anyway. The width was a fair
+   proxy while both framings were framings of Europe; the Atlantic framing
+   breaks it, because it can put the six sites under the 24px floor on a 1440px
+   band. Wherever they are inert the list is the interface, whatever the window
+   is — and this only ever adds an interface, so the flash the media query was
+   written to avoid cannot come back through it. */
+.emap[data-coarse="yes"] .emap-list[data-variant="band"] {
+  display: grid;
+}
 
 /* Below the same width, the card stops floating over the drawing and takes its
    own place under it — the answer a phone already gets, for the same reason.
@@ -912,6 +935,12 @@
 .emap-svg {
   cursor: grab;
   touch-action: pan-y;
+  /* A drag across the drawing used to sweep the place labels into a text
+     selection — blue highlight boxes over Stockholm and Helsinki, and a caret
+     left behind. They are aria-hidden decoration drawn in projection units;
+     the text a reader would want to copy is the list below. */
+  user-select: none;
+  -webkit-user-select: none;
 }
 .emap-svg[data-dragging] {
   cursor: grabbing;
@@ -1000,8 +1029,52 @@
 
 /* One source of truth for "the drawing is too small to aim at". The component
    owns the decision (and refuses to believe a zero width); the drawing follows
-   it. See the note in the max-width:640px block above. */
-.emap[data-coarse="yes"] .emap-hit,
-.emap[data-coarse="yes"] .emap-court-hit {
+   it. See the note in the max-width:640px block above.
+
+   Two attributes, not one, because the question has two answers. The sites and
+   the courts crowd each other by different amounts — 16.9 projection units
+   between the closest two sites, 32 between the closest two courts — and the
+   Atlantic framing lands between: at 1440px it renders a site target at 20.9px
+   and a court target at 24.8px. Asking the sites' question of the courts would
+   have made the framing that exists to show Montreal a framing in which
+   Montreal cannot be clicked. */
+.emap[data-coarse="yes"] .emap-hit {
   pointer-events: none;
+}
+.emap[data-coarse-courts="yes"] .emap-court-hit {
+  pointer-events: none;
+}
+
+/* ---- the wheel, on the band ---- */
+/* The band scrolls the page like any other band and zooms on Ctrl or ⌘, and
+   this says so — for a moment, after a bare wheel, in the middle of the
+   drawing where the reader is already looking. A permanent caption would be
+   furniture; a silent refusal would read as a broken map. */
+.emap-hint {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 32px);
+  padding: 9px 16px;
+  text-align: center;
+  background: color-mix(in srgb, var(--brand-night) 88%, transparent);
+  border: 1px solid var(--brand-night-rule);
+  backdrop-filter: blur(6px);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--brand-gold-pale);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+.emap-hint[data-on="yes"] {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .emap-hint {
+    transition: none;
+  }
 }
