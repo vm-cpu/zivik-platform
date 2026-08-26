@@ -1,4 +1,5 @@
 import { type Locale } from "@/i18n/config";
+import { plural } from "@/i18n/plural";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { pick, type Institution, type RegistryCase } from "@/content/types";
 
@@ -7,15 +8,6 @@ import { pick, type Institution, type RegistryCase } from "@/content/types";
  * the "many" form and 21 taking "one". English keeps a singular and a plural
  * and reads the same three keys.
  */
-function plural(n: number, forms: { one: string; few: string; many: string }) {
-  const mod100 = n % 100;
-  if (mod100 >= 11 && mod100 <= 14) return forms.many;
-  const mod10 = n % 10;
-  if (mod10 === 1) return forms.one;
-  if (mod10 >= 2 && mod10 <= 4) return forms.few;
-  return forms.many;
-}
-
 function fmt(template: string, vars: Record<string, string | number>): string {
   return Object.entries(vars).reduce(
     (out, [key, value]) => out.replaceAll(`{${key}}`, String(value)),
@@ -170,7 +162,7 @@ export default function Registry({
                 <a className="more" href={`/${locale}/registry?court=${inst.id}`}>
                   {fmt(dict.registry.allCases, {
                     count: cases.length,
-                    cases: plural(cases.length, dict.registry.caseWord),
+                    cases: plural(cases.length, dict.registry.caseWord, locale),
                     court: pick(inst.abbr, locale),
                   })}
                 </a>

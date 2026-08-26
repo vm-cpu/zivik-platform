@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { decisionMetadata, jsonLdHtml, siteUrl } from "@/lib/seo";
 import { foreignLang, isLocale, type Locale } from "@/i18n/config";
+import { plural } from "@/i18n/plural";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import PageNav from "@/components/cases/PageNav";
@@ -156,15 +157,6 @@ const T = {
  * plural and reads the same three keys. Same shape as the registry's helper —
  * copied rather than imported, because the two surfaces do not share a module.
  */
-function plural(n: number, forms: { one: string; few: string; many: string }) {
-  const mod100 = n % 100;
-  if (mod100 >= 11 && mod100 <= 14) return forms.many;
-  const mod10 = n % 10;
-  if (mod10 === 1) return forms.one;
-  if (mod10 >= 2 && mod10 <= 4) return forms.few;
-  return forms.many;
-}
-
 /** What each entry in the cast list is. */
 const WHO_KIND: Record<"party" | "court" | "actor", Localized> = {
   party: T.whoKindParty,
@@ -563,7 +555,7 @@ export default async function CasePage({
       : granted > 0
         ? ([granted, T.grantedWord] as const)
         : ([violations, T.violationWord] as const);
-  const decidedLabel = `${plural(decided, decidedForms[locale])} ${pick(T.ofTotal, locale)}`;
+  const decidedLabel = `${plural(decided, decidedForms[locale], locale)} ${pick(T.ofTotal, locale)}`;
 
   /** Resolve a Localized pair for this render's locale (client-prop hygiene:
    *  client components receive plain strings, never both languages). */
