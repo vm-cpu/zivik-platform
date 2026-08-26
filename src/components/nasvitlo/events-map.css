@@ -1200,12 +1200,15 @@
    prints the same sentence from the same call and has always set it in mono
    (.emap-seat-count). One sentence in two faces on two surfaces was the kind
    of drift the type scale exists to stop. */
+/* Quieter than the court above it. It was gold, uppercase, mono and 11px —
+   the loudest line on the card, over the name of the institution it is a
+   footnote to. A count is a footnote. */
 .emap-caseload {
-  margin: 10px 0 0;
-  font: 600 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.09em;
+  margin: 9px 0 0;
+  font: 600 10px var(--brand-font-mono);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--brand-gold-pale);
+  color: var(--brand-muted-dark);
 }
 
 
@@ -1925,4 +1928,91 @@ a.emap-seat-count:focus-visible {
   stroke: currentColor;
   stroke-width: 1.4;
   stroke-linecap: round;
+}
+
+/* Quietening the rest is half a highlight, and on one of the four keys it was
+   the whole of it: «Ще досліджуємо» names exactly one of the fifteen marks,
+   and that one is a hollow ring six units across. Dimming fourteen things and
+   leaving it as it was reads as nothing happening. The named set is lit, not
+   merely spared. */
+.emap[data-hi="lit"] .emap-site[data-lit="yes"] .emap-halo,
+.emap[data-hi="unlit"] .emap-site[data-lit="no"] .emap-halo,
+.emap[data-hi="area"] .emap-site[data-area="yes"] .emap-halo {
+  opacity: 0.42;
+}
+.emap[data-hi="lit"] .emap-site[data-lit="yes"] .emap-dot,
+.emap[data-hi="area"] .emap-site[data-area="yes"] .emap-dot {
+  filter: drop-shadow(0 0 5px var(--c)) drop-shadow(0 0 12px var(--c));
+}
+/* The hollow ring cannot glow from a fill it does not have, so it thickens and
+   warms instead — the same distinction it draws at rest, said louder. */
+.emap[data-hi="unlit"] .emap-site[data-lit="no"] .emap-dot {
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2.6;
+  filter: drop-shadow(0 0 6px var(--c));
+}
+.emap[data-hi="court"] .emap-court-dot {
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2.4;
+  filter: drop-shadow(0 0 4px var(--brand-gold-pale));
+}
+
+
+/* ---- the card, read down ---- */
+/* Three registers, three jobs, and on the court card they had collapsed into
+   one grey run: the Ukrainian name of a case, the citation it is filed as and
+   its docket note were all set at the same size in the same colour, two of
+   them in the same face. A reader met three lines and could not tell which one
+   was the answer to "what is this".
+
+   The name leads, in the serif the card gives every name. The citation is the
+   thing you quote, so it is mono and quiet. The note is metadata about the
+   citation, so it is smaller than the citation and quieter again — a step
+   down, not a repeat. */
+.emap-listed .emap-read-t {
+  color: var(--brand-cream);
+}
+/* The step between the citation and its docket note is size, not opacity.
+   Opacity was the first try and it is the wrong tool for a step this small:
+   --brand-faint-dark measures 4.89:1 on this ground and holds AA, and the
+   same colour at 85% measures 3.89:1 and does not. A dimmer grey would have
+   the same problem. Both lines keep the colour; the note is a point smaller
+   and a line below. */
+.emap-read-cite {
+  margin-top: 1px;
+  font-size: 10.5px;
+  color: var(--brand-faint-dark);
+}
+.emap-listed .emap-read-f {
+  margin-top: 2px;
+  font-size: 9.5px;
+  color: var(--brand-faint-dark);
+}
+/* Air between one case and the next. They were 1px apart with three lines
+   each, so nine lines read as one paragraph. */
+.emap-listed li {
+  padding: 7px 0 8px 10px;
+  border-left: 2px solid var(--brand-night-rule);
+}
+.emap-listed li + li {
+  margin-top: 5px;
+}
+
+/* The way through to the registry. It was the same gold as the decision links
+   above it and sat in the same column, so it read as one more case rather than
+   as the door out of the list. A rule above it, and the arrow doing the work. */
+.emap-more {
+  display: block;
+  margin-top: 11px;
+  padding-top: 10px;
+  border-top: 1px solid var(--brand-night-rule);
+  font: 600 10px var(--brand-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-muted-dark);
+}
+.emap-more:hover,
+.emap-more:focus-visible {
+  color: var(--brand-gold-pale);
+  text-decoration: none;
 }

@@ -137,7 +137,7 @@ const uk = {
     /* The rest of a seat's caseload, in the registry, instead of printed into
        a 300px card. The Hague's ran to 3011px of scroll against a 753px
        window before this. */
-    allInRegistry: "Усі {n} у реєстрі →",
+    allInRegistry: "Дивитися в реєстрі →",
     pending: "Конспект у підготовці",
     /* The registry's own wording for this field, not a new one: the sign in
        the source says which way the money ran, so what a tag can honestly

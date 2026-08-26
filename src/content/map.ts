@@ -95,8 +95,6 @@ export interface MapEvent {
   forums: Localized;
   /** How many proceedings this site accounts for. */
   count: Localized;
-  /** Opened by default — the card the map leads with. */
-  open?: boolean;
   /**
    * Slugs in SUMMARIES this site leads to. Assigned from what each decision is
    * actually about, not from the forum: Oschadbank is a Crimea case but its
@@ -462,7 +460,6 @@ export const MAP_EVENTS: MapEvent[] = [
       en: "ECtHR (Strasbourg) · ICJ and the Dutch courts (The Hague) · the ICAO Council (Montreal)",
     },
     count: { uk: "3 рішення", en: "3 decisions" },
-    open: true,
   },
   {
     key: "donbas",

@@ -131,7 +131,6 @@ const stageWord = (k: string | undefined) =>
               courts: e.courts,
               forums: pick(e.forums, locale),
               count: pick(e.count, locale),
-              open: e.open,
               cases: caseLinksFor(e.key, locale).map((c) => ({
               ...c,
               stage: stageWord(c.stage),

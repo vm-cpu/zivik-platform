@@ -53,7 +53,6 @@ export interface MapEventR {
   courts: string[];
   forums: string;
   count: string;
-  open?: boolean;
   /** Decisions this site leads to. Empty means nothing is summarised yet. */
   cases: { slug: string; title: string; forum: string; stage?: string; amount?: string }[];
 }
@@ -501,7 +500,7 @@ export default function EventsMap({
      */
     writtenOf: string;
     /**
-     * "All 28 in the registry →". A seat's full caseload is the registry's
+     * "See them in the registry". A seat's full caseload is the registry's
      * job, not a 300px card's: The Hague's ran to 3011px of scroll against a
      * 753px window, in raw registry captions, with the same paragraph of Rome
      * Statute articles repeated four times.
@@ -634,12 +633,16 @@ export default function EventsMap({
    * relation, so selecting one must clear the other — holding both would light
    * two different sets of lines at once and mean nothing.
    */
-  const [sel, setSel] = useState<{ kind: "site" | "court"; key: string } | null>(
-    () => {
-      const first = events.find((e) => e.open)?.key;
-      return first ? { kind: "site", key: first } : null;
-    },
-  );
+  /**
+   * Nothing, until the reader picks something.
+   *
+   * The map used to open with one card already up — MH17, by an `open` flag on
+   * the content — so a reader arriving at the page found a panel lit over the
+   * drawing describing a place they had not asked about, and the six marks all
+   * quietened behind one relation they had not chosen. A default selection is
+   * the map answering a question nobody put to it.
+   */
+  const [sel, setSel] = useState<{ kind: "site" | "court"; key: string } | null>(null);
 
   /**
    * The whole screen, on a device that cannot use the drawing any other way.
@@ -771,9 +774,9 @@ export default function EventsMap({
     if (from) {
       setSel(from);
       // A link to ?site= or ?court= is the reader asking for that thing, so
-      // it gets a frame that holds it. The default card — MH17, `open: true` —
-      // does not: nobody asked for it, and moving the opening view because of
-      // it would mean the map never opens where it says it opens.
+      // it gets a frame that holds it. Nothing else opens a card any more —
+      // the map opens with none — so this is the only way in that moves the
+      // view, and it moves it because a reader followed a link to one place.
       setFocusReq(from);
     }
     /* eslint-enable react-hooks/set-state-in-effect */
@@ -1095,14 +1098,18 @@ export default function EventsMap({
       x1 = Math.max(x1, x);
       y1 = Math.max(y1, y);
     }
-    /* Fitted, not merely made visible. The first version of this only moved
-       when something was off screen, and measured on the built page that meant
-       it almost never moved at all: the opening framing holds the whole of
-       Europe, so every court of every site is already somewhere in it — badly,
-       at 1.2 CSS pixels per unit, but in it. "Visible" was never the complaint.
-       The frame is the answer, so the frame follows the question. */
-    const w0 = Math.max(MIN_W, x1 - x0 + 2 * FOCUS_EDGE);
-    const h0 = y1 - y0 + 2 * FOCUS_EDGE;
+    /* Centred, and no closer than the map opens.
+       This fitted the relation exactly at first, and fitting is too much: a
+       court with one site — Hamburg and the Kerch strait — is a narrow span,
+       and the map dived into it, so pressing a seat threw the reader from a
+       picture of Europe into two cities filling the band. The scale a reader
+       chose by arriving is the scale they keep; what a selection earns is the
+       middle of the picture, not a different picture. So the frame is the
+       opening framing's own size, centred on the relation — and it widens only
+       where the relation genuinely does not fit inside that, which is what the
+       framing buttons are for the rest of the time. */
+    const w0 = Math.max(FULL.w, x1 - x0 + 2 * FOCUS_EDGE);
+    const h0 = Math.max(FULL.h, y1 - y0 + 2 * FOCUS_EDGE);
     const want = settle(
       fitView(
         {
@@ -1129,7 +1136,7 @@ export default function EventsMap({
     // `view` is read to decide whether to move at all; re-running on every
     // frame the reader drags would fight them for control of the map.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusReq, box, OUTER, ANCHORS, FULL.w, events, courts, geo.markers]);
+  }, [focusReq, box, OUTER, ANCHORS, FULL.w, FULL.h, events, courts, geo.markers]);
 
   /**
    * The full screen opens on something, not on the whole of Europe.
@@ -2538,10 +2545,11 @@ export default function EventsMap({
                 the number in the line above it are the same number. */}
             {registryHref && (
               <Link className="emap-more" href={registryHref}>
-                {labels.allInRegistry.replace(
-                  "{n}",
-                  String(selectedCourt.caseload.total),
-                )}
+                {/* No number in it. It carried the seat's own count and read
+                    «Усі 1 у реєстрі» on five of the nine courts — and the
+                    count is already stated two lines above, in a sentence
+                    that agrees with itself. */}
+                {labels.allInRegistry}
               </Link>
             )}
           {/* A heading is a promise that something follows it. Stockholm hears
