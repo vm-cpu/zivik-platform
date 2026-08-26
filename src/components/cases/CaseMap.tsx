@@ -242,15 +242,22 @@ export default function CaseMap({
             const cx = t.pts.reduce((s, p) => s + p[0], 0) / t.pts.length;
             const cy = t.pts.reduce((s, p) => s + p[1], 0) / t.pts.length;
             const p = at(cx + (t.labelDx ?? 0), cy + (t.labelDy ?? 0));
-            /* Held inside the frame: a zone on the eastern border centres its
-               name past the right edge, and an HTML label does not clip. */
+            /* Held inside the frame, both ways. An HTML label does not clip,
+               so a zone near an edge puts its name outside the picture and on
+               top of whatever is beside it — and the nudges the summaries used
+               to carry for exactly this were measured against an atlas that no
+               longer exists, which is how «Донеччина та Луганщина» ended up at
+               112% of the frame's height. The label sits above its mark, so
+               the top bound is where it has room to and the bottom is where it
+               would fall off. */
             const left = Math.min(Math.max(parseFloat(p.left), 13), 87);
+            const top = Math.min(Math.max(parseFloat(p.top), 14), 96);
             return (
               <span
                 key={t.id}
                 className="ml-zone"
                 data-state={state(t.id)}
-                style={{ ...p, left: `${left}%` }}
+                style={{ ...p, left: `${left}%`, top: `${top}%` }}
               >
                 <i>{t.tag}</i>
                 <b>{t.place}</b>

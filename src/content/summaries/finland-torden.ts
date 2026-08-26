@@ -351,8 +351,6 @@ export const finlandTorden: DecisionSummary = {
       place: { uk: "Донбас, вересень 2014", en: "The Donbas, September 2014" },
       tag: { uk: "ЗАСІДКА НА «АЙДАР»", en: "THE AIDAR AMBUSH" },
       markerKeys: ["luhansk"],
-      labelDx: -40,
-      labelDy: -22,
       summary: {
         uk: "Операція «Русича» 5 вересня 2014 року — п'ять обвинувачень, розглянутих у Гельсінкі.",
         en: "Rusich's operation of 5 September 2014 — the five charges tried in Helsinki.",

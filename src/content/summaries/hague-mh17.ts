@@ -361,8 +361,6 @@ export const hagueMh17: DecisionSummary = {
       place: { uk: "Первомайське, Донеччина", en: "Pervomaiskyi, Donetsk region" },
       tag: { uk: "МІСЦЕ ПУСКУ", en: "THE LAUNCH SITE" },
       markerKeys: ["donetsk"],
-      labelDx: -40,
-      labelDy: -22,
       summary: {
         uk: "Поле, з якого установка «Бук» випустила ракету по MH17 17 липня 2014 року.",
         en: "The field from which the Buk TELAR fired at MH17 on 17 July 2014.",
