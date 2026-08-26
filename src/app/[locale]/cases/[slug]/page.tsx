@@ -122,8 +122,8 @@ const T = {
      more than one theatre — with a single one there is nothing to tell apart,
      and the sentence would be an instruction for its own sake. */
   mapPick: {
-    uk: "Натисніть на позначку або на рядок нижче — засвітиться те саме місце.",
-    en: "Press a mark, or a line below it — the same place lights up.",
+    uk: "Натисніть позначку або рядок — засвітиться те саме місце.",
+    en: "Press a mark or a line — the same place lights up.",
   },
   /* The year rail. It was `aria-hidden` decoration and read as decoration: a
      row of dots placed by year, so ten events in 2022 stacked into one mark
@@ -358,17 +358,51 @@ function TheatreMap({
    * becoming a letterbox.
    */
   const MARGIN = 90;
-  const ASPECT = 2.2;
+  /* 2.6 rather than 2.2, which is the projection's own ratio and a shorter
+     band: at 1000px wide the drawing is 385px tall against the 455 it was, and
+     the section stops taking a screen of its own inside an article. */
+  const ASPECT = 2.6;
   const x0 = Math.min(...marks.map((p) => p[0])) - MARGIN;
   const x1 = Math.max(...marks.map((p) => p[0])) + MARGIN;
   const y0 = Math.min(...marks.map((p) => p[1])) - MARGIN;
   const y1 = Math.max(...marks.map((p) => p[1])) + MARGIN;
-  const w = Math.max(x1 - x0, (y1 - y0) * ASPECT);
+  const w0 = Math.max(x1 - x0, (y1 - y0) * ASPECT);
+
+  /* The key stands on the drawing's left, so the frame gives up the strip it
+     stands on rather than letting the block cover a mark — the same
+     reservation the map's own page makes with --emap-safe-left, and the reason
+     it can be a block on the map at all instead of a caption under it.
+
+     It is a fraction rather than a number of units because the block is
+     measured in pixels and the frame in projection units: 348 of the band's
+     1000px is the 316 the block ends at, a 16px gap, and the 16 more that the
+     nearest mark's own hit target reaches back — at 332 the seat sat exactly
+     on the edge and three pixels of its target were under the block.
+
+     Only the shortfall is added. Every one of these frames already carries
+     MARGIN of open water west of the forum — on a case whose seat sits at the
+     left edge that is 90 units of the frame's width, and the reservation costs
+     the drawing 12.5% of its scale on the widest case rather than the 33% a
+     full strip would. Every forum on the shelf sits in western Europe and
+     every theatre in Ukraine, so the strip is water on all of them. */
+  const KEY_STRIP = 348 / 1000;
+  const left0 = Math.max(0, ((x0 + x1) / 2 - w0 / 2 - x0) * -1 + MARGIN);
+  const extra = Math.max(0, (KEY_STRIP * w0 - left0) / (1 - KEY_STRIP));
+  const w = w0 + extra;
   const h = w / ASPECT;
-  const frame = `${Math.round(((x0 + x1) / 2 - w / 2) * 10) / 10} ${Math.round(((y0 + y1) / 2 - h / 2) * 10) / 10} ${Math.round(w * 10) / 10} ${Math.round(h * 10) / 10}`;
+  /* The strip is taken off the left only, so the frame's centre moves west by
+     exactly what was added rather than the marks sliding out of it. */
+  const fx = (x0 + x1) / 2 - w0 / 2 - (w - w0);
+  const frame = `${Math.round(fx * 10) / 10} ${Math.round(((y0 + y1) / 2 - h / 2) * 10) / 10} ${Math.round(w * 10) / 10} ${Math.round(h * 10) / 10}`;
   return (
     <CaseMap
       frame={frame}
+      /* What was added, as a fraction of the frame that now carries it. The
+         stylesheet crops exactly this much back off on a phone, where the key
+         is below the drawing and the strip is nothing but water — leaving the
+         margin the forum had before the reservation rather than putting it on
+         the frame's edge. */
+      strip={Math.round((extra / w) * 10000) / 10000}
       context={mapContext}
       uaPath={atlas.ukraine}
       regions={atlas.regions}

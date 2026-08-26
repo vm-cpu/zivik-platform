@@ -26,9 +26,15 @@
   fill: transparent;
   cursor: pointer;
 }
+/* The browser's own ring is a blue rounded square on a gold-and-night map, and
+   it was drawing because `outline: none` on an SVG shape does not stop it in
+   every engine — reported from a screenshot of exactly that. An explicit
+   outline in the map's own gold replaces it rather than removing it: a focus
+   ring that is merely absent is worse than one that is the wrong colour. */
 .casepage .mk-hit:focus-visible {
-  outline: none;
-  stroke: var(--gold);
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 2px;
+  stroke: var(--brand-gold-pale);
   stroke-width: 2;
 }
 @media (max-width: 700px) {
@@ -40,23 +46,30 @@
 /* ---- the two states ---- */
 /* `rest` is every mark at full strength, which is what the map shows until a
    reader asks it something. After that there is exactly one relation on the
-   drawing and everything else steps back. No transition on the quietening:
-   measured on the events map, a group's opacity transition inside an SVG did
-   not advance, and the attribute changed while the screen did not. */
+   drawing and everything else steps back — 0.16, the events map's own figure.
+   No transition on the quietening: measured there, a group's opacity
+   transition inside an SVG did not advance, and the attribute changed while
+   the screen did not. */
 .casepage [data-state="off"] {
-  opacity: 0.22;
+  opacity: 0.16;
 }
+/* Selection is the light coming on, not a ring being drawn: the halo widens
+   and warms and the disc picks up the glow, which is what a selected place
+   does on the events map. */
 .casepage .mk-zone[data-state="on"] .zone-halo {
-  opacity: 0.3;
+  opacity: 0.42;
 }
 .casepage .mk-zone[data-state="on"] .zone {
-  filter: drop-shadow(0 0 6px var(--red));
+  filter: drop-shadow(0 0 5px var(--brand-gold-lamp))
+    drop-shadow(0 0 12px var(--brand-gold-lamp));
 }
 .casepage .mk-seat[data-state="on"] .mk-court {
-  filter: drop-shadow(0 0 6px var(--gold));
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2.4;
+  filter: drop-shadow(0 0 4px var(--brand-gold-pale));
 }
 .casepage .zone-area[data-state="on"] {
-  fill: color-mix(in srgb, var(--red) 34%, transparent);
+  fill: color-mix(in srgb, var(--brand-gold-lamp) 30%, transparent);
 }
 .casepage .map .reach[data-state="on"] {
   opacity: 0.9;

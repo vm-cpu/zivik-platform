@@ -108,9 +108,11 @@
   color: var(--cream);
   padding-block: clamp(34px, 4.5vw, 60px);
 }
-/* heading and legend keep the gutter the rail gives every other band */
-.casepage .mapband > .lbl,
-.casepage .mapband .map-legend {
+/* The heading keeps the gutter the rail gives every other band. The legend
+   used to be in this rule and no longer belongs in it: it stands inside the
+   drawing now, so the band's 72px gutter was reaching in and squeezing its
+   text to a 156px column inside a 300px block. */
+.casepage .mapband > .lbl {
   max-width: calc(var(--measure) + var(--gutter) * 2);
   margin-inline: auto;
   padding-inline: var(--gutter);
@@ -122,20 +124,42 @@
 /* map */
 .casepage .map-wrap {
   position: relative;
+  /* 1000, not 1180. This is an illustration inside an article, not the page's
+     subject the way the drawing on /map is, and the labels are HTML now — the
+     band no longer has to be wide to make its type legible. */
+  max-width: 1000px;
+  margin-inline: auto;
 }
 .casepage .map {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
 }
-.casepage .map-wrap {
-  max-width: 1180px;
-  margin-inline: auto;
-}
-/* The drawing and its names, and nothing else: the legend is a sibling of this
-   box, not a part of it, so a percentage means a percentage of the map. */
+/* The drawing and its names, and nothing else — the key is a sibling of this
+   box rather than a child of it, because every name on the map is placed by a
+   percentage of it and a key in the flow below would be part of that height.
+
+   The box carries the ratio rather than the viewBox — which is how the strip
+   the key stands on can be reserved on a wide screen and gone on a phone
+   without a second frame being computed or a second copy of the atlas shipped.
+   The frame gives up 34.8% of its width to the key (see TheatreMap). At the
+   viewBox's own 2.6 ratio `slice` and `meet` are the same transform and the
+   whole frame shows, strip and all. Narrow the box and `slice` scales to cover
+   and crops the overflow; `xMax` anchors that crop to the right, so what goes
+   is the strip on the left — which on a phone is exactly what should go, since
+   the key is back in the flow below the drawing and nothing stands there.
+
+   --map-strip is what the frame added, as a fraction of itself, set per case by
+   the component that computed it. Cropping exactly that much leaves the forum
+   the margin it had before the reservation instead of on the frame's edge. */
 .casepage .map-plot {
   position: relative;
+  aspect-ratio: 2.6;
+}
+@media (max-width: 900px) {
+  .casepage .map-plot {
+    aspect-ratio: calc(2.6 * (1 - var(--map-strip, 0)));
+  }
 }
 /* Constant weight, like every stroke on the events map and for the same
    reason: a border measured in user units is drawn at whatever the framing
@@ -148,36 +172,51 @@
 .casepage .map .mk-court {
   vector-effect: non-scaling-stroke;
 }
+/* ---- the same map, at a different scale ----------------------------------
+   Every value below is the events map's, because a reader who has used one of
+   these should not have to learn the other. It read as a different instrument:
+   the ground was two rgba literals of its own, the country a third, the
+   connector twice the weight and dashed twice as long, and — the thing that
+   actually gave it away — the theatres were drawn in --red while every mark on
+   the events map is gold.
+
+   The distinction the events map draws is not place-versus-place, it is
+   *court versus ground*: a seat is a hollow ring, a place is a filled disc
+   with a halo behind it. Drawn that way here, the two maps are the same
+   drawing at two scales. The literals go with it: colour comes from tokens, or
+   it does not follow the theme. */
 .casepage .map .ctx {
-  fill: rgba(243, 232, 226, 0.04);
-  stroke: rgba(157, 130, 123, 0.3);
-  stroke-width: 0.7;
+  fill: var(--brand-map-land);
+  stroke: var(--brand-map-land-edge);
+  stroke-width: 0.8;
   stroke-linejoin: round;
 }
 .casepage .map .ua-fill {
-  fill: rgba(230, 182, 92, 0.07);
-  stroke: var(--gold);
-  stroke-width: 1.8;
+  fill: var(--brand-map-ua);
+  stroke: color-mix(in srgb, var(--brand-gold-lamp) 62%, transparent);
+  stroke-width: 1.4;
   stroke-linejoin: round;
 }
 .casepage .map .reach {
-  stroke: var(--gold-dim);
-  stroke-width: 1.8;
-  stroke-dasharray: 6 8;
-  opacity: 0.45;
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+  opacity: 0.28;
 }
+/* The seat is a court, and a court is a ring. */
 .casepage .map .mk-court {
-  fill: var(--gold);
-  stroke: var(--bg);
-  stroke-width: 2;
+  fill: none;
+  stroke: var(--brand-cream);
+  stroke-width: 1.4;
 }
+/* A place is a disc, in the lamp's gold, over a halo of the same. */
 .casepage .zone {
-  fill: var(--red);
-  opacity: 0.85;
+  fill: var(--brand-gold-lamp);
+  opacity: 1;
 }
 .casepage .zone-halo {
-  fill: var(--red);
-  opacity: 0.12;
+  fill: var(--brand-gold-lamp);
+  opacity: 0.16;
 }
 .casepage .mk-city {
   fill: var(--cream);
@@ -192,6 +231,23 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+/* The names are HTML and know nothing about the crop the phone applies: they
+   are placed at a percentage of the frame, and after the crop the box is no
+   longer the frame. So the layer keeps the frame's full width and hangs off
+   the left, which is the side the crop takes from — every percentage inside it
+   then means what it meant before. Kyiv's name was what showed it, landing on
+   the left edge of a 375px drawing.
+
+   It has to come after the rule above rather than beside the crop it belongs
+   to: `inset: 0` sets `left` as well, and at equal specificity the later rule
+   is the one that wins. */
+@media (max-width: 900px) {
+  .casepage .map-labels {
+    left: auto;
+    right: 0;
+    width: calc(100% / (1 - var(--map-strip, 0)));
+  }
 }
 .casepage .map-labels span {
   position: absolute;
@@ -242,6 +298,61 @@
   padding-top: var(--space-4);
   border-top: 1px solid var(--rule-soft);
 }
+/* ---- and, with room for it, lying on the drawing ----
+   The move the map's own page makes, for the same reason: a key set under the
+   picture is a key to something the reader has to look away from to use.
+
+   Bottom-left, on a strip the frame reserves for it: every one of these maps
+   puts its forum in western Europe and its theatres in Ukraine, so the left of
+   the drawing is open water on all eight, and TheatreMap widens the frame west
+   by whatever the block needs beyond the water already there. Nothing has to
+   dodge anything — measured on all eight, no mark and no label falls inside
+   the block.
+
+   Below 900px it goes back into the flow beneath the drawing, where a phone
+   has always had it — there is no laying a 300px block on a 375px picture
+   without covering the country. */
+@media (min-width: 901px) {
+  .casepage .map-legend {
+    position: absolute;
+    z-index: 3;
+    left: 16px;
+    bottom: 16px;
+    /* A share of the drawing, not a number of pixels: the strip is 34.8% of
+       the frame and so scales with the band, while a fixed 300px would not —
+       at a 901px band the strip is 313px and a 300px block plus its 16px
+       margin came to 316, with the forum's ring under the edge of it. 30%
+       clears the strip at every width this rule applies at, and stops at 300
+       so it does not grow into a column on a wide screen. */
+    width: min(30%, 300px);
+    max-height: calc(100% - 32px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-3) var(--space-4) var(--space-3);
+    background: var(--brand-night-2);
+    border: 1px solid var(--brand-night-rule);
+    box-shadow: var(--shadow-dark);
+  }
+  /* In a 300px column the entries stack rather than sharing a row, and the
+     sentence under each comes down a step — it is no longer running the width
+     of the band. */
+  .casepage .map-legend .lg-theatre {
+    flex: none;
+    max-width: none;
+  }
+  .casepage .map-legend .lg-note {
+    font-size: var(--t-cap);
+    line-height: 1.45;
+  }
+  .casepage .map-legend .lg-how {
+    flex: none;
+    margin-top: 0;
+  }
+}
 .casepage .map-legend span {
   display: flex;
   align-items: center;
@@ -249,14 +360,23 @@
   font: 500 var(--t-sm) var(--brand-font-body);
   color: var(--muted);
 }
+/* The key's marks are the drawing's marks. They have to be: the forum and the
+   theatre are the only two things this map draws, and both were a filled disc
+   here — gold for the seat, red for the theatre, from when the theatres were
+   red. Repainted, they were both a filled gold disc and the key could not tell
+   them apart at all. On the drawing the seat is a hollow cream ring and the
+   theatre a gold disc, which is also what the events map's key does with the
+   same two marks. */
 .casepage .map-legend i {
+  box-sizing: border-box;
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--brand-gold-lamp);
 }
 .casepage .map-legend .lg-court {
-  background: var(--gold);
+  background: none;
+  border: 1.4px solid var(--brand-cream);
 }
 .casepage .map-legend b {
   color: var(--gold);
@@ -293,6 +413,11 @@
   padding: 0;
 }
 .casepage .verdicts li {
+  /* Running prose across the full 1180px rail, measured at 154ch to the line —
+     the reading column beside it is held to 70. A cap in `ch` follows this
+     block's own type rather than the rail the box was drawn for, and narrows
+     only the text: the box, its rules and its grid stay where they are. */
+  max-width: 70ch;
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: baseline;
@@ -436,7 +561,7 @@
   }
   .casepage .map-labels i,
   .casepage .ml-seat i {
-    font-size: 10.5px;
+    font-size: var(--t-micro);
   }
   .casepage .ml-city {
     font-size: var(--t-cap);
@@ -473,10 +598,10 @@
 }
 
 /* The ground a theatre is about, where a dot is not the whole truth about it.
-   The same treatment the events map gives it: warm, low, and unstroked — the
-   country's own gold outline is the one edge that has to win here, and a
-   second stroke on the same coast would fight it. What changes is the fill. */
+   The events map's own value, to the percent: warm, low, and unstroked — the
+   country's gold outline is the one edge that has to win here, and a second
+   stroke on the same coast would fight it. What changes is the fill. */
 .casepage .map .zone-area {
-  fill: color-mix(in srgb, var(--red) 22%, transparent);
+  fill: color-mix(in srgb, var(--brand-gold-lamp) 17%, transparent);
   stroke: none;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./theatre-legend.css";
 import "./case-map.css";
@@ -42,6 +43,7 @@ export interface CaseMapTheatre {
 
 export default function CaseMap({
   frame,
+  strip,
   context,
   uaPath,
   regions,
@@ -52,6 +54,8 @@ export default function CaseMap({
   labels,
 }: {
   frame: string;
+  /** How much of `frame` is the strip reserved for the key, 0–1. */
+  strip: number;
   context: string[];
   uaPath: string;
   /** Ukraine's internal oblast boundaries, as one mesh. */
@@ -122,11 +126,20 @@ export default function CaseMap({
 
   return (
     <div className="map-wrap" data-sel={sel ?? "none"}>
-      <div className="map-plot">
+      {/* The strip's size travels with the drawing rather than being written
+          into the stylesheet: it is derived per case, and only the frame that
+          reserved it knows how much it took. */}
+      <div className="map-plot" style={{ "--map-strip": strip } as CSSProperties}>
         <svg
           ref={svgRef}
           className="map"
           viewBox={frame}
+          /* The frame reserves a strip on the left for the key. Anchored to
+             the right and set to cover, this is the identity transform at the
+             frame's own ratio — and on a phone, where the stylesheet narrows
+             the box and the key is back below the drawing, it crops the strip
+             away instead of leaving 130px of empty water. */
+          preserveAspectRatio="xMaxYMid slice"
           /* A group of controls while the marks answer — the same distinction
              the events map draws. There is no state here in which they do not:
              this drawing has at most three of them and they never crowd. */
@@ -270,7 +283,13 @@ export default function CaseMap({
       {/* The legend is the other end of the same control. It carried the one
           sentence that says what happened at each place and had no way to tell
           the reader which mark that sentence belongs to; now pressing either
-          lights both. */}
+          lights both.
+
+          A sibling of the drawing, not a child: with room it is lifted onto
+          the map as a block standing on a strip the frame reserves for it, and
+          on a phone it drops back into the flow beneath — see the stylesheet.
+          Either way it must not be inside the box the names are placed
+          against, whose height is the drawing's own. */}
       <div className="map-legend">
         <button
           type="button"
