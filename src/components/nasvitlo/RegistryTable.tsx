@@ -82,6 +82,11 @@ export interface RegRow {
   /** Sort position of the institution, so "by court" follows the archive. */
   courtOrder: number;
   name: string;
+  /**
+   * The same case in Ukrainian, where the caption is not. Empty in the English
+   * locale: there the citation is already in the reader's language.
+   */
+  nameUk: string;
   note: string;
   /** Procedural posture; null where the record does not fix one. */
   stage: CaseStageKey | null;
@@ -1262,6 +1267,16 @@ export default function RegistryTable({
                     >
                       {highlight(r.name, tokens)}
                     </a>
+                    {/* The Ukrainian line, under the citation the row is filed
+                        as. The note two lines down has said for a long time
+                        that most names here are recorded only in English while
+                        the interface is Ukrainian, and that a reader had to
+                        reach an English-titled row through the institution's
+                        abbreviation rather than through the title. This is the
+                        title, in their language, searchable. */}
+                    {r.nameUk && (
+                      <span className="reg-name-uk">{highlight(r.nameUk, tokens)}</span>
+                    )}
                     {r.note && (
                       <span className="reg-note" lang={foreignLang(r.note, locale)}>
                         {highlight(r.note, tokens)}

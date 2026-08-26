@@ -344,6 +344,7 @@ export default async function RegistryPage({
       court: inst ? pick(inst.abbr, locale) : c.institutionId,
       courtOrder: inst ? inst.order : Number.MAX_SAFE_INTEGER,
       name: c.name,
+      nameUk: locale === "uk" ? (c.nameUk ?? "") : "",
       note: pick(c.note, locale),
       stage: c.stage ?? null,
       stageLabel: stageLabels ? pick(stageLabels, locale) : null,
@@ -360,11 +361,14 @@ export default async function RegistryPage({
       fieldLabel: pick(c.type, locale),
       href: c.summarySlug ? `/${locale}/cases/${c.summarySlug}` : null,
       /* Both locales go into every group. Most case names are recorded only in
-         English while the interface is Ukrainian, so a reader typing «ЄСПЛ» or
-         «Гаага» has to reach an English-titled row through the institution's
-         Ukrainian abbreviation and seat — not through the title. */
+         English while the interface is Ukrainian, and until `nameUk` a reader
+         typing «Нафтогаз» or «Укренерго» could not reach the row that is about
+         it — only the institution's Ukrainian abbreviation and seat were
+         searchable, not the title. The Ukrainian line goes into the search
+         whatever locale is being read, so a Ukrainian query finds the case on
+         the English page too. */
       find: {
-        visible: `${c.name} ${both(c.note)}`,
+        visible: `${c.name} ${c.nameUk ?? ""} ${both(c.note)}`,
         court: `${both(inst?.abbr)} ${both(inst?.name)} ${both(inst?.seat)} ${c.institutionId}`,
         status: `${both(c.status)} ${both(stageLabels)} ${both(outcomeLabels)}`,
         type: both(c.type),

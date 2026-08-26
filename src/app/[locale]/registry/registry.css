@@ -474,3 +474,14 @@
   .reg-pop{max-width:100%}
   .reg-sort{flex:1 1 100%;margin-left:0}
 }
+
+/* The Ukrainian line under a citation that is not. Quieter than the name it
+   sits under — the citation is what the row is filed as — and it is the line
+   a Ukrainian reader actually reads. See `nameUk` in content/types.ts. */
+.registrypage .reg-name-uk {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--t-cap);
+  line-height: 1.35;
+  color: var(--ink-2);
+}
