@@ -44,6 +44,12 @@ export interface MapEventR {
   when: string;
   title: string;
   note: string;
+  /**
+   * The ground this marker speaks for, where a point is not the whole truth —
+   * see `area` in src/content/map.ts. "country" is Ukraine's own outline;
+   * anything else names a path in `geo.areas`.
+   */
+  area?: string;
   courts: string[];
   forums: string;
   count: string;
@@ -94,6 +100,12 @@ export interface MapGeometry {
    * scripts/europe-map.mjs for why this is a mesh and not 27 outlines.
    */
   regions: string;
+  /**
+   * Named pieces of ground a marker can speak for. Ukraine entire is not in
+   * here — that is `ukraine` above, and drawing it twice would put two strokes
+   * on the same coast.
+   */
+  areas?: Record<string, string>;
   markers: Record<string, number[]>;
 }
 
@@ -506,6 +518,12 @@ export default function EventsMap({
     /** The oblast mesh inside Ukraine's outline. */
     legendRegions: string;
     /**
+     * The ground a mark speaks for, where a point is not the whole truth about
+     * it. Only rendered where some site declares an `area` — by data rather
+     * than by name, like the docked-seat key above.
+     */
+    legendArea: string;
+    /**
      * That the marks answer at all, and what answering does. The map's whole
      * mechanic — pick one end of a relation and the other lights — was
      * nowhere on the page; a reader had to discover it by clicking something
@@ -597,6 +615,20 @@ export default function EventsMap({
    * the device's settings.
    */
   const [full, setFull] = useState(false);
+
+  /**
+   * A legend key held down: show me this set of marks and quieten the rest.
+   *
+   * The legend drew the marks instead of naming them, which was the right
+   * idea and half the job — a key that shows you what a mark looks like still
+   * leaves you to find them yourself, on a drawing where five of fifteen are
+   * inside one country. Pressing the key answers it.
+   *
+   * Only the three keys that name a *set* take a press. «Пунктир» and the
+   * size key describe a property of the drawing, not a group you could ask to
+   * see on its own, so they stay captions.
+   */
+  const [hi, setHi] = useState<"lit" | "unlit" | "court" | "area" | null>(null);
 
   /**
    * The selection lives in the URL so a card can be linked to.
@@ -704,15 +736,16 @@ export default function EventsMap({
      screen is the outer of the two, so it is the second thing Escape reaches:
      one press puts the card away, the next gives the page back. */
   useEffect(() => {
-    if (!sel && !full) return;
+    if (!sel && !full && !hi) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      if (sel) select(null);
+      if (hi) setHi(null);
+      else if (sel) select(null);
       else setFull(false);
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [sel, full, select]);
+  }, [sel, full, hi, select]);
 
   /* Held full, the drawing covers the document; a document that still scrolls
      underneath is the classic overlay bug — the reader leaves the map and
@@ -1651,6 +1684,16 @@ export default function EventsMap({
       ? `${selectedCourt.city}. ${caseload(selectedCourt.caseload.total)}.`
       : "";
 
+  /**
+   * The ground the selected marker speaks for, if a point is not the whole
+   * truth about it. Resolved here so the drawing takes a path or nothing.
+   */
+  const areaPath = !selected?.area
+    ? null
+    : selected.area === "country"
+      ? geo.ukraine
+      : (geo.areas?.[selected.area] ?? null);
+
   /** Where the rest of a seat's caseload lives. */
   const registryHref = selectedCourt?.caseload.courtIds.length
     ? `/${locale}/registry?court=${selectedCourt.caseload.courtIds.join(",")}`
@@ -1663,6 +1706,7 @@ export default function EventsMap({
       data-coarse={coarse ? "yes" : "no"}
       data-coarse-courts={coarseCourts ? "yes" : "no"}
       data-full={full ? "yes" : "no"}
+      data-hi={hi ?? undefined}
       data-touch={touch ? "yes" : "no"}
       /* Which framing is on the screen, for the one rule that has to know.
          The Atlantic framing is 2.3 times as wide as the projection and puts
@@ -1926,6 +1970,13 @@ export default function EventsMap({
               foreign one can at least see that Crimea is a piece of this
               country and not a neighbour of it. Quieter than the outer border
               by a wide margin — that stroke is the shape that matters. */}
+          {/* The ground a marker speaks for, where the marker alone would be a
+              claim the record does not support: the ICC's situation is the
+              whole country, not Mariupol, and the energy arbitrations are a
+              grid, not a point. Drawn over the country's fill and under its
+              internal boundaries, so it reads as the same country lit rather
+              than as a shape laid on top of it. */}
+          {areaPath && <path className="emap-area" d={areaPath} />}
           <path className="emap-regions" d={geo.regions} clipPath="url(#emap-ua-clip)" />
 
           {/* Reach lines: from each site to the courts hearing it. Drawn
@@ -2087,6 +2138,7 @@ export default function EventsMap({
                 data-on={sel?.kind === "site" && sel.key === e.key ? "yes" : "no"}
                 data-rel={relSites.has(e.key) ? "yes" : "no"}
                 data-lit={e.cases.length > 0 ? "yes" : "no"}
+                data-area={e.area ? "yes" : "no"}
               >
               <circle className="emap-halo" cx={x} cy={y} r={e.size / 2} />
                 {/* The drawn dot is r=6, which renders 14.4px wide on a
@@ -2347,6 +2399,143 @@ export default function EventsMap({
       </div>
       </div>
 
+      {/* A legend that draws the marks instead of naming them. Every glyph
+          below is the same shape the map uses, at the same size, so the reader
+          matches by sight rather than by reading a colour word — and the three
+          that name a *set* of marks are controls, not captions. */}
+      <div className="emap-legend" data-variant={variant}>
+        <div className="emap-leg-group">
+          <LegendH variant={variant}>{labels.legendWhat}</LegendH>
+          <ul>
+            <li>
+              <button
+                type="button"
+                className="emap-key"
+                aria-pressed={hi === "lit"}
+                onClick={() => setHi(hi === "lit" ? null : "lit")}
+              >
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <circle className="k-halo" cx="11" cy="11" r="9" />
+                  <circle className="k-lit" cx="11" cy="11" r="5" />
+                </svg>
+                {labels.legendLit}
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className="emap-key"
+                aria-pressed={hi === "unlit"}
+                onClick={() => setHi(hi === "unlit" ? null : "unlit")}
+              >
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <circle className="k-unlit" cx="11" cy="11" r="5" />
+                </svg>
+                {labels.legendUnlit}
+              </button>
+            </li>
+            {/* The ground a mark speaks for, where a point is not the whole
+                truth about it. Only where some site actually has one. */}
+            {events.some((e) => e.area) && (
+              <li>
+                <button
+                  type="button"
+                  className="emap-key"
+                  aria-pressed={hi === "area"}
+                  onClick={() => setHi(hi === "area" ? null : "area")}
+                >
+                  <svg viewBox="0 0 22 22" aria-hidden="true">
+                    <path className="k-area" d="M2,7 L9,3 L17,5 L20,11 L15,18 L6,17 L3,12 Z" />
+                    <circle className="k-lit" cx="11" cy="10.5" r="3" />
+                  </svg>
+                  {labels.legendArea}
+                </button>
+              </li>
+            )}
+          </ul>
+        </div>
+
+        {/* On the home band the second group renders too: without it the reader
+            sees three site marks and no key to the rings the courts are drawn
+            as, which are half the picture. */}
+        <div className="emap-leg-group">
+          <LegendH variant={variant}>{labels.legendHow}</LegendH>
+          <ul>
+            <li>
+              <button
+                type="button"
+                className="emap-key"
+                aria-pressed={hi === "court"}
+                onClick={() => setHi(hi === "court" ? null : "court")}
+              >
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <circle className="k-court" cx="11" cy="11" r="5.5" />
+                </svg>
+                {labels.court}
+              </button>
+            </li>
+            {/* The rest are captions, not controls: they explain a property of
+                the drawing rather than name a set of marks you could ask to
+                see on their own. A button that filtered to "the dashed lines"
+                would be a button that did nothing. */}
+            <li className="emap-key">
+              <svg viewBox="0 0 22 22" aria-hidden="true">
+                <line className="k-line" x1="1" y1="11" x2="21" y2="11" />
+              </svg>
+              {labels.legendLine}
+            </li>
+            {/* The one glyph on the drawing a reader has no way to recognise,
+                and the one the legend did not explain: a seat the frame cannot
+                hold, pinned to the border with a chevron and a tail running off
+                the picture. By data rather than by name — today that is
+                Montreal and the ICAO Council, and a second such seat would
+                bring its own key with it. */}
+            {courts.some((c) => c.offMap) && (
+              <li className="emap-key">
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <line className="k-line" x1="1" y1="11" x2="11" y2="11" />
+                  <circle className="k-court" cx="4" cy="11" r="3.4" />
+                  <path className="k-bearing" d="M13,7 L17.5,11 L13,15" />
+                </svg>
+                {labels.legendOffMap}
+              </li>
+            )}
+            {variant === "full" && (
+              <li className="emap-key">
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <circle className="k-lit" cx="5" cy="11" r="3" />
+                  <circle className="k-lit" cx="15" cy="11" r="6" />
+                </svg>
+                {labels.sizeKey}
+              </li>
+            )}
+            {/* The oblast mesh. It is a deliberate and useful part of the
+                drawing — it is what lets a reader see that Crimea is a piece of
+                this country and not a neighbour of it — and to anyone who does
+                not already know the country it was an unexplained grid. */}
+            {variant === "full" && (
+              <li className="emap-key">
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <path className="k-mesh" d="M2,15 L8,9 L14,12 L20,6 M8,9 L7,2 M14,12 L15,20" />
+                </svg>
+                {labels.legendRegions}
+              </li>
+            )}
+          </ul>
+          {/* What the marks do. The map's whole mechanic — pick one end of a
+              relation and the other lights — was written down nowhere, so a
+              reader had to find it by pressing something they had no reason to
+              believe was a control. */}
+          <p className="emap-leg-how">{labels.legendPick}</p>
+        </div>
+      </div>
+
+      {/* The six, as text, under the key that explains the drawing above
+          them. The legend used to sit below this list — which put the keys a
+          screen away from the marks they name, so pressing one to see the five
+          sites with a written decision showed the reader a legend and no map.
+          A key belongs beside the thing it is a key to; the list is content and
+          follows both. */}
       {/*
         The same content as text. The iframe version was invisible to search
         engines and to anyone not using a pointing device; this list is the
@@ -2369,117 +2558,43 @@ export default function EventsMap({
         ))}
       </ul>
 
-      {/* A legend that draws the marks instead of naming them. Every glyph
-          below is the same shape the map uses, at the same size, so the reader
-          matches by sight rather than by reading a colour word. */}
-      <div className="emap-legend" data-variant={variant}>
-        <div className="emap-leg-group">
-          <LegendH variant={variant}>{labels.legendWhat}</LegendH>
+      {/* The seats, out of the legend and into a block of their own.
+          A legend answers "how do I read this drawing". Nine cities with the
+          full names of every institution seated in them answers "where do I go
+          next", which is a different question — and it was the longest thing on
+          the page, pushing the two actual keys to the top of a block a reader
+          read as one list. Same buttons, same comparison of nine caseloads side
+          by side; each one now also opens the registry filtered on that seat's
+          institutions, which is where its proceedings actually live. */}
+      {variant === "full" && (
+        <div className="emap-index">
+          <LegendH variant={variant}>{labels.courtsSeat}</LegendH>
           <ul>
-            <li className="emap-key">
-              <svg viewBox="0 0 22 22" aria-hidden="true">
-                <circle className="k-halo" cx="11" cy="11" r="9" />
-                <circle className="k-lit" cx="11" cy="11" r="5" />
-              </svg>
-              {labels.legendLit}
-            </li>
-            <li className="emap-key">
-              <svg viewBox="0 0 22 22" aria-hidden="true">
-                <circle className="k-unlit" cx="11" cy="11" r="5" />
-              </svg>
-              {labels.legendUnlit}
-            </li>
+            {courts.map((c) => (
+              <li key={c.key}>
+                <button type="button" onClick={() => toggleCourt(c.key)}>
+                  <span className="emap-seat-city">{c.city}</span>
+                  <span className="emap-seat-list">{c.seats}</span>
+                </button>
+                {/* The one thing this list held that a reader could not get any
+                    other way is *comparison*: nine seats side by side. Same
+                    string the card uses, same number, no new fact — and now a
+                    way through to the rows behind it. */}
+                {c.caseload.courtIds.length > 0 ? (
+                  <Link
+                    className="emap-seat-count"
+                    href={`/${locale}/registry?court=${c.caseload.courtIds.join(",")}`}
+                  >
+                    {caseload(c.caseload.total)}
+                  </Link>
+                ) : (
+                  <span className="emap-seat-count">{caseload(c.caseload.total)}</span>
+                )}
+              </li>
+            ))}
           </ul>
         </div>
-
-        {/* On the home band the second group renders too: without it the reader
-            sees three site marks and no key to the rings the courts are drawn
-            as, which are half the picture. */}
-        <div className="emap-leg-group">
-            <LegendH variant={variant}>{labels.legendHow}</LegendH>
-            <ul>
-            <li className="emap-key">
-              <svg viewBox="0 0 22 22" aria-hidden="true">
-                <circle className="k-court" cx="11" cy="11" r="5.5" />
-              </svg>
-              {labels.court}
-            </li>
-              <li className="emap-key">
-                <svg viewBox="0 0 22 22" aria-hidden="true">
-                  <line className="k-line" x1="1" y1="11" x2="21" y2="11" />
-                </svg>
-                {labels.legendLine}
-              </li>
-              {/* The one glyph on the drawing a reader has no way to recognise,
-                  and the one the legend did not explain: a seat the frame
-                  cannot hold, pinned to the border with a chevron and a tail
-                  running off the picture. By data rather than by name — today
-                  that is Montreal and the ICAO Council, and a second such seat
-                  would bring its own key with it. */}
-              {courts.some((c) => c.offMap) && (
-                <li className="emap-key">
-                  <svg viewBox="0 0 22 22" aria-hidden="true">
-                    <line className="k-line" x1="1" y1="11" x2="11" y2="11" />
-                    <circle className="k-court" cx="4" cy="11" r="3.4" />
-                    <path className="k-bearing" d="M13,7 L17.5,11 L13,15" />
-                  </svg>
-                  {labels.legendOffMap}
-                </li>
-              )}
-              {variant === "full" && (
-                <li className="emap-key">
-                  <svg viewBox="0 0 22 22" aria-hidden="true">
-                    <circle className="k-lit" cx="5" cy="11" r="3" />
-                    <circle className="k-lit" cx="15" cy="11" r="6" />
-                  </svg>
-                  {labels.sizeKey}
-                </li>
-              )}
-              {/* The oblast mesh. It is a deliberate and useful part of the
-                  drawing — it is what lets a reader see that Crimea is a piece
-                  of this country and not a neighbour of it — and to anyone who
-                  does not already know the country it was an unexplained
-                  grid. */}
-              {variant === "full" && (
-                <li className="emap-key">
-                  <svg viewBox="0 0 22 22" aria-hidden="true">
-                    <path className="k-mesh" d="M2,15 L8,9 L14,12 L20,6 M8,9 L7,2 M14,12 L15,20" />
-                  </svg>
-                  {labels.legendRegions}
-                </li>
-              )}
-            </ul>
-            {/* What the marks do. The map's whole mechanic — pick one end of a
-                relation and the other lights — was written down nowhere, so a
-                reader had to find it by pressing something they had no reason
-                to believe was a control. */}
-            <p className="emap-leg-how">{labels.legendPick}</p>
-          </div>
-
-
-        {variant === "full" && (
-          <div className="emap-leg-group emap-leg-seats">
-            <LegendH variant={variant}>{labels.courtsSeat}</LegendH>
-            <ul>
-              {courts.map((c) => (
-                <li key={c.key}>
-                  <button type="button" onClick={() => toggleCourt(c.key)}>
-                    <span className="emap-seat-city">{c.city}</span>
-                    <span className="emap-seat-list">{c.seats}</span>
-                    {/* The one thing this list held that a reader could not
-                        get any other way is *comparison*: nine seats side by
-                        side. It could not compare the only quantity the
-                        archive has for them, because the caseload was inside
-                        the card and the card shows one court at a time. Same
-                        string the card uses, same number, no new fact. */}
-                    <span className="emap-seat-count">{caseload(c.caseload.total)}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }

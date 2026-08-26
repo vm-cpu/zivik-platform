@@ -446,7 +446,7 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, конспекти рішень, хронології, карта подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
+            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, конспекти рішень, хронології, мапа подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
             en: "The Site is an open library of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a list of cases, decision summaries, chronologies, an events map and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
           },
         },
@@ -514,7 +514,7 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Що справді є нашим — це те, що ми створюємо самі: конспекти й аналітичні тексти, хронології, неофіційні переклади, добір та впорядкування матеріалів у бібліотеці, карти, ілюстрації, дизайн і код Сайту. Ці матеріали є об'єктами авторського права і належать Факультету права УКУ та Дослідницькому центру імені Луї Б. Зона або використовуються на законних підставах.",
+            uk: "Що справді є нашим — це те, що ми створюємо самі: конспекти й аналітичні тексти, хронології, неофіційні переклади, добір та впорядкування матеріалів у бібліотеці, мапи, ілюстрації, дизайн і код Сайту. Ці матеріали є об'єктами авторського права і належать Факультету права УКУ та Дослідницькому центру імені Луї Б. Зона або використовуються на законних підставах.",
             en: "What is ours is what we make ourselves: the summaries and analytical texts, the chronologies, the unofficial translations, the selection and arrangement of the material in the library, the maps, the illustrations, and the design and code of the Site. These are subject to copyright and belong to the UCU Faculty of Law and the Louis B. Sohn Research Centre, or are used on lawful grounds.",
           },
         },

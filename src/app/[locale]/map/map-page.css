@@ -77,8 +77,21 @@
    widths — below 900px the stage stops being viewport-height anyway, so the
    constant never has to hold at the sizes where the bar wraps. */
 .mp-stage .emap-figure {
-  height: calc(100dvh - 71px);
-  min-height: 460px;
+  /* The drawing takes the screen, less the top bar — and less the legend,
+     which is the point. It used to take the whole of it, so the keys were a
+     scroll below the map: pressing one to see the five sites with a written
+     decision showed you nothing, because the drawing they light was off the
+     top of the window. A key that names a set of marks has to be visible with
+     the marks.
+
+     It costs nothing to look at. The fit is bound by the width on every
+     desktop shape this page is read at — at 1440 x 900 the drawing gets 1.20
+     CSS pixels per unit by width against 1.39 by height, and at 1000 x 900,
+     0.83 against 1.39 — so taking 210px off the height does not shrink the
+     map at all. Where the window is tall and narrow enough for the height to
+     bind, the floor below catches it. */
+  height: calc(100dvh - 71px - 210px);
+  min-height: 420px;
 }
 .mp-stage .emap-svg {
   /* No aspect ratio here: the frame is whatever the viewport gives it. The
@@ -266,15 +279,9 @@
   );
 }
 
-.mp-stage .emap-leg-seats {
-  grid-column: 1 / -1;
-  padding-top: 22px;
-  border-top: 1px solid var(--brand-night-rule);
-}
-.mp-stage .emap-leg-seats ul {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 4px 28px;
+.mp-stage .emap-index {
+  padding-inline: max(clamp(20px, 4vw, 56px), 0px);
+  border-inline: 0;
 }
 
 /* The label rule above the title. `.lbl` is defined in home.css, which this

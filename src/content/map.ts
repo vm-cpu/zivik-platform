@@ -54,6 +54,31 @@ export interface MapEvent {
   when: Localized;
   title: Localized;
   note: Localized;
+  /**
+   * The ground this site stands for, where a point is not the whole truth.
+   *
+   * Two of the six are not places. «Воєнні злочини» is filed under the key
+   * `mariupol` and drawn on Mariupol, and its content is the ICC's situation
+   * in Ukraine entire — six arrest warrants, of which only some are about that
+   * city. «Енергоактиви» is Ukrenergo, Energoatom, DTEK and Ukrhydroenergo:
+   * generation and grid across the country, drawn on one point in the middle
+   * of it. A dot is a claim about where something happened, and on an archive
+   * whose subject is who has the right to name things, a dot that means "the
+   * whole country" is a claim the record does not support.
+   *
+   * The answer is not to move the dot or drop it — a reader needs somewhere to
+   * aim — but to say what it stands for: the marker keeps its place and the
+   * ground it speaks for lights up behind it. "country" is Ukraine's own
+   * outline; anything else names a path in `areas` in europe-map.json.
+   *
+   * NOT SET on «Схід України», deliberately. The east is a part of the
+   * territory and would take this field, but the registry fixes no extent for
+   * it — two oblasts, three, the front line of which year — and this file will
+   * not decide that on the record's behalf. Crimea is different: the
+   * proceedings are styled «re Crimea» and the peninsula's own admin-1 units
+   * are exactly what they are about.
+   */
+  area?: "country" | "crimea";
   /** Court markers this site draws a line to. */
   courts: string[];
   /** The forums, spelled out for the card. */
@@ -340,6 +365,7 @@ export const MAP_COURTS: MapCourt[] = [
 export const MAP_EVENTS: MapEvent[] = [
   {
     key: "crimea",
+    area: "crimea",
     cases: ["icj-cerd-icsft", "oschadbank", "dtek-krymenergo"],
     weight: 11,
     when: { uk: "Окупація · 2014", en: "Occupation · 2014" },
@@ -463,6 +489,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "energy",
+    area: "country",
     cases: ["dtek-krymenergo"],
     weight: 4,
     when: { uk: "Енергетика · 2020", en: "Energy · 2020" },
@@ -491,6 +518,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "mariupol",
+    area: "country",
     cases: ["icc-ukraine"],
     weight: 6,
     when: { uk: "2022", en: "2022" },

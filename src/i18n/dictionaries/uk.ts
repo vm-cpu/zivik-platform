@@ -100,7 +100,7 @@ const uk = {
     heading: "Факти порушень та суди, які здійснюють їх правову оцінку",
     description:
       "Заявлені порушення — обстріли, депортації та захоплення — зʼєднані пунктиром із судом, де здійснюється їх правова оцінка.",
-    fullMap: "Повна карта →",
+    fullMap: "Повна мапа →",
     legendCourt: "Суд, який розглядає",
     legendLit: "Є конспект рішення",
     legendUnlit: "Ще досліджуємо",
@@ -149,6 +149,10 @@ const uk = {
        was the one thing the legend did not explain. */
     legendOffMap: "Суд поза кадром — стрілка вказує напрямок",
     legendRegions: "Тонкі лінії — межі областей України",
+    /* The ground a mark speaks for, where a point is not the whole truth
+       about it — the ICC's situation is the whole country, not Mariupol.
+       Rendered only where some site actually declares one. */
+    legendArea: "Підсвічена територія — подія стосується її всієї",
     /* The map's whole mechanic, and it was nowhere in the legend: a reader
        had to guess that the marks answer at all. */
     legendPick: "Оберіть подію — засвітяться суди, які її розглядають. Оберіть суд — засвітяться його події.",

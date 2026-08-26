@@ -109,6 +109,7 @@ const en: Dictionary = {
     legendLine: "Dashed line — the link between a court and an event",
     legendOffMap: "A court outside the frame — the arrow gives its bearing",
     legendRegions: "Thin lines — Ukraine's oblast boundaries",
+    legendArea: "Lit ground — the event is about all of it",
     legendPick: "Pick a place and the courts hearing it light up; pick a court and its places do.",
     sizeKey: "A bigger circle means more proceedings",
     pageTitle: "The map of violations and courts",

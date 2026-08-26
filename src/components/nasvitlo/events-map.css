@@ -533,14 +533,6 @@
    put the two halves of the pair the owner asked about in two faces that both
    read as technical tags, and set the half a reader actually has to read in
    the narrowest one at the smallest size on the surface. */
-.emap-leg-seats ul {
-  gap: 9px;
-}
-.emap-leg-seats li {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
 .emap-seat-city {
   font: 700 var(--t-micro) / 1.25 var(--brand-font-body);
   letter-spacing: 0.12em;
@@ -835,9 +827,8 @@
 .emap-legend[data-variant="band"] .emap-leg-group :is(h2, h3) {
   display: none;
 }
-.emap-legend[data-variant="band"] .emap-leg-seats {
-  display: none;
-}
+/* The band renders no seat index at all — that block is map-page only — so
+   nothing here has to hide it. */
 .emap-legend[data-variant="band"] ul {
   display: flex;
   flex-wrap: wrap;
@@ -1165,26 +1156,22 @@
   opacity: 0.8;
 }
 
-/* Seats are buttons: the legend is also the way to interrogate a court, which
+/* Seats are buttons: the index is also the way to interrogate a court, which
    is otherwise only reachable by finding a 5px ring on the drawing. */
-.emap-leg-seats button {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: 100%;
-  padding: 5px 8px;
-  margin-left: -8px;
-  background: none;
-  border: 0;
-  border-left: 2px solid transparent;
-  text-align: left;
-  cursor: pointer;
-  transition: background var(--dur) var(--ease);
+.emap-index button {
+  transition: color var(--dur) var(--ease);
 }
-.emap-leg-seats button:hover,
-.emap-leg-seats button:focus-visible {
-  background: var(--brand-night);
+.emap-index li:hover,
+.emap-index li:focus-within {
   border-left-color: var(--brand-gold-pale);
+}
+.emap-index button:hover .emap-seat-city,
+.emap-index button:focus-visible .emap-seat-city {
+  color: var(--brand-cream);
+}
+.emap-index button:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 2px;
 }
 
 /* The court's own caseload, from the registry — «28 проваджень у бібліотеці».
@@ -1469,4 +1456,169 @@
   stroke: var(--brand-gold-lamp);
   stroke-width: 1;
   opacity: 0.55;
+}
+
+
+/* ---- the ground a marker speaks for ---- */
+/* Two of the six marks are not places. «Воєнні злочини» is the ICC's situation
+   in Ukraine entire, drawn on Mariupol; «Енергоактиви» is generation and grid
+   across the country, drawn on one point in the middle of it. The dot stays —
+   a reader needs somewhere to aim — and the ground it stands for lights behind
+   it, so the map stops claiming a place the record does not fix.
+
+   Warm, low and unstroked: the country's own gold outline is the one edge that
+   has to win here, and a second stroke on the same coast would fight it. What
+   changes is the fill — the same country, lit. */
+.emap-area {
+  fill: color-mix(in srgb, var(--brand-gold-lamp) 17%, transparent);
+  stroke: none;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .emap-area {
+    animation: emap-area-in var(--dur) var(--ease) both;
+  }
+}
+@keyframes emap-area-in {
+  from {
+    opacity: 0;
+  }
+}
+.emap-key .k-area {
+  fill: color-mix(in srgb, var(--brand-gold-lamp) 30%, transparent);
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1.1;
+  opacity: 0.8;
+}
+
+
+/* ============================================================================
+   The legend as a control
+   ========================================================================== */
+
+/* Three of the keys name a set of marks rather than a property of the drawing,
+   and pressing one shows you that set. The legend drew the marks instead of
+   naming them, which was the right idea and half the job: a key that shows you
+   what a mark looks like still leaves you to find them, on a picture where five
+   of fifteen sit inside one country. */
+button.emap-key {
+  width: 100%;
+  margin: 0;
+  padding: 3px 6px 3px 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease);
+}
+button.emap-key:hover {
+  color: var(--brand-cream);
+}
+button.emap-key:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 1px;
+}
+button.emap-key[aria-pressed="true"] {
+  color: var(--brand-gold-pale);
+}
+/* The pressed key is marked on the key itself, not only by its colour: colour
+   alone would say nothing to a reader who cannot see this one. */
+button.emap-key[aria-pressed="true"]::after {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  margin-left: auto;
+  background: var(--brand-gold-pale);
+}
+
+/* What a press does. Everything not in the named set goes quiet — not hidden:
+   the drawing has to keep its shape, and a mark that vanished would take its
+   own place on the map with it. `.emap-hit` keeps its pointer either way, so a
+   quietened mark can still be picked; this is a highlight, not a lock. */
+.emap[data-hi] .emap-site,
+.emap[data-hi] .emap-court,
+.emap[data-hi] .emap-reach,
+.emap[data-hi] .emap-court-tail,
+.emap[data-hi] .emap-court-bearing {
+  opacity: 0.16;
+  transition: opacity var(--dur) var(--ease);
+}
+.emap[data-hi="lit"] .emap-site[data-lit="yes"],
+.emap[data-hi="unlit"] .emap-site[data-lit="no"],
+.emap[data-hi="area"] .emap-site[data-area="yes"],
+.emap[data-hi="court"] .emap-court,
+.emap[data-hi="court"] .emap-court-tail,
+.emap[data-hi="court"] .emap-court-bearing {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .emap[data-hi] .emap-site,
+  .emap[data-hi] .emap-court,
+  .emap[data-hi] .emap-reach,
+  .emap[data-hi] .emap-court-tail,
+  .emap[data-hi] .emap-court-bearing {
+    transition: none;
+  }
+}
+
+/* ---- the seat index ---- */
+/* Out of the legend and into a block of its own. A legend answers "how do I
+   read this drawing"; nine cities with the full name of every institution
+   seated in them answers "where do I go next". Mixed, the nine pushed the two
+   actual keys to the top of something a reader took for one list — and it was
+   the longest thing on the page. */
+.emap-index {
+  padding: 22px max(clamp(28px, 5vw, 96px), 0px) 26px;
+  background: var(--brand-night-2);
+  border: 1px solid var(--brand-night-rule);
+  border-top: 0;
+}
+.emap-index :is(h2, h3) {
+  margin: 0 0 12px;
+  font: 700 var(--t-micro) / 1 var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-faint-dark);
+}
+.emap-index ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px 28px;
+}
+.emap-index li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-left: 11px;
+  border-left: 1px solid var(--brand-night-rule);
+}
+.emap-index button {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+/* The caseload is the way through to the rows behind it: `/registry` opens
+   filtered on every institution this seat holds. It was a dead number. */
+.emap-index .emap-seat-count {
+  align-self: start;
+  padding: 3px 0;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+a.emap-seat-count:hover,
+a.emap-seat-count:focus-visible {
+  color: var(--brand-gold-pale);
+  border-bottom-color: currentColor;
 }
