@@ -91,6 +91,7 @@ const en: Dictionary = {
     caseload: "{n} {w} in the library",
     caseloadWord: { one: "proceeding", few: "proceedings", many: "proceedings" },
     zoomLabel: "Framing",
+    railLabel: "Pick an event by date",
     zoomWide: "Europe",
     zoomClose: "Ukraine",
     zoomAtlantic: "Atlantic",

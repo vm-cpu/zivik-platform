@@ -114,6 +114,11 @@ const uk = {
     caseload: "{n} {w} у бібліотеці",
     caseloadWord: { one: "провадження", few: "провадження", many: "проваджень" },
     zoomLabel: "Масштаб",
+    /* The time axis under the drawing. The map held six events from 2014 to
+       2022 and drew them all the same way, so the one thing this collection
+       is — a line that has been running for a decade — was the one thing the
+       picture did not say. */
+    railLabel: "Оберіть подію за часом",
     zoomWide: "Європа",
     zoomClose: "Україна",
     zoomAtlantic: "Атлантика",
@@ -207,7 +212,13 @@ const uk = {
       verdict: "Вирок",
       liability: "Відповідальність",
       warrant: "Ордер",
-      order: "Процедурні ордери",
+      /* «Ордер» is an arrest warrant and belongs to the line above. A
+         procedural act of a court or tribunal is «наказ» — the wording every
+         summary on the site already uses for an ICJ order (icj-cerd-icsft,
+         icj-genocide) and for an arbitral one («Процедурний наказ № 1»,
+         oschadbank). This chip is what `outcome: "order"` renders, and the row
+         that carries it — icj-3, ICJ GL 201 — is an ICJ docket. */
+      order: "Процедурні накази",
       upheld: "Арбітраж залишено",
       settlement: "Врегульовано",
       rejected: "Відхилено",

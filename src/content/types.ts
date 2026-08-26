@@ -57,7 +57,7 @@ export type CaseOutcomeKey =
   | "verdict" // «вирок»
   | "liability" // «відповідальність встановлена»
   | "warrant" // «ордер видано»
-  | "order" // «процедурні ордери»
+  | "order" // «процедурні накази» (an ICJ/arbitral order, never «ордер»)
   | "upheld" // «арбітраж залишено»
   | "settlement" // «врегульовано»
   | "rejected"; // «відхилено»

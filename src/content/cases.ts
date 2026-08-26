@@ -32,10 +32,30 @@ export const registryCases: RegistryCase[] = [
     institutionId: "icj",
     name: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening), Preliminary Objections, Judgment, I.C.J. Reports 2024, 2 February 2024",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
-    statusKey: "warrant",
+    /* The ICJ issues no arrest warrants. What this row was pointing at is the
+       Order on provisional measures of 16 March 2022 (judgment § 10), and in
+       Ukrainian «ордер» names an arrest warrant — a different act of a
+       different court. Every summary on the site writes «наказ» for an ICJ
+       order, and the status line does so now.
+
+       `outcome` records what the forum issued, heaviest act first, and in this
+       docket that is a judgment: the Judgment on preliminary objections of
+       2 February 2024, the document `decisionUrl` links and `summarySlug`
+       explains. The neighbouring `order` key was the other candidate, but it
+       renders «Процедурні накази» / "Procedural orders", which is wrong twice
+       over here — the 16 March 2022 Order is not procedural, and the label
+       would bury the judgment. `stage: "merits"` carries the fact that nothing
+       is concluded. `statusKey`, which nothing renders any more, follows.
+
+       Page count verified against the PDF at `decisionUrl` (the I.C.J. Reports
+       2024 fascicle offprint, judgment at pp. 360-425): 70 pages. */
+    statusKey: "progress",
     stage: "merits",
-    outcome: "warrant",
-    status: { uk: "Розгляд по суті, є ордер", en: "Merits pending; warrant issued" },
+    outcome: "judgment",
+    status: {
+      uk: "Розгляд по суті; ухвалено наказ про тимчасові заходи",
+      en: "Merits pending; provisional measures indicated",
+    },
     year: 2022,
     amountUsd: null,
     note: { uk: "ICJ GL 182", en: "ICJ GL 182" },
@@ -53,7 +73,9 @@ export const registryCases: RegistryCase[] = [
     statusKey: "progress",
     stage: "preliminary",
     outcome: "order",
-    status: { uk: "Попередній етап, рішення нема, лише процедурні ордери", en: "Preliminary stage; procedural orders only" },
+    /* «Накази», not «ордери» — the same confusion as on icj-2 above: this is
+       an ICJ docket, and the acts on it are procedural orders. */
+    status: { uk: "Попередній етап, рішення нема, лише процедурні накази", en: "Preliminary stage; procedural orders only" },
     year: 2025,
     amountUsd: null,
     note: { uk: "ICJ GL 201", en: "ICJ GL 201" },

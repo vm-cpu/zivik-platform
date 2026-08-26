@@ -26,6 +26,21 @@ import verbatimUk from "./icj-genocide.uk.json";
  * The post-judgment timeline entries come from the Court's case page
  * (https://www.icj-cij.org/case/182) and press releases 2025/5 and 2025/55.
  *
+ * Where to read the PDFs when icj-cij.org refuses. The Court's own origin host
+ * serves the identical files without the bot wall —
+ * https://icj-web.leman.un-icc.cloud/sites/default/files/case-related/182/…
+ * — and the Wayback Machine holds the December 2025 filings. That is how
+ * `cases.ts`'s `pages: 70` was checked: the file at `judgment.url` is the
+ * I.C.J. Reports 2024 fascicle offprint, 70 PDF pages, the judgment running
+ * pp. 360-425 (official citation "I.C.J. Reports 2024, p. 360"). The HTML twin
+ * paginates the earlier advance version instead and stops at "- 60 -", which
+ * is why the two disagree; 70 is right for the file we link.
+ *
+ * The Order of 5 December 2025 and press release 2025/55 exist as /node pages
+ * (206010 and 206019) but those carry metadata only — no HTML body — so the
+ * time-limits in the timeline below come from the Order's own § 68, read from
+ * the PDF.
+ *
  * A caution for the next editor. The verbatim prose introduces the list of
  * requests “(a)”–“(f)” as the Memorial's, but that list is paragraph 30 of the
  * *Application* (judgment § 24). The Memorial's own submissions are at § 178
@@ -539,8 +554,8 @@ export const icjGenocide: DecisionSummary = {
         en: "The intervening States renew for the merits",
       },
       note: {
-        uk: "Секретар Суду запропонував їм до 2 серпня 2024 року подати нову декларацію або зберегти попередню. Частина подала нові, частина — уточнені, решта залишила свої без змін; Польща додатково подала заяву про вступ за статтею 62 Статуту.",
-        en: "The Registrar invited them, by 2 August 2024, to file a new declaration or maintain their original one. Some filed new declarations, some adjusted theirs, the rest kept them unchanged; Poland additionally filed an Application for permission to intervene under Article 62 of the Statute.",
+        uk: "Секретар Суду запропонував їм до 2 серпня 2024 року подати нову декларацію або зберегти попередню. Озвалися 23 держави з 32: дев'ять подали нові декларації, вісім — уточнені, шість зберегли попередні без змін. Польща додатково подала заяву про вступ за статтею 62 Статуту (сторінка справи на сайті Суду; прес-релізи 2024/58, 2024/59).",
+        en: "The Registrar invited them, by 2 August 2024, to file a new declaration or maintain their original one. Twenty-three of the 32 responded: nine filed new declarations, eight filed adjusted ones and six maintained theirs unchanged. Poland additionally filed an Application for permission to intervene under Article 62 of the Statute (the Court's case page; press releases 2024/58 and 2024/59).",
       },
     },
     {
@@ -567,8 +582,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Russia's counter-claims held admissible as such",
       },
       note: {
-        uk: "Тим самим наказом Суд дозволив Україні подати Репліку, а Росії — Дуплік, і встановив строки. До наказу додано сім окремих і особливих думок та заяв (прес-реліз 2025/55).",
-        en: "By the same Order the Court authorized Ukraine to submit a Reply and Russia a Rejoinder, and fixed the time-limits for both. Seven separate and dissenting opinions and declarations are appended to it (press release 2025/55).",
+        uk: "11 голосами проти 4. Тим самим наказом, одностайно, Суд дозволив Україні подати Репліку до 7 грудня 2026 року, а Росії — Дуплік до 7 грудня 2027 року. До наказу додано сім окремих і особливих думок та заяв (наказ, § 68; прес-реліз 2025/55).",
+        en: "By eleven votes to four. By the same Order, unanimously, the Court authorized Ukraine to submit a Reply by 7 December 2026 and Russia a Rejoinder by 7 December 2027. Seven separate and dissenting opinions and declarations are appended to it (the Order, § 68; press release 2025/55).",
       },
     },
   ],
@@ -582,7 +597,27 @@ export const icjGenocide: DecisionSummary = {
      judgment reproduces them at § 25 — the list the dispositif actually rules
      on. They are NOT the "(a)"–"(f)" list in the verbatim prose above, which
      is paragraph 30 of the Application (judgment § 24) and letters the same
-     ground differently. See the file header. */
+     ground differently. See the file header.
+
+     (c) and (d) read `rejected` until this pass, which said the Court had
+     considered them and refused them. It did not. It held them ADMISSIBLE —
+     the third preliminary objection against them was rejected, § 129 and
+     dispositif (4) — and then found it had no power over them: "submissions
+     (c) and (d) in paragraph 178 of Ukraine's Memorial do not fall within the
+     jurisdiction of the Court and that the Court may not deal with them on the
+     merits" (§ 149, closing sentence; the same sentence is block 46 of the
+     verbatim). `not-decided` is the union member for that, and it leaves the
+     scorecard untouched: the count line reads off `granted`, which is still
+     submission (b) alone — "1 вимогу задоволено з 3".
+
+     One open question for the researchers, deliberately not answered here.
+     § 178 of the Memorial has five submissions, (a)-(e); this matrix carries
+     three. (a) is the request that the Court declare it has jurisdiction, which
+     the dispositif answers at (8). (e) — that Russia breached the Order of
+     16 March 2022 — the judgment never touches: § 55 defines the second aspect
+     of the dispute as (c) and (d) only, and no paragraph of the judgment
+     mentions submission (e). Adding either row would change the denominator the
+     scorecard prints, so it is an editorial call, not a correction. */
   verdicts: [
     {
       track: "Genocide Convention",
@@ -598,7 +633,7 @@ export const icjGenocide: DecisionSummary = {
         uk: "(c) Застосування Росією сили в Україні та проти України, розпочате 24 лютого 2022 року, порушує статті I і IV Конвенції",
         en: "(c) The Russian Federation's use of force in and against Ukraine beginning on 24 February 2022 violates Articles I and IV of the Genocide Convention",
       },
-      outcome: "rejected",
+      outcome: "not-decided",
     },
     {
       track: "Genocide Convention",
@@ -606,7 +641,7 @@ export const icjGenocide: DecisionSummary = {
         uk: "(d) Визнання Росією незалежності «ДНР» і «ЛНР» 21 лютого 2022 року порушує статті I і IV Конвенції",
         en: "(d) The Russian Federation's recognition of the independence of the so-called “DPR” and “LPR” on 21 February 2022 violates Articles I and IV of the Genocide Convention",
       },
-      outcome: "rejected",
+      outcome: "not-decided",
     },
   ],
 
