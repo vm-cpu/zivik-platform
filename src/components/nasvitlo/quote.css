@@ -8,7 +8,7 @@
 
    Three things this file does that the old rules did not:
 
-   1. It closes the hole at the map → quote join. `.nsv-mapband` carries
+   1. It closes the hole at the map → quote join. `.nsv-mapband` carried
       `padding: 10px 0 40px` as an inline style, so 40px of empty ground sat
       below the map's last hairline, and the quote then opened with 66px of its
       own padding: 106px of nothing. Worse, the two grounds are
@@ -22,19 +22,35 @@
       would cast onto the band below. The concept is a lamp over a document;
       this is where the light gets in.
 
-   3. It makes the section read as a quotation: an oversized quotation mark in
-      the display serif, the court's words in Charis SIL on a pull-quote
-      measure, and the citation set apart underneath in the mono the rest of
-      the site uses for docket machinery.
+   3. It makes the section read as a quotation: the court's words in Charis SIL
+      on a pull-quote measure, and the citation set apart underneath in the
+      mono the rest of the site uses for docket machinery.
+
+   ── The band was shouting. Measured at 1440px before this pass:
+      a 72px ornamental «, then 34px of quoted text over four lines, then a
+      20px case name, then 12.5px of uppercase mono carrying four facts, then
+      an 11px bold uppercase link 70 characters long — 574px of band, five type
+      sizes, two of them set in caps. Two of the five are gone (see Quote.tsx)
+      and the rest came down, which leaves 331px of band at the same width:
+
+        quoted text   34px → 25px at 1440   (clamp cap now bites at 1316px)
+                      22px → 19px at 375
+                      four lines → three at 1440, five → five at 375
+        case name     20px → 16px  (--t-lead → --t-body)
+        mono line     12.5px, unchanged in size but no longer uppercased
+
+      A pull-quote has to outrank body text — 16px Fira Sans across the site —
+      and it still does at 25px on a serif, sitting a step under --t-h2 (29px
+      at this width) so a quotation does not out-shout the headings around it.
 
    Colour comes only from --brand-* tokens (see docs/DESIGN.md). Measured on
-   the band's own ground, --brand-quote:
-     cream       15.69:1    the quoted words
-     gold-lit    10.08:1    the case name, the seam, the focus ring
-     gold-pale   14.03:1    hover
-     gold-mark    7.29:1    the oversized quotation mark
-     muted-dark   9.15:1    the docket line  (7.41:1 where the seam's spill
-                            lightens the ground under it)
+   the band's own ground, --brand-quote (#1e0c0b), and — for anything sitting
+   in the top 130px, where the seam's spill lightens the ground to rgb 54 32 21
+   — on that lit ground too. The floor is 4.5:1:
+     cream       15.69:1  (12.66:1 lit)   the quoted words
+     gold-lit    10.08:1  ( 8.13:1 lit)   the case name, the seam, the focus ring
+     gold-pale   14.03:1  (11.33:1 lit)   hover
+     muted-dark   9.15:1  ( 7.39:1 lit)   the court · stage · date line
    ============================================================ */
 
 .nsvq {
@@ -42,8 +58,13 @@
   /* The pull-up is gone: MapSection.tsx no longer pads 40px below the drawing,
      so there is nothing left to cancel and the two bands meet on their own.
      Coupling a negative margin here to an inline value there meant either
-     number could be changed alone and reopen the hole silently. */
-  padding: clamp(52px, 6vw, 84px) var(--space-7) clamp(48px, 5.5vw, 76px);
+     number could be changed alone and reopen the hole silently.
+
+     Was clamp(52px, 6vw, 84px) / clamp(48px, 5.5vw, 76px). Air is set against
+     the type it surrounds: with the quote nine pixels smaller and two lines of
+     caption gone, the old padding left the band reading as a held pause rather
+     than a passage between two sections. */
+  padding: clamp(44px, 4.4vw, 64px) var(--space-7) clamp(40px, 4vw, 58px);
   background: var(--brand-quote);
   overflow: hidden;
 }
@@ -69,7 +90,9 @@
 }
 /* The light it casts down onto the band. Kept under an eighth of the gold's
    strength: at 12% the ground beneath it still clears AA for every colour set
-   on it, and the effect should be felt rather than seen. */
+   on it — the worst case is the mono line at 7.39:1 — and the effect should be
+   felt rather than seen. The quote's first line now opens inside this spill,
+   where the ornament used to; cream on it measures 12.66:1. */
 .nsvq-seam::after {
   content: "";
   position: absolute;
@@ -87,33 +110,20 @@
 
 /* ---- the quotation ------------------------------------------------------ */
 
-
-
-/* ---- the ornament ------------------------------------------------------- */
-
-/* Centred, so there is no hanging punctuation to reconcile — the device that
-   makes a centred pull-quote read as one is the mark above it, not an optical
-   alignment down the left edge. Kept well under the text's weight: it is a
-   signal, not a second voice. */
-.nsvq-orn {
-  display: block;
-  font-family: var(--brand-font-display), Georgia, serif;
-  font-size: clamp(46px, 5.4vw, 72px);
-  line-height: 0.5;
-  text-align: center;
-  color: color-mix(in srgb, var(--brand-gold-lit) 58%, transparent);
-  margin-bottom: clamp(20px, 2.4vw, 32px);
-}
-
 .nsvq-text {
-  max-width: 44rem;
+  /* 44rem before. At 25px the same 704px runs to roughly 65 characters a line,
+     which is a paragraph measure, not a pull-quote's; 40rem holds it near 55
+     and keeps the block compact as the type comes down. */
+  max-width: 40rem;
   margin: 0 auto;
   text-align: center;
   font-family: var(--brand-font-display), Georgia, serif;
-  font-size: clamp(22px, 2.7vw, 34px);
+  font-size: clamp(19px, 1.9vw, 25px);
   /* Generous for a serif at this size — a pull-quote is read slowly. */
-  line-height: 1.44;
-  letter-spacing: -0.012em;
+  line-height: 1.48;
+  /* Was -0.012em. Optical tightening is a fix for large type; nine pixels
+     smaller, the same tracking starts to close the counters in Charis SIL. */
+  letter-spacing: -0.008em;
   color: var(--brand-cream);
   text-wrap: balance;
 }
@@ -121,22 +131,23 @@
 /* ---- the citation ------------------------------------------------------- */
 
 .nsvq-cite {
-  max-width: 44rem;
-  margin: clamp(26px, 3vw, 38px) auto 0;
-  padding: clamp(22px, 2.4vw, 30px) 0 0;
+  max-width: 40rem;
+  margin: clamp(20px, 2.2vw, 28px) auto 0;
+  padding: clamp(16px, 1.8vw, 22px) 0 0;
   text-align: center;
   position: relative;
 }
 /* A short lit rule, centred, the same light as the seam — an attribution rule
    under a centred quote, not a border across the band. A full-width line here
-   read as the top of a new section. */
+   read as the top of a new section. 84px before: the rule is now separating
+   two lines rather than four, and a shorter one carries that join. */
 .nsvq-cite::before {
   content: "";
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 84px;
+  width: 56px;
   height: 1px;
   background: linear-gradient(
     90deg,
@@ -146,67 +157,66 @@
   );
 }
 
-/* One link, one target: the citation itself is what you click, so there is no
-   second control floating beside unattributed text. */
+/* One link, one target: the case name is what you click, and it goes to the
+   case. The link used to wrap the whole caption — a column of three lines,
+   only one of which named a destination. Inline now, so the arrow sits on the
+   name's baseline and the mono line below is what it is: text, not a control.
+   `display` is stated because the flex column it replaces was set from here. */
 .page .nsvq a.nsvq-link {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  color: inherit;
+  display: inline;
+  /* Not `inherit`: the arrow is the link's own text, and inherited colour on
+     this band is --brand-cream, which put a cream glyph beside a gold name.
+     Lamp gold measures 10.08:1 here. */
+  color: var(--brand-gold-lit);
   text-decoration: none;
 }
 
 /* The case, in the same voice the decision page gives it: Charis SIL italic in
-   lamp gold. This is the line that names where the words come from. */
+   lamp gold. This is the line that names where the words come from, and the
+   arrow beside it is the only affordance a case name needs to read as a way
+   into the case. */
 .nsvq-case {
   font-family: var(--brand-font-display), Georgia, serif;
   font-style: italic;
-  font-size: var(--t-lead);
-  line-height: 1.25;
+  /* --t-lead (20px) before — 319px of italic across the band. Against a 25px
+     quote it competes with the words it attributes; --t-body puts two steps of
+     the ramp between them and brings the name to 255px. */
+  font-size: var(--t-body);
+  line-height: 1.35;
   color: var(--brand-gold-lit);
   border-bottom: 1px solid transparent;
   transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 
-/* Court, stage, date and General List number — docket machinery, so mono, the
-   way every other citation on the site is set. */
+/* Court, stage and date — docket machinery, so mono, the way every other
+   citation on the site is set. It was uppercased and tracked 0.06em, and with
+   the General List number on the end it ran 69 characters and 569px at 1440px:
+   a band of capitals 250px wider than the case name it sat under, and the
+   loudest line in the caption. It runs 56 characters and 434px now. The
+   dictionary writes the string in sentence case, so it is set that way rather
+   than transformed, and the tracking is cut to what mono needs to breathe
+   rather than what caps need to stay legible. */
 .nsvq-meta {
+  display: block;
+  margin-top: var(--space-2);
   font-family: var(--brand-font-mono), ui-monospace, monospace;
   font-size: var(--t-cap);
   line-height: 1.5;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--brand-muted-dark);
 }
 
-.nsvq-read {
-  margin-top: var(--space-1);
-  font-family: var(--brand-font-body), sans-serif;
-  font-weight: 700;
-  font-size: var(--t-micro);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--brand-gold-lit);
-  transition: color var(--dur) var(--ease);
-}
-
 /* home.css carries `.page a:not(…):hover { color: var(--redd) }`, which is
-   (0,3,2) and would turn the whole citation red — red means a finding of
-   breach on this site, not a hover state. These win on specificity, not on
-   file order. */
+   (0,3,2) and would turn the citation red — red means a finding of breach on
+   this site, not a hover state. These win on specificity, not on file order. */
+.page .nsvq a.nsvq-link:hover,
+.page .nsvq a.nsvq-link:focus-visible {
+  color: var(--brand-gold-pale);
+}
 .page .nsvq a.nsvq-link:hover .nsvq-case,
 .page .nsvq a.nsvq-link:focus-visible .nsvq-case {
   color: var(--brand-gold-pale);
   border-bottom-color: color-mix(in srgb, var(--brand-gold-pale) 45%, transparent);
-}
-.page .nsvq a.nsvq-link:hover .nsvq-read,
-.page .nsvq a.nsvq-link:focus-visible .nsvq-read {
-  color: var(--brand-gold-pale);
-}
-.page .nsvq a.nsvq-link:hover .nsvq-meta,
-.page .nsvq a.nsvq-link:focus-visible .nsvq-meta {
-  color: var(--brand-muted-dark);
 }
 /* The site's focus ring is cherry, and cherry on this ground is 1.85:1 — the
    ring exists but cannot be seen. globals.css already switches to lamp gold on
