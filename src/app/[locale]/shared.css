@@ -122,9 +122,15 @@
   min-height: 44px;
   padding: 12px 22px;
   border-radius: var(--r-pill);
-  border: 2px solid var(--brand-gold-ink);
-  background: var(--brand-gold-lit);
-  color: var(--brand-night);
+  /* Filled cherry, not gold. The lit gold is only 1.8:1 against paper, so the
+     pill needed a dark ring to have an edge at all — and a brown 2px ring
+     around a pale gold fill reads as an outline drawn on the button rather
+     than as the button's own shape: it came out looking disabled. The site's
+     accent carries itself: the fill is the boundary, at 9.4:1, and no ring is
+     needed. */
+  border: 2px solid var(--brand-red);
+  background: var(--brand-red);
+  color: var(--brand-cream-warm);
   font: 700 var(--t-micro) var(--brand-font-body), sans-serif;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -137,8 +143,8 @@
 }
 .page a.nsv-cta.nsv-cta:hover {
   transform: translateY(-1px);
-  background: var(--brand-gold-bright);
-  border-color: var(--brand-gold-ink);
+  background: var(--brand-red-dark);
+  border-color: var(--brand-red-dark);
 }
 /* The arrow belongs to the control, not to the label: it moves on hover and is
    hidden from assistive technology by the markup. */

@@ -58,7 +58,9 @@ export default function Newsletter({
   return (
     <div className="nsv-newsletter">
       <div className="nsv-news-grid">
-        {/* Primary: supporting the collection. */}
+        {/* One ask. The monthly-letter column came off at the user's request:
+            there is no sign-up list behind it yet, so the band was offering a
+            subscription that does not exist beside a support ask that does. */}
         <div className="nsv-news-block">
           <h2 className="nsv-news-heading">{SUPPORT.heading[locale]}</h2>
           <p className="nsv-news-text">{SUPPORT.text[locale]}</p>
@@ -69,27 +71,6 @@ export default function Newsletter({
           <a className="btn btn-o" href={mailto(dict.newsletter.support)}>
             {dict.newsletter.support}
           </a>
-        </div>
-
-        {/* Secondary: the monthly letter. Quieter control, same clarity. */}
-        <div className="nsv-news-block nsv-news-block-2">
-          <h2 className="nsv-news-heading nsv-news-heading-2">
-            {dict.newsletter.heading}
-          </h2>
-          <p className="nsv-news-text">{dict.newsletter.text}</p>
-          <a
-            className="nsv-news-support"
-            href={mailto(dict.newsletter.subscribe)}
-          >
-            <span className="nsv-news-support-label">
-              {dict.newsletter.subscribe}
-            </span>
-            <span className="nsv-news-arrow" aria-hidden="true">
-              →
-            </span>
-          </a>
-          {/* Fine print sits under the action it reassures about. */}
-          <p className="nsv-news-assurance">{dict.newsletter.assurance}</p>
         </div>
       </div>
     </div>

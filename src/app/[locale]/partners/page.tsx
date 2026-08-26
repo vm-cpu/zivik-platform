@@ -172,7 +172,6 @@ export default async function PartnersPage({
             );
           })}
         </ul>
-        <p className="prt-note">{dict.partners.note}</p>
 
         <section className="prt-sec">
           <h2>{L(T.runH)}</h2>
