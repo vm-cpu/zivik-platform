@@ -237,6 +237,20 @@
 .nsv-map{margin:22px 0 0;background:var(--brand-night);border-top:1px solid var(--brand-night-rule);border-bottom:1px solid var(--brand-night-rule)}
 .nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:16px}
 
+/* Both paragraphs in the About band are body prose of one rank, so they carry
+   one colour. The opening one used to be painted --ink (#1a1917, 17.57:1 on
+   the band's --surface) with the rest on --ink2 (#55524d, 7.78:1) — a lede
+   "leading by colour" that reads as two ranks of text inside a section that
+   has only one rank in it. --ink2 is what body prose measures everywhere else
+   on this page's paper bands (the registry deck and its lede both measure
+   rgb 85,82,77) and on the /about page itself, so the band now matches them
+   instead of shouting over them. It also leaves --red as the band's single emphasis colour, carried by
+   the eyebrow and the button, which are not prose and may differ.
+   Measured after: 7.78:1 on --surface (#ffffff) — AA at 16px needs 4.5:1.
+   The colour lives here rather than inline in About.tsx because an inline
+   style outranks every rule in this file, which is how the two ranks got in. */
+.nsv-about-main p{margin:0;font-size:16px;line-height:1.65;color:var(--ink2)}
+
 /* ============================================================
    Keep the lamp centred on the now-fluid hero stage at any width.
    The fixtures were authored at fixed px for a 900px stage (centre = 450px);
