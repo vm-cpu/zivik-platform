@@ -11,13 +11,9 @@ import geo from "./europe-map.json";
  * europe-map.json, already projected (see scripts/europe-map.mjs).
  */
 
-/** What kind of harm a site stands for — drives the marker colour. */
-export type EventCategory = "hr" | "war" | "asset";
-
 export interface MapEvent {
   /** Marker key in europe-map.json. */
   key: string;
-  category: EventCategory;
   /**
    * How many items in the registry this site accounts for — the number its
    * own `count` string states, as a number.
@@ -345,7 +341,6 @@ export const MAP_EVENTS: MapEvent[] = [
   {
     key: "crimea",
     cases: ["icj-cerd-icsft", "oschadbank", "dtek-krymenergo"],
-    category: "hr",
     weight: 11,
     when: { uk: "Окупація · 2014", en: "Occupation · 2014" },
     title: { uk: "Окупація Криму", en: "Occupation of Crimea" },
@@ -387,7 +382,6 @@ export const MAP_EVENTS: MapEvent[] = [
     key: "kerch",
     // No `cases`: ITLOS and the PCA arbitration over the vessels are both
     // still unwritten. The card says so rather than linking nowhere.
-    category: "asset",
     weight: 2,
     when: { uk: "Затримання · 2018", en: "Seizure · 2018" },
     title: { uk: "Затримання кораблів", en: "Seizure of the naval vessels" },
@@ -412,7 +406,6 @@ export const MAP_EVENTS: MapEvent[] = [
   {
     key: "mh17",
     cases: ["hague-mh17", "echr-ukraine-netherlands"],
-    category: "war",
     weight: 3,
     when: { uk: "MH17 · 17.07.2014", en: "MH17 · 17 July 2014" },
     title: { uk: "Збиття рейсу MH17", en: "The downing of flight MH17" },
@@ -438,7 +431,6 @@ export const MAP_EVENTS: MapEvent[] = [
   {
     key: "donbas",
     cases: ["echr-ukraine-netherlands", "icj-cerd-icsft", "icj-genocide", "finland-torden"],
-    category: "war",
     weight: 4,
     when: { uk: "Схід · 2014", en: "The east · 2014" },
     title: { uk: "Схід України", en: "Eastern Ukraine" },
@@ -472,7 +464,6 @@ export const MAP_EVENTS: MapEvent[] = [
   {
     key: "energy",
     cases: ["dtek-krymenergo"],
-    category: "asset",
     weight: 4,
     when: { uk: "Енергетика · 2020", en: "Energy · 2020" },
     title: { uk: "Енергоактиви", en: "Energy assets" },
@@ -501,7 +492,6 @@ export const MAP_EVENTS: MapEvent[] = [
   {
     key: "mariupol",
     cases: ["icc-ukraine"],
-    category: "war",
     weight: 6,
     when: { uk: "2022", en: "2022" },
     title: { uk: "Воєнні злочини", en: "War crimes" },

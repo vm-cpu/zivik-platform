@@ -9,7 +9,6 @@ import {
   type ReactNode,
 } from "react";
 import Link from "next/link";
-import type { EventCategory } from "@/content/map";
 import { plural, type PluralForms } from "@/i18n/plural";
 import "./events-map.css";
 
@@ -32,8 +31,16 @@ import "./events-map.css";
  */
 export interface MapEventR {
   key: string;
-  category: EventCategory;
   size: number;
+  /**
+   * How many items in the registry this site accounts for, as a number.
+   *
+   * `count` says it in words and the words differ per site — проваджень,
+   * рішення, арбітражів, ордерів — so the card could not work out that it was
+   * showing three links under a heading that claimed eleven. This is the same
+   * figure the marker's radius comes from.
+   */
+  total: number;
   when: string;
   title: string;
   note: string;
@@ -68,6 +75,8 @@ export interface MapCourtR {
   labelDy?: number;
   /** What the registry says this court is hearing, and which of it is readable. */
   caseload: {
+    /** Registry institution ids, for the link that hands over the rest. */
+    courtIds: string[];
     total: number;
     written: { slug: string; title: string }[];
     listed: { id: string; name: string; note: string }[];
@@ -244,6 +253,30 @@ const SPAN_EDGE = 150;
  * back on the edge.
  */
 const SPAN_FAR = 360;
+
+/**
+ * The air an auto-framed view leaves round the outermost thing it holds.
+ *
+ * Smaller than `SPAN_EDGE`, which frames the whole map and has a coastline to
+ * clear: this frames one relation, and what it has to clear is a marker's own
+ * halo (up to 13 units) plus its label. 90 leaves the label room at every
+ * scale the frame can come out at, and keeps the two ends of a short relation
+ * — a site and The Hague — from filling the picture edge to edge.
+ */
+const FOCUS_EDGE = 90;
+
+/**
+ * How many unwritten proceedings a court card names before handing over.
+ *
+ * The Hague seats four institutions and 28 proceedings, and the card printed
+ * all 22 of the unwritten ones: measured, 3011px of scroll against a 753px
+ * window, in raw registry captions — forty-word arbitration styles in English
+ * inside a Ukrainian page, and the same paragraph of Rome Statute articles
+ * repeated for each of six arrest warrants. Four is enough to show what kind
+ * of thing they are; the registry, which has six filters and a search box, is
+ * where the rest belongs.
+ */
+const LISTED_MAX = 4;
 
 /**
  * How far a press may travel and still count as a click, in CSS pixels.
@@ -436,6 +469,19 @@ export default function EventsMap({
     court: string;
     /** Heading above the decision links inside a card. */
     reads: string;
+    /**
+     * "Written up: 3 of 11" — the gap between what a site accounts for and
+     * what a reader can open. The count line said 11 and the list showed 3,
+     * and nothing said whether the other eight existed.
+     */
+    writtenOf: string;
+    /**
+     * "All 28 in the registry →". A seat's full caseload is the registry's
+     * job, not a 300px card's: The Hague's ran to 3011px of scroll against a
+     * 753px window, in raw registry captions, with the same paragraph of Rome
+     * Statute articles repeated four times.
+     */
+    allInRegistry: string;
     /** Shown where a site has no summarised decision yet. */
     pending: string;
     /** Marker-size key: a bigger dot means more proceedings. */
@@ -449,7 +495,23 @@ export default function EventsMap({
      * And what a marker docked against the frame's edge means. Only rendered
      * where a seat is actually off the projection's window — today Montreal,
      * and by data rather than by name.
+     *
+     * This comment stood here for a long time with no field under it: the key
+     * was planned when the dock was built and never written, so the one glyph
+     * on the drawing a reader has no way to recognise — a marker pinned to the
+     * border with a chevron and a tail running off the picture — was the one
+     * the legend did not explain.
      */
+    legendOffMap: string;
+    /** The oblast mesh inside Ukraine's outline. */
+    legendRegions: string;
+    /**
+     * That the marks answer at all, and what answering does. The map's whole
+     * mechanic — pick one end of a relation and the other lights — was
+     * nowhere on the page; a reader had to discover it by clicking something
+     * they had no reason to think was a control.
+     */
+    legendPick: string;
     /** Heading over the sites a selected court hears. */
     courtHears: string;
     /**
@@ -485,6 +547,17 @@ export default function EventsMap({
      * zooming the map. Never shown on the map's own page, where it does zoom.
      */
     wheelHint: string;
+    /**
+     * What the drawing says where it is a picture rather than a control.
+     *
+     * On a phone the marks are 9.9px across and the component correctly stops
+     * answering the pointer — but it said so nowhere, and kept a grab cursor
+     * and a zoom stepper that could not reach a usable scale. Now it says what
+     * it is and offers the one thing that does work: the whole screen.
+     */
+    overview: string;
+    openFull: string;
+    closeFull: string;
   };
   locale: string;
   /**
@@ -506,6 +579,24 @@ export default function EventsMap({
       return first ? { kind: "site", key: first } : null;
     },
   );
+
+  /**
+   * The whole screen, on a device that cannot use the drawing any other way.
+   *
+   * On a phone the marks render 9.9 CSS pixels across and the component
+   * correctly stops answering the pointer — but the answer to "the drawing is
+   * too small" was a zoom stepper that needed twelve presses to reach a usable
+   * scale and left the reader in a corner of the Atlantic. Rotating is not the
+   * answer either: most phones have autorotate locked, so a "turn your phone"
+   * prompt is a dead end for the reader who most needs it.
+   *
+   * The screen is. Held full, a 390px phone gives the drawing 390 x 780
+   * instead of 390 x 202, which is 2.5 CSS pixels per projection unit — past
+   * every threshold on this page: the marks answer, the sites are labelled and
+   * the cities are named. It works in either orientation and asks nothing of
+   * the device's settings.
+   */
+  const [full, setFull] = useState(false);
 
   /**
    * The selection lives in the URL so a card can be linked to.
@@ -533,6 +624,16 @@ export default function EventsMap({
     }
   }, []);
 
+  /**
+   * A selection waiting for a frame that can hold both ends of it.
+   *
+   * Requested here and served by the effect below, because the frame is
+   * computed from the element's measured box and that is not known this far up
+   * the component. Only ever set by an act of the reader's — the card the map
+   * opens with does not move the view.
+   */
+  const [focusReq, setFocusReq] = useState<{ kind: "site" | "court"; key: string } | null>(null);
+
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const site = q.get("site");
@@ -547,8 +648,16 @@ export default function EventsMap({
         : court && courts.some((c) => c.key === court)
           ? ({ kind: "court", key: court } as const)
           : null;
-    /* eslint-disable-next-line react-hooks/set-state-in-effect */
-    if (from) setSel(from);
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (from) {
+      setSel(from);
+      // A link to ?site= or ?court= is the reader asking for that thing, so
+      // it gets a frame that holds it. The default card — MH17, `open: true` —
+      // does not: nobody asked for it, and moving the opening view because of
+      // it would mean the map never opens where it says it opens.
+      setFocusReq(from);
+    }
+    /* eslint-enable react-hooks/set-state-in-effect */
     // A parameter that names nothing — a typo, a link to a site that has since
     // been renamed, or ?site= and ?court= both set, where only the first can
     // win — used to be left standing in the address bar describing something
@@ -573,6 +682,8 @@ export default function EventsMap({
    */
   const openerRef = useRef<HTMLElement | null>(null);
   const liveRef = useRef<HTMLDivElement>(null);
+  /** The way out of the full screen, and where the keyboard lands on the way in. */
+  const exitRef = useRef<HTMLButtonElement>(null);
 
   const select = useCallback(
     (next: { kind: "site" | "court"; key: string } | null) => {
@@ -582,21 +693,38 @@ export default function EventsMap({
         openerRef.current?.focus?.();
       }
       setSel(next);
+      setFocusReq(next);
       syncUrl(next);
     },
     [syncUrl],
   );
 
   /* A card is a popup, and a popup closes on Escape. Until now the only way
-     out was to Tab to the × — and the × dropped focus on <body>. */
+     out was to Tab to the × — and the × dropped focus on <body>. The full
+     screen is the outer of the two, so it is the second thing Escape reaches:
+     one press puts the card away, the next gives the page back. */
   useEffect(() => {
-    if (!sel) return;
+    if (!sel && !full) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") select(null);
+      if (e.key !== "Escape") return;
+      if (sel) select(null);
+      else setFull(false);
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [sel, select]);
+  }, [sel, full, select]);
+
+  /* Held full, the drawing covers the document; a document that still scrolls
+     underneath is the classic overlay bug — the reader leaves the map and
+     finds the page has moved somewhere they never went. */
+  useEffect(() => {
+    if (!full) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [full]);
 
   const toggleSite = (key: string) =>
     select(sel?.kind === "site" && sel.key === key ? null : { kind: "site", key });
@@ -784,6 +912,133 @@ export default function EventsMap({
   }, [FULL, WIDE, hasWide]);
   const [nav, setNav] = useState<Nav>(null);
   const view = useMemo(() => viewFrom(nav, FULL, OUTER, ANCHORS), [nav, FULL, OUTER, ANCHORS]);
+
+  /**
+   * Bring both ends of the picked relation into the picture.
+   *
+   * This is the one thing the map exists to say, and until now no framing said
+   * it. Measured at 1440: «Європа», the framing the map opens at, renders 1.2
+   * CSS pixels per projection unit — under the 2.6 the site labels need — so
+   * the nine courts are named and the six places the archive is *about* are
+   * unlabelled dots in one corner. «Україна» renders 2.82 and labels them, and
+   * holds no court at all: the dashed lines simply leave the frame. A reader
+   * could see where harm happened, or who is weighing it, never both.
+   *
+   * So the frame follows the selection. Pick Crimea and the view holds Crimea,
+   * Strasbourg, The Hague and Paris; pick The Hague and it holds The Hague and
+   * the five places it hears.
+   *
+   * Two restraints, because a map that jumps on every press is worse than one
+   * that never moves.
+   *
+   *   Seats off the projection's window are left out. Montreal is docked at
+   *   the frame's edge with a chevron and is reachable there; fitting it would
+   *   throw every MH17 press into the Atlantic framing, where Ukraine is a
+   *   tenth of the width. The reader who wants that has a button for it.
+   *
+   *   And nothing moves when nothing needs to. If every point is already in
+   *   frame — which on the home band's opening view is almost every selection —
+   *   the view is left exactly where the reader put it.
+   */
+  useEffect(() => {
+    if (!focusReq) return;
+    /* eslint-disable-next-line react-hooks/set-state-in-effect */
+    setFocusReq(null);
+    if (!(box.w > 0) || !(box.h > 0)) return;
+
+    const pts: [number, number][] = [];
+    const put = (key: string) => {
+      const p = geo.markers[key];
+      if (p) pts.push([p[0], p[1]]);
+    };
+    if (focusReq.kind === "site") {
+      const e = events.find((x) => x.key === focusReq.key);
+      if (!e) return;
+      put(e.key);
+      for (const k of e.courts) {
+        if (!courts.find((c) => c.key === k)?.offMap) put(k);
+      }
+    } else {
+      const c = courts.find((x) => x.key === focusReq.key);
+      if (!c || c.offMap) return;
+      put(c.key);
+      for (const e of events) if (e.courts.includes(c.key)) put(e.key);
+    }
+    if (!pts.length) return;
+
+    let x0 = Infinity;
+    let y0 = Infinity;
+    let x1 = -Infinity;
+    let y1 = -Infinity;
+    for (const [x, y] of pts) {
+      x0 = Math.min(x0, x);
+      y0 = Math.min(y0, y);
+      x1 = Math.max(x1, x);
+      y1 = Math.max(y1, y);
+    }
+    /* Fitted, not merely made visible. The first version of this only moved
+       when something was off screen, and measured on the built page that meant
+       it almost never moved at all: the opening framing holds the whole of
+       Europe, so every court of every site is already somewhere in it — badly,
+       at 1.2 CSS pixels per unit, but in it. "Visible" was never the complaint.
+       The frame is the answer, so the frame follows the question. */
+    const w0 = Math.max(MIN_W, x1 - x0 + 2 * FOCUS_EDGE);
+    const h0 = y1 - y0 + 2 * FOCUS_EDGE;
+    const want = settle(
+      fitView(
+        {
+          x: (x0 + x1) / 2 - w0 / 2,
+          y: (y0 + y1) / 2 - h0 / 2,
+          w: w0,
+          h: h0,
+        },
+        box,
+      ),
+      OUTER,
+      ANCHORS,
+    );
+    // On the home band, where `outer` is the opening framing itself, this
+    // clamps back to where the view already was. Saying so costs a render.
+    if (
+      Math.abs(want.w - view.w) < 1 &&
+      Math.abs(want.x - view.x) < 1 &&
+      Math.abs(want.y - view.y) < 1
+    ) {
+      return;
+    }
+    setNav(navOf(want, FULL.w));
+    // `view` is read to decide whether to move at all; re-running on every
+    // frame the reader drags would fight them for control of the map.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusReq, box, OUTER, ANCHORS, FULL.w, events, courts, geo.markers]);
+
+  /**
+   * The full screen opens on something, not on the whole of Europe.
+   *
+   * A 375px window fits the 1200-unit projection by its width whatever its
+   * height, so simply giving the drawing the screen bought 0.31 CSS pixels per
+   * unit and 600px of Scandinavia and open sea: taller, and no more legible.
+   * The reader who pressed the button was looking at a card; the frame opens
+   * on that, and where there is no card, on Ukraine — which is the subject and
+   * is also the one framing a tall window can hold at a useful scale.
+   */
+  const wantFull = useRef(false);
+  useEffect(() => {
+    if (!full) {
+      wantFull.current = false;
+      return;
+    }
+    if (wantFull.current) return;
+    wantFull.current = true;
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (sel) setFocusReq(sel);
+    else setNav(navOf(CLOSE, FULL.w));
+    /* eslint-enable react-hooks/set-state-in-effect */
+    exitRef.current?.focus();
+    // Read once, on the way in: the reader is free to go anywhere afterwards.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [full]);
+
   /**
    * Which of the two named framings the reader is actually in, if either.
    *
@@ -868,6 +1123,16 @@ export default function EventsMap({
     on: boolean;
   } | null>(null);
   const [dragging, setDragging] = useState(false);
+  /**
+   * Every pointer currently down on the drawing, so two of them can be told
+   * from one. A phone had no gesture for the map at all before this: the only
+   * zoom binding was a wheel with Ctrl or ⌘ held, which is a trackpad pinch
+   * and not a screen one, and `touch-action: pan-y` on the drawing withheld
+   * the browser's own pinch as well.
+   */
+  const touches = useRef(new Map<number, { x: number; y: number }>());
+  /** The span and midpoint the current two-finger gesture started from. */
+  const pinch = useRef<{ d: number; x: number; y: number } | null>(null);
   /**
    * The band tells the reader why its wheel did not zoom. Shown only after a
    * bare wheel over the drawing, and only there: it is an answer to something
@@ -1040,6 +1305,43 @@ export default function EventsMap({
     mq.addEventListener("change", sync);
     return () => mq.removeEventListener("change", sync);
   }, []);
+  /**
+   * Does the drawing answer gestures, or is it a picture inside a document?
+   *
+   * `touch-action: pan-y` was the worst of the three possible answers and it
+   * was the one in force: a finger could drag the map east and west, a finger
+   * dragged north or south scrolled the page out from under it, and pinch —
+   * the first thing a hand tries on a map — was withheld from both the browser
+   * and this component. One axis of pan is not a map; it is a map stealing
+   * half of a scroll.
+   *
+   * So it is all or nothing, and which one depends on what the drawing is at
+   * that moment. In the page, on a phone, it is a picture: the page scrolls
+   * over it in both directions and the list below is the interface, which is
+   * what the component already decided when it made the marks inert. Held
+   * full, it is the only thing on the screen — there is no page left to steal
+   * a scroll from — so it takes every gesture: drag to pan, two fingers to
+   * zoom. A mouse is unaffected either way.
+   */
+  const gestures = !touch || full;
+  /**
+   * Can this device produce a touch at all? A different question from the one
+   * above, and the one `touch-action` has to be answered with.
+   *
+   * `(pointer: coarse)` asks what the *primary* pointer is, which on a laptop
+   * with a touchscreen is the mouse — so `gestures` is true there, correctly:
+   * a mouse drag should pan. But `touch-action: none` is not about the mouse.
+   * Set on that laptop it would take the finger's page scroll away over the
+   * drawing while giving nothing back, which is the trap this whole rule
+   * exists to avoid. So the property follows what the screen can do, and the
+   * pointer handlers below follow what the pointer is.
+   */
+  const [anyTouch, setAnyTouch] = useState(false);
+  useEffect(() => {
+    /* eslint-disable-next-line react-hooks/set-state-in-effect */
+    setAnyTouch(navigator.maxTouchPoints > 0);
+  }, []);
+
   /**
    * One number, because the frame now carries the container's own aspect
    * ratio: `meet` and `slice` resolve to the same scale, and neither crops.
@@ -1270,12 +1572,98 @@ export default function EventsMap({
   const relCourts = new Set(selected?.courts ?? []);
   const relSites = new Set(courtSites.map((e) => e.key));
 
+  /**
+   * One tab stop for the whole drawing, and the arrow keys inside it.
+   *
+   * Fifteen markers each took a stop of their own, so a keyboard reader who
+   * did not want the map had thirty-six presses to get past it (fifteen marks,
+   * five framing controls, the six-site list, the nine seats) and no way to
+   * skip. A grid of controls is a *composite* widget: it takes one stop, and
+   * the arrows move within it. That is what a reader already expects from a
+   * map, a toolbar or a calendar, and it costs the map nothing — every mark is
+   * still reachable, in the same order the list below is in.
+   *
+   * Only the marks that actually answer are in the ring: where the drawing is
+   * too small to aim at, its circles are `tabIndex={-1}` and inert, and the
+   * ring is the other family's, or empty.
+   */
+  const markerKeys = [
+    ...(coarse ? [] : events.map((e) => e.key)),
+    ...(coarseCourts ? [] : courts.map((c) => c.key)),
+  ];
+  const [rov, setRov] = useState<string | null>(null);
+  /* The remembered mark, unless it has just gone inert under the reader —
+     zooming out past the floor, or turning the phone. Then the ring's first. */
+  const rovKey = rov && markerKeys.includes(rov) ? rov : markerKeys[0];
+  const goMarker = (key: string) => {
+    setRov(key);
+    svgRef.current
+      ?.querySelector<SVGGraphicsElement>(`[data-mkey="${CSS.escape(key)}"]`)
+      ?.focus?.();
+  };
+  const stepMarker = (from: string, by: number) => {
+    const i = markerKeys.indexOf(from);
+    if (i < 0 || markerKeys.length < 2) return;
+    goMarker(markerKeys[(i + by + markerKeys.length) % markerKeys.length]);
+  };
+  /** Enter and Space pick; the arrows, Home and End move. */
+  const onMarkerKey = (
+    ev: { key: string; repeat: boolean; preventDefault: () => void },
+    key: string,
+    toggle: () => void,
+  ) => {
+    // Not on auto-repeat. Held down, Enter toggled the selection thirty times
+    // a second: the card blinked in and out and the light ran the connectors
+    // again on every frame, which is a strobe, not a control.
+    if (ev.repeat) return;
+    if (ev.key === "Enter" || ev.key === " ") {
+      ev.preventDefault();
+      toggle();
+    } else if (ev.key === "ArrowRight" || ev.key === "ArrowDown") {
+      ev.preventDefault();
+      stepMarker(key, 1);
+    } else if (ev.key === "ArrowLeft" || ev.key === "ArrowUp") {
+      ev.preventDefault();
+      stepMarker(key, -1);
+    } else if (ev.key === "Home") {
+      ev.preventDefault();
+      if (markerKeys[0]) goMarker(markerKeys[0]);
+    } else if (ev.key === "End") {
+      ev.preventDefault();
+      const last = markerKeys[markerKeys.length - 1];
+      if (last) goMarker(last);
+    }
+  };
+
+  /**
+   * What a screen reader is told when the selection changes.
+   *
+   * The live region used to wrap the cards themselves, `aria-atomic`, so
+   * picking The Hague read its entire card aloud — twenty-two registry
+   * captions, about three thousand characters, in one announcement that could
+   * not be interrupted. A live region is for saying that something happened.
+   * The card says what; it is right there, it is reachable, and the focus goes
+   * back to the control that opened it.
+   */
+  const announce = selected
+    ? `${selected.title}. ${selected.count}.`
+    : selectedCourt
+      ? `${selectedCourt.city}. ${caseload(selectedCourt.caseload.total)}.`
+      : "";
+
+  /** Where the rest of a seat's caseload lives. */
+  const registryHref = selectedCourt?.caseload.courtIds.length
+    ? `/${locale}/registry?court=${selectedCourt.caseload.courtIds.join(",")}`
+    : null;
+
   return (
     <div
       className="emap"
       data-variant={variant}
       data-coarse={coarse ? "yes" : "no"}
       data-coarse-courts={coarseCourts ? "yes" : "no"}
+      data-full={full ? "yes" : "no"}
+      data-touch={touch ? "yes" : "no"}
       /* Which framing is on the screen, for the one rule that has to know.
          The Atlantic framing is 2.3 times as wide as the projection and puts
          everything worth clicking in the right-hand tenth of it, so on the
@@ -1298,6 +1686,7 @@ export default function EventsMap({
           {hasWide && (
             <button
               type="button"
+              className="emap-zoom-far"
               aria-pressed={atWide}
               onClick={() => setNav(navOf(WIDE, FULL.w))}
             >
@@ -1337,6 +1726,21 @@ export default function EventsMap({
             +
           </button>
         </div>
+        {/* The way back out. Beside the framing controls rather than in a
+            corner of its own: it is the same kind of thing — a control over
+            what the drawing is showing and how much of it. */}
+        {full && (
+          <button
+            type="button"
+            ref={exitRef}
+            className="emap-unfull"
+            aria-label={labels.closeFull}
+            title={labels.closeFull}
+            onClick={() => setFull(false)}
+          >
+            ×
+          </button>
+        )}
         {/* Why the wheel did not zoom. Only on the band, only just after a
             bare wheel over the drawing, and never in the accessibility tree:
             a reader who is not using a wheel is not being told about one. */}
@@ -1355,9 +1759,38 @@ export default function EventsMap({
              slice are the same fit — and meet cannot crop during the one
              render before the element has been measured. */
           preserveAspectRatio="xMidYMid meet"
-          role="img"
+          /* `role="img"` claims the subtree is a picture, and a picture has no
+             parts: an assistive technology is entitled to skip everything
+             inside it — which here is fifteen circles that carefully announce
+             themselves as buttons with labels and pressed states. Where the
+             marks answer the pointer this is a group of controls and says so;
+             where they do not — a phone, a drawing too small to aim at — it
+             really is a picture, and the list below carries the content. */
+          role={coarse && coarseCourts ? "img" : "group"}
           aria-label={labels.alt}
+          data-gest={full || !anyTouch ? "yes" : "no"}
           onPointerDown={(ev) => {
+            // A mouse or a pen always drags; a finger only where the drawing
+            // has taken the gestures it would be stealing from the page.
+            if (ev.pointerType === "touch" && !gestures) return;
+            touches.current.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+            /* Two fingers: a pinch, and no longer a drag or a click. The press
+               that started as one has to be abandoned rather than finished —
+               otherwise lifting the second finger would leave a "click" on
+               whatever the first one is resting on. */
+            if (touches.current.size === 2) {
+              const [a, b] = [...touches.current.values()];
+              pinch.current = {
+                d: Math.hypot(a.x - b.x, a.y - b.y) || 1,
+                x: (a.x + b.x) / 2,
+                y: (a.y + b.y) / 2,
+              };
+              drag.current = null;
+              panned.current = true;
+              setDragging(false);
+              return;
+            }
+            if (touches.current.size > 2) return;
             // The markers drag too. They used to be excluded — "only the
             // ground drags" — but a marker's hit circle is measured in
             // projection units, so it is 26px wide at the opening framing and
@@ -1378,6 +1811,25 @@ export default function EventsMap({
             panned.current = false;
           }}
           onPointerMove={(ev) => {
+            if (touches.current.has(ev.pointerId)) {
+              touches.current.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+            }
+            /* The pinch. Anchored at the midpoint between the two fingers and
+               re-anchored as that midpoint travels, so spreading over Crimea
+               keeps Crimea between the fingers and the gesture pans as well as
+               scales — which is what a hand expects and what makes a second
+               drag gesture unnecessary. */
+            if (pinch.current && touches.current.size >= 2) {
+              const [a, b] = [...touches.current.values()];
+              const d = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+              const mx = (a.x + b.x) / 2;
+              const my = (a.y + b.y) / 2;
+              const factor = pinch.current.d / d;
+              const at = atPointer({ clientX: mx, clientY: my });
+              pinch.current = { d, x: mx, y: my };
+              if (Math.abs(factor - 1) > 0.002) zoomBy(factor, at?.x, at?.y);
+              return;
+            }
             const d = drag.current;
             if (!d || d.id !== ev.pointerId) return;
             // Nothing is held down any more, so this is not a drag: the up
@@ -1412,9 +1864,15 @@ export default function EventsMap({
             });
           }}
           onPointerUp={(ev) => {
+            touches.current.delete(ev.pointerId);
+            if (touches.current.size < 2) pinch.current = null;
             if (drag.current?.id === ev.pointerId) endDrag(ev.currentTarget, ev.pointerId);
           }}
-          onPointerCancel={(ev) => endDrag(ev.currentTarget, ev.pointerId)}
+          onPointerCancel={(ev) => {
+            touches.current.delete(ev.pointerId);
+            if (touches.current.size < 2) pinch.current = null;
+            endDrag(ev.currentTarget, ev.pointerId);
+          }}
           onLostPointerCapture={(ev) => {
             if (drag.current?.id === ev.pointerId) {
               drag.current = null;
@@ -1569,28 +2027,20 @@ export default function EventsMap({
                   cx={x}
                   cy={y}
                   r={hitR(13, room[c.key], px)}
+                  data-mkey={c.key}
                   role={coarseCourts ? undefined : "button"}
                   aria-hidden={coarseCourts || undefined}
-                  tabIndex={coarseCourts ? -1 : 0}
+                  tabIndex={coarseCourts || rovKey !== c.key ? -1 : 0}
                   aria-label={coarseCourts ? undefined : c.city}
                   aria-pressed={coarseCourts ? undefined : on}
+                  onFocus={() => setRov(c.key)}
                   onClick={() => {
                     // The tail of a drag, not a pick: the press began here and
                     // the pointer travelled before it came up.
                     if (panned.current) return;
                     toggleCourt(c.key);
                   }}
-                  onKeyDown={(ev) => {
-                    // Not on auto-repeat. Held down, Enter toggled the
-                    // selection thirty times a second: the card blinked in and
-                    // out and the light ran the connectors again on every
-                    // frame, which is a strobe, not a control.
-                    if (ev.repeat) return;
-                    if (ev.key === "Enter" || ev.key === " ") {
-                      ev.preventDefault();
-                      toggleCourt(c.key);
-                    }
-                  }}
+                  onKeyDown={(ev) => onMarkerKey(ev, c.key, () => toggleCourt(c.key))}
                 />
                 <circle className="emap-court-dot" cx={x} cy={y} r={5} />
                 {citied && (
@@ -1648,29 +2098,31 @@ export default function EventsMap({
                 cx={x}
                 cy={y}
                   r={hitR(11, room[e.key], px)}
+                data-mkey={e.key}
                 role={coarse ? undefined : "button"}
                 aria-hidden={coarse || undefined}
                 aria-label={coarse ? undefined : e.title}
                   aria-pressed={sel?.kind === "site" && sel.key === e.key}
-                  tabIndex={coarse ? -1 : 0}
+                  tabIndex={coarse || rovKey !== e.key ? -1 : 0}
+                  onFocus={() => setRov(e.key)}
                   onClick={() => {
                     if (panned.current) return;
                     toggleSite(e.key);
                   }}
-                  onKeyDown={(ev) => {
-                    if (ev.repeat) return;
-                    if (ev.key === "Enter" || ev.key === " ") {
-                      ev.preventDefault();
-                      toggleSite(e.key);
-                    }
-                  }}
+                  onKeyDown={(ev) => onMarkerKey(ev, e.key, () => toggleSite(e.key))}
               />
                 <circle className="emap-dot" cx={x} cy={y} r={6} />
-                {/* The name, once the drawing is big enough to hold it. The
-                    label clears the marker's own halo — drawn in projection
-                    units, so it grows with the zoom — plus a 5px gap and an
-                    11px face, both of which do not. */}
-                {labelled && (
+                {/* The name, once the drawing is big enough to hold it — or,
+                    whatever the scale, when this is the one the reader picked.
+
+                    `labelled` is a question about six labels at once: the
+                    tightest pair, MH17 and eastern Ukraine, are 16.9 units
+                    apart and their labels touch below 2.6 CSS pixels per unit.
+                    One label has nothing to collide with. And the alternative
+                    was what the map did: in the framing it opens at — 1.2
+                    pixels per unit at 1440 — it named all nine courts and left
+                    the six places the archive is *about* as unlabelled dots. */}
+                {(labelled || (sel?.kind === "site" && sel.key === e.key)) && (
                   <text
                     className="emap-site-label"
                     aria-hidden="true"
@@ -1702,9 +2154,35 @@ export default function EventsMap({
         })}
       </svg>
 
-      {/* Clicking a dot changes a panel that can be 800px away. Without a
-          live region a screen-reader user hears nothing at all. */}
-      <div className="emap-live" ref={liveRef} aria-live="polite" aria-atomic="true">
+      {/* Where the drawing is a picture, it says so — and offers the one
+          thing that turns it back into a map. It was silent about this: the
+          marks went inert below the 24px floor, correctly, while the grab
+          cursor and the zoom stepper stayed on, promising a control surface
+          that answered nothing. Rendered only where both families are inert,
+          so a landscape phone — which can already reach the courts — is not
+          told its map is a picture. */}
+      {(touch || (coarse && coarseCourts)) && !full && (
+        <div className="emap-overview">
+          {/* The sentence only where the drawing really is a picture. A phone
+              held sideways renders a court target at 24.9px and names its nine
+              cities — it is a small map, not a picture of one — so it is
+              offered the screen without being told its map does not work. */}
+          {coarse && coarseCourts && <p>{labels.overview}</p>}
+          <button type="button" className="emap-gofull" onClick={() => setFull(true)}>
+            {labels.openFull}
+          </button>
+        </div>
+      )}
+
+      {/* Clicking a dot changes a panel that can be 800px away. Without a live
+          region a screen-reader user hears nothing at all — and with the wrong
+          one they hear three thousand characters of registry citation. One
+          sentence: what was picked, and how much of the record it stands for.
+          The card carries the rest, where it can be read at leisure. */}
+      <div className="emap-say" aria-live="polite" aria-atomic="true">
+        {announce}
+      </div>
+      <div className="emap-live" ref={liveRef}>
       {selected && (
         <div className="emap-card">
           <button
@@ -1727,6 +2205,19 @@ export default function EventsMap({
           {selected.cases.length > 0 ? (
             <div className="emap-reads">
               <div className="emap-reads-h">{labels.reads}</div>
+              {/* «11 проваджень» stood over three links and the reader had no
+                  way to tell whether the other eight existed, were elsewhere,
+                  or had never been written. The court cards answer the same
+                  question with a named list; a site's proceedings are not all
+                  in one forum, so it answers with the arithmetic. Only where
+                  the two numbers differ: "3 of 3" is noise. */}
+              {selected.total > selected.cases.length && (
+                <p className="emap-written">
+                  {labels.writtenOf
+                    .replace("{n}", String(selected.cases.length))
+                    .replace("{total}", String(selected.total))}
+                </p>
+              )}
               <ul>
                 {selected.cases.map((c) => (
                   <li key={c.slug}>
@@ -1792,7 +2283,15 @@ export default function EventsMap({
               <div className="emap-reads emap-listed">
                 <div className="emap-reads-h">{labels.inLibrary}</div>
                 <ul>
-                  {selectedCourt.caseload.listed.map((c) => (
+                  {/* Four, not all of them. The Hague seats the ICJ, the ICC,
+                      the PCA and the Dutch courts, and printing its whole
+                      unwritten tail gave a 300px card 3011px of scroll against
+                      a 753px window — forty-word arbitration styles in English
+                      inside a Ukrainian page, and one paragraph of Rome
+                      Statute articles repeated for each of six warrants. Four
+                      shows what kind of thing they are; the link below hands
+                      the reader a table built to hold them. */}
+                  {selectedCourt.caseload.listed.slice(0, LISTED_MAX).map((c) => (
                     <li key={c.id}>
                       <span className="emap-read-t">{c.name}</span>
                       {c.note && <span className="emap-read-f">{c.note}</span>}
@@ -1800,6 +2299,18 @@ export default function EventsMap({
                   ))}
                 </ul>
               </div>
+            )}
+            {/* And the whole caseload, in the one place on this site that can
+                sort and filter it. `/registry` opens on `?court=`, and takes
+                every institution this seat holds — the number in this link and
+                the number in the line above it are the same number. */}
+            {registryHref && (
+              <Link className="emap-more" href={registryHref}>
+                {labels.allInRegistry.replace(
+                  "{n}",
+                  String(selectedCourt.caseload.total),
+                )}
+              </Link>
             )}
           {/* A heading is a promise that something follows it. Stockholm hears
               the two Naftogaz/Gazprom gas arbitrations, Vilnius Lithuania's
@@ -1899,6 +2410,22 @@ export default function EventsMap({
                 </svg>
                 {labels.legendLine}
               </li>
+              {/* The one glyph on the drawing a reader has no way to recognise,
+                  and the one the legend did not explain: a seat the frame
+                  cannot hold, pinned to the border with a chevron and a tail
+                  running off the picture. By data rather than by name — today
+                  that is Montreal and the ICAO Council, and a second such seat
+                  would bring its own key with it. */}
+              {courts.some((c) => c.offMap) && (
+                <li className="emap-key">
+                  <svg viewBox="0 0 22 22" aria-hidden="true">
+                    <line className="k-line" x1="1" y1="11" x2="11" y2="11" />
+                    <circle className="k-court" cx="4" cy="11" r="3.4" />
+                    <path className="k-bearing" d="M13,7 L17.5,11 L13,15" />
+                  </svg>
+                  {labels.legendOffMap}
+                </li>
+              )}
               {variant === "full" && (
                 <li className="emap-key">
                   <svg viewBox="0 0 22 22" aria-hidden="true">
@@ -1908,7 +2435,25 @@ export default function EventsMap({
                   {labels.sizeKey}
                 </li>
               )}
+              {/* The oblast mesh. It is a deliberate and useful part of the
+                  drawing — it is what lets a reader see that Crimea is a piece
+                  of this country and not a neighbour of it — and to anyone who
+                  does not already know the country it was an unexplained
+                  grid. */}
+              {variant === "full" && (
+                <li className="emap-key">
+                  <svg viewBox="0 0 22 22" aria-hidden="true">
+                    <path className="k-mesh" d="M2,15 L8,9 L14,12 L20,6 M8,9 L7,2 M14,12 L15,20" />
+                  </svg>
+                  {labels.legendRegions}
+                </li>
+              )}
             </ul>
+            {/* What the marks do. The map's whole mechanic — pick one end of a
+                relation and the other lights — was written down nowhere, so a
+                reader had to find it by pressing something they had no reason
+                to believe was a control. */}
+            <p className="emap-leg-how">{labels.legendPick}</p>
           </div>
 
 

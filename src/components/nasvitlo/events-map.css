@@ -468,7 +468,13 @@
     aspect-ratio: 1200 / 645;
   }
   .emap-card {
-    position: static;
+    /* `relative`, not `static`: the close button inside is absolutely placed,
+       so a static card hands it to the nearest positioned ancestor — the
+       figure — and the × floated over the top-right corner of the drawing,
+       yards from the card it closes, at every width where the card stops
+       floating. `inset: auto` clears the offsets the floating card sets. */
+    position: relative;
+    inset: auto;
     width: auto;
     margin-top: 1px;
   }
@@ -664,10 +670,27 @@
   color: var(--brand-cream);
 }
 
-/* The live region wraps both cards and must not become a layout box of its
-   own — the cards are absolutely placed against .emap-figure. */
+/* The cards' wrapper must not become a layout box of its own — they are
+   absolutely placed against .emap-figure. It is no longer the live region:
+   wrapping the cards and marking them atomic meant picking The Hague read its
+   whole card aloud, about three thousand characters of registry citation, in
+   one announcement that could not be interrupted. */
 .emap-live {
   display: contents;
+}
+/* What is announced instead: one sentence saying what was picked. Off-screen
+   rather than `display: none`, which would take it out of the accessibility
+   tree and announce nothing at all. */
+.emap-say {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ---- framing control ---- */
@@ -767,7 +790,13 @@
    back that was reserved for the card. */
 @media (max-width: 999px) {
   .emap[data-variant="band"] .emap-card {
-    position: static;
+    /* `relative`, not `static`: the close button inside is absolutely placed,
+       so a static card hands it to the nearest positioned ancestor — the
+       figure — and the × floated over the top-right corner of the drawing,
+       yards from the card it closes, at every width where the card stops
+       floating. `inset: auto` clears the offsets the floating card sets. */
+    position: relative;
+    inset: auto;
     width: auto;
     max-height: none;
     margin-top: 1px;
@@ -1026,13 +1055,27 @@
 /* ---- zoom and pan ---- */
 .emap-svg {
   cursor: grab;
-  touch-action: pan-y;
   /* A drag across the drawing used to sweep the place labels into a text
      selection — blue highlight boxes over Stockholm and Helsinki, and a caret
      left behind. They are aria-hidden decoration drawn in projection units;
      the text a reader would want to copy is the list below. */
   user-select: none;
   -webkit-user-select: none;
+}
+/* All the gestures or none of them — see `gestures` in EventsMap.tsx.
+
+   `touch-action: pan-y` was in force here and was the worst of the three
+   answers: a finger could drag the map east and west, a finger dragged north
+   or south scrolled the page out from under it, and pinch — the first thing a
+   hand tries on a map — was withheld from the browser *and* from this
+   component, which is why a phone had no zoom gesture at all. One axis of pan
+   is not a map. It is a map taking half of a scroll. */
+.emap-svg[data-gest="yes"] {
+  touch-action: none;
+}
+.emap-svg[data-gest="no"] {
+  touch-action: auto;
+  cursor: default;
 }
 .emap-svg[data-dragging] {
   cursor: grabbing;
@@ -1218,4 +1261,212 @@
 }
 .emap-listed .emap-read-t {
   color: var(--brand-muted-dark);
+}
+
+
+/* ============================================================================
+   The overview state, and the whole screen
+   ========================================================================== */
+
+/* What the drawing says where it is a picture rather than a control: below the
+   24px floor the marks stop answering, correctly, and until now nothing said
+   so — the grab cursor and the framing stepper stayed on, promising a surface
+   that answered nothing, and the only way to a usable scale was twelve presses
+   of "+" that ended in a corner of the Atlantic. */
+.emap-overview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-top: 1px;
+  padding: 12px 16px;
+  background: var(--brand-night-2);
+  border: 1px solid var(--brand-night-rule);
+}
+.emap-overview p {
+  margin: 0;
+  flex: 1 1 200px;
+  font: 400 var(--t-cap) / 1.45 var(--brand-font-body);
+  color: var(--brand-muted-dark);
+}
+.emap-gofull {
+  flex: none;
+  min-height: 34px;
+  padding: 8px 14px;
+  background: var(--brand-gold-pale);
+  color: var(--brand-night);
+  border: 0;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.emap-gofull:hover {
+  background: var(--brand-cream);
+}
+
+/* Held full, the drawing is the only thing on the screen. A phone gives it
+   390 x 780 instead of 390 x 202 — 2.5 CSS pixels per projection unit, past
+   every threshold on this page: the marks answer, the sites are labelled, the
+   cities are named. It works in either orientation, which is why it is here
+   rather than a "turn your phone" prompt: most phones have autorotate locked,
+   so that prompt is a dead end for exactly the reader who needs it. */
+.emap[data-full="yes"] {
+  position: fixed;
+  z-index: 60;
+  inset: 0;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--brand-night);
+  overscroll-behavior: contain;
+}
+.emap[data-full="yes"] .emap-figure {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+.emap[data-full="yes"] .emap-svg {
+  aspect-ratio: auto;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* The card is a sheet along the bottom edge rather than a panel in the corner:
+   a phone held full is 390 wide, and a 300px card floating in it covers the
+   country. Capped at half the height, and it has always scrolled its
+   overflow. */
+.emap[data-full="yes"] .emap-card {
+  position: absolute;
+  inset: auto 0 0 0;
+  width: auto;
+  max-height: 52%;
+  border-left: 0;
+  border-top: 3px solid var(--c, var(--brand-gold));
+}
+/* The list, the legend and the seat index belong to the page, not to the
+   overlay: the overlay is one drawing at the size it needs, and the reader
+   leaves it to read. */
+.emap[data-full="yes"] .emap-list,
+.emap[data-full="yes"] .emap-legend,
+.emap[data-full="yes"] .emap-overview {
+  display: none;
+}
+/* The way out. A square with a glyph rather than a labelled button: spelled
+   out — «Вийти з повного екрана» is 26 characters — it ran clean across a
+   375px phone and under the framing strip anchored to the other corner. The
+   glyph carries its name in `aria-label` and `title`, which is what the card's
+   own × has always done. 36px, clear of the 24px floor on both axes. */
+.emap-unfull {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: var(--brand-gold-pale);
+  color: var(--brand-night);
+  border: 0;
+  font: 400 20px/1 var(--brand-font-body);
+  cursor: pointer;
+}
+.emap-unfull:hover {
+  background: var(--brand-cream);
+}
+
+/* The framing strip is 319px of buttons at every width and it is anchored to
+   the right edge, so on a 375px phone it covered 85% of the drawing. The
+   Atlantic framing is the one to drop there, and it is dropped by name rather
+   than by position: it is only the strip's first button on the map's own page,
+   and on the home band — which does not offer it — the same `:first-child`
+   would have taken «Європа» away instead.
+
+   Why this one. It fits a span two and a half times the projection's own, so
+   on a 375px phone it renders Ukraine at about 40 pixels and Montreal as a
+   marker in an empty ocean: a framing that costs the map its subject and
+   delivers a city too small to press. The two framings of Europe stay, and so
+   does the stepper, which reaches the same place with the pinch. */
+@media (max-width: 560px) {
+  .emap-zoom-far {
+    display: none;
+  }
+}
+
+/* Long registry captions in a 300px column. Four of them now rather than
+   twenty-two, but a forty-word arbitration style is still forty words, and
+   what a card owes the reader is enough to recognise the thing — not the whole
+   citation, which is what the registry is for. */
+.emap-listed .emap-read-t {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.emap-listed .emap-read-f {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+/* And the way to all of it. */
+.emap-more {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 7px 0;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--brand-gold-pale);
+  text-decoration: none;
+}
+.emap-more:hover {
+  color: var(--brand-cream);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* "Written up: 3 of 11" — the gap between what a place accounts for and what a
+   reader can open. Quieter than the links under it: it is a fact about the
+   list, not another entry in it. */
+.emap-written {
+  margin: -2px 0 8px;
+  font: 400 11px var(--brand-font-mono);
+  color: var(--brand-faint-dark);
+}
+
+/* What the marks do, under the keys that say what they are. */
+.emap-leg-how {
+  margin: 10px 0 0;
+  max-width: 46ch;
+  font: 400 var(--t-cap) / 1.45 var(--brand-font-body);
+  color: var(--brand-muted-dark);
+}
+/* On the band the legend is one wrapped row of keys with no headings, so this
+   takes the whole of the next line rather than sitting in the row as a very
+   long key. */
+.emap-legend[data-variant="band"] .emap-leg-how {
+  flex: 1 0 100%;
+  margin-top: 2px;
+}
+
+/* Legend marks added with the keys they belong to. */
+.emap-key .k-bearing {
+  fill: none;
+  stroke: var(--brand-gold-pale);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.emap-key .k-mesh {
+  fill: none;
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1;
+  opacity: 0.55;
 }

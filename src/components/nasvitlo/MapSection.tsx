@@ -94,8 +94,8 @@ export default function MapSection({
           geo={{ ...geo, contextFar: undefined }}
           events={MAP_EVENTS.map((e) => ({
             key: e.key,
-            category: e.category,
             size: markerSize(e.weight),
+            total: e.weight,
             when: pick(e.when, locale),
             title: pick(e.title, locale),
             note: pick(e.note, locale),
@@ -122,11 +122,16 @@ export default function MapSection({
             legendLit: dict.mapSection.legendLit,
             legendUnlit: dict.mapSection.legendUnlit,
             reads: dict.mapSection.reads,
+            writtenOf: dict.mapSection.writtenOf,
+            allInRegistry: dict.mapSection.allInRegistry,
             pending: dict.mapSection.pending,
             sizeKey: dict.mapSection.sizeKey,
             legendWhat: dict.mapSection.legendWhat,
             legendHow: dict.mapSection.legendHow,
             legendLine: dict.mapSection.legendLine,
+            legendOffMap: dict.mapSection.legendOffMap,
+            legendRegions: dict.mapSection.legendRegions,
+            legendPick: dict.mapSection.legendPick,
             courtHears: dict.mapSection.courtHears,
             inLibrary: dict.mapSection.inLibrary,
             courtNoSites: {
@@ -142,6 +147,9 @@ export default function MapSection({
             zoomIn: dict.mapSection.zoomIn,
             zoomOut: dict.mapSection.zoomOut,
             wheelHint: dict.mapSection.wheelHint,
+            overview: dict.mapSection.overview,
+            openFull: dict.mapSection.openFull,
+            closeFull: dict.mapSection.closeFull,
           }}
           locale={locale}
           variant="band"

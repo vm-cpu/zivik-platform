@@ -769,9 +769,18 @@ export default function RegistryTable({
   t: RegistryLabels;
 }) {
   /* The home page's "Усі N справ ICJ →" links arrive with ?court=<id>, so the
-     table opens already filtered instead of dropping the reader into all 39. */
+     table opens already filtered instead of dropping the reader into all 39.
+
+     Several ids, comma-separated, because the map hands over a *seat* and a
+     seat is not an institution: The Hague alone holds the ICJ, the ICC, the
+     PCA and the Dutch courts, and «Усі 28 →» from its card has to mean all
+     four. The filter itself has always been a list — only the way in was
+     single-valued. Unknown ids are dropped rather than emptying the table. */
   const params = useSearchParams();
-  const initialCourt = params.get("court");
+  const initialCourts = (params.get("court") ?? "")
+    .split(",")
+    .map((id) => id.trim())
+    .filter((id) => id && courts.some((c) => c.id === id));
   /* Rows without a summary link to `/[locale]/cases/{id}`, and the row data is
      already localized to strings, so the locale comes off the path this table
      is mounted on (`/uk/registry`) rather than a prop the server would have to
@@ -780,9 +789,7 @@ export default function RegistryTable({
   const locale = isLocale(seg) ? seg : defaultLocale;
 
   const [q, setQ] = useState("");
-  const [court, setCourt] = useState<string[]>(
-    initialCourt && courts.some((c) => c.id === initialCourt) ? [initialCourt] : [],
-  );
+  const [court, setCourt] = useState<string[]>(initialCourts);
   const [stage, setStage] = useState<string[]>([]);
   const [outcome, setOutcome] = useState<string[]>([]);
   const [field, setField] = useState<string[]>([]);

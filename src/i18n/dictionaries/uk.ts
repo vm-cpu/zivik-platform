@@ -120,11 +120,38 @@ const uk = {
     zoomIn: "Наблизити",
     zoomOut: "Віддалити",
     wheelHint: "Ctrl або ⌘ + прокручування — масштаб",
+    /* What the drawing says on a phone, where the marks are too small to aim
+       at and the list below is the interface. It was silent: a map-shaped
+       picture with a grab cursor and a zoom stepper that answered nothing. */
+    overview: "Оглядова мапа. Оберіть подію нижче — або відкрийте на весь екран.",
+    openFull: "На весь екран",
+    closeFull: "Вийти з повного екрана",
     reads: "Опрацьовані рішення",
+    /* «11 проваджень» over three links left the reader unable to tell whether
+       the other eight exist. The court cards answer this with «ЯКІ САМЕ»; the
+       site cards had nothing. Not pluralised: the nouns differ per site —
+       проваджень, рішення, арбітражів, ордерів — and the count line above
+       already carries the right one. */
+    writtenOf: "Опрацьовано {n} з {total}",
+    /* The rest of a seat's caseload, in the registry, instead of printed into
+       a 300px card. The Hague's ran to 3011px of scroll against a 753px
+       window before this. */
+    allInRegistry: "Усі {n} у реєстрі →",
     pending: "Конспект у підготовці",
     legendWhat: "Місця подій",
     legendHow: "Суди й звʼязки",
     legendLine: "Пунктир — звʼязок між судом та подією",
+    /* The chevron and the tail on a seat the frame cannot hold. Rendered only
+       where some seat is actually off the projection's window — today
+       Montreal, and by data rather than by name. It was planned when the
+       dock was built and never written: the type carried the comment with no
+       field under it, so the one genuinely unfamiliar glyph on the drawing
+       was the one thing the legend did not explain. */
+    legendOffMap: "Суд поза кадром — стрілка вказує напрямок",
+    legendRegions: "Тонкі лінії — межі областей України",
+    /* The map's whole mechanic, and it was nowhere in the legend: a reader
+       had to guess that the marks answer at all. */
+    legendPick: "Оберіть подію — засвітяться суди, які її розглядають. Оберіть суд — засвітяться його події.",
     sizeKey: "Більше коло — більше проваджень",
     pageTitle: "Мапа порушень і судів",
     pageLede: "Порушення сталися в Україні, а судять їх за тисячі кілометрів звідти. Мапа тримає обидва кінці разом: місце події — і суд, який його розглядає.",

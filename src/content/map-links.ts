@@ -80,6 +80,13 @@ export function courtCaseloadFor(courtKey: string, locale: Locale) {
     (court?.institutionIds ?? []).includes(c.institutionId),
   );
   return {
+    /**
+     * The registry institutions this seat stands for, so a card can hand the
+     * reader the rest of the caseload instead of printing it. `/registry`
+     * opens filtered on `?court=`, and takes several ids separated by commas —
+     * The Hague alone seats four (ICJ, ICC, PCA, the Dutch courts).
+     */
+    courtIds: court?.institutionIds ?? [],
     total: cases.length,
     /** The ones a reader can actually open. */
     written: cases

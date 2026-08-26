@@ -16,9 +16,6 @@ export function pick<T>(value: Localized<T>, locale: Locale): T {
   return value[locale];
 }
 
-/** Geographic point as `[longitude, latitude]` (d3-geo order). */
-export type LonLat = [number, number];
-
 /** Normalised case status driving the chip colour/label (source status is free text). */
 export type CaseStatusKey =
   | "decided"
@@ -136,32 +133,6 @@ export interface RegistryCase {
   summarySlug?: string;
   /** True once a summary/timeline/documents exist ("lit" vs merely registered). */
   lit: boolean;
-}
-
-/** A court location on the events map (a hub city may host several seats). */
-export interface CourtHub {
-  id: string;
-  city: Localized;
-  coord: LonLat;
-  seats: Array<{ abbr: string; name: Localized }>;
-}
-
-/** An event on the map, linked to the courts that hear it. */
-export interface MapEvent {
-  id: string;
-  coord: LonLat;
-  category: "hr" | "war" | "asset";
-  size: number;
-  tag?: Localized;
-  eyebrow: Localized;
-  title: Localized;
-  note: Localized;
-  hubs: string[];
-  forum: Localized;
-  cases: Localized;
-  fresh?: boolean;
-  freshLabel?: Localized;
-  featured?: boolean;
 }
 
 /** A headline statistic in the intro band. */

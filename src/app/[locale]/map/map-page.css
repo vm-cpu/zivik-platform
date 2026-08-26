@@ -223,7 +223,13 @@
      and every seat — and the only way to change the selection was the list
      underneath. */
   .mp-stage .emap-card {
-    position: static;
+    /* `relative`, not `static`: the close button inside is absolutely placed,
+       so a static card hands it to the nearest positioned ancestor — the
+       figure — and the × floated over the top-right corner of the drawing,
+       yards from the card it closes, at every width where the card stops
+       floating. `inset: auto` clears the offsets the floating card sets. */
+    position: relative;
+    inset: auto;
     width: auto;
     max-height: none;
     margin-top: 1px;
@@ -292,4 +298,92 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--brand-gold-mark);
+}
+
+
+/* ---- the phone held sideways ---- */
+/* The rule above is asked of the width alone, and a phone in landscape is
+   wide: at 812 x 375 it took the `max-width: 900px` branch and gave the
+   drawing `aspect-ratio: 1200/645`, which is 812 x 436 — a drawing taller than
+   the window it is in. The map had to be scrolled to be seen, and it could
+   never be seen at the same time as the card it opens.
+
+   Landscape is otherwise the best thing a phone has: measured at 812 x 375 the
+   drawing renders 0.68 CSS pixels per projection unit, which puts a court
+   target at 24.9px — the seats answer, and the nine cities are named, neither
+   of which is true in portrait. So it gets the window instead of a ratio, and
+   the masthead folds down to the one line that says where you are. */
+@media (orientation: landscape) and (max-height: 560px) {
+  /* Down to the fold and no further. `100dvh` was the first try and it was
+     wrong by everything above the drawing: the figure starts 178px down the
+     page — the 77px top bar and the masthead below it — so a viewport-tall
+     figure ran that far past the bottom and the map still had to be scrolled
+     to be seen whole. 142 is the bar plus the folded masthead measured below,
+     in the same spirit as the 71px the desktop rule already subtracts. The floor is there because a
+     very short window (a phone in landscape with the browser chrome showing)
+     would otherwise leave a sliver. */
+  .mp-stage .emap-figure {
+    height: calc(100dvh - 142px);
+    min-height: 190px;
+  }
+  .mp-stage .emap-svg {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+  /* Every pixel the masthead gives up, the drawing gets — and in this window
+     that is the whole argument. The figure is fitted into what is left, so
+     `height` and legibility are the same number here: at 178px of chrome the
+     drawing came out 197px tall and the fit went from width-bound to
+     height-bound, 0.43 CSS pixels per unit, *worse* than the overflowing
+     version it replaced. Folded to one line of back-link and one of title, the
+     chrome is about 110px and the drawing keeps most of its scale.
+
+     The lede is three lines of prose above a drawing that has no room for it;
+     the label rule is decoration. What has to survive is where you are and how
+     to leave. */
+  .mp-mast {
+    padding-block: 8px;
+  }
+  .mp-mast h1 {
+    font-size: 17px;
+    line-height: 1.2;
+    margin-bottom: 0;
+  }
+  .mp-back {
+    margin-bottom: 2px;
+    padding-block: 4px;
+  }
+  .mappage .mp-mast .lbl,
+  .mp-lede {
+    display: none;
+  }
+  /* And the framing strip moves up out of the drawing into the masthead's own
+     empty right half.
+
+     It floats over the top-right corner everywhere else, and the frame gives
+     up 60px at the top so no marker lands under it. Sixty pixels is nothing on
+     a 900px-tall window and it is a quarter of this one: it took the fit from
+     0.55 CSS pixels per unit to 0.42, which is the difference between a map
+     whose cities are named and one whose are not. There is a row of empty
+     space directly above the drawing here. It goes there, and the frame gets
+     its 60px back. */
+  .mp-stage .emap-figure {
+    --emap-safe-top: 0px;
+  }
+  .mp-stage .emap-zoom {
+    top: -42px;
+    right: 0;
+  }
+  /* So the title cannot run under it — and so it does not wrap doing it. Both
+     matter: the figure's height is the window minus the chrome above it, so a
+     title that takes a second line takes it out of the map. */
+  .mp-mast {
+    padding-right: 330px;
+  }
+  .mp-mast h1 {
+    font-size: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
