@@ -15,7 +15,7 @@ import TakingsGrid from "@/components/cases/TakingsGrid";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
 import GlanceFacts from "@/components/cases/GlanceFacts";
-import TheatreLegend from "@/components/cases/TheatreLegend";
+import CaseMap from "@/components/cases/CaseMap";
 import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
@@ -118,6 +118,13 @@ const T = {
   // Instruments an arbitral award earns.
   allEvents: { uk: "Усе", en: "All" },
   openDetail: { uk: "Показати деталі", en: "Show detail" },
+  /* That the marks on the theatre map answer. Only rendered where the case has
+     more than one theatre — with a single one there is nothing to tell apart,
+     and the sentence would be an instruction for its own sake. */
+  mapPick: {
+    uk: "Натисніть на позначку або на рядок нижче — засвітиться те саме місце.",
+    en: "Press a mark, or a line below it — the same place lights up.",
+  },
   /* The year rail. It was `aria-hidden` decoration and read as decoration: a
      row of dots placed by year, so ten events in 2022 stacked into one mark
      and the reader saw four dots for twenty events. Placed by date and
@@ -350,132 +357,50 @@ function TheatreMap({
   /** Per-summary frame override. Omitted, every page keeps the atlas frame. */
   viewBox?: string;
 }) {
-  const frame = viewBox ?? uaMap.viewBox;
-  const [vw0, vh0, vw, vh] = frame.split(" ").map(Number);
+  /* Everything resolved here, on the server: `CaseMap` is a client component
+     and its props are serialized into the payload, so a {uk, en} pair would
+     ship both languages to every reader — and the atlas would ship whole
+     rather than the two or three paths this case actually draws. */
   const seat = MK[forum.key] ?? MK.hague;
-  const reach = MK[forum.reachTo] ?? MK.kyiv;
-  /**
-   * A point in the frame, as a percentage of it.
-   *
-   * Every label on this map used to be an SVG `<text>`, and SVG measures a
-   * font in user units: the same declaration rendered 23 CSS pixels at 1440
-   * and 6 at 375 — a headline on a desktop, a grey smudge on a phone. The band
-   * had been made full-bleed to compensate, which is why the drawing ran to
-   * 1990px and 1114px tall on a wide screen, and the labels with it.
-   *
-   * The labels are HTML now, laid over the drawing at these percentages. Type
-   * is type at every width, the drawing can go back to a sane size, and the
-   * gaps between a mark and its name are constant pixels instead of units
-   * that grow with the picture.
-   */
-  const at = (x: number, y: number) => ({
-    left: `${((x - vw0) / vw) * 100}%`,
-    top: `${((y - vh0) / vh) * 100}%`,
-  });
   return (
-    <div className="map-wrap">
-      {/* The drawing and its names share a box of their own. `.map-wrap` also
-          holds the legend, so labels positioned against it were being placed
-          as percentages of the map *plus* the legend — the zone name for the
-          east landed under the drawing, on top of the legend text. */}
-      <div className="map-plot">
-      <svg className="map" viewBox={frame} role="img" aria-label={pick(T.mapAlt, locale)}>
-        <defs>
-          <clipPath id="mapclip">
-            <rect x={vw0} y={vh0} width={vw} height={vh} />
-          </clipPath>
-        </defs>
-        <g clipPath="url(#mapclip)">
-          {mapContext.map((d, i) => (
-            <path key={i} className="ctx" d={d} />
-          ))}
-          <path className="ua-fill" d={uaMap.path} />
-
-          {/* the forum's reach: seat → the ground in dispute */}
-          <line className="reach" x1={seat[0]} y1={seat[1]} x2={reach[0]} y2={reach[1]} />
-
-          <circle className="mk-court" cx={seat[0]} cy={seat[1]} r={10} />
-          <circle className="mk-city" cx={MK.kyiv[0]} cy={MK.kyiv[1]} r={7} />
-
-          {/* The ground first, under every mark: most of these theatres are not
-              points. «Крим», «Донбас із 2014», «Східна Україна», «Окуповані
-              території», «Уся Україна з 2022» are territories, and a dot
-              standing for one is a claim the record does not make. The dot
-              stays, because a reader needs somewhere to look, and the ground
-              behind it lights. Two of the eleven really are points — the Buk's
-              launch site at Pervomaiskyi and the ambush on the Aidar battalion
-              — and they declare no ground, so they get none. */}
-          {theatres.flatMap((t, ti) =>
-            (t.areas ?? []).map((key) => {
-              const d = key === "country" ? uaMap.path : MAP_AREAS[key];
-              return d ? <path key={`${ti}-${key}`} className="zone-area" d={d} /> : null;
-            }),
-          )}
-          {theatres.map((t) => {
-            const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
-            return (
-              <g key={pick(t.place, locale)}>
-                {pts.map((p, i) => (
-                  <g key={i}>
-                    <circle className="zone-halo" cx={p[0]} cy={p[1]} r={40} />
-                    <circle className="zone" cx={p[0]} cy={p[1]} r={9} />
-                  </g>
-                ))}
-              </g>
-            );
-          })}
-        </g>
-      </svg>
-
-      {/* The names, in HTML over the drawing. `aria-hidden`, because the
-          legend under the map is the same list in reading order and a screen
-          reader does not need it twice. */}
-      <div className="map-labels" aria-hidden="true">
-        <span className="ml-seat" style={at(seat[0], seat[1])}>
-          <b>{pick(forum.name, locale)}</b>
-          <i>{pick(forum.caption, locale)}</i>
-        </span>
-        <span className="ml-city" style={at(MK.kyiv[0], MK.kyiv[1])}>
-          {locale === "uk" ? "Київ" : "Kyiv"}
-        </span>
-        {theatres.map((t) => {
-          const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
-          const cx = pts.reduce((s2, p) => s2 + p[0], 0) / pts.length;
-          const cy = pts.reduce((s2, p) => s2 + p[1], 0) / pts.length;
-          return (
-            <span
-              key={pick(t.place, locale)}
-              className="ml-zone"
-              /* Held inside the frame, as the SVG version was: a zone on the
-                 eastern border centres its name past the right edge, and an
-                 HTML label does not clip — it spills onto whatever is beside
-                 the map. 13% and 87% leave room for the widest of them. */
-              style={(() => {
-                const p = at(cx + (t.labelDx ?? 0), cy + (t.labelDy ?? 0));
-                const pct = Math.min(
-                  Math.max(parseFloat(p.left), 13),
-                  87,
-                );
-                return { ...p, left: `${pct}%` };
-              })()}
-            >
-              <i>{typeof t.tag === "string" ? t.tag : pick(t.tag, locale)}</i>
-              <b>{pick(t.place, locale)}</b>
-            </span>
-          );
-        })}
-      </div>
-      </div>
-
-      <TheatreLegend
-        seat={{ name: pick(forum.name, locale), caption: pick(forum.caption, locale) }}
-        theatres={theatres.map((t) => ({
-          place: pick(t.place, locale),
-          tag: typeof t.tag === "string" ? t.tag : pick(t.tag, locale),
-          summary: pick(t.summary, locale),
-        }))}
-      />
-    </div>
+    <CaseMap
+      frame={viewBox ?? uaMap.viewBox}
+      context={mapContext}
+      uaPath={uaMap.path}
+      seat={{
+        name: pick(forum.name, locale),
+        caption: pick(forum.caption, locale),
+        at: [seat[0], seat[1]],
+      }}
+      reach={(() => {
+        const r = MK[forum.reachTo] ?? MK.kyiv;
+        return [r[0], r[1]];
+      })()}
+      kyiv={{
+        label: locale === "uk" ? "Київ" : "Kyiv",
+        at: [MK.kyiv[0], MK.kyiv[1]],
+      }}
+      theatres={theatres.map((t, i) => ({
+        id: `t${i}`,
+        place: pick(t.place, locale),
+        tag: typeof t.tag === "string" ? t.tag : pick(t.tag, locale),
+        summary: pick(t.summary, locale),
+        pts: t.markerKeys
+          .map((k) => MK[k])
+          .filter(Boolean)
+          .map((p) => [p[0], p[1]] as [number, number]),
+        areas: (t.areas ?? [])
+          .map((k) => (k === "country" ? uaMap.path : MAP_AREAS[k]))
+          .filter(Boolean),
+        labelDx: t.labelDx,
+        labelDy: t.labelDy,
+      }))}
+      labels={{
+        alt: pick(T.mapAlt, locale),
+        seatRole: pick(T.seatLabel, locale),
+        pick: pick(T.mapPick, locale),
+      }}
+    />
   );
 }
 
