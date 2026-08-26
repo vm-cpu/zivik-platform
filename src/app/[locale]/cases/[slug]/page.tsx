@@ -222,6 +222,43 @@ const MK: Record<string, number[]> = {
 
 const mapContext = (uaMap as { context?: string[] }).context ?? [];
 
+/**
+ * Crimea is part of the outline this map draws, and it must stay part of it.
+ *
+ * The atlas this frame was built from stops at the Perekop isthmus, so the
+ * country ended at y = 461 and the peninsula was not drawn at all — while the
+ * markers for it sat at y = 462 and y = 476, on bare background, outside the
+ * country they belong to. On an archive whose largest award is compensation
+ * for property taken in Crimea, that is not a cartographic quibble; it is the
+ * map contradicting the cases on it.
+ *
+ * The peninsula's own subpaths are appended to the same `d`, exactly as
+ * scripts/europe-map.mjs does for the events map and from the same Natural
+ * Earth admin-1 coordinates, reprojected into this frame — Mercator, fitted
+ * from this file's own Kyiv and The Hague markers and checked against its
+ * Donetsk, which it reproduces to a tenth of a unit.
+ *
+ * The check is here rather than in a comment because a comment does not fail
+ * a build: every marker this map can draw has to fall inside the country's own
+ * bounding box.
+ */
+{
+  const nums = uaMap.path.match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
+  let y1 = -Infinity;
+  for (let i = 1; i < nums.length; i += 2) y1 = Math.max(y1, nums[i]);
+  const south = Math.max(
+    ...(["crimea", "simferopol"] as const).map(
+      (k) => (uaMap.markers as Record<string, number[]>)[k]?.[1] ?? -Infinity,
+    ),
+  );
+  if (!(y1 >= south)) {
+    throw new Error(
+      `ukraine-map.json draws the country down to y=${y1} and puts a marker at ` +
+        `y=${south}: Crimea is outside the outline again.`,
+    );
+  }
+}
+
 /** A search snippet is cut off around here. */
 const META_MAX = 160;
 

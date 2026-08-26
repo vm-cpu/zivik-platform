@@ -680,7 +680,12 @@ export default function EventsMap({
    * folds, and the drawing takes the height back. Open by default: a reader
    * who has not read it yet cannot be expected to go looking for it.
    */
-  const [legendOpen, setLegendOpen] = useState(true);
+  const [legendUser, setLegendUser] = useState<boolean | null>(null);
+  /* `null` is not closed: it is "whatever the surface can spare", and the
+     stylesheet answers it — open on a window wide enough to lay it beside the
+     drawing, folded on a phone, where an open key stands between the reader
+     and everything under it. */
+  const legendOpen = legendUser ?? true;
 
   /**
    * A legend key held down: show me this set of marks and quieten the rest.
@@ -1394,7 +1399,7 @@ export default function EventsMap({
     // this dependency existed, folding the key left the frame reserving the
     // 312px strip it no longer stood on, and the drawing kept the 0.94 CSS
     // pixels per unit it had had rather than the 1.2 it was owed.
-  }, [legendOpen]);
+  }, [legendUser]);
   /**
    * Is the reader pointing with a finger? Asked of the input device rather
    * than of the viewport: a narrow desktop window is not a phone, and a tablet
@@ -1796,7 +1801,7 @@ export default function EventsMap({
       data-coarse-courts={coarseCourts ? "yes" : "no"}
       data-full={full ? "yes" : "no"}
       data-hi={hi ?? undefined}
-      data-legend={legendOpen ? "on" : "off"}
+      data-legend={legendUser === null ? "auto" : legendUser ? "on" : "off"}
       data-list={listUser === null ? "auto" : listUser ? "on" : "off"}
       data-seats={seatsOpen ? "on" : "off"}
       data-touch={touch ? "yes" : "no"}
@@ -2575,6 +2580,17 @@ export default function EventsMap({
         engines and to anyone not using a pointing device; this list is the
         map's actual payload, and on a narrow screen it is the whole map.
       */}
+      {/* The six, as text, under the key that explains the drawing above
+          them. The legend used to sit below this list — which put the keys a
+          screen away from the marks they name, so pressing one to see the five
+          sites with a written decision showed the reader a legend and no map.
+          A key belongs beside the thing it is a key to; the list is content and
+          follows both. */}
+      {/*
+        The same content as text. The iframe version was invisible to search
+        engines and to anyone not using a pointing device; this list is the
+        map's actual payload, and on a narrow screen it is the whole map.
+      */}
       {/* The key lies on the drawing, bottom left, and folds away.
           Inside the figure because that is what it is a key to: on the map's
           own page the drawing takes the screen, and a key a scroll below it is
@@ -2594,7 +2610,7 @@ export default function EventsMap({
             type="button"
             className="emap-leg-toggle"
             aria-expanded={legendOpen}
-            onClick={() => setLegendOpen((v) => !v)}
+            onClick={() => setLegendUser((v) => !(v ?? true))}
           >
             <span className="emap-leg-chev" aria-hidden="true" />
             {labels.legendTitle}
