@@ -38,6 +38,16 @@ const T = {
     uk: "«Насвітло» — бібліотека рішень міжнародних судів і трибуналів, що постали з українських ініціатив притягнути Росію до відповідальності. Проєкт веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
     en: "nasvitlo is a library of decisions of the international courts and tribunals arising from Ukraine's initiatives to hold Russia accountable. It is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
   },
+  /* Which courts' practice this library covers. It was the home page's intro
+     band, a screen above a section that said nearly the same thing at greater
+     length; the user asked for it here and off the home page entirely. Kept in
+     this page's own prose rather than in `content/about.ts`, because that file
+     feeds the home band too. */
+  scope: {
+    uk: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів, що стосується українських ініціатив для притягнення Росії до відповідальності за порушення, вчинені під час війни проти України.",
+    en: "An online library of international case-law — the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration — and of foreign national courts, arising from Ukraine\u2019s initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
+  },
+
   metaDesc: {
     uk: "Хто веде бібліотеку «насвітло», як готуємо конспекти рішень і в якому стані бібліотека.",
     en: "Who runs the nasvitlo library, how a decision summary is prepared, and how far the library has got.",
@@ -284,6 +294,7 @@ export default async function AboutPage({
         <section className="abt-sec">
           <h2>{L(about.title)}</h2>
           <div className="abt-prose">
+            <p>{L(T.scope)}</p>
             {L(about.paragraphs).map((text, i) => (
               <p key={i}>{text}</p>
             ))}

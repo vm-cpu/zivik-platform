@@ -253,7 +253,6 @@
 }
 
 @media (max-width:760px){
-  .nsv-intro{flex-direction:column !important;align-items:flex-start !important;gap:18px !important}
   .lmp .wm{font-size:clamp(46px,15vw,88px) !important}
   .nsv-hero{padding:158px 18px 0 !important}
   .pj{min-height:auto !important;padding-bottom:44px !important}

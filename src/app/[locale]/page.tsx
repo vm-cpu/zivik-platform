@@ -10,7 +10,6 @@ import { jsonLdHtml, siteUrl } from "@/lib/seo";
 import "./home.css";
 import LampShell from "@/components/nasvitlo/LampShell";
 import Hero from "@/components/nasvitlo/Hero";
-import Intro from "@/components/nasvitlo/Intro";
 import About from "@/components/nasvitlo/About";
 import Slogan from "@/components/nasvitlo/Slogan";
 import MapSection from "@/components/nasvitlo/MapSection";
@@ -66,7 +65,6 @@ export default async function HomePage({
       <main>
         <LampShell>
         <Hero dict={dict} />
-        <Intro locale={locale} dict={dict} />
         <About
           locale={locale}
           dict={dict}
