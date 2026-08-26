@@ -122,8 +122,16 @@ export interface MapCourt {
    * by acronyms that appear in the case citations themselves, but a national
    * court has none, and inventing one for an archive of citations would be
    * worse than leaving it out.
+   *
+   * And it is a pair where the two languages cite the court differently. Most
+   * acronyms are the same in both — ICJ, ICC, PCA, ITLOS, SCC, ICAO — but the
+   * Strasbourg court is ЄСПЛ in a Ukrainian filing and ECtHR in an English
+   * one, and carrying both in one string put «ЄСПЛ / ECtHR» on the English
+   * map, in the badge on the drawing and in the seat list underneath. Both
+   * halves come from the record; this only picks the one the reader is
+   * reading in.
    */
-  seats: { abbr?: string; name: Localized }[];
+  seats: { abbr?: string | Localized; name: Localized }[];
 }
 
 /**
@@ -166,6 +174,26 @@ export const MAP_COURT_NO_SITES: Localized = {
   en: "These proceedings are not tied to any of the six places on this map.",
 };
 
+/**
+ * The key to the one glyph on the drawing that had none.
+ *
+ * Every other mark in the legend is drawn there: the lit dot, the hollow ring,
+ * the court's circle, the dashed connector, the two sizes. The docked seat was
+ * not — a marker pinned to the frame's edge with a chevron and a dashed tail
+ * running off the picture, which is what «Європа» and «Україна» do with
+ * Montreal. Measured on the built page, that is a mark a reader meets in the
+ * framing the map opens at, and the only thing that explained it was a code
+ * comment.
+ *
+ * Here rather than in the dictionaries for the same reason as
+ * MAP_COURT_NO_SITES: it is a statement about this drawing's own mechanics,
+ * not a piece of site chrome.
+ */
+export const MAP_LEGEND_OFFMAP: Localized = {
+  uk: "Місто за межами кадру — стрілка вказує, де воно насправді",
+  en: "A seat outside the frame — the arrow points to where it really is",
+};
+
 export const MAP_COURTS: MapCourt[] = [
   {
     key: "hague",
@@ -194,7 +222,10 @@ export const MAP_COURTS: MapCourt[] = [
     institutionIds: ["ecthr"],
     city: { uk: "Страсбург", en: "Strasbourg" },
     seats: [
-      { abbr: "ЄСПЛ / ECtHR", name: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" } },
+      {
+        abbr: { uk: "ЄСПЛ", en: "ECtHR" },
+        name: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
+      },
     ],
   },
   {
@@ -277,9 +308,16 @@ export const MAP_COURTS: MapCourt[] = [
     seats: [
       {
         abbr: "ICAO",
+        // The name, and nothing after it. It used to end «— поза кадром мапи» /
+        // "outside the map's frame", which was true of the only framing that
+        // existed when it was written and is false in the one added since:
+        // «Атлантика» puts Montreal inside the picture, drawn like any other
+        // seat. The drawing already says where a city is — docked at the edge
+        // with a bearing, or in place — and it says it per framing, which a
+        // fixed string cannot.
         name: {
-          uk: "Рада Міжнародної організації цивільної авіації — поза кадром мапи",
-          en: "Council of the International Civil Aviation Organization — outside the map's frame",
+          uk: "Рада Міжнародної організації цивільної авіації",
+          en: "Council of the International Civil Aviation Organization",
         },
       },
     ],
@@ -498,10 +536,34 @@ export const MAP_EVENTS: MapEvent[] = [
  * badged: the card and the legend still spell every institution out.
  */
 export function courtBadges(c: MapCourt, locale: Locale): string[] {
-  const abbrs = c.seats.map((s) => s.abbr).filter((a): a is string => !!a);
+  const abbrs = c.seats
+    .map((s) => abbrOf(s.abbr, locale))
+    .filter((a): a is string => !!a);
   if (abbrs.length) return abbrs;
   const first = c.seats[0];
   return first ? [pick(first.name, locale).split(" — ")[0].trim()] : [];
+}
+
+/** The acronym a citation carries, in the language the reader is reading in. */
+const abbrOf = (a: string | Localized | undefined, locale: Locale) =>
+  a === undefined ? undefined : typeof a === "string" ? a : pick(a, locale);
+
+/**
+ * "ICJ — Міжнародний суд ООН · ICC — …" — every institution seated in one
+ * city, on one line.
+ *
+ * Exported rather than written out at each render site: the home band and the
+ * map's own page both build it, and they had drifted to two copies of the same
+ * expression, which is how one of them would have kept the old single-string
+ * abbreviation after the other stopped.
+ */
+export function seatsLine(c: MapCourt, locale: Locale): string {
+  return c.seats
+    .map((s) => {
+      const a = abbrOf(s.abbr, locale);
+      return a ? `${a} — ${pick(s.name, locale)}` : pick(s.name, locale);
+    })
+    .join(" · ");
 }
 
 /**

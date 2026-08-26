@@ -1037,6 +1037,12 @@
 .emap-svg[data-dragging] {
   cursor: grabbing;
 }
+/* And no hand where there is nothing to pull towards: at the framing the home
+   band opens at, the view already fills the whole bound the reader may reach,
+   so a drag clamps straight back. See `canPan` in EventsMap.tsx. */
+.emap-svg[data-pan="no"] {
+  cursor: default;
+}
 /* The markers are buttons; only the ground drags. */
 .emap-hit,
 .emap-court-hit {
@@ -1098,6 +1104,23 @@
   stroke-width: 1.4;
   stroke-dasharray: 4 4;
 }
+/* The docked seat, drawn at the legend's scale from the same two marks the
+   drawing uses — .emap-court-tail and .emap-court-bearing — so the reader
+   matches the glyph to the map by sight rather than by reading about it. */
+.emap-key .k-tail {
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+  opacity: 0.55;
+}
+.emap-key .k-bearing {
+  fill: none;
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.8;
+}
 
 /* Seats are buttons: the legend is also the way to interrogate a court, which
    is otherwise only reachable by finding a 5px ring on the drawing. */
@@ -1121,11 +1144,15 @@
   border-left-color: var(--brand-gold-pale);
 }
 
-/* The court's own caseload, from the registry. */
+/* The court's own caseload, from the registry — «28 проваджень у бібліотеці».
+   Mono, because it is a count, and because the seat list under the full map
+   prints the same sentence from the same call and has always set it in mono
+   (.emap-seat-count). One sentence in two faces on two surfaces was the kind
+   of drift the type scale exists to stop. */
 .emap-caseload {
   margin: 10px 0 0;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.11em;
+  font: 600 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--brand-gold-pale);
 }

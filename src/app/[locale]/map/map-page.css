@@ -37,9 +37,14 @@
   margin: 0 auto;
   padding: 42px clamp(20px, 5vw, 44px) 26px;
 }
+/* The one control in the masthead, and it measured 89.8 x 13 — an 11px cap
+   line with nothing round it, against the 24px floor every other control on
+   this page clears. The padding is what makes the box, so the margin below it
+   gives back what the padding adds and the masthead keeps its rhythm. */
 .mp-back {
   display: inline-block;
-  margin-bottom: 18px;
+  padding-block: 6px;
+  margin-bottom: 12px;
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -99,6 +104,22 @@
   --emap-safe-top: 206px;
 }
 
+/* The panel floats over the drawing, so the drawing has to be reachable
+   through the parts of it that are not text. Measured in the «Україна»
+   framing: at 1280 and at 1440, Vilnius's hit circle lands inside the
+   masthead's own padding — elementFromPoint returned the <header>, not the
+   heading or the lede — so a court that is drawn in plain sight answered
+   nothing. The panel keeps its pointer where it has ink; its gutters hand the
+   press to the map. Text stays selectable, because the children take the
+   pointer back. */
+.mp-mast {
+  pointer-events: none;
+}
+.mp-mast a,
+.mp-mast h1,
+.mp-lede {
+  pointer-events: auto;
+}
 .mp-mast {
   position: absolute;
   z-index: 4;
@@ -132,7 +153,8 @@
 }
 .mp-back {
   display: inline-block;
-  margin-bottom: 12px;
+  padding-block: 6px;
+  margin-bottom: 6px;
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.09em;
   text-transform: uppercase;

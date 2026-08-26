@@ -396,7 +396,16 @@
     background:color-mix(in srgb, var(--brand-night) 88%, transparent);
     border:1px solid var(--brand-night-rule);
     backdrop-filter:blur(6px);
+    /* Once it floats it is standing on the drawing, and the drawing has to be
+       reachable through the parts of it that carry no ink — the same rule the
+       map page's masthead takes. Without it a press anywhere in the panel's
+       gutters, which is most of its 440x229, could not drag the map. The
+       children take the pointer back, so the heading is still selectable and
+       the link still a link. */
+    pointer-events:none;
   }
+  .page .nsv-mapband > .nsv-sechead > *,
+  .page .nsv-mapband > .nsv-sechead a{pointer-events:auto}
   .page .nsv-mapband > .nsv-sechead h2{font-size:25px}
   .page .nsv-mapband > .nsv-sechead p{max-width:none}
   /* The drawing runs to the band's top edge, under the panel. */
@@ -419,8 +428,13 @@
 .page .nsv-mapband > .nsv-sechead .lbl::before{background:var(--brand-gold-mark)}
 .page .nsv-mapband a.nsv-map-full{color:var(--brand-gold-pale)}
 .page .nsv-mapband a.nsv-map-full:hover{color:var(--brand-cream-warm)}
+/* The band's one link out, and it measured 96.5 x 11 against the 24px floor
+   every button on the drawing below it clears. The padding is what makes the
+   box; the negative block margin gives the layout back what the padding adds,
+   so nothing moves. */
 .page a.nsv-map-full{
   align-self:flex-end;flex:none;
+  padding-block:7px;margin-block:-7px;
   font:700 var(--t-micro)/1 var(--brand-font-body);
   letter-spacing:.09em;text-transform:uppercase;
   color:var(--red);white-space:nowrap;

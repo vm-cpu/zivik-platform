@@ -441,6 +441,12 @@ export default function EventsMap({
     legendHow: string;
     /** What the dashed line means. */
     legendLine: string;
+    /**
+     * And what a marker docked against the frame's edge means. Only rendered
+     * where a seat is actually off the projection's window — today Montreal,
+     * and by data rather than by name.
+     */
+    legendOffMap: string;
     /** Heading over the sites a selected court hears. */
     courtHears: string;
     /**
@@ -739,11 +745,16 @@ export default function EventsMap({
    * «Європа» and «Україна» and the link to the full map, which is where the
    * third framing lives.
    *
-   * A consequence worth naming: the band no longer draws anything outside the
-   * projection's own window, so the 60 far-ring country paths in
-   * europe-map.json — about 31 kB gzipped once in the HTML and once in the RSC
-   * payload — are dead weight on the home page. Splitting `context` into a
-   * near list and a far list in the generator would take them out of it.
+   * The consequence for weight, since the band can no longer draw anything
+   * outside the projection's own window: the generator emits the far ring as
+   * its own list (`contextFar`, 60 paths of North America and the Atlantic
+   * rim) and MapSection withholds it, so those paths travel to the map's own
+   * page and nowhere else. Measured as an A/B of two builds, same JSON, one
+   * prop apart: the home page went from 100,293 to 62,782 bytes gzipped in
+   * Ukrainian and 96,922 to 59,582 in English — 37.5 kB and 37.3 kB, a little
+   * over a third of the document, because the geometry travelled twice, once
+   * in the HTML and again in the RSC payload. The map page is unchanged; the
+   * near ring is byte-identical, so Crimea and the oblast mesh have not moved.
    */
   const hasWide =
     variant === "full" && (SPAN.w > BASE.w + 1 || SPAN.h > BASE.h + 1);
@@ -805,6 +816,21 @@ export default function EventsMap({
     [FULL, OUTER, ANCHORS],
   );
   const viewBox = `${view.x} ${view.y} ${view.w} ${view.h}`;
+  /**
+   * Is there anywhere to drag to?
+   *
+   * The `grab` cursor was a promise the drawing could not always keep. On the
+   * map's own page `outer` is the union of the European framing and the
+   * Atlantic one, so the opening view is smaller than its bound and a press on
+   * the ground always moves something. On the home band, which does not offer
+   * the Atlantic framing, `outer` *is* the opening framing — measured, a
+   * 160px pull at 1440 left the viewBox at `-13.3 -51.1 1226.7 511.1`,
+   * unchanged — and the hand-shaped cursor was describing a gesture with no
+   * effect. It has somewhere to go the moment the reader zooms in, by the
+   * stepper, by «Україна», by a double-click or by ⌘-wheel, so this is asked
+   * of the current frame rather than of the surface.
+   */
+  const canPan = view.w < OUTER.w - 0.5 || view.h < OUTER.h - 0.5;
 
   /** Pointer position in viewBox units — what both drag and double-click need. */
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -1318,6 +1344,7 @@ export default function EventsMap({
           ref={svgRef}
           className="emap-svg"
           data-dragging={dragging ? "yes" : undefined}
+          data-pan={canPan ? "yes" : "no"}
           viewBox={viewBox}
           /* The frame is built to the container's aspect ratio, so meet and
              slice are the same fit — and meet cannot crop during the one
@@ -1389,19 +1416,17 @@ export default function EventsMap({
               setDragging(false);
             }
           }}
-          /* No wheel handler, on either variant.
-             It used to zoom on the map's own page, on the reasoning that there
-             the map owns the viewport. It does not: the legend and the list of
-             six sit below the drawing, so the page scrolls — and because a
-             React wheel listener is passive, the scroll could not be
-             suppressed even in principle. Measured, one wheel notch over the
-             drawing zoomed the map out *and* scrolled the page 120px, so a
-             reader on their way down to the legend arrived there having lost
-             the framing they had chosen. Binding it properly would mean
-             swallowing the wheel over an element that fills the screen, which
-             is the trap the band was careful to avoid. The two framings, the
-             plus and minus buttons, double-click and drag remain, and both
-             variants now behave the same way. */
+          /* No wheel prop here, and that is the point: React registers
+             `onWheel` passively, so `preventDefault` is unavailable on it and
+             one notch over the map's own page zoomed the drawing *and*
+             scrolled the page 120px away from it. The wheel is bound as a
+             non-passive listener in the effect above instead, which is the
+             only place it can be bound and still be able to refuse the
+             scroll. This comment used to say there was no wheel handler at
+             all; measured on the built page, there is. A bare notch over the
+             map's own page zooms and the page holds still (scrollY 0 before
+             and after); over the home band the page scrolls its 120px, the
+             drawing does not move, and the hint appears. */
           onDoubleClick={(ev) => {
             // Not on a marker: two clicks there have already selected it and
             // deselected it again, and zooming into a card that just closed
@@ -1850,6 +1875,22 @@ export default function EventsMap({
                 </svg>
                 {labels.legendLine}
               </li>
+              {/* The docked seat. Every other mark in this legend is drawn on
+                  the map and keyed here; this one was drawn and not keyed, and
+                  it is the mark a reader is least able to guess — a circle
+                  pinned to the border with an arrow leaving the picture. Shown
+                  only where a seat really is off the window, so it disappears
+                  by itself if the projection ever grows to hold them all. */}
+              {courts.some((c) => c.offMap) && (
+                <li className="emap-key">
+                  <svg viewBox="0 0 22 22" aria-hidden="true">
+                    <line className="k-tail" x1="8" y1="11" x2="17" y2="11" />
+                    <circle className="k-court" cx="4" cy="11" r="4" />
+                    <path className="k-bearing" d="M0,-3.2 L3.4,0 L0,3.2" transform="translate(18 11)" />
+                  </svg>
+                  {labels.legendOffMap}
+                </li>
+              )}
               {variant === "full" && (
                 <li className="emap-key">
                   <svg viewBox="0 0 22 22" aria-hidden="true">
