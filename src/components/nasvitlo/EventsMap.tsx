@@ -180,6 +180,24 @@ const shortLabel = (when: string) => when.split("·")[0].trim();
 const LABEL_MIN_SCALE = 2.6;
 
 /**
+ * How much room two labels need between their markers, in CSS pixels.
+ *
+ * `LABEL_MIN_SCALE` above asks this question of the whole set at once, using
+ * the tightest pair in it — MH17 and eastern Ukraine, 16.9 units — so one
+ * crowded pair kept the other four unnamed. Measured on the built page, that
+ * meant the map opened with its nine courts named and the six places the
+ * archive is *about* drawn as unlabelled dots: 0.94 CSS pixels per unit at
+ * 1440, against the 2.6 the threshold wants. The card used to cover for it by
+ * opening on one of them, and the card does not open any more.
+ *
+ * Asked per marker instead, against the room that marker actually has, the
+ * four with a country to themselves are named at the framing the map opens
+ * at and the crowded pair joins them when the reader comes closer. 44px is
+ * the same figure the old threshold encodes — 16.9 units at 2.6.
+ */
+const LABEL_GAP = 44;
+
+/**
  * Hit targets, in projection units, once the scale is known.
  *
  * 24 CSS pixels is the floor, and the drawing no longer has one fixed scale to
@@ -2328,7 +2346,9 @@ export default function EventsMap({
                     was what the map did: in the framing it opens at — 1.2
                     pixels per unit at 1440 — it named all nine courts and left
                     the six places the archive is *about* as unlabelled dots. */}
-                {(labelled || (sel?.kind === "site" && sel.key === e.key)) && (
+                {(labelled ||
+                  room[e.key] * scale >= LABEL_GAP ||
+                  (sel?.kind === "site" && sel.key === e.key)) && (
                   <text
                     className="emap-site-label"
                     aria-hidden="true"

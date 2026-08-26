@@ -1825,16 +1825,23 @@ a.emap-seat-count:focus-visible {
 }
 
 /* The six places. `auto` is not a state the reader chose — it is "whatever the
-   drawing can do", and the stylesheet answers it for the first paint so the
-   block does not appear and then vanish once the client has measured. 1001px
-   is the width the home band has always used for the same question. */
+   surface needs" — and on the map's own page what it needs is for them to be
+   open.
+
+   They were folded here too, and that was right until the card stopped opening
+   by default. Measured after it did: the map arrives at 0.94 CSS pixels per
+   unit, the site labels want 2.6, and nothing was selected — so the drawing
+   named its nine courts and left the six places the archive is *about* as
+   unlabelled dots, with the only list of their names folded under it. Six
+   marks with no names is not a map of anything.
+
+   Asking the labels to appear per marker instead does not rescue it: the
+   closest pair of *any* two marks is about 32 units, which is 30px at this
+   scale, and two names do not fit in 30px. The names live in the list, so the
+   list is open. The nine seats stay folded — they are a directory, and the
+   registry is a better one. */
 .emap[data-list="off"] .emap-list {
   display: none;
-}
-@media (min-width: 1001px) {
-  .emap[data-list="auto"] .emap-list {
-    display: none;
-  }
 }
 .emap[data-seats="off"] .emap-index {
   display: none;

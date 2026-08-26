@@ -444,9 +444,19 @@
   .casepage .ml-zone {
     transform: translate(-50%, calc(-100% - 14px));
   }
-  .casepage .ml-seat,
-  .casepage .ml-city {
+  .casepage .ml-seat {
     transform: translate(9px, -50%);
+  }
+  /* Kyiv goes. It is a reference point, not a subject — the map names it so a
+     reader can place the rest — and on a 375px drawing it is the label that
+     collides: measured on the CERD/ICSFT page, «Київ» and «Східна Україна»
+     overlap, and of the two the one that can be spared is the one that is not
+     what the case is about. */
+  /* `.casepage .map-labels span` sets `display: flex` and carries one element
+     selector more than `.casepage .ml-city`, so the plain form lost the
+     cascade and Kyiv stayed on the map. */
+  .casepage .map-labels .ml-city {
+    display: none;
   }
   .casepage .map .mk-court {
     r: 22;
