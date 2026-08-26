@@ -544,6 +544,7 @@ export const iccUkraine: DecisionSummary = {
       place: { uk: "Окуповані території", en: "Occupied territories" },
       tag: { uk: "ДІТИ", en: "CHILDREN" },
       markerKeys: ["crimea", "donetsk", "luhansk"],
+      areas: ["crimea", "east"],
       // keep the caption clear of the three markers it points at
       labelDx: -40,
       labelDy: -22,
@@ -556,6 +557,7 @@ export const iccUkraine: DecisionSummary = {
       place: { uk: "Енергосистема України", en: "Ukraine's power grid" },
       tag: { uk: "ЕНЕРГОСИСТЕМА", en: "POWER GRID" },
       markerKeys: ["kyiv"],
+      areas: ["country"],
       // lift the label clear of the Kyiv marker and its city caption
       labelDx: -60,
       labelDy: -46,

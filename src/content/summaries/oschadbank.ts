@@ -635,6 +635,7 @@ export const oschadbank: DecisionSummary = {
       place: { uk: "Крим", en: "Crimea" },
       tag: "BIT 1998",
       markerKeys: ["crimea"],
+      areas: ["crimea"],
       summary: {
         uk: "294 відділення, найбільший кредитний портфель півострова — активи, які банк втратив у 2014 році.",
         en: "294 outlets and the peninsula's largest loan book — the assets the bank lost in 2014.",

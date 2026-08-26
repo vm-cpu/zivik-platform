@@ -220,6 +220,26 @@ export interface Theatre {
   tag: string | Localized;
   /** Map marker key in `ukraine-map.json` this theatre highlights. */
   markerKeys: string[];
+  /**
+   * The ground this theatre is about, where a dot is not the whole truth.
+   *
+   * The map drew every theatre as a point with a halo, and most of them are
+   * not points: «Крим», «Донбас із 2014», «Східна Україна», «Окуповані
+   * території», «Уся Україна з 2022» are territories, and a dot standing for
+   * one is a claim the record does not make. The dot stays — a reader needs
+   * somewhere to look — and the ground behind it lights.
+   *
+   * "country" is Ukraine's own outline; the rest name a path in
+   * `ukraine-map.json`'s `areas`. Several, because a theatre can be about more
+   * than one: the ICC's deportations are the occupied territories, which is
+   * Crimea and the east together.
+   *
+   * NOT SET where the record really does fix a point, and two of the eleven
+   * do: the Buk's launch site at Pervomaiskyi in the MH17 judgment, and the
+   * ambush on the Aidar battalion that Finland tried Petrovsky for. Lighting a
+   * territory for either would be the same error in the other direction.
+   */
+  areas?: ("country" | "crimea" | "east")[];
   summary: Localized;
   /** Nudge the label off a collision with the seat, a city or a neighbour. */
   labelDx?: number;

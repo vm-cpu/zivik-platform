@@ -496,6 +496,7 @@ export const icjCerdIcsft: DecisionSummary = {
       place: { uk: "Східна Україна", en: "Eastern Ukraine" },
       tag: "ICSFT",
       markerKeys: ["donetsk", "luhansk"],
+      areas: ["east"],
       summary: {
         uk: "Ймовірне фінансування збройних груп «ДНР» і «ЛНР» — трек фінансування тероризму.",
         en: "Alleged financing of armed groups linked to the “DPR” and “LPR” — terrorism-financing track.",
@@ -505,6 +506,7 @@ export const icjCerdIcsft: DecisionSummary = {
       place: { uk: "Крим", en: "Crimea" },
       tag: "CERD",
       markerKeys: ["crimea"],
+      areas: ["crimea"],
       summary: {
         uk: "Ймовірна кампанія расової дискримінації проти кримських татар і етнічних українців.",
         en: "Alleged campaign of racial discrimination against Crimean Tatars and ethnic Ukrainians.",

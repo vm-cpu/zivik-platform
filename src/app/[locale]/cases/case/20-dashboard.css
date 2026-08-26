@@ -461,3 +461,12 @@
     r: 62;
   }
 }
+
+/* The ground a theatre is about, where a dot is not the whole truth about it.
+   The same treatment the events map gives it: warm, low, and unstroked — the
+   country's own gold outline is the one edge that has to win here, and a
+   second stroke on the same coast would fight it. What changes is the fill. */
+.casepage .map .zone-area {
+  fill: color-mix(in srgb, var(--red) 22%, transparent);
+  stroke: none;
+}

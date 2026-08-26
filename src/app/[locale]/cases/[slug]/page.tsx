@@ -221,6 +221,12 @@ const MK: Record<string, number[]> = {
 };
 
 const mapContext = (uaMap as { context?: string[] }).context ?? [];
+/**
+ * Named pieces of ground a theatre can be about — see `areas` on `Theatre`.
+ * "country" is the outline itself and is not in here; drawing it twice would
+ * put two strokes on one coast.
+ */
+const MAP_AREAS = (uaMap as { areas?: Record<string, string> }).areas ?? {};
 
 /**
  * Crimea is part of the outline this map draws, and it must stay part of it.
@@ -251,6 +257,11 @@ const mapContext = (uaMap as { context?: string[] }).context ?? [];
       (k) => (uaMap.markers as Record<string, number[]>)[k]?.[1] ?? -Infinity,
     ),
   );
+  for (const key of ["crimea", "east"]) {
+    if (!(key in MAP_AREAS)) {
+      throw new Error(`ukraine-map.json has no area "${key}" — a theatre that names it would light nothing.`);
+    }
+  }
   if (!(y1 >= south)) {
     throw new Error(
       `ukraine-map.json draws the country down to y=${y1} and puts a marker at ` +
@@ -386,6 +397,20 @@ function TheatreMap({
           <circle className="mk-court" cx={seat[0]} cy={seat[1]} r={10} />
           <circle className="mk-city" cx={MK.kyiv[0]} cy={MK.kyiv[1]} r={7} />
 
+          {/* The ground first, under every mark: most of these theatres are not
+              points. «Крим», «Донбас із 2014», «Східна Україна», «Окуповані
+              території», «Уся Україна з 2022» are territories, and a dot
+              standing for one is a claim the record does not make. The dot
+              stays, because a reader needs somewhere to look, and the ground
+              behind it lights. Two of the eleven really are points — the Buk's
+              launch site at Pervomaiskyi and the ambush on the Aidar battalion
+              — and they declare no ground, so they get none. */}
+          {theatres.flatMap((t, ti) =>
+            (t.areas ?? []).map((key) => {
+              const d = key === "country" ? uaMap.path : MAP_AREAS[key];
+              return d ? <path key={`${ti}-${key}`} className="zone-area" d={d} /> : null;
+            }),
+          )}
           {theatres.map((t) => {
             const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
             return (

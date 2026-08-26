@@ -489,6 +489,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       place: { uk: "Донбас із 2014", en: "The Donbas from 2014" },
       tag: { uk: "КОНТРОЛЬ З 11.05.2014", en: "CONTROL FROM 11 MAY 2014" },
       markerKeys: ["donetsk", "luhansk"],
+      areas: ["east"],
       labelDx: -40,
       labelDy: -22,
       summary: {
@@ -500,6 +501,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       place: { uk: "Уся Україна з 2022", en: "All of Ukraine from 2022" },
       tag: { uk: "ВТОРГНЕННЯ", en: "INVASION" },
       markerKeys: ["kyiv"],
+      areas: ["country"],
       labelDx: -60,
       labelDy: -46,
       summary: {
