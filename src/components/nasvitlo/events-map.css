@@ -1565,38 +1565,30 @@ button.emap-key[aria-pressed="true"]::after {
 }
 
 /* ---- the seat index ---- */
-/* Out of the legend and into a block of its own. A legend answers "how do I
-   read this drawing"; nine cities with the full name of every institution
-   seated in them answers "where do I go next". Mixed, the nine pushed the two
-   actual keys to the top of something a reader took for one list — and it was
-   the longest thing on the page. */
+/* Nine seats, one row each, and the figure at the end of the row.
+   The one thing this block holds that the registry does not is nine caseloads
+   side by side — and they used to be set under the text in a four-column grid,
+   where no two of them lined up and the comparison the block exists for could
+   not be made. Rows, hairlines, and the number in a right-hand column in
+   figures that share a width, so the eye runs down them. */
 .emap-index {
-  padding: 22px max(clamp(28px, 5vw, 96px), 0px) 26px;
+  padding: 0 max(clamp(28px, 5vw, 96px), 0px) 8px;
   background: var(--brand-night-2);
   border: 1px solid var(--brand-night-rule);
   border-top: 0;
-}
-.emap-index :is(h2, h3) {
-  margin: 0 0 12px;
-  font: 700 var(--t-micro) / 1 var(--brand-font-body);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--brand-faint-dark);
 }
 .emap-index ul {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 14px 28px;
 }
 .emap-index li {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding-left: 11px;
-  border-left: 1px solid var(--brand-night-rule);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 8px 18px;
+  padding: 9px 0;
+  border-top: 1px solid var(--brand-night-rule);
 }
 .emap-index button {
   display: flex;
@@ -1609,17 +1601,30 @@ button.emap-key[aria-pressed="true"]::after {
   color: inherit;
   cursor: pointer;
 }
-/* The caseload is the way through to the rows behind it: `/registry` opens
-   filtered on every institution this seat holds. It was a dead number. */
+.emap-index button:hover .emap-seat-city,
+.emap-index button:focus-visible .emap-seat-city {
+  color: var(--brand-cream);
+}
+.emap-index button:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 3px;
+}
+/* The figure alone, not «28 проваджень у бібліотеці» nine times over: the
+   heading of the column is the sentence, and repeating it on every row was
+   three words of chrome for one digit of content. It is the way through to
+   those rows — `/registry` opens filtered on every institution this seat
+   holds. */
 .emap-index .emap-seat-count {
-  align-self: start;
-  padding: 3px 0;
+  font: 600 15px var(--brand-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--brand-gold-pale);
   text-decoration: none;
   border-bottom: 1px solid transparent;
 }
 a.emap-seat-count:hover,
 a.emap-seat-count:focus-visible {
-  color: var(--brand-gold-pale);
   border-bottom-color: currentColor;
 }
 
@@ -1746,4 +1751,67 @@ a.emap-seat-count:focus-visible {
    needs. */
 .emap[data-full="yes"] .emap-index {
   display: none;
+}
+
+
+/* ============================================================================
+   The two blocks under the drawing
+   ========================================================================== */
+
+/* The map's own page is the map, and everything under it is furniture below
+   the fold. Neither block is decoration, so neither is deleted — they fold.
+
+   One heading, used twice, and it is a control: chevron, name, count. The
+   count is the point of the heading. Folded, «Суди засідають у · 9» says as
+   much as the block did in three hundred pixels of it. */
+.emap-fold-h {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 13px max(clamp(28px, 5vw, 96px), 0px);
+  background: var(--brand-night-2);
+  border: 1px solid var(--brand-night-rule);
+  border-bottom: 0;
+  cursor: pointer;
+  text-align: left;
+  font: 700 var(--t-micro) / 1 var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-faint-dark);
+  transition: color var(--dur) var(--ease);
+}
+.emap-fold-h:hover {
+  color: var(--brand-cream);
+}
+.emap-fold-h:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: -3px;
+}
+.emap-fold-n {
+  margin-left: auto;
+  font-family: var(--brand-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: var(--brand-gold-pale);
+}
+
+/* The six places. `auto` is not a state the reader chose — it is "whatever the
+   drawing can do", and the stylesheet answers it for the first paint so the
+   block does not appear and then vanish once the client has measured. 1001px
+   is the width the home band has always used for the same question. */
+.emap[data-list="off"] .emap-list {
+  display: none;
+}
+@media (min-width: 1001px) {
+  .emap[data-list="auto"] .emap-list {
+    display: none;
+  }
+}
+.emap[data-seats="off"] .emap-index {
+  display: none;
+}
+/* Nothing follows a folded block, so it closes its own bottom edge. */
+.emap[data-seats="off"] .emap-fold-h:last-of-type {
+  border-bottom: 1px solid var(--brand-night-rule);
 }

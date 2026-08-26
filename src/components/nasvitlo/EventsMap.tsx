@@ -514,6 +514,12 @@ export default function EventsMap({
     amountLabel: string;
     /** The key's own name, on the control that folds it away. */
     legendTitle: string;
+    /**
+     * The name on the control that folds the six places away. Not «Список» —
+     * it is the same six the drawing holds, said in words, and where the marks
+     * are too small to aim at it is the only way to reach them.
+     */
+    placesTitle: string;
     /** Legend group headings. */
     legendWhat: string;
     legendHow: string;
@@ -1655,6 +1661,25 @@ export default function EventsMap({
     ...(coarse ? [] : events.map((e) => e.key)),
     ...(coarseCourts ? [] : courts.map((c) => c.key)),
   ];
+  /**
+   * The two blocks under the drawing, folded.
+   *
+   * The map's own page is the map, and everything under it is furniture below
+   * the fold — but neither block is decoration, so neither is deleted.
+   *
+   * The six places are the interface wherever the marks are too small to aim
+   * at, so `null` here does not mean closed: it means "whatever the drawing
+   * can do". The stylesheet answers that for the first paint, by width, and
+   * `coarse` answers it after the client has measured; a press by the reader
+   * overrules both.
+   *
+   * The nine seats are a directory, and the registry is a better one — 39
+   * rows, six filters, a search box, one click away in the top bar. What this
+   * block has that the registry does not is nine caseloads side by side, which
+   * is worth a line, not a screen. Folded.
+   */
+  const [listUser, setListUser] = useState<boolean | null>(null);
+  const [seatsOpen, setSeatsOpen] = useState(false);
   const [rov, setRov] = useState<string | null>(null);
   /* The remembered mark, unless it has just gone inert under the reader —
      zooming out past the floor, or turning the phone. Then the ring's first. */
@@ -1739,6 +1764,8 @@ export default function EventsMap({
       data-full={full ? "yes" : "no"}
       data-hi={hi ?? undefined}
       data-legend={legendOpen ? "on" : "off"}
+      data-list={listUser === null ? "auto" : listUser ? "on" : "off"}
+      data-seats={seatsOpen ? "on" : "off"}
       data-touch={touch ? "yes" : "no"}
       /* Which framing is on the screen, for the one rule that has to know.
          The Atlantic framing is 2.3 times as wide as the projection and puts
@@ -2663,6 +2690,18 @@ export default function EventsMap({
         </div>
       </div>
 
+      {variant === "full" && (
+        <button
+          type="button"
+          className="emap-fold-h"
+          aria-expanded={listUser ?? coarse}
+          onClick={() => setListUser((v) => !(v ?? coarse))}
+        >
+          <span className="emap-leg-chev" aria-hidden="true" />
+          {labels.placesTitle}
+          <span className="emap-fold-n">{events.length}</span>
+        </button>
+      )}
       <ul className="emap-list" data-variant={variant}>
         {events.map((e) => (
           <li key={e.key}>
@@ -2689,33 +2728,47 @@ export default function EventsMap({
           by side; each one now also opens the registry filtered on that seat's
           institutions, which is where its proceedings actually live. */}
       {variant === "full" && (
-        <div className="emap-index">
-          <LegendH variant={variant}>{labels.courtsSeat}</LegendH>
-          <ul>
-            {courts.map((c) => (
-              <li key={c.key}>
-                <button type="button" onClick={() => toggleCourt(c.key)}>
-                  <span className="emap-seat-city">{c.city}</span>
-                  <span className="emap-seat-list">{c.seats}</span>
-                </button>
-                {/* The one thing this list held that a reader could not get any
-                    other way is *comparison*: nine seats side by side. Same
-                    string the card uses, same number, no new fact — and now a
-                    way through to the rows behind it. */}
-                {c.caseload.courtIds.length > 0 ? (
-                  <Link
-                    className="emap-seat-count"
-                    href={`/${locale}/registry?court=${c.caseload.courtIds.join(",")}`}
-                  >
-                    {caseload(c.caseload.total)}
-                  </Link>
-                ) : (
-                  <span className="emap-seat-count">{caseload(c.caseload.total)}</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <>
+          <button
+            type="button"
+            className="emap-fold-h"
+            aria-expanded={seatsOpen}
+            onClick={() => setSeatsOpen((v) => !v)}
+          >
+            <span className="emap-leg-chev" aria-hidden="true" />
+            {labels.courtsSeat}
+            <span className="emap-fold-n">{courts.length}</span>
+          </button>
+          <div className="emap-index">
+            <ul>
+              {courts.map((c) => (
+                <li key={c.key}>
+                  {/* One row per seat, and the figure at the end of it.
+                      The one thing this block holds that the registry does not
+                      is nine caseloads side by side — and until now they were
+                      set under the text in a four-column grid, where no two of
+                      them lined up and the comparison it exists for could not
+                      be made. A row, a rule, and the number in the right-hand
+                      column, in figures that share a width. */}
+                  <button type="button" onClick={() => toggleCourt(c.key)}>
+                    <span className="emap-seat-city">{c.city}</span>
+                    <span className="emap-seat-list">{c.seats}</span>
+                  </button>
+                  {c.caseload.courtIds.length > 0 ? (
+                    <Link
+                      className="emap-seat-count"
+                      href={`/${locale}/registry?court=${c.caseload.courtIds.join(",")}`}
+                    >
+                      {c.caseload.total}
+                    </Link>
+                  ) : (
+                    <span className="emap-seat-count">{c.caseload.total}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </>
       )}
     </div>
   );

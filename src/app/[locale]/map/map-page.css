@@ -369,7 +369,8 @@
   );
 }
 
-.mp-stage .emap-index {
+.mp-stage .emap-index,
+.mp-stage .emap-fold-h {
   padding-inline: max(clamp(20px, 4vw, 56px), 0px);
   border-inline: 0;
 }
