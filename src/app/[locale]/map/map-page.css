@@ -90,7 +90,7 @@
      0.83 against 1.39 — so taking 210px off the height does not shrink the
      map at all. Where the window is tall and narrow enough for the height to
      bind, the floor below catches it. */
-  height: calc(100dvh - 71px - 210px);
+  height: calc(100dvh - 71px - var(--mp-key, 210px));
   min-height: 420px;
 }
 .mp-stage .emap-svg {
@@ -185,6 +185,7 @@
 @media (min-width: 901px) {
   .mp-stage .emap {
     display: grid;
+    --mp-key: 210px;
     grid-template-columns: minmax(240px, 300px) 1fr;
     align-items: start;
   }
@@ -197,6 +198,12 @@
   .mp-stage .emap-legend {
     grid-column: 1;
     border-right: 0;
+  }
+  /* Folded, the key is one line, and the 210px the drawing gave up for it come
+     back. Declared on the stage rather than on the figure: the figure reads
+     the number, the element that knows whether the key is open sets it. */
+  .mp-stage .emap[data-legend="off"] {
+    --mp-key: 62px;
   }
   .mp-stage .emap-list {
     grid-column: 2;

@@ -107,6 +107,7 @@ const en: Dictionary = {
     pending: "Summary in preparation",
     amountLabel: "Amount in dispute",
     legendWhat: "Places",
+    legendTitle: "Key",
     legendHow: "Courts and links",
     legendLine: "A court's link to an event",
     legendOffMap: "A court outside the frame",

@@ -148,6 +148,10 @@ const uk = {
        print is the magnitude, called the sum in dispute. */
     amountLabel: "Сума у спорі",
     legendWhat: "Місця подій",
+    /* The name on the control that folds the key away — see `legendOpen` in
+       EventsMap. A legend is read once and then remembered; after that it is a
+       column of things the reader already knows, where the map could be. */
+    legendTitle: "Легенда",
     legendHow: "Суди й звʼязки",
     legendLine: "Звʼязок суду з подією",
     /* The chevron and the tail on a seat the frame cannot hold. Rendered only

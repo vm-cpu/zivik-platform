@@ -152,6 +152,7 @@ const stageWord = (k: string | undefined) =>
             pending: dict.mapSection.pending,
             amountLabel: dict.mapSection.amountLabel,
             sizeKey: dict.mapSection.sizeKey,
+            legendTitle: dict.mapSection.legendTitle,
             legendWhat: dict.mapSection.legendWhat,
             legendHow: dict.mapSection.legendHow,
             legendLine: dict.mapSection.legendLine,

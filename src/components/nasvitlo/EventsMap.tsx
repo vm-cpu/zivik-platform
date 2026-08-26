@@ -517,6 +517,8 @@ export default function EventsMap({
     amountLabel: string;
     /** Marker-size key: a bigger dot means more proceedings. */
     sizeKey: string;
+    /** The key's own name, on the control that folds it away. */
+    legendTitle: string;
     /** Legend group headings. */
     legendWhat: string;
     legendHow: string;
@@ -1653,6 +1655,15 @@ export default function EventsMap({
     ...(coarse ? [] : events.map((e) => e.key)),
     ...(coarseCourts ? [] : courts.map((c) => c.key)),
   ];
+  /**
+   * Is the key open?
+   *
+   * A legend is read once and then remembered — after that it is a column of
+   * things the reader already knows, sitting where the map could be. So it
+   * folds, and the drawing takes the height back. Open by default: a reader
+   * who has not read it yet cannot be expected to go looking for it.
+   */
+  const [legendOpen, setLegendOpen] = useState(true);
   const [rov, setRov] = useState<string | null>(null);
   /* The remembered mark, unless it has just gone inert under the reader —
      zooming out past the floor, or turning the phone. Then the ring's first. */
@@ -1784,6 +1795,7 @@ export default function EventsMap({
       data-coarse-courts={coarseCourts ? "yes" : "no"}
       data-full={full ? "yes" : "no"}
       data-hi={hi ?? undefined}
+      data-legend={legendOpen ? "on" : "off"}
       data-touch={touch ? "yes" : "no"}
       /* Which framing is on the screen, for the one rule that has to know.
          The Atlantic framing is 2.3 times as wide as the projection and puts
@@ -2608,6 +2620,20 @@ export default function EventsMap({
           matches by sight rather than by reading a colour word — and the three
           that name a *set* of marks are controls, not captions. */}
       <div className="emap-legend" data-variant={variant}>
+        {/* Only on the map's own page. On the home band the key is a single
+            wrapped row of six words under the drawing — there is nothing there
+            to fold, and a control to fold it would be larger than the thing. */}
+        {variant === "full" && (
+          <button
+            type="button"
+            className="emap-leg-toggle"
+            aria-expanded={legendOpen}
+            onClick={() => setLegendOpen((v) => !v)}
+          >
+            <span className="emap-leg-chev" aria-hidden="true" />
+            {labels.legendTitle}
+          </button>
+        )}
         <div className="emap-leg-group">
           <LegendH variant={variant}>{labels.legendWhat}</LegendH>
           <ul>

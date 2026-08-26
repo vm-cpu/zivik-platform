@@ -1780,3 +1780,67 @@ a.emap-seat-count:focus-visible {
   font: 400 10px/1.4 var(--brand-font-mono);
   color: var(--brand-faint-dark);
 }
+
+/* ---- folding the key away ---- */
+/* A legend is read once and then remembered. After that it is a column of
+   things the reader already knows, sitting where the map could be — so it
+   folds, and the drawing takes the height back (see map-page.css). */
+.emap-leg-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 0 0 4px;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  font: 700 var(--t-micro) / 1 var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-gold-pale);
+}
+.emap-leg-toggle:hover {
+  color: var(--brand-cream);
+}
+.emap-leg-toggle:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: 3px;
+}
+/* A triangle, turned. It points down at an open key and right at a folded one,
+   which is the one convention every disclosure on every platform shares. */
+.emap-leg-chev {
+  flex: none;
+  width: 0;
+  height: 0;
+  border-left: 5px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transform-origin: 2px 50%;
+  transition: transform var(--dur) var(--ease);
+}
+.emap-leg-toggle[aria-expanded="true"] .emap-leg-chev {
+  transform: rotate(90deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .emap-leg-chev {
+    transition: none;
+  }
+}
+.emap[data-legend="off"] .emap-leg-group {
+  display: none;
+}
+/* Folded, the block is one line and needs none of the air an eight-key column
+   wanted under it. */
+.emap[data-legend="off"] .emap-legend {
+  padding-block: 14px;
+}
+
+/* The seat index belongs to the page, not to the overlay. It was not in the
+   list of things the full screen puts away, so it rendered under a
+   viewport-tall drawing inside a fixed panel — the map, then the card, then
+   nine courts, in something that is supposed to be one drawing at the size it
+   needs. */
+.emap[data-full="yes"] .emap-index {
+  display: none;
+}
