@@ -343,8 +343,31 @@ function TheatreMap({
   const [vw0, vh0, vw, vh] = frame.split(" ").map(Number);
   const seat = MK[forum.key] ?? MK.hague;
   const reach = MK[forum.reachTo] ?? MK.kyiv;
+  /**
+   * A point in the frame, as a percentage of it.
+   *
+   * Every label on this map used to be an SVG `<text>`, and SVG measures a
+   * font in user units: the same declaration rendered 23 CSS pixels at 1440
+   * and 6 at 375 — a headline on a desktop, a grey smudge on a phone. The band
+   * had been made full-bleed to compensate, which is why the drawing ran to
+   * 1990px and 1114px tall on a wide screen, and the labels with it.
+   *
+   * The labels are HTML now, laid over the drawing at these percentages. Type
+   * is type at every width, the drawing can go back to a sane size, and the
+   * gaps between a mark and its name are constant pixels instead of units
+   * that grow with the picture.
+   */
+  const at = (x: number, y: number) => ({
+    left: `${((x - vw0) / vw) * 100}%`,
+    top: `${((y - vh0) / vh) * 100}%`,
+  });
   return (
     <div className="map-wrap">
+      {/* The drawing and its names share a box of their own. `.map-wrap` also
+          holds the legend, so labels positioned against it were being placed
+          as percentages of the map *plus* the legend — the zone name for the
+          east landed under the drawing, on top of the legend text. */}
+      <div className="map-plot">
       <svg className="map" viewBox={frame} role="img" aria-label={pick(T.mapAlt, locale)}>
         <defs>
           <clipPath id="mapclip">
@@ -360,29 +383,11 @@ function TheatreMap({
           {/* the forum's reach: seat → the ground in dispute */}
           <line className="reach" x1={seat[0]} y1={seat[1]} x2={reach[0]} y2={reach[1]} />
 
-          {/* the seat of the proceedings */}
-          <g>
-            <circle className="mk-court" cx={seat[0]} cy={seat[1]} r={10} />
-            <text className="mk-treaty" x={seat[0] + 18} y={seat[1] - 8}>
-              {pick(forum.name, locale)}
-            </text>
-            <text className="mk-city-label" x={seat[0] + 18} y={seat[1] + 18}>
-              {pick(forum.caption, locale)}
-            </text>
-          </g>
-
-          {/* Kyiv reference */}
+          <circle className="mk-court" cx={seat[0]} cy={seat[1]} r={10} />
           <circle className="mk-city" cx={MK.kyiv[0]} cy={MK.kyiv[1]} r={7} />
-          <text className="mk-city-label" x={MK.kyiv[0] + 14} y={MK.kyiv[1] - 8}>
-            {locale === "uk" ? "Київ" : "Kyiv"}
-          </text>
 
           {theatres.map((t) => {
             const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
-            const cx = pts.reduce((s, p) => s + p[0], 0) / pts.length;
-            const cy = pts.reduce((s, p) => s + p[1], 0) / pts.length;
-            // keep centred labels inside the 0..1000 viewBox
-            const lx = Math.min(Math.max(cx + (t.labelDx ?? 0), 130), 860);
             return (
               <g key={pick(t.place, locale)}>
                 {pts.map((p, i) => (
@@ -391,17 +396,52 @@ function TheatreMap({
                     <circle className="zone" cx={p[0]} cy={p[1]} r={9} />
                   </g>
                 ))}
-                <text className="mk-treaty" x={lx} y={cy - 84 + (t.labelDy ?? 0)} textAnchor="middle">
-                  {typeof t.tag === "string" ? t.tag : pick(t.tag, locale)}
-                </text>
-                <text className="mk-label" x={lx} y={cy - 56 + (t.labelDy ?? 0)} textAnchor="middle">
-                  {pick(t.place, locale)}
-                </text>
               </g>
             );
           })}
         </g>
       </svg>
+
+      {/* The names, in HTML over the drawing. `aria-hidden`, because the
+          legend under the map is the same list in reading order and a screen
+          reader does not need it twice. */}
+      <div className="map-labels" aria-hidden="true">
+        <span className="ml-seat" style={at(seat[0], seat[1])}>
+          <b>{pick(forum.name, locale)}</b>
+          <i>{pick(forum.caption, locale)}</i>
+        </span>
+        <span className="ml-city" style={at(MK.kyiv[0], MK.kyiv[1])}>
+          {locale === "uk" ? "Київ" : "Kyiv"}
+        </span>
+        {theatres.map((t) => {
+          const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
+          const cx = pts.reduce((s2, p) => s2 + p[0], 0) / pts.length;
+          const cy = pts.reduce((s2, p) => s2 + p[1], 0) / pts.length;
+          return (
+            <span
+              key={pick(t.place, locale)}
+              className="ml-zone"
+              /* Held inside the frame, as the SVG version was: a zone on the
+                 eastern border centres its name past the right edge, and an
+                 HTML label does not clip — it spills onto whatever is beside
+                 the map. 13% and 87% leave room for the widest of them. */
+              style={(() => {
+                const p = at(cx + (t.labelDx ?? 0), cy + (t.labelDy ?? 0));
+                const pct = Math.min(
+                  Math.max(parseFloat(p.left), 13),
+                  87,
+                );
+                return { ...p, left: `${pct}%` };
+              })()}
+            >
+              <i>{typeof t.tag === "string" ? t.tag : pick(t.tag, locale)}</i>
+              <b>{pick(t.place, locale)}</b>
+            </span>
+          );
+        })}
+      </div>
+      </div>
+
       <TheatreLegend
         seat={{ name: pick(forum.name, locale), caption: pick(forum.caption, locale) }}
         theatres={theatres.map((t) => ({

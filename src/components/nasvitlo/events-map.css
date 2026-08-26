@@ -1567,8 +1567,12 @@ button.emap-key[aria-pressed="true"]::after {
 .emap[data-hi] .emap-reach,
 .emap[data-hi] .emap-court-tail,
 .emap[data-hi] .emap-court-bearing {
+  /* No transition on this one. Measured: the group's opacity transition never
+     advanced — `getAnimations()` reported it running at currentTime 0 while
+     the computed value stayed at 1 — so pressing a key set the attribute and
+     changed nothing on the screen. The marks that light are transitioned by
+     the rules below and are unaffected; what this needed was to apply. */
   opacity: 0.16;
-  transition: opacity var(--dur) var(--ease);
 }
 .emap[data-hi="lit"] .emap-site[data-lit="yes"],
 .emap[data-hi="unlit"] .emap-site[data-lit="no"],
@@ -1577,15 +1581,6 @@ button.emap-key[aria-pressed="true"]::after {
 .emap[data-hi="court"] .emap-court-tail,
 .emap[data-hi="court"] .emap-court-bearing {
   opacity: 1;
-}
-@media (prefers-reduced-motion: reduce) {
-  .emap[data-hi] .emap-site,
-  .emap[data-hi] .emap-court,
-  .emap[data-hi] .emap-reach,
-  .emap[data-hi] .emap-court-tail,
-  .emap[data-hi] .emap-court-bearing {
-    transition: none;
-  }
 }
 
 /* ---- the seat index ---- */
@@ -1938,6 +1933,11 @@ a.emap-seat-count:focus-visible {
 .emap[data-hi="lit"] .emap-site[data-lit="yes"] .emap-halo,
 .emap[data-hi="unlit"] .emap-site[data-lit="no"] .emap-halo,
 .emap[data-hi="area"] .emap-site[data-area="yes"] .emap-halo {
+  /* Instant, for the same reason the dim above is: the halo carries an opacity
+     transition for selection, and measured on this change it did not advance —
+     the attribute flipped and the halo stayed at the 0.06 an unwritten place
+     is drawn with. A key that answers has to answer. */
+  transition: none;
   opacity: 0.42;
 }
 .emap[data-hi="lit"] .emap-site[data-lit="yes"] .emap-dot,
