@@ -31,7 +31,16 @@ export interface VerbatimSummary {
   masthead: { official: string; parties: string; judgment: string };
   /** Source-language body (English — the language of the judgment). */
   blocks: SummaryBlock[];
-  /** Ukrainian translation of the body (draft, pending legal review). */
+  /**
+   * Ukrainian translation of the body. Still a draft pending legal review —
+   * that remains true and is why the field is documented this way.
+   *
+   * It is deliberately NOT surfaced to the reader. A notice saying so was
+   * rendered on every Ukrainian decision page and the owner had it removed:
+   * how the faculty's own translations are reviewed is her editorial process
+   * to describe, not this site's to announce. Do not put the notice back on
+   * the strength of this comment — the fact being true is not the question.
+   */
   blocksUk?: SummaryBlock[];
 }
 
