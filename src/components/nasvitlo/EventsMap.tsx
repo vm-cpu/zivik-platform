@@ -6,7 +6,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
   type ReactNode,
 } from "react";
 import Link from "next/link";
@@ -43,8 +42,6 @@ export interface MapEventR {
    */
   total: number;
   when: string;
-  /** The same date as a sort key, for the time rail. See `iso` in map.ts. */
-  iso: string;
   title: string;
   note: string;
   /**
@@ -515,8 +512,6 @@ export default function EventsMap({
      * page, from the same reasoning.
      */
     amountLabel: string;
-    /** Marker-size key: a bigger dot means more proceedings. */
-    sizeKey: string;
     /** The key's own name, on the control that folds it away. */
     legendTitle: string;
     /** Legend group headings. */
@@ -573,16 +568,6 @@ export default function EventsMap({
     caseloadWord: PluralForms;
     /** Heading over the cases a court hears that have no write-up yet. */
     inLibrary: string;
-    /**
-     * The rail: the six places on a time axis.
-     *
-     * The map held six events spanning 2014 to 2022, with the date printed on
-     * every card and on every marker's label, and did nothing with it. The
-     * occupation of Crimea and the war crimes of 2022 were drawn the same way,
-     * eight years apart, and the one thing this collection is — a line that has
-     * been running for a decade — was the one thing the drawing did not say.
-     */
-    railLabel: string;
     /** The three framings. */
     zoomLabel: string;
     zoomWide: string;
@@ -646,6 +631,16 @@ export default function EventsMap({
    * the device's settings.
    */
   const [full, setFull] = useState(false);
+
+  /**
+   * Is the key open?
+   *
+   * A legend is read once and then remembered — after that it is a column of
+   * things the reader already knows, sitting where the map could be. So it
+   * folds, and the drawing takes the height back. Open by default: a reader
+   * who has not read it yet cannot be expected to go looking for it.
+   */
+  const [legendOpen, setLegendOpen] = useState(true);
 
   /**
    * A legend key held down: show me this set of marks and quieten the rest.
@@ -1355,7 +1350,12 @@ export default function EventsMap({
       ro.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, []);
+    // And neither does folding the key, which changes `--emap-safe-left` and
+    // nothing else: the element is exactly the size it was. Measured before
+    // this dependency existed, folding the key left the frame reserving the
+    // 312px strip it no longer stood on, and the drawing kept the 0.94 CSS
+    // pixels per unit it had had rather than the 1.2 it was owed.
+  }, [legendOpen]);
   /**
    * Is the reader pointing with a finger? Asked of the input device rather
    * than of the viewport: a narrow desktop window is not a phone, and a tablet
@@ -1655,15 +1655,6 @@ export default function EventsMap({
     ...(coarse ? [] : events.map((e) => e.key)),
     ...(coarseCourts ? [] : courts.map((c) => c.key)),
   ];
-  /**
-   * Is the key open?
-   *
-   * A legend is read once and then remembered — after that it is a column of
-   * things the reader already knows, sitting where the map could be. So it
-   * folds, and the drawing takes the height back. Open by default: a reader
-   * who has not read it yet cannot be expected to go looking for it.
-   */
-  const [legendOpen, setLegendOpen] = useState(true);
   const [rov, setRov] = useState<string | null>(null);
   /* The remembered mark, unless it has just gone inert under the reader —
      zooming out past the floor, or turning the phone. Then the ring's first. */
@@ -1723,54 +1714,6 @@ export default function EventsMap({
     : selectedCourt
       ? `${selectedCourt.city}. ${caseload(selectedCourt.caseload.total)}.`
       : "";
-
-  /**
-   * The six on a time axis.
-   *
-   * Placed by the date rather than by the year, the way the case pages' own
-   * rail is — though here five of the six dates *are* years, because that is
-   * all the record fixes. Two of them are 2014 and land on the same point;
-   * they are staggered rather than nudged apart, because a mark moved off its
-   * date to make room is a mark that is lying about when.
-   */
-  const rail = useMemo(() => {
-    const at = events.map((e) => {
-      const t = Date.parse(e.iso.length === 4 ? `${e.iso}-01-01` : e.iso);
-      return Number.isFinite(t) ? t : null;
-    });
-    const dated = at.filter((t): t is number => t !== null);
-    if (dated.length < 2) return null;
-    const t0 = Math.min(...dated);
-    const t1 = Math.max(...dated);
-    const span = Math.max(1, t1 - t0);
-    // Two marks closer together than this cannot both be aimed at, so the
-    // second goes on a row of its own directly under the first. 2% of the axis
-    // is about 20px on a 1000px rail — a mark's own width plus air.
-    const near = 2;
-    const placed: { x: number; row: number }[] = [];
-    const marks = events
-      .map((e, i) => ({ e, t: at[i] }))
-      .filter((m): m is { e: MapEventR; t: number } => m.t !== null)
-      .sort((a, b) => a.t - b.t)
-      .map((m) => {
-        const x = ((m.t - t0) / span) * 100;
-        // The first free row at this point on the axis, counting up from the
-        // rule itself.
-        let row = 0;
-        while (placed.some((p) => p.row === row && Math.abs(p.x - x) < near)) row += 1;
-        placed.push({ x, row });
-        return { key: m.e.key, title: m.e.title, when: m.e.when, x, row };
-      });
-    const y0 = new Date(t0).getUTCFullYear();
-    const y1 = new Date(t1).getUTCFullYear();
-    const step = Math.max(1, Math.ceil((y1 - y0) / 4));
-    const years: number[] = [];
-    for (let y = y0; y < y1; y += step) years.push(y);
-    if (years.length && y1 - years[years.length - 1] < step) years.pop();
-    years.push(y1);
-    const yearAt = (y: number) => ((Date.UTC(y, 0, 1) - t0) / span) * 100;
-    return { marks, years, yearAt, rows: Math.max(...marks.map((m) => m.row)) + 1 };
-  }, [events]);
 
   /**
    * The ground the selected marker speaks for, if a point is not the whole
@@ -2530,6 +2473,7 @@ export default function EventsMap({
         </div>
       )}
       </div>
+
       </div>
 
       {/* Outside the figure, not inside it. The figure is the drawing's own
@@ -2537,64 +2481,6 @@ export default function EventsMap({
           strip laid out in it overlapped the legend below — measured, the rail
           and the legend both started at y = 706. The cards can live in there
           because they are absolutely placed; these are in flow. */}
-      {/* The six on a time axis, under the drawing they belong to.
-          Every card and every marker label carried a date, and the map did
-          nothing with any of them: the occupation of Crimea and the war crimes
-          of 2022 were drawn identically, eight years apart. Here the shape is
-          the first thing the reader gets — 2014 crowded, then a long thinning
-          line — and each mark is the same selection the drawing and the list
-          make, so pressing one lights its courts and reframes to hold them. */}
-      {rail && (
-        <div
-          className="emap-rail"
-          role="group"
-          aria-label={labels.railLabel}
-          style={{ "--rows": rail.rows } as CSSProperties}
-        >
-          {/* An inner track, because a percentage `left` on an absolutely
-              placed child resolves against the *padding box* of its container
-              — so marks laid out directly in the padded strip would span the
-              whole width while the rule they sit on is inset, and the first
-              and last would hang past both ends of their own axis. */}
-          <div className="emap-rail-track">
-          <div className="emap-rail-line" aria-hidden="true" />
-          {rail.marks.map((m) => (
-            <button
-              key={m.key}
-              type="button"
-              className="emap-rail-dot"
-              data-on={sel?.kind === "site" && sel.key === m.key ? "yes" : "no"}
-              data-lit={events.find((e) => e.key === m.key)?.cases.length ? "yes" : "no"}
-              aria-pressed={sel?.kind === "site" && sel.key === m.key}
-              aria-label={`${m.when} — ${m.title}`}
-              title={`${m.when} — ${m.title}`}
-              style={{ left: `${m.x}%`, top: `${20 + m.row * 15}px` }}
-              onClick={() => toggleSite(m.key)}
-            />
-          ))}
-          {rail.years.map((y) => {
-            /* A year mark sits at its own first of January, which for the
-               first year is at or before the axis's own start. Held to the
-               rail, and the ends are aligned from the end rather than centred
-               past it. */
-            const x = rail.yearAt(y);
-            const edge = x <= 0 ? "start" : x >= 100 ? "end" : undefined;
-            return (
-              <span
-                key={y}
-                className="emap-rail-year"
-                data-edge={edge}
-                aria-hidden="true"
-                style={{ left: `${Math.max(0, Math.min(100, x))}%` }}
-              >
-                {y}
-              </span>
-            );
-          })}
-          </div>
-        </div>
-      )}
-
       {/* Where the drawing is a picture, it says so — and offers the one
           thing that turns it back into a map. It was silent about this: the
           marks went inert below the 24px floor, correctly, while the grab
@@ -2615,6 +2501,23 @@ export default function EventsMap({
         </div>
       )}
 
+      {/* The six, as text, under the key that explains the drawing above
+          them. The legend used to sit below this list — which put the keys a
+          screen away from the marks they name, so pressing one to see the five
+          sites with a written decision showed the reader a legend and no map.
+          A key belongs beside the thing it is a key to; the list is content and
+          follows both. */}
+      {/*
+        The same content as text. The iframe version was invisible to search
+        engines and to anyone not using a pointing device; this list is the
+        map's actual payload, and on a narrow screen it is the whole map.
+      */}
+      {/* The key lies on the drawing, bottom left, and folds away.
+          Inside the figure because that is what it is a key to: on the map's
+          own page the drawing takes the screen, and a key a scroll below it is
+          a key to something you cannot see. Absolutely placed, so the figure's
+          declared height is not its business; below 901px it goes back into
+          the flow under the drawing, where a phone has always had it. */}
       {/* A legend that draws the marks instead of naming them. Every glyph
           below is the same shape the map uses, at the same size, so the reader
           matches by sight rather than by reading a colour word — and the three
@@ -2634,6 +2537,12 @@ export default function EventsMap({
             {labels.legendTitle}
           </button>
         )}
+        {/* What the marks do, at the top, where an invitation belongs — it was
+            at the foot of the key, under eight things a reader has to get past
+            before being told the marks answer at all. The map's whole mechanic
+            was written down nowhere before this: a reader had to find it by
+            pressing something they had no reason to think was a control. */}
+        <p className="emap-leg-how">{labels.legendPick}</p>
         <div className="emap-leg-group">
           <LegendH variant={variant}>{labels.legendWhat}</LegendH>
           <ul>
@@ -2730,15 +2639,14 @@ export default function EventsMap({
                 {labels.legendOffMap}
               </li>
             )}
-            {variant === "full" && (
-              <li className="emap-key">
-                <svg viewBox="0 0 22 22" aria-hidden="true">
-                  <circle className="k-lit" cx="5" cy="11" r="3" />
-                  <circle className="k-lit" cx="15" cy="11" r="6" />
-                </svg>
-                {labels.sizeKey}
-              </li>
-            )}
+            {/* No key for the marker sizes. They still encode how much of the
+                record a place accounts for — that is what `markerSize` is for,
+                and the build still checks it against each card's own count —
+                but the range is 18 to 26 projection units, which at the scale
+                this is read at is a 24px circle beside a 17px one. The eye does
+                not read that as "five times the caseload", and a key that names
+                a distinction the reader cannot see is a key that teaches them
+                to distrust the others. The number is on every card, in words. */}
             {/* The oblast mesh. It is a deliberate and useful part of the
                 drawing — it is what lets a reader see that Crimea is a piece of
                 this country and not a neighbour of it — and to anyone who does
@@ -2752,25 +2660,9 @@ export default function EventsMap({
               </li>
             )}
           </ul>
-          {/* What the marks do. The map's whole mechanic — pick one end of a
-              relation and the other lights — was written down nowhere, so a
-              reader had to find it by pressing something they had no reason to
-              believe was a control. */}
-          <p className="emap-leg-how">{labels.legendPick}</p>
         </div>
       </div>
 
-      {/* The six, as text, under the key that explains the drawing above
-          them. The legend used to sit below this list — which put the keys a
-          screen away from the marks they name, so pressing one to see the five
-          sites with a written decision showed the reader a legend and no map.
-          A key belongs beside the thing it is a key to; the list is content and
-          follows both. */}
-      {/*
-        The same content as text. The iframe version was invisible to search
-        engines and to anyone not using a pointing device; this list is the
-        map's actual payload, and on a narrow screen it is the whole map.
-      */}
       <ul className="emap-list" data-variant={variant}>
         {events.map((e) => (
           <li key={e.key}>

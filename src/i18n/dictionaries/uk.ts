@@ -114,11 +114,6 @@ const uk = {
     caseload: "{n} {w} у бібліотеці",
     caseloadWord: { one: "провадження", few: "провадження", many: "проваджень" },
     zoomLabel: "Масштаб",
-    /* The time axis under the drawing. The map held six events from 2014 to
-       2022 and drew them all the same way, so the one thing this collection
-       is — a line that has been running for a decade — was the one thing the
-       picture did not say. */
-    railLabel: "Оберіть подію за часом",
     zoomWide: "Європа",
     zoomClose: "Україна",
     zoomAtlantic: "Атлантика",
@@ -168,8 +163,7 @@ const uk = {
     legendArea: "Подія — про всю підсвічену територію",
     /* The map's whole mechanic, and it was nowhere in the legend: a reader
        had to guess that the marks answer at all. */
-    legendPick: "Оберіть подію або суд — засвітиться другий кінець.",
-    sizeKey: "Більше коло — більше справ",
+    legendPick: "Натисніть на подію або суд — засвітиться шлях між ними.",
     pageTitle: "Мапа порушень і судів",
     pageLede: "Порушення сталися в Україні, а судять їх за тисячі кілометрів звідти. Мапа тримає обидва кінці разом: місце події — і суд, який його розглядає.",
     backHome: "На головну",

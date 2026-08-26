@@ -90,8 +90,8 @@
      0.83 against 1.39 — so taking 210px off the height does not shrink the
      map at all. Where the window is tall and narrow enough for the height to
      bind, the floor below catches it. */
-  height: calc(100dvh - 71px - var(--mp-key, 210px));
-  min-height: 420px;
+  height: calc(100dvh - 71px);
+  min-height: 460px;
 }
 .mp-stage .emap-svg {
   /* No aspect ratio here: the frame is whatever the viewport gives it. The
@@ -176,40 +176,69 @@
 /* The legend sits on the map, bottom left, and folds away. */
 /* Two short groups share a row; the seats get their own, because nine cities
    stacked beside a three-line column left two thirds of the block empty. */
-/* The legend is one column on the left, and the six places stand beside it.
-   It used to be two wide groups laid across the whole page — the keys spread
-   over 1400px with the right half of the row empty, which read as a band of
-   its own rather than as a caption to the drawing above. In a column it is a
-   caption: narrow, scanned down, and the six site cards get the space it was
-   wasting. */
+/* ---- the key, lying on the drawing ---- */
+/* The map's own page is the map: the drawing takes the screen, and everything
+   that reads it has to be on it. The key was a band below — first spread over
+   1400px with half the row empty, then a column beside the six site cards —
+   and both were a key to something the reader had to scroll away from to use.
+
+   It sits on the drawing now, bottom left, in a column, and it folds. The
+   frame gives up the strip it stands on so no marker lands under it, and gets
+   the strip back the moment it is folded. */
 @media (min-width: 901px) {
-  .mp-stage .emap {
-    display: grid;
-    --mp-key: 210px;
-    grid-template-columns: minmax(240px, 300px) 1fr;
-    align-items: start;
+  .mp-stage .emap-figure {
+    --emap-safe-left: 312px;
   }
-  /* The drawing, the axis and the seat index are the width of the page. */
-  .mp-stage .emap-figure,
-  .mp-stage .emap-rail,
-  .mp-stage .emap-index {
-    grid-column: 1 / -1;
+  .mp-stage .emap[data-legend="off"] .emap-figure {
+    --emap-safe-left: 0px;
   }
   .mp-stage .emap-legend {
-    grid-column: 1;
-    border-right: 0;
+    position: absolute;
+    z-index: 4;
+    left: 18px;
+    /* Anchored to the drawing's bottom edge, not to `.emap`'s — the key is a
+       sibling of the figure, not a child of it, so `bottom` here would measure
+       from the foot of the whole block, past the six site cards and the seat
+       index. The figure's height is a declared number; the key sits at it and
+       lifts itself and its 18px of air back up. It is a sibling so that a
+       phone, where all of this is in flow, gets the way to the full screen
+       *before* the key rather than under 400px of it. */
+    top: max(460px, calc(100dvh - 71px));
+    transform: translateY(calc(-100% - 18px));
+    width: 282px;
+    /* Never taller than the drawing it lies on, less the masthead above it. */
+    max-height: calc(100dvh - 71px - 240px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--brand-gold-lamp) 70%, transparent)
+      var(--brand-night-rule);
+    background: color-mix(in srgb, var(--brand-night) 88%, transparent);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--brand-night-rule);
+    padding: 13px 15px 14px;
+    gap: 14px;
   }
-  /* Folded, the key is one line, and the 210px the drawing gave up for it come
-     back. Declared on the stage rather than on the figure: the figure reads
-     the number, the element that knows whether the key is open sets it. */
-  .mp-stage .emap[data-legend="off"] {
-    --mp-key: 62px;
+  /* Tighter than the block below the drawing was: this one is 282px wide and
+     lying on the map, so every row it saves is map. */
+  .mp-stage .emap-legend .emap-leg-group :is(h2, h3) {
+    margin-bottom: 6px;
   }
-  .mp-stage .emap-list {
-    grid-column: 2;
-    border-left: 1px solid var(--brand-night-rule);
+  .mp-stage .emap-legend .emap-key {
+    gap: 9px;
+  }
+  .mp-stage .emap-legend ul {
+    gap: 2px;
+  }
+  .mp-stage .emap-leg-how {
+    margin-top: 8px;
+  }
+  /* Folded it is one line, and it stops reserving anything. */
+  .mp-stage .emap[data-legend="off"] .emap-legend {
+    width: auto;
+    padding: 10px 14px;
   }
 }
+
 .mp-stage .emap-legend {
   display: grid;
   grid-template-columns: 1fr;
