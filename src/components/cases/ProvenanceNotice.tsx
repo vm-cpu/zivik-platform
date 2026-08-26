@@ -4,12 +4,17 @@ import "./provenance.css";
  * What the reader is actually looking at, said before they rely on it.
  *
  * Four of the eight decision pages carry `provisionalSource: true` — their
- * verbatim body was ingested from a working draft that has not been finalized
- * — and all eight serve a draft Ukrainian translation pending legal review.
- * Both facts were recorded in the data and in `types.ts`, and the two strings
- * that state them (`T.provisionalNote`, `T.translationNote`) sat in the page
- * template referenced by nothing. A reader had no way to know. For an archive
- * that exists to be cited, that is the defect that matters most.
+ * verbatim body was ingested from a working draft that has not been finalized.
+ * The fact was recorded in the data and in `types.ts`, and the string that
+ * states it (`T.provisionalNote`) sat in the page template referenced by
+ * nothing. A reader had no way to know. For an archive that exists to be
+ * cited, that is the defect that matters most.
+ *
+ * A "draft Ukrainian translation, English governs" notice was rendered here
+ * too and has been removed at the user's instruction — it is her editorial
+ * process to describe, and she does not want the site to carry that claim.
+ * The `"translation"` kind stays in the union so the mechanism is there if it
+ * is ever wanted back; nothing constructs one today.
  *
  * A third note covers the case where the court's own text of the decision is
  * not published anywhere the page can link — finland-torden, whose registry

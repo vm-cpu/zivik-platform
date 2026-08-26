@@ -149,11 +149,6 @@ const T = {
     uk: "Цей конспект перенесено з робочої чернетки, яку ще не фіналізовано: формулювання можуть змінитися. Перед цитуванням звіряйтеся з документом суду, а не з цією сторінкою.",
     en: "This summary was carried across from a working draft that has not been finalized: its wording may change. Before citing, check against the court's own document rather than this page.",
   },
-  translationTag: { uk: "Чернетка перекладу", en: "Draft translation" },
-  translationNote: {
-    uk: "Український переклад конспекту ще не пройшов юридичної вичитки. Мова запису — англійська: за будь-якої розбіжності визначальним є англійський текст сторінки.",
-    en: "The Ukrainian translation of this summary has not yet passed legal review. English is the language of record: where the two differ, the English page governs.",
-  },
   /* The third provenance case: the court's own text is not published anywhere
      this page can link to, so the two buttons in the masthead lead to
      commentary and reporting instead. The library says the same thing in its
@@ -565,7 +560,6 @@ export default async function CasePage({
    * the source text, not at a translation of it — so the English page has
    * nothing to warn about and does not pretend to.
    */
-  const showTranslationNote = locale === "uk" && Boolean(summary.blocksUk);
   const provenanceNotes: ProvenanceNote[] = [
     ...(summary.provisionalSource
       ? [
@@ -573,15 +567,6 @@ export default async function CasePage({
             kind: "provisional" as const,
             tag: pick(T.provisionalTag, locale),
             text: pick(T.provisionalNote, locale),
-          },
-        ]
-      : []),
-    ...(showTranslationNote
-      ? [
-          {
-            kind: "translation" as const,
-            tag: pick(T.translationTag, locale),
-            text: pick(T.translationNote, locale),
           },
         ]
       : []),
