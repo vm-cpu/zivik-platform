@@ -206,15 +206,24 @@
     top: max(460px, calc(100dvh - 71px));
     transform: translateY(calc(-100% - 18px));
     width: 282px;
-    /* Never taller than the drawing it lies on, less the masthead above it. */
-    max-height: calc(100dvh - 71px - 240px);
+    /* Never taller than the drawing, less the masthead and air under it. The
+       masthead reserves 206px from the top; on a short window the key grew up
+       into that and the two panels met. They are also the same colour, which
+       is the other half of why it read as one object — see below. */
+    max-height: calc(100dvh - 71px - 272px);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: color-mix(in srgb, var(--brand-gold-lamp) 70%, transparent)
       var(--brand-night-rule);
-    background: color-mix(in srgb, var(--brand-night) 88%, transparent);
-    backdrop-filter: blur(6px);
+    /* The raised panel, solid — the tone the info card already uses, because
+       the two are the same kind of thing: instruments lying on the drawing.
+       It was `--brand-night` at 88% with a blur, which is the masthead's own
+       treatment, so where the two met they read as one continuous panel with a
+       rule through the middle of it. The masthead is the page speaking; this
+       is a control. */
+    background: var(--brand-night-2);
     border: 1px solid var(--brand-night-rule);
+    box-shadow: var(--shadow-dark);
     padding: 13px 15px 14px;
     gap: 14px;
   }
@@ -223,8 +232,26 @@
   .mp-stage .emap-legend .emap-leg-group :is(h2, h3) {
     margin-bottom: 6px;
   }
+  /* Smaller than the key is anywhere else, because nowhere else is it 282px
+     wide and lying on the map it explains. At --t-cap the longest line —
+     «Подія — про всю підсвічену територію» — took three rows and the column
+     read as prose; at 11.5 it takes two, and the glyph comes down with it so
+     the mark and its name stay the same weight beside each other. */
   .mp-stage .emap-legend .emap-key {
-    gap: 9px;
+    gap: 8px;
+    font-size: 11.5px;
+    line-height: 1.35;
+  }
+  .mp-stage .emap-legend .emap-key svg {
+    width: 18px;
+    height: 18px;
+  }
+  .mp-stage .emap-leg-how {
+    font-size: 11.5px;
+    line-height: 1.4;
+  }
+  .mp-stage .emap-legend .emap-leg-group :is(h2, h3) {
+    font-size: 10px;
   }
   .mp-stage .emap-legend ul {
     gap: 2px;
