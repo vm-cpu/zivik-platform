@@ -273,7 +273,11 @@ export interface RegistryLabels {
   sortOpt: Record<string, string>;
   colCourt: string;
   colCase: string;
-  colTags: string;
+  /* The tag column used to be called «Теги», which named the widget rather
+     than the facts in it. It is two columns now, each named for the dimension
+     it carries and each sortable in its own right. */
+  colStage: string;
+  colOutcome: string;
   colDate: string;
   sortAsc: string;
   sortDesc: string;
@@ -282,6 +286,11 @@ export interface RegistryLabels {
   ofTotal: string;
   combine: string;
   reset: string;
+  /** Accessible name of the active-filter list. */
+  activeFilters: string;
+  /** Verb on each active-filter chip: «Прибрати фільтр: Суди — ЄСПЛ». */
+  clearFilter: string;
+  clearSearch: string;
   emptyHead: string;
   emptyBody: string;
   matched: string;
@@ -326,6 +335,9 @@ function Listbox({
   selected,
   onChange,
   multi,
+  variant = "filter",
+  summaryOverride,
+  activeOverride,
 }: {
   label: string;
   allLabel: string;
@@ -333,6 +345,25 @@ function Listbox({
   selected: string[];
   onChange: (next: string[]) => void;
   multi: boolean;
+  /**
+   * Filtering and ordering are different acts, so they do not wear the same
+   * control. A `filter` is an enclosed pill that names its dimension and
+   * carries a count when it is narrowing; `sort` is an underlined text control
+   * at the other end of the row that shows the order itself.
+   */
+  variant?: "filter" | "sort";
+  /**
+   * The sort state can also be set by clicking a column heading, and a heading
+   * clicked twice reaches a direction no preset names. The control says what
+   * the order actually is rather than falling back to «Спершу нові».
+   */
+  summaryOverride?: string;
+  /**
+   * Whether the control counts as "doing something". A filter decides that for
+   * itself — anything chosen is narrowing — but every list is in some order,
+   * so only the caller knows which order is the default one.
+   */
+  activeOverride?: boolean;
 }) {
   const uid = useId();
   const listId = `${uid}-list`;
@@ -343,22 +374,33 @@ function Listbox({
   const listRef = useRef<HTMLDivElement>(null);
   const typed = useRef({ buf: "", at: 0 });
 
-  // "Усі суди" is an option rather than a second control: one idiom for
-  // clearing, matching the СКИНУТИ button rather than competing with it.
+  /* "Усі суди" is an option rather than a second control: one idiom for
+     clearing, matching the СКИНУТИ button rather than competing with it.
+     Ordering has no "all": every list is in *some* order, and the synthetic
+     row listed «Спершу нові» twice — once as the clear-everything row and
+     once as the preset that means exactly the same thing. */
   const rows: Opt[] = useMemo(
-    () => [{ value: "", label: allLabel }, ...options],
-    [allLabel, options],
+    () =>
+      variant === "sort" ? options : [{ value: "", label: allLabel }, ...options],
+    [allLabel, options, variant],
   );
 
   const chosen = rows.filter((r) => r.value !== "" && selected.includes(r.value));
+  /* What the closed control shows. The sort control shows the order; a filter
+     shows its own dimension plus a count, because *which* values are chosen is
+     spelled out by the removable chips under the toolbar — repeating them
+     inside the trigger is what made these read as form fields. */
   const summary =
-    chosen.length === 0
-      ? allLabel
-      : chosen.length === 1
-        ? chosen[0].label
-        : `${chosen[0].label} +${chosen.length - 1}`;
+    variant === "sort"
+      ? (summaryOverride ?? chosen[0]?.label ?? allLabel)
+      : label;
   const readback =
-    chosen.length === 0 ? allLabel : chosen.map((c) => c.label).join(", ");
+    variant === "sort"
+      ? (summaryOverride ?? chosen[0]?.label ?? allLabel)
+      : chosen.length === 0
+        ? allLabel
+        : chosen.map((c) => c.label).join(", ");
+  const on = activeOverride ?? chosen.length > 0;
 
   const close = useCallback((focusTrigger: boolean) => {
     setOpen(false);
@@ -388,7 +430,18 @@ function Listbox({
       // moves focus on to whatever was clicked, when that is focusable.
       const inside = listRef.current?.contains(document.activeElement);
       setOpen(false);
-      if (inside) trigRef.current?.focus();
+      if (!inside) return;
+      trigRef.current?.focus();
+      /* …and again after the browser has run mousedown's own default action,
+         which overrides the line above. Measured: focus did not fall all the
+         way to <body>, but it did land on `main[tabindex="-1"]` — the nearest
+         programmatically-focusable ancestor — so the keyboard user was still
+         dropped out of the toolbar. Anything the reader actually clicked into
+         is a real tab stop (tabIndex >= 0) and keeps the focus it just won. */
+      requestAnimationFrame(() => {
+        const el = document.activeElement as HTMLElement | null;
+        if (!el || el === document.body || el.tabIndex < 0) trigRef.current?.focus();
+      });
     };
     document.addEventListener("mousedown", onDown);
     return () => document.removeEventListener("mousedown", onDown);
@@ -478,7 +531,7 @@ function Listbox({
   };
 
   return (
-    <div className="reg-lb" ref={wrapRef}>
+    <div className="reg-lb" data-variant={variant} ref={wrapRef}>
       <button
         type="button"
         ref={trigRef}
@@ -487,7 +540,7 @@ function Listbox({
         aria-expanded={open}
         aria-controls={open ? listId : undefined}
         aria-label={`${label}: ${readback}`}
-        data-on={chosen.length > 0 ? "1" : undefined}
+        data-on={on ? "1" : undefined}
         onClick={() =>
           open
             ? close(false)
@@ -495,8 +548,19 @@ function Listbox({
         }
         onKeyDown={onTriggerKey}
       >
-        <span className="tl">{label}</span>
+        {variant === "sort" && (
+          <span className="ts" aria-hidden="true">
+            ↕
+          </span>
+        )}
         <span className="tv">{summary}</span>
+        {/* The count is a numeral, not a colour: a filter that is narrowing
+            says so in a way that survives a monochrome screen. */}
+        {variant === "filter" && chosen.length > 0 && (
+          <span className="tn" aria-hidden="true">
+            {chosen.length}
+          </span>
+        )}
         <span className="tc" aria-hidden="true" />
       </button>
       {open && (
@@ -523,7 +587,13 @@ function Listbox({
                 className="reg-opt"
                 data-active={i === active ? "1" : undefined}
                 data-all={r.value === "" ? "1" : undefined}
-                onMouseEnter={() => setActive(i)}
+                /* Move, not enter. A popup that opens under a pointer parked
+                   from an earlier click fires mouseenter on whatever lands
+                   beneath it, which threw the keyboard's active option away:
+                   measured at 390px, End and Home both landed on whichever
+                   row the stationary cursor happened to be over. mousemove
+                   only fires when the pointer really moves. */
+                onMouseMove={() => setActive(i)}
                 onClick={() => toggle(r.value)}
               >
                 <span className="ok" aria-hidden="true">
@@ -675,6 +745,49 @@ export default function RegistryTable({
     label: t.sortOpt[s.id],
   }));
 
+  /* A heading clicked twice reverses its axis, and four of those reversals —
+     court, name, stage and outcome descending — are states no preset in SORTS
+     names. The control used to fall back to its "all" label and claim «Спершу
+     нові» while the table was ordered by something else; it now reads the real
+     state off the column's own name. */
+  const COL: Partial<Record<SortKey, string>> = {
+    court: t.colCourt,
+    name: t.colCase,
+    stage: t.colStage,
+    outcome: t.colOutcome,
+    year: t.colDate,
+  };
+  const sortSummary = sortId
+    ? undefined
+    : `${COL[sort.key] ?? ""} — ${sort.dir === "asc" ? t.sortAsc : t.sortDesc}`;
+
+  /* The active filters, spelled out. A reader who has narrowed to two courts
+     can see which two without opening anything, and each chip clears its own
+     value in one click — «Скинути» stays the one action that clears
+     everything, the search and the ordering included. */
+  const courtLabel = (id: string) =>
+    courts.find((c) => c.id === id)?.abbr ?? id;
+  const chips: Array<{ id: string; dim: string; label: string; clear: () => void }> = [
+    ...court.map((v) => ({
+      id: `court:${v}`,
+      dim: t.courts,
+      label: courtLabel(v),
+      clear: () => setCourt(court.filter((x) => x !== v)),
+    })),
+    ...stage.map((v) => ({
+      id: `stage:${v}`,
+      dim: t.stages,
+      label: stages.find((s) => s.key === v)?.label ?? v,
+      clear: () => setStage(stage.filter((x) => x !== v)),
+    })),
+    ...outcome.map((v) => ({
+      id: `outcome:${v}`,
+      dim: t.outcomes,
+      label: outcomes.find((o) => o.key === v)?.label ?? v,
+      clear: () => setOutcome(outcome.filter((x) => x !== v)),
+    })),
+  ];
+
   /** Clicking a heading takes that axis; clicking it again flips direction. */
   const head = (key: SortKey, defaultDir: SortDir, label: string) => {
     const on = sort.key === key;
@@ -716,10 +829,32 @@ export default function RegistryTable({
   return (
     <section className="reg-page">
       <div className="reg-toolbar">
+        {/* The search is a line of the instrument, not a box sitting next to
+            it: a rule under it, a glyph in front of it and the same edge
+            colour the pills carry. A boxed field in one idiom beside pills in
+            another is what made the toolbar read as a form. */}
         <div className="reg-searchwrap">
           <label className="sr-only" htmlFor="reg-q">
             {t.searchLabel}
           </label>
+          <span className="reg-si" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="17" height="17" focusable="false">
+              <circle
+                cx="6.8"
+                cy="6.8"
+                r="4.6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+              />
+              <path
+                d="M10.3 10.3 L14 14"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+          </span>
           <input
             id="reg-q"
             className="reg-search"
@@ -728,6 +863,19 @@ export default function RegistryTable({
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
+          {q !== "" && (
+            <button
+              type="button"
+              className="reg-x"
+              aria-label={t.clearSearch}
+              onClick={() => {
+                setQ("");
+                document.getElementById("reg-q")?.focus();
+              }}
+            >
+              <span aria-hidden="true">✕</span>
+            </button>
+          )}
         </div>
         <div className="reg-filters">
           <Listbox
@@ -766,23 +914,58 @@ export default function RegistryTable({
             selected={outcome}
             onChange={setOutcome}
           />
-          <Listbox
-            label={t.sort}
-            allLabel={t.sortOpt.yearDesc}
-            multi={false}
-            options={sortOptions}
-            selected={sortId && sortId !== "yearDesc" ? [sortId] : []}
-            onChange={(next) => {
-              const picked = SORTS.find((s) => s.id === next[0]);
-              setSort(
-                picked
-                  ? { key: picked.key, dir: picked.dir }
-                  : { key: "year", dir: "desc" },
-              );
-            }}
-          />
+          {/* Ordering is not narrowing, so it does not wear a filter's pill:
+              it sits at the far end of the row as an underlined text control.
+              It stays on wide screens even though the heading row sorts too —
+              two of its axes, the decision date and "ready to read first",
+              have no column to click. */}
+          <div className="reg-sort">
+            <Listbox
+              label={t.sort}
+              allLabel={t.sortOpt.yearDesc}
+              multi={false}
+              variant="sort"
+              summaryOverride={sortSummary}
+              activeOverride={sortId !== "yearDesc"}
+              options={sortOptions}
+              selected={sortId ? [sortId] : []}
+              onChange={(next) => {
+                const picked = SORTS.find((s) => s.id === next[0]);
+                setSort(
+                  picked
+                    ? { key: picked.key, dir: picked.dir }
+                    : { key: "year", dir: "desc" },
+                );
+              }}
+            />
+          </div>
         </div>
       </div>
+
+      {chips.length > 0 && (
+        <ul className="reg-active" aria-label={t.activeFilters}>
+          {chips.map((c) => (
+            <li key={c.id}>
+              <button
+                type="button"
+                className="reg-chip"
+                aria-label={`${t.clearFilter}: ${c.dim} — ${c.label}`}
+                onClick={c.clear}
+              >
+                <span className="cd" aria-hidden="true">
+                  {c.dim}
+                </span>
+                <span className="cv" aria-hidden="true">
+                  {c.label}
+                </span>
+                <span className="cx" aria-hidden="true">
+                  ✕
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div className="reg-count">
         <p aria-live="polite">
@@ -811,7 +994,8 @@ export default function RegistryTable({
             <div role="row" className="reg-row reg-hrow">
               {head("court", "asc", t.colCourt)}
               {head("name", "asc", t.colCase)}
-              {head("stage", "asc", t.colTags)}
+              {head("stage", "asc", t.colStage)}
+              {head("outcome", "asc", t.colOutcome)}
               {head("year", "desc", t.colDate)}
             </div>
           </div>
@@ -857,21 +1041,33 @@ export default function RegistryTable({
                         {t.matched} {reasons.join(" · ")}
                       </span>
                     )}
+                    {/* The full status wording sits with the case name rather
+                        than in the outcome cell: a row whose record names no
+                        act can then leave that cell genuinely empty, and the
+                        stacked layout drops it instead of keeping a 1px
+                        sliver of it. */}
+                    <span className="sr-only">{r.status}</span>
                   </span>
-                  <span role="cell" className="reg-tags chip">
+                  {/* Two cells, not one: the stage of the proceedings and the
+                      act the forum issued are different facts, each with its
+                      own heading and its own aria-sort. The visually-hidden
+                      prefix stays on the chip itself, so the dimension is
+                      still named below 820px where the heading row is gone. */}
+                  <span role="cell" className="reg-tags reg-cstage chip">
                     {r.stageLabel && (
                       <span className="tag tag-stage">
                         <span className="sr-only">{t.stageName}: </span>
                         {r.stageLabel}
                       </span>
                     )}
+                  </span>
+                  <span role="cell" className="reg-tags reg-coutcome chip">
                     {r.outcomeLabel && (
                       <span className="tag tag-outcome">
                         <span className="sr-only">{t.outcomeName}: </span>
                         {r.outcomeLabel}
                       </span>
                     )}
-                    <span className="sr-only">{r.status}</span>
                   </span>
                   <span role="cell" className="reg-when">
                     <span className="reg-year">{r.year ?? t.noDate}</span>

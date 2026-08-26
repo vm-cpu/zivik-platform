@@ -42,14 +42,14 @@ const T = {
      field that is truncated at about 160. They are two strings now, the way
      /about already splits them. */
   lede: {
-    uk: "Усі провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Теги розділено на дві осі: етап розгляду і те, що суд ухвалив.",
-    en: "Every proceeding against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Tags run on two axes: the stage of the proceedings, and what the court issued.",
+    uk: "Усі провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип рішення.",
+    en: "Every proceeding against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
   },
   /* The meta description: 133 / 147 characters, both inside the ~160 a search
      result shows. Says what the page holds and what can be done with it. */
   metaDesc: {
-    uk: "39 проваджень проти Росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, етапом розгляду і тим, що суд ухвалив.",
-    en: "39 proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage, and by what the court issued.",
+    uk: "39 проваджень проти Росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
+    en: "39 proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
   },
   // The wordmark is lowercase everywhere, and the English one is "nasvitlo".
   // Team and map both say "Home"/"На головну" — so does this now.
@@ -61,10 +61,15 @@ const T = {
   searchLabel: { uk: "Пошук у реєстрі", en: "Search the registry" },
   courts: { uk: "Суди", en: "Courts" },
   courtsAll: { uk: "Усі суди", en: "All courts" },
-  stages: { uk: "Етап", en: "Stage" },
-  stagesAll: { uk: "Усі етапи", en: "All stages" },
-  outcomes: { uk: "Ухвалено", en: "Outcome" },
-  outcomesAll: { uk: "Будь-яке", en: "Any outcome" },
+  /* The filter over a column is named for the column. «Етап» and «Ухвалено»
+     named neither the data nor the heading above it; the registry calls these
+     two dimensions «стан розгляду» and «тип рішення» everywhere now — the
+     column heading, the filter, the sort axis and the tag's assistive-
+     technology prefix all say the same words. */
+  stages: { uk: "Стан розгляду", en: "Stage" },
+  stagesAll: { uk: "Будь-який стан", en: "Any stage" },
+  outcomes: { uk: "Тип рішення", en: "Decision type" },
+  outcomesAll: { uk: "Будь-який тип", en: "Any decision type" },
   sort: { uk: "Порядок", en: "Sort" },
   sortOpt: {
     yearDesc: { uk: "Спершу нові", en: "Newest first" },
@@ -72,13 +77,16 @@ const T = {
     decidedDesc: { uk: "За датою рішення", en: "By decision date" },
     readable: { uk: "Спершу опрацьовані", en: "Ready to read first" },
     court: { uk: "За судом", en: "By court" },
-    stage: { uk: "За етапом", en: "By stage" },
-    outcome: { uk: "За тим, що ухвалено", en: "By outcome" },
+    stage: { uk: "За станом розгляду", en: "By stage" },
+    outcome: { uk: "За типом рішення", en: "By decision type" },
     name: { uk: "За назвою", en: "By name" },
   },
   colCourt: { uk: "Суд", en: "Court" },
   colCase: { uk: "Справа", en: "Case" },
-  colTags: { uk: "Теги", en: "Tags" },
+  /* «Теги» named the widget, not the facts. Two columns now, each named for
+     what it holds, and each sortable on its own axis. */
+  colStage: { uk: "Стан розгляду", en: "Stage" },
+  colOutcome: { uk: "Тип рішення", en: "Decision type" },
   colDate: { uk: "Рік", en: "Year" },
   sortAsc: { uk: "за зростанням", en: "sorted ascending" },
   sortDesc: { uk: "за спаданням", en: "sorted descending" },
@@ -96,6 +104,12 @@ const T = {
     en: "Several values in one filter mean any of them; different filters apply together.",
   },
   reset: { uk: "Скинути", en: "Reset" },
+  /* Per-filter clearing and the blanket reset are two different acts and are
+     kept apart: a chip drops one value, «Скинути» drops every filter, the
+     search box and the ordering with them. */
+  activeFilters: { uk: "Активні фільтри", en: "Active filters" },
+  clearFilter: { uk: "Прибрати фільтр", en: "Remove filter" },
+  clearSearch: { uk: "Очистити пошук", en: "Clear search" },
   emptyHead: { uk: "Нічого не знайдено", en: "Nothing found" },
   emptyBody: {
     uk: "Спробуйте змінити фільтри або пошуковий запит.",
@@ -376,7 +390,8 @@ export default async function RegistryPage({
             ),
             colCourt: pick(T.colCourt, locale),
             colCase: pick(T.colCase, locale),
-            colTags: pick(T.colTags, locale),
+            colStage: pick(T.colStage, locale),
+            colOutcome: pick(T.colOutcome, locale),
             colDate: pick(T.colDate, locale),
             sortAsc: pick(T.sortAsc, locale),
             sortDesc: pick(T.sortDesc, locale),
@@ -385,6 +400,9 @@ export default async function RegistryPage({
             ofTotal: pick(T.ofTotal, locale),
             combine: pick(T.combine, locale),
             reset: pick(T.reset, locale),
+            activeFilters: pick(T.activeFilters, locale),
+            clearFilter: pick(T.clearFilter, locale),
+            clearSearch: pick(T.clearSearch, locale),
             emptyHead: pick(T.emptyHead, locale),
             emptyBody: pick(T.emptyBody, locale),
             matched: pick(T.matched, locale),
