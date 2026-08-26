@@ -118,6 +118,11 @@ const T = {
   // Instruments an arbitral award earns.
   allEvents: { uk: "Усе", en: "All" },
   openDetail: { uk: "Показати деталі", en: "Show detail" },
+  /* The year rail. It was `aria-hidden` decoration and read as decoration: a
+     row of dots placed by year, so ten events in 2022 stacked into one mark
+     and the reader saw four dots for twenty events. Placed by date and
+     pressable, it is the index of the chronology under it. */
+  railLabel: { uk: "Перейти до події за датою", en: "Jump to an event by date" },
   amountsH: { uk: "Суми", en: "Amounts" },
   shareOf: { uk: "від суми", en: "of the total" },
   attributionH: { uk: "Чия поведінка — це поведінка держави", en: "Whose conduct counts as the State's" },
@@ -949,6 +954,7 @@ export default async function CasePage({
             labels={{
               all: pick(T.allEvents, locale),
               openDetail: pick(T.openDetail, locale),
+              railLabel: pick(T.railLabel, locale),
             }}
           />
         </div>

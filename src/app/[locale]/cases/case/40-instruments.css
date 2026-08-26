@@ -200,7 +200,7 @@
 }
 .casepage .ctl-rail {
   position: relative;
-  height: 46px;
+  height: 52px;
   margin-bottom: var(--space-4);
 }
 .casepage .ctl-rail-line {
@@ -211,26 +211,77 @@
   height: 1px;
   background: var(--rule);
 }
+/* Each mark is a press: it takes the reader to the row it stands for, opens it
+   and puts the keyboard on it. The rail used to be `aria-hidden` decoration —
+   a row of dots that answered nothing — and it read that way.
+
+   The button is 24px square with the dot painted in the middle of it, rather
+   than an 11px target: 11 is what the mark should look like on a 1px rule and
+   24 is the floor for something a finger has to hit. Two marks a day apart
+   overlap, and that is the honest picture of a case where ten things happened
+   in one year; the one on top wins the press, and the list below reaches every
+   one of them. */
 .casepage .ctl-dot {
   position: absolute;
-  top: 2px;
+  top: -4px;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease);
+}
+.casepage .ctl-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 11px;
   height: 11px;
-  margin-left: -5px;
+  margin: -5.5px 0 0 -5.5px;
   border-radius: 50%;
   background: var(--gold-dim);
-  transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease);
+  transition:
+    background var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+.casepage .ctl-dot:hover::before,
+.casepage .ctl-dot:focus-visible::before,
+.casepage .ctl-dot[data-on="yes"]::before {
+  background: var(--gold);
+  transform: scale(1.35);
+}
+.casepage .ctl-dot:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+  border-radius: 50%;
 }
 .casepage .ctl-dot[data-dim="yes"] {
   opacity: 0.28;
 }
+@media (prefers-reduced-motion: reduce) {
+  .casepage .ctl-dot,
+  .casepage .ctl-dot::before {
+    transition: none;
+  }
+}
 .casepage .ctl-tick {
   position: absolute;
-  top: 24px;
+  top: 30px;
   transform: translateX(-50%);
   font: 500 var(--t-cap) var(--brand-font-mono);
   color: var(--faint);
   font-variant-numeric: tabular-nums;
+}
+/* Held to the rail rather than centred past its end. See the note in
+   CaseTimeline.tsx. */
+.casepage .ctl-tick[data-edge="start"] {
+  transform: none;
+}
+.casepage .ctl-tick[data-edge="end"] {
+  transform: translateX(-100%);
 }
 .casepage .ctl-list {
   list-style: none;
