@@ -64,11 +64,12 @@ export default function Newsletter({
         <div className="nsv-news-block">
           <h2 className="nsv-news-heading">{SUPPORT.heading[locale]}</h2>
           <p className="nsv-news-text">{SUPPORT.text[locale]}</p>
-          {/* The site's own button, not a second one invented beside it.
-              `.btn .btn-o` is what the intro and the registry already use on
-              paper; a bespoke pill here read as a different control from the
-              ones above it on the same page. */}
-          <a className="btn btn-o" href={mailto(dict.newsletter.support)}>
+        </div>
+        {/* The ask sits opposite the words rather than under them: with one
+            column the band left half its width empty, which read as an
+            unfinished section rather than a quiet one. */}
+        <div className="nsv-news-act">
+          <a className="nsv-cta nsv-cta" href={mailto(dict.newsletter.support)}>
             {dict.newsletter.support}
           </a>
         </div>

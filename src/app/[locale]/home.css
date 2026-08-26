@@ -205,10 +205,14 @@
   .page .pj{width:900px;margin:0 auto}
 
 /* partner marks — restrained row, no empty placeholder boxes */
-.nsv-partnerrow{display:flex;flex-wrap:wrap;align-items:center;row-gap:14px}
-.nsv-partnerrow .pmark{padding:0 22px;border-left:1px solid var(--rule);font:700 12px var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);text-decoration:none}
+/* Each partner is a mark with its name under it, not a mark alone: a reader
+   who does not recognise a wordmark learns nothing from a row of them. The
+   hairline between entries stays, so several still read as one row. */
+.nsv-partnerrow{display:flex;flex-wrap:wrap;align-items:flex-start;gap:18px 0}
+.nsv-partnerrow .pmark{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:0 26px;border-left:1px solid var(--rule);text-decoration:none}
 .nsv-partnerrow .pmark:first-child{padding-left:0;border-left:0}
-.nsv-partnerrow a.pmark:hover{color:var(--red)}
+.nsv-partnerrow .pmark-name{font:700 12px var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);transition:color var(--dur) var(--ease)}
+.nsv-partnerrow a.pmark:hover .pmark-name{color:var(--red)}
 
 /* brand slogan divider — Charis SIL caps, wide tracking (UCU "гасла" style) */
 .nsv-slogan{display:flex;align-items:center;gap:24px;padding:30px 28px;background:var(--paper2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}

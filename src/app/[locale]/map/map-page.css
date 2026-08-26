@@ -270,3 +270,26 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 4px 28px;
 }
+
+/* The label rule above the title. `.lbl` is defined in home.css, which this
+   page does not load, so the map page carries its own copy — scoped, and using
+   the gold the panel's dark ground needs rather than the paper red. */
+.mappage .mp-mast .lbl {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 12px;
+}
+.mappage .mp-mast .lbl::before {
+  content: "";
+  width: 34px;
+  height: 3px;
+  background: var(--brand-gold-mark);
+  flex: none;
+}
+.mappage .mp-mast .lbl span {
+  font: 700 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-gold-mark);
+}

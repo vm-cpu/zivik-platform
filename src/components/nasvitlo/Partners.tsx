@@ -73,24 +73,29 @@ export default function Partners({
       <div className="nsv-partnerrow">
         {partners.map((partner) => {
           const name = pick(partner.name, locale);
+          /* The mark and the name, not one or the other. A logo alone asks
+             the reader to recognise it; «З ким ми працюємо» followed by an
+             unlabelled wordmark answers nothing for anyone who does not
+             already know ifa. The name is the answer and the mark is the
+             evidence, so the alt goes empty — it would otherwise be read
+             twice. */
           const inner = partner.logo ? (
-            /* 34px was sized for a row of several marks. With one real
-               partner the row reads as an afterthought at that height, and
-               ifa's wordmark carries small type inside it that needs the
-               size to stay legible. */
-            <Image
-              src={partner.logo}
-              alt={name}
-              width={260}
-              height={74}
-              style={{
-                maxWidth: "100%",
-                height: "clamp(44px, 5vw, 62px)",
-                width: "auto",
-              }}
-            />
+            <>
+              <Image
+                src={partner.logo}
+                alt=""
+                width={260}
+                height={74}
+                style={{
+                  maxWidth: "100%",
+                  height: "clamp(44px, 5vw, 62px)",
+                  width: "auto",
+                }}
+              />
+              <span className="pmark-name">{name}</span>
+            </>
           ) : (
-            name
+            <span className="pmark-name">{name}</span>
           );
           return partner.url ? (
             <a

@@ -257,26 +257,33 @@
   text-transform: uppercase;
   color: var(--red);
 }
+/* Mark above name, matching the home band — see the note in home.css. */
 .aboutpage .nsv-partnerrow {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  row-gap: var(--space-3);
+  align-items: flex-start;
+  gap: var(--space-5) 0;
 }
 .aboutpage .nsv-partnerrow .pmark {
-  padding: 0 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 0 var(--space-6);
   border-left: 1px solid var(--rule);
-  font: 700 var(--t-cap) var(--brand-font-body);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink2);
   text-decoration: none;
 }
 .aboutpage .nsv-partnerrow .pmark:first-child {
   padding-left: 0;
   border-left: 0;
 }
-.aboutpage .nsv-partnerrow a.pmark:hover {
+.aboutpage .nsv-partnerrow .pmark-name {
+  font: 700 var(--t-cap) var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink2);
+}
+.aboutpage .nsv-partnerrow a.pmark:hover .pmark-name {
   color: var(--red);
 }
 

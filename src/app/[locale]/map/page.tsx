@@ -95,7 +95,13 @@ export default async function MapPage({
             <Link href={`/${locale}`} className="mp-back">
               ← {dict.mapSection.backHome}
             </Link>
-            <h1>{dict.mapSection.pageTitle}</h1>
+            {/* The same heading the home band carries, at the user's request:
+                one map, one title. The label rule above it comes with it — this
+                page had its own wording for the same object. */}
+            <div className="lbl">
+              <span>{dict.mapSection.label}</span>
+            </div>
+            <h1>{dict.mapSection.heading}</h1>
             <p className="mp-lede">{dict.mapSection.pageLede}</p>
           </header>
 

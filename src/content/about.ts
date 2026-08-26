@@ -13,8 +13,8 @@ import type { AboutContent } from "./types";
  */
 export const about: AboutContent = {
   title: {
-    uk: "Що це за бібліотека",
-    en: "What this library is",
+    uk: "Про проєкт",
+    en: "About the project",
   },
   paragraphs: {
     uk: [

@@ -32,10 +32,11 @@
    instead of fighting it (it is dead CSS now — see the report). */
 .nsv-newsletter .nsv-news-grid {
   display: grid;
-  /* Two asks of comparable width now, not copy plus a narrow action rail:
-     each column carries its own heading, sentence and control. */
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  align-items: start;
+  /* Words on the left, the ask opposite them on the right. One column left
+     the band half empty, which read as unfinished rather than quiet; putting
+     the button under the paragraph made a tall left edge and a wide blank. */
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
   gap: var(--space-8) clamp(32px, 5vw, 72px);
 }
 
@@ -162,5 +163,26 @@
     padding-top: 0;
     padding-left: clamp(24px, 4vw, 56px);
     border-left: 1px solid var(--brand-rule);
+  }
+}
+
+
+/* The action column. Right-aligned so the button sits against the band's own
+   gutter, the same edge the section heads above and below it end at. */
+.nsv-newsletter .nsv-news-act {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Below the fold of a phone the two stack, and the button goes back under the
+   words — at that width there is no "opposite" to sit at. */
+@media (max-width: 760px) {
+  .nsv-newsletter .nsv-news-grid {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-6);
+  }
+  .nsv-newsletter .nsv-news-act {
+    justify-content: flex-start;
   }
 }
