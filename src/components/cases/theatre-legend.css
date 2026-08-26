@@ -1,0 +1,46 @@
+/* ============================================================
+   Theatre legend — the places the case is about, with what happened there.
+
+   Owned and imported by components/cases/TheatreLegend.tsx. The base
+   `.map-legend` rules stay where they are (cases/case/20-dashboard.css);
+   this file adds only the classes that file does not know about, so there is
+   never a second definition of one selector.
+
+   `.casepage .map-legend span` is (0,2,1) and sets a one-line flex row; the
+   rules below are (0,3,0) and (0,3,1), so they win on specificity rather
+   than on file order — the load order of a component stylesheet is not
+   something this page controls.
+
+   Colour comes only from --brand-* tokens. On --brand-night the sentence uses
+   --brand-faint-dark, the documented AA-clearing muted colour for that ground.
+   ============================================================ */
+
+/* Each theatre becomes a two-line entry: the dot and the place on the first
+   line, the sentence under it, indented past the dot. */
+.casepage .map-legend span.lg-theatre {
+  display: grid;
+  grid-template-columns: 11px 1fr;
+  column-gap: var(--space-2);
+  row-gap: var(--space-1);
+  align-items: start;
+  /* Sentences need a column of their own; a single theatre still keeps the
+     reading measure rather than running the width of the band. */
+  flex: 1 1 clamp(240px, 30%, 460px);
+  max-width: 62ch;
+}
+
+/* The dot is centred on the first line of text, not on the whole entry. */
+.casepage .map-legend .lg-theatre > i {
+  margin-top: 0.32em;
+}
+
+.casepage .map-legend .lg-place {
+  align-self: center;
+}
+
+.casepage .map-legend .lg-note {
+  grid-column: 2;
+  font: 400 var(--t-sm) var(--brand-font-body);
+  line-height: 1.55;
+  color: var(--brand-faint-dark);
+}

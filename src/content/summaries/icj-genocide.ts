@@ -48,6 +48,13 @@ export const icjGenocide: DecisionSummary = {
     seat: { uk: "Гаага", en: "The Hague" },
   },
 
+  /* Search-result description. `plain.tldr` used to serve as this and runs
+     three to four sentences, so the snippet was cut off mid-word. */
+  metaDesc: {
+    uk: "Рішення МС ООН від 2 лютого 2024 щодо попередніх заперечень: п'ять із шести заперечень Росії відхилено; вимоги (c) і (d) — поза Конвенцією.",
+    en: "ICJ judgment on preliminary objections, 2 February 2024: five of Russia's six objections rejected; submissions (c) and (d) fall outside the Convention.",
+  },
+
   plain: {
     tldr: {
       uk: "Росія виправдовувала вторгнення вигаданим «геноцидом на Донбасі». Україна пішла до Міжнародного суду ООН, щоб той офіційно засвідчив: геноциду не було. Суд погодився розглядати саме це — і відхилив п'ять із шести заперечень Росії. Але вимоги визнати незаконними визнання «ДНР/ЛНР» і саму «спецоперацію» Суд розглядати відмовився: це поза межами Конвенції про геноцид.",

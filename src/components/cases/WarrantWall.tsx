@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import "./warrant-wave.css";
 
 /**
  * The warrants of arrest, drawn as a ladder of command.
@@ -131,11 +132,19 @@ export default function WarrantWall({
 
   return (
     <div className="warrants warrants-ladder">
+      {/* The legend is also where each wave says what it is about. `summary`
+          is authored on every wave and used to render only in the `!rungs`
+          fallback below — and icc-ukraine, the one page with warrants, sets
+          `rungs`, so the sentence never appeared: the ladder named three
+          waves and explained none of them. */}
       <div className="wr-legend">
         {waves.map((w, wi) => (
-          <span key={wi} className="wr-key" data-wave={wi}>
+          <span key={wi} className="wr-key wr-key-note" data-wave={wi}>
             <i aria-hidden="true" />
-            {w.theme} · {w.date}
+            <span className="wr-key-head">
+              {w.theme} · {w.date}
+            </span>
+            <span className="wr-key-sum">{w.summary}</span>
           </span>
         ))}
       </div>

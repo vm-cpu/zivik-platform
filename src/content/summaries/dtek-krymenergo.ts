@@ -237,7 +237,15 @@ export const dtekKrymenergo: DecisionSummary = {
   stats: [
     {
       value: { uk: "$207,8 млн", en: "$207.8M" },
-      label: { uk: "відшкодування + відсотки з 22.01.2015", en: "damages + interest from 22 Jan 2015" },
+      // "+ відсотки" read as though 207.8M already contained the interest,
+      // which is what the amounts block, the FAQ and the tldr two screens
+      // below all deny: 207.8M is the damages figure, interest runs on top of
+      // it from the day of the taking, and ≈267M is the two together at the
+      // award date. This tile is the one number a scanning reader leaves with.
+      label: {
+        uk: "відшкодування, без відсотків з 22.01.2015",
+        en: "damages, before interest from 22 Jan 2015",
+      },
       em: true,
     },
     { value: "6", label: { uk: "заперечень Росії — всі відхилено", en: "objections by Russia — all rejected" } },
@@ -453,10 +461,24 @@ export const dtekKrymenergo: DecisionSummary = {
       uk: "Просили не менш як 421,2 млн; присуджено 207,8 млн (більшістю) плюс відсотки з дня вилучення — разом близько 267 млн на день рішення. Стягнення йде через суди США і Нідерландів.",
       en: "At least 421.2M was claimed; 207.8M awarded (by majority) plus interest from the day of the taking — about 267M at the award date. Enforcement runs through US and Dutch courts.",
     },
+    // NOTATION. Every `display` here is a pair, because Ukrainian and English
+    // group and point numbers differently and this card printed one notation
+    // to both readers. Ukrainian groups with a space and takes a comma for the
+    // decimal — $10 764 067,64; English groups with a comma and takes a
+    // point — $10,764,067.64. The symbol leads in both, which is what the
+    // stats tiles above ("$207,8 млн" / "$207.8M") and the holdings row
+    // already do. Before this the bars mixed all three systems on one card:
+    // ASCII-space grouping on the totals, comma-and-cents on the parts of one
+    // of them, so the same figure was written two ways side by side.
+    //
+    // The `amount` fields carry the exact cents too. They only scale the bars,
+    // but rounding them to whole dollars made the two costs parts sum to
+    // 10 764 068 against a total of 10 764 067 — a one-dollar gap with no
+    // source behind it. The award's own figures are exact; they are used.
     figures: [
       {
         label: { uk: "Вимога позивача", en: "Claimed" },
-        display: "≥ $421 198 000",
+        display: { uk: "≥ $421 198 000", en: "≥ $421,198,000" },
         amount: 421198000,
         estimated: true,
         note: {
@@ -466,7 +488,7 @@ export const dtekKrymenergo: DecisionSummary = {
       },
       {
         label: { uk: "Присуджено, 1 листопада 2023", en: "Awarded, 1 November 2023" },
-        display: "$207 800 000",
+        display: { uk: "$207 800 000", en: "$207,800,000" },
         amount: 207800000,
         note: {
           uk: "більшістю складу · + LIBOR 3м (SOFR) + 1%, складні, з 22.01.2015",
@@ -482,11 +504,19 @@ export const dtekKrymenergo: DecisionSummary = {
       },
       {
         label: { uk: "Витрати, присуджені арбітражем", en: "Costs awarded" },
-        display: "$10 764 067",
-        amount: 10764067,
+        display: { uk: "$10 764 067,64", en: "$10,764,067.64" },
+        amount: 10764067.64,
         parts: [
-          { label: { uk: "адміністративні", en: "administrative" }, display: "$1,362,422.88", amount: 1362423 },
-          { label: { uk: "правова допомога", en: "legal" }, display: "$9,401,644.76", amount: 9401645 },
+          {
+            label: { uk: "адміністративні", en: "administrative" },
+            display: { uk: "$1 362 422,88", en: "$1,362,422.88" },
+            amount: 1362422.88,
+          },
+          {
+            label: { uk: "правова допомога", en: "legal" },
+            display: { uk: "$9 401 644,76", en: "$9,401,644.76" },
+            amount: 9401644.76,
+          },
         ],
       },
     ],
@@ -499,6 +529,23 @@ export const dtekKrymenergo: DecisionSummary = {
       en: "Unlike in Oschadbank, Russia appeared and fought. The tribunal rejected every objection; on territory, by majority.",
     },
     benchSize: 3,
+    // FOR THE RESEARCHERS — five cards, six objections, and the six is right.
+    //
+    // The award's own heading (verbatim block 10) reads "The Respondent raised
+    // 6 preliminary objections". The list that follows it (block 11) sets out
+    // only four: territory, timing under Article 12, the Article 1(1)
+    // definition of an investment, and investor status under Article 1(2)(b).
+    // The fifth card below — corruption — is not in that list at all; it is
+    // built from block 27, which is prose ("Respondent alleges that the DTEK
+    // Energy Group corruptly acquired its additional 45% stake…"). Block 43
+    // says only that the claimant prevailed "in all its defenses to
+    // Respondent's multiple jurisdictional objections", without a number.
+    //
+    // So these cards under-enumerate a number the source supports. The sixth
+    // objection has to be identified in the award itself and written up here.
+    // Do NOT close the gap the other way by deleting the sixth from the prose,
+    // the heading or the stat tile: that would put the site in conflict with
+    // its own verbatim, which is the one thing it may never be.
     items: [
       {
         ground: { uk: "Територія", en: "Territory" },

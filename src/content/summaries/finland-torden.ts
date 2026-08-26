@@ -36,6 +36,13 @@ export const finlandTorden: DecisionSummary = {
     seat: { uk: "Гельсінкі", en: "Helsinki" },
   },
 
+  /* Search-result description. `plain.tldr` used to serve as this and runs
+     three to four sentences, so the snippet was cut off mid-word. */
+  metaDesc: {
+    uk: "Вирок Окружного суду Гельсінкі від 14 березня 2025: довічне ув'язнення Яну Петровському («Торден») за воєнні злочини — універсальна юрисдикція.",
+    en: "Helsinki District Court, 14 March 2025: life imprisonment for Yan Petrovsky (\"Torden\") for war crimes in Ukraine, under universal jurisdiction.",
+  },
+
   plain: {
     tldr: {
       uk: "Ян Петровський («Воїслав Торден») — заступник командира російського неонацистського загону «Русич». У вересні 2014-го його підрозділ під українським прапором влаштував засідку на батальйон «Айдар»: щонайменше 22 загиблих. У 2023 році Фінляндія затримала його в аеропорту Гельсінкі, а 14 березня 2025 року засудила до довічного ув'язнення за воєнні злочини — за універсальною юрисдикцією, хоча злочини скоєно в Україні проти українців.",
@@ -175,13 +182,29 @@ export const finlandTorden: DecisionSummary = {
     },
   ],
 
+  /*
+   * NEITHER of these links is a court document, and the page must not pretend
+   * otherwise. The Helsinki District Court's judgment of 14 March 2025 is not
+   * published anywhere we can link — the registry row `fi-38` records that
+   * with `decisionUrl: null`, and this page now says the same thing out loud.
+   *
+   * `url` is Sorcha MacLeod and Iryna Marchuk's EJIL:Talk! analysis and
+   * `caseUrl` is Ukrainska Pravda's report of the verdict; both are listed in
+   * `sources` below, which is where the page reads their publisher and kind
+   * from. Before `urlType`/`caseUrlType` existed the template printed
+   * "Окружний суд Гельсінкі" as the caption under the EJIL:Talk! button and
+   * told search engines, in JSON-LD, that the court had authored the
+   * Ukrainska Pravda article.
+   */
   judgment: {
     court: { uk: "Окружний суд Гельсінкі", en: "Helsinki District Court" },
     url: "https://www.ejiltalk.org/prosecuting-members-of-russian-mercenary-groups-for-war-crimes-a-remedy-for-victims/",
+    urlType: "blog post",
     caseUrl: "https://www.pravda.com.ua/eng/news/2025/03/14/7502855/",
+    caseUrlType: "news/insight",
     date: "2025-03-14",
     readLabel: { uk: "Розбір справи (EJIL: Talk!)", en: "Case analysis (EJIL: Talk!)" },
-    fileLabel: { uk: "Повідомлення про вирок", en: "Verdict reporting" },
+    fileLabel: { uk: "Репортаж про вирок", en: "Report of the verdict" },
   },
 
   instruments: [

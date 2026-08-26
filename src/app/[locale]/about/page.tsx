@@ -158,8 +158,26 @@ const T = {
 
   stateH: { uk: "Стан бібліотеки", en: "Where the library stands" },
   state: {
-    uk: "Сайт працює в тестовому режимі. Реєстр повний, конспекти — ні: справи опрацьовуємо поступово, і кожна, до якої ще не дійшли руки, позначена в реєстрі та на мапі як така.",
-    en: "The site is in test mode. The registry is complete; the summaries are not. Cases are written up one at a time, and every case we have not reached yet is marked as such in the registry and on the map.",
+    /*
+     * This used to read «Реєстр повний, конспекти — ні» / "The registry is
+     * complete; the summaries are not", and it was the only place on the site
+     * that said so. Three others say the opposite, one of them on this very
+     * page:
+     *   • src/content/legal.ts — «Бібліотека наповнюється… Відсутність справи,
+     *     документа чи конспекту не означає, що провадження не існує» /
+     *     "The library is still being filled… The absence of a case, a
+     *     document or a summary does not mean that the proceeding does not
+     *     exist";
+     *   • the dictionaries, registry.description — «Реєстр поповнюється
+     *     поступово» / "The registry grows step by step";
+     *   • `contact`, eight lines below — «знаєте про провадження, якого тут
+     *     немає — напишіть» / "know of a proceeding that is missing, write to
+     *     us", which only makes sense if the registry can still grow.
+     * Three against one, and the one is the claim a reader is most likely to
+     * rely on. So this paragraph moves to the other three.
+     */
+    uk: "Сайт працює в тестовому режимі. Ні реєстр, ні конспекти не завершені: спершу справу вносимо до реєстру, потім готуємо конспект. Справи, до яких ще не дійшли руки, позначені в реєстрі та на мапі як такі; відсутність провадження тут не означає, що його не існує.",
+    en: "The site is in test mode. Neither the registry nor the summaries are finished: a proceeding goes into the registry first and is written up later. Cases we have not reached yet are marked as such in the registry and on the map; a proceeding's absence here does not mean it does not exist.",
   },
   mProceedings: { uk: "проваджень", en: "proceedings" },
   mCourts: { uk: "інстанцій", en: "courts" },

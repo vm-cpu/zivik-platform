@@ -35,6 +35,13 @@ export const hagueMh17: DecisionSummary = {
     seat: { uk: "Гаага", en: "The Hague" },
   },
 
+  /* Search-result description. `plain.tldr` used to serve as this and runs
+     three to four sentences, so the snippet was cut off mid-word. */
+  metaDesc: {
+    uk: "Вирок Окружного суду Гааги від 17 листопада 2022 у справі MH17: троє заочно засуджені до довічного ув'язнення, четвертого підсудного виправдано.",
+    en: "The Hague District Court's MH17 verdict of 17 November 2022: three men sentenced to life in absentia, the fourth accused acquitted. Final, unappealed.",
+  },
+
   plain: {
     tldr: {
       uk: "17 липня 2014 року ракета «Бук» збила над Донеччиною рейс MH17 — загинули всі 298 людей на борту. 17 листопада 2022 року нідерландський суд заочно засудив до довічного ув'язнення трьох організаторів доставки «Бука» — Гіркіна, Дубинського і Харченка — і виправдав четвертого підсудного, Пулатова. Вирок остаточний: ні прокуратура, ні засуджені його не оскаржили.",

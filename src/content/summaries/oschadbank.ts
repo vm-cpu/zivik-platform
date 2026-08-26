@@ -749,25 +749,38 @@ export const oschadbank: DecisionSummary = {
       uk: "Росія не сплатила рішення добровільно, тому стягнення відбувається через арешт її державних активів за кордоном. €87 млн, заарештовані у Франції, — це приблизно 6% основної суми.",
       en: "Russia has not paid voluntarily, so recovery proceeds by attaching Russian state assets abroad. The EUR 87 million seized in France is roughly 6% of the principal.",
     },
+    // NOTATION. Every `display` here is a pair, because Ukrainian and English
+    // group and point numbers differently and this card printed one notation
+    // to both readers. Ukrainian groups with a space and takes a comma for the
+    // decimal — $3 866 307,34; English groups with a comma and takes a
+    // point — $3,866,307.34. The symbol leads, and it is a symbol: the bars
+    // used a third system of their own, "USD 1,111,300,729" and
+    // "≈ EUR 87,000,000", while the stats tiles on this same page say
+    // "$1,11 млрд" / "$1.11B" and "€87 млн" / "€87M". One page, one notation.
+    //
+    // The `amount` fields carry the exact cents too. They only scale the bars,
+    // but rounded to whole dollars the two costs parts summed to 3 866 307
+    // against a total of 3 866 307,34 — a gap with no source behind it. The
+    // award's own figures are exact; they are used.
     figures: [
       {
         label: { uk: "Присуджено, 26 листопада 2018", en: "Principal awarded, 26 November 2018" },
-        display: "USD 1,111,300,729",
+        display: { uk: "$1 111 300 729", en: "$1,111,300,729" },
         amount: 1111300729,
         parts: [
           {
             label: { uk: "матеріальні та кредитні активи", en: "physical and loan assets" },
-            display: "USD 597,771,793",
+            display: { uk: "$597 771 793", en: "$597,771,793" },
             amount: 597771793,
           },
           {
             label: { uk: "втрачений майбутній прибуток", en: "lost future profits" },
-            display: "USD 484,616,757",
+            display: { uk: "$484 616 757", en: "$484,616,757" },
             amount: 484616757,
           },
           {
             label: { uk: "інші збитки", en: "other tangible losses" },
-            display: "USD 28,912,179",
+            display: { uk: "$28 912 179", en: "$28,912,179" },
             amount: 28912179,
           },
         ],
@@ -777,7 +790,7 @@ export const oschadbank: DecisionSummary = {
           uk: "З нарахованими відсотками, за даними 2025 року",
           en: "Award value with accrued interest, as reported in 2025",
         },
-        display: "> USD 1.5bn",
+        display: { uk: "> $1,5 млрд", en: "> $1.5B" },
         amount: 1500000000,
         estimated: true,
         note: {
@@ -787,18 +800,18 @@ export const oschadbank: DecisionSummary = {
       },
       {
         label: { uk: "Витрати, присуджені арбітражем", en: "Costs awarded by the tribunal" },
-        display: "USD 3,866,307.34",
-        amount: 3866307,
+        display: { uk: "$3 866 307,34", en: "$3,866,307.34" },
+        amount: 3866307.34,
         parts: [
           {
             label: { uk: "витрати на арбітраж", en: "costs of the arbitration" },
-            display: "USD 731,400.00",
+            display: { uk: "$731 400,00", en: "$731,400.00" },
             amount: 731400,
           },
           {
             label: { uk: "правова допомога та експерти", en: "legal and expert fees" },
-            display: "USD 3,134,907.34",
-            amount: 3134907,
+            display: { uk: "$3 134 907,34", en: "$3,134,907.34" },
+            amount: 3134907.34,
           },
         ],
       },
@@ -807,7 +820,21 @@ export const oschadbank: DecisionSummary = {
           uk: "Арештовано у Франції, квітень 2025",
           en: "Russian property seized in France, April 2025",
         },
-        display: "≈ EUR 87,000,000",
+        // Euros, and the bar's scale is dollars. The figure stays in euros
+        // because that is the currency the French seizure is recorded in;
+        // converting it would invent a rate and a date. `amount` therefore
+        // carries a euro magnitude on a dollar scale, which is a comparison
+        // this card cannot make honestly — the bar is indicative only.
+        //
+        // FOR THE RESEARCHERS — the "≈ 6% of the principal" said here, in the
+        // note above this block and in the FAQ does not come out of these
+        // numbers. 87 000 000 is 7,8% of the 1 111 300 729 principal. It is
+        // ~5,8% of the "> $1,5 млрд" accrued figure in the bar above, so the
+        // six per cent looks like a share of the award WITH interest rather
+        // than of the principal — but the source for the 6% is not recorded
+        // here, and the currencies are being mixed either way. Both readings
+        // are set out rather than one being chosen.
+        display: { uk: "≈ €87 000 000", en: "≈ €87,000,000" },
         amount: 87000000,
         note: { uk: "≈ 6% основної суми", en: "≈ 6% of the principal" },
       },

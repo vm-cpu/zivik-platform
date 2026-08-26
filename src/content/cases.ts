@@ -652,7 +652,21 @@ export const registryCases: RegistryCase[] = [
     stage: "frozen",
     status: { uk: "Заморожено безстроково", en: "Frozen indefinitely" },
     year: 2022,
-    amountUsd: 210000000000,
+    // Null, and the figure lives in `note` instead, because €210bn is not a
+    // dollar amount and this field is dollars — `CasePending` formats it with
+    // `Intl.NumberFormat(…, {currency: "USD"})`, so the euro figure printed as
+    // «210 000 000 000 $» directly above the note's «Euroclear €210 млрд»:
+    // one sum, two currencies, one screen. The immobilised Russian
+    // central-bank assets held at Euroclear are quoted in euros by the EU, by
+    // Belgium and by Euroclear itself; converting them to dollars here would
+    // invent a rate and a date the record does not give. Nor is this a "sum in
+    // dispute", which is what the field's only render site calls it: it is a
+    // stock of assets frozen by an enforcement measure, not a claim in a
+    // proceeding. Every other amount on this list really is USD — the awards
+    // and claims in the PCA, SCC and ICC arbitrations — so this row was the
+    // only mismatch. Restoring the number here needs a currency-carrying
+    // field, which means a change in `components/cases/CasePending.tsx`.
+    amountUsd: null,
     note: { uk: "Euroclear €210 млрд", en: "Euroclear €210bn" },
     pages: null,
     decisionUrl: null,

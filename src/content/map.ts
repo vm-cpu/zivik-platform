@@ -249,12 +249,32 @@ export const MAP_EVENTS: MapEvent[] = [
     // Paris because the Oschadbank award — the largest here at $1.1bn — was
     // made there. The map listed Oschadbank among the decisions this site
     // leads to while drawing no line to where it was decided.
+    //
+    // The ICJ is named because this card links one of its cases. It was
+    // missing from `forums` while `cases` led to icj-cerd-icsft, so the card
+    // spelled out two of the three fora it actually sends a reader to.
     courts: ["strasbourg", "hague", "paris"],
     forums: {
-      uk: "ЄСПЛ (Страсбург) · PCA (Гаага і Париж)",
-      en: "ECtHR (Strasbourg) · PCA (The Hague and Paris)",
+      uk: "ЄСПЛ (Страсбург) · ICJ і PCA (Гаага) · PCA (Париж)",
+      en: "ECtHR (Strasbourg) · the ICJ and the PCA (The Hague) · the PCA (Paris)",
     },
-    count: { uk: "8 проваджень", en: "8 proceedings" },
+    // WHAT THIS COUNTS: the registry rows whose subject is the occupation of
+    // Crimea, in the fora named above. Eleven, and they can be listed —
+    // icj-1 (CERD limb; its note reads "Crimea, Donbas"), ecthr-4 (Ukraine v
+    // Russia (re Crimea)), and the nine BIT arbitrations over property taken
+    // in Crimea: pca-20 Naftogaz/Chornomornaftogaz (PCA 2017-16), pca-21
+    // Belbek, pca-22 PrivatBank, pca-23 Oschadbank, pca-24 Ukrnafta, pca-25
+    // Stabil and others, pca-26 Everest Estate, pca-27 Lugzor and others,
+    // pca-28 DTEK Krymenergo.
+    //
+    // It said 8, and no definition reconstructs 8 from this registry: the
+    // arbitrations alone are 9, and with the ICJ and the ECtHR they are 11.
+    // Deliberately NOT counted, so the next reader does not re-derive them:
+    // nl-34…nl-37, the Hoge Raad set-aside and enforcement proceedings, which
+    // are the afterlife of four awards already counted here rather than
+    // separate Crimea cases; and eu-40 (Euroclear), which the registry itself
+    // records as an enforcement measure and not a proceeding.
+    count: { uk: "11 проваджень", en: "11 proceedings" },
   },
   {
     key: "kerch",
@@ -273,6 +293,13 @@ export const MAP_EVENTS: MapEvent[] = [
       uk: "ITLOS (Гамбург) · PCA (Гаага)",
       en: "ITLOS (Hamburg) · PCA (The Hague)",
     },
+    // WHAT THIS COUNTS: two proceedings — the ITLOS provisional-measures case
+    // (ITLOS Case No. 26) and the Annex VII merits arbitration (PCA Case No.
+    // 2019-28). Both are correct and both are named in the registry, but the
+    // registry carries them on ONE row, itlos-15, whose citation recites both.
+    // So the map counts two where the registry counts one, on purpose: this is
+    // a difference in what a "row" is, not a disagreement about the facts.
+    // Do not reconcile it by changing either side.
     count: { uk: "2 провадження", en: "2 proceedings" },
   },
   {
@@ -308,18 +335,32 @@ export const MAP_EVENTS: MapEvent[] = [
     size: 19,
     when: { uk: "Схід · 2014", en: "The east · 2014" },
     title: { uk: "Схід України", en: "Eastern Ukraine" },
+    // Three of the four are inter-State applications; the fourth, Finland v
+    // Petrovsky, is a national criminal trial of one man. The note used to say
+    // only "inter-State applications", which described the card's own link
+    // list wrongly.
     note: {
-      uk: "Збройний конфлікт — міждержавні заяви.",
-      en: "Armed conflict, brought as inter-State applications.",
+      uk: "Збройний конфлікт — міждержавні заяви та вирок за універсальною юрисдикцією.",
+      en: "Armed conflict — inter-State applications and a universal-jurisdiction conviction.",
     },
     // Helsinki: Finland tried Petrovsky for the Aidar ambush under universal
     // jurisdiction, and that judgment is one of the eight written up here.
-    courts: ["strasbourg", "helsinki"],
+    // The Hague, because two of the four cases this card links are the ICJ's
+    // (icj-cerd-icsft and icj-genocide) and the card drew no line to them.
+    courts: ["strasbourg", "hague", "helsinki"],
     forums: {
-      uk: "ЄСПЛ (Страсбург) · Окружний суд Гельсінкі",
-      en: "ECtHR (Strasbourg) · Helsinki District Court",
+      uk: "ЄСПЛ (Страсбург) · ICJ (Гаага) · Окружний суд Гельсінкі",
+      en: "ECtHR (Strasbourg) · the ICJ (The Hague) · Helsinki District Court",
     },
-    count: { uk: "2 провадження", en: "2 proceedings" },
+    // WHAT THIS COUNTS: the four proceedings this card links, one per registry
+    // row — ecthr-5 (Ukraine and Netherlands v Russia), icj-1 (the ICSFT limb,
+    // terrorism financing in the east), icj-2 (Allegations of Genocide) and
+    // fi-38 (Finland v Petrovsky). It said 2 while linking 4.
+    // Deliberately NOT counted: ecthr-8, Russia's own inter-State application
+    // (App 36958/21, Rule 39 refused). The registry fixes no place for it —
+    // its note is the application number and nothing else — so it cannot be
+    // put on this site's card without deciding, here, what it is about.
+    count: { uk: "4 провадження", en: "4 proceedings" },
   },
   {
     key: "energy",
@@ -334,7 +375,21 @@ export const MAP_EVENTS: MapEvent[] = [
     },
     courts: ["hague"],
     forums: { uk: "PCA (Гаага)", en: "PCA (The Hague)" },
-    count: { uk: "6 арбітражів", en: "6 arbitrations" },
+    // WHAT THIS COUNTS: the arbitrations against Russia over generation and
+    // grid assets that this registry holds — pca-28 DTEK Krymenergo (PCA
+    // 2018-41), pca-29 Ukrenergo (PCA 2020-17), pca-30 Energoatom (II) and
+    // pca-31 Ukrhydroenergo. Four, and the note above names three of the four
+    // operators.
+    //
+    // It said 6, which nothing here reconstructs. Two things it is not: the
+    // Naftogaz/Gazprom gas arbitrations (scc-17, scc-18, icc-arb-19) and
+    // Naftogaz v Russia (pca-20) are gas-supply and Crimea-expropriation
+    // matters, and adding them gives 8, not 6; and row pca-30 is styled
+    // "(II)" while the registry holds no Energoatom (I), so the missing first
+    // arbitration cannot be counted from this file either. If the six is
+    // right in the world, the two extra proceedings have to enter the
+    // registry before this card may say so.
+    count: { uk: "4 арбітражі", en: "4 arbitrations" },
   },
   {
     key: "mariupol",
@@ -349,6 +404,11 @@ export const MAP_EVENTS: MapEvent[] = [
     },
     courts: ["hague"],
     forums: { uk: "ICC (Гаага)", en: "ICC (The Hague)" },
+    // WHAT THIS COUNTS: the six arrest warrants on the registry — icc-9 Putin,
+    // icc-10 Lvova-Belova, icc-11 Kobylash, icc-12 Sokolov, icc-13 Shoigu,
+    // icc-14 Gerasimov. Warrants, not proceedings: the umbrella situation
+    // (icc-situation, ICC-01/22) is the investigation they issue from and is
+    // not one of the six.
     count: { uk: "6 ордерів", en: "6 warrants" },
   },
 ];

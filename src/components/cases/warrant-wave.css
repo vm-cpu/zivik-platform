@@ -1,0 +1,45 @@
+/* ============================================================
+   Warrant-wave legend — what each wave of warrants is about.
+
+   Owned and imported by components/cases/WarrantWall.tsx. The base
+   `.wr-legend` / `.wr-key` rules stay in cases/case/60-warrants.css; only the
+   classes that file does not know about live here, so no selector is defined
+   twice.
+
+   `.casepage .wr-key` is (0,2,0) and lays the key out as a one-line inline
+   flex row. `.casepage .wr-key.wr-key-note` is (0,3,0) and wins on
+   specificity, not on load order.
+
+   The band is --brand-paper. Colour comes only from --brand-* tokens:
+   --brand-ink-2 (7.65:1 here) for the wave name, --brand-faint (5.34:1) for
+   the sentence under it.
+   ============================================================ */
+
+.casepage .wr-key.wr-key-note {
+  display: grid;
+  grid-template-columns: 10px 1fr;
+  column-gap: var(--space-2);
+  row-gap: var(--space-1);
+  align-items: start;
+  /* One column per wave while there is room; a full-width row once the
+     sentences would be squeezed into a gutter. */
+  flex: 1 1 clamp(230px, 28%, 380px);
+  max-width: 58ch;
+}
+
+.casepage .wr-key.wr-key-note > i {
+  margin-top: 0.34em;
+}
+
+.casepage .wr-key .wr-key-head {
+  align-self: center;
+  color: var(--brand-ink-2);
+}
+
+.casepage .wr-key .wr-key-sum {
+  grid-column: 2;
+  font: 400 var(--t-sm) var(--brand-font-body);
+  line-height: 1.55;
+  letter-spacing: 0;
+  color: var(--brand-faint);
+}

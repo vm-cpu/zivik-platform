@@ -45,6 +45,13 @@ export const icjCerdIcsft: DecisionSummary = {
     seat: { uk: "Гаага", en: "The Hague" },
   },
 
+  /* Search-result description. `plain.tldr` used to serve as this and runs
+     three to four sentences, so the snippet was cut off mid-word. */
+  metaDesc: {
+    uk: "Рішення МС ООН від 31 січня 2024: два порушення — Росія не розслідувала фінансування тероризму і згорнула українську освіту в Криму.",
+    en: "ICJ judgment of 31 January 2024: two breaches upheld — Russia failed to investigate terrorism financing and curtailed Ukrainian schooling in Crimea.",
+  },
+
   plain: {
     tldr: {
       uk: "Україна судилася з Росією у Міжнародному суді ООН за двома договорами — про фінансування тероризму (події на сході) і про расову дискримінацію (Крим). Суд визнав лише два порушення: Росія не розслідувала ймовірне фінансування тероризму й згорнула шкільну освіту українською мовою в Криму. Більшість вимог України відхилено.",
@@ -445,6 +452,14 @@ export const icjCerdIcsft: DecisionSummary = {
       },
     },
   ],
+
+  /* The date the template used to hardcode. It is in the verbatim: "Order on
+     Provisional Measures of 19 April 2017", and the dispositif cites
+     "paragraph 106 (1) (a) of the Order of 19 April 2017". */
+  provisionalMeasuresOrder: {
+    uk: "Наказ від 19 квітня 2017",
+    en: "Order of 19 April 2017",
+  },
 
   provisionalMeasures: [
     {

@@ -42,6 +42,13 @@ export const echrUkraineNetherlands: DecisionSummary = {
     seat: { uk: "Страсбург", en: "Strasbourg" },
   },
 
+  /* Search-result description. `plain.tldr` used to serve as this and runs
+     three to four sentences, so the snippet was cut off mid-word. */
+  metaDesc: {
+    uk: "Рішення Великої палати ЄСПЛ від 9 липня 2025: Росія відповідальна за системні порушення прав людини в Україні з 2014 року, зокрема збиття MH17.",
+    en: "ECtHR Grand Chamber judgment of 9 July 2025: Russia held responsible for systemic human-rights violations in Ukraine since 2014, MH17 included.",
+  },
+
   plain: {
     tldr: {
       uk: "Чотири міждержавні скарги — три від України, одна від Нідерландів через збиття MH17 — Велика палата ЄСПЛ розглянула разом і 9 липня 2025 року винесла рішення по суті. Суд визнав Росію відповідальною за системні порушення прав людини на сході України з 2014 року і по всій країні з 2022-го: від збиття MH17 і страт полонених до катувань, депортації дітей і заборони української освіти. Сатисфакцію (компенсації) буде визначено окремим рішенням.",

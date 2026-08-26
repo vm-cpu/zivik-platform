@@ -234,6 +234,21 @@ export interface JudgmentSource {
   url: string;
   /** The court's case-overview page. */
   caseUrl: string;
+  /**
+   * What `url` actually points at, when it is NOT the court's own text of the
+   * decision. Same vocabulary as `Citation.type` ("blog post",
+   * "news/insight", …), and normally the very entry in `sources` that carries
+   * this URL, so the page can name its publisher.
+   *
+   * Absent means the link is the court's own document, and the page says so:
+   * it prints `court` under the button and tells search engines, through
+   * `isBasedOn`, that the article is based on that document. A summary whose
+   * judgment is not published must set this, or the page will caption a blog
+   * post with the name of a court — which is what finland-torden did.
+   */
+  urlType?: string;
+  /** The same, for `caseUrl`. Absent means the court's own case page. */
+  caseUrlType?: string;
   /** Length of the published text, where it is known. */
   pages?: number;
   /** Delivery date as ISO 8601 (YYYY-MM-DD) — used in structured data. */
@@ -337,9 +352,19 @@ export interface DecisionSummary extends VerbatimSummary {
   /**
    * The source doc's tab for this case is not yet marked finalized: the
    * verbatim was ingested from a working draft and will be re-ingested when
-   * the tab is done. Renders a provenance notice above the summary text.
+   * the tab is done. Renders a provenance notice high on the page and again
+   * above the verbatim text — see components/cases/ProvenanceNotice.
    */
   provisionalSource?: boolean;
+  /**
+   * Search-result description, under 160 characters in both locales.
+   *
+   * `plain.tldr` used to serve as this, and it is a three-to-four-sentence
+   * paragraph: every decision page's snippet ran 300–496 characters and was
+   * cut off mid-sentence. Written from the same record the tldr is written
+   * from — what the case is and how it ended — not from marketing copy.
+   */
+  metaDesc?: Localized;
   plain: PlainLanguage;
   glossary: GlossaryTerm[];
   whoIsWho: WhoEntry[];
@@ -363,6 +388,14 @@ export interface DecisionSummary extends VerbatimSummary {
   /** Filters for the timeline. Absent → a plain, unfiltered timeline. */
   timelineTracks?: TimelineTrack[];
   provisionalMeasures?: ProvisionalMeasure[];
+  /**
+   * Which Order these provisional measures come from — the sub-label of the
+   * instrument. Required whenever `provisionalMeasures` is set (enforced in
+   * `summaries/index.ts`): the template used to hardcode "Order of 19 April
+   * 2017", which was right only for as long as icj-cerd-icsft was the only
+   * page with the instrument.
+   */
+  provisionalMeasuresOrder?: Localized;
   theatres?: Theatre[];
   /**
    * Map framing: which marker is the seat, and where the reach line points.

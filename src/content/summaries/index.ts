@@ -75,6 +75,33 @@ export const SUMMARIES: Record<string, DecisionSummary> = Object.assign(
   }
 }
 
+/**
+ * Provenance invariants. Each of these was a live defect before it was a
+ * guard, so the build refuses rather than shipping the next one quietly.
+ */
+{
+  const bad: string[] = [];
+  for (const [slug, s] of Object.entries(SUMMARIES)) {
+    // The provisional-measures instrument used to caption every page's
+    // measures "Order of 19 April 2017", hardcoded in the template. The
+    // caption now comes from the data, so the data has to carry it.
+    if (s.provisionalMeasures?.length && !s.provisionalMeasuresOrder) {
+      bad.push(`${slug}: provisionalMeasures without provisionalMeasuresOrder`);
+    }
+    // A search snippet is cut off around 160 characters. `metaDesc` exists so
+    // that the cut never lands mid-sentence; one over the line defeats it.
+    for (const loc of ["uk", "en"] as const) {
+      const d = s.metaDesc?.[loc];
+      if (d && d.length > 160) {
+        bad.push(`${slug}: metaDesc.${loc} is ${d.length} characters (max 160)`);
+      }
+    }
+  }
+  if (bad.length) {
+    throw new Error(`Summary provenance invariants violated:\n  ${bad.join("\n  ")}`);
+  }
+}
+
 /** Freshness of a page: its context-verification date, else the decision date. */
 export function summaryLastModified(slug: string): string | undefined {
   const s = SUMMARIES[slug];

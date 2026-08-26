@@ -25,6 +25,37 @@ const QUOTE_SLUG = "icj-genocide";
 const OPEN_MARK: Record<Locale, string> = { uk: "«", en: "“" };
 
 /**
+ * What the link promises — and why it no longer promises the quoted decision.
+ *
+ * The words above are from the ICJ's Order on provisional measures of
+ * 16 March 2022. The page this links to writes up a different decision in the
+ * same case: the Judgment on Preliminary Objections of 2 February 2024. Its
+ * `judgment.date` is 2024-02-02, its masthead reads JUDGMENT OF 2 FEBRUARY
+ * 2024, its timeline runs 2014 → 26 February 2022 → 5 June 2023 → 2 February
+ * 2024, and it carries no `provisionalMeasures` block. So the link said
+ * "Читати рішення" / "Read the decision" and did not lead to the decision
+ * quoted.
+ *
+ * The other repair would have been to add the Order to that page's timeline.
+ * It is not available: nothing in this repository records the Order's date or
+ * its content except `dict.quote.*` — the very strings under question — and
+ * the icj-genocide verbatim, which mentions only the *request* for provisional
+ * measures filed on 26 February 2022. Inventing the entry from memory is the
+ * one thing this archive must not do, so the promise changed instead: the
+ * label now names the decision the reader will actually find, and the date it
+ * carries is read off `icjGenocide.judgment.date` rather than typed here, so
+ * the two cannot drift apart.
+ *
+ * `dict.quote.read` ("Читати рішення" / "Read the decision") is what this
+ * replaces and now has no consumer — a matter for whoever owns the
+ * dictionaries.
+ */
+const DESTINATION: Record<Locale, string> = {
+  uk: "Сторінка справи: рішення від {date} (попередні заперечення)",
+  en: "The case page: judgment of {date} (preliminary objections)",
+};
+
+/**
  * The source line is composed only from values recorded in this repository.
  * Nothing in it is written from memory:
  *
@@ -63,6 +94,13 @@ export default function Quote({
   const href = `/${locale}/cases/${QUOTE_SLUG}`;
   const { parties, docket } = citation(locale);
   const meta = docket ? `${dict.quote.source} · ${docket}` : dict.quote.source;
+  // The linked page's own decision date, formatted the way the decision pages
+  // format theirs. Read from the summary, never typed here.
+  const linkedDate = new Date(`${icjGenocide.judgment.date}T00:00:00Z`).toLocaleDateString(
+    locale === "uk" ? "uk-UA" : "en-GB",
+    { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
+  );
+  const destination = DESTINATION[locale].replace("{date}", linkedDate);
 
   return (
     /* The band was `.nsv-quote`, styled from [locale]/home.css. It is now
@@ -85,7 +123,7 @@ export default function Quote({
           <cite className="nsvq-case">{parties}</cite>
           <span className="nsvq-meta">{meta}</span>
           <span className="nsvq-read">
-            {dict.quote.read}
+            {destination}
             <span aria-hidden="true"> →</span>
           </span>
         </Link>

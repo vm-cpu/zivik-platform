@@ -1,0 +1,51 @@
+/* ============================================================
+   "At a glance" — the docket ledger in the overview band.
+
+   Owned and imported by components/cases/GlanceFacts.tsx. Only `.glance*`
+   selectors live here; nothing the decision page's own stylesheets define is
+   touched.
+
+   Deliberately NOT another row of cards. The KPI strip directly above it is
+   cards on --brand-night-2 carrying figures; these are identifiers, and a
+   second card grid would read as more of the same. A ruled ledger — hairline
+   over each entry, label above value — is what a docket looks like on paper
+   and separates the two instruments without a heading having to do it.
+
+   Colour comes only from --brand-* tokens. On the band's ground,
+   --brand-night: --brand-faint-dark clears AA for the labels, --brand-cream
+   is the page's text-on-dark colour, --brand-night-rule the hairline.
+   ============================================================ */
+
+.casepage .glance {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  column-gap: var(--space-8);
+}
+
+.casepage .glance-item {
+  border-top: 1px solid var(--brand-night-rule);
+  padding-block: var(--space-4);
+}
+
+.casepage .glance dt {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-faint-dark);
+  margin-bottom: var(--space-2);
+}
+
+.casepage .glance dd {
+  margin: 0;
+  font: 400 var(--t-body) var(--brand-font-body);
+  line-height: 1.45;
+  color: var(--brand-cream);
+  text-wrap: pretty;
+}
+
+@media (max-width: 520px) {
+  .casepage .glance {
+    grid-template-columns: 1fr;
+  }
+}

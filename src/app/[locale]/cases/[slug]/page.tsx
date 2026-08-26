@@ -13,6 +13,9 @@ import ObjectionCards from "@/components/cases/ObjectionCards";
 import TakingsGrid from "@/components/cases/TakingsGrid";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
+import GlanceFacts from "@/components/cases/GlanceFacts";
+import TheatreLegend from "@/components/cases/TheatreLegend";
+import ProvenanceNotice, { type ProvenanceNote } from "@/components/cases/ProvenanceNotice";
 import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
@@ -41,6 +44,10 @@ import "../case/70-chrome.css";
 /** Localized chrome labels (the summary body stays in its source language). */
 const T = {
   overview: { uk: "Огляд", en: "Overview" },
+  /* Heading for `DecisionSummary.glance` — the docket facts. Distinct from
+     `inShort` ("Якщо коротко"), which heads the plain-language tldr: one is a
+     ledger of identifiers, the other is a paragraph. */
+  glanceH: { uk: "Картка справи", en: "Case at a glance" },
   timeline: { uk: "Хронологія", en: "Timeline" },
   tracks: { uk: "Два театри", en: "Two theatres" },
   found: { uk: "Що встановив Суд", en: "What the Court found" },
@@ -69,7 +76,10 @@ const T = {
   pagesPdf: { uk: "PDF, {n} с.", en: "PDF, {n} pp." },
   keyRulings: { uk: "Ключові тлумачення", en: "Key rulings on the law" },
   provMeasures: { uk: "Тимчасові заходи", en: "Provisional measures" },
-  provSub: { uk: "Наказ від 19 квітня 2017", en: "Order of 19 April 2017" },
+  /* `provSub` used to live here, hardcoded to "Наказ від 19 квітня 2017" /
+     "Order of 19 April 2017" — right for icj-cerd-icsft and for nothing else.
+     It is now `DecisionSummary.provisionalMeasuresOrder`, and index.ts refuses
+     to build a summary that has the instrument without naming its Order. */
   orderBreached: { uk: "Наказ порушено", en: "Order breached" },
   orderComplied: { uk: "Дотримано", en: "Complied" },
   inShort: { uk: "Якщо коротко", en: "In short" },
@@ -118,13 +128,40 @@ const T = {
   standing: { uk: "Рішення чинне", en: "Award stands" },
   notStanding: { uk: "Рішення скасовано", en: "Award annulled" },
   seatLabel: { uk: "Місце арбітражу", en: "Seat" },
+  /*
+   * Provenance notices. Both strings existed here already and were referenced
+   * nowhere, so four pages served preliminary text and all eight served a
+   * draft translation with no notice at all. They are now rendered by
+   * components/cases/ProvenanceNotice, twice: as a band under the masthead
+   * and again above the verbatim text.
+   *
+   * Both were reworded. The old provisional note said the summary's "tab in
+   * the working document is not yet finalized" — true, and meaningless to a
+   * reader who has never seen the working document; it also told them what
+   * we would do about it rather than what they should do about it. The old
+   * translation note stated the facts in one clause and left the reader to
+   * work out the consequence. Each now says what the text is, and what to
+   * rely on instead.
+   */
+  noteAria: { uk: "Про цей текст", en: "About this text" },
+  provisionalTag: { uk: "Попередня редакція", en: "Preliminary text" },
   provisionalNote: {
-    uk: "Текст самері — попередня версія: вкладку в робочому документі ще не фіналізовано. Після фіналізації текст на цій сторінці буде оновлено.",
-    en: "The summary text is a preliminary version: its tab in the working document is not yet finalized. This page will be updated when it is.",
+    uk: "Цей конспект перенесено з робочої чернетки, яку ще не фіналізовано: формулювання можуть змінитися. Перед цитуванням звіряйтеся з документом суду, а не з цією сторінкою.",
+    en: "This summary was carried across from a working draft that has not been finalized: its wording may change. Before citing, check against the court's own document rather than this page.",
   },
+  translationTag: { uk: "Чернетка перекладу", en: "Draft translation" },
   translationNote: {
-    uk: "Український переклад — чернетка, очікує юридичної вичитки; мовою запису є англійська.",
-    en: "The Ukrainian translation is a draft pending legal review; English is the language of record.",
+    uk: "Український переклад конспекту ще не пройшов юридичної вичитки. Мова запису — англійська: за будь-якої розбіжності визначальним є англійський текст сторінки.",
+    en: "The Ukrainian translation of this summary has not yet passed legal review. English is the language of record: where the two differ, the English page governs.",
+  },
+  /* The third provenance case: the court's own text is not published anywhere
+     this page can link to, so the two buttons in the masthead lead to
+     commentary and reporting instead. The registry says the same thing in its
+     own way — `decisionUrl: null`. */
+  unpublishedTag: { uk: "Рішення не опубліковано", en: "Decision not published" },
+  unpublishedNote: {
+    uk: "Суд не оприлюднив тексту цього рішення, і в реєстрі за ним не значиться жодного судового документа. Посилання нижче ведуть на фаховий коментар і на репортаж — це не текст рішення.",
+    en: "The court has not published the text of this decision, and the registry records no court document for it. The links below lead to expert commentary and to news reporting — neither is the decision itself.",
   },
 
   // Warrant wall.
@@ -185,7 +222,10 @@ const OUTCOME_LABEL: Record<Outcome, Localized> = {
 const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
   "blog post": { uk: "допис у блозі", en: "blog post" },
   "journal article": { uk: "стаття в журналі", en: "journal article" },
-  "news/insight": { uk: "аналітика", en: "news / insight" },
+  /* Was «аналітика» alone, which under the masthead's new source caption read
+     as a claim that a Ukrainska Pravda news report was analysis. The English
+     side already carried both halves. */
+  "news/insight": { uk: "новини / аналітика", en: "news / insight" },
   "preprint/repository": { uk: "препринт / репозиторій", en: "preprint / repository" },
   "official/ICC": { uk: "офіційний документ МКС", en: "ICC official document" },
   "official/award": { uk: "текст рішення", en: "award text" },
@@ -220,6 +260,61 @@ const MK: Record<string, number[]> = {
 };
 
 const mapContext = (uaMap as { context?: string[] }).context ?? [];
+
+/** A search snippet is cut off around here. */
+const META_MAX = 160;
+
+/**
+ * The description a search result shows.
+ *
+ * `pick(summary.plain.tldr, locale)` used to be handed to `description`
+ * verbatim, and the tldr is a three-to-four-sentence paragraph: every decision
+ * page's snippet ran 300–496 characters and broke off mid-sentence. A summary
+ * that has authored a `metaDesc` gets it (index.ts enforces the limit). The
+ * rest fall back to the tldr's opening sentence — which is always "what this
+ * case is and how it ended" — and only if that too is over the limit is it cut,
+ * at a word boundary, with a visible ellipsis rather than the engine's silent
+ * one.
+ */
+function shortDescription(summary: DecisionSummary, locale: Locale): string {
+  if (summary.metaDesc) return pick(summary.metaDesc, locale);
+  const tldr = pick(summary.plain.tldr, locale).trim();
+  const first = /^[^.!?]*[.!?]/.exec(tldr)?.[0]?.trim() ?? tldr;
+  if (first.length <= META_MAX) return first;
+  const cut = first.slice(0, META_MAX - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+}
+
+/**
+ * What a link in the masthead actually points at, and who published it.
+ *
+ * `judgment.url` and `judgment.caseUrl` are normally the court's own document
+ * and its own case page, and the template captions the first with
+ * `judgment.court`. On finland-torden they are an EJIL:Talk! analysis and a
+ * Ukrainska Pravda report — the Helsinki District Court's judgment is not
+ * published anywhere — so the page captioned a blog post with the name of a
+ * court and told search engines, through `isBasedOn` and `about.url`, that the
+ * court had authored a news article. The registry row for that case has said
+ * `decisionUrl: null` all along.
+ *
+ * A summary declares the mismatch with `urlType` / `caseUrlType`, in the same
+ * vocabulary `Citation.type` uses. The publisher is not a second field to keep
+ * in step: it is read out of the `sources` list, which already carries this
+ * exact URL with its publication and date.
+ */
+function linkProvenance(
+  url: string,
+  type: string | undefined,
+  sources: DecisionSummary["sources"],
+  locale: Locale,
+): { official: boolean; caption?: string } {
+  if (!type) return { official: true };
+  const cited = sources.find((s) => s.url === url);
+  const kind = pick(TYPE_LABEL[type] ?? { uk: type, en: type }, locale);
+  const publisher = cited?.publication;
+  return { official: false, caption: publisher ? `${publisher} · ${kind}` : kind };
+}
 
 /**
  * Europe-context map: where the case was decided, and the ground it is about.
@@ -309,21 +404,14 @@ function TheatreMap({
           })}
         </g>
       </svg>
-      <div className="map-legend">
-        <span>
-          <i className="lg-court" />
-          {pick(forum.name, locale)} — {pick(forum.caption, locale)}
-        </span>
-        {theatres.map((t, i) => {
-          const tag = typeof t.tag === "string" ? t.tag : pick(t.tag, locale);
-          return (
-            <span key={i}>
-              <i />
-              {pick(t.place, locale)} — <b>{tag}</b>
-            </span>
-          );
-        })}
-      </div>
+      <TheatreLegend
+        seat={{ name: pick(forum.name, locale), caption: pick(forum.caption, locale) }}
+        theatres={theatres.map((t) => ({
+          place: pick(t.place, locale),
+          tag: typeof t.tag === "string" ? t.tag : pick(t.tag, locale),
+          summary: pick(t.summary, locale),
+        }))}
+      />
     </div>
   );
 }
@@ -420,7 +508,7 @@ export async function generateMetadata({
     locale,
     slug,
     title: `${parties} — ${pick(summary.judgment.court, locale)}`,
-    description: pick(summary.plain.tldr, locale),
+    description: shortDescription(summary, locale),
     ogAlt: dict.meta.ogAlt,
     siteName: dict.brand.wordmark,
     image: `/og/cases/${slug}.png`,
@@ -441,7 +529,7 @@ export default async function CasePage({
 
   const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
   const { interpretations, plain, glossary, whoIsWho, faq, related } = summary;
-  const { theatres = [], provisionalMeasures = [], timelineTracks = [] } = summary;
+  const { theatres = [], provisionalMeasures = [], timelineTracks = [], glance = [] } = summary;
   const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
   const parties = summary.title
     ? pick(summary.title, locale)
@@ -458,6 +546,56 @@ export default async function CasePage({
     caption: forum.institution,
     reachTo: summary.mapFocus?.reachTo ?? "kyiv",
   };
+  /*
+   * What the two masthead links actually are. Both are the court's own
+   * documents unless the summary says otherwise; when neither is, the page
+   * carries a notice saying so, because that is what the registry row says.
+   */
+  const readSrc = linkProvenance(judgment.url, judgment.urlType, sources, locale);
+  const fileSrc = linkProvenance(judgment.caseUrl, judgment.caseUrlType, sources, locale);
+  const noOfficialText = !readSrc.official && !fileSrc.official;
+
+  /*
+   * The provenance notices, in the order a reader needs them: what this text
+   * is (a draft), what language it is in (a draft translation), and what the
+   * links at the top of the page will and will not give them.
+   *
+   * The translation notice is Ukrainian-only on purpose. English is the
+   * language of record on all eight pages — an English reader is looking at
+   * the source text, not at a translation of it — so the English page has
+   * nothing to warn about and does not pretend to.
+   */
+  const showTranslationNote = locale === "uk" && Boolean(summary.blocksUk);
+  const provenanceNotes: ProvenanceNote[] = [
+    ...(summary.provisionalSource
+      ? [
+          {
+            kind: "provisional" as const,
+            tag: pick(T.provisionalTag, locale),
+            text: pick(T.provisionalNote, locale),
+          },
+        ]
+      : []),
+    ...(showTranslationNote
+      ? [
+          {
+            kind: "translation" as const,
+            tag: pick(T.translationTag, locale),
+            text: pick(T.translationNote, locale),
+          },
+        ]
+      : []),
+    ...(noOfficialText
+      ? [
+          {
+            kind: "unpublished" as const,
+            tag: pick(T.unpublishedTag, locale),
+            text: pick(T.unpublishedNote, locale),
+          },
+        ]
+      : []),
+  ];
+
   // Body in the reader's language; English is the source of truth.
   const rawBlocks = locale === "uk" && summary.blocksUk ? summary.blocksUk : summary.blocks;
   const isSourcesHeading = (b: SummaryBlock) =>
@@ -551,16 +689,31 @@ export default async function CasePage({
         url: pageUrl,
         datePublished: judgment.date,
         ...(summary.asOf ? { dateModified: summary.asOf } : {}),
-        // The decision itself is a court document, not legislation; the
-        // treaties it applies stay Legislation in `mentions` below.
+        /*
+         * The decision itself is a court document, not legislation; the
+         * treaties it applies stay Legislation in `mentions` below.
+         *
+         * `url` here is a claim that the court published its decision at that
+         * address, and `isBasedOn` a claim that this article is based on the
+         * document there. Both used to be emitted unconditionally, so
+         * finland-torden told every crawler that the Helsinki District Court
+         * had authored a Ukrainska Pravda article and that this page was
+         * based on an EJIL:Talk! blog post. A URL is attached only when the
+         * summary vouches for it as the court's own; the commentary and the
+         * reporting are still published, under `citation`, as what they are.
+         */
         about: {
           "@type": "CreativeWork",
           name: masthead.official,
           creator: { "@type": "Organization", name: pick(judgment.court, locale) },
           datePublished: judgment.date,
-          url: judgment.caseUrl ?? judgment.url,
+          ...(fileSrc.official
+            ? { url: judgment.caseUrl }
+            : readSrc.official
+              ? { url: judgment.url }
+              : {}),
         },
-        isBasedOn: judgment.url,
+        ...(readSrc.official ? { isBasedOn: judgment.url } : {}),
         publisher: {
           "@type": "Organization",
           name: dict.footer.org,
@@ -679,15 +832,21 @@ export default async function CasePage({
         <p className="fullname">{masthead.official}</p>
 
         <div className="actions">
+          {/* The sub-label says who stands behind the document at the other
+              end. It was always `judgment.court`, which is right when the link
+              is the court's own text and a false attribution when it is not:
+              finland-torden's primary button read "Окружний суд Гельсінкі"
+              under a link to EJIL:Talk!. */}
           <a className="btn btn-primary" href={judgment.url} target="_blank" rel="noopener noreferrer">
             {pick(judgment.readLabel ?? T.readJudgment, locale)}
             <em>
-              {pick(judgment.court, locale)}
+              {readSrc.caption ?? pick(judgment.court, locale)}
               {pagesLabel ? ` · ${pagesLabel}` : ""}
             </em>
           </a>
           <a className="btn btn-ghost" href={judgment.caseUrl} target="_blank" rel="noopener noreferrer">
             {pick(judgment.fileLabel ?? T.caseFile, locale)}
+            {fileSrc.caption && <em>{fileSrc.caption}</em>}
           </a>
         </div>
         </div>
@@ -695,6 +854,12 @@ export default async function CasePage({
 
       {/* 1a — Sticky page navigation: every band, not just the article */}
       <PageNav sections={pageSections} ariaLabel={pick(T.navAria, locale)} />
+
+      {/* 1c — What this text is. Above the plain-language lede, because the
+          lede is written from the same provisional summary the notice is
+          about; a reader meets the caveat before the first sentence they
+          might quote. Nothing renders on a page whose flags set no notice. */}
+      <ProvenanceNotice notes={provenanceNotes} label={pick(T.noteAria, locale)} />
 
       {/* 1b — Plain-language lede */}
       <section className="lede">
@@ -713,6 +878,20 @@ export default async function CasePage({
       {/* 2 — Dashboard: one column of full-width instruments */}
       <section className="dash" id="overview" data-navsec aria-label={pick(T.overview, locale)}>
         <div className="rail dash-stack">
+          {/* The docket facts, then the figures. `glance` is authored on all
+              eight summaries — 48 facts — and rendered nowhere until now. */}
+          {glance.length > 0 && (
+            <div>
+              <h2 className="lbl">{pick(T.glanceH, locale)}</h2>
+              <GlanceFacts
+                facts={glance.map((g) => ({
+                  label: pick(g.label, locale),
+                  value: pick(g.value, locale),
+                }))}
+              />
+            </div>
+          )}
+
           <div>
             <h2 className="lbl">{pick(T.overview, locale)}</h2>
             <div className="kpis">
@@ -994,7 +1173,9 @@ export default async function CasePage({
           <div className="rail">
             <div className="lbl lbl-onpaper">
               {pick(T.provMeasures, locale)}
-              <em className="lbl-sub">{pick(T.provSub, locale)}</em>
+              {summary.provisionalMeasuresOrder && (
+                <em className="lbl-sub">{pick(summary.provisionalMeasuresOrder, locale)}</em>
+              )}
             </div>
             <ul className="pmeasures">
               {provisionalMeasures.map((m, i) => (
@@ -1060,6 +1241,14 @@ export default async function CasePage({
       <section className="readzone" id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
         <div className="rail">
           <article className="read">
+            {/* The same caveat, again, at the head of the text it is about —
+                the page nav lets a reader jump straight here and skip the
+                band under the masthead. */}
+            <ProvenanceNotice
+              notes={provenanceNotes}
+              label={pick(T.noteAria, locale)}
+              variant="inline"
+            />
             {glossary.length > 0 && (
               <nav className="termchips" aria-label={pick(T.termsInText, locale)}>
                 <span className="termchips-lbl">{pick(T.termsInText, locale)}:</span>

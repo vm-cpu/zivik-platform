@@ -45,6 +45,13 @@ export const iccUkraine: DecisionSummary = {
     seat: { uk: "Гаага", en: "The Hague" },
   },
 
+  /* Search-result description. `plain.tldr` used to serve as this and runs
+     three to four sentences, so the snippet was cut off mid-word. */
+  metaDesc: {
+    uk: "Ситуація в Україні (ICC-01/22): розслідування МКС і шість ордерів на арешт — за депортацію дітей і ракетну кампанію проти енергосистеми.",
+    en: "Situation in Ukraine (ICC-01/22): the ICC investigation and six arrest warrants — over the deportation of children and the strikes on the power grid.",
+  },
+
   plain: {
     tldr: {
       uk: "Міжнародний кримінальний суд розслідує воєнні злочини, злочини проти людяності та геноцид на території України з 2013 року. Судді видали шість ордерів на арешт: Путіну і Львовій-Бєловій — за депортацію українських дітей, чотирьом вищим військовим командувачам — за ракетну кампанію проти енергосистеми. Це не вирок: ордер означає обґрунтовану підозру, а судити МКС може лише тих, кого заарештують.",
