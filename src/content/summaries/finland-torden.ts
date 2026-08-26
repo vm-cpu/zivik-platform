@@ -345,7 +345,6 @@ export const finlandTorden: DecisionSummary = {
    * instead of turning into a portrait.
    */
   mapFocus: { forumKey: "helsinki", reachTo: "luhansk" },
-  mapViewBox: "-80 -215 1160 640",
 
   theatres: [
     {

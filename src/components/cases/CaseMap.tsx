@@ -44,6 +44,7 @@ export default function CaseMap({
   frame,
   context,
   uaPath,
+  regions,
   seat,
   reach,
   kyiv,
@@ -53,6 +54,8 @@ export default function CaseMap({
   frame: string;
   context: string[];
   uaPath: string;
+  /** Ukraine's internal oblast boundaries, as one mesh. */
+  regions?: string;
   seat: { name: string; caption: string; at: [number, number] };
   reach: [number, number];
   kyiv: { label: string; at: [number, number] };
@@ -140,6 +143,16 @@ export default function CaseMap({
               <path key={i} className="ctx" d={d} />
             ))}
             <path className="ua-fill" d={uaPath} />
+            {/* The oblasts, as the lines between them. The decision maps never
+                had these — the atlas that carried them was the other one — and
+                they are what lets a reader see that Crimea is a piece of this
+                country rather than a neighbour of it. Clipped to the outline,
+                because the mesh is 10m and the outline 110m and where an
+                internal line runs out to meet the coast the two disagree by a
+                pixel. */}
+            {regions && (
+              <path className="ua-regions" d={regions} clipPath="url(#mapclip)" />
+            )}
 
             {/* The ground each theatre is about, under every mark. */}
             {theatres.flatMap((t) =>

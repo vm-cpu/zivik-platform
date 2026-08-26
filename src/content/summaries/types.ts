@@ -432,14 +432,6 @@ export interface DecisionSummary extends VerbatimSummary {
    * Defaults to The Hague → Kyiv. The labels come from `forum`.
    */
   mapFocus?: { forumKey: string; reachTo?: string };
-  /**
-   * Frame override for the theatre map, as an SVG viewBox. Absent — and it is
-   * absent on seven of the eight pages — the map keeps the atlas's own
-   * `0 0 1000 560`. A summary sets it when its seat falls outside that frame:
-   * Helsinki projects to y = −171 on this atlas, 171px above the top edge, so
-   * finland-torden has to open the frame northwards to draw the case at all.
-   */
-  mapViewBox?: string;
   takings?: { heading: Localized; note?: Localized; metrics: Metric[] };
   attribution?: { respondent: Localized; note: Localized; nodes: AttributionNode[] };
   amounts?: { note?: Localized; figures: MoneyFigure[] };

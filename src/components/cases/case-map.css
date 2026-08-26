@@ -114,3 +114,15 @@
     transition: none;
   }
 }
+
+/* The oblast mesh, quieter than the country's own edge by a wide margin: that
+   stroke is the shape that matters, and these are the frame a Ukrainian reader
+   already has. Constant weight, like every other stroke on this drawing. */
+.casepage .map .ua-regions {
+  fill: none;
+  stroke: color-mix(in srgb, var(--gold) 32%, transparent);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
