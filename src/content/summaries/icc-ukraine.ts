@@ -546,8 +546,6 @@ export const iccUkraine: DecisionSummary = {
       markerKeys: ["crimea", "donetsk", "luhansk"],
       areas: ["crimea", "east"],
       // keep the caption clear of the three markers it points at
-      labelDx: -40,
-      labelDy: -22,
       summary: {
         uk: "Депортація та незаконне переміщення українських дітей до РФ — перша хвиля ордерів.",
         en: "Deportation and unlawful transfer of Ukrainian children to Russia — the first wave of warrants.",
@@ -559,8 +557,6 @@ export const iccUkraine: DecisionSummary = {
       markerKeys: ["kyiv"],
       areas: ["country"],
       // lift the label clear of the Kyiv marker and its city caption
-      labelDx: -60,
-      labelDy: -46,
       summary: {
         uk: "Ракетна кампанія проти електроінфраструктури по всій країні — друга і третя хвилі.",
         en: "The missile campaign against electric infrastructure nationwide — the second and third waves.",

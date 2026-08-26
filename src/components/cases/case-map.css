@@ -1,0 +1,128 @@
+/* ============================================================
+   The decision page's map, as an instrument.
+
+   Owned and imported by components/cases/CaseMap.tsx. The drawing's own
+   look — the ground, the outline, the marks, the labels — stays where it is,
+   in cases/case/20-dashboard.css, so there is never a second definition of
+   one selector. This file adds only what the map did not have when it was a
+   picture: targets, the two states a mark can be in, and a legend that is the
+   other end of the same control.
+
+   The language is the events map's, because a reader who has used one of
+   these should not have to learn the other: selecting lights the relation and
+   quietens the rest, nothing is selected until the reader selects it, and the
+   list beside the drawing is a way in rather than a caption.
+   ============================================================ */
+
+/* ---- targets ---- */
+/* The mark a reader aims at is not the mark they see. The seat is drawn at 10
+   units and a zone at 9, which at this frame's scale is 24px and 21px across
+   at 1180 and under 8px on a phone — the same reason the events map carries a
+   hit circle behind every marker. The radius is set here rather than on the
+   element so it can step with the drawing: 16 units is 38px at the desktop
+   size, 46 is 35px at the phone's. */
+.casepage .mk-hit {
+  r: 16;
+  fill: transparent;
+  cursor: pointer;
+}
+.casepage .mk-hit:focus-visible {
+  outline: none;
+  stroke: var(--gold);
+  stroke-width: 2;
+}
+@media (max-width: 700px) {
+  .casepage .mk-hit {
+    r: 46;
+  }
+}
+
+/* ---- the two states ---- */
+/* `rest` is every mark at full strength, which is what the map shows until a
+   reader asks it something. After that there is exactly one relation on the
+   drawing and everything else steps back. No transition on the quietening:
+   measured on the events map, a group's opacity transition inside an SVG did
+   not advance, and the attribute changed while the screen did not. */
+.casepage [data-state="off"] {
+  opacity: 0.22;
+}
+.casepage .mk-zone[data-state="on"] .zone-halo {
+  opacity: 0.3;
+}
+.casepage .mk-zone[data-state="on"] .zone {
+  filter: drop-shadow(0 0 6px var(--red));
+}
+.casepage .mk-seat[data-state="on"] .mk-court {
+  filter: drop-shadow(0 0 6px var(--gold));
+}
+.casepage .zone-area[data-state="on"] {
+  fill: color-mix(in srgb, var(--red) 34%, transparent);
+}
+.casepage .map .reach[data-state="on"] {
+  opacity: 0.9;
+}
+.casepage .map-labels [data-state="on"] b {
+  color: var(--cream);
+}
+
+/* ---- the legend, as the other end of the control ---- */
+/* It was a row of spans carrying the one sentence that says what happened at
+   each place, with no way to tell the reader which mark that sentence belongs
+   to — on a case with two theatres, the only way to pair them was to match
+   the words by eye. */
+.casepage .map-legend button {
+  display: grid;
+  padding: var(--space-2);
+  margin: calc(var(--space-2) * -1);
+  background: none;
+  border: 0;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.casepage .map-legend button:hover,
+.casepage .map-legend button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--cream) 6%, transparent);
+}
+.casepage .map-legend button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+/* The seat's row is one line and takes the flex layout the band already gives
+   it; the theatre rows keep their two-line grid from theatre-legend.css. */
+.casepage .map-legend button.lg-seat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* That the marks answer at all — one line, and only where there is more than
+   one thing to tell apart. */
+.casepage .map-legend .lg-how {
+  flex: 1 0 100%;
+  margin: var(--space-2) 0 0;
+  font: 400 var(--t-cap) / 1.5 var(--brand-font-body);
+  color: var(--brand-faint-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .casepage .mk-zone .zone,
+  .casepage .mk-seat .mk-court,
+  .casepage .map .reach {
+    transition: none;
+  }
+}
+
+/* The oblast mesh, quieter than the country's own edge by a wide margin: that
+   stroke is the shape that matters, and these are the frame a Ukrainian reader
+   already has. Constant weight, like every other stroke on this drawing. */
+.casepage .map .ua-regions {
+  fill: none;
+  stroke: color-mix(in srgb, var(--gold) 32%, transparent);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}

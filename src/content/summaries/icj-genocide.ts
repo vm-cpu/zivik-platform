@@ -850,8 +850,6 @@ export const icjGenocide: DecisionSummary = {
       markerKeys: ["donetsk", "luhansk"],
       areas: ["east"],
       // the only theatre sits level with Kyiv — drop the label below the zones
-      labelDy: 168,
-      labelDx: -125,
       summary: {
         uk: "Саме тут, за твердженням Росії, стався «геноцид», що став приводом для вторгнення. Україна просить Суд встановити, що жодних актів геноциду тут вчинено не було.",
         en: "This is where Russia claims a “genocide” took place — the stated pretext for the invasion. Ukraine asks the Court to find that no acts of genocide were committed here.",

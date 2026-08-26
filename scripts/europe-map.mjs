@@ -92,6 +92,24 @@ const POINTS = {
   energy: [34.6, 47.5],
   mariupol: [37.55, 47.1],
   kyiv: [30.52, 50.45],
+  /**
+   * Points this atlas carries and the events map never draws.
+   *
+   * The decision pages' maps used to have an atlas of their own — a
+   * hand-maintained ukraine-map.json with no generator, its own Mercator, and
+   * its own vocabulary of markers. Two atlases meant every fact about the
+   * ground had to be fixed twice: Crimea was outside the country's outline on
+   * one of them for as long as it existed, and the areas had to be projected
+   * into that frame separately. One atlas, one generator, one place to fix
+   * anything.
+   *
+   * Their vocabulary is these three plus `kyiv` above, which the events map
+   * already had. Nothing else changes: a marker no surface asks for is a
+   * couple of numbers in a file.
+   */
+  donetsk: [37.8, 48.0],
+  luhansk: [39.31, 48.57],
+  simferopol: [34.1, 44.95],
 };
 
 /**

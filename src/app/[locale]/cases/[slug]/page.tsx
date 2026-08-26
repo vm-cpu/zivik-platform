@@ -15,7 +15,7 @@ import TakingsGrid from "@/components/cases/TakingsGrid";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
 import GlanceFacts from "@/components/cases/GlanceFacts";
-import TheatreLegend from "@/components/cases/TheatreLegend";
+import CaseMap from "@/components/cases/CaseMap";
 import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
@@ -27,7 +27,7 @@ import type {
   SummaryBlock,
   Theatre,
 } from "@/content/summaries/types";
-import uaMap from "@/content/summaries/ukraine-map.json";
+import atlas from "@/content/europe-map.json";
 // One stylesheet per concern, imported in cascade order — the 2000-line
 // monolith was where parallel sessions collided. Order matters: it must
 // reproduce the original file's cascade exactly.
@@ -118,6 +118,13 @@ const T = {
   // Instruments an arbitral award earns.
   allEvents: { uk: "Усе", en: "All" },
   openDetail: { uk: "Показати деталі", en: "Show detail" },
+  /* That the marks on the theatre map answer. Only rendered where the case has
+     more than one theatre — with a single one there is nothing to tell apart,
+     and the sentence would be an instruction for its own sake. */
+  mapPick: {
+    uk: "Натисніть на позначку або на рядок нижче — засвітиться те саме місце.",
+    en: "Press a mark, or a line below it — the same place lights up.",
+  },
   /* The year rail. It was `aria-hidden` decoration and read as decoration: a
      row of dots placed by year, so ten events in 2022 stacked into one mark
      and the reader saw four dots for twenty events. Placed by date and
@@ -195,78 +202,54 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
 };
 
 /**
- * Markers the atlas does not carry, in the atlas's own projection.
+ * One atlas for every map on this site.
  *
- * ukraine-map.json is owned by another process, so these live here instead of
- * in the asset. They are fitted, not guessed: the asset is a Mercator
- * projection, and a least-squares fit over its four unambiguous city markers
- * (hague, kyiv, donetsk, luhansk) recovers it as
- *
- *   x = 1449.14 · λ + (−44.24)              λ, φ in radians
- *   y = 1746.36 − 1449.14 · ln(tan(π/4 + φ/2))
- *
- * which reproduces those four to within 1.5px and the two approximate
- * region markers (paris, simferopol) to within 7px. Helsinki
- * (60.1699 N, 24.9384 E) therefore lands at (586.5, −170.7) — 171px above the
- * default 0 0 1000 560 frame, which is why a summary that uses it has to widen
- * the frame with `mapViewBox`.
+ * The decision pages used to carry their own — a hand-maintained
+ * ukraine-map.json with no generator, its own Mercator and its own vocabulary
+ * of markers — which meant every fact about the ground had to be fixed twice.
+ * It was: Crimea sat outside the country's outline on that one until today,
+ * and the lit territories had to be projected into its frame separately. The
+ * events map's atlas already carried Ukraine with Crimea, the oblast mesh, the
+ * two named grounds and every seat; it now also carries the three points these
+ * pages needed and it did not have. `EXTRA_MK`, which existed to patch
+ * Helsinki into the old atlas by hand, is gone with it.
  */
-const EXTRA_MK: Record<string, number[]> = {
-  helsinki: [586.5, -170.7],
-};
+const MK = atlas.markers as Record<string, number[]>;
+const MAP_AREAS = (atlas as { areas?: Record<string, string> }).areas ?? {};
 
-const MK: Record<string, number[]> = {
-  ...(uaMap.markers as Record<string, number[]>),
-  ...EXTRA_MK,
-};
-
-const mapContext = (uaMap as { context?: string[] }).context ?? [];
+const mapContext = atlas.context;
 /**
  * Named pieces of ground a theatre can be about — see `areas` on `Theatre`.
  * "country" is the outline itself and is not in here; drawing it twice would
  * put two strokes on one coast.
  */
-const MAP_AREAS = (uaMap as { areas?: Record<string, string> }).areas ?? {};
 
 /**
- * Crimea is part of the outline this map draws, and it must stay part of it.
+ * Nothing this page can draw may fall outside the country it belongs to.
  *
- * The atlas this frame was built from stops at the Perekop isthmus, so the
- * country ended at y = 461 and the peninsula was not drawn at all — while the
- * markers for it sat at y = 462 and y = 476, on bare background, outside the
- * country they belong to. On an archive whose largest award is compensation
- * for property taken in Crimea, that is not a cartographic quibble; it is the
- * map contradicting the cases on it.
- *
- * The peninsula's own subpaths are appended to the same `d`, exactly as
- * scripts/europe-map.mjs does for the events map and from the same Natural
- * Earth admin-1 coordinates, reprojected into this frame — Mercator, fitted
- * from this file's own Kyiv and The Hague markers and checked against its
- * Donetsk, which it reproduces to a tenth of a unit.
- *
- * The check is here rather than in a comment because a comment does not fail
- * a build: every marker this map can draw has to fall inside the country's own
- * bounding box.
+ * The old atlas drew a Ukraine that stopped at the Perekop isthmus and put its
+ * own markers for the peninsula on bare background, outside the country they
+ * belong to — on an archive whose largest award is compensation for property
+ * taken in Crimea. This atlas has never had that problem, and the check stays
+ * so that it cannot acquire one: a comment does not fail a build.
  */
 {
-  const nums = uaMap.path.match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
+  const nums = atlas.ukraine.match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
   let y1 = -Infinity;
   for (let i = 1; i < nums.length; i += 2) y1 = Math.max(y1, nums[i]);
   const south = Math.max(
-    ...(["crimea", "simferopol"] as const).map(
-      (k) => (uaMap.markers as Record<string, number[]>)[k]?.[1] ?? -Infinity,
-    ),
+    ...(["crimea", "simferopol"] as const).map((k) => MK[k]?.[1] ?? -Infinity),
   );
-  for (const key of ["crimea", "east"]) {
-    if (!(key in MAP_AREAS)) {
-      throw new Error(`ukraine-map.json has no area "${key}" — a theatre that names it would light nothing.`);
-    }
-  }
   if (!(y1 >= south)) {
     throw new Error(
-      `ukraine-map.json draws the country down to y=${y1} and puts a marker at ` +
-        `y=${south}: Crimea is outside the outline again.`,
+      `europe-map.json draws Ukraine down to y=${y1} and puts a marker at ` +
+        `y=${south}: Crimea is outside the outline.`,
     );
+  }
+  for (const key of ["crimea", "east"]) {
+    if (!(key in MAP_AREAS)) {
+      throw new Error(`europe-map.json has no area "${key}" — a theatre naming it would light nothing.`);
+    }
   }
 }
 
@@ -337,7 +320,6 @@ function TheatreMap({
   theatres,
   locale,
   forum,
-  viewBox,
 }: {
   theatres: Theatre[];
   locale: Locale;
@@ -347,135 +329,83 @@ function TheatreMap({
     caption: Localized;
     reachTo: string;
   };
-  /** Per-summary frame override. Omitted, every page keeps the atlas frame. */
-  viewBox?: string;
 }) {
-  const frame = viewBox ?? uaMap.viewBox;
-  const [vw0, vh0, vw, vh] = frame.split(" ").map(Number);
+  /* Everything resolved here, on the server: `CaseMap` is a client component
+     and its props are serialized into the payload, so a {uk, en} pair would
+     ship both languages to every reader — and the atlas would ship whole
+     rather than the handful of paths this case actually draws. */
   const seat = MK[forum.key] ?? MK.hague;
-  const reach = MK[forum.reachTo] ?? MK.kyiv;
+  const marks: [number, number][] = [
+    [seat[0], seat[1]],
+    ...theatres.flatMap((t) =>
+      t.markerKeys.map((k) => MK[k]).filter(Boolean).map((p) => [p[0], p[1]] as [number, number]),
+    ),
+  ];
   /**
-   * A point in the frame, as a percentage of it.
+   * The frame, from the case's own marks rather than from a constant.
    *
-   * Every label on this map used to be an SVG `<text>`, and SVG measures a
-   * font in user units: the same declaration rendered 23 CSS pixels at 1440
-   * and 6 at 375 — a headline on a desktop, a grey smudge on a phone. The band
-   * had been made full-bleed to compensate, which is why the drawing ran to
-   * 1990px and 1114px tall on a wide screen, and the labels with it.
+   * The old atlas had one fixed window and one summary overriding it by hand —
+   * finland-torden, whose seat is Helsinki and which therefore did not fit the
+   * frame everything else used. Derived, every case frames itself: Oschadbank
+   * reaches from Paris to Crimea, Finland from Helsinki to Luhansk, and
+   * neither needs a number written into the content.
    *
-   * The labels are HTML now, laid over the drawing at these percentages. Type
-   * is type at every width, the drawing can go back to a sane size, and the
-   * gaps between a mark and its name are constant pixels instead of units
-   * that grow with the picture.
+   * MARGIN is in projection units and is what a mark needs to clear its own
+   * halo — 40 units — plus its name, which is HTML and so is measured in
+   * pixels rather than units; 90 covers it at every width this band is read
+   * at. The aspect is the band's: wide-format, and the projection is 2.6:1, so
+   * 2.2 keeps a frame that holds Europe's west and Ukraine's east from
+   * becoming a letterbox.
    */
-  const at = (x: number, y: number) => ({
-    left: `${((x - vw0) / vw) * 100}%`,
-    top: `${((y - vh0) / vh) * 100}%`,
-  });
+  const MARGIN = 90;
+  const ASPECT = 2.2;
+  const x0 = Math.min(...marks.map((p) => p[0])) - MARGIN;
+  const x1 = Math.max(...marks.map((p) => p[0])) + MARGIN;
+  const y0 = Math.min(...marks.map((p) => p[1])) - MARGIN;
+  const y1 = Math.max(...marks.map((p) => p[1])) + MARGIN;
+  const w = Math.max(x1 - x0, (y1 - y0) * ASPECT);
+  const h = w / ASPECT;
+  const frame = `${Math.round(((x0 + x1) / 2 - w / 2) * 10) / 10} ${Math.round(((y0 + y1) / 2 - h / 2) * 10) / 10} ${Math.round(w * 10) / 10} ${Math.round(h * 10) / 10}`;
   return (
-    <div className="map-wrap">
-      {/* The drawing and its names share a box of their own. `.map-wrap` also
-          holds the legend, so labels positioned against it were being placed
-          as percentages of the map *plus* the legend — the zone name for the
-          east landed under the drawing, on top of the legend text. */}
-      <div className="map-plot">
-      <svg className="map" viewBox={frame} role="img" aria-label={pick(T.mapAlt, locale)}>
-        <defs>
-          <clipPath id="mapclip">
-            <rect x={vw0} y={vh0} width={vw} height={vh} />
-          </clipPath>
-        </defs>
-        <g clipPath="url(#mapclip)">
-          {mapContext.map((d, i) => (
-            <path key={i} className="ctx" d={d} />
-          ))}
-          <path className="ua-fill" d={uaMap.path} />
-
-          {/* the forum's reach: seat → the ground in dispute */}
-          <line className="reach" x1={seat[0]} y1={seat[1]} x2={reach[0]} y2={reach[1]} />
-
-          <circle className="mk-court" cx={seat[0]} cy={seat[1]} r={10} />
-          <circle className="mk-city" cx={MK.kyiv[0]} cy={MK.kyiv[1]} r={7} />
-
-          {/* The ground first, under every mark: most of these theatres are not
-              points. «Крим», «Донбас із 2014», «Східна Україна», «Окуповані
-              території», «Уся Україна з 2022» are territories, and a dot
-              standing for one is a claim the record does not make. The dot
-              stays, because a reader needs somewhere to look, and the ground
-              behind it lights. Two of the eleven really are points — the Buk's
-              launch site at Pervomaiskyi and the ambush on the Aidar battalion
-              — and they declare no ground, so they get none. */}
-          {theatres.flatMap((t, ti) =>
-            (t.areas ?? []).map((key) => {
-              const d = key === "country" ? uaMap.path : MAP_AREAS[key];
-              return d ? <path key={`${ti}-${key}`} className="zone-area" d={d} /> : null;
-            }),
-          )}
-          {theatres.map((t) => {
-            const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
-            return (
-              <g key={pick(t.place, locale)}>
-                {pts.map((p, i) => (
-                  <g key={i}>
-                    <circle className="zone-halo" cx={p[0]} cy={p[1]} r={40} />
-                    <circle className="zone" cx={p[0]} cy={p[1]} r={9} />
-                  </g>
-                ))}
-              </g>
-            );
-          })}
-        </g>
-      </svg>
-
-      {/* The names, in HTML over the drawing. `aria-hidden`, because the
-          legend under the map is the same list in reading order and a screen
-          reader does not need it twice. */}
-      <div className="map-labels" aria-hidden="true">
-        <span className="ml-seat" style={at(seat[0], seat[1])}>
-          <b>{pick(forum.name, locale)}</b>
-          <i>{pick(forum.caption, locale)}</i>
-        </span>
-        <span className="ml-city" style={at(MK.kyiv[0], MK.kyiv[1])}>
-          {locale === "uk" ? "Київ" : "Kyiv"}
-        </span>
-        {theatres.map((t) => {
-          const pts = t.markerKeys.map((k) => MK[k]).filter(Boolean);
-          const cx = pts.reduce((s2, p) => s2 + p[0], 0) / pts.length;
-          const cy = pts.reduce((s2, p) => s2 + p[1], 0) / pts.length;
-          return (
-            <span
-              key={pick(t.place, locale)}
-              className="ml-zone"
-              /* Held inside the frame, as the SVG version was: a zone on the
-                 eastern border centres its name past the right edge, and an
-                 HTML label does not clip — it spills onto whatever is beside
-                 the map. 13% and 87% leave room for the widest of them. */
-              style={(() => {
-                const p = at(cx + (t.labelDx ?? 0), cy + (t.labelDy ?? 0));
-                const pct = Math.min(
-                  Math.max(parseFloat(p.left), 13),
-                  87,
-                );
-                return { ...p, left: `${pct}%` };
-              })()}
-            >
-              <i>{typeof t.tag === "string" ? t.tag : pick(t.tag, locale)}</i>
-              <b>{pick(t.place, locale)}</b>
-            </span>
-          );
-        })}
-      </div>
-      </div>
-
-      <TheatreLegend
-        seat={{ name: pick(forum.name, locale), caption: pick(forum.caption, locale) }}
-        theatres={theatres.map((t) => ({
-          place: pick(t.place, locale),
-          tag: typeof t.tag === "string" ? t.tag : pick(t.tag, locale),
-          summary: pick(t.summary, locale),
-        }))}
-      />
-    </div>
+    <CaseMap
+      frame={frame}
+      context={mapContext}
+      uaPath={atlas.ukraine}
+      regions={atlas.regions}
+      seat={{
+        name: pick(forum.name, locale),
+        caption: pick(forum.caption, locale),
+        at: [seat[0], seat[1]],
+      }}
+      reach={(() => {
+        const r = MK[forum.reachTo] ?? MK.kyiv;
+        return [r[0], r[1]];
+      })()}
+      kyiv={{
+        label: locale === "uk" ? "Київ" : "Kyiv",
+        at: [MK.kyiv[0], MK.kyiv[1]],
+      }}
+      theatres={theatres.map((t, i) => ({
+        id: `t${i}`,
+        place: pick(t.place, locale),
+        tag: typeof t.tag === "string" ? t.tag : pick(t.tag, locale),
+        summary: pick(t.summary, locale),
+        pts: t.markerKeys
+          .map((k) => MK[k])
+          .filter(Boolean)
+          .map((p) => [p[0], p[1]] as [number, number]),
+        areas: (t.areas ?? [])
+          .map((k) => (k === "country" ? atlas.ukraine : MAP_AREAS[k]))
+          .filter(Boolean),
+        labelDx: t.labelDx,
+        labelDy: t.labelDy,
+      }))}
+      labels={{
+        alt: pick(T.mapAlt, locale),
+        seatRole: pick(T.seatLabel, locale),
+        pick: pick(T.mapPick, locale),
+      }}
+    />
   );
 }
 
@@ -1033,7 +963,6 @@ export default async function CasePage({
             theatres={theatres}
             locale={locale}
             forum={mapForum}
-            viewBox={summary.mapViewBox}
           />
         </section>
       )}

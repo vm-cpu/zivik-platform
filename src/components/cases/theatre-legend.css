@@ -1,7 +1,8 @@
 /* ============================================================
    Theatre legend — the places the case is about, with what happened there.
 
-   Owned and imported by components/cases/TheatreLegend.tsx. The base
+   Owned and imported by components/cases/CaseMap.tsx, which renders this
+   markup now that the legend and the drawing are one control. The base
    `.map-legend` rules stay where they are (cases/case/20-dashboard.css);
    this file adds only the classes that file does not know about, so there is
    never a second definition of one selector.

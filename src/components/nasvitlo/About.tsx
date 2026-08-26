@@ -34,22 +34,15 @@ export default function About({
         <span>{pick(about.title, locale)}</span>
       </div>
       <div className="nsv-about-main">
+        {/* All prose of one rank, so one face, one size and one colour —
+            set together on `.nsv-about-main p` in home.css. The opening
+            paragraph used to lead at 18px in the display serif, then by
+            colour (--ink, 17.57:1, against --ink2's 7.78:1 for the rest);
+            both read as an accident rather than a hierarchy in a section
+            whose text is all the same rank. Emphasis is the eyebrow's and
+            the button's job. */}
         {paragraphs.map((text, i) => (
-          <p
-            key={i}
-            style={{
-              margin: 0,
-              /* All prose, so one face and one size. The opening paragraph
-                 used to lead at 18px in the display serif with the rest at
-                 14.5 — a step and a half of difference reads as an accident
-                 rather than a hierarchy. It leads by colour instead. */
-              fontSize: 16,
-              lineHeight: 1.65,
-              color: i === 0 ? "var(--ink)" : "var(--ink2)",
-            }}
-          >
-            {text}
-          </p>
+          <p key={i}>{text}</p>
         ))}
       </div>
     </div>

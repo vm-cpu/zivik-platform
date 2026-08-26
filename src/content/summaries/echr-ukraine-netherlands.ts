@@ -490,8 +490,6 @@ export const echrUkraineNetherlands: DecisionSummary = {
       tag: { uk: "КОНТРОЛЬ З 11.05.2014", en: "CONTROL FROM 11 MAY 2014" },
       markerKeys: ["donetsk", "luhansk"],
       areas: ["east"],
-      labelDx: -40,
-      labelDy: -22,
       summary: {
         uk: "Фактичний контроль Росії над районами «ДНР»/«ЛНР»; збиття MH17 17 липня 2014 року.",
         en: "Russia's effective control of the \"DPR\"/\"LPR\" areas; the downing of MH17 on 17 July 2014.",
@@ -502,8 +500,6 @@ export const echrUkraineNetherlands: DecisionSummary = {
       tag: { uk: "ВТОРГНЕННЯ", en: "INVASION" },
       markerKeys: ["kyiv"],
       areas: ["country"],
-      labelDx: -60,
-      labelDy: -46,
       summary: {
         uk: "Повномасштабне вторгнення 24 лютого 2022 року — охоплене рішенням до 16 вересня 2022-го.",
         en: "The full-scale invasion of 24 February 2022 — covered by the judgment up to 16 September 2022.",
