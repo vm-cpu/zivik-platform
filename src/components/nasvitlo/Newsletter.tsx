@@ -23,15 +23,21 @@ import "@/app/[locale]/newsletter.css";
  * The support ask, held here rather than in the dictionaries — the same
  * convention the team, registry, map and about pages use for page prose,
  * keeping the dictionaries to UI chrome.
+ *
+ * It used to describe the labour: weeks of reading, checking, translating.
+ * True, but it asked a reader to care about our workload. It says why the work
+ * matters instead — the decisions are already handed down and already public,
+ * and are still effectively unreadable — which is the same thing the site's
+ * name says.
  */
 const SUPPORT = {
   heading: {
-    uk: "Бібліотека тримається на людях",
-    en: "The library is kept by people",
+    uk: "Рішення вже ухвалені. Їх треба прочитати",
+    en: "The decisions already exist. They need to be read",
   },
   text: {
-    uk: "Кожен конспект — це тижні читання рішень, звірки документів і перекладу. Підтримка дає змогу опрацювати наступне.",
-    en: "Every summary is weeks of reading decisions, checking documents and translating. Support is what lets us take on the next one.",
+    uk: "Міжнародні суди встановили факти й дали їм правову оцінку — сотнями сторінок процедурної мови кількома мовами. Ми проливаємо на них світло, щоб на них можна було спертися в аргументі, статті чи позові. Підтримка — це наступне опрацьоване рішення.",
+    en: "International courts have established the facts and ruled on them — across hundreds of pages of procedural language in several languages. We shed light on those pages so they can be relied on in an argument, an article or a claim. Support is the next decision written up.",
   },
 } as const;
 

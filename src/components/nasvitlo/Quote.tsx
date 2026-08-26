@@ -22,7 +22,15 @@ const QUOTE_SLUG = "icj-genocide";
  * The dictionary's `quote.text` carries no marks of its own, so nothing is
  * doubled here — check before changing either side.
  */
-const OPEN_MARK: Record<Locale, string> = { uk: "«", en: "“" };
+/* Both marks, not one. A single oversized glyph floating above the text is a
+   decoration that has to be forgiven; a pair at reading size around the words
+   is what actually marks a quotation, and it balances. The opening mark hangs
+   into the margin so the first letter stays optically flush with the lines
+   below it. */
+const MARKS: Record<Locale, [string, string]> = {
+  uk: ["«", "»"],
+  en: ["\u201C", "\u201D"],
+};
 
 /**
  * What the link promises — and why it no longer promises the quoted decision.
@@ -112,11 +120,10 @@ export default function Quote({
           in place of the empty strip that used to sit there. Decoration, so it
           is hidden from assistive technology. */}
       <span className="nsvq-seam" aria-hidden="true" />
-      <span className="nsvq-mark" aria-hidden="true">
-        {OPEN_MARK[locale]}
-      </span>
       <blockquote className="nsvq-text" cite={href}>
+        {MARKS[locale][0]}
         {dict.quote.text}
+        {MARKS[locale][1]}
       </blockquote>
       <figcaption className="nsvq-cite">
         <Link href={href} className="nsvq-link">

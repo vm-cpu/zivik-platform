@@ -60,12 +60,20 @@ export default function Partners({
         {partners.map((partner) => {
           const name = pick(partner.name, locale);
           const inner = partner.logo ? (
+            /* 34px was sized for a row of several marks. With one real
+               partner the row reads as an afterthought at that height, and
+               ifa's wordmark carries small type inside it that needs the
+               size to stay legible. */
             <Image
               src={partner.logo}
               alt={name}
-              width={120}
-              height={40}
-              style={{ maxWidth: "100%", height: 34, width: "auto" }}
+              width={260}
+              height={74}
+              style={{
+                maxWidth: "100%",
+                height: "clamp(44px, 5vw, 62px)",
+                width: "auto",
+              }}
             />
           ) : (
             name
