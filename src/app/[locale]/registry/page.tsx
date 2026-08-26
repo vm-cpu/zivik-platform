@@ -28,11 +28,12 @@ import {
 import RegistryTable, {
   type RegRow,
 } from "@/components/nasvitlo/RegistryTable";
+import { contentIndex, SECTIONS } from "@/content/search-index";
 import "./registry.css";
 
 /** Localized page chrome (the case data itself is localized from content). */
 const T = {
-  title: { uk: "Реєстр рішень", en: "Case registry" },
+  title: { uk: "Бібліотека рішень", en: "Library of decisions" },
   /* The standfirst on the page. It runs to 222 characters in Ukrainian and 279
      in English because it does a job on the page — it tells the reader that a
      row's date is the year the proceeding opened, not the year of the
@@ -58,11 +59,11 @@ const T = {
     uk: "Сторона, суд, номер справи, рік, тема…",
     en: "Party, court, docket number, year, subject…",
   },
-  searchLabel: { uk: "Пошук у реєстрі", en: "Search the registry" },
+  searchLabel: { uk: "Пошук у бібліотеці", en: "Search the library" },
   courts: { uk: "Суди", en: "Courts" },
   courtsAll: { uk: "Усі суди", en: "All courts" },
   /* The filter over a column is named for the column. «Етап» and «Ухвалено»
-     named neither the data nor the heading above it; the registry calls these
+     named neither the data nor the heading above it; the library calls these
      two dimensions «стан розгляду» and «тип рішення» everywhere now — the
      column heading, the filter, the sort axis and the tag's assistive-
      technology prefix all say the same words. */
@@ -70,6 +71,15 @@ const T = {
   stagesAll: { uk: "Будь-який стан", en: "Any stage" },
   outcomes: { uk: "Тип рішення", en: "Decision type" },
   outcomesAll: { uk: "Будь-який тип", en: "Any decision type" },
+  /* «Галузь» is the word the pending case page and the search's own group
+     label already use for `type`; the filter takes it rather than inventing a
+     fifth name for the same column of the record. */
+  fields: { uk: "Галузь", en: "Field" },
+  fieldsAll: { uk: "Будь-яка галузь", en: "Any field" },
+  materials: { uk: "Матеріали", en: "Materials" },
+  materialsAll: { uk: "Будь-які матеріали", en: "Any materials" },
+  matLit: { uk: "Є конспект", en: "Has a summary" },
+  matDoc: { uk: "Є документ суду", en: "Has a court document" },
   sort: { uk: "Порядок", en: "Sort" },
   sortOpt: {
     yearDesc: { uk: "Спершу нові", en: "Newest first" },
@@ -116,6 +126,30 @@ const T = {
     en: "Try adjusting the filters or the search query.",
   },
   matched: { uk: "збіг:", en: "matched:" },
+  /* Distinct from `matched`, which names a hidden field of the *row*. This one
+     names a part of the write-up behind the row, and each part is a link. */
+  matchedIn: { uk: "у конспекті:", en: "in the write-up:" },
+  /* The decision page's own bands, in its own words — these labels have to be
+     the ones a reader sees on arriving at the anchor, or the link lies about
+     where it goes. Copied from `T` and `pageSections` in
+     app/[locale]/cases/[slug]/page.tsx.
+
+     One does not travel cleanly: `#machinery` is titled «Ордери» / "Warrants"
+     on the ICC page and «Розбір рішення» / "Anatomy" everywhere else, because
+     that band renders warrants on one page and attribution/objections on the
+     others. The label here is the majority one. Making it exact would mean
+     shipping a per-case label table for a single band; it is noted rather than
+     built, and it is the only place these two lists differ. */
+  section: {
+    overview: { uk: "Огляд", en: "Overview" },
+    chronology: { uk: "Хронологія", en: "Timeline" },
+    machinery: { uk: "Розбір рішення", en: "Anatomy" },
+    rulings: { uk: "Тлумачення", en: "Key rulings" },
+    measures: { uk: "Тимчасові заходи", en: "Provisional measures" },
+    handbook: { uk: "Що варто знати", en: "What to know" },
+    questions: { uk: "Часті запитання", en: "Common questions" },
+    fulltext: { uk: "Самері", en: "Summary" },
+  },
   group: {
     court: { uk: "суд", en: "court" },
     status: { uk: "статус", en: "status" },
@@ -200,6 +234,22 @@ function formatDay(iso: string, locale: Locale): string {
 /** Both locales of a localized value, for the search haystack. */
 function both(v: Localized | null | undefined): string {
   return v ? `${v.uk} ${v.en}` : "";
+}
+
+/**
+ * A stable key for a subject-matter value.
+ *
+ * `cases.ts` records `type` as a localized pair and no key — the nine values
+ * are an authored vocabulary, but an unkeyed one. This derives the key
+ * mechanically from the English wording rather than inventing a taxonomy
+ * beside it, so a filter value cannot drift from the label it filters on and
+ * nothing here adds a category the record does not already carry.
+ */
+function fieldKey(v: Localized): string {
+  return v.en
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 export function generateStaticParams() {
@@ -304,6 +354,10 @@ export default async function RegistryPage({
       decided,
       decidedLabel: decided ? formatDay(decided.iso, locale) : null,
       lit: c.lit,
+      slug: c.summarySlug ?? null,
+      hasDoc: c.decisionUrl != null,
+      fieldKey: fieldKey(c.type),
+      fieldLabel: pick(c.type, locale),
       href: c.summarySlug ? `/${locale}/cases/${c.summarySlug}` : null,
       /* Both locales go into every group. Most case names are recorded only in
          English while the interface is Ukrainian, so a reader typing «ЄСПЛ» or
@@ -335,6 +389,27 @@ export default async function RegistryPage({
   const outcomes = OUTCOME_ORDER.filter((k) => presentOutcomes.has(k)).map(
     (key) => ({ key, label: dict.registry.outcome[key] }),
   );
+
+  /* Subject-matter options, in the order the source file lists them: the
+     spreadsheet's own order, not an alphabet imposed on top of it. */
+  const fields: Array<{ key: string; label: string }> = [];
+  const seenFields = new Set<string>();
+  for (const c of cases) {
+    const key = fieldKey(c.type);
+    if (seenFields.has(key)) continue;
+    seenFields.add(key);
+    fields.push({ key, label: pick(c.type, locale) });
+  }
+
+  /* The content index, built at build time and localized here only in its
+     section labels — the postings themselves are language-agnostic because
+     both locales of every field went into them. */
+  const content = {
+    cases: contentIndex.cases,
+    terms: contentIndex.terms,
+    prefix: contentIndex.prefix,
+    sections: SECTIONS.map((id) => ({ id, label: pick(T.section[id], locale) })),
+  };
 
   const analysed = cases.filter((c) => c.lit).length;
 
@@ -374,6 +449,8 @@ export default async function RegistryPage({
           courts={courts}
           stages={stages}
           outcomes={outcomes}
+          fields={fields}
+          content={content}
           t={{
             search: pick(T.search, locale),
             searchLabel: pick(T.searchLabel, locale),
@@ -384,6 +461,12 @@ export default async function RegistryPage({
             stagesAll: pick(T.stagesAll, locale),
             outcomes: pick(T.outcomes, locale),
             outcomesAll: pick(T.outcomesAll, locale),
+            fields: pick(T.fields, locale),
+            fieldsAll: pick(T.fieldsAll, locale),
+            materials: pick(T.materials, locale),
+            materialsAll: pick(T.materialsAll, locale),
+            matLit: pick(T.matLit, locale),
+            matDoc: pick(T.matDoc, locale),
             sort: pick(T.sort, locale),
             sortOpt: Object.fromEntries(
               Object.entries(T.sortOpt).map(([k, v]) => [k, pick(v, locale)]),
@@ -406,6 +489,7 @@ export default async function RegistryPage({
             emptyHead: pick(T.emptyHead, locale),
             emptyBody: pick(T.emptyBody, locale),
             matched: pick(T.matched, locale),
+            matchedIn: pick(T.matchedIn, locale),
             group: {
               visible: pick(T.group.visible, locale),
               court: pick(T.group.court, locale),

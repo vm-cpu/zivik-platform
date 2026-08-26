@@ -1,9 +1,18 @@
 import Image from "next/image";
+import Link from "next/link";
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { pick, type Partner } from "@/content/types";
 
-/** Restrained partner row (real marks only, hairline-separated). */
+/**
+ * Restrained partner band (real marks only, hairline-separated).
+ *
+ * A lead-in, not the whole account: partners have their own page at
+ * `/{locale}/partners`, which is where the header nav and the footer point,
+ * and this band carries a button to it — the same pattern the About band on
+ * the home page already uses. The band used to be the only place partners were
+ * shown, which is why the header item pointed at a fragment of /about.
+ */
 export default function Partners({
   locale,
   dict,
@@ -53,7 +62,12 @@ export default function Partners({
             {dict.partners.heading}
           </h2>
         </div>
-        {/* No partners page yet; the full row is directly below. */}
+        <Link className="nsv-cta nsv-cta-quiet" href={`/${locale}/partners`}>
+          {dict.partners.all}
+          <span className="nsv-cta-arrow" aria-hidden="true">
+            →
+          </span>
+        </Link>
       </div>
 
       <div className="nsv-partnerrow">

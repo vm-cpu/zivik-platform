@@ -44,14 +44,14 @@ const link: React.CSSProperties = {
 const T = {
   uk: {
     heading: "Такої сторінки немає",
-    body: "Можливо, посилання застаріле або в адресі є помилка. У реєстрі — повний перелік проваджень, які ми ведемо.",
-    registry: "Реєстр рішень",
+    body: "Можливо, посилання застаріле або в адресі є помилка. У бібліотеці — повний перелік проваджень, які ми ведемо.",
+    registry: "Бібліотека рішень",
     home: "На головну",
   },
   en: {
     heading: "There is no such page",
-    body: "The link may be out of date, or the address may have a typo. The registry lists every proceeding we track.",
-    registry: "Case registry",
+    body: "The link may be out of date, or the address may have a typo. The library lists every proceeding we track.",
+    registry: "Library of decisions",
     home: "Home",
   },
 } as const;

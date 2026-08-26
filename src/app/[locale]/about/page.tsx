@@ -123,7 +123,7 @@ const T = {
     uk: [
       {
         h: "Спершу картка справи",
-        p: "Провадження вносимо до реєстру: суд, реєстраційний номер, рік, стан розгляду, коротка нота про предмет і посилання на документ суду, якщо він оприлюднений. На цьому етапі конспекту ще немає — справа стоїть у черзі, і сторінка про це говорить прямо.",
+        p: "Провадження вносимо до бібліотеки: суд, реєстраційний номер, рік, стан розгляду, коротка нота про предмет і посилання на документ суду, якщо він оприлюднений. На цьому етапі конспекту ще немає — справа стоїть у черзі, і сторінка про це говорить прямо.",
       },
       {
         h: "Потім конспект",
@@ -145,7 +145,7 @@ const T = {
     en: [
       {
         h: "First the case record",
-        p: "The proceeding goes into the registry: court, docket number, year, stage, a short note on the subject matter, and a link to the court's document where one is public. At this point there is no summary — the case is queued, and the page says so plainly.",
+        p: "The proceeding goes into the library: court, docket number, year, stage, a short note on the subject matter, and a link to the court's document where one is public. At this point there is no summary — the case is queued, and the page says so plainly.",
       },
       {
         h: "Then the summary",
@@ -178,21 +178,27 @@ const T = {
      *     "The library is still being filled… The absence of a case, a
      *     document or a summary does not mean that the proceeding does not
      *     exist";
-     *   • the dictionaries, registry.description — «Реєстр поповнюється
-     *     поступово» / "The registry grows step by step";
+     *   • the dictionaries, registry.description — «Бібліотека поповнюється
+     *     поступово» / "The library grows step by step";
      *   • `contact`, eight lines below — «знаєте про провадження, якого тут
      *     немає — напишіть» / "know of a proceeding that is missing, write to
-     *     us", which only makes sense if the registry can still grow.
+     *     us", which only makes sense if the collection can still grow.
      * Three against one, and the one is the claim a reader is most likely to
      * rely on. So this paragraph moves to the other three.
+     *
+     * The word «реєстр» is gone from it as well (user decision — see the note
+     * at the top of `i18n/dictionaries/uk.ts`). It cannot simply become
+     * «бібліотека» twice over, because "neither the library nor the summaries
+     * are finished" is a tautology once the library *is* the summaries: the
+     * two incomplete things are the list of proceedings and the write-ups.
      */
-    uk: "Сайт працює в тестовому режимі. Ні реєстр, ні конспекти не завершені: спершу справу вносимо до реєстру, потім готуємо конспект. Справи, до яких ще не дійшли руки, позначені в реєстрі та на мапі як такі; відсутність провадження тут не означає, що його не існує.",
-    en: "The site is in test mode. Neither the registry nor the summaries are finished: a proceeding goes into the registry first and is written up later. Cases we have not reached yet are marked as such in the registry and on the map; a proceeding's absence here does not mean it does not exist.",
+    uk: "Сайт працює в тестовому режимі. Ні перелік проваджень, ні конспекти не завершені: спершу справу вносимо до бібліотеки, потім готуємо конспект. Справи, до яких ще не дійшли руки, позначені в бібліотеці та на мапі як такі; відсутність провадження тут не означає, що його не існує.",
+    en: "The site is in test mode. Neither the list of proceedings nor the summaries are finished: a proceeding goes into the library first and is written up later. Cases we have not reached yet are marked as such in the library and on the map; a proceeding's absence here does not mean it does not exist.",
   },
   mProceedings: { uk: "проваджень", en: "proceedings" },
   mCourts: { uk: "інстанцій", en: "courts" },
   mAnalysed: { uk: "з конспектом", en: "written up" },
-  stateLink: { uk: "Повний реєстр", en: "The full registry" },
+  stateLink: { uk: "Уся бібліотека", en: "The whole library" },
 
   contactH: { uk: "Написати нам", en: "Write to us" },
   contact: {
@@ -271,7 +277,7 @@ export default async function AboutPage({
 
   const L = <V,>(x: Record<Locale, V>) => pick(x, locale);
 
-  /* Counted, never written down. The registry page counts the same three
+  /* Counted, never written down. The library page counts the same three
      figures the same way — instances are the institutions that actually have
      a case, not every court in the file. */
   const withCases = new Set(cases.map((c) => c.institutionId));
@@ -390,9 +396,21 @@ export default async function AboutPage({
           <div className="abt-prose">
             <p>{L(T.contact)}</p>
           </div>
-          <p className="abt-more">
-            <a href={`mailto:${dict.footer.email}`}>{dict.footer.email} →</a>
+          {/* The address itself used to be the control — an 11px uppercase
+              arrow link, the same treatment as «Повний реєстр» two sections
+              above, which made an invitation to write look like navigation.
+              The shared CTA pill carries the act; the address stays underneath
+              as a fact, for a reader who wants to copy it rather than open a
+              mail client. */}
+          <p className="abt-action">
+            <a className="nsv-cta" href={`mailto:${dict.footer.email}`}>
+              {L(T.contactH)}
+              <span className="nsv-cta-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
           </p>
+          <p className="abt-addr">{dict.footer.email}</p>
         </section>
       </main>
     </div>

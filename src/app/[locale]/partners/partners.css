@@ -1,0 +1,163 @@
+/* ============================================================================
+   Partners page.
+
+   Own palette, like .teampage, .aboutpage and .registrypage: every surface
+   carries its own scale from the --brand-* tokens rather than borrowing one
+   from another stylesheet. No hex literals.
+
+   The one control that is not this page's own is `.nsv-cta`, which lives in
+   shared.css because /team, /about and this page all need it.
+   ========================================================================== */
+.partnerspage {
+  --red: var(--brand-red);
+  --redd: var(--brand-red-dark);
+  --paper: var(--brand-paper);
+  --paper2: var(--brand-paper-2);
+  --surface: var(--brand-surface);
+  --ink: var(--brand-ink);
+  --ink2: var(--brand-ink-2);
+  --faint: var(--brand-faint);
+  --rule: var(--brand-rule);
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--brand-font-body), sans-serif;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+}
+/* Scoped to the page body, not the whole surface: as `.partnerspage a` this
+   ties with `.nsv-mobnav a` in header.css and wins on source order, which
+   repaints the mobile menu red on its dark ground. */
+.partnerspage .prt-wrap a {
+  color: var(--red);
+  text-decoration: none;
+}
+.partnerspage .prt-wrap a:hover {
+  color: var(--redd);
+}
+
+/* Same measure cap and gutters as /team and /about — one reading column across
+   the three pages that share this shell. */
+.prt-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 clamp(28px, 5vw, 44px) var(--space-16);
+}
+
+.prt-mast {
+  padding: var(--space-12) 0 var(--space-7);
+  border-bottom: 1px solid var(--rule);
+}
+.prt-back {
+  display: inline-block;
+  margin-bottom: var(--space-5);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.partnerspage .prt-wrap a.prt-back {
+  color: var(--faint);
+}
+.partnerspage .prt-wrap a.prt-back:hover {
+  color: var(--red);
+}
+.prt-mast h1 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.08;
+  color: var(--ink);
+  margin: 0 0 var(--space-3);
+}
+.prt-lede {
+  max-width: 60ch;
+  font-size: var(--t-body);
+  line-height: 1.6;
+  color: var(--ink2);
+  margin: 0;
+}
+
+/* ---- the list ----------------------------------------------------------
+   A card, not a bare mark on a hairline. With one entry the row idiom the
+   home band uses reads as a placeholder for marks that never arrived; a card
+   with the organisation's own name under its mark reads as a record. */
+.prt-list {
+  list-style: none;
+  margin: var(--space-10) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+.prt-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-7);
+  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
+}
+.prt-mark {
+  display: block;
+}
+.prt-mark img {
+  height: clamp(44px, 5vw, 62px);
+  width: auto;
+  max-width: 100%;
+  display: block;
+}
+.prt-name {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-h3);
+  line-height: 1.25;
+  color: var(--ink);
+}
+.prt-card a.prt-site {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.prt-note {
+  margin: var(--space-4) 0 0;
+  font-size: var(--t-cap);
+  color: var(--faint);
+}
+
+/* ---- prose sections ----------------------------------------------------- */
+.prt-sec {
+  margin-top: var(--space-12);
+  padding-top: var(--space-7);
+  border-top: 1px solid var(--rule);
+}
+.prt-sec h2 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--t-h2);
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 var(--space-4);
+}
+.prt-prose {
+  max-width: 68ch;
+  margin: 0;
+  font-size: var(--t-body);
+  line-height: 1.7;
+  color: var(--ink2);
+}
+.prt-more {
+  margin: var(--space-6) 0 0;
+}
+.prt-more a {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.prt-action {
+  margin: var(--space-6) 0 0;
+}

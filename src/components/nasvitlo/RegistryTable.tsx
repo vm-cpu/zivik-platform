@@ -101,6 +101,13 @@ export interface RegRow {
   /** `decided`, already formatted for the locale. */
   decidedLabel: string | null;
   lit: boolean;
+  /** Summary slug where one exists — the key into the content index. */
+  slug: string | null;
+  /** Whether the record holds a link to a court document for this row. */
+  hasDoc: boolean;
+  /** Subject-matter field, as a stable key and as a label in the locale. */
+  fieldKey: string;
+  fieldLabel: string;
   /** Decision page, when a summary is published. Otherwise `/cases/{id}`. */
   href: string | null;
   /** Raw searchable text, grouped so a match can say where it came from. */
@@ -120,6 +127,113 @@ export interface RegRow {
 
 type FindGroup = keyof RegRow["find"];
 const HIDDEN_GROUPS: FindGroup[] = ["court", "status", "type", "date"];
+
+/* ============================================================================
+   Content search — the write-ups, not just the row.
+
+   The index is built at build time (`content/search-index.ts`); everything
+   here is the read side. The shape is deliberately dumb: a sorted array of
+   truncated term keys, and for each key a string of two-character postings
+   (case index, then section index, both base 36). Nothing is parsed until a
+   reader types.
+   ========================================================================== */
+
+/** What the server hands over. Kept structural so the type is not imported
+ *  from a module that would drag the summaries into the client graph. */
+export interface ContentIndexProp {
+  /** Summary slugs, in posting order. */
+  cases: string[];
+  /** Section ids and their labels, in posting order. */
+  sections: Array<{ id: string; label: string }>;
+  /** Sorted term prefixes → concatenated postings. */
+  terms: Record<string, string>;
+  /** Characters kept per term. A query token is truncated the same way. */
+  prefix: number;
+}
+
+/** Index of the first key that is >= `needle`, over a sorted array. */
+function lowerBound(keys: string[], needle: string): number {
+  let lo = 0;
+  let hi = keys.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (keys[mid] < needle) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo;
+}
+
+/**
+ * Sections that carry one query token, as case index → set of section indices.
+ *
+ * A token is truncated to the index's prefix length and then matched as a
+ * PREFIX over the key set, which is what makes a short query behave: three
+ * letters reach every term that starts with them. A token at or past the
+ * prefix length can only match its own key, because no key is longer than the
+ * prefix — so one code path covers both.
+ */
+function tokenHits(
+  idx: ContentIndexProp,
+  keys: string[],
+  token: string,
+): Map<number, Set<number>> {
+  const out = new Map<number, Set<number>>();
+  for (const variant of expand(token)) {
+    const needle = variant.slice(0, idx.prefix);
+    if (!needle) continue;
+    for (let i = lowerBound(keys, needle); i < keys.length; i++) {
+      const key = keys[i];
+      if (!key.startsWith(needle)) break;
+      const postings = idx.terms[key];
+      for (let j = 0; j + 1 < postings.length; j += 2) {
+        const ci = parseInt(postings[j], 36);
+        const si = parseInt(postings[j + 1], 36);
+        let set = out.get(ci);
+        if (!set) out.set(ci, (set = new Set()));
+        set.add(si);
+      }
+    }
+  }
+  return out;
+}
+
+/**
+ * Which cases carry EVERY token somewhere in their write-up, and which of
+ * their sections to point the reader at.
+ *
+ * Two levels of AND, and the difference matters. A case qualifies when each
+ * token appears somewhere in it — that is what puts the row in the table. The
+ * sections named on the row are the ones where every token appears *together*,
+ * because that is the screen the reader wants; when the tokens are scattered
+ * across different sections there is no such screen, so the union is named
+ * instead and the reader is told the truth by being given more than one place
+ * to look.
+ */
+function contentMatches(
+  idx: ContentIndexProp,
+  keys: string[],
+  tokens: string[],
+): Map<number, number[]> {
+  const out = new Map<number, number[]>();
+  if (tokens.length === 0) return out;
+  const perToken = tokens.map((t) => tokenHits(idx, keys, t));
+  const first = perToken[0];
+  for (const [ci, sections] of first) {
+    if (!perToken.every((m) => m.has(ci))) continue;
+    let together = [...sections];
+    for (const m of perToken.slice(1)) {
+      const other = m.get(ci)!;
+      together = together.filter((si) => other.has(si));
+    }
+    if (together.length === 0) {
+      const union = new Set<number>();
+      for (const m of perToken) for (const si of m.get(ci)!) union.add(si);
+      together = [...union];
+    }
+    out.set(ci, together.sort((a, b) => a - b));
+  }
+  return out;
+}
 
 /* ============================================================================
    Sorting
@@ -269,6 +383,20 @@ export interface RegistryLabels {
   stagesAll: string;
   outcomes: string;
   outcomesAll: string;
+  /* Subject-matter field. Nine values, and every one of them is already in
+     `content/cases.ts` as `type` — an authored vocabulary that covers all
+     thirty-nine rows, was searchable and was not filterable. */
+  fields: string;
+  fieldsAll: string;
+  /* What a reader can actually open. Two facts the record already fixes: a
+     row has a summary on this site (`lit`), and a row has a link to the
+     court's own document (`decisionUrl`). Seventeen of thirty-nine have no
+     document link, which is exactly the thing a reader of a legal archive
+     wants to filter on before citing. */
+  materials: string;
+  materialsAll: string;
+  matLit: string;
+  matDoc: string;
   sort: string;
   sortOpt: Record<string, string>;
   colCourt: string;
@@ -294,6 +422,8 @@ export interface RegistryLabels {
   emptyHead: string;
   emptyBody: string;
   matched: string;
+  /** Prefix on the line that names which part of a write-up matched. */
+  matchedIn: string;
   group: Record<FindGroup, string>;
   decidedOn: string;
   noDate: string;
@@ -641,12 +771,18 @@ export default function RegistryTable({
   courts,
   stages,
   outcomes,
+  fields,
+  content,
   t,
 }: {
   rows: RegRow[];
   courts: Array<{ id: string; abbr: string }>;
   stages: Array<{ key: CaseStageKey; label: string }>;
   outcomes: Array<{ key: CaseOutcomeKey; label: string }>;
+  /** Subject-matter values the thirty-nine rows actually carry. */
+  fields: Array<{ key: string; label: string }>;
+  /** The build-time index over the eight write-ups. */
+  content: ContentIndexProp;
   t: RegistryLabels;
 }) {
   /* The home page's "Усі N справ ICJ →" links arrive with ?court=<id>, so the
@@ -666,6 +802,8 @@ export default function RegistryTable({
   );
   const [stage, setStage] = useState<string[]>([]);
   const [outcome, setOutcome] = useState<string[]>([]);
+  const [field, setField] = useState<string[]>([]);
+  const [material, setMaterial] = useState<string[]>([]);
   const [sort, setSort] = useState<SortState>({ key: "year", dir: "desc" });
 
   const active =
@@ -673,6 +811,8 @@ export default function RegistryTable({
     court.length > 0 ||
     stage.length > 0 ||
     outcome.length > 0 ||
+    field.length > 0 ||
+    material.length > 0 ||
     sort.key !== "year" ||
     sort.dir !== "desc";
 
@@ -699,6 +839,24 @@ export default function RegistryTable({
     [q],
   );
 
+  /** The index's own key list, sorted once rather than per keystroke. */
+  const termKeys = useMemo(() => Object.keys(content.terms), [content]);
+
+  /** slug → the sections of its write-up that carry the whole query. */
+  const inWriteup = useMemo(() => {
+    const byIndex = contentMatches(content, termKeys, tokens);
+    const out = new Map<string, string[]>();
+    for (const [ci, sections] of byIndex) {
+      const slug = content.cases[ci];
+      if (!slug) continue;
+      out.set(
+        slug,
+        sections.map((si) => content.sections[si]?.id).filter(Boolean) as string[],
+      );
+    }
+    return out;
+  }, [content, termKeys, tokens]);
+
   const view = useMemo(() => {
     const out = rows.filter((r) => {
       // Several values inside one filter mean OR; the filters are ANDed.
@@ -706,13 +864,36 @@ export default function RegistryTable({
       if (stage.length && !(r.stage && stage.includes(r.stage))) return false;
       if (outcome.length && !(r.outcome && outcome.includes(r.outcome)))
         return false;
+      if (field.length && !field.includes(r.fieldKey)) return false;
+      if (
+        material.length &&
+        !material.some((m) => (m === "lit" ? r.lit : r.hasDoc))
+      )
+        return false;
       if (tokens.length === 0) return true;
       const hay = haystacks.get(r.id)!;
       const all = Object.values(hay).join(" ");
-      return tokens.every((tok) => hits(all, tok));
+      /* Metadata OR content: a row earns its place either because the query
+         is in what the row shows, or because it is somewhere in the write-up
+         behind it. Before the index existed only the first half was possible,
+         and a search for «депортація дітей» returned nothing from an archive
+         with a whole ICC page about it. */
+      if (tokens.every((tok) => hits(all, tok))) return true;
+      return r.slug != null && inWriteup.has(r.slug);
     });
     return out.sort((a, b) => compare(a, b, sort));
-  }, [rows, court, stage, outcome, tokens, haystacks, sort]);
+  }, [
+    rows,
+    court,
+    stage,
+    outcome,
+    field,
+    material,
+    tokens,
+    haystacks,
+    inWriteup,
+    sort,
+  ]);
 
   /** Which hidden fields earned a row its place, when the visible ones did not. */
   const why = useCallback(
@@ -736,6 +917,8 @@ export default function RegistryTable({
     setCourt([]);
     setStage([]);
     setOutcome([]);
+    setField([]);
+    setMaterial([]);
     setSort({ key: "year", dir: "desc" });
   };
 
@@ -786,6 +969,18 @@ export default function RegistryTable({
       label: outcomes.find((o) => o.key === v)?.label ?? v,
       clear: () => setOutcome(outcome.filter((x) => x !== v)),
     })),
+    ...field.map((v) => ({
+      id: `field:${v}`,
+      dim: t.fields,
+      label: fields.find((f) => f.key === v)?.label ?? v,
+      clear: () => setField(field.filter((x) => x !== v)),
+    })),
+    ...material.map((v) => ({
+      id: `material:${v}`,
+      dim: t.materials,
+      label: v === "lit" ? t.matLit : t.matDoc,
+      clear: () => setMaterial(material.filter((x) => x !== v)),
+    })),
   ];
 
   /** Clicking a heading takes that axis; clicking it again flips direction. */
@@ -824,7 +1019,9 @@ export default function RegistryTable({
   const multiCount =
     (court.length > 1 ? 1 : 0) +
     (stage.length > 1 ? 1 : 0) +
-    (outcome.length > 1 ? 1 : 0);
+    (outcome.length > 1 ? 1 : 0) +
+    (field.length > 1 ? 1 : 0) +
+    (material.length > 1 ? 1 : 0);
 
   return (
     <section className="reg-page">
@@ -913,6 +1110,39 @@ export default function RegistryTable({
             }))}
             selected={outcome}
             onChange={setOutcome}
+          />
+          {/* Subject-matter field. The record has carried it on all thirty-nine
+              rows from the beginning — `type` in content/cases.ts — and the
+              search already looked in it; only the filter was missing. */}
+          <Listbox
+            label={t.fields}
+            allLabel={t.fieldsAll}
+            multi
+            options={fields.map((f) => ({
+              value: f.key,
+              label: f.label,
+              count: rows.filter((r) => r.fieldKey === f.key).length,
+            }))}
+            selected={field}
+            onChange={setField}
+          />
+          {/* What can be opened. Not a taxonomy — two booleans the record
+              already fixes, and the two questions a reader about to cite the
+              archive asks first. */}
+          <Listbox
+            label={t.materials}
+            allLabel={t.materialsAll}
+            multi
+            options={[
+              { value: "lit", label: t.matLit, count: rows.filter((r) => r.lit).length },
+              {
+                value: "doc",
+                label: t.matDoc,
+                count: rows.filter((r) => r.hasDoc).length,
+              },
+            ]}
+            selected={material}
+            onChange={setMaterial}
           />
           {/* Ordering is not narrowing, so it does not wear a filter's pill:
               it sits at the far end of the row as an underlined text control.
@@ -1006,6 +1236,17 @@ export default function RegistryTable({
               // dead row, is what says which is which.
               const href = r.href ?? `/${locale}/cases/${r.id}`;
               const reasons = why(r);
+              /* Where in the write-up the query landed. A row is a case, but
+                 the match may be in a chronology entry three screens down, so
+                 each section named here is a link that lands on it. */
+              const inDocAll = r.slug ? (inWriteup.get(r.slug) ?? []) : [];
+              /* Capped. A one-word query can land in every band of a long
+                 write-up — oschadbank matches «крим» in all six — and six
+                 links under a table row is a second navigation, not a hint.
+                 Four, in page order, and the rest counted rather than
+                 dropped silently. */
+              const inDoc = inDocAll.slice(0, 4);
+              const inDocMore = inDocAll.length - inDoc.length;
               return (
                 <div
                   role="row"
@@ -1039,6 +1280,19 @@ export default function RegistryTable({
                     {reasons.length > 0 && (
                       <span className="reg-why">
                         {t.matched} {reasons.join(" · ")}
+                      </span>
+                    )}
+                    {inDoc.length > 0 && (
+                      <span className="reg-inwrite">
+                        <span className="rw-l">{t.matchedIn}</span>
+                        {inDoc.map((id) => (
+                          <a key={id} className="rw-s" href={`${href}#${id}`}>
+                            {content.sections.find((x) => x.id === id)?.label ?? id}
+                          </a>
+                        ))}
+                        {inDocMore > 0 && (
+                          <span className="rw-l">+{inDocMore}</span>
+                        )}
                       </span>
                     )}
                     {/* The full status wording sits with the case name rather

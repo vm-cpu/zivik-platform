@@ -5,10 +5,19 @@ import type { Dictionary } from "./uk";
  * shape of the canonical Ukrainian dictionary — a missing or renamed key is a
  * compile error.
  *
- * The library/registry distinction the Ukrainian file sets out applies here
- * word for word: "the library" is the site, "the registry" is the list of
- * proceedings, and every link into that list says "Case registry" — the name
- * the page gives itself in its title and its H1.
+ * The one-word rule the Ukrainian file sets out applies here word for word.
+ * USER DECISION: the collection has a single name in English — "Library of
+ * decisions" — and it is what the page title, the H1, the nav item, the hero
+ * CTA, the home band, the footer link and every back link say. The earlier
+ * library/registry split ("the library" the site, "the registry" the list) is
+ * overruled; do not restore it, and do not reintroduce "registry" as a name
+ * for the collection or for anything pointing at it. "Register" stays only
+ * where a court or a State names its own — the Register of Damage for Ukraine,
+ * the register of depositors quoted in the Oschadbank award — and "docket" is
+ * the word for a case number.
+ *
+ * The route is still `/registry` and the keys are still `registry.*`: renaming
+ * a URL that has already been given out is not a vocabulary change.
  */
 const en: Dictionary = {
   meta: {
@@ -22,7 +31,7 @@ const en: Dictionary = {
     menu: "Menu",
     home: "Home",
       about: "About us",
-    decisions: "Case registry",
+    decisions: "Library of decisions",
     map: "Map",
     team: "Team",
     partners: "Partners",
@@ -37,7 +46,7 @@ const en: Dictionary = {
     creditCentre: "the Louis B. Sohn Research Centre",
     creditFaculty: "UCU Faculty of Law",
     lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice.",
-    ctaRegistry: "Case registry",
+    ctaRegistry: "Library of decisions",
     ctaMap: "Map",
     chainHint: "pull the cord",
     lampLabel: "Turn the lamp on or off",
@@ -52,13 +61,13 @@ const en: Dictionary = {
   slogan: "We research · We explain · We bring to light",
   pending: {
     title: "Still being researched",
-    body: "This proceeding is in the registry, but its summary is not written yet — we are working on it. Below is what is already known, and a link to the court's own document where one is public.",
+    body: "This proceeding is in the library, but its summary is not written yet — we are working on it. Below is what is already known, and a link to the court's own document where one is public.",
     forum: "Court",
     status: "Stage",
     kind: "Field",
     docket: "Docket",
     official: "The court's document",
-    toRegistry: "The full registry",
+    toRegistry: "The library of decisions",
     toMap: "The map",
   },
   quote: {
@@ -97,11 +106,11 @@ const en: Dictionary = {
     backHome: "Home",
   },
   registry: {
-    label: "Case registry",
-    heading: "Every proceeding against Russia, in one registry",
+    label: "Library of decisions",
+    heading: "Every proceeding against Russia, in one library",
     description:
-      "Here the light is already on. The registry grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
-    fullRegistry: "Full registry",
+      "Here the light is already on. The library grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
+    fullRegistry: "The whole library",
     allCases: "All {count} {court} {cases} →",
     caseWord: { one: "case", few: "cases", many: "cases" },
     legendLit: "Ready to read: summary, timeline, documents",
@@ -143,8 +152,8 @@ const en: Dictionary = {
   partners: {
     label: "Partners",
     heading: "Who we work with",
-    all: "All partners →",
-    note: "Placeholders for logos — send the files and we'll add the real ones.",
+    all: "All partners",
+    note: "The list is short, and it will grow.",
   },
   footer: {
     tagline:
@@ -154,7 +163,7 @@ const en: Dictionary = {
     colArchive: "Library",
     colCenter: "Centre",
     colContacts: "Contacts",
-    linkRegistry: "Case registry",
+    linkRegistry: "Library of decisions",
     linkMap: "Events map",
     linkCourts: "Courts and institutions",
     linkDocs: "Documents",

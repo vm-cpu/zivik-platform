@@ -382,6 +382,33 @@
   font:600 var(--t-micro) var(--brand-font-body);letter-spacing:.05em;
   text-transform:uppercase;color:var(--faint);
 }
+/* Where in the write-up the query landed.
+   Two things separate it from `.reg-why` above: it is not uppercase micro-type
+   (these are destinations, and a destination has to be readable), and every
+   item is a link into the decision page's own anchor. `.reg-name::after`
+   covers the whole row so the row is one click target — these links have to
+   sit above that overlay or they are unreachable, which is what `position:
+   relative; z-index: 1` buys. */
+.reg-inwrite{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;
+  margin-top:5px;
+  font:400 var(--t-cap) var(--brand-font-body);
+}
+.reg-inwrite .rw-l{color:var(--faint)}
+.registrypage .reg-wrap .reg-inwrite a.rw-s{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;min-height:24px;
+  color:var(--goldink);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  text-decoration-color:color-mix(in srgb,var(--goldink) 42%,transparent);
+}
+.registrypage .reg-wrap .reg-inwrite a.rw-s:hover{
+  color:var(--red);
+  text-decoration-color:currentColor;
+}
+
 .reg-main mark{
   background:color-mix(in srgb,var(--gold) 26%,var(--surface));
   color:var(--ink);border-radius:2px;padding:0 1px;

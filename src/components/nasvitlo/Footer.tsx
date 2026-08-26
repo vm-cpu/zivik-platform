@@ -43,6 +43,21 @@ const footPending: React.CSSProperties = {
    and every content band read this one value. */
 const chromeInsetLeft = "var(--page-gutter)";
 
+/** The contact address, which is the one thing in the footer a reader is
+ *  asked to *use* rather than follow. Brighter than a nav link and underlined,
+ *  so it is not mistaken for the postal address beneath it. */
+const footMail: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  minHeight: 24,
+  fontSize: "var(--t-sm)",
+  fontWeight: 600,
+  color: "var(--brand-gold-pale)",
+  textDecoration: "underline",
+  textDecorationThickness: 1,
+  textUnderlineOffset: 4,
+};
+
 /** The legal bar reads at 11px, so its links are footLink at that size —
  *  same colour and same no-underline as every other link in the footer. */
 const legalLink: React.CSSProperties = { ...footLink, fontSize: 11 };
@@ -140,13 +155,22 @@ export default function Footer({
         {column(f.colCenter, [
           { label: f.linkAbout, href: `/${locale}/about` },
           { label: f.linkTeam, href: `/${locale}/team` },
-          { label: f.linkPartners, href: `/${locale}/about#partners` },
+          { label: f.linkPartners, href: `/${locale}/partners` },
           { label: f.linkBlog },
         ])}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <div style={colHead}>{f.colContacts}</div>
-          <a href={`mailto:${f.email}`} style={footLink}>
+          {/* The one contact control in the footer, and it used to be
+              indistinguishable from the postal address directly under it —
+              same size, same --brand-muted-dark, no underline, so the column
+              read as two lines of information and neither looked clickable.
+              It takes --brand-gold-pale and a rule now: 14.98:1 on the footer
+              ground (the muted colour was 9.77:1, so this is brighter as well
+              as identifiable), 24px of target height, and the underline says
+              "link" without a pill, which would be wrong inside a column of
+              links. */}
+          <a href={`mailto:${f.email}`} style={footMail}>
             {f.email}
           </a>
           <span style={footLink}>{f.address}</span>

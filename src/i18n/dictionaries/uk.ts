@@ -5,26 +5,34 @@
  * UI *chrome* strings live here. Domain content (courts, cases, events,
  * partners) lives in the content layer (`src/content/`) with per-locale fields.
  *
- * ── Two words, one distinction ──────────────────────────────────────────────
- * The thing had three names and the reader met all three: «Бібліотека рішень»
- * in the nav, the hero CTA and `registry.label`; «Реєстр рішень» in the page
- * title, the H1 and `footer.linkRegistry`; «Онлайн-бібліотека міжнародної
- * судової практики» in `registry.heading`. Both words are right, but not of
- * the same thing:
+ * ── One word: «Бібліотека рішень» ───────────────────────────────────────────
+ * USER DECISION, and it overrides what this comment used to say. The reader
+ * meets exactly one name for the collection: «Бібліотека рішень» in Ukrainian,
+ * "Library of decisions" in English. The page title, the H1, the nav item, the
+ * hero CTA, the band on the home page, the footer link and every back link all
+ * carry it.
  *
- *   **бібліотека / the library** — the site. What насвітло *is*: the whole
- *   collection, its summaries, its method, the project behind it. It names the
- *   project (`intro.text`, `footer.tagline`, `newsletter.support`), never a
- *   page or a destination.
+ * The previous rule — which this replaces — split the vocabulary in two:
+ * «бібліотека» for the site and «реєстр» for the list of 39 proceedings at
+ * `/registry`. The user has ruled that out: «переконайся що ми всюди
+ * використовуємо термінологію Бібліотека рішень а не реєстр». Do not restore
+ * the split, and do not reintroduce «реєстр» as a name for the collection or
+ * for any page, band, link or control that points at it.
  *
- *   **реєстр / the registry** — the list of proceedings and nothing else, at
- *   `/registry` and previewed by the band on the home page. Anything that
- *   *points at that list* says «Реєстр рішень» / "Case registry", which is the
- *   name the page already gives itself in its `<title>` and its H1: the nav
- *   item, the hero CTA, the band's label, the footer link.
+ * «Реєстр» survives in exactly two places, and both are somebody else's word,
+ * not ours:
+ *   • a court's or a State's own register named in quoted or legal text — the
+ *     Register of Damage for Ukraine («Реєстр збитків») in
+ *     `summaries/echr-ukraine-netherlands.ts`, the register of depositors in
+ *     the Russian federal laws quoted by `summaries/oschadbank.ts`;
+ *   • «реєстраційний номер» — a docket reference, which is what a docket is
+ *     called in Ukrainian.
  *
- * So: you read the library; you search the registry. A link never promises one
- * and opens the other.
+ * The identifiers do not follow the words. The route is still `/registry`, the
+ * component is still `RegistryTable`, the key is still `registry.*`: renaming
+ * the URL breaks every link already given out, and renaming the keys is churn
+ * with no reader on the other end. If the route is ever renamed it needs a
+ * redirect and a sitemap change, neither of which is a vocabulary question.
  * ────────────────────────────────────────────────────────────────────────────
  */
 const uk = {
@@ -39,7 +47,7 @@ const uk = {
     menu: "Меню",
     home: "Головна",
       about: "Про нас",
-    decisions: "Реєстр рішень",
+    decisions: "Бібліотека рішень",
     map: "Мапа",
     team: "Команда",
     partners: "Партнери",
@@ -54,7 +62,7 @@ const uk = {
     creditCentre: "Дослідницького центру імені Луї Б. Зона",
     creditFaculty: "Факультету права УКУ",
     lead: "Бібліотека відповідальності та правосуддя для України — освітлюємо правовий шлях, яким Україна крокує до справедливості.",
-    ctaRegistry: "Реєстр рішень",
+    ctaRegistry: "Бібліотека рішень",
     ctaMap: "Мапа",
     chainHint: "потягніть за ланцюжок",
     lampLabel: "Увімкнути або вимкнути лампу",
@@ -72,13 +80,13 @@ const uk = {
   slogan: "Досліджуємо · Пояснюємо · Висвітлюємо",
   pending: {
     title: "Ще досліджуємо",
-    body: "Цю справу вже внесено до реєстру, але конспекту ще немає — ми над ним працюємо. Нижче те, що вже відомо, і посилання на документ суду, якщо він у відкритому доступі.",
+    body: "Цю справу вже внесено до бібліотеки, але конспекту ще немає — ми над ним працюємо. Нижче те, що вже відомо, і посилання на документ суду, якщо він у відкритому доступі.",
     forum: "Суд",
     status: "Стан",
     kind: "Галузь",
     docket: "Реєстраційний номер",
     official: "Документ суду",
-    toRegistry: "До повного реєстру",
+    toRegistry: "До бібліотеки рішень",
     toMap: "До мапи",
   },
   quote: {
@@ -117,15 +125,15 @@ const uk = {
     backHome: "На головну",
   },
   registry: {
-    /* The band on the home page previews the registry, so it is labelled with
-       the registry's name — the same name the page, the nav item and the
-       footer link carry. The heading used to be the first eight words of
-       `intro.text` and named the library instead. */
-    label: "Реєстр рішень",
-    heading: "Кожне провадження проти Росії — в одному реєстрі",
+    /* The band on the home page previews the collection, so it is labelled
+       with the collection's one name — the same name the page, the nav item
+       and the footer link carry. The key stays `registry.*`; the words the
+       reader sees do not. See the note at the top of this file. */
+    label: "Бібліотека рішень",
+    heading: "Кожне провадження проти Росії — в одній бібліотеці",
     description:
-      "Тут уже світло. Реєстр поповнюється поступово: спершу справу вносимо, потім готуємо конспект, таймлайн і документи.",
-    fullRegistry: "Повний реєстр",
+      "Тут уже світло. Бібліотека поповнюється поступово: спершу справу вносимо, потім готуємо конспект, таймлайн і документи.",
+    fullRegistry: "Уся бібліотека",
     allCases: "Усі {count} {cases} {court} →",
     /* Ukrainian counts in three forms: 1 справа, 2–4 справи, 5+ справ. The
        string used to hardcode the third, so ITLOS and Finland read "Усі 1
@@ -138,7 +146,7 @@ const uk = {
        forum issued. They are two tag dimensions now. Every label below is the
        wording the source `status` text uses — a case whose record fixes only
        one of the two carries only one tag. */
-    /* The registry names these two dimensions the way the columns and the
+    /* The library names these two dimensions the way the columns and the
        filters over them do: «стан розгляду» and «тип рішення». They used to
        read «Етап» and «Що ухвалено», which agreed with nothing on the page. */
     stageName: "Стан розгляду",
@@ -178,8 +186,15 @@ const uk = {
   partners: {
     label: "Партнери",
     heading: "З ким ми працюємо",
-    all: "Усі партнери →",
-    note: "Місця для логотипів — надішліть файли, і ми поставимо справжні.",
+    /* The arrow used to live inside this string. It is a `.nsv-cta-arrow`
+       span now, hidden from assistive technology and animated on hover — a
+       screen reader was reading the glyph out as part of the label. */
+    all: "Усі партнери",
+    /* Shown on the partners page when the list is short, which it is: one
+       external partner. It used to read «Місця для логотипів — надішліть
+       файли» — a note to ourselves, addressed to the reader, on a band that
+       has carried a real mark since ifa's arrived. */
+    note: "Список короткий і поповнюватиметься.",
   },
   footer: {
     tagline:
@@ -189,7 +204,7 @@ const uk = {
     colArchive: "Бібліотека",
     colCenter: "Центр",
     colContacts: "Контакти",
-    linkRegistry: "Реєстр рішень",
+    linkRegistry: "Бібліотека рішень",
     linkMap: "Карта подій",
     linkCourts: "Суди та інстанції",
     linkDocs: "Документи",

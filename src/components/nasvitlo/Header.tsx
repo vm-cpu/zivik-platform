@@ -48,14 +48,13 @@ export default function Header({
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
-  /* Every item is a page. The menu used to mix pages with fragments of the
-     home page (#about, #registry, #partners): from anywhere but the home page
-     those ids do not exist, so the item scrolled nowhere and then, once Next
-     had navigated, left the reader at the top of the home page instead. The
-     archive has real routes for all of them now, so the menu points at routes.
-     Partners has no page of its own — it is a band on /about, which is a page,
-     so the fragment travels with a real destination rather than instead of
-     one. */
+  /* Every item is a page, and now every item is a *whole* page. The menu used
+     to mix pages with fragments of the home page (#about, #registry,
+     #partners): from anywhere but the home page those ids do not exist, so the
+     item scrolled nowhere and then, once Next had navigated, left the reader
+     at the top of the home page instead. Partners was the last of them — it
+     pointed at `/about#partners`, a band inside another page — and has its own
+     route now, so nothing in this menu is a fragment. */
   const about = `${home}/about`;
   const nav = [
     // `home` used to be labelled "About us" while pointing at `/uk`, so the
@@ -72,7 +71,11 @@ export default function Header({
     // points at it rather than at the band on the home page.
     { label: dict.nav.map, href: `${home}/map`, active: pathname === `${home}/map` },
     { label: dict.nav.team, href: `${home}/team`, active: pathname === `${home}/team` },
-    { label: dict.nav.partners, href: `${about}#partners`, active: false },
+    {
+      label: dict.nav.partners,
+      href: `${home}/partners`,
+      active: pathname === `${home}/partners`,
+    },
   ];
 
   /* Same page, other language. Switching used to drop the reader on the home

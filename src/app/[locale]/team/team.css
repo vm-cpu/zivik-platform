@@ -129,13 +129,27 @@
   color: var(--faint);
 }
 
+/* The contact section, not a floating link. `.nsv-cta` (shared.css) carries
+   the control; this only gives it a heading, a sentence and room. */
 .team-contact {
-  margin: 28px 0 0;
+  margin: var(--space-12) 0 0;
+  padding-top: var(--space-7);
+  border-top: 1px solid var(--rule);
 }
-.team-contact a {
-  font: 700 11px var(--brand-font-body);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+.team-contact h2 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--t-h2);
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 var(--space-3);
+}
+.team-contact p {
+  max-width: 60ch;
+  margin: 0 0 var(--space-5);
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink2);
 }
 
 /* Two up on a phone rather than one: at 220px minimum the auto-fill grid

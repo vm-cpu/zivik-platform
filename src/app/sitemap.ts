@@ -107,6 +107,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: aboutLanguages },
   }));
 
+  /* Partners is its own route now rather than a fragment of /about, so it
+     needs its own entry. */
+  const partnersLanguages = languagesFor((l) => `/${l}/partners`);
+  const partners: MetadataRoute.Sitemap = locales.map((locale) => ({
+    url: `${siteUrl}/${locale}/partners`,
+    changeFrequency: "yearly",
+    priority: 0.4,
+    alternates: { languages: partnersLanguages },
+  }));
+
   /* Privacy and terms are linked from every page's footer. They rarely
      change, and a crawler that cannot find them reads the footer links as
      dangling. */
@@ -120,5 +130,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
-  return [...homes, ...registry, ...map, ...about, ...team, ...cases, ...legal];
+  return [...homes, ...registry, ...map, ...about, ...team, ...partners, ...cases, ...legal];
 }

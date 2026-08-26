@@ -23,6 +23,14 @@ const T = {
     en: "The project is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
   },
   contact: { uk: "Написати нам", en: "Write to us" },
+  contactH: { uk: "Написати нам", en: "Write to us" },
+  /* Says what writing is *for*. The same invitation /about already makes, in
+     the same words, so the two pages do not offer a reader two different
+     reasons to use one address. */
+  contactText: {
+    uk: "Помітили помилку в конспекті або знаєте про провадження, якого тут немає — напишіть.",
+    en: "If you have spotted an error in a summary, or know of a proceeding that is missing, write to us.",
+  },
 } as const;
 
 export function generateStaticParams() {
@@ -129,9 +137,22 @@ export default async function TeamPage({
           })}
         </ul>
 
-        <p className="team-contact">
-          <a href={`mailto:${dict.footer.email}`}>{L(T.contact)} →</a>
-        </p>
+        {/* «НАПИСАТИ НАМ →» used to be an 11px uppercase gold text link
+            floating under the last portrait, with nothing about it saying it
+            was a control. It is the shared CTA pill now — see `.nsv-cta` in
+            [locale]/shared.css for the measured colours — and it carries a
+            sentence, because a button with no context under a grid of faces
+            is still a button nobody presses. */}
+        <section className="team-contact">
+          <h2>{L(T.contactH)}</h2>
+          <p>{L(T.contactText)}</p>
+          <a className="nsv-cta" href={`mailto:${dict.footer.email}`}>
+            {L(T.contact)}
+            <span className="nsv-cta-arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
+        </section>
       </main>
     </div>
   );

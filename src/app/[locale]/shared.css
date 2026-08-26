@@ -79,3 +79,86 @@
   background: color-mix(in srgb, var(--brand-gold) 10%, var(--brand-surface));
   border-color: var(--brand-gold);
 }
+
+/* Contact / call-to-action pill -------------------------------------------
+   Genuinely cross-surface: /team, /about and /partners all need the same
+   control, and the design contract says a rule two surfaces need moves here
+   rather than being restated in each stylesheet.
+
+   Why a new class rather than `.btn`. `.btn` is defined twice already — once
+   unscoped in home.css (which only the home page loads) and once as
+   `.casepage .btn` in cases/case/10-bands.css. Promoting either definition to
+   this file would put a global button rule back on the decision page, which is
+   the exact regression DESIGN.md records: home.css's `.btn{border:2px solid
+   var(--red)}` once reached the decision page's primary action and painted it
+   in the colour this system reserves for a finding of breach. `.nsv-cta` is
+   the same pill — same geometry, same tokens, same idiom as `.btn-lit` — under
+   a name neither of those two scopes claims.
+
+   Specificity, and it was measured wrong once already. Every page stylesheet
+   scopes its own link colour as `.teampage .team-wrap a` / `.aboutpage
+   .abt-wrap a` — two classes and a type, (0,2,1), NOT (0,2,0). `.page
+   a.nsv-cta` is also (0,2,1), so the two tie and source order decides; this
+   file loads from the layout, before any page stylesheet, so the page rule won
+   and the pill's label came out cherry on gold at 5.50:1 instead of night on
+   gold at 9.98:1. The class is repeated to make it (0,3,1) and end the tie.
+
+   Colour, measured against the real grounds (sRGB, WCAG 2.x):
+     • --brand-gold-lit fill is 1.81:1 on --brand-paper and 1.70:1 on
+       --brand-paper-2 — the pill's own shape is NOT identifiable from the fill
+       alone, so it cannot be the only boundary;
+     • the 2px --brand-gold-ink hairline carries the boundary: 5.42:1 on
+       --brand-paper, 5.10:1 on --brand-paper-2, 5.61:1 on --brand-surface,
+       all past the 3:1 floor for a non-text boundary;
+     • the --brand-night label on the fill is 9.98:1.
+   The quiet tone is the outlined pill the home page and the newsletter already
+   use: --brand-red is 9.96:1 on paper as both label and boundary.
+
+   Target size: 44px min-height and 12px block padding, past the 24×24 floor. */
+.page a.nsv-cta.nsv-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 12px 22px;
+  border-radius: var(--r-pill);
+  border: 2px solid var(--brand-gold-ink);
+  background: var(--brand-gold-lit);
+  color: var(--brand-night);
+  font: 700 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--dur) var(--ease),
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+.page a.nsv-cta.nsv-cta:hover {
+  transform: translateY(-1px);
+  background: var(--brand-gold-bright);
+  border-color: var(--brand-gold-ink);
+}
+/* The arrow belongs to the control, not to the label: it moves on hover and is
+   hidden from assistive technology by the markup. */
+.page a.nsv-cta.nsv-cta .nsv-cta-arrow {
+  transition: transform var(--dur) var(--ease);
+}
+.page a.nsv-cta.nsv-cta:hover .nsv-cta-arrow {
+  transform: translateX(3px);
+}
+
+/* Quiet tone — navigation, not contact. Same pill, the outlined idiom the
+   home page's `.btn .btn-o` already uses, so a "see everything" link does not
+   compete with the one control that asks the reader to do something. */
+.page a.nsv-cta.nsv-cta.nsv-cta-quiet {
+  background: transparent;
+  border-color: var(--brand-red);
+  color: var(--brand-red);
+}
+.page a.nsv-cta.nsv-cta.nsv-cta-quiet:hover {
+  background: transparent;
+  border-color: var(--brand-red-dark);
+  color: var(--brand-red-dark);
+}

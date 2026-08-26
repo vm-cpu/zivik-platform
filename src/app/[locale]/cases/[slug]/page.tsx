@@ -70,7 +70,7 @@ const T = {
     en: { one: "claim upheld", few: "claims upheld", many: "claims upheld" },
   },
   sources: { uk: "Джерела та коментарі", en: "Sources and commentary" },
-  back: { uk: "До реєстру", en: "Back to registry" },
+  back: { uk: "До бібліотеки", en: "Back to the library" },
   readJudgment: { uk: "Читати рішення", en: "Read the judgment" },
   caseFile: { uk: "Справа на сайті Суду", en: "Case file at the Court" },
   pagesPdf: { uk: "PDF, {n} с.", en: "PDF, {n} pp." },
@@ -156,12 +156,12 @@ const T = {
   },
   /* The third provenance case: the court's own text is not published anywhere
      this page can link to, so the two buttons in the masthead lead to
-     commentary and reporting instead. The registry says the same thing in its
+     commentary and reporting instead. The library says the same thing in its
      own way — `decisionUrl: null`. */
   unpublishedTag: { uk: "Рішення не опубліковано", en: "Decision not published" },
   unpublishedNote: {
-    uk: "Суд не оприлюднив тексту цього рішення, і в реєстрі за ним не значиться жодного судового документа. Посилання нижче ведуть на фаховий коментар і на репортаж — це не текст рішення.",
-    en: "The court has not published the text of this decision, and the registry records no court document for it. The links below lead to expert commentary and to news reporting — neither is the decision itself.",
+    uk: "Суд не оприлюднив тексту цього рішення, і в бібліотеці за ним не значиться жодного судового документа. Посилання нижче ведуть на фаховий коментар і на репортаж — це не текст рішення.",
+    en: "The court has not published the text of this decision, and the library records no court document for it. The links below lead to expert commentary and to news reporting — neither is the decision itself.",
   },
 
   // Warrant wall.

@@ -44,8 +44,8 @@ export const legalEmail = "nasvitlo@ucu.edu.ua";
  * These two numbers were hardcoded in the prose ("39 проваджень, з яких
  * опрацьовано 8"). That is a bad thing to hardcode in a document that carries
  * a revision date and that nobody re-reads: the ninth summary would have made
- * a legal page state a falsehood, silently. The registry is the same source of
- * truth the registry page and the sitemap use.
+ * a legal page state a falsehood, silently. `content/cases.ts` is the same
+ * source of truth the library page and the sitemap use.
  */
 export const registryTotal = registryCases.length;
 export const registrySummarised = registryCases.filter(
@@ -97,7 +97,7 @@ export const legalRevised: Localized = Object.fromEntries(
  * One block inside a section: a paragraph, or a bulleted list.
  *
  * A paragraph may carry one trailing in-site link (`link`), which is how a
- * clause points at the other document or at the registry without prose
+ * clause points at the other document or at the library without prose
  * having to contain markup.
  */
 export type LegalBlock =
@@ -446,17 +446,17 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: реєстр справ, конспекти рішень, хронології, карта подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
-            en: "The Site is an open library of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a case registry, decision summaries, chronologies, an events map and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
+            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, конспекти рішень, хронології, карта подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
+            en: "The Site is an open library of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a list of cases, decision summaries, chronologies, an events map and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
           },
         },
         {
           kind: "p",
           text: {
-            uk: `Бібліотека наповнюється: у реєстрі ${registryTotal} проваджень, з яких опрацьовано ${registrySummarised}. Відсутність справи, документа чи конспекту не означає, що провадження не існує, що воно завершилося або що воно неважливе.`,
-            en: `The library is still being filled: the registry holds ${registryTotal} proceedings, of which ${registrySummarised} have been summarised. The absence of a case, a document or a summary does not mean that the proceeding does not exist, that it has ended, or that it is unimportant.`,
+            uk: `Бібліотека наповнюється: у ній ${registryTotal} проваджень, з яких опрацьовано ${registrySummarised}. Відсутність справи, документа чи конспекту не означає, що провадження не існує, що воно завершилося або що воно неважливе.`,
+            en: `The library is still being filled: it holds ${registryTotal} proceedings, of which ${registrySummarised} have been summarised. The absence of a case, a document or a summary does not mean that the proceeding does not exist, that it has ended, or that it is unimportant.`,
           },
-          link: { label: { uk: "Переглянути реєстр", en: "Open the registry" }, to: "registry" },
+          link: { label: { uk: "Переглянути бібліотеку", en: "Open the library" }, to: "registry" },
         },
       ],
     },
@@ -514,8 +514,8 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Що справді є нашим — це те, що ми створюємо самі: конспекти й аналітичні тексти, хронології, неофіційні переклади, добір та впорядкування матеріалів у реєстрі, карти, ілюстрації, дизайн і код Сайту. Ці матеріали є об'єктами авторського права і належать Факультету права УКУ та Дослідницькому центру імені Луї Б. Зона або використовуються на законних підставах.",
-            en: "What is ours is what we make ourselves: the summaries and analytical texts, the chronologies, the unofficial translations, the selection and arrangement of the material in the registry, the maps, the illustrations, and the design and code of the Site. These are subject to copyright and belong to the UCU Faculty of Law and the Louis B. Sohn Research Centre, or are used on lawful grounds.",
+            uk: "Що справді є нашим — це те, що ми створюємо самі: конспекти й аналітичні тексти, хронології, неофіційні переклади, добір та впорядкування матеріалів у бібліотеці, карти, ілюстрації, дизайн і код Сайту. Ці матеріали є об'єктами авторського права і належать Факультету права УКУ та Дослідницькому центру імені Луї Б. Зона або використовуються на законних підставах.",
+            en: "What is ours is what we make ourselves: the summaries and analytical texts, the chronologies, the unofficial translations, the selection and arrangement of the material in the library, the maps, the illustrations, and the design and code of the Site. These are subject to copyright and belong to the UCU Faculty of Law and the Louis B. Sohn Research Centre, or are used on lawful grounds.",
           },
         },
         {
