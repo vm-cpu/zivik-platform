@@ -1,4 +1,5 @@
 import { MAP_EVENTS, MAP_COURTS } from "./map";
+import { moneyCompact } from "@/content/money";
 import { registryCases } from "./cases";
 import { SUMMARIES } from "./summaries";
 import { pick } from "./types";
@@ -89,14 +90,7 @@ export interface MapCaseLink {
  * that is not something a tag can caption honestly, so the label calls it the
  * sum in dispute and leaves the direction to the case.
  */
-function money(amountUsd: number, locale: Locale): string {
-  return new Intl.NumberFormat(locale === "uk" ? "uk-UA" : "en-GB", {
-    style: "currency",
-    currency: "USD",
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(Math.abs(amountUsd));
-}
+const money = moneyCompact;
 
 /** The registry row a summary was written from, if the registry has one. */
 const rowFor = (slug: string) => registryCases.find((c) => c.summarySlug === slug);

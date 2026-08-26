@@ -104,7 +104,7 @@ const en: Dictionary = {
     closeFull: "Leave full screen",
     reads: "Decisions written up",
     writtenOf: "Written up: {n} of {total}",
-    allInRegistry: "See them in the registry →",
+    allInRegistry: "See them in the library →",
     pending: "Summary in preparation",
     amountLabel: "Amount in dispute",
     legendWhat: "Places",
@@ -124,7 +124,7 @@ const en: Dictionary = {
     label: "Library of decisions",
     heading: "Every proceeding against Russia, in one library",
     description:
-      "Here the light is already on. The library grows step by step: first we add the case, then prepare a summary, a timeline and the documents.",
+      "Here the light is already on. Every proceeding carries its year, its forum, where it stands, and a link to the source.",
     fullRegistry: "The whole library",
     allCases: "All {count} {court} {cases} →",
     caseWord: { one: "case", few: "cases", many: "cases" },

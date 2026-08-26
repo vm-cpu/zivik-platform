@@ -137,7 +137,12 @@ export default function Footer({
               font: "600 var(--t-micro)/1.8 var(--brand-font-body)",
               letterSpacing: ".13em",
               textTransform: "uppercase",
-              color: "var(--brand-muted-brown)",
+              /* --brand-faint-dark, not --brand-muted-brown. The legal bar at
+                 the foot of this same file already made this exact swap and
+                 says why: muted-brown measures 3.01:1 on --brand-ink-black,
+                 under AA for 11px text. This block is the same 11px on the
+                 same ground and was left behind — 5.64:1 now. */
+              color: "var(--brand-faint-dark)",
             }}
           >
             {f.org}

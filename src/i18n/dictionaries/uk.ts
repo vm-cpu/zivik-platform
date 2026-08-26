@@ -135,10 +135,16 @@ const uk = {
        проваджень, рішення, арбітражів, ордерів — and the count line above
        already carries the right one. */
     writtenOf: "Опрацьовано {n} з {total}",
-    /* The rest of a seat's caseload, in the registry, instead of printed into
+    /* The rest of a seat's caseload, in the library, instead of printed into
        a 300px card. The Hague's ran to 3011px of scroll against a 753px
-       window before this. */
-    allInRegistry: "Дивитися в реєстрі →",
+       window before this.
+
+       The key is still `allInRegistry` — the route it points at is still
+       `/registry` — but the word the reader sees is the collection's one
+       name. This string said «у реєстрі» against the rule at the top of this
+       file, and it is the last thing a reader sees before landing on the
+       page that calls itself «Бібліотека рішень». */
+    allInRegistry: "Дивитися в бібліотеці →",
     pending: "Конспект у підготовці",
     /* The registry's own wording for this field, not a new one: the sign in
        the source says which way the money ran, so what a tag can honestly
@@ -179,7 +185,7 @@ const uk = {
     label: "Бібліотека рішень",
     heading: "Кожне провадження проти Росії — в одній бібліотеці",
     description:
-      "Тут уже світло. Бібліотека поповнюється поступово: спершу справу вносимо, потім готуємо конспект, таймлайн і документи.",
+      "Тут уже світло. Кожне провадження — з роком, судом, станом розгляду і посиланням на першоджерело.",
     fullRegistry: "Уся бібліотека",
     allCases: "Усі {count} {cases} {court} →",
     /* Ukrainian counts in three forms: 1 справа, 2–4 справи, 5+ справ. The

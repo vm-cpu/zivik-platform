@@ -73,11 +73,19 @@
   font-family:var(--brand-font-display),Georgia,serif;font-weight:400;
   font-size:clamp(30px,5vw,44px);line-height:1.08;color:var(--ink);margin:0 0 12px;
 }
-.reg-lede{max-width:680px;font-size:15px;line-height:1.6;color:var(--ink2);margin:0}
+/* 14px, not 15. Fifteen was a step the scale does not have — it sat between
+   --t-sm and --t-body — and this is the floor the design contract sets for
+   text a reader actually reads, so it goes to the token rather than below it. */
+.reg-lede{max-width:680px;font-size:var(--t-sm);line-height:1.6;color:var(--ink2);margin:0}
 
 /* stats row (data-display "stats" pattern) */
 .reg-meta{
-  display:flex;flex-wrap:wrap;gap:0 34px;margin-top:26px;
+  display:flex;flex-wrap:wrap;
+  /* A row gap, and 32 rather than 34 — the scale's step, not a guess. The gap
+     used to be `0 34px`: the moment the three figures wrapped, the second line
+     sat flush against the first with no air at all. */
+  gap:var(--space-3) var(--space-8);
+  margin-top:26px;
 }
 .reg-meta .m{
   display:flex;flex-direction:column;gap:3px;
@@ -136,12 +144,22 @@
 }
 .reg-si{display:flex;flex:none;color:var(--faint)}
 .reg-searchwrap:focus-within .reg-si{color:var(--goldink)}
+/* 16px here and 14px from 641px up, which is the one place on this page the
+   size is not purely an editorial choice: mobile Safari zooms the whole page
+   when a field smaller than 16px takes focus, and a reader who taps the
+   search box should not have to pinch back out to see the results. Above that
+   width there is no such behaviour and the field takes the same step down the
+   scale the pills beside it do. The 44px minimum is the touch target and does
+   not move. */
 .reg-search{
   flex:1 1 auto;min-width:0;box-sizing:border-box;
   min-height:44px;
   font:400 var(--t-body) var(--brand-font-body);color:var(--ink);
   background:transparent;border:0;border-radius:0;
   padding:var(--space-3) 0;outline:none;
+}
+@media (min-width:641px){
+  .reg-search{font-size:var(--t-sm)}
 }
 .reg-search::placeholder{color:var(--faint);opacity:1}
 /* Safari draws its own clear affordance in a system idiom; ours is a real
@@ -160,6 +178,23 @@
   gap:var(--space-2);
   padding-top:var(--space-3);
 }
+/* The five narrowing controls, as one set. Above 640 this is the flex row it
+   has always been and the wrapper is invisible; below it, it is the thing the
+   «Фільтри» button opens and shuts. */
+.reg-fset{
+  display:flex;flex-wrap:wrap;align-items:center;
+  gap:var(--space-2);
+  flex:1 1 auto;min-width:0;
+}
+/* The button that opens them. It does not exist above 640, where five pills
+   fit on one line and hiding them would be theatre. It borrows `.reg-trig`
+   wholesale — same pill, same gold edge and numeral when something is
+   narrowing, same caret that turns over when it is open. */
+/* Child selector, not the bare class: `.reg-fbtn` and `.reg-trig` are both
+   one class deep, and `.reg-trig{display:inline-flex}` is declared further
+   down this file, so a bare `.reg-fbtn{display:none}` lost on source order
+   and the button turned up on the desktop toolbar. */
+.reg-filters > .reg-fbtn{display:none}
 /* Sorting sits at the other end of the row from the filters, so the two acts
    are not read as one set. */
 .reg-sort{display:flex;margin-left:auto}
@@ -173,13 +208,18 @@
    a real listbox: button + role="listbox" + aria-activedescendant. Only the
    paint below changed; every ARIA attribute and key handler is the original. */
 .reg-lb{position:relative;flex:0 1 auto}
+/* One step down the scale — --t-cap, the token for metadata, which is what a
+   filter's dimension name is — with the box tightened to match. At 14px in a
+   40px pill the five of them read as five buttons competing with the ledger
+   they narrow; the toolbar is an instrument beside the archive, not a second
+   headline. 34px keeps it well clear of the 24px minimum target size. */
 .reg-trig{
-  display:inline-flex;align-items:center;gap:var(--space-2);
-  min-height:40px;max-width:100%;
-  font:600 var(--t-sm) var(--brand-font-body);color:var(--ink);
+  display:inline-flex;align-items:center;gap:6px;
+  min-height:34px;max-width:100%;
+  font:600 var(--t-cap) var(--brand-font-body);color:var(--ink);
   background:var(--surface);
   border:1px solid var(--ctl-edge);border-radius:var(--r-pill);
-  padding:6px var(--space-3) 6px var(--space-4);
+  padding:4px var(--space-2) 4px var(--space-3);
   cursor:pointer;text-align:left;
   transition:border-color var(--dur) var(--ease),
              background-color var(--dur) var(--ease);
@@ -203,7 +243,7 @@
 }
 .reg-trig[data-on] .tv{font-weight:700}
 .reg-trig .tn{
-  flex:none;min-width:20px;height:20px;padding:0 6px;box-sizing:border-box;
+  flex:none;min-width:17px;height:17px;padding:0 5px;box-sizing:border-box;
   display:inline-flex;align-items:center;justify-content:center;
   border-radius:var(--r-pill);
   font:700 var(--t-micro)/1 var(--brand-font-mono);
@@ -224,7 +264,7 @@
 .reg-lb[data-variant="sort"] .reg-trig[aria-expanded="true"],
 .reg-lb[data-variant="sort"] .reg-trig[data-on]{border-bottom-color:var(--gold)}
 .reg-lb[data-variant="sort"] .reg-trig .ts{
-  flex:none;color:var(--goldink);font-size:15px;line-height:1;
+  flex:none;color:var(--goldink);font-size:13px;line-height:1;
 }
 /* Anchored to its own right edge: it is the last thing on the row, and a
    popup hung off its left would leave the container. */
@@ -241,10 +281,12 @@
   box-shadow:var(--shadow-md);
   padding:var(--space-1);
 }
+/* The list follows the control that opens it: a popup in a larger size than
+   its own trigger reads as a different component. */
 .reg-opt{
   display:flex;align-items:center;gap:8px;
-  min-height:36px;padding:6px 10px;
-  font:400 var(--t-sm) var(--brand-font-body);color:var(--ink);
+  min-height:32px;padding:5px 9px;
+  font:400 var(--t-cap) var(--brand-font-body);color:var(--ink);
   border-radius:var(--r-sm);cursor:pointer;
   box-shadow:inset 0 0 0 0 var(--gold);
 }
@@ -336,11 +378,32 @@
 }
 .reg-list [role="rowgroup"]:last-child .reg-row:last-child{border-bottom:1px solid var(--rule)}
 
-/* column headings */
+/* column headings
+
+   Sticky, in the idiom the decision pages already use for `.pagenav` — top:0,
+   its own ground, a rule under it. Thirty-nine rows run to roughly 2600px of
+   document on a desktop: without this, a reader at row 25 has no idea which
+   column is which, and the only way back to the sort control is the whole way
+   to the top.
+
+   On `.reg-thead`, the rowgroup, and NOT on `.reg-hrow` inside it. A sticky
+   element can only travel inside its own parent's box, and `.reg-thead` is
+   exactly as tall as the one row it holds — measured, the heading stuck for
+   zero pixels and scrolled away with everything else. The rowgroup's parent
+   is `.reg-list`, which is the whole ledger, so that is the box the heading
+   is allowed to ride down.
+
+   The site header is not sticky — it scrolls away — so there is nothing above
+   this to offset against. The z-index sits under the filter popups (40) and
+   above the rows: an open «Суди» list overlapping the heading must win. */
+.reg-thead{
+  position:sticky;top:0;z-index:5;
+  background:var(--paper2);
+}
 .reg-hrow{
   align-items:center;padding-top:10px;padding-bottom:10px;
   border-top:1px solid var(--rule);
-  background:var(--paper2);
+  border-bottom:1px solid var(--rule);
 }
 .reg-th{min-width:0}
 .reg-sortbtn{
@@ -409,6 +472,29 @@
   text-decoration-color:currentColor;
 }
 
+/* The court's own document. Same construction as `.rw-s` above and for the
+   same reason — it has to sit above `.reg-name::after`, which covers the row
+   — but it is a destination off this site, so it takes the cherry the rest of
+   `.reg-wrap` gives a link rather than the gold the in-page anchors use. */
+.registrypage .reg-wrap a.reg-doc{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;min-height:24px;
+  margin-top:5px;
+  font:600 var(--t-cap) var(--brand-font-body);
+  color:var(--red);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  text-decoration-color:color-mix(in srgb,var(--red) 38%,transparent);
+}
+.registrypage .reg-wrap a.reg-doc:hover{
+  color:var(--redd);
+  text-decoration-color:currentColor;
+}
+/* Both on one line when a row carries a document and a matched write-up: they
+   are two ways out of the same row, not two paragraphs. */
+.reg-doc + .reg-inwrite{margin-top:5px}
+
 .reg-main mark{
   background:color-mix(in srgb,var(--gold) 26%,var(--surface));
   color:var(--ink);border-radius:2px;padding:0 1px;
@@ -437,6 +523,29 @@
 .reg-decided .dl{
   font-family:var(--brand-font-body);letter-spacing:.05em;text-transform:uppercase;
 }
+/* The sum in dispute, under the dates. Gold, because it is the one figure in
+   the ledger a reader scans for, and `--brand-gold-ink` is the small-text
+   variant this page already uses where gold has to carry text. Tabular so the
+   thirteen rows that have one line up against each other. */
+.reg-amount{
+  font:500 var(--t-cap) var(--brand-font-mono);color:var(--goldink);
+  font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+
+/* The sign-off band under the ledger.
+
+   Full-bleed ground, like the footer below it, but its words sit in exactly
+   the box `.reg-wrap` gives every case row — otherwise the paragraph starts
+   44px to the left of the ledger above it and the page loses its margin at
+   the last band. The grid takes the rail's own max-width and padding, border-
+   box like the rail, and the band's horizontal padding stands down so the two
+   do not add up. The band keeps its vertical padding. */
+.registrypage .nsv-newsletter{padding-inline:0}
+.registrypage .nsv-newsletter .nsv-news-grid{
+  box-sizing:border-box;
+  max-width:1120px;margin-inline:auto;
+  padding-inline:clamp(20px,5vw,44px);
+}
 
 /* ---- empty state ---- */
 .reg-empty{
@@ -452,7 +561,9 @@
    layout, so it is removed from the page and from the accessibility tree with
    it — the sort control in the toolbar carries the same axes. */
 @media (max-width:899px){
-  .reg-hrow{display:none}
+  /* The group as well as the row: an empty sticky rowgroup would still hold a
+     1px line at the top of the ledger and take a hairline of scroll with it. */
+  .reg-thead,.reg-hrow{display:none}
   .reg-row{
     grid-template-columns:minmax(0,1fr) auto;grid-auto-rows:auto;gap:6px 12px;padding:15px 4px;
   }
@@ -467,12 +578,49 @@
   .reg-cstage:empty,.reg-coutcome:empty{display:none}
 }
 /* One control per line below 640: a popup anchored to a half-width trigger
-   would hang off the right edge of a 390px viewport. */
+   would hang off the right edge of a 390px viewport.
+
+   The five of them are behind the «Фільтри» button here — see the note on
+   `.reg-fbtn` in RegistryTable. Shut, the toolbar is two controls on one
+   line: what to narrow by, and what order to read in. Open, they stack as
+   they always did. */
 @media (max-width:640px){
   .reg-lb{flex:1 1 100%}
   .reg-trig{width:100%}
   .reg-pop{max-width:100%}
-  .reg-sort{flex:1 1 100%;margin-left:0}
+  .reg-filters > .reg-fbtn{display:inline-flex;flex:1 1 auto;width:auto}
+  .reg-fset{display:none;flex:1 1 100%}
+  .reg-fset[data-open]{display:flex}
+  /* Beside the button, not under it: ordering is the only way to reorder once
+     the heading row is gone, so it stays in reach without opening anything. */
+  .reg-sort{flex:0 1 auto;margin-left:0}
+  .reg-sort .reg-trig{width:auto}
+  /* Laid out in a different order from the one they are written in. `.reg-fset`
+     is `flex-basis:100%`, so in source order it forced a wrap the moment it
+     opened and carried the sort control down with it to a third line — the
+     one control that is supposed to stay put whether the filters are open or
+     shut. `order` puts the two auto-width controls on the first line and lets
+     the wide one wrap under both. */
+  .reg-filters > .reg-fbtn{order:1}
+  .reg-sort{order:2}
+  .reg-fset{order:3}
+
+  /* Three up, and not a wrapping flex row.
+
+     When the figures wrapped, the first item of the second line kept the
+     `border-left` every `.m` after the first carries — a rule dividing the
+     page edge from a number, with nothing on its other side. `:first-child`
+     clears the first item of the *set*; CSS has no "first item of a row". A
+     grid of three fixes the seats, so every rule always falls between two
+     figures. Measured at 375px: the widest label, ОПРАЦЬОВАНО, takes 87px of
+     a 104px column. */
+  .reg-meta{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:0 var(--space-3);
+  }
+  .reg-meta .m{padding-left:var(--space-3);min-width:0}
+  .reg-meta .mv{font-size:26px}
+  .reg-meta .ml{font-size:9.5px;letter-spacing:.07em}
 }
 
 /* The Ukrainian line under a citation that is not. Quieter than the name it
@@ -483,5 +631,10 @@
   margin-top: 2px;
   font-size: var(--t-cap);
   line-height: 1.35;
-  color: var(--ink-2);
+  /* `--ink2`, not `--ink-2`. The hyphenated spelling is the token name in
+     globals.css (`--brand-ink-2`), not the local alias declared at the top of
+     this file, so it resolved to nothing and the colour fell through to the
+     inherited ink: measured #1a1917, the same value as the citation above it.
+     The line meant to be quieter than the name was exactly as loud. */
+  color: var(--ink2);
 }

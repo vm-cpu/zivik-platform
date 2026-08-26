@@ -16,23 +16,19 @@ export function pick<T>(value: Localized<T>, locale: Locale): T {
   return value[locale];
 }
 
-/** Normalised case status driving the chip colour/label (source status is free text). */
-export type CaseStatusKey =
-  | "decided"
-  | "progress"
-  | "warrant"
-  | "settled"
-  | "enforcement"
-  | "frozen"
-  | "rejected";
-
 /**
  * Where the proceedings stand — the first of the two tag dimensions.
  *
- * `CaseStatusKey` above mixed procedural posture with disposition ("progress"
- * and "warrant" answer different questions), so a row could only ever carry
- * one of the two facts. Every key here is a phrase the source `status` text
- * actually uses; a case whose record does not fix a stage carries none.
+ * It replaced a single `CaseStatusKey` — decided / progress / warrant /
+ * settled / enforcement / frozen / rejected — which mixed procedural posture
+ * with disposition ("progress" and "warrant" answer different questions), so a
+ * row could only ever carry one of the two facts. That key and the field that
+ * held it are gone: they had survived the split as a `statusKey` on all
+ * thirty-nine records that no surface read and no comparator sorted on, and
+ * every value it held is recoverable from `stage`, `outcome` and `status`.
+ *
+ * Every key here is a phrase the source `status` text actually uses; a case
+ * whose record does not fix a stage carries none.
  */
 export type CaseStageKey =
   | "preliminary" // «попередній етап»
@@ -61,6 +57,44 @@ export type CaseOutcomeKey =
   | "upheld" // «арбітраж залишено»
   | "settlement" // «врегульовано»
   | "rejected"; // «відхилено»
+
+/**
+ * The order the stages are offered and sorted in — the life-cycle, not an
+ * alphabet, so "by stage" reads as a proceeding moving through a court.
+ *
+ * Here rather than in a component because two surfaces need the same answer:
+ * the filter list the server builds in `registry/page.tsx` and the comparator
+ * the client sorts with in `RegistryTable`. They each carried a private copy
+ * of this array and of `OUTCOME_ORDER` below — identical, and one edit away
+ * from disagreeing, which would have shown up as a filter listing the stages
+ * in one order while the table sorted them in another.
+ */
+export const STAGE_ORDER: readonly CaseStageKey[] = [
+  "upcoming",
+  "preliminary",
+  "investigation",
+  "merits",
+  "satisfaction",
+  "appeal",
+  "remitted",
+  "enforcement",
+  "suspended",
+  "frozen",
+  "concluded",
+] as const;
+
+/** Weight of the act, heaviest first. Same two consumers as `STAGE_ORDER`. */
+export const OUTCOME_ORDER: readonly CaseOutcomeKey[] = [
+  "judgment",
+  "award",
+  "verdict",
+  "liability",
+  "upheld",
+  "warrant",
+  "order",
+  "settlement",
+  "rejected",
+] as const;
 
 /**
  * A date whose precision is part of the fact.
@@ -98,8 +132,9 @@ export interface Institution {
 /** A single case in the registry. */
 export interface RegistryCase {
   id: string;
-  /** Sequence number from the source table (null for the umbrella ICC situation). */
-  num: number | null;
+  /* `num` — the row number from "Cases for the platform.xlsx" — was here and
+     is gone. It addressed a spreadsheet, not a proceeding; `id` is what every
+     route, link and filter on the site uses. */
   /** References `Institution.id`. */
   institutionId: string;
   /** Official citation — identical in both locales. */
@@ -126,8 +161,6 @@ export interface RegistryCase {
    */
   nameUk?: string;
   type: Localized;
-  /** Normalised status for the chip. */
-  statusKey: CaseStatusKey;
   /** Procedural posture. Omitted where the record does not fix one. */
   stage?: CaseStageKey;
   /** What the forum issued. Omitted where the record names no act. */
@@ -146,7 +179,16 @@ export interface RegistryCase {
   amountUsd: number | null;
   /** Short context / docket reference. */
   note: Localized;
-  /** Page count of the decision, if known. */
+  /**
+   * Page count of the decision, if known — four of the thirty-nine.
+   *
+   * Nothing renders it. It is kept rather than dropped because those four
+   * numbers are facts about documents that exist nowhere else in this repo
+   * (the `pages` read by the decision pages is `judgment.pages`, a different
+   * field on the summaries), and deleting the field would delete them. Either
+   * give it a surface or clear it deliberately; it should not sit here
+   * unread indefinitely.
+   */
   pages: number | null;
   /** Link to the decision or case page. */
   decisionUrl: string | null;

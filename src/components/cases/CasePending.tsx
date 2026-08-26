@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { moneyFull } from "@/content/money";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { foreignLang, type Locale } from "@/i18n/config";
@@ -23,21 +24,8 @@ export function pendingCase(slug: string): RegistryCase | undefined {
   return registryCases.find((c) => c.id === slug && !c.summarySlug);
 }
 
-/**
- * Amount at stake, as a plain grouped USD figure.
- *
- * The sign in the source encodes which way the money ran (the Naftogaz gas
- * sales arbitration is recorded as −2.02bn); that direction is not something
- * this page can caption honestly in one line, so it shows the magnitude and
- * calls it what it is — the sum in dispute.
- */
-function money(amountUsd: number, locale: Locale): string {
-  return new Intl.NumberFormat(locale === "uk" ? "uk-UA" : "en-GB", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(Math.abs(amountUsd));
-}
+/** Amount at stake, whole. See `content/money.ts` for why it is unsigned. */
+const money = moneyFull;
 
 /**
  * Title and description for a proceeding with no summary yet.

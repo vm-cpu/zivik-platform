@@ -4,16 +4,23 @@ import {
   useCallback,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
 } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { defaultLocale, foreignLang, isLocale } from "@/i18n/config";
 import { plural, type PluralForms } from "@/i18n/plural";
-import type { CaseDate, CaseOutcomeKey, CaseStageKey } from "@/content/types";
+import {
+  OUTCOME_ORDER,
+  STAGE_ORDER,
+  type CaseDate,
+  type CaseOutcomeKey,
+  type CaseStageKey,
+} from "@/content/types";
 
 /* ============================================================================
    Search normalisation.
@@ -109,8 +116,25 @@ export interface RegRow {
   lit: boolean;
   /** Summary slug where one exists — the key into the content index. */
   slug: string | null;
-  /** Whether the record holds a link to a court document for this row. */
-  hasDoc: boolean;
+  /**
+   * The court's own document, where the record holds a link to one — twenty-
+   * two of the thirty-nine.
+   *
+   * It used to arrive as a bare boolean, because the only thing the table did
+   * with it was let the «Матеріали» filter narrow to rows that had one. That
+   * left the reader who used that filter holding twenty-two rows and no way
+   * to open a single document without going into each case first — one extra
+   * navigation in front of the most valuable act this archive supports.
+   */
+  docUrl: string | null;
+  /**
+   * Amount at stake in USD, signed, or null. Thirteen rows carry one, up to
+   * five billion. Print it through `content/money.ts`, which explains why the
+   * sign never reaches the reader and why these are never summed.
+   */
+  amountUsd: number | null;
+  /** `amountUsd`, already formatted for the locale. */
+  amountLabel: string | null;
   /** Subject-matter field, as a stable key and as a label in the locale. */
   fieldKey: string;
   fieldLabel: string;
@@ -252,39 +276,12 @@ export type SortKey =
   | "stage"
   | "outcome"
   | "readable"
+  | "amount"
   | "name";
 type SortDir = "asc" | "desc";
 
-/** Procedural order, so "by stage" reads as a life-cycle, not an alphabet. */
-const STAGE_ORDER: CaseStageKey[] = [
-  "upcoming",
-  "preliminary",
-  "investigation",
-  "merits",
-  "satisfaction",
-  "appeal",
-  "remitted",
-  "enforcement",
-  "suspended",
-  "frozen",
-  "concluded",
-];
-
-/** Weight of the act, heaviest first. */
-const OUTCOME_ORDER: CaseOutcomeKey[] = [
-  "judgment",
-  "award",
-  "verdict",
-  "liability",
-  "upheld",
-  "warrant",
-  "order",
-  "settlement",
-  "rejected",
-];
-
 /** Absent dimensions rank after every present one, in either direction. */
-function rank<T>(order: T[], value: T | null): number {
+function rank<T>(order: readonly T[], value: T | null): number {
   if (value == null) return order.length;
   const i = order.indexOf(value);
   return i < 0 ? order.length : i;
@@ -339,11 +336,148 @@ function compare(a: RegRow, b: RegRow, { key, dir }: SortState): number {
     case "readable":
       primary = Number(a.lit) - Number(b.lit);
       break;
+    case "amount": {
+      /* Same rule as the decision date above, for the same reason: a row
+         whose record fixes no amount has nothing to sort by, so it goes last
+         in both directions rather than pretending to be worth nothing. The
+         magnitude, because that is the only thing the sign lets us compare —
+         see content/money.ts. */
+      const av = a.amountUsd == null ? null : Math.abs(a.amountUsd);
+      const bv = b.amountUsd == null ? null : Math.abs(b.amountUsd);
+      if (av == null && bv == null) return tail(a, b);
+      if (av == null) return 1;
+      if (bv == null) return -1;
+      primary = av - bv;
+      break;
+    }
     case "name":
       primary = a.name.localeCompare(b.name);
       break;
   }
   return primary * sign || tail(a, b);
+}
+
+/* ============================================================================
+   The reader's state, in the URL.
+
+   Two things this buys, and the page had neither. A narrowed view is a link
+   again — «усі справи ЄСПЛ у стадії виконання» is the sort of thing a lawyer
+   sends to a colleague — and a reader who follows a row into a decision page
+   and comes back lands on the view they left rather than on all thirty-nine.
+
+   It is deliberately NOT `useSearchParams()`, which is how the incoming
+   `?court=` used to be read. That hook makes a statically rendered page bail
+   out to client-side rendering, and the cost was measured on this exact
+   route: the built HTML for /uk/registry carried an 815-byte <main> holding
+   the masthead and a BAILOUT_TO_CLIENT_SIDE_RENDERING marker where the table
+   should be. No rows, no toolbar, no case names, no court names — on the one
+   page this archive most needs indexed, and the only route on the site with
+   that marker in it. The data still shipped, as 195KB of RSC payload inside
+   <script> tags; it just never became markup.
+
+   So: the URL is read from `window.location` once the tree has hydrated, and
+   written back with `history.replaceState`, which does not go through the
+   router and therefore cannot re-render, re-fetch or add a history entry per
+   keystroke. The page prerenders in full again.
+   ========================================================================== */
+
+/** Layout phase on the client, plain effect on the server (where there is
+ *  neither a layout phase nor a `window`). See the read effect for why the
+ *  difference matters. */
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
+
+const DEFAULT_SORT: SortState = { key: "year", dir: "desc" };
+
+const SORT_KEYS: SortKey[] = [
+  "year",
+  "decided",
+  "court",
+  "stage",
+  "outcome",
+  "readable",
+  "amount",
+  "name",
+];
+
+/** Everything the toolbar holds, in one shape, because the URL carries it all. */
+interface UrlState {
+  q: string;
+  court: string[];
+  stage: string[];
+  outcome: string[];
+  field: string[];
+  material: string[];
+  sort: SortState;
+}
+
+/** The values each list filter is allowed to hold — the options actually on
+ *  the page. A query string is user input like any other. */
+interface Allowed {
+  court: Set<string>;
+  stage: Set<string>;
+  outcome: Set<string>;
+  field: Set<string>;
+}
+
+/**
+ * Parse `window.location.search`.
+ *
+ * Every value is checked against the options the page is showing, and unknown
+ * ones are dropped rather than emptying the table — a stale link to a court
+ * that has since been renamed should still open the library.
+ */
+function readUrl(allow: Allowed): UrlState {
+  const p = new URLSearchParams(window.location.search);
+  const list = (name: string, ok: (v: string) => boolean) =>
+    (p.get(name) ?? "")
+      .split(",")
+      .map((v) => v.trim())
+      .filter((v) => v !== "" && ok(v));
+  const [key, dir] = (p.get("sort") ?? "").split(":");
+  return {
+    q: p.get("q") ?? "",
+    /* `court` keeps its name: the home page's court bands and the map's seat
+       cards have been handing out `?court=icj,icc,pca` for a long time and
+       those links are already in the world. */
+    court: list("court", (v) => allow.court.has(v)),
+    stage: list("stage", (v) => allow.stage.has(v)),
+    outcome: list("outcome", (v) => allow.outcome.has(v)),
+    field: list("field", (v) => allow.field.has(v)),
+    material: list("material", (v) => v === "lit" || v === "doc"),
+    sort:
+      (SORT_KEYS as string[]).includes(key) && (dir === "asc" || dir === "desc")
+        ? { key: key as SortKey, dir }
+        : DEFAULT_SORT,
+  };
+}
+
+/**
+ * Write the state back, or clear the query string when nothing is narrowing.
+ *
+ * `replaceState`, not `pushState`: a history entry per keystroke would make
+ * the back button a way to un-type a search rather than a way to leave.
+ */
+function writeUrl(s: UrlState): void {
+  const p = new URLSearchParams();
+  if (s.q.trim() !== "") p.set("q", s.q);
+  if (s.court.length) p.set("court", s.court.join(","));
+  if (s.stage.length) p.set("stage", s.stage.join(","));
+  if (s.outcome.length) p.set("outcome", s.outcome.join(","));
+  if (s.field.length) p.set("field", s.field.join(","));
+  if (s.material.length) p.set("material", s.material.join(","));
+  if (s.sort.key !== DEFAULT_SORT.key || s.sort.dir !== DEFAULT_SORT.dir) {
+    p.set("sort", `${s.sort.key}:${s.sort.dir}`);
+  }
+  /* A comma is legal in a query string and these are lists the reader can
+     read; `URLSearchParams` escapes them to %2C anyway, which turns
+     `?court=icj,icc` into something nobody would paste into a message. */
+  const query = p.toString().replace(/%2C/g, ",");
+  const { pathname, search, hash } = window.location;
+  const next = `${pathname}${query ? `?${query}` : ""}${hash}`;
+  if (next !== `${pathname}${search}${hash}`) {
+    window.history.replaceState(window.history.state, "", next);
+  }
 }
 
 /* ============================================================================
@@ -385,6 +519,13 @@ export interface RegistryLabels {
   materialsAll: string;
   matLit: string;
   matDoc: string;
+  /** The link on a row that opens the court's own document. */
+  doc: string;
+  /** Assistive-technology prefix on the figure: «Сума у спорі: $5,0 млрд». */
+  amountName: string;
+  /* The name on the control that folds the five filters away below 640. Just
+     «Фільтри»: ordering sits outside it and is not one. */
+  filters: string;
   sort: string;
   sortOpt: Record<string, string>;
   colCourt: string;
@@ -419,12 +560,15 @@ export interface RegistryLabels {
   outcomeName: string;
 }
 
-/** The eight axes offered by the sort control, in the order they are listed. */
+/** The axes offered by the sort control, in the order they are listed. */
 const SORTS: Array<{ id: string; key: SortKey; dir: SortDir }> = [
   { id: "yearDesc", key: "year", dir: "desc" },
   { id: "yearAsc", key: "year", dir: "asc" },
   { id: "decidedDesc", key: "decided", dir: "desc" },
   { id: "readable", key: "readable", dir: "desc" },
+  /* Descending only. "Smallest claim first" is not a question anyone has
+     about an archive of claims against a State. */
+  { id: "amountDesc", key: "amount", dir: "desc" },
   { id: "court", key: "court", dir: "asc" },
   { id: "stage", key: "stage", dir: "asc" },
   { id: "outcome", key: "outcome", dir: "asc" },
@@ -773,33 +917,100 @@ export default function RegistryTable({
   content: ContentIndexProp;
   t: RegistryLabels;
 }) {
-  /* The home page's "Усі N справ ICJ →" links arrive with ?court=<id>, so the
-     table opens already filtered instead of dropping the reader into all 39.
-
-     Several ids, comma-separated, because the map hands over a *seat* and a
-     seat is not an institution: The Hague alone holds the ICJ, the ICC, the
-     PCA and the Dutch courts, and «Усі 28 →» from its card has to mean all
-     four. The filter itself has always been a list — only the way in was
-     single-valued. Unknown ids are dropped rather than emptying the table. */
-  const params = useSearchParams();
-  const initialCourts = (params.get("court") ?? "")
-    .split(",")
-    .map((id) => id.trim())
-    .filter((id) => id && courts.some((c) => c.id === id));
   /* Rows without a summary link to `/[locale]/cases/{id}`, and the row data is
      already localized to strings, so the locale comes off the path this table
      is mounted on (`/uk/registry`) rather than a prop the server would have to
-     thread through. */
+     thread through. `usePathname` is safe here in a way `useSearchParams` is
+     not: it does not bail the route out of prerendering. */
   const seg = usePathname().split("/")[1];
   const locale = isLocale(seg) ? seg : defaultLocale;
 
+  /* Every state below starts at its default on BOTH sides of hydration, which
+     is what lets the server render the whole table into the HTML. The
+     reader's own view arrives from the URL in the layout effect further
+     down. */
   const [q, setQ] = useState("");
-  const [court, setCourt] = useState<string[]>(initialCourts);
+  const [court, setCourt] = useState<string[]>([]);
   const [stage, setStage] = useState<string[]>([]);
   const [outcome, setOutcome] = useState<string[]>([]);
   const [field, setField] = useState<string[]>([]);
   const [material, setMaterial] = useState<string[]>([]);
-  const [sort, setSort] = useState<SortState>({ key: "year", dir: "desc" });
+  const [sort, setSort] = useState<SortState>(DEFAULT_SORT);
+  /* Below 640 the five filters fold away behind one control. Shut by default:
+     the reader came for the cases. */
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const filtersId = useId();
+
+  /** The values a query string may name — the options this page is showing. */
+  const allow: Allowed = useMemo(
+    () => ({
+      court: new Set(courts.map((c) => c.id)),
+      stage: new Set<string>(stages.map((x) => x.key)),
+      outcome: new Set<string>(outcomes.map((x) => x.key)),
+      field: new Set(fields.map((f) => f.key)),
+    }),
+    [courts, stages, outcomes, fields],
+  );
+
+  /* Read the URL — a *layout* effect, not an ordinary one.
+
+     It runs after hydration has matched the server's markup and before the
+     browser paints, so React flushes the resulting re-render in the same
+     frame: a reader arriving at ?court=icj never sees all thirty-nine rows
+     flash past on the way to three. `useEffect` would paint the unfiltered
+     table first and then correct it.
+
+     Mount only. The URL is the way *in*; after that this component owns the
+     state and the writer below owns the URL. Re-running this on a prop change
+     would throw away whatever the reader had narrowed to. */
+  useIsomorphicLayoutEffect(() => {
+    const u = readUrl(allow);
+    /* Set only what the URL actually named. Calling every setter would hand
+       React six fresh array identities and force a re-render for a link that
+       carried no query string at all. */
+    if (u.q !== "") setQ(u.q);
+    if (u.court.length) setCourt(u.court);
+    if (u.stage.length) setStage(u.stage);
+    if (u.outcome.length) setOutcome(u.outcome);
+    if (u.field.length) setField(u.field);
+    if (u.material.length) setMaterial(u.material);
+    if (u.sort.key !== DEFAULT_SORT.key || u.sort.dir !== DEFAULT_SORT.dir) {
+      setSort(u.sort);
+    }
+  }, []);
+
+  /* Back and forward. Our own writes use replaceState and so create no
+     history entries, but the browser can still hand this component a
+     different query string underneath it — a soft navigation back from a
+     decision page that keeps the tree mounted, or a reader editing the
+     address bar. Then the URL is authoritative again, defaults included. */
+  useEffect(() => {
+    const onPop = () => {
+      const u = readUrl(allow);
+      setQ(u.q);
+      setCourt(u.court);
+      setStage(u.stage);
+      setOutcome(u.outcome);
+      setField(u.field);
+      setMaterial(u.material);
+      setSort(u.sort);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [allow]);
+
+  /* Write the URL. Skipped exactly once: on mount this runs with the defaults
+     still in place — the reader's values are set by the layout effect above
+     and land on the next render — so writing here would erase the ?court=
+     they arrived with before anything had read it. */
+  const firstWrite = useRef(true);
+  useEffect(() => {
+    if (firstWrite.current) {
+      firstWrite.current = false;
+      return;
+    }
+    writeUrl({ q, court, stage, outcome, field, material, sort });
+  }, [q, court, stage, outcome, field, material, sort]);
 
   const active =
     q.trim() !== "" ||
@@ -862,7 +1073,7 @@ export default function RegistryTable({
       if (field.length && !field.includes(r.fieldKey)) return false;
       if (
         material.length &&
-        !material.some((m) => (m === "lit" ? r.lit : r.hasDoc))
+        !material.some((m) => (m === "lit" ? r.lit : r.docUrl != null))
       )
         return false;
       if (tokens.length === 0) return true;
@@ -907,6 +1118,48 @@ export default function RegistryTable({
     [tokens, haystacks, t],
   );
 
+  /* Where the keyboard goes when the control it was on is about to stop
+     existing.
+
+     Three controls on this page delete themselves as their own last act: a
+     chip removes the value it names, «Скинути» clears the state that put it
+     on the page, and the search field's ✕ clears the query that made it
+     appear. Only the third had ever been handled — it puts the caret back in
+     the field it emptied. The other two dropped focus on <body>, which sends
+     a keyboard reader back to the top of the document to tab in again, and
+     the chips are exactly the control a keyboard reader uses most: one Enter
+     per value they want gone.
+
+     A ref rather than state: this is not something the page renders, and it
+     must survive the render that removes the button without causing one. */
+  const focusAfter = useRef<
+    null | { kind: "chip"; index: number } | { kind: "search" }
+  >(null);
+  const chipsRef = useRef<HTMLUListElement>(null);
+  const toolbarRef = useRef<HTMLDivElement>(null);
+
+  /* No dependency list. It has to run after *any* render that might have
+     removed the control, and it clears its own instruction, so an empty run
+     costs one null check. */
+  useEffect(() => {
+    const want = focusAfter.current;
+    if (!want) return;
+    focusAfter.current = null;
+    if (want.kind === "search") {
+      document.getElementById("reg-q")?.focus();
+      return;
+    }
+    /* The chip that took the removed one's place, so a reader clearing four
+       values presses Enter four times without moving their hands. Past the
+       end of a shortened list, the last chip; past the last chip, the
+       toolbar, because there is nothing left to clear. */
+    const list = chipsRef.current?.querySelectorAll<HTMLElement>(".reg-chip");
+    const next = list?.length
+      ? list[Math.min(want.index, list.length - 1)]
+      : toolbarRef.current?.querySelector<HTMLElement>("button, input");
+    next?.focus();
+  });
+
   const reset = () => {
     setQ("");
     setCourt([]);
@@ -914,7 +1167,11 @@ export default function RegistryTable({
     setOutcome([]);
     setField([]);
     setMaterial([]);
-    setSort({ key: "year", dir: "desc" });
+    setSort(DEFAULT_SORT);
+    /* «Скинути» is the last control standing after it runs — it takes itself
+       off the page along with the chips and, in the empty state, the panel it
+       sits in. The search field is where the instrument starts. */
+    focusAfter.current = { kind: "search" };
   };
 
   const sortId = SORTS.find((s) => s.key === sort.key && s.dir === sort.dir)?.id;
@@ -1020,7 +1277,7 @@ export default function RegistryTable({
 
   return (
     <section className="reg-page">
-      <div className="reg-toolbar">
+      <div className="reg-toolbar" ref={toolbarRef}>
         {/* The search is a line of the instrument, not a box sitting next to
             it: a rule under it, a glyph in front of it and the same edge
             colour the pills carry. A boxed field in one idiom beside pills in
@@ -1070,6 +1327,40 @@ export default function RegistryTable({
           )}
         </div>
         <div className="reg-filters">
+          {/* Below 640 the five filters fold behind one control.
+
+              Stacked full width they ran to 292px, and with the masthead
+              above them that put the first case row at 921px on an 812px
+              screen: the library opened on no library at all, a full screen
+              of chrome before a reader saw a single proceeding. Folded, they
+              are one pill carrying its own count, and the chips under the
+              toolbar still name every value that is narrowing whether this is
+              open or shut — so nothing becomes invisible, only quiet.
+
+              Ordering stays outside it. Under 900px the column headings are
+              gone from the page, which makes this control the only way to
+              reorder, and it is not a filter. */}
+          <button
+            type="button"
+            className="reg-trig reg-fbtn"
+            aria-expanded={filtersOpen}
+            aria-controls={filtersId}
+            data-on={chips.length > 0 ? "1" : undefined}
+            onClick={() => setFiltersOpen((v) => !v)}
+          >
+            <span className="tv">{t.filters}</span>
+            {chips.length > 0 && (
+              <span className="tn" aria-hidden="true">
+                {chips.length}
+              </span>
+            )}
+            <span className="tc" aria-hidden="true" />
+          </button>
+          <div
+            className="reg-fset"
+            id={filtersId}
+            data-open={filtersOpen ? "1" : undefined}
+          >
           <Listbox
             label={t.courts}
             allLabel={t.courtsAll}
@@ -1133,12 +1424,13 @@ export default function RegistryTable({
               {
                 value: "doc",
                 label: t.matDoc,
-                count: rows.filter((r) => r.hasDoc).length,
+                count: rows.filter((r) => r.docUrl != null).length,
               },
             ]}
             selected={material}
             onChange={setMaterial}
           />
+          </div>
           {/* Ordering is not narrowing, so it does not wear a filter's pill:
               it sits at the far end of the row as an underlined text control.
               It stays on wide screens even though the heading row sorts too —
@@ -1168,14 +1460,17 @@ export default function RegistryTable({
       </div>
 
       {chips.length > 0 && (
-        <ul className="reg-active" aria-label={t.activeFilters}>
-          {chips.map((c) => (
+        <ul className="reg-active" ref={chipsRef} aria-label={t.activeFilters}>
+          {chips.map((c, i) => (
             <li key={c.id}>
               <button
                 type="button"
                 className="reg-chip"
                 aria-label={`${t.clearFilter}: ${c.dim} — ${c.label}`}
-                onClick={c.clear}
+                onClick={() => {
+                  focusAfter.current = { kind: "chip", index: i };
+                  c.clear();
+                }}
               >
                 <span className="cd" aria-hidden="true">
                   {c.dim}
@@ -1287,6 +1582,25 @@ export default function RegistryTable({
                         {t.matched} {reasons.join(" · ")}
                       </span>
                     )}
+                    {/* The court's own document, one click from the list.
+
+                        It sits above `.reg-name::after` — the overlay that
+                        makes the whole row one target — the same way the
+                        write-up section links do, which is what `position:
+                        relative; z-index: 1` buys in the stylesheet. Without
+                        that it would be underneath the row link and
+                        unclickable. */}
+                    {r.docUrl && (
+                      <a
+                        className="reg-doc"
+                        href={r.docUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {t.doc}
+                        <span aria-hidden="true"> ↗</span>
+                      </a>
+                    )}
                     {inDoc.length > 0 && (
                       <span className="reg-inwrite">
                         <span className="rw-l">{t.matchedIn}</span>
@@ -1328,6 +1642,12 @@ export default function RegistryTable({
                       </span>
                     )}
                   </span>
+                  {/* The figures column: the docket year, the day a decision
+                      was handed down where one was, and the sum in dispute
+                      where the record fixes one. Thirteen rows of thirty-nine
+                      carry that last line, which is why it is a line here and
+                      not a sixth column standing empty on the other twenty-
+                      six. */}
                   <span role="cell" className="reg-when">
                     <span className="reg-year">{r.year ?? t.noDate}</span>
                     {r.decidedLabel && (
@@ -1335,6 +1655,12 @@ export default function RegistryTable({
                         <span className="dl">{t.decidedOn}</span>
                         {"\u00a0"}
                         {r.decidedLabel}
+                      </span>
+                    )}
+                    {r.amountLabel && (
+                      <span className="reg-amount">
+                        <span className="sr-only">{t.amountName}: </span>
+                        {r.amountLabel}
                       </span>
                     )}
                   </span>

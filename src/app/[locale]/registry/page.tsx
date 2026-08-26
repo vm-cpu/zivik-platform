@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
 import Link from "next/link";
 import {
   alternateOpenGraphLocales,
@@ -12,12 +11,13 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContentRepository } from "@/content/repository";
 import {
+  OUTCOME_ORDER,
   pick,
+  STAGE_ORDER,
   type CaseDate,
-  type CaseOutcomeKey,
-  type CaseStageKey,
   type Localized,
 } from "@/content/types";
+import { moneyCompact } from "@/content/money";
 import { SUMMARIES } from "@/content/summaries";
 import {
   defaultOgImage,
@@ -25,6 +25,7 @@ import {
   pathAlternates,
   siteUrl,
 } from "@/lib/seo";
+import Newsletter from "@/components/nasvitlo/Newsletter";
 import RegistryTable, {
   type RegRow,
 } from "@/components/nasvitlo/RegistryTable";
@@ -78,14 +79,30 @@ const T = {
   fieldsAll: { uk: "Будь-яка галузь", en: "Any field" },
   materials: { uk: "Матеріали", en: "Materials" },
   materialsAll: { uk: "Будь-які матеріали", en: "Any materials" },
+  /* The control that folds the five filters away on a phone. See the note in
+     RegistryTable for why it exists and why the sort control is not inside
+     it. */
+  filters: { uk: "Фільтри", en: "Filters" },
   matLit: { uk: "Є конспект", en: "Has a summary" },
   matDoc: { uk: "Є документ суду", en: "Has a court document" },
+  /* The link itself, in the wording `dict.pending.official` already uses on
+     the page a row without a summary leads to — the reader meets the same
+     three words in the list and at the destination. */
+  doc: { uk: "Документ суду", en: "The court's document" },
+  /* The label the map tag and the pending page already give this figure. It
+     is visually hidden here: in the figures column the currency mark says
+     what the number is, and a caption on thirteen of thirty-nine rows would
+     be louder than the years above it. */
+  amountName: { uk: "Сума у спорі", en: "Amount in dispute" },
   sort: { uk: "Порядок", en: "Sort" },
   sortOpt: {
     yearDesc: { uk: "Спершу нові", en: "Newest first" },
     yearAsc: { uk: "Спершу давні", en: "Oldest first" },
     decidedDesc: { uk: "За датою рішення", en: "By decision date" },
     readable: { uk: "Спершу опрацьовані", en: "Ready to read first" },
+    /* Thirteen rows carry a sum and the largest is five billion; until now
+       the figure was in the record and on no surface that lists these cases. */
+    amountDesc: { uk: "Найбільші суми", en: "Largest amounts" },
     court: { uk: "За судом", en: "By court" },
     stage: { uk: "За станом розгляду", en: "By stage" },
     outcome: { uk: "За типом рішення", en: "By decision type" },
@@ -168,34 +185,6 @@ const T = {
   mInstitutions: { uk: "інстанцій", en: "institutions" },
   mAnalysed: { uk: "опрацьовано", en: "analysed" },
 } as const;
-
-/** Preferred ordering of the stage filter — the life-cycle, not an alphabet. */
-const STAGE_ORDER: CaseStageKey[] = [
-  "upcoming",
-  "preliminary",
-  "investigation",
-  "merits",
-  "satisfaction",
-  "appeal",
-  "remitted",
-  "enforcement",
-  "suspended",
-  "frozen",
-  "concluded",
-];
-
-/** Preferred ordering of the outcome filter — heaviest act first. */
-const OUTCOME_ORDER: CaseOutcomeKey[] = [
-  "judgment",
-  "award",
-  "verdict",
-  "liability",
-  "upheld",
-  "warrant",
-  "order",
-  "settlement",
-  "rejected",
-];
 
 /**
  * The exact date of a case's operative decision, or null.
@@ -356,7 +345,10 @@ export default async function RegistryPage({
       decidedLabel: decided ? formatDay(decided.iso, locale) : null,
       lit: c.lit,
       slug: c.summarySlug ?? null,
-      hasDoc: c.decisionUrl != null,
+      docUrl: c.decisionUrl,
+      amountUsd: c.amountUsd,
+      amountLabel:
+        c.amountUsd != null ? moneyCompact(c.amountUsd, locale) : null,
       fieldKey: fieldKey(c.type),
       fieldLabel: pick(c.type, locale),
       href: c.summarySlug ? `/${locale}/cases/${c.summarySlug}` : null,
@@ -443,11 +435,22 @@ export default async function RegistryPage({
           </div>
         </header>
 
-        {/* RegistryTable reads ?court= so the home page can link in
-            pre-filtered; useSearchParams needs a boundary for the page to stay
-            prerendered. The fallback is never seen in practice — the shell
-            around it is static and hydration is immediate. */}
-        <Suspense fallback={null}>
+        {/* No Suspense boundary, and that is the point.
+
+            There used to be one, wrapping this table with `fallback={null}`,
+            because `RegistryTable` read the incoming `?court=` through
+            `useSearchParams()`. The comment here claimed the fallback was
+            never seen. It was seen by every reader and every crawler in
+            production: `useSearchParams` bails a statically rendered route
+            out to client-side rendering, and the built HTML for this page
+            carried an 815-byte <main> — masthead, then a
+            BAILOUT_TO_CLIENT_SIDE_RENDERING marker where thirty-nine
+            proceedings should have been. Dev renders on demand, so the hole
+            only existed in the artefact nobody was reading.
+
+            The table now reads the URL after hydration instead (see the
+            state block in RegistryTable), so nothing here suspends and the
+            whole ledger is in the HTML again. */}
         <RegistryTable
           rows={rows}
           courts={courts}
@@ -471,6 +474,9 @@ export default async function RegistryPage({
             materialsAll: pick(T.materialsAll, locale),
             matLit: pick(T.matLit, locale),
             matDoc: pick(T.matDoc, locale),
+            doc: pick(T.doc, locale),
+            amountName: pick(T.amountName, locale),
+            filters: pick(T.filters, locale),
             sort: pick(T.sort, locale),
             sortOpt: Object.fromEntries(
               Object.entries(T.sortOpt).map(([k, v]) => [k, pick(v, locale)]),
@@ -507,8 +513,24 @@ export default async function RegistryPage({
             outcomeName: dict.registry.outcomeName,
           }}
         />
-        </Suspense>
       </main>
+
+      {/* The sign-off band, which until now only the home page carried.
+
+          This is where a reader ends up having found what they came for —
+          they have narrowed thirty-nine proceedings to the one they needed
+          and opened it, or they have read to the bottom of the ledger. It was
+          also the one page on the site that asked them for nothing at all:
+          the support ask sat on the home page, which a reader arriving from
+          the map's «Дивитися в бібліотеці →» or from a shared filtered link
+          never sees.
+
+          The component as it stands, not a new ask. The monthly-letter column
+          came off it at the owner's request because there is no sign-up list
+          behind it — see the note in Newsletter.tsx — and inventing a second
+          call to action here would put back, on a different page, exactly
+          what was deliberately removed. */}
+      <Newsletter dict={dict} locale={locale} />
     </div>
   );
 }
