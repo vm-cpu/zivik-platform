@@ -257,7 +257,7 @@ const uk = {
     colCenter: "Центр",
     colContacts: "Контакти",
     linkRegistry: "Бібліотека рішень",
-    linkMap: "Карта подій",
+    linkMap: "Мапа подій",
     linkCourts: "Суди та інстанції",
     linkDocs: "Документи",
     linkAbout: "Про нас",
