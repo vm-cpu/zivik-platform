@@ -797,16 +797,30 @@
     --emap-safe-right: 0px;
   }
 }
-/* The Atlantic framing used to be offered here too, and a floating card over a
-   500-unit-tall band could not clear it: measured with a card open, nine
-   markers under it at 1024, nine at 1100, seven at 1280 and three at 1440,
-   including every one of the six sites at the first three. Reserving a strip
-   instead needs 269px at 1280, which drops the drawing to 0.435 CSS pixels per
-   unit and takes the court targets to 19.5px — the framing that exists to show
-   a court in Montreal would be the framing in which no court can be clicked.
-   The framing is the map page's now (see `hasWide` in EventsMap.tsx), so there
-   is nothing left here to collide, and `data-framing` stays on the element as
-   the record of which framing is on screen. */
+/* The Atlantic framing is offered here again, and this is what it needs.
+   A floating card over a 500-unit-tall band could not clear it: measured with
+   a card open, nine markers under it at 1024, nine at 1100, seven at 1280 and
+   three at 1440, including every one of the six sites at the first three.
+   Reserving a strip instead needs 269px at 1280, which drops the drawing to
+   0.435 CSS pixels per unit and takes the court targets to 19.5px — the
+   framing that exists to show a court in Montreal would be the framing in
+   which no court can be clicked.
+
+   So in this framing, and only in it, the card stops floating and takes its
+   own place under the drawing — the same answer the band already gives below
+   1000px, for the same reason. The picture is 2.3 times as wide as the
+   projection and every marker is in the right-hand tenth of it; there is
+   nowhere on it a 300px card can stand without covering something. */
+.emap[data-variant="band"][data-framing="wide"] .emap-card {
+  position: relative;
+  inset: auto;
+  width: auto;
+  max-height: none;
+  margin-top: 1px;
+}
+.emap[data-variant="band"][data-framing="wide"] .emap-figure {
+  --emap-safe-right: 0px;
+}
 
 /* On the home band the legend stops being a band of its own. It was a full
    ruled strip under the drawing with two stacked headed groups, which read as

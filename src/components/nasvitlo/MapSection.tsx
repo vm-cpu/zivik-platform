@@ -101,10 +101,13 @@ const stageWord = (k: string | undefined) =>
       </div>
       <div className="nsv-map">
         <EventsMap
-          /* Near ring only. The Atlantic framing is map-page only, so the far
-             ring would be ~31 kB gzipped of North America this band can never
-             draw — and it travels twice, in the HTML and in the RSC payload. */
-          geo={{ ...geo, contextFar: undefined }}
+          /* The far ring is not in this object at all any more — it is a file
+             the component asks for the first time a reader asks for the
+             Atlantic framing. That is what lets the band offer the framing:
+             the geometry used to be withheld here to keep 17.5 kB gzipped of
+             North America off the home page, and withholding it withheld the
+             framing with it. */
+          geo={geo}
           events={MAP_EVENTS.map((e) => ({
             key: e.key,
             size: markerSize(e.weight),

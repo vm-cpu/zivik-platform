@@ -32,6 +32,17 @@ import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "src/content/europe-map.json");
+/**
+ * The Atlantic ring, on its own, in `public/`.
+ *
+ * 60 paths and 17.5 kB gzipped, and inside europe-map.json it travelled twice
+ * in every document that imported it — in the HTML and again in the RSC
+ * payload — including the home page, which is 72 kB. It is only ever wanted by
+ * one of the three framings, so `EventsMap` fetches it the first time a reader
+ * asks for that framing. Written by this script so the two halves of the
+ * geometry are always generated together and cannot drift.
+ */
+const OUT_FAR = join(ROOT, "public/europe-far.json");
 
 /** Fixed drawing surface. The SVG scales to its container through viewBox. */
 const W = 1200;
@@ -526,7 +537,6 @@ writeFileSync(
       _generated: "scripts/europe-map.mjs — do not edit by hand",
       viewBox: `0 0 ${W} ${H}`,
       context,
-      contextFar,
       ukraine,
       regions,
       areas,
@@ -537,8 +547,10 @@ writeFileSync(
   ) + "\n",
 );
 
+writeFileSync(OUT_FAR, JSON.stringify({ contextFar }) + "\n");
+
 console.log(
-  `wrote ${OUT}\n  ${context.length} + ${contextFar.length} country paths` +
+  `wrote ${OUT} and ${OUT_FAR}\n  ${context.length} + ${contextFar.length} country paths` +
     ` (${nearRing.length} inside the frame, ${farRing.length} for the Atlantic framing),` +
     ` ${Object.keys(markers).length} markers` +
     `\n  Ukraine outline includes Crimea and Sevastopol` +

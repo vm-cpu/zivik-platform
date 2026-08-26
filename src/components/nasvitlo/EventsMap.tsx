@@ -99,7 +99,12 @@ export interface MapCourtR {
 export interface MapGeometry {
   viewBox: string;
   context: string[];
-  /** The Atlantic ring. Absent on the home band, which cannot frame it. */
+  /**
+   * The Atlantic ring. Absent from the bundle now and fetched when it is
+   * first needed — see `far` in the component. It is 60 paths and 17.5 kB
+   * gzipped, and it travelled twice in every document that carried it, once
+   * in the HTML and again in the RSC payload.
+   */
   contextFar?: string[];
   ukraine: string;
   /**
@@ -639,6 +644,35 @@ export default function EventsMap({
   const [full, setFull] = useState(false);
 
   /**
+   * North America and the Atlantic rim, fetched rather than bundled.
+   *
+   * The band used to be denied the Atlantic framing partly to keep this off
+   * the home page: 60 paths, 17.5 kB gzipped, travelling twice in every
+   * document that carried them — in the HTML and again in the RSC payload — on
+   * a page that is 72 kB. Withholding the geometry withheld the framing.
+   *
+   * It is a file now, asked for the first time a reader asks for the framing.
+   * Nothing waits on it: pressing «Атлантика» reframes immediately and draws
+   * the near ring and every marker; the far coast fills in behind them when it
+   * arrives, and if it never arrives the reader gets the framing they asked
+   * for over open water, which is exactly what the band gave before.
+   */
+  const [far, setFar] = useState<string[] | null>(geo.contextFar ?? null);
+  const farAsked = useRef(false);
+  const loadFar = useCallback(() => {
+    if (farAsked.current) return;
+    farAsked.current = true;
+    fetch("/europe-far.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d: { contextFar?: string[] } | null) => {
+        if (d?.contextFar) setFar(d.contextFar);
+      })
+      .catch(() => {
+        // The framing still works; it is the coast behind it that is missing.
+      });
+  }, []);
+
+  /**
    * Is the key open?
    *
    * A legend is read once and then remembered — after that it is a column of
@@ -954,8 +988,7 @@ export default function EventsMap({
    * in the HTML and again in the RSC payload. The map page is unchanged; the
    * near ring is byte-identical, so Crimea and the oblast mesh have not moved.
    */
-  const hasWide =
-    variant === "full" && (SPAN.w > BASE.w + 1 || SPAN.h > BASE.h + 1);
+  const hasWide = SPAN.w > BASE.w + 1 || SPAN.h > BASE.h + 1;
   /**
    * How far the reader may get, by any means — the smallest rect of the
    * element's own shape that holds both named framings. Grown from their
@@ -1791,7 +1824,10 @@ export default function EventsMap({
               type="button"
               className="emap-zoom-far"
               aria-pressed={atWide}
-              onClick={() => setNav(navOf(WIDE, FULL.w))}
+              onClick={() => {
+                loadFar();
+                setNav(navOf(WIDE, FULL.w));
+              }}
             >
               {labels.zoomAtlantic}
             </button>
@@ -2019,7 +2055,7 @@ export default function EventsMap({
           {geo.context.map((d, i) => (
             <path key={i} className="emap-ctx" d={d} />
           ))}
-          {(geo.contextFar ?? []).map((d, i) => (
+          {(far ?? []).map((d, i) => (
             <path key={`f${i}`} className="emap-ctx" d={d} />
           ))}
           <path className="emap-ua" d={geo.ukraine} />
@@ -2602,7 +2638,7 @@ export default function EventsMap({
             </li>
             {/* The ground a mark speaks for, where a point is not the whole
                 truth about it. Only where some site actually has one. */}
-            {events.some((e) => e.area) && (
+            {variant === "full" && events.some((e) => e.area) && (
               <li>
                 <button
                   type="button"
@@ -2621,9 +2657,13 @@ export default function EventsMap({
           </ul>
         </div>
 
-        {/* On the home band the second group renders too: without it the reader
-            sees three site marks and no key to the rings the courts are drawn
-            as, which are half the picture. */}
+        {/* On the home band this group renders too, but only its first key:
+            without it the reader sees the site marks and no key to the rings
+            the courts are drawn as, which are half the picture. Everything
+            else here — the dashed line, the docked seat, the lit ground, the
+            oblast mesh — explains a detail of a drawing the band is showing at
+            a glance, and a band is a glance. Three marks and one sentence; the
+            rest is on the map's own page, which is one link away. */}
         <div className="emap-leg-group">
           <LegendH variant={variant}>{labels.legendHow}</LegendH>
           <ul>
@@ -2644,19 +2684,21 @@ export default function EventsMap({
                 the drawing rather than name a set of marks you could ask to
                 see on their own. A button that filtered to "the dashed lines"
                 would be a button that did nothing. */}
-            <li className="emap-key">
-              <svg viewBox="0 0 22 22" aria-hidden="true">
-                <line className="k-line" x1="1" y1="11" x2="21" y2="11" />
-              </svg>
-              {labels.legendLine}
-            </li>
+            {variant === "full" && (
+              <li className="emap-key">
+                <svg viewBox="0 0 22 22" aria-hidden="true">
+                  <line className="k-line" x1="1" y1="11" x2="21" y2="11" />
+                </svg>
+                {labels.legendLine}
+              </li>
+            )}
             {/* The one glyph on the drawing a reader has no way to recognise,
                 and the one the legend did not explain: a seat the frame cannot
                 hold, pinned to the border with a chevron and a tail running off
                 the picture. By data rather than by name — today that is
                 Montreal and the ICAO Council, and a second such seat would
                 bring its own key with it. */}
-            {courts.some((c) => c.offMap) && (
+            {variant === "full" && courts.some((c) => c.offMap) && (
               <li className="emap-key">
                 <svg viewBox="0 0 22 22" aria-hidden="true">
                   <line className="k-line" x1="1" y1="11" x2="11" y2="11" />
