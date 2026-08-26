@@ -3,6 +3,7 @@ import { registryCases } from "./cases";
 import { SUMMARIES } from "./summaries";
 import { pick } from "./types";
 import type { Locale } from "@/i18n/config";
+import type { CaseStageKey } from "./types";
 
 /**
  * Map event → the decisions it leads to.
@@ -54,15 +55,62 @@ export interface MapCaseLink {
   slug: string;
   title: string;
   forum: string;
+  /**
+   * Where the proceeding stands, and what is at stake in it.
+   *
+   * The map counted rows and said nothing about consequences: every card gave
+   * a number of proceedings and none of them gave a figure or a posture, while
+   * the registry beside it carries both on every row. The largest award in the
+   * collection — $1.1bn in Oschadbank — appeared nowhere on the map at all.
+   *
+   * `stage` is the registry's own key, resolved to a label by the render site,
+   * which has the dictionary. `amount` is already formatted: the sign in the
+   * source encodes which way the money ran, and that is not something a tag
+   * can caption honestly, so this is the magnitude and the label calls it the
+   * sum in dispute — the same wording, from the same reasoning, as the pending
+   * case page.
+   */
+  stage?: CaseStageKey;
+  amount?: string;
 }
+
+/**
+ * Amount at stake, short. See `MapCaseLink`.
+ *
+ * Compact rather than the grouped figure the pending case page prints. That
+ * page sets the amount as a field in a definition list with the width of the
+ * page behind it; here it is a tag inside a 300px card, and «1 100 000 000
+ * USD» is thirteen digits and a currency across a column that also has to hold
+ * the name of the case. `compact` gives «1,1 млрд $» and "$1.1B" — the same
+ * number, at the precision a tag can carry.
+ *
+ * The magnitude, not the signed value: the sign in the source encodes which
+ * way the money ran — the gas sales arbitration is recorded as −2.02bn — and
+ * that is not something a tag can caption honestly, so the label calls it the
+ * sum in dispute and leaves the direction to the case.
+ */
+function money(amountUsd: number, locale: Locale): string {
+  return new Intl.NumberFormat(locale === "uk" ? "uk-UA" : "en-GB", {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(Math.abs(amountUsd));
+}
+
+/** The registry row a summary was written from, if the registry has one. */
+const rowFor = (slug: string) => registryCases.find((c) => c.summarySlug === slug);
 
 /** Resolved once per render, on the server, so the client gets one language. */
 export function caseLinksFor(eventKey: string, locale: Locale): MapCaseLink[] {
   const event = MAP_EVENTS.find((e) => e.key === eventKey);
   return (event?.cases ?? []).map((slug) => {
     const s = SUMMARIES[slug];
+    const row = rowFor(slug);
     return {
       slug,
+      stage: row?.stage,
+      amount: row?.amountUsd != null ? money(row.amountUsd, locale) : undefined,
       // `title` is optional on DecisionSummary; the masthead parties are
       // what the case is filed as, so they stand in when it is absent.
       title: s.title ? pick(s.title, locale) : s.masthead.parties,
@@ -96,6 +144,8 @@ export function courtCaseloadFor(courtKey: string, locale: Locale) {
         return {
           slug: c.summarySlug as string,
           title: s.title ? pick(s.title, locale) : s.masthead.parties,
+          stage: c.stage,
+          amount: c.amountUsd != null ? money(c.amountUsd, locale) : undefined,
         };
       }),
     /**
@@ -108,6 +158,12 @@ export function courtCaseloadFor(courtKey: string, locale: Locale) {
      */
     listed: cases
       .filter((c) => !(c.summarySlug && c.summarySlug in SUMMARIES))
-      .map((c) => ({ id: c.id, name: c.name, note: pick(c.note, locale) })),
+      .map((c) => ({
+        id: c.id,
+        name: c.name,
+        note: pick(c.note, locale),
+        stage: c.stage,
+        amount: c.amountUsd != null ? money(c.amountUsd, locale) : undefined,
+      })),
   };
 }

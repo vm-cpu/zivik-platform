@@ -39,6 +39,20 @@
      / 4.95. */
   --brand-faint: #6d6964;      /* muted / captions */
   --brand-rule: #e7e5e1;       /* hairline dividers */
+
+  /* Band boundary on paper. --brand-rule is a quiet divider inside a
+     component — it measures 1.22:1 on --brand-paper and 1.14:1 on
+     --brand-paper-2, which is correct for a row separator and invisible as
+     the edge between two full-bleed sections. The decision page alternates
+     --brand-paper and --brand-paper-2, and those two are themselves only
+     1.06:1 apart, so where an optional band makes two same-ground sections
+     land next to each other there was nothing at all between them. This is
+     the section edge: 1.75:1 on --brand-paper, 1.64:1 on --brand-paper-2 —
+     a printed rule, seen at a glance, still a hairline.
+     It doubles as the track behind a gold bar or dot field: --brand-gold-ink
+     on it is 3.11:1, so a partly-filled bar clears the 3:1 graphics floor
+     against its own track. */
+  --brand-seam: #c6c0b6;
   --brand-cream: #f3e8e2;      /* text on dark scenes */
 
   /* Dark surfaces — a near-black with a warm cast, so the lamp still reads as

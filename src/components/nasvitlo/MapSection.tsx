@@ -26,6 +26,19 @@ export default function MapSection({
   locale: Locale;
   dict: Dictionary;
 }) {
+
+/**
+ * The registry's stage key as the word the registry uses for it.
+ *
+ * Resolved here rather than in `map-links.ts`: the labels live in the
+ * dictionary and this is the surface that already has one. A key the
+ * dictionary does not carry is dropped rather than printed raw.
+ */
+const stageWord = (k: string | undefined) =>
+  k && k in dict.registry.stage
+    ? (dict.registry.stage as Record<string, string>)[k]
+    : undefined;
+
   return (
     <div
       id="map"
@@ -96,6 +109,7 @@ export default function MapSection({
             key: e.key,
             size: markerSize(e.weight),
             total: e.weight,
+            iso: e.iso,
             when: pick(e.when, locale),
             title: pick(e.title, locale),
             note: pick(e.note, locale),
@@ -104,14 +118,24 @@ export default function MapSection({
             forums: pick(e.forums, locale),
             count: pick(e.count, locale),
             open: e.open,
-            cases: caseLinksFor(e.key, locale),
+            cases: caseLinksFor(e.key, locale).map((c) => ({
+              ...c,
+              stage: stageWord(c.stage),
+            })),
           }))}
           courts={MAP_COURTS.map((c) => ({
             key: c.key,
             city: pick(c.city, locale),
             offMap: c.offMap,
             labelDy: c.labelDy,
-            caseload: courtCaseloadFor(c.key, locale),
+            caseload: (() => {
+              const cl = courtCaseloadFor(c.key, locale);
+              return {
+                ...cl,
+                written: cl.written.map((w) => ({ ...w, stage: stageWord(w.stage) })),
+                listed: cl.listed.map((l) => ({ ...l, stage: stageWord(l.stage) })),
+              };
+            })(),
             seats: seatsLine(c, locale),
             ...courtMarks(c, locale),
           }))}
@@ -126,6 +150,7 @@ export default function MapSection({
             writtenOf: dict.mapSection.writtenOf,
             allInRegistry: dict.mapSection.allInRegistry,
             pending: dict.mapSection.pending,
+            amountLabel: dict.mapSection.amountLabel,
             sizeKey: dict.mapSection.sizeKey,
             legendWhat: dict.mapSection.legendWhat,
             legendHow: dict.mapSection.legendHow,
@@ -142,6 +167,7 @@ export default function MapSection({
             },
             caseload: dict.mapSection.caseload,
             caseloadWord: dict.mapSection.caseloadWord,
+            railLabel: dict.mapSection.railLabel,
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,

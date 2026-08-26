@@ -1,7 +1,22 @@
-/* ---- 3. Dashboard (dark) --------------------------------------------------- */
+/* ---- 3. Dashboard (paper) --------------------------------------------------
+   This band was --brand-night, and it was the head of a 3563px run of dark:
+   .dash (1364) → .mapband (1018) → .chron (1180), measured at 1440 on
+   icj-genocide. The first two share one rgb, so the seam between them was
+   1.00:1; the third is --brand-night-2, 1.07:1 against --brand-night. Three
+   intended layers separated by seven per cent of luminance is one dark field,
+   and there is no way to fix that by going deeper: --brand-night against pure
+   black is 1.12:1, so the whole range below the page's darkest ground is
+   worth one eighth of a contrast step.
+   So the fix is structural, not chromatic. DESIGN.md reserves the dark ground
+   for "the lamp stage, the map, the court mastheads". A dashboard of docket
+   facts, headline figures and a dispositif is none of those — it is document
+   furniture, and it belongs on paper with the rest of the instruments. The
+   masthead above it and the map below it stay dark, so the dark scenes are
+   now islands with paper on both sides and no two of them ever touch. */
 .casepage .dash {
-  background: var(--bg);
-  color: var(--cream);
+  background: var(--paper2);
+  color: var(--ink);
+  border-bottom: 1px solid var(--seam);
   padding-block: clamp(34px, 4.5vw, 60px);
 }
 .casepage .dash-stack {
@@ -25,9 +40,14 @@
     grid-template-columns: 1fr;
   }
 }
+/* On the night ground these were --brand-night-2, 1.07:1 against the band:
+   four cards a reader could not see the edges of. On paper they are the
+   site's own card — --brand-surface and a soft elevation, 1.06:1 in luminance
+   but carrying a shadow, which is what actually draws a card. */
 .casepage .kpi {
-  background: var(--panel);
+  background: var(--card);
   border-radius: var(--r-md);
+  box-shadow: var(--shadow-sm);
   padding: var(--space-6) var(--space-6);
   display: flex;
   flex-direction: column;
@@ -45,15 +65,15 @@
   font-weight: 700;
   font-size: var(--t-h2);
   line-height: 1.05;
-  color: var(--gold);
+  color: var(--pgold);
   font-variant-numeric: tabular-nums;
 }
 .casepage .kpi[data-em="1"] b {
-  color: var(--red);
+  color: var(--pred);
 }
 .casepage .kpi span {
   font: 500 var(--t-sm) var(--brand-font-body);
-  color: var(--muted);
+  color: var(--ink2);
 }
 
 /* ---- map band -------------------------------------------------------------
@@ -72,10 +92,16 @@
    units, so full width is also the only thing that makes them legible. At
    1440 the scale went from 0.82 to 1.24, which takes a 14-unit marker label
    from 11.5px to 17.4px and a 16-unit place name from 13.1px to 19.9px. */
+/* The one dark scene left in the middle of the page, and the only band the
+   contract actually names as dark besides the masthead. It used to run
+   straight out of .dash on the same rgb — no top padding, no edge — so the
+   two read as one 2382px field. With paper above and below it, it is an
+   island: the seam is --brand-paper-2 against --brand-night, 17.1:1, and it
+   gets the top padding every other band has. */
 .casepage .mapband {
   background: var(--bg);
   color: var(--cream);
-  padding-block: 0 clamp(34px, 4.5vw, 60px);
+  padding-block: clamp(34px, 4.5vw, 60px);
 }
 /* heading and legend keep the gutter the rail gives every other band */
 .casepage .mapband > .lbl,
@@ -187,14 +213,14 @@
   font-family: var(--brand-font-display), serif;
   font-size: var(--t-h3);
   font-weight: 700;
-  color: var(--cream);
+  color: var(--ink);
 }
 .casepage .score-count {
   font: 600 var(--t-sm) var(--brand-font-body);
-  color: var(--muted);
+  color: var(--ink2);
 }
 .casepage .score-count b {
-  color: var(--red);
+  color: var(--pred);
   font-weight: 700;
 }
 .casepage .verdicts {
@@ -208,7 +234,7 @@
   align-items: baseline;
   gap: var(--space-2) var(--space-5);
   padding: var(--space-4) 0;
-  border-bottom: 1px solid var(--rule-soft);
+  border-bottom: 1px solid var(--prule);
 }
 .casepage .v-track,
 .casepage .v-track-link {
@@ -217,16 +243,16 @@
   font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--gold-dim);
+  color: var(--pgold);
   text-decoration: none;
 }
 .casepage .v-track-link:hover {
-  color: var(--gold);
+  color: var(--ink);
 }
 .casepage .v-claim {
   font-size: var(--t-ui);
   line-height: 1.4;
-  color: var(--cream);
+  color: var(--ink);
 }
 .casepage .v-out {
   display: inline-flex;
@@ -244,36 +270,38 @@
   border-radius: 50%;
 }
 .casepage .v-out[data-o="violation"] {
-  color: var(--red);
+  color: var(--pred);
 }
 .casepage .v-out[data-o="violation"]::before {
-  background: var(--red);
+  background: var(--pred);
 }
 .casepage .v-out[data-o="no-violation"] {
-  color: var(--faint);
+  color: var(--ink2);
 }
 .casepage .v-out[data-o="no-violation"]::before {
-  border: 1.5px solid var(--faint);
+  border: 1.5px solid var(--ink2);
 }
 /* An arbitral dispositif also grants, rejects and leaves things undecided.
    These are outcomes, not breaches, so they run on gold — never red. */
 .casepage .v-out[data-o="granted"] {
-  color: var(--gold);
+  color: var(--pgold);
 }
 .casepage .v-out[data-o="granted"]::before {
-  background: var(--gold);
+  background: var(--pgold);
 }
+/* Rejected is not a breach and not an award: neutral ink, hollow ring. On the
+   dark ground it was --gold-dim beside --gold, two golds 1.4:1 apart. */
 .casepage .v-out[data-o="rejected"] {
-  color: var(--gold-dim);
+  color: var(--ink2);
 }
 .casepage .v-out[data-o="rejected"]::before {
-  border: 1.5px solid var(--gold-dim);
+  border: 1.5px solid var(--ink2);
 }
 .casepage .v-out[data-o="not-decided"] {
-  color: var(--faint);
+  color: var(--ink2);
 }
 .casepage .v-out[data-o="not-decided"]::before {
-  border: 1.5px dashed var(--faint);
+  border: 1.5px dashed var(--ink2);
 }
 
 /* timeline */
@@ -289,7 +317,7 @@
   left: 6px;
   right: 6px;
   height: 1px;
-  background: var(--rule);
+  background: var(--prule);
 }
 .casepage .tl {
   position: relative;
@@ -303,24 +331,24 @@
   width: 13px;
   height: 13px;
   border-radius: 50%;
-  background: var(--bg);
-  border: 2px solid var(--gold-dim);
+  background: var(--paper2);
+  border: 2px solid var(--pgold);
 }
 .casepage .tl[data-kind="judgment"]::before {
-  background: var(--red);
-  border-color: var(--red);
+  background: var(--pred);
+  border-color: var(--pred);
 }
 .casepage .tl-date {
   font: 500 var(--t-cap) var(--brand-font-mono);
   letter-spacing: 0.01em;
-  color: var(--gold);
+  color: var(--pgold);
   font-variant-numeric: tabular-nums;
 }
 .casepage .tl-label {
   margin: var(--space-2) 0 0;
   font-size: var(--t-sm);
   line-height: 1.45;
-  color: var(--muted);
+  color: var(--ink2);
   max-width: 26ch;
 }
 

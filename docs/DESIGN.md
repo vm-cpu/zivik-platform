@@ -44,6 +44,7 @@ court mastheads — which are dark in the design, not in a theme.
 | `--brand-ink-2` | `#55524d` | `#c2bab0` | secondary text |
 | `--brand-faint` | `#8a8681` | `#8f877d` | muted, captions |
 | `--brand-rule` | `#e7e5e1` | `#322c26` | hairline dividers |
+| `--brand-seam` | `#c6c0b6` | — | the edge between two full-bleed paper bands |
 | `--brand-night` | `#17110f` | — | scenes that are dark by design |
 
 **Rules**
@@ -161,8 +162,23 @@ are forbidden: they read as neither sharp nor round.
   Masthead, lede, dashboard and reading column must share one left edge at every
   width. Mixing an inset band with a centred one is the bug that made the page
   look misaligned.
-- Full-bleed bands alternate ground (`--brand-paper` ⇄ `--brand-paper-2` ⇄
-  `--brand-night`) to segment the page instead of drawing boxes.
+- Full-bleed bands alternate ground (`--brand-paper` ⇄ `--brand-paper-2`) to
+  segment the page instead of drawing boxes — **and every band also carries a
+  1px `--brand-seam` edge.** The alternation alone cannot be relied on:
+  `--brand-paper` against `--brand-paper-2` is 1.06:1, and half the bands on a
+  decision page are conditional, so the parity flips and two same-ground
+  sections meet whenever one of them is absent. `--brand-rule` is a divider
+  *inside* a component (1.22:1 on paper) and is not this.
+- **Dark grounds do not alternate — they are islands.** The dark half of the
+  palette has no room to layer: `--brand-night` against pure black is 1.12:1,
+  so the whole range below the page's darkest ground is worth one eighth of a
+  contrast step, and `--brand-night-2` sits 1.07:1 above it. Two dark bands in
+  a row read as one field whatever values they take. A dark scene therefore
+  gets paper on both sides. The decision page had four consecutive dark bands
+  — masthead, dashboard, map, chronology, 4359px of it at 1440 — and the fix
+  was to move the two that are not scenes onto paper, not to recolour them.
+  The scenes that stay dark are the ones named above: the lamp stage, the map,
+  the court mastheads.
 - Instruments are **full width in one column**. Two dense columns of unrelated
   content read as clutter.
 

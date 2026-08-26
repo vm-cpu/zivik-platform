@@ -801,7 +801,7 @@ export default async function CasePage({
               eight summaries — 48 facts — and rendered nowhere until now. */}
           {glance.length > 0 && (
             <div>
-              <h2 className="lbl">{pick(T.glanceH, locale)}</h2>
+              <h2 className="lbl lbl-onpaper">{pick(T.glanceH, locale)}</h2>
               <GlanceFacts
                 facts={glance.map((g) => ({
                   label: pick(g.label, locale),
@@ -812,7 +812,7 @@ export default async function CasePage({
           )}
 
           <div>
-            <h2 className="lbl">{pick(T.overview, locale)}</h2>
+            <h2 className="lbl lbl-onpaper">{pick(T.overview, locale)}</h2>
             <div className="kpis">
               {stats.map((s, i) => (
                 <div
@@ -868,7 +868,7 @@ export default async function CasePage({
 
           {takings && (
             <div>
-              <div className="lbl">{pick(takings.heading, locale)}</div>
+              <div className="lbl lbl-onpaper">{pick(takings.heading, locale)}</div>
               <TakingsGrid metrics={takings.metrics} locale={locale} />
               {takings.note && (
                 <p className="dash-note">
@@ -890,7 +890,7 @@ export default async function CasePage({
 
           {amounts && (
             <div>
-              <div className="lbl">{pick(T.amountsH, locale)}</div>
+              <div className="lbl lbl-onpaper">{pick(T.amountsH, locale)}</div>
               <MoneyBars
                 figures={amounts.figures.map((f) => ({
                   label: L(f.label),
@@ -940,7 +940,7 @@ export default async function CasePage({
           tail of the dashboard, below the money bars, under a <div> label. */}
       <section className="chron" id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
         <div className="rail">
-          <h2 className="lbl">{pick(T.timeline, locale)}</h2>
+          <h2 className="lbl lbl-onpaper">{pick(T.timeline, locale)}</h2>
           <CaseTimeline
             events={timeline.map((e) => ({
               date: L(e.date),
@@ -1116,44 +1116,42 @@ export default async function CasePage({
         </section>
       )}
 
-      {/* 3 — Reader's guide: the reference layer, ahead of the long read.
-          Grouped by use: the question-and-answer column (common questions,
-          related decisions) beside the reference column (who's who, glossary). */}
-      <section className="aids" id="handbook" data-navsec aria-label={pick(T.navHandbook, locale)}>
-        <div className="rail">
-          {/* No label above the two column headings: "Довідник / Хто є хто /
-              Словник" was three levels of naming for one lookup panel. The nav
-              names the section; the columns name themselves. */}
-          <div className="aids-grid">
-              {/* Who's who is a cast list: what each actor is, who they are,
-                  what they did. The glossary below is a dictionary. They used
-                  to be the same bold-name-plus-grey-line pair poured into one
-                  two-column flow, which is why they read as one panel twice. */}
-              <div className="aid aid-who">
-                <h2 className="lbl">{pick(T.whoH, locale)}</h2>
-                <ul className="who">
-                  {whoIsWho.map((w, i) => (
-                    <li key={i} data-kind={w.kind}>
-                      <span className="who-kind">{pick(WHO_KIND[w.kind], locale)}</span>
-                      <b>{pick(w.name, locale)}</b>
-                      <span className="who-role">{pick(w.role, locale)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+      {/* 3 — Reader's guide.
 
-              <div className="aid aid-glossary">
-                <h2 className="lbl">{pick(T.glossaryH, locale)}</h2>
-                <dl className="glossary">
-                  {glossary.map((g, i) => (
-                    <div key={i} id={`term-${i}`}>
-                      <dt>{pick(g.term, locale)}</dt>
-                      <dd>{pick(g.def, locale)}</dd>
-                    </div>
-                  ))}
-                </dl>
+          Two sections, not two columns. They were side by side inside one
+          band, 336px and 788px wide, under byte-identical 11px gold uppercase
+          headings, and the roster's own role label was set in exactly that
+          same style — so the band offered a reader three headings and no way
+          to tell a cast list from a dictionary. They are different objects
+          and they now have different shapes: the roster is a grid of cards
+          across the full rail, each led by a kind chip; the glossary is a
+          ruled dictionary poured into two columns. Different grounds, too. */}
+      <section className="aids" id="handbook" data-navsec aria-label={pick(T.whoH, locale)}>
+        <div className="rail">
+          <h2 className="lbl lbl-onpaper">{pick(T.whoH, locale)}</h2>
+          <ul className="who">
+            {whoIsWho.map((w, i) => (
+              <li key={i} data-kind={w.kind}>
+                <span className="who-kind">{pick(WHO_KIND[w.kind], locale)}</span>
+                <b>{pick(w.name, locale)}</b>
+                <span className="who-role">{pick(w.role, locale)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="terms" aria-label={pick(T.glossaryH, locale)}>
+        <div className="rail">
+          <h2 className="lbl lbl-onpaper">{pick(T.glossaryH, locale)}</h2>
+          <dl className="glossary">
+            {glossary.map((g, i) => (
+              <div key={i} id={`term-${i}`}>
+                <dt>{pick(g.term, locale)}</dt>
+                <dd>{pick(g.def, locale)}</dd>
               </div>
-          </div>
+            ))}
+          </dl>
         </div>
       </section>
 
@@ -1189,7 +1187,7 @@ export default async function CasePage({
 
         {sources.length > 0 && (
           <>
-            <h2 id="sec-sources">{pick(T.sources, locale)}</h2>
+            <h2 id="sec-sources" className="srcs-h2">{pick(T.sources, locale)}</h2>
             {(() => {
               // A 45-item wall is unusable: split the court's own record from
               // the commentary, numbering the two lists continuously.
@@ -1257,7 +1255,7 @@ export default async function CasePage({
             <div className="lbl lbl-onpaper">{pick(T.faqH, locale)}</div>
             <div className="qa-list">
               {faq.map((f, i) => (
-                <details key={i} open={i === 0}>
+                <details key={i} open>
                   <summary>{pick(f.q, locale)}</summary>
                   <p>{pick(f.a, locale)}</p>
                 </details>

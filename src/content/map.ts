@@ -52,6 +52,20 @@ export interface MapEvent {
    * field of their own rather than a longer derivation.
    */
   when: Localized;
+  /**
+   * The same date as a sort key, so the map can put its six marks on a time
+   * axis — see the rail in EventsMap.
+   *
+   * Exactly what the tag above already says and no more. Five of the six tags
+   * name a year and nothing finer, so five of these are years; MH17's tag
+   * carries the day, so its key does too. The temptation is to look up a month
+   * for each — the occupation began in February, the vessels were seized in
+   * November — and it is refused here for the same reason the marker labels
+   * are: this file states what the record states. Two marks share 2014 as a
+   * result, and the rail draws them as two marks sharing a year rather than
+   * pretending to know which came first.
+   */
+  iso: string;
   title: Localized;
   note: Localized;
   /**
@@ -71,14 +85,24 @@ export interface MapEvent {
    * ground it speaks for lights up behind it. "country" is Ukraine's own
    * outline; anything else names a path in `areas` in europe-map.json.
    *
-   * NOT SET on «Схід України», deliberately. The east is a part of the
-   * territory and would take this field, but the registry fixes no extent for
-   * it — two oblasts, three, the front line of which year — and this file will
-   * not decide that on the record's behalf. Crimea is different: the
-   * proceedings are styled «re Crimea» and the peninsula's own admin-1 units
-   * are exactly what they are about.
+   * The extents are not ours to choose. Each is the one the proceedings
+   * themselves fix, and for «Схід України» that took asking the record rather
+   * than guessing at a front line: the ICJ's operative paragraph in
+   * *Allegations of Genocide* reads "in the Donetsk and Luhansk oblasts of
+   * Ukraine"; the Dutch MH17 judgment places the launch site at Pervomaiskyi
+   * in Donetsk oblast; the ECtHR inter-State application is about the April
+   * 2014 seizures in Luhansk and Donetsk; and Finland v Petrovsky is the Aidar
+   * ambush in Luhansk oblast. All four proceedings this marker accounts for
+   * name the same two oblasts and no third — so that is the ground, and
+   * `AREA_UNITS` in scripts/europe-map.mjs cuts it from those two admin-1
+   * units.
+   *
+   * Not the four oblasts of Oschadbank's 2025 notice of dispute — Donetsk,
+   * Luhansk, Kherson and Zaporizhzhia. That is a later and separate claim
+   * about asset losses, it is not one of the four this marker stands for, and
+   * no tribunal has been constituted for it.
    */
-  area?: "country" | "crimea";
+  area?: "country" | "crimea" | "east";
   /** Court markers this site draws a line to. */
   courts: string[];
   /** The forums, spelled out for the card. */
@@ -365,6 +389,7 @@ export const MAP_COURTS: MapCourt[] = [
 export const MAP_EVENTS: MapEvent[] = [
   {
     key: "crimea",
+    iso: "2014",
     area: "crimea",
     cases: ["icj-cerd-icsft", "oschadbank", "dtek-krymenergo"],
     weight: 11,
@@ -406,6 +431,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "kerch",
+    iso: "2018",
     // No `cases`: ITLOS and the PCA arbitration over the vessels are both
     // still unwritten. The card says so rather than linking nowhere.
     weight: 2,
@@ -431,6 +457,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "mh17",
+    iso: "2014-07-17",
     cases: ["hague-mh17", "echr-ukraine-netherlands"],
     weight: 3,
     when: { uk: "MH17 · 17.07.2014", en: "MH17 · 17 July 2014" },
@@ -456,6 +483,8 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "donbas",
+    iso: "2014",
+    area: "east",
     cases: ["echr-ukraine-netherlands", "icj-cerd-icsft", "icj-genocide", "finland-torden"],
     weight: 4,
     when: { uk: "Схід · 2014", en: "The east · 2014" },
@@ -489,6 +518,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "energy",
+    iso: "2020",
     area: "country",
     cases: ["dtek-krymenergo"],
     weight: 4,
@@ -518,6 +548,7 @@ export const MAP_EVENTS: MapEvent[] = [
   },
   {
     key: "mariupol",
+    iso: "2022",
     area: "country",
     cases: ["icc-ukraine"],
     weight: 6,
@@ -632,6 +663,12 @@ export function courtMarks(c: MapCourt, locale: Locale) {
           `event "${e.key}" is drawn for ${e.weight} but its ${loc} count reads "${e.count[loc]}"`,
         );
       }
+    }
+    // The rail places a mark per event; one that cannot be parsed would drop
+    // off the axis without a word, and the axis would silently be about five
+    // events instead of six.
+    if (!Number.isFinite(Date.parse(e.iso.length === 4 ? `${e.iso}-01-01` : e.iso))) {
+      wrong.push(`event "${e.key}" has an iso "${e.iso}" that is not a date`);
     }
     for (const k of e.courts) {
       if (!keys.has(k)) wrong.push(`event "${e.key}" draws a line to unknown court "${k}"`);

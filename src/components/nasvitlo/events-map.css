@@ -1622,3 +1622,147 @@ a.emap-seat-count:focus-visible {
   color: var(--brand-gold-pale);
   border-bottom-color: currentColor;
 }
+
+
+/* ============================================================================
+   The time axis
+   ========================================================================== */
+
+/* Six events from 2014 to 2022, and until now the map drew them all the same
+   way. The date was on every card and on every marker's label and the picture
+   did nothing with it, so the one thing this collection is — a line that has
+   been running for a decade — was the one thing it did not say.
+
+   Under the drawing, above the legend: it is a control over what is selected,
+   like the marks themselves, and it has to be read together with them. */
+.emap-rail {
+  position: relative;
+  /* 20px above the rule, one row of 15 per stacked mark, then the year
+     labels and their air. */
+  height: calc(56px + var(--rows, 1) * 15px);
+  margin-top: 1px;
+  padding: 0 max(clamp(28px, 5vw, 96px), 0px);
+  background: var(--brand-night-2);
+  border: 1px solid var(--brand-night-rule);
+  border-bottom: 0;
+}
+.emap-rail-track {
+  position: relative;
+  height: 100%;
+}
+.emap-rail-line {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--brand-night-rule);
+}
+.emap-rail-dot {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.emap-rail-dot::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: var(--brand-gold-lamp);
+  opacity: 0.55;
+  transition:
+    opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+/* Hollow where there is nothing to read yet, filled where there is — the same
+   distinction, drawn the same way, as the marks on the drawing above. */
+.emap-rail-dot[data-lit="no"]::before {
+  background: none;
+  box-shadow: inset 0 0 0 1.4px var(--brand-gold-lamp);
+}
+.emap-rail-dot:hover::before,
+.emap-rail-dot:focus-visible::before,
+.emap-rail-dot[data-on="yes"]::before {
+  opacity: 1;
+  transform: scale(1.4);
+}
+.emap-rail-dot:focus-visible {
+  outline: 2px solid var(--brand-gold-pale);
+  outline-offset: -3px;
+  border-radius: 50%;
+}
+.emap-rail-year {
+  position: absolute;
+  top: calc(30px + var(--rows, 1) * 15px);
+  transform: translateX(-50%);
+  font: 600 10px var(--brand-font-mono);
+  letter-spacing: 0.08em;
+  color: var(--brand-faint-dark);
+  font-variant-numeric: tabular-nums;
+}
+.emap-rail-year[data-edge="start"] {
+  transform: none;
+}
+.emap-rail-year[data-edge="end"] {
+  transform: translateX(-100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .emap-rail-dot::before {
+    transition: none;
+  }
+}
+/* Held full, the drawing is the only thing on the screen. */
+.emap[data-full="yes"] .emap-rail {
+  display: none;
+}
+
+/* ---- what a proceeding stands at, and what is at stake in it ---- */
+/* The map counted rows and said nothing about consequences: a number of
+   proceedings, no posture, no figure — while the registry beside it carries
+   both on every row, and the largest award in the collection, $1.1bn in
+   Oschadbank, appeared nowhere on the map at all.
+
+   Two tags, and they are different kinds of thing. The stage is a word from a
+   closed list and takes the quiet treatment every other status word here
+   takes; the sum is a quantity, set in the figures face and given the gold —
+   it is the one number on the card that is about the world rather than about
+   the archive. */
+.emap-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  margin-top: 5px;
+}
+.emap-tag {
+  padding: 2px 6px;
+  background: var(--brand-night-2);
+  border: 1px solid var(--brand-night-rule);
+  font: 600 9.5px/1.5 var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-muted-dark);
+  white-space: nowrap;
+}
+.emap-tag-sum {
+  border-color: color-mix(in srgb, var(--brand-gold-lamp) 45%, transparent);
+  font-family: var(--brand-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--brand-gold-pale);
+}
+/* The listed rows are not links, so their tags need the indent the link's own
+   padding gives the others. */
+.emap-listed .emap-tags {
+  padding-left: 10px;
+  margin-bottom: 4px;
+}

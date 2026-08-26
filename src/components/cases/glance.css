@@ -6,14 +6,17 @@
    touched.
 
    Deliberately NOT another row of cards. The KPI strip directly above it is
-   cards on --brand-night-2 carrying figures; these are identifiers, and a
-   second card grid would read as more of the same. A ruled ledger — hairline
-   over each entry, label above value — is what a docket looks like on paper
-   and separates the two instruments without a heading having to do it.
+   cards carrying figures; these are identifiers, and a second card grid would
+   read as more of the same. A ruled ledger — hairline over each entry, label
+   above value — is what a docket looks like on paper and separates the two
+   instruments without a heading having to do it.
 
-   Colour comes only from --brand-* tokens. On the band's ground,
-   --brand-night: --brand-faint-dark clears AA for the labels, --brand-cream
-   is the page's text-on-dark colour, --brand-night-rule the hairline.
+   Colour comes only from --brand-* tokens. The overview band moved from
+   --brand-night to --brand-paper-2 (see 20-dashboard.css), so the ledger came
+   with it: --brand-ink-2 for the labels (7.06:1 on that ground — the 11px
+   uppercase label needs AA, and --brand-faint is 4.95:1, which clears it but
+   leaves no margin), --brand-ink for the values (15.95:1), --brand-rule for
+   the hairline.
    ============================================================ */
 
 .casepage .glance {
@@ -24,7 +27,7 @@
 }
 
 .casepage .glance-item {
-  border-top: 1px solid var(--brand-night-rule);
+  border-top: 1px solid var(--brand-rule);
   padding-block: var(--space-4);
 }
 
@@ -32,7 +35,7 @@
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--brand-faint-dark);
+  color: var(--brand-ink-2);
   margin-bottom: var(--space-2);
 }
 
@@ -40,7 +43,7 @@
   margin: 0;
   font: 400 var(--t-body) var(--brand-font-body);
   line-height: 1.45;
-  color: var(--brand-cream);
+  color: var(--brand-ink);
   text-wrap: pretty;
 }
 

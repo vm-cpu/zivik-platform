@@ -5,9 +5,6 @@
   .casepage .refs-grid {
     grid-template-columns: 1fr;
   }
-  .casepage .aids-grid {
-    grid-template-columns: 1fr;
-  }
   .casepage .why {
     border-left: 0;
     border-top: 2px solid var(--pgold);

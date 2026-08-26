@@ -6,6 +6,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
 } from "react";
 import Link from "next/link";
@@ -42,6 +43,8 @@ export interface MapEventR {
    */
   total: number;
   when: string;
+  /** The same date as a sort key, for the time rail. See `iso` in map.ts. */
+  iso: string;
   title: string;
   note: string;
   /**
@@ -55,7 +58,7 @@ export interface MapEventR {
   count: string;
   open?: boolean;
   /** Decisions this site leads to. Empty means nothing is summarised yet. */
-  cases: { slug: string; title: string; forum: string }[];
+  cases: { slug: string; title: string; forum: string; stage?: string; amount?: string }[];
 }
 export interface MapCourtR {
   key: string;
@@ -84,8 +87,8 @@ export interface MapCourtR {
     /** Registry institution ids, for the link that hands over the rest. */
     courtIds: string[];
     total: number;
-    written: { slug: string; title: string }[];
-    listed: { id: string; name: string; note: string }[];
+    written: { slug: string; title: string; stage?: string; amount?: string }[];
+    listed: { id: string; name: string; note: string; stage?: string; amount?: string }[];
   };
 }
 export interface MapGeometry {
@@ -496,6 +499,14 @@ export default function EventsMap({
     allInRegistry: string;
     /** Shown where a site has no summarised decision yet. */
     pending: string;
+    /**
+     * What the figure on a decision is. The sign in the registry encodes which
+     * way the money ran — the gas sales arbitration is recorded as −2.02bn —
+     * and no tag can caption that honestly, so the map shows the magnitude and
+     * says what it is: the sum in dispute. Same wording as the pending case
+     * page, from the same reasoning.
+     */
+    amountLabel: string;
     /** Marker-size key: a bigger dot means more proceedings. */
     sizeKey: string;
     /** Legend group headings. */
@@ -552,6 +563,16 @@ export default function EventsMap({
     caseloadWord: PluralForms;
     /** Heading over the cases a court hears that have no write-up yet. */
     inLibrary: string;
+    /**
+     * The rail: the six places on a time axis.
+     *
+     * The map held six events spanning 2014 to 2022, with the date printed on
+     * every card and on every marker's label, and did nothing with it. The
+     * occupation of Crimea and the war crimes of 2022 were drawn the same way,
+     * eight years apart, and the one thing this collection is — a line that has
+     * been running for a decade — was the one thing the drawing did not say.
+     */
+    railLabel: string;
     /** The three framings. */
     zoomLabel: string;
     zoomWide: string;
@@ -1685,6 +1706,54 @@ export default function EventsMap({
       : "";
 
   /**
+   * The six on a time axis.
+   *
+   * Placed by the date rather than by the year, the way the case pages' own
+   * rail is — though here five of the six dates *are* years, because that is
+   * all the record fixes. Two of them are 2014 and land on the same point;
+   * they are staggered rather than nudged apart, because a mark moved off its
+   * date to make room is a mark that is lying about when.
+   */
+  const rail = useMemo(() => {
+    const at = events.map((e) => {
+      const t = Date.parse(e.iso.length === 4 ? `${e.iso}-01-01` : e.iso);
+      return Number.isFinite(t) ? t : null;
+    });
+    const dated = at.filter((t): t is number => t !== null);
+    if (dated.length < 2) return null;
+    const t0 = Math.min(...dated);
+    const t1 = Math.max(...dated);
+    const span = Math.max(1, t1 - t0);
+    // Two marks closer together than this cannot both be aimed at, so the
+    // second goes on a row of its own directly under the first. 2% of the axis
+    // is about 20px on a 1000px rail — a mark's own width plus air.
+    const near = 2;
+    const placed: { x: number; row: number }[] = [];
+    const marks = events
+      .map((e, i) => ({ e, t: at[i] }))
+      .filter((m): m is { e: MapEventR; t: number } => m.t !== null)
+      .sort((a, b) => a.t - b.t)
+      .map((m) => {
+        const x = ((m.t - t0) / span) * 100;
+        // The first free row at this point on the axis, counting up from the
+        // rule itself.
+        let row = 0;
+        while (placed.some((p) => p.row === row && Math.abs(p.x - x) < near)) row += 1;
+        placed.push({ x, row });
+        return { key: m.e.key, title: m.e.title, when: m.e.when, x, row };
+      });
+    const y0 = new Date(t0).getUTCFullYear();
+    const y1 = new Date(t1).getUTCFullYear();
+    const step = Math.max(1, Math.ceil((y1 - y0) / 4));
+    const years: number[] = [];
+    for (let y = y0; y < y1; y += step) years.push(y);
+    if (years.length && y1 - years[years.length - 1] < step) years.pop();
+    years.push(y1);
+    const yearAt = (y: number) => ((Date.UTC(y, 0, 1) - t0) / span) * 100;
+    return { marks, years, yearAt, rows: Math.max(...marks.map((m) => m.row)) + 1 };
+  }, [events]);
+
+  /**
    * The ground the selected marker speaks for, if a point is not the whole
    * truth about it. Resolved here so the drawing takes a path or nothing.
    */
@@ -1976,7 +2045,18 @@ export default function EventsMap({
               grid, not a point. Drawn over the country's fill and under its
               internal boundaries, so it reads as the same country lit rather
               than as a shape laid on top of it. */}
-          {areaPath && <path className="emap-area" d={areaPath} />}
+          {areaPath && (
+            <path
+              className="emap-area"
+              d={areaPath}
+              /* Clipped to the country, like the oblast mesh and for the same
+                 reason: an area cut from Natural Earth's 10m admin-1 units is
+                 drawn against an outline from a 110m atlas, and where the two
+                 disagree — a pixel or two along the coast and the border — the
+                 fill would spill past the country it is lighting. */
+              clipPath="url(#emap-ua-clip)"
+            />
+          )}
           <path className="emap-regions" d={geo.regions} clipPath="url(#emap-ua-clip)" />
 
           {/* Reach lines: from each site to the courts hearing it. Drawn
@@ -2206,26 +2286,6 @@ export default function EventsMap({
         })}
       </svg>
 
-      {/* Where the drawing is a picture, it says so — and offers the one
-          thing that turns it back into a map. It was silent about this: the
-          marks went inert below the 24px floor, correctly, while the grab
-          cursor and the zoom stepper stayed on, promising a control surface
-          that answered nothing. Rendered only where both families are inert,
-          so a landscape phone — which can already reach the courts — is not
-          told its map is a picture. */}
-      {(touch || (coarse && coarseCourts)) && !full && (
-        <div className="emap-overview">
-          {/* The sentence only where the drawing really is a picture. A phone
-              held sideways renders a court target at 24.9px and names its nine
-              cities — it is a small map, not a picture of one — so it is
-              offered the screen without being told its map does not work. */}
-          {coarse && coarseCourts && <p>{labels.overview}</p>}
-          <button type="button" className="emap-gofull" onClick={() => setFull(true)}>
-            {labels.openFull}
-          </button>
-        </div>
-      )}
-
       {/* Clicking a dot changes a panel that can be 800px away. Without a live
           region a screen-reader user hears nothing at all — and with the wrong
           one they hear three thousand characters of registry citation. One
@@ -2276,6 +2336,22 @@ export default function EventsMap({
                     <Link href={`/${locale}/cases/${c.slug}`}>
                       <span className="emap-read-t">{c.title}</span>
                       {c.forum && <span className="emap-read-f">{c.forum}</span>}
+                      {/* The map counted rows and said nothing about
+                          consequences: it gave a number of proceedings and no
+                          posture and no figure, while the registry beside it
+                          carries both on every row — and the largest award in
+                          the collection, $1.1bn in Oschadbank, appeared
+                          nowhere on the map at all. */}
+                      {(c.stage || c.amount) && (
+                        <span className="emap-tags">
+                          {c.stage && <span className="emap-tag">{c.stage}</span>}
+                          {c.amount && (
+                            <span className="emap-tag emap-tag-sum" title={labels.amountLabel}>
+                              {c.amount}
+                            </span>
+                          )}
+                        </span>
+                      )}
                     </Link>
                   </li>
                 ))}
@@ -2319,6 +2395,16 @@ export default function EventsMap({
                     <li key={w.slug}>
                       <Link href={`/${locale}/cases/${w.slug}`}>
                         <span className="emap-read-t">{w.title}</span>
+                        {(w.stage || w.amount) && (
+                          <span className="emap-tags">
+                            {w.stage && <span className="emap-tag">{w.stage}</span>}
+                            {w.amount && (
+                              <span className="emap-tag emap-tag-sum" title={labels.amountLabel}>
+                                {w.amount}
+                              </span>
+                            )}
+                          </span>
+                        )}
                       </Link>
                     </li>
                   ))}
@@ -2347,6 +2433,16 @@ export default function EventsMap({
                     <li key={c.id}>
                       <span className="emap-read-t">{c.name}</span>
                       {c.note && <span className="emap-read-f">{c.note}</span>}
+                      {(c.stage || c.amount) && (
+                        <span className="emap-tags">
+                          {c.stage && <span className="emap-tag">{c.stage}</span>}
+                          {c.amount && (
+                            <span className="emap-tag emap-tag-sum" title={labels.amountLabel}>
+                              {c.amount}
+                            </span>
+                          )}
+                        </span>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -2398,6 +2494,89 @@ export default function EventsMap({
       )}
       </div>
       </div>
+
+      {/* Outside the figure, not inside it. The figure is the drawing's own
+          box and on the map's own page it carries a declared height, so a
+          strip laid out in it overlapped the legend below — measured, the rail
+          and the legend both started at y = 706. The cards can live in there
+          because they are absolutely placed; these are in flow. */}
+      {/* The six on a time axis, under the drawing they belong to.
+          Every card and every marker label carried a date, and the map did
+          nothing with any of them: the occupation of Crimea and the war crimes
+          of 2022 were drawn identically, eight years apart. Here the shape is
+          the first thing the reader gets — 2014 crowded, then a long thinning
+          line — and each mark is the same selection the drawing and the list
+          make, so pressing one lights its courts and reframes to hold them. */}
+      {rail && (
+        <div
+          className="emap-rail"
+          role="group"
+          aria-label={labels.railLabel}
+          style={{ "--rows": rail.rows } as CSSProperties}
+        >
+          {/* An inner track, because a percentage `left` on an absolutely
+              placed child resolves against the *padding box* of its container
+              — so marks laid out directly in the padded strip would span the
+              whole width while the rule they sit on is inset, and the first
+              and last would hang past both ends of their own axis. */}
+          <div className="emap-rail-track">
+          <div className="emap-rail-line" aria-hidden="true" />
+          {rail.marks.map((m) => (
+            <button
+              key={m.key}
+              type="button"
+              className="emap-rail-dot"
+              data-on={sel?.kind === "site" && sel.key === m.key ? "yes" : "no"}
+              data-lit={events.find((e) => e.key === m.key)?.cases.length ? "yes" : "no"}
+              aria-pressed={sel?.kind === "site" && sel.key === m.key}
+              aria-label={`${m.when} — ${m.title}`}
+              title={`${m.when} — ${m.title}`}
+              style={{ left: `${m.x}%`, top: `${20 + m.row * 15}px` }}
+              onClick={() => toggleSite(m.key)}
+            />
+          ))}
+          {rail.years.map((y) => {
+            /* A year mark sits at its own first of January, which for the
+               first year is at or before the axis's own start. Held to the
+               rail, and the ends are aligned from the end rather than centred
+               past it. */
+            const x = rail.yearAt(y);
+            const edge = x <= 0 ? "start" : x >= 100 ? "end" : undefined;
+            return (
+              <span
+                key={y}
+                className="emap-rail-year"
+                data-edge={edge}
+                aria-hidden="true"
+                style={{ left: `${Math.max(0, Math.min(100, x))}%` }}
+              >
+                {y}
+              </span>
+            );
+          })}
+          </div>
+        </div>
+      )}
+
+      {/* Where the drawing is a picture, it says so — and offers the one
+          thing that turns it back into a map. It was silent about this: the
+          marks went inert below the 24px floor, correctly, while the grab
+          cursor and the zoom stepper stayed on, promising a control surface
+          that answered nothing. Rendered only where both families are inert,
+          so a landscape phone — which can already reach the courts — is not
+          told its map is a picture. */}
+      {(touch || (coarse && coarseCourts)) && !full && (
+        <div className="emap-overview">
+          {/* The sentence only where the drawing really is a picture. A phone
+              held sideways renders a court target at 24.9px and names its nine
+              cities — it is a small map, not a picture of one — so it is
+              offered the screen without being told its map does not work. */}
+          {coarse && coarseCourts && <p>{labels.overview}</p>}
+          <button type="button" className="emap-gofull" onClick={() => setFull(true)}>
+            {labels.openFull}
+          </button>
+        </div>
+      )}
 
       {/* A legend that draws the marks instead of naming them. Every glyph
           below is the same shape the map uses, at the same size, so the reader

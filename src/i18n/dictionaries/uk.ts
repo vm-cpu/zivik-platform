@@ -143,6 +143,10 @@ const uk = {
        window before this. */
     allInRegistry: "Усі {n} у реєстрі →",
     pending: "Конспект у підготовці",
+    /* The registry's own wording for this field, not a new one: the sign in
+       the source says which way the money ran, so what a tag can honestly
+       print is the magnitude, called the sum in dispute. */
+    amountLabel: "Сума у спорі",
     legendWhat: "Місця подій",
     legendHow: "Суди й звʼязки",
     legendLine: "Пунктир — звʼязок між судом та подією",

@@ -105,6 +105,7 @@ const en: Dictionary = {
     writtenOf: "Written up: {n} of {total}",
     allInRegistry: "All {n} in the registry →",
     pending: "Summary in preparation",
+    amountLabel: "Amount in dispute",
     legendWhat: "Places",
     legendHow: "Courts and links",
     legendLine: "Dashed line — the link between a court and an event",

@@ -122,9 +122,12 @@
 }
 
 /* ---- 2. Plain-language lede (paper) --------------------------------------- */
+/* The one white band on the page, between the dark masthead and the paper
+   dashboard. --brand-surface against --brand-paper-2 is 1.06:1, so the edge
+   below it is carried by --brand-seam, not by the grounds. */
 .casepage .lede {
   background: var(--card);
-  border-bottom: 1px solid var(--prule);
+  border-bottom: 1px solid var(--seam);
   padding-block: clamp(32px, 4vw, 56px);
 }
 .casepage .lede-grid {

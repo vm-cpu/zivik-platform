@@ -135,6 +135,33 @@ const ADMIN1 =
  */
 const REGION_TOLERANCE = 0.35;
 
+/**
+ * Named pieces of ground a marker can speak for, as the admin-1 units they are
+ * made of.
+ *
+ * `area` in src/content/map.ts names one of these where a point is not the
+ * whole truth about a marker — see the note there. The extents are not ours to
+ * choose: each is the one the proceedings themselves fix.
+ *
+ * «Схід України» is the Donetsk and Luhansk oblasts, and the archive's own
+ * record is where that comes from. The ICJ's operative paragraph in
+ * *Allegations of Genocide* reads "in the Donetsk and Luhansk oblasts of
+ * Ukraine" (icj-genocide.ts, and `place` on that summary is already
+ * «Донеччина та Луганщина»); the Dutch MH17 judgment places the launch site at
+ * Pervomaiskyi in Donetsk oblast; the ECtHR inter-State application is about
+ * the April 2014 seizures in Luhansk and Donetsk; and Finland v Petrovsky is
+ * the Aidar ambush in Luhansk oblast. All four proceedings this marker
+ * accounts for name the same two oblasts and no third.
+ *
+ * Deliberately NOT the four oblasts of Oschadbank's 2025 notice of dispute —
+ * Donetsk, Luhansk, Kherson and Zaporizhzhia. That is a later and separate
+ * claim about asset losses, it is not one of the four this marker stands for,
+ * and no tribunal has been constituted for it.
+ */
+const AREA_UNITS = {
+  east: ["UA-14", "UA-09"],
+};
+
 const round = (n) => Math.round(n * 10) / 10;
 
 const topo = await (await fetch(ATLAS)).json();
@@ -264,6 +291,8 @@ const ukraine = `${atlasUkraine} ${crimeaPath}`;
  * coast.
  */
 const areas = { crimea: crimeaPath };
+/* `AREA_UNITS` is served below, once the admin-1 features have been fetched
+   for the oblast mesh — the same download, no second source. */
 
 if (!atlasUkraine) throw new Error("Ukraine not found in the atlas — check the property name");
 if (!crimeaPath) throw new Error("Crimea did not project — the map must not ship without it");
@@ -425,6 +454,51 @@ const regions = chains
   .join("");
 
 if (!regions) throw new Error("the oblast mesh came out empty");
+
+/**
+ * The named areas that are made of admin-1 units — «Схід України» today.
+ *
+ * Projected and simplified exactly as the mesh above is, and for the same
+ * reason: this is drawn by the same projection at the same scale, so it can
+ * bear the same tolerance, and unsimplified it does not belong in a document.
+ * Measured on the 10m source, the two oblasts came to 16 986 characters of
+ * path — more than the entire 27-unit boundary mesh — for a shape the drawing
+ * fills at 17% opacity with no stroke on it.
+ *
+ * Ring by ring rather than as one merged polygon. The two oblasts share a
+ * boundary and simplifying it twice, once from each side, can leave a hairline
+ * between them; that is what the mesh above goes to some trouble to avoid,
+ * because there it would show as a double line. Here it cannot: the shape is a
+ * fill with no stroke, the gap is at most the tolerance — 0.35 units, about
+ * 0.4 CSS pixels at the framing this is read in — and it is the same colour on
+ * both sides of it.
+ */
+for (const [name, codes] of Object.entries(AREA_UNITS)) {
+  const units = codes.map((code) => {
+    const f = oblasts.find((o) => o.properties.iso_3166_2 === code);
+    if (!f) throw new Error(`area "${name}" wants ${code}, which is not among the 27`);
+    return f;
+  });
+  const parts = [];
+  for (const f of units) {
+    const polys =
+      f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+    for (const poly of polys) {
+      for (const ring of poly) {
+        const pts = simplify(
+          ring.map((c) => projection(c)).filter(Boolean),
+          REGION_TOLERANCE,
+        ).map(([x, y]) => [round(x), round(y)]);
+        if (pts.length < 3) continue;
+        parts.push(
+          `M${pts.map(([x, y]) => `${x},${y}`).join("L")}Z`,
+        );
+      }
+    }
+  }
+  if (!parts.length) throw new Error(`area "${name}" did not project`);
+  areas[name] = parts.join("");
+}
 
 /**
  * Deliberately not in POINTS: Montreal.

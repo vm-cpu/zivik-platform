@@ -26,7 +26,9 @@ export default function ObjectionCards({
 }: {
   items: ObjectionR[];
   labels: { objection: string; rejected: string; upheld: string; ruling: string };
-  /** Judges sitting. With a bench, a vote draws as seats won of seats sitting. */
+  /** Judges sitting. A vote is only printed for a case that names its bench;
+      it used to draw one tick per seat beside the tally, which at card size
+      read as a row of ASCII blocks and said nothing the tally did not. */
   benchSize?: number;
 }) {
   const [open, setOpen] = useState<number | null>(null);
@@ -43,8 +45,11 @@ export default function ObjectionCards({
               aria-expanded={isOpen}
               onClick={() => setOpen(isOpen ? null : i)}
             >
+              {/* Stacked, not one baseline row: the counter and the Latin
+                  term used to sit inline beside the heading and take the
+                  width it needed to wrap in. */}
               <span className="obj-head">
-                <span className="obj-n">{i + 1}</span>
+                <span className="obj-n">{String(i + 1).padStart(2, "0")}</span>
                 <span className="obj-ground">{o.ground}</span>
                 {o.latin && <em className="obj-latin">{o.latin}</em>}
               </span>
@@ -63,16 +68,9 @@ export default function ObjectionCards({
                 <span className="obj-votes">
                   {o.votes.map((v, j) => (
                     <span key={j} className="obj-vote">
-                      <span
-                        className="obj-bench"
-                        style={{ width: `${benchSize * 8 - 2}px` }}
-                        aria-hidden="true"
-                      >
-                        <i style={{ width: `${v.for * 8 - 2}px` }} />
-                      </span>
                       <span className="obj-tally">
                         {v.for}–{v.against}
-                        {v.scope && <em> {v.scope}</em>}
+                        {v.scope && <em>{v.scope}</em>}
                       </span>
                     </span>
                   ))}
