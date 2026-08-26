@@ -98,14 +98,32 @@
      explained in globals.css. Same values, one source. */
   fill: var(--brand-map-land);
   stroke: var(--brand-map-land-edge);
-  stroke-width: 0.5;
+  /* Real pixels, not projection units. A border measured in units is drawn at
+     whatever the framing makes of it, and the framings differ by a factor of
+     four: 0.5 units came out 0.31 CSS pixels in the Atlantic framing, 0.43 in
+     the European one and 0.6 zoomed into Ukraine. A third of a pixel is not a
+     thin line, it is a line the screen cannot resolve, and it is the other
+     half of why the outlines were invisible — colour alone would not have
+     fixed it. Constant weight is also what a border wants: zoomed all the way
+     in, the scaling version reached six pixels. */
+  vector-effect: non-scaling-stroke;
+  stroke-width: 0.8;
 }
 .emap-ua {
   fill: var(--brand-map-ua);
   /* The same gold the markers and the oblast mesh are drawn in, mixed rather
-     than written out: an rgba() literal here would not follow the token. */
-  stroke: color-mix(in srgb, var(--brand-gold-lamp) 55%, transparent);
-  stroke-width: 0.9;
+     than written out: an rgba() literal here would not follow the token.
+     62%, up from 55%, because the fill underneath it was raised: at 55% over
+     the new ground the outline measured 2.83:1 against its own country and
+     this is the one stroke on the map that has to win. 3.01:1 now, which is
+     what it had before. */
+  stroke: color-mix(in srgb, var(--brand-gold-lamp) 62%, transparent);
+  /* Non-scaling for the same reason as the context edges above, and 1.4px
+     rather than the 0.9 units it was: 0.9 units is 0.56 CSS pixels in the
+     Atlantic framing, so the country this archive is about was outlined at
+     half a pixel in the framing that shows it smallest. */
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.4;
 }
 
 /* The 27 oblasts, drawn as the lines between them rather than as 27 shapes.
@@ -117,8 +135,13 @@
    Kherson or Donetsk: the mesh knows nothing about which unit is which. */
 .emap-regions {
   fill: none;
-  stroke: color-mix(in srgb, var(--brand-gold-lamp) 26%, transparent);
-  stroke-width: 0.45;
+  /* Half the outer border's opacity and half its width, as before — 32 against
+     62 and 0.7px against 1.4px, where it used to be 26 against 55 and 0.45
+     units against 0.9. Both numbers moved with the ones above and the
+     relationship between them did not. */
+  stroke: color-mix(in srgb, var(--brand-gold-lamp) 32%, transparent);
+  vector-effect: non-scaling-stroke;
+  stroke-width: 0.7;
   stroke-linejoin: round;
   stroke-linecap: round;
   pointer-events: none;
@@ -433,8 +456,16 @@
      sources of truth for one question, and when they disagreed — a browser
      reporting a zero width before layout matches `max-width:640px` — the CSS
      made every marker inert while nothing was left to switch it back. */
+  /* Not 4/3, which is what this was. The drawing is a picture here — the
+     markers are inert and the list below is the interface — and a picture
+     should show its subject rather than the sea around it. The projection is
+     1200 x 460 and the framing strip takes a fixed 60px off the top, which at
+     390px wide is 185 projection units; 645 is the two added together, so the
+     whole of Europe fits the box with nothing to spare instead of sitting in a
+     band across the middle of it. Measured at 390: the frame was 898 units
+     tall for 460 units of content, and is 645 now. */
   .emap-svg {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1200 / 645;
   }
   .emap-card {
     position: static;
@@ -484,8 +515,18 @@
   color: var(--brand-muted-dark);
 }
 
-/* The seats, written out. The abbreviations are what appear in case names, so
-   they carry the mono face the rest of the site gives to citations. */
+/* The seats, written out.
+
+   Same three registers as everywhere else on this map, and for the same
+   reason: the city is the place, so it is uppercase Fira Sans, the label the
+   drawing gives it; the institutions are names written out in full, so they
+   are the display serif, the face this site gives a case title; and the count
+   is machinery, so it is mono.
+
+   The list used to run city in sans over institutions in mono at 11px, which
+   put the two halves of the pair the owner asked about in two faces that both
+   read as technical tags, and set the half a reader actually has to read in
+   the narrowest one at the smallest size on the surface. */
 .emap-leg-seats ul {
   gap: 9px;
 }
@@ -495,11 +536,24 @@
   gap: 2px;
 }
 .emap-seat-city {
-  font: 600 var(--t-cap) var(--brand-font-body);
-  color: var(--brand-cream);
+  font: 700 var(--t-micro) / 1.25 var(--brand-font-body);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-gold-pale);
 }
 .emap-seat-list {
-  font: 400 11px/1.45 var(--brand-font-mono);
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-cap);
+  line-height: 1.4;
+  color: var(--brand-cream);
+}
+/* What the registry says this seat is carrying — the court-side counterpart of
+   the count on each of the six site cards, and the one thing the seat list
+   held that a reader could not get without clicking every city in turn. */
+.emap-seat-count {
+  font: 600 10px var(--brand-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--brand-faint-dark);
 }
 
@@ -566,8 +620,18 @@
   border-left-color: var(--brand-gold-pale);
 }
 /* The court card has no site colour of its own, so its over-title is named
-   explicitly rather than inheriting one. */
+   explicitly rather than inheriting one.
+
+   And it is not the same kind of thing as the event card's over-title, which
+   shares the class: there the slot holds a date, which is machinery and takes
+   the mono face; here it holds a city. A city is a place, and a place on this
+   map is uppercase Fira Sans — that is what the drawing labels Гаага with, and
+   a reader who clicked that label should meet it again in the card wearing the
+   same face. The institution below is the serif, so the pair the owner asked
+   to see apart is apart on every surface it appears on. */
 .emap-card-court .emap-when {
+  font: 700 var(--t-micro) / 1.25 var(--brand-font-body);
+  letter-spacing: 0.12em;
   color: var(--brand-gold-pale);
 }
 /* Several institutions can share one city, so this heading is a list rather
@@ -712,6 +776,17 @@
     --emap-safe-right: 0px;
   }
 }
+/* The Atlantic framing used to be offered here too, and a floating card over a
+   500-unit-tall band could not clear it: measured with a card open, nine
+   markers under it at 1024, nine at 1100, seven at 1280 and three at 1440,
+   including every one of the six sites at the first three. Reserving a strip
+   instead needs 269px at 1280, which drops the drawing to 0.435 CSS pixels per
+   unit and takes the court targets to 19.5px — the framing that exists to show
+   a court in Montreal would be the framing in which no court can be clicked.
+   The framing is the map page's now (see `hasWide` in EventsMap.tsx), so there
+   is nothing left here to collide, and `data-framing` stays on the element as
+   the record of which framing is on screen. */
+
 /* On the home band the legend stops being a band of its own. It was a full
    ruled strip under the drawing with two stacked headed groups, which read as
    a second section rather than as a caption to the map above it. One line of
@@ -870,11 +945,28 @@
    the glyphs (paint-order), not an outline: it is what keeps the badge legible
    where it crosses a lit halo or a country fill. Size and stroke width are set
    on the element in projection units recomputed from the rendered scale, so
-   the badge stays 10px however far the reader has zoomed. */
-.emap-court-abbr {
+   the badge stays 10px however far the reader has zoomed.
+
+   `.emap-court text` above, not this rule, is what the browser was applying:
+   one class plus one type selector beats one class, so the badge lost its
+   face, its case and its tracking to the city label sitting directly above it.
+   Measured on the built page, ГААГА came back as Fira Sans 600 / 9.17px /
+   uppercase / 0.73px of tracking and ICJ · ICC · PCA as Fira Sans 600 /
+   7.92px / uppercase / 0.63px — the same face at 1.25px apart, which is the
+   court and its city in one voice. That is the thing the owner asked to be
+   told apart, and this file already said how; it just could not out-specify
+   itself. `.emap-court text.emap-court-abbr` can.
+
+   Sentence case, not uppercase: a court whose citations carry no acronym is
+   badged with the shortest true name this archive gives it — «Суди Литви»,
+   «Окружний суд Гельсінкі» — and a name shouted in capitals beside a city
+   shouted in capitals is two labels of the same kind. The place is uppercase
+   sans; the institution is mono, as it is in every citation on this site. */
+.emap-court text.emap-court-abbr {
   font-family: var(--brand-font-mono), monospace;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
+  text-transform: none;
   fill: var(--brand-gold-pale);
   stroke: var(--brand-night);
   paint-order: stroke fill;
@@ -959,6 +1051,18 @@
 .emap-zoom-step:disabled {
   opacity: 0.35;
   cursor: default;
+}
+/* The strip is five buttons in a row and it is anchored to the right edge, so
+   on a narrow screen it grows leftwards off the drawing rather than wrapping.
+   Measured: 319px of buttons at every width, which at 320px put «Атлантика»
+   13px past the left edge with its first letters cut off. Narrower padding
+   rather than a wrap, because a wrapped strip is two rows tall and the frame
+   reserves one row's worth of space above the drawing for it. */
+@media (max-width: 480px) {
+  .emap-zoom button {
+    padding-inline: 8px;
+    letter-spacing: 0.06em;
+  }
 }
 
 

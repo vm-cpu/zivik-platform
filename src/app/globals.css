@@ -57,10 +57,26 @@
      (Three category hues — --brand-map-hr/war/asset — used to live here too.
      The map no longer colour-codes categories: every marker takes
      --brand-gold-lamp and the one distinction drawn is lit vs unlit, so those
-     tokens and the legend strings that named them are gone.) */
-  --brand-map-land: #221b18;      /* every country but Ukraine */
-  --brand-map-land-edge: #2e2521; /* the hairline between them */
-  --brand-map-ua: #2b211c;        /* Ukraine, a shade above its neighbours */
+     tokens and the legend strings that named them are gone.)
+
+     Raised once the owner asked for country outlines — «додай контури
+     країн або зроби їх трохи яскравішими». They were not faint, they were
+     effectively absent. Measured on the built page at 1440, composited against
+     the sea (--brand-night, rgb 23 17 15): land rgb 34 27 24, a ratio of
+     1.10:1; the hairline between countries rgb 46 37 33, 1.13:1 against the
+     land it divides, at half a projection unit — which in the Atlantic
+     framing is a third of a CSS pixel. A third of a pixel at 1.13:1 is not a
+     quiet border, it is no border, and the framing whose whole point is
+     recognising two continents showed an undifferentiated dark field.
+     Now: land 1.25:1 against the sea, the border 2.21:1 against the land and
+     2.76:1 against the sea, Ukraine 1.22:1 against its neighbours. The gold
+     still owns the drawing by a wide margin — a marker measures 6.51:1
+     against the land and 5.34:1 against Ukraine, a lit connector 5.12:1 — and
+     the strokes are drawn in real pixels now (see events-map.css), which is
+     the half of this that colour alone could not fix. */
+  --brand-map-land: #2e2521;      /* every country but Ukraine */
+  --brand-map-land-edge: #6f564a; /* the hairline between them */
+  --brand-map-ua: #43342c;        /* Ukraine, a shade above its neighbours */
 
   /* ── Shape & depth ──────────────────────────────────────────────
      The site read as boxy because everything was a 1px hairline

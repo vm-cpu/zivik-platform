@@ -155,8 +155,26 @@
     height: auto;
     min-height: 0;
   }
+  /* The stage stops being viewport-height here, and so must the figure inside
+     it. It did not: `height: calc(100dvh - 71px)` and `min-height: 460px` were
+     declared outside this query and the `height: 100%` on the drawing followed
+     them, so the `aspect-ratio` below was overridden by an explicit height and
+     never applied. Measured at 390 x 844, the drawing came out 390 x 829 — a
+     portrait slab twice as tall as it is wide, with the whole of Europe a band
+     across the middle of it and open sea above and below. */
+  .mp-stage .emap-figure {
+    height: auto;
+    min-height: 0;
+  }
   .mp-stage .emap-svg {
-    aspect-ratio: 4 / 3;
+    /* The projection is 1200 x 460 and the framing strip takes a fixed 60px
+       off the top of it, which is a larger share of a narrow drawing than of a
+       wide one: 185 projection units at 390px, 80 at 900. 645 is 460 plus the
+       first of those, so the phone — where the waste showed worst — comes out
+       exactly fitted, and the widest screen this query covers carries 1.4x the
+       projection's height instead of the 2x it had. */
+    aspect-ratio: 1200 / 645;
+    height: auto;
   }
   .mp-mast {
     position: static;
@@ -170,7 +188,54 @@
      it and the frame falls back to the strip the framing buttons need. */
   .mp-stage .emap-figure {
     --emap-safe-top: 60px;
+    /* And nothing floats over the drawing from the right either, so the frame
+       gets that strip back too — see the card below. */
+    --emap-safe-right: 0px;
   }
+  /* The card takes its own place under the drawing, which is the answer the
+     home band has had since 999px and for exactly the same reason: the room a
+     floating card has shrinks with the window and the card does not. It only
+     became true here when the stage stopped being viewport-height. Measured
+     the moment it did: at 768 and at 900, in the Atlantic framing, a 300 x 328
+     card over a 413px-tall drawing covered all fifteen markers — every site
+     and every seat — and the only way to change the selection was the list
+     underneath. */
+  .mp-stage .emap-card {
+    position: static;
+    width: auto;
+    max-height: none;
+    margin-top: 1px;
+  }
+}
+
+/* ---- the card in the widest framing ---- */
+/* The Atlantic framing fits a span two and a half times the projection's own
+   into the same box, so Europe lands in the right-hand tenth of the picture
+   and Ukraine — the subject of every marker on it — is 12.5% of the frame's
+   width, hard against the side the card is anchored to. The card cannot move:
+   the left half is North America with Montreal in it, which is the one thing
+   this framing exists to show, and reserving a strip for the card instead
+   needs 269px at 1280, which drops the drawing to 0.435 CSS pixels per unit
+   and takes the court targets to 19.5px — no court clickable in the framing
+   that exists to show a court.
+
+   What the card can do is stop growing. It is capped at the drawing's height
+   everywhere else, and on a short window that is enough to reach the subject:
+   measured at 1280 x 650 with a site card open, the card ran to 634px and
+   Ukraine's outline begins at 493. Ukraine's top edge lands between 66% and
+   73% of the drawing's height in this framing across 1280, 1440 and 1990 and
+   at 1280 x 650; 62% clears it by 34px at the tightest of them, and the card
+   has scrolled its overflow since long before this.
+
+   What this does not fix, and cannot: Helsinki, Stockholm and Vilnius sit at
+   40–60% of the height in the same right-hand strip, so an open card still
+   covers them here. They are reachable by closing it, by the seat list below,
+   and by the keyboard, which reaches every marker whatever is drawn over it. */
+.mp-stage .emap[data-framing="wide"] .emap-card {
+  max-height: min(
+    calc(100% - var(--emap-card-top, 16px) - 16px),
+    calc(62% - var(--emap-card-top, 16px))
+  );
 }
 
 .mp-stage .emap-leg-seats {

@@ -106,7 +106,12 @@ const uk = {
     legendUnlit: "Ще досліджуємо",
     courtsSeat: "Суди засідають у",
     courtHears: "Розглядає справи",
-    caseload: "{n} проваджень у реєстрі",
+    /* Two placeholders, not one. The noun agrees with the number — 1
+       провадження, 2–4 провадження, 5+ проваджень — and baked into the
+       template as the genitive plural it read «1 проваджень» on six of the
+       nine courts on the map. `plural()` in @/i18n/plural picks the form. */
+    caseload: "{n} {w} у бібліотеці",
+    caseloadWord: { one: "провадження", few: "провадження", many: "проваджень" },
     zoomLabel: "Масштаб",
     zoomWide: "Європа",
     zoomClose: "Україна",

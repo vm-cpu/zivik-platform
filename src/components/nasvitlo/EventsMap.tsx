@@ -10,6 +10,7 @@ import {
 } from "react";
 import Link from "next/link";
 import type { EventCategory } from "@/content/map";
+import { plural, type PluralForms } from "@/i18n/plural";
 import "./events-map.css";
 
 /**
@@ -202,6 +203,41 @@ interface Box {
 
 /** How far in the reader may zoom. Past this the projection's rounding shows. */
 const MIN_W = 120;
+
+/**
+ * The air the widest framing leaves round the outermost thing it holds, in
+ * projection units.
+ *
+ * 150 rather than the 64 a marker needs to clear its own halo and label: this
+ * is the frame's edge, not a gap between two markers, and the easternmost
+ * marker is not the easternmost thing the reader is looking at. MH17 sits at
+ * x = 876.9 and Ukraine's coast runs to 900.4, so 64 would put the country
+ * this map is about 40 units — 26 CSS pixels at 1440 — from the picture's
+ * edge. 150 leaves 126 units, 78 pixels, behind the coast.
+ */
+const SPAN_EDGE = 150;
+/**
+ * And the air it leaves on the side an off-window seat came in from.
+ *
+ * A seat with no point in europe-map.json is off the projection's declared
+ * window because it is on another continent — today Montreal, where the ICAO
+ * Council decided the MH17 case the ICJ is hearing on appeal. A marker's own
+ * 64 units there buys the Gulf of St Lawrence and calls it the Atlantic:
+ * measured on the built page at 1440, that framing came out
+ * `-1000.9 -555.4 2200.9 1267.0`, which put Montreal 2.9% of the frame's width
+ * inside the western edge, with Greenland and open water where a reader was
+ * promised America.
+ *
+ * 360 is the judgement, and these are the numbers behind it. It puts Montreal
+ * 15.5% in — far enough from the edge to read as a city in a country rather
+ * than a marker pinned to a border. It reaches x = -1296.9, about 96°W:
+ * Toronto (-1030.9), Detroit (-1090.2) and Chicago (-1164.3) all project
+ * inside the frame, so what stands behind Montreal is the Great Lakes and the
+ * eastern half of a continent, not a coastline. Further west buys prairie at a
+ * real cost to the thing the other two framings are for; nearer puts the city
+ * back on the edge.
+ */
+const SPAN_FAR = 360;
 
 /**
  * How far a press may travel and still count as a click, in CSS pixels.
@@ -405,8 +441,24 @@ export default function EventsMap({
     legendLine: string;
     /** Heading over the sites a selected court hears. */
     courtHears: string;
-    /** "{n} proceedings in the registry" — the court's own caseload. */
+    /**
+     * And what stands in its place where the court hears none of them.
+     *
+     * Three of the nine do — Stockholm, Vilnius and Brussels — and the card
+     * used to print the heading over nothing at all. Comes from
+     * `MAP_COURT_NO_SITES` in src/content/map.ts, because it is a statement
+     * about this map's six places rather than a piece of chrome.
+     */
+    courtNoSites: string;
+    /**
+     * "{n} {w} in the library" — the court's own caseload, with the noun left
+     * to `caseloadWord` because it agrees with the number. The template used
+     * to carry the genitive plural itself and this component substituted the
+     * figure with a bare `.replace`, so eight of the nine courts read
+     * «1 проваджень» / «3 проваджень» and seven of nine "1 proceedings".
+     */
     caseload: string;
+    caseloadWord: PluralForms;
     /** The three framings. */
     zoomLabel: string;
     zoomWide: string;
@@ -578,30 +630,74 @@ export default function EventsMap({
     [box, FULL],
   );
   /**
-   * Everything the projection actually holds, not just the window the viewBox
-   * declares.
+   * The widest framing: everything the map has to show, and nothing else.
    *
-   * Derived from the courts rather than written down: any seat that says it is
-   * off the frame contributes where it really projects to, so the span grows
-   * by itself if a second one is ever added. Today that is Montreal, at
-   * x = -936.9 on a frame that runs 0…1200 — the ICAO Council, which decided
-   * the MH17 case the ICJ is hearing on appeal. 64 units of margin, so the
-   * city is inside the picture rather than on its edge.
+   * This used to be the projection's own 0…1200 × 0…460 window plus 64 units
+   * round Montreal, and the result did not deserve the name it was given.
+   * Measured on the built page at 1440: the frame came out
+   * `-1000.9 -555.4 2200.9 1267.0`, Montreal sat at x = -936.9 — 64 units, or
+   * 2.9% of the frame's width, inside the western edge — and what a reader saw
+   * beside Europe was Greenland and open water. North America was in the
+   * drawing (the atlas reaches x = -2658) and out of the picture.
+   *
+   * Two things were wrong with taking the window as the floor. It carries 323
+   * units of empty steppe east of the last marker — MH17 at x = 876.9, and
+   * Ukraine's own coast ends at 900.4 — which is a sixth of the frame spent on
+   * nothing. And it treats the margin round an off-window seat as the same
+   * kind of thing as the margin round a marker in Kyiv oblast, when it is not:
+   * a seat is off the window because it is on another continent, and a frame
+   * that clears it by 64 units shows the city without the continent.
+   *
+   * So the span is the markers themselves — `SPAN_EDGE` round the ones inside
+   * the window, `SPAN_FAR` on the side an off-window seat came in from. Still
+   * derived rather than written down: a second off-window seat, in any
+   * direction, widens this by itself.
+   *
+   * What it comes to today: x -1296.9 … 1026.9, y -140.4 … 565.2. Montreal
+   * lands 360 units — 15.5% of the width — inside the western edge, with the
+   * coast from Labrador to the Chesapeake, the Great Lakes and the ground out
+   * to about 96°W behind it, and Ukraine's own coast keeps 126 units of air on
+   * the other side instead of the 40 the marker margin alone would leave.
+   *
+   * The frame is 2323.8 units wide against the 2200.9 it was, so Europe is
+   * drawn 5.3% smaller in this framing than it used to be. That is the trade,
+   * and it is a small one because most of the room America needed came out of
+   * the empty steppe rather than out of Europe. The other two framings are
+   * untouched: «Європа» is still the projection's own window.
    */
   const SPAN = useMemo(() => {
-    let x0 = BASE.x;
-    let y0 = BASE.y;
-    let x1 = BASE.x + BASE.w;
-    let y1 = BASE.y + BASE.h;
+    let x0 = Infinity;
+    let y0 = Infinity;
+    let x1 = -Infinity;
+    let y1 = -Infinity;
+    const put = (x: number, y: number, m: number) => {
+      x0 = Math.min(x0, x - m);
+      y0 = Math.min(y0, y - m);
+      x1 = Math.max(x1, x + m);
+      y1 = Math.max(y1, y + m);
+    };
+    for (const e of events) {
+      const p = geo.markers[e.key];
+      if (p) put(p[0], p[1], SPAN_EDGE);
+    }
+    for (const c of courts) {
+      const p = geo.markers[c.key];
+      if (p) put(p[0], p[1], SPAN_EDGE);
+      else if (c.offAt) put(c.offAt.x, c.offAt.y, SPAN_EDGE);
+    }
+    // And the continent, on whichever side of the window the seat lies off.
     for (const c of courts) {
       if (!c.offAt) continue;
-      x0 = Math.min(x0, c.offAt.x - 64);
-      y0 = Math.min(y0, c.offAt.y - 64);
-      x1 = Math.max(x1, c.offAt.x + 64);
-      y1 = Math.max(y1, c.offAt.y + 64);
+      if (c.offAt.x < BASE.x) x0 = Math.min(x0, c.offAt.x - SPAN_FAR);
+      if (c.offAt.x > BASE.x + BASE.w) x1 = Math.max(x1, c.offAt.x + SPAN_FAR);
+      if (c.offAt.y < BASE.y) y0 = Math.min(y0, c.offAt.y - SPAN_FAR);
+      if (c.offAt.y > BASE.y + BASE.h) y1 = Math.max(y1, c.offAt.y + SPAN_FAR);
     }
+    // Nothing to frame at all — no markers in the geometry. Fall back to the
+    // declared window rather than returning an infinite rect.
+    if (!Number.isFinite(x0)) return BASE;
     return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
-  }, [BASE, courts]);
+  }, [BASE, events, courts, geo.markers]);
   /** The third framing: North America beside Europe. */
   const WIDE = useMemo(() => fitView(SPAN, box), [SPAN, box]);
   /**
@@ -622,8 +718,33 @@ export default function EventsMap({
     }
     return pts;
   }, [events, courts, geo.markers]);
-  /** Is there anything out there to frame? Nothing off the frame, no button. */
-  const hasWide = SPAN.w > BASE.w + 1 || SPAN.h > BASE.h + 1;
+  /**
+   * Is there anything out there to frame, and is this the surface to frame it
+   * on? Nothing off the frame, no button — and not on the home band either.
+   *
+   * The Atlantic framing is a good answer to a question a reader asks once
+   * they are already looking at the map, and a bad one to put in the middle of
+   * a scrolling document. The band is 500 units tall for 1200 wide; the
+   * Atlantic span is 2323.8 by 705.6, so fitting it there leaves Europe at 25%
+   * of the frame's width and Ukraine at 12%, under a card the band has no room
+   * to move out of the way. Measured on the deployed build at 1440, pressing
+   * «Атлантика» on the home page gave the reader a band of open ocean with the
+   * subject of the map half behind the info card and the six sites unusable —
+   * it cost Europe's legibility and did not deliver America in exchange.
+   *
+   * On the map's own page the drawing has the viewport, the seat list is
+   * underneath, and the framing does what it was added for. So the band keeps
+   * «Європа» and «Україна» and the link to the full map, which is where the
+   * third framing lives.
+   *
+   * A consequence worth naming: the band no longer draws anything outside the
+   * projection's own window, so the 60 far-ring country paths in
+   * europe-map.json — about 31 kB gzipped once in the HTML and once in the RSC
+   * payload — are dead weight on the home page. Splitting `context` into a
+   * near list and a far list in the generator would take them out of it.
+   */
+  const hasWide =
+    variant === "full" && (SPAN.w > BASE.w + 1 || SPAN.h > BASE.h + 1);
   /**
    * How far the reader may get, by any means — the smallest rect of the
    * element's own shape that holds both named framings. Grown from their
@@ -1068,6 +1189,31 @@ export default function EventsMap({
   const badged = !coarseCourts;
   /** The city labels, in projection units, aiming at 11 CSS pixels. */
   const cityF = labelSize(11, 14, px);
+  /**
+   * Whether a city can be named at all at this size.
+   *
+   * `labelSize` asks for 11 CSS pixels and gives up at 14 projection units,
+   * because past that a place name is wider than the country it stands in —
+   * «СТРАСБУРГ» at 14 units already measures about the width of France. Where
+   * the cap binds the label stops being 11px and starts shrinking with the
+   * drawing, and nothing stopped it: measured on a 390px phone, the nine city
+   * names rendered at 4.6 CSS pixels, and in the Atlantic framing on a 1024px
+   * window at 5.7. That is not a small label, it is a grey smudge beside a
+   * marker, and on a 210px-tall drawing it was most of what was on the map.
+   *
+   * 7.5px is where uppercase Fira Sans at this tracking stops resolving into
+   * letters. Below it the cities are drawn as rings and named by the card a
+   * press opens, by the seat list under the full map, and by the `aria-label`
+   * on the target, which is what a screen reader was reading all along.
+   */
+  const citied = cityF * scale >= 7.5;
+
+  /**
+   * "28 проваджень у бібліотеці" — the same sentence in the card and in the
+   * seat list, so the noun agrees in one place rather than two.
+   */
+  const caseload = (n: number) =>
+    labels.caseload.replace("{n}", String(n)).replace("{w}", plural(n, labels.caseloadWord, locale));
 
   const selected = sel?.kind === "site" ? events.find((e) => e.key === sel.key) ?? null : null;
   const selectedCourt =
@@ -1097,6 +1243,14 @@ export default function EventsMap({
       data-variant={variant}
       data-coarse={coarse ? "yes" : "no"}
       data-coarse-courts={coarseCourts ? "yes" : "no"}
+      /* Which framing is on the screen, for the one rule that has to know.
+         The Atlantic framing is 2.3 times as wide as the projection and puts
+         everything worth clicking in the right-hand tenth of it, so on the
+         home band — where the drawing is only 500 units tall — a floating card
+         covers the lot. Measured at 1024, 1100 and 1280: all fifteen markers
+         under the card, every site and every seat, on a page whose default
+         state opens a card. See events-map.css. */
+      data-framing={atWide ? "wide" : undefined}
     >
       <div className="emap-figure">
         {/* Not drawn and not reachable: it exists so the stylesheet can state
@@ -1404,20 +1558,22 @@ export default function EventsMap({
                   }}
                 />
                 <circle className="emap-court-dot" cx={x} cy={y} r={5} />
-                <text
-                  x={x + 12}
-                  y={y + 0.4 * cityF + (c.labelDy ?? 0)}
-                  fontSize={cityF}
-                >
-                  {c.city}
-                </text>
+                {citied && (
+                  <text
+                    x={x + 12}
+                    y={y + 0.4 * cityF + (c.labelDy ?? 0)}
+                    fontSize={cityF}
+                  >
+                    {c.city}
+                  </text>
+                )}
                 {/* The court's own name, at its city, once it is lit. Not
                     always: The Hague alone seats four institutions and the
                     names run to sixty characters, so every city named at once
                     would bury the drawing. Only the abbreviations the
                     citations use, and only while the reader is looking at
                     that relation. */}
-                {(on || rel) && badged && c.badges.length > 0 && (
+                {(on || rel) && badged && citied && c.badges.length > 0 && (
                   <text
                     className="emap-court-abbr"
                     aria-hidden="true"
@@ -1576,9 +1732,7 @@ export default function EventsMap({
                 and the ten heard by the Dutch courts, the ICAO Council, the
                 ICC arbitration court, Lithuania and the EU were tied to none
                 of those six places, so they appeared nowhere at all. */}
-            <p className="emap-caseload">
-              {labels.caseload.replace("{n}", String(selectedCourt.caseload.total))}
-            </p>
+            <p className="emap-caseload">{caseload(selectedCourt.caseload.total)}</p>
             {selectedCourt.caseload.written.length > 0 && (
               <div className="emap-reads">
                 <div className="emap-reads-h">{labels.reads}</div>
@@ -1593,23 +1747,36 @@ export default function EventsMap({
                 </ul>
               </div>
             )}
-          <div className="emap-reads">
-            <div className="emap-reads-h">{labels.courtHears}</div>
-            <ul>
-              {courtSites.map((e) => (
-                <li key={e.key}>
-                  <button
-                    type="button"
-                    className="emap-court-site"
-                        onClick={() => toggleSite(e.key)}
-                  >
-                    <span className="emap-read-t">{e.title}</span>
-                    <span className="emap-read-f">{e.count}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* A heading is a promise that something follows it. Stockholm hears
+              the two Naftogaz/Gazprom gas arbitrations, Vilnius Lithuania's
+              universal-jurisdiction proceedings and Brussels is not a court at
+              all — none of the six places on this map is about any of them, so
+              `courtSites` is empty and «РОЗГЛЯДАЄ СПРАВИ» stood over nothing.
+              An empty list is not an absence of cases: the caseload line above
+              has already said how many the registry holds. It is an absence of
+              a link to *this drawing*, which is a different fact and is worth
+              one sentence. */}
+          {courtSites.length > 0 ? (
+            <div className="emap-reads">
+              <div className="emap-reads-h">{labels.courtHears}</div>
+              <ul>
+                {courtSites.map((e) => (
+                  <li key={e.key}>
+                    <button
+                      type="button"
+                      className="emap-court-site"
+                      onClick={() => toggleSite(e.key)}
+                    >
+                      <span className="emap-read-t">{e.title}</span>
+                      <span className="emap-read-f">{e.count}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="emap-pending">{labels.courtNoSites}</p>
+          )}
         </div>
       )}
       </div>
@@ -1700,6 +1867,13 @@ export default function EventsMap({
                   <button type="button" onClick={() => toggleCourt(c.key)}>
                     <span className="emap-seat-city">{c.city}</span>
                     <span className="emap-seat-list">{c.seats}</span>
+                    {/* The one thing this list held that a reader could not
+                        get any other way is *comparison*: nine seats side by
+                        side. It could not compare the only quantity the
+                        archive has for them, because the caseload was inside
+                        the card and the card shows one court at a time. Same
+                        string the card uses, same number, no new fact. */}
+                    <span className="emap-seat-count">{caseload(c.caseload.total)}</span>
                   </button>
                 </li>
               ))}

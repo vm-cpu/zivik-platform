@@ -12,6 +12,7 @@ import {
 } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { defaultLocale, foreignLang, isLocale } from "@/i18n/config";
+import { plural, type PluralForms } from "@/i18n/plural";
 import type { CaseDate, CaseOutcomeKey, CaseStageKey } from "@/content/types";
 
 /* ============================================================================
@@ -344,32 +345,14 @@ function compare(a: RegRow, b: RegRow, { key, dir }: SortState): number {
    Labels
    ========================================================================== */
 
-export interface PluralForms {
-  one: string;
-  few: string;
-  many: string;
-}
-
-const PR = new Map<string, Intl.PluralRules>();
-
 /**
- * Ukrainian agreement has three forms — 1 справа, 2–4 справи, 5+ справ — and
- * the teens all take the "many" one, which is why 11 and 21 disagree.
- * `Intl.PluralRules` is asked rather than hand-rolled, because the hand-rolled
- * version got English wrong in the other direction: n % 10 === 1 made it print
- * "21 case". English resolves to one/other and reads `one` and `many`.
+ * Moved to `@/i18n/plural`, and re-exported here so `registry/page.tsx` keeps
+ * importing it from where it always has. It was defined in this file and
+ * needed in three: the map's court caseload was the surface that went without,
+ * and printed «1 проваджень» on six of nine courts because of it.
  */
-export function plural(n: number, forms: PluralForms, locale: string): string {
-  let rules = PR.get(locale);
-  if (!rules) {
-    rules = new Intl.PluralRules(locale);
-    PR.set(locale, rules);
-  }
-  const category = rules.select(n);
-  if (category === "one") return forms.one;
-  if (category === "few") return forms.few;
-  return forms.many;
-}
+export { plural };
+export type { PluralForms };
 
 export interface RegistryLabels {
   search: string;

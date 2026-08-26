@@ -371,13 +371,22 @@
 /* At wide widths it becomes the same panel the map's own page uses — dark,
    ruled, blurred, sitting over the drawing rather than stacked above it.
 
-   1100px, not 900. The panel is a constant 229px tall, and the band is only
+   1150px, not 900. The panel is a constant 229px tall, and the band is only
    417px tall at 1000px and 375px at 901px — so below about 1100 it stops
    floating over open sea and starts covering markers: Hamburg at 1000px, and
    The Hague, Hamburg, Vilnius, Helsinki and Stockholm at 901px. Measured, with
    every one of the 15 markers reachable again once the heading returns to the
-   flow. Above 1100 the panel costs nothing. */
-@media (min-width:1100px){
+   flow.
+
+   1100 was where that was set and it was fifty pixels short. Re-measured
+   across 1100, 1120, 1150, 1180, 1200, 1240 and 1280: the panel still covers
+   Hamburg and Stockholm at 1100 and at 1120, and clears every marker from
+   1150 up. Reserving the strip instead — the mechanism the card and the map
+   page's own masthead use — is not available here: 247px off a 458px band
+   makes the fit height-bound at 0.459 CSS pixels per unit, which puts a site
+   target at 14.7px and turns the whole drawing inert at exactly the width the
+   panel was meant to be free at. */
+@media (min-width:1150px){
   .page .nsv-mapband{position:relative}
   .page .nsv-mapband > .nsv-sechead{
     position:absolute;z-index:4;top:18px;

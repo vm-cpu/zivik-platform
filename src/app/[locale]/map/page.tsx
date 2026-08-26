@@ -11,7 +11,7 @@ import {
 } from "@/lib/seo";
 import { localeOpenGraph, alternateOpenGraphLocales } from "@/i18n/config";
 import { pick } from "@/content/types";
-import { MAP_EVENTS, MAP_COURTS, courtMarks } from "@/content/map";
+import { MAP_EVENTS, MAP_COURTS, courtMarks, markerSize, MAP_COURT_NO_SITES } from "@/content/map";
 import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
 import geo from "@/content/europe-map.json";
 import EventsMap from "@/components/nasvitlo/EventsMap";
@@ -97,7 +97,7 @@ export default async function MapPage({
             events={MAP_EVENTS.map((e) => ({
               key: e.key,
               category: e.category,
-              size: e.size,
+              size: markerSize(e.weight),
               when: pick(e.when, locale),
               title: pick(e.title, locale),
               note: pick(e.note, locale),
@@ -132,7 +132,9 @@ export default async function MapPage({
               legendHow: dict.mapSection.legendHow,
               legendLine: dict.mapSection.legendLine,
             courtHears: dict.mapSection.courtHears,
+            courtNoSites: pick(MAP_COURT_NO_SITES, locale),
             caseload: dict.mapSection.caseload,
+            caseloadWord: dict.mapSection.caseloadWord,
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,

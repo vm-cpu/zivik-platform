@@ -1,7 +1,7 @@
 import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { MAP_EVENTS, MAP_COURTS, courtMarks } from "@/content/map";
+import { MAP_EVENTS, MAP_COURTS, courtMarks, markerSize, MAP_COURT_NO_SITES } from "@/content/map";
 import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
 import Link from "next/link";
 import geo from "@/content/europe-map.json";
@@ -85,7 +85,7 @@ export default function MapSection({
           events={MAP_EVENTS.map((e) => ({
             key: e.key,
             category: e.category,
-            size: e.size,
+            size: markerSize(e.weight),
             when: pick(e.when, locale),
             title: pick(e.title, locale),
             note: pick(e.note, locale),
@@ -120,7 +120,9 @@ export default function MapSection({
             legendHow: dict.mapSection.legendHow,
             legendLine: dict.mapSection.legendLine,
             courtHears: dict.mapSection.courtHears,
+            courtNoSites: pick(MAP_COURT_NO_SITES, locale),
             caseload: dict.mapSection.caseload,
+            caseloadWord: dict.mapSection.caseloadWord,
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,

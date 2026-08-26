@@ -18,8 +18,26 @@ export interface MapEvent {
   /** Marker key in europe-map.json. */
   key: string;
   category: EventCategory;
-  /** Marker radius. Bigger means more proceedings, not more harm. */
-  size: number;
+  /**
+   * How many items in the registry this site accounts for — the number its
+   * own `count` string states, as a number.
+   *
+   * The marker's radius is derived from it (see `markerSize`) rather than
+   * written down beside it, because written down it drifted. The six radii
+   * were 26, 22, 24, 19, 19 and 18 against counts of 11, 2, 3, 4, 4 and 6, so
+   * the second-largest dot on the map stood for two proceedings and the
+   * smallest for six — while the legend told the reader in as many words that
+   * a bigger circle means more proceedings. The legend was right about what
+   * the map ought to say and the map was not saying it.
+   *
+   * `count` keeps the wording because the six are not all the same kind of
+   * thing — proceedings, decisions, arbitrations, arrest warrants — and this
+   * archive does not flatten that in prose. It is one quantity for the purpose
+   * of a radius: how much of the record this place accounts for. The guard at
+   * the foot of this file checks the two against each other, so a count
+   * corrected in the string cannot leave the drawing behind.
+   */
+  weight: number;
   /**
    * Date or period, shown above the title — and, since the map gained oblast
    * boundaries, the source of the marker's own label on the drawing.
@@ -107,6 +125,46 @@ export interface MapCourt {
    */
   seats: { abbr?: string; name: Localized }[];
 }
+
+/**
+ * The diameter a site's marker is drawn at, from what it stands for.
+ *
+ * Square-rooted, so the mark's *area* rises with the count rather than its
+ * width — the reader compares blobs, not radii, and a linear radius makes 11
+ * look thirty times two rather than five. Fitted to the range the drawing
+ * already used, 18…26 units, so nothing about the map's scale changes: the two
+ * ends land exactly where they were (Crimea at 11 keeps 26, the Kerch strait
+ * at 2 keeps 18) and only the middle four move into the right order.
+ *
+ * Rounded to a half unit. One decimal of a projection unit is 0.06 CSS pixels
+ * at the framing the map opens in; the extra digits were noise in the markup.
+ */
+export function markerSize(weight: number): number {
+  const lo = 2;
+  const hi = 11;
+  const n = Math.min(hi, Math.max(lo, weight));
+  const t = (Math.sqrt(n) - Math.sqrt(lo)) / (Math.sqrt(hi) - Math.sqrt(lo));
+  return Math.round((18 + 8 * t) * 2) / 2;
+}
+
+/**
+ * What a court's card says where the map has nothing to link it to.
+ *
+ * Three of the nine seats hear proceedings that none of the six sites on this
+ * map is about — Stockholm (the Naftogaz/Gazprom gas arbitrations), Vilnius
+ * (Lithuania's universal-jurisdiction proceedings) and Brussels (which is not
+ * a court at all) — so `courtSites` comes back empty for them and the card had
+ * a heading with nothing under it. An empty section is not a fact; this is.
+ *
+ * A statement about this map's own structure rather than about any one court,
+ * which is why it is one sentence here and not a field on nine entries. It
+ * lives with the map's data rather than in the dictionaries because it is only
+ * true of this drawing and its six places: reword the sites and it changes.
+ */
+export const MAP_COURT_NO_SITES: Localized = {
+  uk: "Ці провадження не привʼязані до жодного з шести місць на мапі.",
+  en: "These proceedings are not tied to any of the six places on this map.",
+};
 
 export const MAP_COURTS: MapCourt[] = [
   {
@@ -254,7 +312,7 @@ export const MAP_EVENTS: MapEvent[] = [
     key: "crimea",
     cases: ["icj-cerd-icsft", "oschadbank", "dtek-krymenergo"],
     category: "hr",
-    size: 26,
+    weight: 11,
     when: { uk: "Окупація · 2014", en: "Occupation · 2014" },
     title: { uk: "Окупація Криму", en: "Occupation of Crimea" },
     note: {
@@ -296,7 +354,7 @@ export const MAP_EVENTS: MapEvent[] = [
     // No `cases`: ITLOS and the PCA arbitration over the vessels are both
     // still unwritten. The card says so rather than linking nowhere.
     category: "asset",
-    size: 22,
+    weight: 2,
     when: { uk: "Затримання · 2018", en: "Seizure · 2018" },
     title: { uk: "Затримання кораблів", en: "Seizure of the naval vessels" },
     note: {
@@ -321,7 +379,7 @@ export const MAP_EVENTS: MapEvent[] = [
     key: "mh17",
     cases: ["hague-mh17", "echr-ukraine-netherlands"],
     category: "war",
-    size: 24,
+    weight: 3,
     when: { uk: "MH17 · 17.07.2014", en: "MH17 · 17 July 2014" },
     title: { uk: "Збиття рейсу MH17", en: "The downing of flight MH17" },
     note: {
@@ -347,7 +405,7 @@ export const MAP_EVENTS: MapEvent[] = [
     key: "donbas",
     cases: ["echr-ukraine-netherlands", "icj-cerd-icsft", "icj-genocide", "finland-torden"],
     category: "war",
-    size: 19,
+    weight: 4,
     when: { uk: "Схід · 2014", en: "The east · 2014" },
     title: { uk: "Схід України", en: "Eastern Ukraine" },
     // Three of the four are inter-State applications; the fourth, Finland v
@@ -381,7 +439,7 @@ export const MAP_EVENTS: MapEvent[] = [
     key: "energy",
     cases: ["dtek-krymenergo"],
     category: "asset",
-    size: 19,
+    weight: 4,
     when: { uk: "Енергетика · 2020", en: "Energy · 2020" },
     title: { uk: "Енергоактиви", en: "Energy assets" },
     note: {
@@ -410,7 +468,7 @@ export const MAP_EVENTS: MapEvent[] = [
     key: "mariupol",
     cases: ["icc-ukraine"],
     category: "war",
-    size: 18,
+    weight: 6,
     when: { uk: "2022", en: "2022" },
     title: { uk: "Воєнні злочини", en: "War crimes" },
     note: {
@@ -480,6 +538,18 @@ export function courtMarks(c: MapCourt, locale: Locale) {
   }
   for (const e of MAP_EVENTS) {
     if (!(e.key in markers)) wrong.push(`event "${e.key}" has no point in europe-map.json`);
+    // The radius says how much of the record a place accounts for, and the
+    // card says it in words. They came apart once — six radii in one order and
+    // six counts in another — so they are checked against each other here.
+    // Both locales, because either string could be the one that is edited.
+    for (const loc of ["uk", "en"] as const) {
+      const said = /^\s*(\d+)/.exec(e.count[loc])?.[1];
+      if (said !== String(e.weight)) {
+        wrong.push(
+          `event "${e.key}" is drawn for ${e.weight} but its ${loc} count reads "${e.count[loc]}"`,
+        );
+      }
+    }
     for (const k of e.courts) {
       if (!keys.has(k)) wrong.push(`event "${e.key}" draws a line to unknown court "${k}"`);
     }

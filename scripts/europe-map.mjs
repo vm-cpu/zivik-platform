@@ -175,6 +175,22 @@ const path = geoPath(projection).digits(1);
  * These bounds cover that with room to spare, and panning is clamped inside
  * the same rect, so nothing the reader can reach falls outside them.
  *
+ * x0 moved from -1030 to -1400 when the Atlantic framing was widened.
+ *
+ * That framing used to stop 64 units west of Montreal (-936.9) and keep the
+ * projection's whole 0…1200 window on the other side, so it spent 323 units on
+ * empty steppe east of the last marker and gave North America the Gulf of St
+ * Lawrence: measured at 1440, Montreal rendered 2.9% of the frame width inside
+ * the western edge. `EventsMap` now frames the markers themselves — 64 units
+ * round the ones inside the window, 360 round a seat that is off it — which
+ * puts the western edge at -1296.9, about 96°W. Everything between -1400 and
+ * -1030 is land that had no country to be drawn from: Canada and the United
+ * States were already here whole (their bounds reach x = -2658), but Mexico's
+ * easternmost point projects to -1149 and its whole outline fell outside the
+ * old window, so the new framing would have shown a hole where the Rio Grande
+ * is. -1400 is the -1296.9 the component can reach, with a hundred units in
+ * hand for a narrower element.
+ *
  * NOTHING ABOUT THE PROJECTION CHANGES. fitExtent, FRAME, W, H and the marker
  * list are exactly as they were, so `ukraine`, `regions`, `markers` and
  * `viewBox` regenerate byte-identical and Europe's framing does not move. Only
@@ -182,7 +198,7 @@ const path = geoPath(projection).digits(1);
  * same strings in the same order they have always been.
  */
 const NEAR = { x0: -20, y0: -20, x1: W + 20, y1: H + 20 };
-const WIDE = { x0: -1030, y0: -1060, x1: 1430, y1: 1030 };
+const WIDE = { x0: -1400, y0: -1060, x1: 1430, y1: 1030 };
 
 /** Does this shape land anywhere inside the given window at all? */
 const within = (f, b) => {
