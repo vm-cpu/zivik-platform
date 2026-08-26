@@ -88,7 +88,15 @@ export interface MapCourtR {
     courtIds: string[];
     total: number;
     written: { slug: string; title: string; stage?: string; amount?: string }[];
-    listed: { id: string; name: string; note: string; stage?: string; amount?: string }[];
+    listed: {
+      id: string;
+      name: string;
+      /** The same case in Ukrainian. Absent in the English locale. */
+      nameUk?: string;
+      note: string;
+      stage?: string;
+      amount?: string;
+    }[];
   };
 }
 export interface MapGeometry {
@@ -2431,7 +2439,24 @@ export default function EventsMap({
                       the reader a table built to hold them. */}
                   {selectedCourt.caseload.listed.slice(0, LISTED_MAX).map((c) => (
                     <li key={c.id}>
-                      <span className="emap-read-t">{c.name}</span>
+                      {/* The Ukrainian line leads and the citation follows it.
+                          The other way round put a forty-word English
+                          arbitration style at the top of every row in a card
+                          whose every other word was Ukrainian, and left the
+                          reader to work out what they were looking at from the
+                          docket number underneath. The citation is what the
+                          case is filed as and does not change language; it is
+                          still here, in full, one line down. */}
+                      {c.nameUk ? (
+                        <>
+                          <span className="emap-read-t">{c.nameUk}</span>
+                          <span className="emap-read-cite" lang="en">
+                            {c.name}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="emap-read-t">{c.name}</span>
+                      )}
                       {c.note && <span className="emap-read-f">{c.note}</span>}
                       {(c.stage || c.amount) && (
                         <span className="emap-tags">

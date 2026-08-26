@@ -1766,3 +1766,17 @@ a.emap-seat-count:focus-visible {
   padding-left: 10px;
   margin-bottom: 4px;
 }
+
+/* The official citation, under the Ukrainian line that says what the case is.
+   Quieter and smaller than the name above it: it is the thing to quote, not
+   the thing to read. Clamped like the name was, because a PCA style runs to
+   forty words. */
+.emap-read-cite {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  font: 400 10px/1.4 var(--brand-font-mono);
+  color: var(--brand-faint-dark);
+}

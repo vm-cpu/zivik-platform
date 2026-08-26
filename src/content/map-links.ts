@@ -160,7 +160,11 @@ export function courtCaseloadFor(courtKey: string, locale: Locale) {
       .filter((c) => !(c.summarySlug && c.summarySlug in SUMMARIES))
       .map((c) => ({
         id: c.id,
+        // The citation, and — for a Ukrainian reader — the same case said in
+        // Ukrainian. Never both in the English locale: there the caption is
+        // already in the reader's language and a second line would repeat it.
         name: c.name,
+        nameUk: locale === "uk" ? c.nameUk : undefined,
         note: pick(c.note, locale),
         stage: c.stage,
         amount: c.amountUsd != null ? money(c.amountUsd, locale) : undefined,

@@ -364,9 +364,11 @@
    for letter, so every entry opened with something that read as a heading.
    As a bordered chip it reads as a tag at a glance and cannot be confused
    with the label above the list.
-   --ink3 is 3.28:1 on this ground and --pgold 4.32:1, both under AA for an
-   11px label, so the text runs on --ink2 (6.68:1 on --brand-surface) and the
-   court is marked by --ink (17.7:1) rather than by hue. */
+   The card ground is --brand-surface. --brand-faint is 5.45:1 on it and
+   --brand-gold-ink 5.62:1, both AA, but the chip is 11px and the kind is the
+   first thing read in the entry: it runs on --ink2 (7.78:1) and the court is
+   marked by --ink (17.57:1) rather than by hue, with the chip's border in
+   --brand-gold-ink to carry the one distinction that is not a word. */
 .casepage .who-kind {
   justify-self: start;
   font: 700 var(--t-micro) var(--brand-font-body);

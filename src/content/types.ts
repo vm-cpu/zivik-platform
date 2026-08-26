@@ -104,6 +104,27 @@ export interface RegistryCase {
   institutionId: string;
   /** Official citation — identical in both locales. */
   name: string;
+  /**
+   * The same case, said in Ukrainian.
+   *
+   * Not a translation of the citation and not a replacement for it: the
+   * caption is what the case is filed as and it does not change language. This
+   * is the line a Ukrainian reader needs beside it, because the surfaces that
+   * list these rows are Ukrainian and the rows are not — the map's «Які саме»
+   * block put twenty-two English arbitration styles, forty words apiece, into
+   * a card whose every other word was Ukrainian.
+   *
+   * Ukrainian only, and optional. A row whose caption is already Ukrainian
+   * needs nothing, and the English locale never shows this: there the citation
+   * is in the reader's own language and a second line would be a repetition.
+   *
+   * NEEDS THE OWNER'S REVIEW where a name had to be rendered rather than
+   * copied — the company names in the PCA arbitrations are transliterated back
+   * from the English caption and the statutory Ukrainian name may differ, and
+   * the ICC warrants are given as the first and last name the Court's own
+   * warrants use, without the patronymic.
+   */
+  nameUk?: string;
   type: Localized;
   /** Normalised status for the chip. */
   statusKey: CaseStatusKey;
