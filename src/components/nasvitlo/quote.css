@@ -89,13 +89,26 @@
 
 
 
+/* ---- the ornament ------------------------------------------------------- */
+
+/* Centred, so there is no hanging punctuation to reconcile — the device that
+   makes a centred pull-quote read as one is the mark above it, not an optical
+   alignment down the left edge. Kept well under the text's weight: it is a
+   signal, not a second voice. */
+.nsvq-orn {
+  display: block;
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: clamp(46px, 5.4vw, 72px);
+  line-height: 0.5;
+  text-align: center;
+  color: color-mix(in srgb, var(--brand-gold-lit) 58%, transparent);
+  margin-bottom: clamp(20px, 2.4vw, 32px);
+}
+
 .nsvq-text {
-  max-width: 46rem;
-  /* The opening mark hangs left so the first letter lines up with every line
-     under it. Charis SIL's « is close enough to 0.42em at this size that the
-     block reads flush; measured, the first letter sits within a pixel of the
-     lines below. */
-  margin: 0 0 0 -0.42em;
+  max-width: 44rem;
+  margin: 0 auto;
+  text-align: center;
   font-family: var(--brand-font-display), Georgia, serif;
   font-size: clamp(22px, 2.7vw, 34px);
   /* Generous for a serif at this size — a pull-quote is read slowly. */
@@ -108,12 +121,29 @@
 /* ---- the citation ------------------------------------------------------- */
 
 .nsvq-cite {
-  max-width: 46rem;
-  margin: clamp(24px, 3vw, 36px) 0 0;
-  padding: var(--space-5) 0 0;
-  /* A short lit rule, the same light as the seam, tying the attribution to the
-     words above it. */
-  border-top: 1px solid color-mix(in srgb, var(--brand-gold-lit) 26%, transparent);
+  max-width: 44rem;
+  margin: clamp(26px, 3vw, 38px) auto 0;
+  padding: clamp(22px, 2.4vw, 30px) 0 0;
+  text-align: center;
+  position: relative;
+}
+/* A short lit rule, centred, the same light as the seam — an attribution rule
+   under a centred quote, not a border across the band. A full-width line here
+   read as the top of a new section. */
+.nsvq-cite::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 84px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--brand-gold-lit) 62%, transparent),
+    transparent
+  );
 }
 
 /* One link, one target: the citation itself is what you click, so there is no
@@ -121,7 +151,7 @@
 .page .nsvq a.nsvq-link {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-2);
   color: inherit;
   text-decoration: none;

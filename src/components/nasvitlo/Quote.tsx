@@ -120,6 +120,13 @@ export default function Quote({
           in place of the empty strip that used to sit there. Decoration, so it
           is hidden from assistive technology. */}
       <span className="nsvq-seam" aria-hidden="true" />
+      {/* The ornament that says "someone else's words" before a word is read.
+          Decorative and hidden from assistive technology: the <blockquote>
+          carries the semantics and the marks around the text carry the
+          punctuation, which a quotation from a court has to keep. */}
+      <span className="nsvq-orn" aria-hidden="true">
+        {MARKS[locale][0]}
+      </span>
       <blockquote className="nsvq-text" cite={href}>
         {MARKS[locale][0]}
         {dict.quote.text}
