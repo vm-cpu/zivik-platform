@@ -509,6 +509,8 @@ export default function EventsMap({
     legendLit: string;
     legendUnlit: string;
     court: string;
+    /** The grip that moves the card out from over whatever it is covering. */
+    moveCard: string;
     /** Heading above the decision links inside a card. */
     reads: string;
     /**
@@ -681,6 +683,20 @@ export default function EventsMap({
   const [full, setFull] = useState(false);
 
   /**
+   * Where the reader has put the card, in CSS pixels from where it opens.
+   *
+   * The card is anchored to one corner and the drawing is not: a marker, the
+   * masthead, a seat the reader wants to reach can all end up under it, and
+   * the only answers were to close it or to change the framing. Now it can be
+   * moved. Kept across selections, because a reader who moved it out of the
+   * way meant it; cleared when they close the last card, so it does not open
+   * somewhere surprising an hour later.
+   */
+  const [cardAt, setCardAt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const cardDrag = useRef<{ id: number; x: number; y: number } | null>(null);
+
+
+  /**
    * North America and the Atlantic rim, fetched rather than bundled.
    *
    * The band used to be denied the Atlantic framing partly to keep this off
@@ -829,8 +845,11 @@ export default function EventsMap({
     (next: { kind: "site" | "court"; key: string } | null) => {
       if (next) {
         openerRef.current = document.activeElement as HTMLElement | null;
-      } else if (liveRef.current?.contains(document.activeElement)) {
-        openerRef.current?.focus?.();
+      } else {
+        setCardAt({ x: 0, y: 0 });
+        if (liveRef.current?.contains(document.activeElement)) {
+          openerRef.current?.focus?.();
+        }
       }
       setSel(next);
       setFocusReq(next);
@@ -1052,6 +1071,34 @@ export default function EventsMap({
   }, [FULL, WIDE, hasWide]);
   const [nav, setNav] = useState<Nav>(null);
   const view = useMemo(() => viewFrom(nav, FULL, OUTER, ANCHORS), [nav, FULL, OUTER, ANCHORS]);
+
+  /**
+   * Ask for the far coast when the view actually reaches it.
+   *
+   * It used to be asked for by the «Вся мапа» button, on the reasoning that
+   * that is the framing it exists for. It is not the only way out there: a
+   * link to `?court=montreal`, the stepper, a wheel with the modifier held and
+   * a drag all take the view past the projection's own window, and by none of
+   * those routes was the button pressed. Reported from a screenshot of the
+   * result — the ICAO Council's marker sitting in open ocean, in exactly the
+   * right place, with no continent under it.
+   *
+   * Asked of the view instead, every route is covered and the home page still
+   * pays nothing until a reader goes looking.
+   */
+  useEffect(() => {
+    /* 80 units of slack, not 1. The opening framing is already a little wider
+       than the projection's declared window — the frame takes the container's
+       aspect ratio, so at 1440 x 829 it comes out 1218 units against 1200 —
+       and at one unit of tolerance that counted as "reaching the far coast",
+       which fetched North America on every visit to the map. 80 is past any
+       fit of the window itself and well short of the first thing out there:
+       Montreal is 937 units west of it. */
+    const slack = 80;
+    if (view.x < BASE.x - slack || view.x + view.w > BASE.x + BASE.w + slack) {
+      loadFar();
+    }
+  }, [view.x, view.w, BASE.x, BASE.w, loadFar]);
 
   /**
    * Bring both ends of the picked relation into the picture.
@@ -1873,10 +1920,7 @@ export default function EventsMap({
               type="button"
               className="emap-zoom-far"
               aria-pressed={atWide}
-              onClick={() => {
-                loadFar();
-                setNav(navOf(WIDE, FULL.w));
-              }}
+              onClick={() => setNav(navOf(WIDE, FULL.w))}
             >
               {labels.zoomAtlantic}
             </button>
@@ -2390,7 +2434,69 @@ export default function EventsMap({
       </div>
       <div className="emap-live" ref={liveRef}>
       {selected && (
-        <div className="emap-card">
+        <div
+          className="emap-card"
+          style={{ transform: `translate(${cardAt.x}px, ${cardAt.y}px)` }}
+        >
+          {/* The grip. The card is anchored to a corner and the drawing is
+              not, so a marker or a seat can end up underneath it and the only
+              answers used to be closing it or changing the framing. It moves
+              now — by this, and not by the card itself, which is full of links
+              a drag would swallow. Only where the card floats: below 1000px it
+              is in the flow under the drawing and covers nothing. */}
+          <button
+            type="button"
+            className="emap-grip"
+            aria-label={labels.moveCard}
+            title={labels.moveCard}
+            onPointerDown={(ev) => {
+              if (ev.button !== 0) return;
+              ev.preventDefault();
+              cardDrag.current = { id: ev.pointerId, x: ev.clientX, y: ev.clientY };
+              ev.currentTarget.setPointerCapture(ev.pointerId);
+            }}
+            onPointerMove={(ev) => {
+              const d = cardDrag.current;
+              if (!d || d.id !== ev.pointerId) return;
+              const dx = ev.clientX - d.x;
+              const dy = ev.clientY - d.y;
+              d.x = ev.clientX;
+              d.y = ev.clientY;
+              // Held inside the drawing, with a corner always in reach: a card
+              // dragged off the picture is a card that cannot be brought back.
+              const r = svgRef.current?.getBoundingClientRect();
+              setCardAt((p) => ({
+                x: Math.min(Math.max(p.x + dx, r ? -(r.width - 120) : -600), 40),
+                y: Math.min(Math.max(p.y + dy, -40), r ? r.height - 120 : 600),
+              }));
+            }}
+            onPointerUp={(ev) => {
+              if (cardDrag.current?.id === ev.pointerId) cardDrag.current = null;
+            }}
+            onPointerCancel={() => {
+              cardDrag.current = null;
+            }}
+            onKeyDown={(ev) => {
+              // The keyboard gets it too, in steps of sixteen.
+              const step =
+                ev.key === "ArrowLeft" ? [-16, 0] :
+                ev.key === "ArrowRight" ? [16, 0] :
+                ev.key === "ArrowUp" ? [0, -16] :
+                ev.key === "ArrowDown" ? [0, 16] : null;
+              if (!step) return;
+              ev.preventDefault();
+              setCardAt((p) => ({ x: p.x + step[0], y: p.y + step[1] }));
+            }}
+          >
+            <svg viewBox="0 0 12 12" aria-hidden="true">
+              <circle cx="3.5" cy="2.5" r="1" />
+              <circle cx="8.5" cy="2.5" r="1" />
+              <circle cx="3.5" cy="6" r="1" />
+              <circle cx="8.5" cy="6" r="1" />
+              <circle cx="3.5" cy="9.5" r="1" />
+              <circle cx="8.5" cy="9.5" r="1" />
+            </svg>
+          </button>
           <button
             type="button"
             className="emap-close"
@@ -2460,7 +2566,69 @@ export default function EventsMap({
       {/* A court selection answers the reverse question: not "who is hearing
           this?" but "what is this court hearing?" */}
       {selectedCourt && (
-        <div className="emap-card emap-card-court">
+        <div
+          className="emap-card emap-card-court"
+          style={{ transform: `translate(${cardAt.x}px, ${cardAt.y}px)` }}
+        >
+          {/* The grip. The card is anchored to a corner and the drawing is
+              not, so a marker or a seat can end up underneath it and the only
+              answers used to be closing it or changing the framing. It moves
+              now — by this, and not by the card itself, which is full of links
+              a drag would swallow. Only where the card floats: below 1000px it
+              is in the flow under the drawing and covers nothing. */}
+          <button
+            type="button"
+            className="emap-grip"
+            aria-label={labels.moveCard}
+            title={labels.moveCard}
+            onPointerDown={(ev) => {
+              if (ev.button !== 0) return;
+              ev.preventDefault();
+              cardDrag.current = { id: ev.pointerId, x: ev.clientX, y: ev.clientY };
+              ev.currentTarget.setPointerCapture(ev.pointerId);
+            }}
+            onPointerMove={(ev) => {
+              const d = cardDrag.current;
+              if (!d || d.id !== ev.pointerId) return;
+              const dx = ev.clientX - d.x;
+              const dy = ev.clientY - d.y;
+              d.x = ev.clientX;
+              d.y = ev.clientY;
+              // Held inside the drawing, with a corner always in reach: a card
+              // dragged off the picture is a card that cannot be brought back.
+              const r = svgRef.current?.getBoundingClientRect();
+              setCardAt((p) => ({
+                x: Math.min(Math.max(p.x + dx, r ? -(r.width - 120) : -600), 40),
+                y: Math.min(Math.max(p.y + dy, -40), r ? r.height - 120 : 600),
+              }));
+            }}
+            onPointerUp={(ev) => {
+              if (cardDrag.current?.id === ev.pointerId) cardDrag.current = null;
+            }}
+            onPointerCancel={() => {
+              cardDrag.current = null;
+            }}
+            onKeyDown={(ev) => {
+              // The keyboard gets it too, in steps of sixteen.
+              const step =
+                ev.key === "ArrowLeft" ? [-16, 0] :
+                ev.key === "ArrowRight" ? [16, 0] :
+                ev.key === "ArrowUp" ? [0, -16] :
+                ev.key === "ArrowDown" ? [0, 16] : null;
+              if (!step) return;
+              ev.preventDefault();
+              setCardAt((p) => ({ x: p.x + step[0], y: p.y + step[1] }));
+            }}
+          >
+            <svg viewBox="0 0 12 12" aria-hidden="true">
+              <circle cx="3.5" cy="2.5" r="1" />
+              <circle cx="8.5" cy="2.5" r="1" />
+              <circle cx="3.5" cy="6" r="1" />
+              <circle cx="8.5" cy="6" r="1" />
+              <circle cx="3.5" cy="9.5" r="1" />
+              <circle cx="8.5" cy="9.5" r="1" />
+            </svg>
+          </button>
           <button
             type="button"
             className="emap-close"
@@ -2816,8 +2984,12 @@ export default function EventsMap({
         <button
           type="button"
           className="emap-fold-h"
-          aria-expanded={listUser ?? coarse}
-          onClick={() => setListUser((v) => !(v ?? coarse))}
+          /* `auto` means open here — see the note in events-map.css — so the
+             control has to say open. It said `coarse`, which is false on a
+             desktop, so the chevron pointed at a folded block while six cards
+             sat under it. */
+          aria-expanded={listUser ?? true}
+          onClick={() => setListUser((v) => !(v ?? true))}
         >
           <span className="emap-leg-chev" aria-hidden="true" />
           {labels.placesTitle}

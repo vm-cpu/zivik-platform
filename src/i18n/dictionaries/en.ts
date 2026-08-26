@@ -77,6 +77,7 @@ const en: Dictionary = {
   },
   mapSection: {
     close: "Close card",
+    moveCard: "Move the card",
     label: "Map",
     heading: "Alleged violations and the courts assessing them",
     description:

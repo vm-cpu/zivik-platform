@@ -1742,7 +1742,11 @@ a.emap-seat-count:focus-visible {
   transform-origin: 2px 50%;
   transition: transform var(--dur) var(--ease);
 }
-.emap-leg-toggle[aria-expanded="true"] .emap-leg-chev {
+/* Both controls that fold something use this chevron, and only one of them
+   was turning it: the rule named `.emap-leg-toggle`, so «Місця подій» and
+   «Суди засідають у» pointed right at blocks that were open. */
+.emap-leg-toggle[aria-expanded="true"] .emap-leg-chev,
+.emap-fold-h[aria-expanded="true"] .emap-leg-chev {
   transform: rotate(90deg);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1895,15 +1899,19 @@ a.emap-seat-count:focus-visible {
     font-size: 11.5px;
     line-height: 1.4;
   }
-  /* The band reserves the strip the block stands on, the same way the map's
-     own page does — and gets it back in the Atlantic framing, where the block
-     stands over open ocean. */
-  .emap[data-variant="band"] .emap-figure {
-    --emap-safe-left: 264px;
-  }
-  .emap[data-variant="band"][data-framing="wide"] .emap-figure {
-    --emap-safe-left: 0px;
-  }
+  /* The band reserves nothing for this block, unlike the map's own page.
+     Reserving a strip does not move a panel — it widens the frame — and on a
+     band that is 1200 units of projection the 264px this one stands on came to
+     275 units of extra picture, all of it Atlantic: the opening view ran from
+     x = −269 instead of 0. That cost the drawing its scale and, once the far
+     coast became a file fetched on demand, it also pulled 17.5 kB of North
+     America onto the home page, because the view was now reaching out to where
+     that coast is.
+
+     So the key lies on the drawing and covers what it covers. It is one press
+     from folding, which is what folding is for, and the marks it can reach —
+     Paris, The Hague, Strasbourg — are all reachable from the list of six and
+     from the seat index on the map's own page. */
 }
 
 
@@ -2022,4 +2030,48 @@ a.emap-seat-count:focus-visible {
 .emap-more:focus-visible {
   color: var(--brand-gold-pale);
   text-decoration: none;
+}
+
+
+/* ---- moving the card ---- */
+/* The card is anchored to a corner and the drawing is not, so a marker, the
+   masthead or a seat can end up underneath it, and the only answers were to
+   close it or to change the framing. The grip moves it. Not the card itself:
+   it is full of links, and a drag that starts on one of them would either
+   swallow the link or refuse the drag. */
+.emap-grip {
+  position: absolute;
+  top: 6px;
+  right: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  min-height: 26px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: grab;
+  color: var(--brand-faint-dark);
+  touch-action: none;
+}
+.emap-grip:active {
+  cursor: grabbing;
+}
+.emap-grip:hover,
+.emap-grip:focus-visible {
+  color: var(--brand-gold-pale);
+}
+.emap-grip svg {
+  width: 12px;
+  height: 12px;
+  fill: currentColor;
+}
+/* Only where the card floats. Below 1000px on the band and 900px on the map's
+   own page it sits in the flow under the drawing and covers nothing, so there
+   is nothing to move it out of. */
+@media (max-width: 999px) {
+  .emap-grip {
+    display: none;
+  }
 }

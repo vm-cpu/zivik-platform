@@ -6,14 +6,27 @@
    Borrowing is what left the registry unreadable when home.css stopped
    loading everywhere.
    ========================================================================== */
+/* The aliases point at the dark scale, because this page has no light ground
+   anywhere on it.
+ 
+   They pointed at the paper scale and were then overridden further down —
+   `--ink` for the heading, `--red` for the back link — and those overrides won
+   by source order, not by weight. That works until something reorders the
+   stylesheets, and it fails visibly for as long as this file has not arrived:
+   until it does, the heading is #1a1917 and the link #7f1716 on a near-black
+   map, which is a page whose title cannot be read. Reported from a screenshot
+   of exactly that moment.
+ 
+   Aliased to the dark values, the first paint is already right and the
+   overrides below are confirmations rather than rescues. */
 .mappage {
-  --red: var(--brand-red);
-  --redd: var(--brand-red-dark);
-  --paper: var(--brand-paper);
-  --ink: var(--brand-ink);
-  --ink2: var(--brand-ink-2);
-  --faint: var(--brand-faint);
-  --rule: var(--brand-rule);
+  --red: var(--brand-gold-pale);
+  --redd: var(--brand-cream);
+  --paper: var(--brand-night);
+  --ink: var(--brand-cream);
+  --ink2: var(--brand-muted-dark);
+  --faint: var(--brand-faint-dark);
+  --rule: var(--brand-night-rule);
 
   /* The whole page is the map, so the page is dark. It was paper, which
      showed as a white band between the legend and the footer. */

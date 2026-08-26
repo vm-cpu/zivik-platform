@@ -96,6 +96,7 @@ const uk = {
   },
   mapSection: {
     close: "Закрити картку",
+    moveCard: "Перетягнути картку",
     label: "Мапа",
     heading: "Факти порушень та суди, які здійснюють їх правову оцінку",
     description:

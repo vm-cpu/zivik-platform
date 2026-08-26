@@ -155,6 +155,7 @@ const stageWord = (k: string | undefined) =>
             labels={{
               alt: dict.mapSection.heading,
               close: dict.mapSection.close,
+            moveCard: dict.mapSection.moveCard,
               courtsSeat: dict.mapSection.courtsSeat,
               court: dict.mapSection.legendCourt,
               legendLit: dict.mapSection.legendLit,
