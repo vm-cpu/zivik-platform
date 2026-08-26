@@ -169,30 +169,26 @@ export function markerSize(weight: number): number {
  * lives with the map's data rather than in the dictionaries because it is only
  * true of this drawing and its six places: reword the sites and it changes.
  */
-export const MAP_COURT_NO_SITES: Localized = {
-  uk: "Ці провадження не привʼязані до жодного з шести місць на мапі.",
-  en: "These proceedings are not tied to any of the six places on this map.",
+/**
+ * Why a court on this map has no dashed line to anywhere.
+ *
+ * Singular and plural, because a card that read «1 провадження у бібліотеці»
+ * and then «Ці провадження не привʼязані…» disagreed with itself in front of
+ * the reader. The sentence also says *why* now: the six marks on this drawing
+ * are places where harm happened, and a gas-contract arbitration, an asset
+ * immobilisation and an extradition are not about a place.
+ */
+export const MAP_COURT_NO_SITES: { one: Localized; many: Localized } = {
+  one: {
+    uk: "Це провадження не про жодне з шести місць на мапі — мапа показує, де сталося, а тут спір іншого роду.",
+    en: "This proceeding is not about any of the six places on the map — the map marks where harm happened, and this is a dispute of another kind.",
+  },
+  many: {
+    uk: "Ці провадження не про жодне з шести місць на мапі — мапа показує, де сталося, а тут спори іншого роду.",
+    en: "These proceedings are not about any of the six places on the map — the map marks where harm happened, and these are disputes of another kind.",
+  },
 };
 
-/**
- * The key to the one glyph on the drawing that had none.
- *
- * Every other mark in the legend is drawn there: the lit dot, the hollow ring,
- * the court's circle, the dashed connector, the two sizes. The docked seat was
- * not — a marker pinned to the frame's edge with a chevron and a dashed tail
- * running off the picture, which is what «Європа» and «Україна» do with
- * Montreal. Measured on the built page, that is a mark a reader meets in the
- * framing the map opens at, and the only thing that explained it was a code
- * comment.
- *
- * Here rather than in the dictionaries for the same reason as
- * MAP_COURT_NO_SITES: it is a statement about this drawing's own mechanics,
- * not a piece of site chrome.
- */
-export const MAP_LEGEND_OFFMAP: Localized = {
-  uk: "Місто за межами кадру — стрілка вказує, де воно насправді",
-  en: "A seat outside the frame — the arrow points to where it really is",
-};
 
 export const MAP_COURTS: MapCourt[] = [
   {

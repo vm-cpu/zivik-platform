@@ -106,6 +106,7 @@ const uk = {
     legendUnlit: "Ще досліджуємо",
     courtsSeat: "Суди засідають у",
     courtHears: "Розглядає справи",
+    inLibrary: "Які саме",
     /* Two placeholders, not one. The noun agrees with the number — 1
        провадження, 2–4 провадження, 5+ проваджень — and baked into the
        template as the genitive plural it read «1 проваджень» on six of the

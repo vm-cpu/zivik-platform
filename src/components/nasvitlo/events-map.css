@@ -1209,3 +1209,13 @@
     transition: none;
   }
 }
+
+/* Cases a court hears that have no write-up yet: named, but not links, because
+   there is nothing to open. Quieter than the read list beside it so the two do
+   not look like the same offer. */
+.emap-listed li {
+  border-left-color: var(--brand-night-rule);
+}
+.emap-listed .emap-read-t {
+  color: var(--brand-muted-dark);
+}

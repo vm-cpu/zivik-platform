@@ -17,7 +17,6 @@ import {
   courtMarks,
   markerSize,
   MAP_COURT_NO_SITES,
-  MAP_LEGEND_OFFMAP,
   seatsLine,
 } from "@/content/map";
 import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
@@ -137,9 +136,12 @@ export default async function MapPage({
               legendWhat: dict.mapSection.legendWhat,
               legendHow: dict.mapSection.legendHow,
               legendLine: dict.mapSection.legendLine,
-            legendOffMap: pick(MAP_LEGEND_OFFMAP, locale),
             courtHears: dict.mapSection.courtHears,
-            courtNoSites: pick(MAP_COURT_NO_SITES, locale),
+            inLibrary: dict.mapSection.inLibrary,
+            courtNoSites: {
+              one: pick(MAP_COURT_NO_SITES.one, locale),
+              many: pick(MAP_COURT_NO_SITES.many, locale),
+            },
             caseload: dict.mapSection.caseload,
             caseloadWord: dict.mapSection.caseloadWord,
             zoomLabel: dict.mapSection.zoomLabel,

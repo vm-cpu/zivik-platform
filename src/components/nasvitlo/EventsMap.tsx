@@ -67,7 +67,11 @@ export interface MapCourtR {
   badges: string[];
   labelDy?: number;
   /** What the registry says this court is hearing, and which of it is readable. */
-  caseload: { total: number; written: { slug: string; title: string }[] };
+  caseload: {
+    total: number;
+    written: { slug: string; title: string }[];
+    listed: { id: string; name: string; note: string }[];
+  };
 }
 export interface MapGeometry {
   viewBox: string;
@@ -446,7 +450,6 @@ export default function EventsMap({
      * where a seat is actually off the projection's window — today Montreal,
      * and by data rather than by name.
      */
-    legendOffMap: string;
     /** Heading over the sites a selected court hears. */
     courtHears: string;
     /**
@@ -457,7 +460,7 @@ export default function EventsMap({
      * `MAP_COURT_NO_SITES` in src/content/map.ts, because it is a statement
      * about this map's six places rather than a piece of chrome.
      */
-    courtNoSites: string;
+    courtNoSites: { one: string; many: string };
     /**
      * "{n} {w} in the library" — the court's own caseload, with the noun left
      * to `caseloadWord` because it agrees with the number. The template used
@@ -467,6 +470,8 @@ export default function EventsMap({
      */
     caseload: string;
     caseloadWord: PluralForms;
+    /** Heading over the cases a court hears that have no write-up yet. */
+    inLibrary: string;
     /** The three framings. */
     zoomLabel: string;
     zoomWide: string;
@@ -1777,6 +1782,25 @@ export default function EventsMap({
                 </ul>
               </div>
             )}
+            {/* And the ones with no write-up yet, by name. Without this a
+                card said "2 proceedings in the library" and then that they are
+                tied to none of the six places — a number and a negative, which
+                left the reader asking what Stockholm was doing on the map at
+                all. Named, it answers itself: two Naftogaz–Gazprom
+                arbitrations. Not links: there is nothing to open yet. */}
+            {selectedCourt.caseload.listed.length > 0 && (
+              <div className="emap-reads emap-listed">
+                <div className="emap-reads-h">{labels.inLibrary}</div>
+                <ul>
+                  {selectedCourt.caseload.listed.map((c) => (
+                    <li key={c.id}>
+                      <span className="emap-read-t">{c.name}</span>
+                      {c.note && <span className="emap-read-f">{c.note}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           {/* A heading is a promise that something follows it. Stockholm hears
               the two Naftogaz/Gazprom gas arbitrations, Vilnius Lithuania's
               universal-jurisdiction proceedings and Brussels is not a court at
@@ -1805,7 +1829,7 @@ export default function EventsMap({
               </ul>
             </div>
           ) : (
-            <p className="emap-pending">{labels.courtNoSites}</p>
+            <p className="emap-pending">{selectedCourt.caseload.total === 1 ? labels.courtNoSites.one : labels.courtNoSites.many}</p>
           )}
         </div>
       )}
@@ -1875,22 +1899,6 @@ export default function EventsMap({
                 </svg>
                 {labels.legendLine}
               </li>
-              {/* The docked seat. Every other mark in this legend is drawn on
-                  the map and keyed here; this one was drawn and not keyed, and
-                  it is the mark a reader is least able to guess — a circle
-                  pinned to the border with an arrow leaving the picture. Shown
-                  only where a seat really is off the window, so it disappears
-                  by itself if the projection ever grows to hold them all. */}
-              {courts.some((c) => c.offMap) && (
-                <li className="emap-key">
-                  <svg viewBox="0 0 22 22" aria-hidden="true">
-                    <line className="k-tail" x1="8" y1="11" x2="17" y2="11" />
-                    <circle className="k-court" cx="4" cy="11" r="4" />
-                    <path className="k-bearing" d="M0,-3.2 L3.4,0 L0,3.2" transform="translate(18 11)" />
-                  </svg>
-                  {labels.legendOffMap}
-                </li>
-              )}
               {variant === "full" && (
                 <li className="emap-key">
                   <svg viewBox="0 0 22 22" aria-hidden="true">

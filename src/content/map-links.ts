@@ -91,5 +91,16 @@ export function courtCaseloadFor(courtKey: string, locale: Locale) {
           title: s.title ? pick(s.title, locale) : s.masthead.parties,
         };
       }),
+    /**
+     * The rest, by name. A card that said «2 провадження у бібліотеці» and
+     * then «ці провадження не привʼязані до жодного з шести місць» told the
+     * reader a number and a negative and left them asking what Stockholm was
+     * doing on the map at all. Naming them answers it: two Naftogaz–Gazprom
+     * arbitrations, an asset immobilisation, an extradition. The registry's
+     * own name and docket, nothing composed here.
+     */
+    listed: cases
+      .filter((c) => !(c.summarySlug && c.summarySlug in SUMMARIES))
+      .map((c) => ({ id: c.id, name: c.name, note: pick(c.note, locale) })),
   };
 }
