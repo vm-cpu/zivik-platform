@@ -72,6 +72,8 @@ export interface MapCourtR {
 export interface MapGeometry {
   viewBox: string;
   context: string[];
+  /** The Atlantic ring. Absent on the home band, which cannot frame it. */
+  contextFar?: string[];
   ukraine: string;
   /**
    * Ukraine's internal oblast boundaries, as one mesh of open polylines — the
@@ -1425,6 +1427,9 @@ export default function EventsMap({
           </defs>
           {geo.context.map((d, i) => (
             <path key={i} className="emap-ctx" d={d} />
+          ))}
+          {(geo.contextFar ?? []).map((d, i) => (
+            <path key={`f${i}`} className="emap-ctx" d={d} />
           ))}
           <path className="emap-ua" d={geo.ukraine} />
           {/* The 27 regions, as the lines between them. Six unlabelled dots

@@ -81,7 +81,10 @@ export default function MapSection({
       </div>
       <div className="nsv-map">
         <EventsMap
-          geo={geo}
+          /* Near ring only. The Atlantic framing is map-page only, so the far
+             ring would be ~31 kB gzipped of North America this band can never
+             draw — and it travels twice, in the HTML and in the RSC payload. */
+          geo={{ ...geo, contextFar: undefined }}
           events={MAP_EVENTS.map((e) => ({
             key: e.key,
             category: e.category,

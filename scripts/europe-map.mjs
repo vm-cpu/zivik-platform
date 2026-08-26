@@ -215,7 +215,13 @@ const isUkraine = (f) => f.properties?.name === "Ukraine";
 const rest = countries.features.filter((f) => !isUkraine(f));
 const nearRing = rest.filter((f) => within(f, NEAR));
 const farRing = rest.filter((f) => !within(f, NEAR) && within(f, WIDE));
-const context = [...nearRing, ...farRing].map((f) => path(f)).filter(Boolean);
+/* Emitted as two lists, not one. The Atlantic framing is map-page only, so the
+   home band can never draw the far ring — and shipping it there cost ~31 kB
+   gzipped on every home-page view, twice over, because the geometry travels in
+   the HTML and again in the RSC payload. `context` stays the near ring so its
+   bytes are unchanged; `contextFar` is additive. */
+const context = nearRing.map((f) => path(f)).filter(Boolean);
+const contextFar = farRing.map((f) => path(f)).filter(Boolean);
 
 /**
  * The Atlantic framing exists to show one thing, and it must not ship without
@@ -429,6 +435,7 @@ writeFileSync(
       _generated: "scripts/europe-map.mjs — do not edit by hand",
       viewBox: `0 0 ${W} ${H}`,
       context,
+      contextFar,
       ukraine,
       regions,
       markers,
@@ -439,7 +446,7 @@ writeFileSync(
 );
 
 console.log(
-  `wrote ${OUT}\n  ${context.length} country paths` +
+  `wrote ${OUT}\n  ${context.length} + ${contextFar.length} country paths` +
     ` (${nearRing.length} inside the frame, ${farRing.length} for the Atlantic framing),` +
     ` ${Object.keys(markers).length} markers` +
     `\n  Ukraine outline includes Crimea and Sevastopol` +
