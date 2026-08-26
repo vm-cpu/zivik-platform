@@ -612,8 +612,15 @@ export function courtMarks(c: MapCourt, locale: Locale) {
       wrong.push(`court "${c.key}" has no point in europe-map.json and is not offMap`);
     }
   }
+  const areas = (geo as { areas?: Record<string, string> }).areas ?? {};
   for (const e of MAP_EVENTS) {
     if (!(e.key in markers)) wrong.push(`event "${e.key}" has no point in europe-map.json`);
+    // A marker that says it speaks for ground and has no ground to light would
+    // fail silently — the drawing would simply omit the highlight and go on
+    // claiming the point. `country` is Ukraine's own outline and always there.
+    if (e.area && e.area !== "country" && !(e.area in areas)) {
+      wrong.push(`event "${e.key}" names area "${e.area}", which europe-map.json does not carry`);
+    }
     // The radius says how much of the record a place accounts for, and the
     // card says it in words. They came apart once — six radii in one order and
     // six counts in another — so they are checked against each other here.

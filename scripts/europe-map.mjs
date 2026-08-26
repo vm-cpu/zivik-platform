@@ -248,6 +248,23 @@ const crimeaPath = path({
 });
 const ukraine = `${atlasUkraine} ${crimeaPath}`;
 
+/**
+ * Named pieces of ground a marker can speak for.
+ *
+ * Two of the six marks on the map are not places: the ICC's situation is the
+ * whole country, drawn on Mariupol, and the energy arbitrations are a grid,
+ * drawn on one point. `area` in src/content/map.ts names what a marker stands
+ * for and the drawing lights it — "country" is `ukraine` above, and anything
+ * else is a path in here.
+ *
+ * Crimea is the one entry today, and it costs nothing: it is the same
+ * projection of the same CRIMEA constant that already goes into the outline
+ * above, so no new source and no new download. Ukraine entire is deliberately
+ * absent — it is `ukraine`, and carrying it twice would put two strokes on one
+ * coast.
+ */
+const areas = { crimea: crimeaPath };
+
 if (!atlasUkraine) throw new Error("Ukraine not found in the atlas — check the property name");
 if (!crimeaPath) throw new Error("Crimea did not project — the map must not ship without it");
 
@@ -438,6 +455,7 @@ writeFileSync(
       contextFar,
       ukraine,
       regions,
+      areas,
       markers,
     },
     null,
@@ -450,6 +468,7 @@ console.log(
     ` (${nearRing.length} inside the frame, ${farRing.length} for the Atlantic framing),` +
     ` ${Object.keys(markers).length} markers` +
     `\n  Ukraine outline includes Crimea and Sevastopol` +
+    `\n  ${Object.keys(areas).length} named area(s): ${Object.keys(areas).join(", ")}` +
     `\n  ${oblasts.length} admin-1 units → ${chains.length} internal boundary chains,` +
     ` ${regionPoints} points, ${regions.length} chars`,
 );
