@@ -583,8 +583,24 @@ export default function EventsMap({
     zoomLabel: string;
     zoomWide: string;
     zoomClose: string;
-    /** North America beside Europe — the framing that holds the ICAO Council. */
+    /**
+     * The widest framing there is — everything the map has to show.
+     *
+     * It was «Атлантика», which named the ocean in the middle of it rather
+     * than what it is for. The three read as a ladder now, widest to
+     * tightest: the whole map, Europe, Ukraine. A reader picking a framing is
+     * choosing how close to stand, not which sea to look at.
+     */
     zoomAtlantic: string;
+    /**
+     * Back to what is being looked at: the selection if there is one, the
+     * opening framing if there is not.
+     *
+     * The three framings are absolutes, and the wheel, the drag and the
+     * stepper leave the reader between them — nothing pressed, and no way back
+     * that does not throw away the card they have open.
+     */
+    zoomReset: string;
     zoomIn: string;
     zoomOut: string;
     /**
@@ -1267,21 +1283,23 @@ export default function EventsMap({
    * *and* scrolled the page 120px, and three notches took the reader away from
    * the map with a framing they had not chosen.
    *
-   * The two surfaces get different answers because they are different things.
+   * One answer on both surfaces, and it is the page's: a bare notch scrolls,
+   * Ctrl or ⌘ zooms, and the map says so for a moment after the first bare
+   * notch over it.
    *
-   *   On the map's own page the drawing is the page: it fills the viewport,
-   *   the reader came here to move around it, and a wheel notch means zoom.
-   *   The page scroll is suppressed — except at the ends of the zoom, where
-   *   there is nothing left to do with the notch and swallowing it would trap
-   *   the reader in a viewport-filling element with the legend and the list of
-   *   six unreachable below it. Zoom out to the edge and the page moves on.
+   * The map's own page used to be the exception — the drawing is the page
+   * there, so a notch meant zoom, and the page only moved once the zoom hit
+   * its ends. Measured against a reader rather than against the drawing, that
+   * is the classic trap: the map fills the viewport, so anyone on their way
+   * down the page has to zoom all the way out before the document will move,
+   * and anyone who only wanted to read what is under the map has zoomed it by
+   * accident on the way. Nothing is lost by giving the wheel back, because
+   * every other route to the zoom is right there: three framings, a stepper, a
+   * recentre, a double-click, a drag, and the pinch a trackpad already sends
+   * as Ctrl-wheel.
    *
-   *   On the home band the map is one section inside a long document, and a
-   *   band that swallows the wheel is the classic trap: a reader on their way
-   *   down the page cannot get past it. So a bare wheel scrolls the page, as
-   *   it would over any other band, and the map says why; Ctrl or ⌘ zooms.
-   *   That is also the gesture a Mac trackpad pinch already sends, so pinching
-   *   the band zooms it without anything extra.
+   * Held full there is no page underneath to scroll, so the wheel is the
+   * map's again with no modifier.
    *
    * Anchored at the pointer, not the centre: zooming towards Ukraine keeps
    * Ukraine under the cursor.
@@ -1291,7 +1309,8 @@ export default function EventsMap({
     if (!el) return;
     const onWheel = (ev: WheelEvent) => {
       const held = ev.ctrlKey || ev.metaKey;
-      if (variant === "band" && !held) {
+      // Held full there is no page to scroll past, so the wheel is the map's.
+      if (!held && !full) {
         setHint(true);
         if (hintOff.current) window.clearTimeout(hintOff.current);
         hintOff.current = window.setTimeout(() => setHint(false), 1800);
@@ -1318,7 +1337,7 @@ export default function EventsMap({
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
-  }, [variant]);
+  }, [variant, full]);
   /**
    * The last press moved the map, so the click that follows it is the tail of
    * a drag and must not also pick whatever the pointer came to rest on.
@@ -1854,6 +1873,23 @@ export default function EventsMap({
           <button
             type="button"
             className="emap-zoom-step"
+            aria-label={labels.zoomReset}
+            title={labels.zoomReset}
+            onClick={() => {
+              if (sel) setFocusReq(sel);
+              else setNav(null);
+            }}
+          >
+            {/* A reticle: a ring with four ticks off it. Drawn rather than
+                lettered, because it sits beside − and + and belongs to them. */}
+            <svg viewBox="0 0 16 16" aria-hidden="true" className="emap-reticle">
+              <circle cx="8" cy="8" r="3.6" />
+              <path d="M8 0.6V3M8 13v2.4M0.6 8H3M13 8h2.4" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="emap-zoom-step"
             aria-label={labels.zoomOut}
             onClick={() => zoomBy(1 / 0.7)}
             disabled={view.w >= OUTER.w - 0.5}
@@ -1888,7 +1924,7 @@ export default function EventsMap({
         {/* Why the wheel did not zoom. Only on the band, only just after a
             bare wheel over the drawing, and never in the accessibility tree:
             a reader who is not using a wheel is not being told about one. */}
-        {variant === "band" && (
+        {!full && (
           <div className="emap-hint" data-on={hint ? "yes" : "no"} aria-hidden="true">
             {labels.wheelHint}
           </div>

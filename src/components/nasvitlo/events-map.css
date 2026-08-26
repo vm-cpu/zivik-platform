@@ -1900,3 +1900,29 @@ a.emap-seat-count:focus-visible {
     --emap-safe-left: 0px;
   }
 }
+
+
+/* The band ends where the drawing ends. `.emap` carries 28px of padding under
+   it for the block that follows — the six site cards, the key — and on the
+   home band above 1000px neither is in flow: the cards are hidden and the key
+   is a panel lying on the picture. What was left was 28px of the map's own
+   near-black between the drawing and the next section, reading as a seam that
+   belongs to neither. */
+.emap[data-variant="band"] {
+  padding-bottom: 0;
+}
+/* Except where the list really is under the drawing, and needs air after it. */
+.emap[data-variant="band"][data-coarse="yes"] {
+  padding-bottom: 20px;
+}
+
+/* The recentre control. A ring with four ticks off it — drawn rather than
+   lettered, because it stands beside − and + and belongs to them. */
+.emap-reticle {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}

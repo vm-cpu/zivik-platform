@@ -174,6 +174,7 @@ const stageWord = (k: string | undefined) =>
             zoomWide: dict.mapSection.zoomWide,
             zoomClose: dict.mapSection.zoomClose,
             zoomAtlantic: dict.mapSection.zoomAtlantic,
+            zoomReset: dict.mapSection.zoomReset,
             zoomIn: dict.mapSection.zoomIn,
             zoomOut: dict.mapSection.zoomOut,
             wheelHint: dict.mapSection.wheelHint,
