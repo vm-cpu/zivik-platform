@@ -183,7 +183,7 @@ export const hagueMh17: DecisionSummary = {
       href: "/cases/echr-ukraine-netherlands",
     },
     {
-      label: { uk: "Фінляндія проти Петровського", en: "Finland v. Petrovsky" },
+      label: { uk: "Фінляндія проти Тордена", en: "Finland v. Torden" },
       note: { uk: "інший нацсуд: універсальна юрисдикція", en: "another national court: universal jurisdiction" },
       href: "/cases/finland-torden",
     },

@@ -1169,6 +1169,7 @@ export default async function CasePage({
                   label: L(f.label),
                   display: typeof f.display === "string" ? f.display : L(f.display),
                   amount: f.amount,
+                  currency: f.currency,
                   estimated: f.estimated,
                   note: f.note && L(f.note),
                   parts: f.parts?.map((pt) => ({

@@ -123,7 +123,16 @@ export default function PageNav({
       </nav>
 
       <nav className="pagenav" aria-label={ariaLabel}>
-        <div className="rail pagenav-row" ref={rowRef}>
+        {/* The row and the return-to-top are siblings inside the rail, not
+            parent and child. Sticky-inside-the-scroller pinned the button to
+            the right edge of the *visible* area, so with the sections
+            overflowing it floated over whichever chip happened to be under it
+            — on the Oschadbank page it sat in the middle of «Пов'язані
+            рішення», which read as «ПОВ ↑ НАГОРУ ННЯ». Beside the row instead,
+            the row's own width is what is left over and no chip can reach
+            under it. */}
+        <div className="rail pagenav-rail">
+          <div className="pagenav-row" ref={rowRef}>
           {sections.map((s) => (
             <a
               key={s.id}
@@ -134,9 +143,7 @@ export default function PageNav({
               {s.label}
             </a>
           ))}
-          {/* Sticky inside the scrolling row rather than after it: the chips
-              overflow and scroll sideways, so a plain last child would drift
-              off the end exactly when a reader deep in the page wants it. */}
+          </div>
           <button
             type="button"
             className="pagenav-top"

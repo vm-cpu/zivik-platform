@@ -839,11 +839,12 @@ export const oschadbank: DecisionSummary = {
           uk: "Арештовано у Франції, квітень 2025",
           en: "Russian property seized in France, April 2025",
         },
-        // Euros, and the bar's scale is dollars. The figure stays in euros
-        // because that is the currency the French seizure is recorded in;
-        // converting it would invent a rate and a date. `amount` therefore
-        // carries a euro magnitude on a dollar scale, which is a comparison
-        // this card cannot make honestly — the bar is indicative only.
+        // Euros, and the scale is dollars. The figure stays in euros because
+        // that is the currency the French seizure is recorded in; converting
+        // it would invent a rate and a date. Declaring the currency takes this
+        // figure off the shared scale altogether — it used to carry a euro
+        // magnitude on a dollar bar, which is a comparison this card cannot
+        // make, and for a while it printed a percentage of it.
         //
         // FOR THE RESEARCHERS — the "≈ 6% of the principal" said here, in the
         // note above this block and in the FAQ does not come out of these
@@ -855,7 +856,16 @@ export const oschadbank: DecisionSummary = {
         // are set out rather than one being chosen.
         display: { uk: "≈ €87 000 000", en: "≈ €87,000,000" },
         amount: 87000000,
-        note: { uk: "≈ 6% основної суми", en: "≈ 6% of the principal" },
+        currency: "EUR",
+        /* The share that used to stand here does not reproduce and cannot:
+           87 000 000 euros against 1 111 300 729 dollars is 7,8% before any
+           exchange rate, ~5,8% of the accrued figure, and neither is "6%".
+           Any percentage across two currencies needs a rate and a date that no
+           source here supplies, so the figure stands on its own. */
+        note: {
+          uk: "у євро — не звіряється зі шкалою в доларах",
+          en: "in euros — not to the dollar scale",
+        },
       },
     ],
   },

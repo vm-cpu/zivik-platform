@@ -172,8 +172,18 @@ export interface MoneyFigure {
   label: Localized;
   /** Display value, already formatted; localize when locales format it differently. */
   display: string | Localized;
-  /** Magnitude in a single unit (USD), used to scale the bars. */
+  /** Magnitude, used to scale the bars. Same unit as `currency`. */
   amount: number;
+  /**
+   * The unit `amount` is in. Omitted means USD, which every award here is.
+   *
+   * A figure in another currency cannot be drawn against the others: the
+   * French seizure is recorded in euros because that is the currency the
+   * seizure is in, and converting it would invent a rate and a date. Naming
+   * the currency lets the component leave that figure off the shared scale
+   * instead of drawing a bar and printing a share that compares two units.
+   */
+  currency?: "USD" | "EUR";
   parts?: { label: Localized; display: string | Localized; amount: number }[];
   /** Render as an open-ended / estimated bar rather than a solid one. */
   estimated?: boolean;

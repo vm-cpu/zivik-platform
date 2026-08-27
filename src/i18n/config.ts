@@ -41,7 +41,8 @@ export const localeShortNames: Record<Locale, string> = {
  * voice.
  *
  * Script, not language detection. A name that mixes the two scripts —
- * "Lithuania v Gadzhimagomedov (UJ, катування)" — is left alone: tagging the
+ * "Lithuania v a serviceman of the 177th Marine Regiment (UJ, катування)" —
+ * is left alone: tagging the
  * whole string would be a worse lie than tagging none of it, and the Cyrillic
  * half is the half the Ukrainian voice gets right. Returns `undefined` when
  * the page's own language is already correct, so it can be spread straight

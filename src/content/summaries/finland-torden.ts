@@ -3,7 +3,17 @@ import verbatim from "./finland-torden.verbatim.json";
 import verbatimUk from "./finland-torden.uk.json";
 
 /**
- * Finland v. Yan Petrovsky ("Voislav Torden"), Helsinki District Court,
+ * The court's name first, the earlier one after it.
+ *
+ * The Helsinki District Court's decision bulletin of 14 March 2025 calls the
+ * defendant Torden in every count; he changed his name legally and travelled
+ * under it. "Yan Petrovsky" is what the sanctions lists and most of the
+ * reporting use, so it is not dropped — it is given once, on the first
+ * mention, and once more where it is the point, because he was sanctioned
+ * under one name and boarded the flight under the other.
+ *
+ * Finland v. Voislav Torden (formerly Yan Petrovsky), Helsinki District
+ * Court,
  * judgment of 14 March 2025 — the first universal-jurisdiction war-crimes
  * conviction over Ukraine in Finland.
  *
@@ -24,8 +34,8 @@ export const finlandTorden: DecisionSummary = {
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
   title: {
-    uk: "Фінляндія проти Яна Петровського",
-    en: "Finland v. Yan Petrovsky",
+    uk: "Фінляндія проти Воїслава Тордена",
+    en: "Finland v. Voislav Torden",
   },
 
   asOf: "2026-08-22",
@@ -39,14 +49,14 @@ export const finlandTorden: DecisionSummary = {
   /* Search-result description. `plain.tldr` used to serve as this and runs
      three to four sentences, so the snippet was cut off mid-word. */
   metaDesc: {
-    uk: "Вирок Окружного суду Гельсінкі від 14 березня 2025: довічне ув'язнення Яну Петровському («Торден») за воєнні злочини — універсальна юрисдикція.",
-    en: "Helsinki District Court, 14 March 2025: life imprisonment for Yan Petrovsky (\"Torden\") for war crimes in Ukraine, under universal jurisdiction.",
+    uk: "Вирок Окружного суду Гельсінкі від 14 березня 2025: довічне ув'язнення Воїславу Тордену («Торден») за воєнні злочини — універсальна юрисдикція.",
+    en: "Helsinki District Court, 14 March 2025: life imprisonment for Voislav Torden for war crimes in Ukraine, under universal jurisdiction.",
   },
 
   plain: {
     tldr: {
-      uk: "Ян Петровський («Воїслав Торден») — заступник командира російського неонацистського загону «Русич». У вересні 2014-го його підрозділ під українським прапором влаштував засідку на батальйон «Айдар»: щонайменше 22 загиблих. У 2023 році Фінляндія затримала його в аеропорту Гельсінкі, а 14 березня 2025 року засудила до довічного ув'язнення за воєнні злочини — за універсальною юрисдикцією, хоча злочини скоєно в Україні проти українців.",
-      en: "Yan Petrovsky (\"Voislav Torden\") was deputy commander of the Russian neo-Nazi unit Rusich. In September 2014 his unit ambushed the Aidar battalion under a Ukrainian flag: at least 22 dead. Finland arrested him at Helsinki airport in 2023 and on 14 March 2025 sentenced him to life imprisonment for war crimes — under universal jurisdiction, though the crimes were committed in Ukraine against Ukrainians.",
+      uk: "Воїслав Торден (раніше Ян Петровський) — заступник командира російського неонацистського загону «Русич». У вересні 2014-го його підрозділ під українським прапором влаштував засідку на батальйон «Айдар»: щонайменше 22 загиблих. У 2023 році Фінляндія затримала його в аеропорту Гельсінкі, а 14 березня 2025 року засудила до довічного ув'язнення за воєнні злочини — за універсальною юрисдикцією, хоча злочини скоєно в Україні проти українців.",
+      en: "Voislav Torden (formerly Yan Petrovsky) was deputy commander of the Russian neo-Nazi unit Rusich. In September 2014 his unit ambushed the Aidar battalion under a Ukrainian flag: at least 22 dead. Finland arrested him at Helsinki airport in 2023 and on 14 March 2025 sentenced him to life imprisonment for war crimes — under universal jurisdiction, though the crimes were committed in Ukraine against Ukrainians.",
     },
     whyMatters: {
       uk: "Це перше в Фінляндії засудження за воєнні злочини у війні проти України — і демонстрація того, як працює універсальна юрисдикція: виконавцю досить перетнути кордон будь-якої держави, що переслідує міжнародні злочини. Жоден ордер МКС не знадобився — вистачило національного суду.",
@@ -102,7 +112,7 @@ export const finlandTorden: DecisionSummary = {
       kind: "party",
     },
     {
-      name: { uk: "Ян Петровський («Воїслав Торден»)", en: "Yan Petrovsky (\"Voislav Torden\")" },
+      name: { uk: "Воїслав Торден (раніше Ян Петровський)", en: "Voislav Torden (formerly Yan Petrovsky)" },
       role: {
         uk: "Підсудний. Підсанкційний росіянин, заступник командира «Русича»; затриманий у Гельсінкі 2023 року під вигаданим ім'ям.",
         en: "The accused. A sanctioned Russian, Rusich's deputy commander; arrested in Helsinki in 2023 under an assumed name.",
@@ -238,7 +248,7 @@ export const finlandTorden: DecisionSummary = {
 
   glance: [
     { label: { uk: "Обвинувачення", en: "Prosecution" }, value: { uk: "Національна прокуратура Фінляндії", en: "Finnish National Prosecution Authority" } },
-    { label: { uk: "Підсудний", en: "Accused" }, value: { uk: "Ян Петровський («Торден»)", en: "Yan Petrovsky (\"Torden\")" } },
+    { label: { uk: "Підсудний", en: "Accused" }, value: { uk: "Воїслав Торден", en: "Voislav Torden" } },
     { label: { uk: "Суд", en: "Court" }, value: { uk: "Окружний суд Гельсінкі", en: "Helsinki District Court" } },
     { label: { uk: "Підстава", en: "Basis" }, value: { uk: "універсальна юрисдикція", en: "universal jurisdiction" } },
     { label: { uk: "Події", en: "The events" }, value: { uk: "Донбас, 5 вересня 2014", en: "The Donbas, 5 September 2014" } },
@@ -268,8 +278,8 @@ export const finlandTorden: DecisionSummary = {
         en: "Arrested at Helsinki airport under an assumed name",
       },
       note: {
-        uk: "Підсанкційний Петровський летів до Франції як «Воїслав Торден».",
-        en: "The sanctioned Petrovsky was travelling to France as \"Voislav Torden\".",
+        uk: "Під санкціями як Ян Петровський, летів до Франції на ім'я Воїслав Торден.",
+        en: "Sanctioned as Yan Petrovsky, he was travelling to France as Voislav Torden.",
       },
     },
     {

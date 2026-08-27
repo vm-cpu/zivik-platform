@@ -631,7 +631,11 @@ export const registryCases: RegistryCase[] = [
   {
     id: "fi-38",
     institutionId: "fi",
-    name: "Finland v Yan Petrovsky (UJ, Rusich)",
+    /* The name the court itself uses. The Helsinki District Court's decision
+       bulletin of 14 March 2025 calls the defendant "Torden" throughout, in
+       every count; "Yan Petrovsky" is the earlier name, common in the
+       literature and in no Finnish official source. */
+    name: "Finland v Voislav Torden (UJ, Rusich)",
     type: { uk: "Нац. кримінальне", en: "National criminal" },
     /* "appeal", not "concluded": both the prosecution and the defence appealed
        the judgment of 14 March 2025 (EJIL:Talk!, 15 Dec 2025), and the
@@ -661,14 +665,29 @@ export const registryCases: RegistryCase[] = [
   {
     id: "lt-39",
     institutionId: "lt",
-    name: "Lithuania v Gadzhimagomedov (UJ)",
-    nameUk: "Литва проти Гаджимагомедова — універсальна юрисдикція",
+    /* The defendant is not named, on the owner's instruction and for the
+       reason that prompted it: no Lithuanian source names him. The Prosecutor
+       General's statements, reported by LRT, identify him only as a senior
+       seaman of the 177th Separate Marine Regiment of the Caspian Flotilla,
+       captured near Robotyne; the surname that circulated appears solely in
+       Ukrainian media citing the SBU. Lithuanian pre-trial confidentiality
+       makes an official name unlikely to exist while the case is open. */
+    name: "Lithuania v a serviceman of the 177th Marine Regiment (UJ)",
+    nameUk: "Литва проти військовослужбовця 177-го полку морської піхоти — універсальна юрисдикція",
     type: { uk: "Нац. кримінальне", en: "National criminal" },
     stage: "upcoming",
     status: { uk: "До суду", en: "Heading to trial" },
     year: 2025,
     amountUsd: null,
-    note: { uk: "Vilnius · перша екстрадиція · катування", en: "Vilnius · first extradition · torture" },
+    /* A transfer, not an extradition: a soldier captured in the field and
+       handed from one state to another is not the same act, and the archive
+       should not blur it. The "first" is attributed rather than asserted —
+       Ukraine's Prosecutor General called it the first time a detained Russian
+       soldier had been handed to another state, quoted by LRT. */
+    note: {
+      uk: "Vilnius · перша така передача, за словами ГПУ · катування",
+      en: "Vilnius · the first such transfer, per Ukraine's Prosecutor General · torture",
+    },
     pages: null,
     /* The Prosecutor General's own release is behind a bot check and could not be retrieved; this is the national broadcaster quoting it. */
     decisionUrl: "https://www.lrt.lt/en/news-in-english/19/2731176/ukraine-hands-over-russian-soldier-accused-of-war-crimes-against-lithuanian-citizen",

@@ -26,7 +26,17 @@
   background: var(--bg);
   border-bottom: 1px solid var(--rule);
 }
+/* The rail holds two things: the scrolling row of sections, and the way back
+   to the top. The button is not inside the row — see PageNav for what that
+   cost — so the row takes the space the button leaves. */
+.casepage .pagenav-rail {
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-4);
+}
 .casepage .pagenav-row {
+  min-width: 0;
+  flex: 1 1 auto;
   display: flex;
   align-items: stretch;
   gap: clamp(16px, 2.5vw, 36px);
@@ -38,21 +48,19 @@
   display: none;
 }
 /* ---- return to top ------------------------------------------------------
-   Pinned to the right end of the bar, over the chips rather than after them:
-   the row scrolls sideways when the sections overflow it, and a reader who is
-   deep enough in the page to want this is exactly the reader whose row has
-   scrolled. It carries the bar's own ground so chips pass under it cleanly. */
+   Beside the scrolling row, never over it. It was sticky *inside* the row,
+   which pinned it to the right edge of the visible area and floated it across
+   whichever section chip was underneath — «ПОВ ↑ НАГОРУ ННЯ» where «Пов'язані
+   рішення» should have been. As a sibling it simply takes its width and the
+   row gets the rest. */
 .casepage .pagenav-top {
-  position: sticky;
-  right: 0;
-  margin-left: auto;
   flex: none;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 0 var(--space-2) 0 var(--space-5);
+  padding: 0;
   height: var(--pagenav-h);
-  background: linear-gradient(to right, transparent, var(--bg) var(--space-5));
+  background: none;
   border: 0;
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.1em;

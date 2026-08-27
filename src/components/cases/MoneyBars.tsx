@@ -27,6 +27,8 @@ export interface MoneyFigureR {
   label: string;
   display: string;
   amount: number;
+  /** The unit `amount` is in; anything but the scale's own is left undrawn. */
+  currency?: string;
   parts?: { label: string; display: string; amount: number }[];
   estimated?: boolean;
   note?: string;
@@ -48,7 +50,23 @@ export default function MoneyBars({
   locale: string;
 }) {
   const [picked, setPicked] = useState<string | null>(null);
-  const scale = Math.max(...figures.map((f) => f.amount));
+
+  /* The scale belongs to one currency — the one the largest figure is in,
+     which on every page here is the award's own. A figure in another cannot be
+     drawn against it: the French seizure is in euros, and a euro magnitude on
+     a dollar bar is a comparison nobody made. It used to be drawn anyway, with
+     a note calling the bar "indicative"; then it acquired a printed
+     percentage, which is the same error with a decimal place on it. Now it
+     simply is not drawn.
+
+     Declared before `scale`, which reads them. Written the other way round
+     this threw "Cannot access 'l' before initialization" at prerender — a
+     const is not hoisted, and the build is where that surfaced. */
+  const scaleCurrency =
+    figures.reduce((a, b) => (b.amount > a.amount ? b : a), figures[0])
+      ?.currency ?? "USD";
+  const onScale = (f: MoneyFigureR) => (f.currency ?? "USD") === scaleCurrency;
+  const scale = Math.max(...figures.filter(onScale).map((f) => f.amount));
 
   const FLOOR = 1.2;
   const pct = (n: number) =>
@@ -59,8 +77,9 @@ export default function MoneyBars({
   return (
     <div className="money">
       {figures.map((f, i) => {
+        const drawn = onScale(f);
         const width = (f.amount / scale) * 100;
-        const floored = width < FLOOR;
+        const floored = drawn && width < FLOOR;
         return (
           <div key={i} className="money-row">
             <div className="money-head">
@@ -68,6 +87,7 @@ export default function MoneyBars({
               <b className="money-value">{f.display}</b>
             </div>
 
+            {drawn && (
             <div
               className="money-bar"
               data-estimated={f.estimated ? "yes" : "no"}
@@ -88,15 +108,19 @@ export default function MoneyBars({
                 />
               ))}
             </div>
+            )}
 
-            {/* The share, in words, for every figure and without being asked.
+            {/* The share, in words, for every figure on the scale and without
+                being asked.
                 The bar is drawn against the largest sum on the page and cannot
                 be read to two decimal places by eye; on a page about money the
                 number has to be legible, not inferred from a length. */}
-            <p className="money-share">
-              {pct(width)}% {ofLargestLabel}
-              {floored && <em> · {flooredLabel}</em>}
-            </p>
+            {drawn && (
+              <p className="money-share">
+                {pct(width)}% {ofLargestLabel}
+                {floored && <em> · {flooredLabel}</em>}
+              </p>
+            )}
 
             {f.parts && (
               <ul className="money-key">
