@@ -1,3 +1,23 @@
+/* ---- band grounds --------------------------------------------------------
+   The alternation used to be written into each band's own rule, which is only
+   correct if every band renders. They do not: the machinery, the provisional
+   measures, the FAQ and the related list are all conditional. On
+   icj-cerd-icsft there is no machinery band, so `.pmeas` (paper-2) fell
+   straight onto `.chron` (paper-2), the two merged into one slab and their
+   paddings stacked into a screen of empty ground.
+
+   The page computes which bands actually render and stamps `data-ground` on
+   each in turn (see the `bands` array in cases/[slug]/page.tsx), so the
+   alternation survives any combination. The map band is not stamped: it is a
+   dark island with its own ground, and the paper bands keep alternating past
+   it. */
+.casepage [data-ground="p"] {
+  background: var(--paper);
+}
+.casepage [data-ground="p2"] {
+  background: var(--paper2);
+}
+
 /* ---- page navigation: one sticky bar for every band --------------------- */
 .casepage .pagenav {
   position: sticky;
@@ -244,7 +264,6 @@
 
 /* ---- questions: read, so set at reading width ------------------------- */
 .casepage .qa {
-  background: var(--paper2);
   border-top: 1px solid var(--seam);
   padding: var(--space-14) 0 var(--space-16);
 }
@@ -308,7 +327,6 @@
 
 /* ---- neighbouring decisions: navigation, so cards you click ----------- */
 .casepage .neighbours {
-  background: var(--paper);
   border-top: 1px solid var(--seam);
   padding: var(--space-14) 0 var(--space-24);
 }
@@ -384,7 +402,6 @@
   /* --paper2: the bands moved, so the alternation moved with them. The run is
      dash(p2), rulings(p), measures(p2), machinery(p), chronology(p2), the map
      as a dark island, then who's who on paper. */
-  background: var(--paper2);
   border-top: 1px solid var(--seam);
   padding: var(--space-14) 0 var(--space-16);
 }

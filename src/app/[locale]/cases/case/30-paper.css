@@ -1,6 +1,5 @@
 /* ---- 4. Reference band (paper): rulings + provisional measures ------------- */
 .casepage .refs {
-  background: var(--paper);
   border-bottom: 1px solid var(--seam);
   padding-block: clamp(34px, 4.5vw, 60px);
 }
@@ -81,7 +80,6 @@
 /* The long read keeps the brightest ground on the page — 5654px of prose at
    1440 on icj-genocide — and the seam above it does the separating. */
 .casepage .readzone {
-  background: var(--paper);
   border-top: 1px solid var(--seam);
   padding-block: clamp(40px, 5vw, 72px) clamp(56px, 7vw, 96px);
 }
@@ -333,12 +331,10 @@
    band seam, so they read as two sections, which is what they are.
    ------------------------------------------------------------------------- */
 .casepage .aids {
-  background: var(--paper);
   border-top: 1px solid var(--seam);
   padding-block: clamp(38px, 5vw, 64px);
 }
 .casepage .terms {
-  background: var(--paper2);
   border-top: 1px solid var(--seam);
   padding-block: clamp(38px, 5vw, 64px);
 }

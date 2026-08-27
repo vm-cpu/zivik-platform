@@ -27,22 +27,30 @@
    needs more takes two of them or the whole row (see `span()` in
    GlanceFacts.tsx). Fixed rather than fluid because the spans are counted in
    columns: `span 2` only means "half the rail" if the count is known. */
+/* One fact to a line: label left in a fixed column, value right.
+
+   This was four equal columns of label-and-value. The content is not equal —
+   34 of the 55 facts across the eight pages are twenty characters or fewer
+   while one is eighty-five — so equal cells either crushed the long values or,
+   once they were allowed to span, left holes where a two-column entry could
+   not fit the tail of a row. Both were tried and both were wrong at the root:
+   a grid was the wrong instrument for a docket.
+
+   Nothing spans now, so nothing can leave a hole; the long identifier takes
+   its line; and the card is read top to bottom in the order it is authored in,
+   which is the order the type documents. It also stops looking like the grid
+   of figure tiles directly beneath it. */
 .casepage .glance {
   margin: 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: var(--space-8);
-}
-.casepage .glance-item[data-span="2"] {
-  grid-column: span 2;
-}
-.casepage .glance-item[data-span="4"] {
-  grid-column: 1 / -1;
 }
 
 .casepage .glance-item {
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+  gap: var(--space-2) var(--space-8);
+  align-items: baseline;
   border-top: 1px solid var(--brand-rule);
-  padding-block: var(--space-4);
+  padding-block: var(--space-3);
 }
 
 .casepage .glance dt {
@@ -50,7 +58,9 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--brand-ink-2);
-  margin-bottom: var(--space-2);
+  margin: 0;
+  /* Optically aligned with the value's first line rather than its box. */
+  padding-top: 2px;
 }
 
 .casepage .glance dd {
@@ -59,21 +69,19 @@
   line-height: 1.45;
   color: var(--brand-ink);
   text-wrap: pretty;
+  /* A ledger value is a fact, not prose, but the longest here runs to eighty-
+     five characters and wants a measure like anything else. */
+  max-width: 62ch;
 }
 
-/* Two columns from 900px down, and the spans halve with them — a `span 2` on
-   a two-column grid is the full row, which is what it should be at that
-   width. */
-@media (max-width: 900px) {
-  .casepage .glance {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+/* Below the fold of a phone the two-column row would leave the value about
+   nine characters, so the label goes back above it. */
+@media (max-width: 620px) {
+  .casepage .glance-item {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
   }
-}
-@media (max-width: 520px) {
-  .casepage .glance {
-    grid-template-columns: 1fr;
-  }
-  .casepage .glance-item[data-span="2"] {
-    grid-column: auto;
+  .casepage .glance dt {
+    padding-top: 0;
   }
 }

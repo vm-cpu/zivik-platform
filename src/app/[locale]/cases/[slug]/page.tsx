@@ -722,6 +722,38 @@ export default async function CasePage({
 
   // Bands of the page, in reading order — the sticky nav names each one.
   const hasMachinery = Boolean(summary.warrants || attribution || objections || afterlife);
+  /* Which ground each band stands on, computed rather than fixed.
+   *
+   * The alternation used to be written into each band's own rule, which is
+   * only correct if every band renders. They do not: the machinery, the
+   * provisional measures, the map, the FAQ and the related list are all
+   * conditional. On icj-cerd-icsft there is no machinery band, so `.pmeas`
+   * (paper-2) fell straight onto `.chron` (paper-2), the two merged into one
+   * slab and their paddings stacked into a screen of empty ground.
+   *
+   * The map is skipped rather than counted: it is a dark island, and what
+   * matters is that the paper bands either side of it keep alternating past
+   * it. */
+  const bands: Array<[string, boolean]> = [
+    ["refs", true],
+    ["pmeas", provisionalMeasures.length > 0],
+    ["machinery", hasMachinery],
+    ["chron", true],
+    ["aids", true],
+    ["terms", true],
+    ["readzone", true],
+    ["qa", faq.length > 0],
+    ["neighbours", related.length > 0],
+  ];
+  const ground: Record<string, "p" | "p2"> = {};
+  let alt = 0;
+  for (const [name, shown] of bands) {
+    if (!shown) continue;
+    /* The dashboard above these is paper-2, so the first of them is paper. */
+    ground[name] = alt % 2 === 0 ? "p" : "p2";
+    alt++;
+  }
+
   const pageSections = [
     { id: "overview", label: pick(T.overview, locale) },
     /* This list is the page's order, and the sticky bar is drawn from it — so
@@ -1109,7 +1141,7 @@ export default async function CasePage({
           dark island. */
       }
       {/* 2b — Reference: doctrine and the interim order, on paper */}
-      <section className="refs" id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
+      <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
         <div className="rail">
           <h2 className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</h2>
           <div className="rulings-grid">
@@ -1127,7 +1159,7 @@ export default async function CasePage({
           are different subjects; they were sharing one section and one nav
           entry, so the second was invisible. */}
       {provisionalMeasures.length > 0 && (
-        <section className="pmeas" id="measures" data-navsec aria-label={pick(T.provMeasures, locale)}>
+        <section className="pmeas" data-ground={ground["pmeas"]} id="measures" data-navsec aria-label={pick(T.provMeasures, locale)}>
           <div className="rail">
             <h2 className="lbl lbl-onpaper">
               {pick(T.provMeasures, locale)}
@@ -1156,7 +1188,7 @@ export default async function CasePage({
 
       {/* 2w — The warrants, wave by wave (ICC situation pages) */}
       {warrants && (
-        <section className="machinery" id="machinery" data-navsec
+        <section className="machinery" data-ground={ground["machinery"]} id="machinery" data-navsec
           aria-label={pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale)}>
           <div className="rail machinery-stack">
             <div>
@@ -1199,7 +1231,7 @@ export default async function CasePage({
 
       {/* 2c — Machinery of the award: attribution, objections, what followed */}
       {(attribution || objections || afterlife) && (
-        <section className="machinery" id={warrants ? undefined : "machinery"} data-navsec
+        <section className="machinery" data-ground={ground["machinery"]} id={warrants ? undefined : "machinery"} data-navsec
           aria-label={pick(T.navAnatomy, locale)}>
           <div className="rail machinery-stack">
             {attribution && (
@@ -1266,7 +1298,7 @@ export default async function CasePage({
 
       {/* 2t — Chronology. Its own band, its own heading: it used to be the
           tail of the dashboard, below the money bars, under a <div> label. */}
-      <section className="chron" id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
+      <section className="chron" data-ground={ground["chron"]} id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
         <div className="rail">
           <h2 className="lbl lbl-onpaper">{pick(T.timeline, locale)}</h2>
           <CaseTimeline
@@ -1351,7 +1383,7 @@ export default async function CasePage({
           already says «Сторони» is the same word twice. The court keeps its
           gold edge, which was the one distinction the chip carried that is
           not a word; it moves to the card. */}
-      <section className="aids" id="handbook" data-navsec aria-label={pick(T.whoH, locale)}>
+      <section className="aids" data-ground={ground["aids"]} id="handbook" data-navsec aria-label={pick(T.whoH, locale)}>
         <div className="rail">
           <h2 className="lbl lbl-onpaper">{pick(T.whoH, locale)}</h2>
           {WHO_ORDER.map((kind) => {
@@ -1394,7 +1426,7 @@ export default async function CasePage({
           open. They have a page of their own now, and the link below is this
           band's own contents on it — same terms, plus the other decisions'
           readings of the four words that two courts define differently. */}
-      <section className="terms" id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
+      <section className="terms" data-ground={ground["terms"]} id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
         <div className="rail">
           <h2 className="lbl lbl-onpaper">{pick(T.glossaryH, locale)}</h2>
           <TermSearch
@@ -1416,7 +1448,7 @@ export default async function CasePage({
       </section>
 
       {/* 4 — Verbatim summary. The page bar is the only navigation. */}
-      <section className="readzone" id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
+      <section className="readzone" data-ground={ground["readzone"]} id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
         <div className="rail">
           <article className="read">
             {glossary.length > 0 && (
@@ -1507,7 +1539,7 @@ export default async function CasePage({
         click. They were one grid, which made the second look like more prose.
       */}
       {faq.length > 0 && (
-        <section className="qa" id="questions" data-navsec aria-label={pick(T.faqH, locale)}>
+        <section className="qa" data-ground={ground["qa"]} id="questions" data-navsec aria-label={pick(T.faqH, locale)}>
           <div className="rail">
             <h2 className="lbl lbl-onpaper">{pick(T.faqH, locale)}</h2>
             {/* Closed on arrival. The band reads as an index of the questions
@@ -1527,7 +1559,7 @@ export default async function CasePage({
       )}
 
       {related.length > 0 && (
-        <section className="neighbours" id="related" data-navsec aria-label={pick(T.relatedH, locale)}>
+        <section className="neighbours" data-ground={ground["neighbours"]} id="related" data-navsec aria-label={pick(T.relatedH, locale)}>
           <div className="rail">
             <h2 className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</h2>
             <ul className="nb-grid">

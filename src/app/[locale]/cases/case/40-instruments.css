@@ -487,14 +487,12 @@
    DESIGN.md keeps dark, so it is on paper: --brand-paper-2 under
    --brand-night is a 17.1:1 edge where the section actually changes. */
 .casepage .chron {
-  background: var(--paper2);
   color: var(--ink);
   border-bottom: 1px solid var(--seam);
   padding-block: clamp(34px, 4.5vw, 60px);
 }
 /* ---- machinery band (paper): attribution, objections, afterlife ------------ */
 .casepage .machinery {
-  background: var(--paper);
   border-bottom: 1px solid var(--seam);
   padding-block: clamp(34px, 4.5vw, 60px);
 }

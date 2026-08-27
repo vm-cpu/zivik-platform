@@ -19,31 +19,31 @@ export interface GlanceFactR {
 }
 
 /**
- * How many columns a fact needs, from how much it has to say.
+ * A docket, not a grid.
  *
- * The ledger used to give every entry one equal column, and the entries are
- * not equal. Measured across the eight pages, 55 facts: 34 are twenty
- * characters or fewer — «Гаага», «№ 182», a date — and sit comfortably in one
- * column; nine run 31 to 45 and wrapped to three and four lines in a column
- * sized for «Гаага»; and one, MH17's identifier, is 85 characters naming four
- * simultaneous judgments, which wrapped to five.
+ * This was four equal columns of label-and-value, which treats thirteen facts
+ * as thirteen equal things. They are not: «Заявник: Україна» is who the case
+ * is, «Автентичний текст: французький» is a footnote. Worse, the content is
+ * wildly uneven — 34 of the 55 facts across the eight pages are twenty
+ * characters or fewer while one is eighty-five — so equal cells either crush
+ * the long values or, once they are allowed to span, leave holes where a
+ * two-column entry could not fit the tail of a row. Both were tried. The holes
+ * were the symptom; the equal cells were the cause.
  *
- * So the thresholds are the data's own, not a guess. Giving the long ones the
- * room they need also packs the rows better, because a two-column entry beside
- * two one-column entries completes a row of four.
+ * One fact to a line, label left, value right. Nothing spans, so nothing can
+ * leave a hole; the eighty-five-character identifier simply takes its line;
+ * the reading order the card is authored in (see `GlanceFact` in
+ * summaries/types.ts) is the order it is read in, top to bottom. And it stops
+ * looking like the grid of KPI tiles directly beneath it, which is a different
+ * instrument answering a different question.
  */
-function span(value: string): 1 | 2 | 4 {
-  if (value.length > 70) return 4;
-  if (value.length > 30) return 2;
-  return 1;
-}
 
 export default function GlanceFacts({ facts }: { facts: GlanceFactR[] }) {
   if (facts.length === 0) return null;
   return (
     <dl className="glance">
       {facts.map((f, i) => (
-        <div key={i} className="glance-item" data-span={span(f.value)}>
+        <div key={i} className="glance-item">
           <dt>{f.label}</dt>
           <dd>{f.value}</dd>
         </div>
