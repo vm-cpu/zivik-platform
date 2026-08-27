@@ -9,6 +9,8 @@ import { pick } from "@/content/types";
 import CiteBlock from "@/components/cases/CiteBlock";
 import TermSearch from "@/components/cases/TermSearch";
 import PageNav from "@/components/cases/PageNav";
+import { markTerms, type TermRef } from "@/content/mark-terms";
+import TermTooltips from "@/components/cases/TermTooltips";
 import CaseTimeline from "@/components/cases/CaseTimeline";
 import MoneyBars from "@/components/cases/MoneyBars";
 import AttributionTree from "@/components/cases/AttributionTree";
@@ -22,7 +24,7 @@ import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
 import { SUMMARIES } from "@/content/summaries";
-import { sortKey } from "@/content/glossary";
+import { sortKey, idOf } from "@/content/glossary";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -513,7 +515,15 @@ function TheatreMap({
 }
 
 /** Render one findings-table cell: verbatim text, sub-headings pulled out. */
-function Findings({ text }: { text: string }) {
+function Findings({
+  text,
+  mark,
+}: {
+  text: string;
+  /** Wraps the first appearance of each glossary term. Identity, when the
+      page has no glossary to mark against. */
+  mark: (s: string) => React.ReactNode;
+}) {
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
   return (
     <div className="findings">
@@ -530,21 +540,27 @@ function Findings({ text }: { text: string }) {
           return (
             <p key={i}>
               <span className="pos">{m[1]}</span>
-              {m[2]}
+              {mark(m[2])}
             </p>
           );
         }
-        return <p key={i}>{line}</p>;
+        return <p key={i}>{mark(line)}</p>;
       })}
     </div>
   );
 }
 
 /** Render one verbatim block in reading order. */
-function Block({ block }: { block: SummaryBlock }) {
+function Block({
+  block,
+  mark,
+}: {
+  block: SummaryBlock;
+  mark: (s: string) => React.ReactNode;
+}) {
   switch (block.kind) {
     case "lead":
-      return <p className="lead">{block.text}</p>;
+      return <p className="lead">{mark(block.text)}</p>;
     case "h2":
       return <h2>{block.text}</h2>;
     case "h3":
@@ -552,7 +568,7 @@ function Block({ block }: { block: SummaryBlock }) {
     case "h4":
       return <h4>{block.text}</h4>;
     case "findings":
-      return <Findings text={block.text} />;
+      return <Findings text={block.text} mark={mark} />;
     case "link":
       return null;
     case "dispositif":
@@ -560,13 +576,15 @@ function Block({ block }: { block: SummaryBlock }) {
       // lines ("For the foregoing reasons…", "The Court," / "However…") —
       // detecting the frame is robust across courts; detecting the clause
       // openers was not (ICJ "Finds…", PCA "That…", DTEK "Tribunal has…").
+      // Left unmarked on purpose: these are the court's operative words, in
+      // the order it ordered them, quoted here to be quoted onward.
       return /^(For the foregoing|However|The Court,|З наведених|Проте|Суд,)/.test(block.text) ? (
         <p>{block.text}</p>
       ) : (
         <p className="disp">{block.text}</p>
       );
     default:
-      return <p>{block.text}</p>;
+      return <p>{mark(block.text)}</p>;
   }
 }
 
@@ -640,6 +658,16 @@ export default async function CasePage({
       { sensitivity: "base" },
     ),
   );
+  /* The terms this decision defines, pointed at their entry in the dictionary.
+     The definition travels with the mark, so a reader never has to leave the
+     sentence to find out what a word means. */
+  const termRefs: TermRef[] = glossary.map((g) => ({
+    id: idOf(g.term.uk),
+    term: pick(g.term, locale),
+    def: pick(g.def, locale),
+    href: `/${locale}/glossary#${idOf(g.term.uk)}`,
+  }));
+
   const { theatres = [], provisionalMeasures = [], timelineTracks = [], glance = [] } = summary;
   const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
   const parties = summary.title
@@ -981,6 +1009,10 @@ export default async function CasePage({
       </header>
 
       {/* 1a — Sticky page navigation: every band, not just the article */}
+      {/* Escape closes a term definition — the one thing the CSS-only
+          tooltips cannot do for themselves. Renders nothing. */}
+      {termRefs.length > 0 && <TermTooltips />}
+
       <PageNav
         sections={pageSections}
         ariaLabel={pick(T.navAria, locale)}
@@ -1472,13 +1504,21 @@ export default async function CasePage({
             )}
         {(() => {
           let h2i = 0;
+          /* One set for the whole article, filled as the blocks are walked in
+             reading order, so "first occurrence" means first on the page and
+             not first in each paragraph. The map callback runs eagerly, here,
+             rather than inside each Block — leaving the mutation to React's
+             render order would make the result depend on when React chose to
+             call the component. */
+          const used = new Set<string>();
+          const mark = (t: string) => markTerms(t, termRefs, used);
           return body.map((b, i) =>
             b.kind === "h2" ? (
               <h2 id={`sec-${h2i++}`} key={i}>
                 {b.text}
               </h2>
             ) : (
-              <Block key={i} block={b} />
+              <Block key={i} block={b} mark={mark} />
             ),
           );
         })()}

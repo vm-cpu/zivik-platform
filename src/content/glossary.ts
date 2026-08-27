@@ -78,8 +78,10 @@ export function sortKey(term: string): string {
   return term.replace(/^[«»"'“„\s(]+/, "");
 }
 
-/** A url-safe id. Cyrillic survives percent-encoding; this keeps it readable. */
-function idOf(uk: string): string {
+/** A url-safe id. Cyrillic survives percent-encoding; this keeps it readable.
+    Exported because the decision pages link into the dictionary by it — the
+    two have to derive the anchor the same way or every link lands nowhere. */
+export function idOf(uk: string): string {
   return uk
     .toLowerCase()
     .replace(/[«»"'“„]/g, "")

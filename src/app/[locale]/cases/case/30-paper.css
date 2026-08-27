@@ -715,3 +715,118 @@ The measure has been argued four times, so here is the method that settles
   line-height: 1.55;
   color: var(--ink2);
 }
+
+/* ---- glossary terms, marked in the running text -------------------------
+   The definitions used to live in one band at the foot of the page, so a
+   reader met «hors de combat» in the fourth paragraph and either already knew
+   it or scrolled past it. The mark is a link to the dictionary entry; the
+   note beside it means most readers never need to follow it.
+
+   No JavaScript. Hover and focus are both states CSS already knows, the note
+   is in the HTML, and the anchor works with scripting off — a tooltip that
+   needs hydration to explain a word is a tooltip that fails on the slow
+   connection where the explaining matters most. */
+.casepage .gl-wrap {
+  position: relative;
+  /* Not inline-block: that would take the phrase out of the line-breaking of
+     the sentence around it and a marked term near the margin would jump to a
+     line of its own. */
+  display: inline;
+}
+.casepage .gl-mark {
+  color: inherit;
+  text-decoration: none;
+  /* A dotted rule, not the solid underline of an ordinary link: this points
+     sideways to a definition, not onward to another document, and the two
+     should not look alike in a page this dense with real citations. */
+  border-bottom: 1px dotted var(--pgold);
+  cursor: help;
+  transition: background-color var(--dur) var(--ease);
+}
+.casepage .gl-mark:hover,
+.casepage .gl-mark:focus-visible {
+  background: var(--paper2);
+  border-bottom-style: solid;
+}
+.casepage .gl-pop {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 5;
+  width: max-content;
+  max-width: min(320px, 78vw);
+  padding: var(--space-4) var(--space-5);
+  background: var(--bg);
+  color: var(--muted);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  font-family: var(--brand-font-body);
+  font-size: var(--t-cap);
+  line-height: 1.5;
+  font-weight: 400;
+  /* Hidden from the pointer as well as the eye, or the note would sit over
+     the words above it and swallow their clicks. */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition:
+    opacity var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    visibility var(--dur);
+}
+.casepage .gl-pop b {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-sm);
+  color: var(--gold);
+}
+/* Shown on hover, on keyboard focus, and while the pointer is over the note
+   itself — without that last one the note vanishes the moment a reader moves
+   towards it to read a long definition. */
+.casepage .gl-mark:hover + .gl-pop,
+.casepage .gl-mark:focus-visible + .gl-pop,
+.casepage .gl-pop:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+/* The note is anchored to the left of its term and capped in width. There is
+   no edge detection here on purpose: `nth-child(n)` matches every element, so
+   the rule that briefly lived here shifted every note left rather than the few
+   near a margin. CSS cannot ask where a word landed, and the reading column is
+   centred inside a rail half again its width, so a note beside a term at the
+   end of a line opens into that margin rather than off the page. */
+/* Escape was pressed. WCAG 1.4.13 requires content shown on hover or focus to
+   be dismissable without moving either, and a stylesheet cannot hear a key —
+   TermTooltips raises this flag and the next pointer move or keypress lowers
+   it. `display: none` rather than opacity, so the note is gone for the
+   pointer too and does not sit invisibly over the line above. */
+.casepage[data-gl-quiet] .gl-pop {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .casepage .gl-pop {
+    transition: none;
+  }
+}
+/* On a touch screen there is no hover to show the note and no way back from
+   one that opened by accident; the mark stays a link to the dictionary, which
+   is a place a thumb can actually go. */
+@media (hover: none) {
+  .casepage .gl-pop {
+    display: none;
+  }
+  .casepage .gl-mark {
+    border-bottom-style: solid;
+  }
+}
+@media print {
+  .casepage .gl-pop {
+    display: none;
+  }
+  .casepage .gl-mark {
+    border-bottom: 0;
+  }
+}
