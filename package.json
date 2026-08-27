@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "design": "node scripts/design-lint.mjs",
-    "check": "node scripts/design-lint.mjs && node scripts/data-check.mjs && tsc --noEmit && eslint",
-    "data": "node scripts/data-check.mjs"
+    "check": "node scripts/design-lint.mjs && node scripts/data-check.mjs && node scripts/text-check.mjs && tsc --noEmit && eslint",
+    "data": "node scripts/data-check.mjs",
+    "text": "node scripts/text-check.mjs"
   },
   "dependencies": {
     "next": "16.3.2",

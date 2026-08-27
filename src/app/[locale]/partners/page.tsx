@@ -41,9 +41,13 @@ import "./partners.css";
 const T = {
   back: { uk: "На головну", en: "Home" },
   title: { uk: "Партнери", en: "Partners" },
+  /* The lede says what the page lists. Who runs the library is a heading of
+     its own further down, and the lede used to carry that sentence too — the
+     same twenty-two words twice on a page of fifty-two, which is a third of
+     everything it says. */
   lede: {
-    uk: "Організації, з якими працює «насвітло». Бібліотеку веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
-    en: "The organisations nasvitlo works with. The library itself is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
+    uk: "Організації, з якими працює «насвітло».",
+    en: "The organisations nasvitlo works with.",
   },
   /* 118 / 138 characters — both inside the ~160 a search result shows. */
   metaDesc: {
