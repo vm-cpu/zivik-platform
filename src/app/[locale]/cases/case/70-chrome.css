@@ -236,13 +236,21 @@
   .casepage .lede,
   .casepage .refs,
   .casepage .machinery,
-  .casepage .aids {
+  .casepage .aids,
+  /* The dispositif is a dark panel on screen; on paper it is the block a
+     reader is most likely to be printing the page for. */
+  .casepage .vpanel {
     background: #fff !important;
     color: #000 !important;
+  }
+  .casepage .vpanel {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
   }
   .casepage .official,
   .casepage .kpi b,
   .casepage .ctl-label,
+  .casepage .score-head h2,
   .casepage .v-claim {
     color: #000 !important;
   }
@@ -295,21 +303,26 @@
 
 
 /* criminal outcomes reuse the breach pair's colours: a conviction reads like
-   a violation chip, an acquittal like a no-violation chip. The dispositif
-   moved to paper with the rest of the dashboard, so these take the paper
-   twins: --red (#e0685c) measured 3.02:1 and --faint (#968a85) 3.04:1 on
-   --brand-paper-2, both under AA for an 11px chip. */
+   a violation chip, an acquittal like a no-violation chip.
+
+   These took the paper twins, --pred and --ink2, from the pass that moved the
+   dispositif onto paper with the rest of the dashboard. The dispositif is a
+   dark panel again — its own island, not the band — so they go back to the
+   dark pair the rest of the matrix now uses: --red is --brand-breach at 5.61:1
+   on --brand-night and --muted is 9.06:1. (What that earlier note recorded is
+   still worth keeping: on --brand-paper-2 the dark tokens measured 3.02:1 and
+   3.04:1, which is why they may not be used on paper.) */
 .casepage .v-out[data-o="convicted"] {
-  color: var(--pred);
+  color: var(--red);
 }
 .casepage .v-out[data-o="convicted"]::before {
-  background: var(--pred);
+  background: var(--red);
 }
 .casepage .v-out[data-o="acquitted"] {
-  color: var(--ink2);
+  color: var(--muted);
 }
 .casepage .v-out[data-o="acquitted"]::before {
-  border: 1.5px solid var(--ink2);
+  border: 1.5px solid var(--muted);
 }
 
 

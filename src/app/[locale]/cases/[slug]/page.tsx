@@ -16,6 +16,7 @@ import MoneyBars from "@/components/cases/MoneyBars";
 import AttributionTree from "@/components/cases/AttributionTree";
 import ObjectionCards from "@/components/cases/ObjectionCards";
 import TakingsGrid from "@/components/cases/TakingsGrid";
+import VerdictMatrix from "@/components/cases/VerdictMatrix";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
 import GlanceFacts from "@/components/cases/GlanceFacts";
@@ -742,12 +743,17 @@ export default async function CasePage({
    */
   const granted = verdicts.filter((v) => v.outcome === "granted").length;
   const convictions = verdicts.filter((v) => v.outcome === "convicted").length;
-  const [decided, decidedForms] =
+  /* The third element is which colour the figure may wear. Red on this site
+     means a finding of breach, and a conviction is one; relief granted is not,
+     however large. The count was painted --pred on all three branches, which
+     on paper is a dark cherry nobody read as a semantic and on the panel's
+     dark ground is --brand-breach, which everybody would. */
+  const [decided, decidedForms, decidedKind] =
     convictions > 0
-      ? ([convictions, T.convictionWord] as const)
+      ? ([convictions, T.convictionWord, "breach"] as const)
       : granted > 0
-        ? ([granted, T.grantedWord] as const)
-        : ([violations, T.violationWord] as const);
+        ? ([granted, T.grantedWord, "relief"] as const)
+        : ([violations, T.violationWord, "breach"] as const);
   const decidedLabel = `${plural(decided, decidedForms[locale], locale)} ${pick(T.ofTotal, locale)}`;
 
   /** Resolve a Localized pair for this render's locale (client-prop hygiene:
@@ -1066,52 +1072,44 @@ export default async function CasePage({
             </div>
           </div>
 
-          <div>
+          {/* The dispositif, on its own ground.
+
+              It sat on the same paper as the docket facts and the figures
+              above it, which made the one instrument on this page that carries
+              the holding read as a third strip of furniture. It is a panel now,
+              on --brand-night, and it is an island: the KPI strip is paper
+              above it and either the takings grid or the band's own padding is
+              paper below, so the rule that no two dark grounds may touch still
+              holds. Everything else about it — one row per claim, the track in
+              the row rather than over it, the staggered arrival — is in
+              VerdictMatrix. */}
+          <div className="vpanel">
             <div className="score-head">
               <h2>{pick(summary.verdictsHeading ?? T.found, locale)}</h2>
-              <span className="score-count">
+              <span className="score-count" data-of={decidedKind}>
                 <b>{decided}</b> {decidedLabel} {verdicts.length}
               </span>
             </div>
-            <ul className="verdicts">
-                {verdicts.map((v, i) => {
-                  const prev = verdicts[i - 1];
-                  const showTrack = !prev || prev.track !== v.track;
-                  const url = trackUrl(v.track);
-                  return (
-                    <li key={i}>
-                      {showTrack &&
-                        (url ? (
-                          <a
-                            className="v-track v-track-link"
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {v.track} ↗
-                          </a>
-                        ) : (
-                          <span className="v-track">
-                            {v.trackLabel ? pick(v.trackLabel, locale) : v.track}
-                          </span>
-                        ))}
-                      {/* Outcome first, then the claim it disposes of.
-
-                          The claim used to lead and the outcome was pushed to
-                          the far edge of the rail, which put most of a screen
-                          of nothing between a sentence and the word that
-                          answers it. Reversed, the twelve outcomes are a rail
-                          the eye runs down and each claim starts right where
-                          its outcome ends — and the row reads as a sentence
-                          either way: «Порушення — право на життя». */}
-                      <span className="v-out" data-o={v.outcome}>
-                        {pick(OUTCOME_LABEL[v.outcome], locale)}
-                      </span>
-                      <span className="v-claim">{pick(v.claim, locale)}</span>
-                    </li>
-                  );
-                })}
-            </ul>
+            <VerdictMatrix
+              rows={verdicts.map((v, i) => {
+                const url = trackUrl(v.track);
+                return {
+                  /* The track key doubles as an instrument abbr where one
+                     exists, and that is the form the official-text link is
+                     labelled with; everywhere else the display form wins. */
+                  track: url
+                    ? v.track
+                    : v.trackLabel
+                      ? pick(v.trackLabel, locale)
+                      : v.track,
+                  href: url,
+                  opensTrack: i === 0 || verdicts[i - 1].track !== v.track,
+                  outcome: v.outcome,
+                  outcomeLabel: pick(OUTCOME_LABEL[v.outcome], locale),
+                  claim: pick(v.claim, locale),
+                };
+              })}
+            />
           </div>
 
           {takings && (
