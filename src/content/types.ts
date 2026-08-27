@@ -192,6 +192,31 @@ export interface RegistryCase {
   pages: number | null;
   /** Link to the decision or case page. */
   decisionUrl: string | null;
+  /**
+   * What is actually at the other end of `decisionUrl`.
+   *
+   * The button offering it says "Документ суду", and for a while everything it
+   * pointed at was one. It cannot stay that way: of the seventeen records that
+   * had no link, only some can be given the decision itself. Five of the
+   * Crimea arbitrations keep their awards confidential and the most the
+   * tribunal has published is a press release; two proceedings do not exist
+   * yet and the only public account is the claimant's own notice; one is
+   * traceable solely through a case database; one is known only from the
+   * national broadcaster because the prosecution's page is unreachable.
+   *
+   * Those are all worth linking and none of them is a court document. The kind
+   * travels with the link so the label can say what the reader is about to
+   * open, rather than promising a judgment and delivering a press release.
+   *
+   * Omitted where the link is the decision or the forum's own case page, which
+   * is what the default label already describes.
+   */
+  decisionUrlKind?:
+    | "press-release"
+    | "case-page"
+    | "party"
+    | "database"
+    | "report";
   /** Slug of the on-site decision page, when a summary has been published. */
   summarySlug?: string;
   /** True once a summary/timeline/documents exist ("lit" vs merely registered). */

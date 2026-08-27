@@ -325,7 +325,8 @@ export const registryCases: RegistryCase[] = [
     amountUsd: 5000000000,
     note: { uk: "PCA 2017-16", en: "PCA 2017-16" },
     pages: 218,
-    decisionUrl: null,
+    /* Final Award, 12 April 2023, 236 pp. — the award itself. */
+    decisionUrl: "https://www.italaw.com/sites/default/files/case-documents/180074_0.pdf",
     lit: false,
   },
   {
@@ -340,7 +341,9 @@ export const registryCases: RegistryCase[] = [
     amountUsd: null,
     note: { uk: "PCA 2015-07", en: "PCA 2015-07" },
     pages: null,
-    decisionUrl: null,
+    /* The award is confidential; the tribunal's press release of 15 February 2019 is the most it published. */
+    decisionUrl: "https://pcacases.com/web/sendAttach/2530",
+    decisionUrlKind: "press-release",
     lit: false,
   },
   {
@@ -355,7 +358,8 @@ export const registryCases: RegistryCase[] = [
     amountUsd: 1000000000,
     note: { uk: "PCA 2015-21 · заявлена", en: "PCA 2015-21 · claimed" },
     pages: null,
-    decisionUrl: null,
+    /* Partial Award of 4 February 2019, 108 pp., on the PCA's own server. */
+    decisionUrl: "https://pcacases.com/web/sendAttach/40819",
     lit: false,
   },
   {
@@ -391,7 +395,9 @@ export const registryCases: RegistryCase[] = [
     amountUsd: 44455012,
     note: { uk: "PCA 2015-34", en: "PCA 2015-34" },
     pages: null,
-    decisionUrl: null,
+    /* The Final Award of 12 April 2019 is unpublished; this is the tribunal's joint release with the Stabil arbitration. */
+    decisionUrl: "https://pcacases.com/web/sendAttach/2585",
+    decisionUrlKind: "press-release",
     lit: false,
   },
   {
@@ -422,7 +428,9 @@ export const registryCases: RegistryCase[] = [
     amountUsd: 159000000,
     note: { uk: "PCA 2015-36", en: "PCA 2015-36" },
     pages: null,
-    decisionUrl: null,
+    /* The Award on the Merits of 2 May 2018 is unpublished. */
+    decisionUrl: "https://pcacases.com/web/sendAttach/2325",
+    decisionUrlKind: "press-release",
     lit: false,
   },
   {
@@ -432,13 +440,19 @@ export const registryCases: RegistryCase[] = [
     nameUk: "«Лугзор», «Лібсет», «Укрінтерінвест», «ДніпроАзот» і «Аберон» проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "concluded",
-    outcome: "judgment",
+    /* An award, not a judgment. The tribunal's own press release of
+       30 March 2023 is headed "The Tribunal Renders Its Award" (Award of
+       4 October 2022, corrected 2 December 2022), and every sibling
+       arbitration in this registry already carries "award". */
+    outcome: "award",
     status: { uk: "Рішення винесено", en: "Judgment delivered" },
     year: 2015,
     amountUsd: null,
     note: { uk: "PCA 2015-29", en: "PCA 2015-29" },
     pages: null,
-    decisionUrl: null,
+    /* The Award of 4 October 2022, corrected 2 December 2022, is unpublished. */
+    decisionUrl: "https://pcacases.com/web/sendAttach/45023",
+    decisionUrlKind: "press-release",
     lit: false,
   },
   {
@@ -471,9 +485,14 @@ export const registryCases: RegistryCase[] = [
     status: { uk: "Розгляд по суті", en: "Merits pending" },
     year: 2020,
     amountUsd: 580000000,
-    note: { uk: "PCA Paris · заявлена", en: "PCA Paris · claimed" },
+    /* The seat is not stated here any more. "PCA Paris" was on this row and
+       no source carries it — the PCA's own case list does not hold this
+       arbitration at all, and neither UNCTAD nor italaw names a seat. */
+    note: { uk: "PCA 2020-17 · заявлена", en: "PCA 2020-17 · claimed" },
     pages: null,
-    decisionUrl: null,
+    /* No PCA case page exists for this arbitration and both its decisions are unpublished. */
+    decisionUrl: "https://investmentpolicy.unctad.org/investment-dispute-settlement/cases/1007/ukrenergo-v-russia",
+    decisionUrlKind: "database",
     lit: false,
   },
   {
@@ -488,7 +507,9 @@ export const registryCases: RegistryCase[] = [
     amountUsd: 3000000000,
     note: { uk: "Заявлена", en: "Claimed" },
     pages: null,
-    decisionUrl: null,
+    /* No arbitration has been filed, so there is no forum and no forum document — this is the claimant's own notice. */
+    decisionUrl: "https://energoatom.com.ua/news/enerhoatom-initsijuvav-jurydychni-protsedury-proty-rosiyi-shchodo-stjahnennja-zbytkiv-zavdanykh-vijs-kovoju-ahresiyeju",
+    decisionUrlKind: "party",
     lit: false,
   },
   {
@@ -503,7 +524,9 @@ export const registryCases: RegistryCase[] = [
     amountUsd: 2500000000,
     note: { uk: "Заявлена", en: "Claimed" },
     pages: null,
-    decisionUrl: null,
+    /* A notice of dispute that never became an arbitration; the claimant's own announcement is the record. */
+    decisionUrl: "https://en.uhe.gov.ua/news/ukrhydroenergo-has-initiated-investment-arbitration-proceedings-against-russian-federation",
+    decisionUrlKind: "party",
     lit: false,
   },
   {
@@ -534,7 +557,9 @@ export const registryCases: RegistryCase[] = [
     amountUsd: null,
     note: { uk: "JIT MH17", en: "JIT MH17" },
     pages: null,
-    decisionUrl: null,
+    /* The Public Prosecution Service's own page on the JIT investigation. */
+    decisionUrl: "https://www.prosecutionservice.nl/topics/m/mh17-plane-crash/criminal-investigation-jit-mh17",
+    decisionUrlKind: "case-page",
     lit: false,
   },
   {
@@ -550,7 +575,7 @@ export const registryCases: RegistryCase[] = [
     amountUsd: null,
     note: { uk: "HR:2024:1810 · скасування", en: "HR:2024:1810 · set aside" },
     pages: null,
-    decisionUrl: null,
+    decisionUrl: "https://uitspraken.rechtspraak.nl/details?id=ECLI:NL:HR:2024:1810",
     lit: false,
   },
   {
@@ -564,25 +589,28 @@ export const registryCases: RegistryCase[] = [
     status: { uk: "Арбітраж залишено", en: "Arbitration upheld" },
     year: 2022,
     amountUsd: null,
-    note: { uk: "HR 2024", en: "HR 2024" },
+    note: { uk: "ECLI:NL:HR:2024:1813", en: "ECLI:NL:HR:2024:1813" },
     pages: null,
-    decisionUrl: null,
+    decisionUrl: "https://uitspraken.rechtspraak.nl/details?id=ECLI:NL:HR:2024:1813",
     lit: false,
   },
   {
     id: "nl-36",
     institutionId: "nl",
-    name: "Russia v PrivatBank/Finilon (Hoge Raad)",
-    nameUk: "РФ проти ПриватБанку і «Фінілона» — Верховний суд Нідерландів",
+    /* Privatbank alone. Finilon was a co-claimant in the arbitration
+       (pca-22) but is not a party to this cassation: ECLI:NL:HR:2024:1807
+       names "JSC CB PRIVATBANK, gevestigd te Kiev" and no one else. */
+    name: "Russia v PrivatBank (Hoge Raad)",
+    nameUk: "РФ проти ПриватБанку — Верховний суд Нідерландів",
     type: { uk: "Нац. цивільне", en: "National civil" },
     stage: "concluded",
     outcome: "upheld",
     status: { uk: "Арбітраж залишено", en: "Arbitration upheld" },
     year: 2022,
     amountUsd: null,
-    note: { uk: "HR 2024", en: "HR 2024" },
+    note: { uk: "ECLI:NL:HR:2024:1807", en: "ECLI:NL:HR:2024:1807" },
     pages: null,
-    decisionUrl: null,
+    decisionUrl: "https://uitspraken.rechtspraak.nl/details?id=ECLI:NL:HR:2024:1807",
     lit: false,
   },
   {
@@ -595,9 +623,9 @@ export const registryCases: RegistryCase[] = [
     status: { uk: "Повернуто до апеляції", en: "Remitted to appeal" },
     year: 2022,
     amountUsd: null,
-    note: { uk: "HR 2024", en: "HR 2024" },
+    note: { uk: "ECLI:NL:HR:2024:1812", en: "ECLI:NL:HR:2024:1812" },
     pages: null,
-    decisionUrl: null,
+    decisionUrl: "https://uitspraken.rechtspraak.nl/details?id=ECLI:NL:HR:2024:1812",
     lit: false,
   },
   {
@@ -614,9 +642,19 @@ export const registryCases: RegistryCase[] = [
     status: { uk: "Вирок, оскаржується обома сторонами", en: "Convicted; on appeal by both sides" },
     year: 2024,
     amountUsd: null,
-    note: { uk: "Helsinki · перше UJ засудження", en: "Helsinki · first universal-jurisdiction conviction" },
+    /* Narrowed, and given the docket it always had. The Helsinki District
+       Court's own bulletin (14 March 2025, case R 706/2024/11203) says the
+       jurisdiction rested on the laws-of-war treaties binding Finland; it does
+       not call this the first universal-jurisdiction conviction, and Finland
+       had tried such a case before (Massaquoi, acquitted 2022). */
+    note: {
+      uk: "Helsinki · R 706/2024/11203 · воєнні злочини, універсальна юрисдикція",
+      en: "Helsinki · R 706/2024/11203 · war crimes, universal jurisdiction",
+    },
     pages: null,
-    decisionUrl: null,
+    /* The judgment is not published online; it can only be ordered from the court. This is the court's own decision bulletin. */
+    decisionUrl: "https://www.tuomioistuimet.fi/ajankohtaista/tiedotteet/vastaaja-tuomittiin-elinkautiseen-vankeusrangaistukseen-ita-ukrainassa-vuonna-2014-tapahtuneista-sotarikoksista/",
+    decisionUrlKind: "press-release",
     summarySlug: "finland-torden",
     lit: true,
   },
@@ -632,7 +670,9 @@ export const registryCases: RegistryCase[] = [
     amountUsd: null,
     note: { uk: "Vilnius · перша екстрадиція · катування", en: "Vilnius · first extradition · torture" },
     pages: null,
-    decisionUrl: null,
+    /* The Prosecutor General's own release is behind a bot check and could not be retrieved; this is the national broadcaster quoting it. */
+    decisionUrl: "https://www.lrt.lt/en/news-in-english/19/2731176/ukraine-hands-over-russian-soldier-accused-of-war-crimes-against-lithuanian-citizen",
+    decisionUrlKind: "report",
     lit: false,
   },
   {
@@ -661,7 +701,8 @@ export const registryCases: RegistryCase[] = [
     amountUsd: null,
     note: { uk: "Euroclear €210 млрд", en: "Euroclear €210bn" },
     pages: null,
-    decisionUrl: null,
+    /* Council Regulation (EU) 2022/334 — the act that immobilised the assets. */
+    decisionUrl: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32022R0334",
     lit: false,
   },
 ];

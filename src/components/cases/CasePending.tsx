@@ -35,6 +35,26 @@ const T = {
   },
   hasSummary: { uk: "є розбір", en: "analysed" },
   allOfForum: { uk: "Усі провадження цього суду", en: "All proceedings before this forum" },
+  /* What the link actually opens. `dict.pending.official` stays the label for
+     a decision or a forum's own case page; these name the rest, because a
+     button that promises a judgment and opens a press release has spent the
+     reader's trust for nothing. */
+  linkKind: {
+    uk: {
+      "press-release": "Прес-реліз суду",
+      "case-page": "Сторінка справи в суді",
+      party: "Заява сторони",
+      database: "Картка справи в базі даних",
+      report: "Повідомлення в медіа",
+    },
+    en: {
+      "press-release": "The court's press release",
+      "case-page": "The case on the court's site",
+      party: "A party's own statement",
+      database: "The case in a database",
+      report: "Press reporting",
+    },
+  },
 } as const;
 
 /** The registry row behind a `/cases/{id}` URL that has no summary. */
@@ -279,7 +299,10 @@ export default function CasePending({
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t.official} ↗
+              {entry.decisionUrlKind
+                ? T.linkKind[locale === "uk" ? "uk" : "en"][entry.decisionUrlKind]
+                : t.official}{" "}
+              ↗
             </a>
           )}
           <Link className="pend-back" href={`/${locale}/registry`}>
