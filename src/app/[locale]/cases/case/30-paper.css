@@ -13,7 +13,10 @@
 .casepage .ruling b {
   display: block;
   font-family: var(--brand-font-display), serif;
-  font-size: var(--t-h3);
+  /* 22.5px over 14px card prose was 1.6x and made a holding read like a blog
+     headline. --t-lead is 1.43x, the same ratio the objection cards settled
+     on for the same reason. */
+  font-size: var(--t-lead);
   font-weight: 700;
   color: var(--ink);
   margin-bottom: var(--space-2);
@@ -99,14 +102,27 @@
 
    560px was 70 characters exactly, the top of the range the contract asked
    for — and measured against a 1180px rail it read starved, which the owner
-   said plainly. 620px is 77 characters: past the textbook 60-70 and well short
-   of the 85 that was wrong, and it holds the column against the rail instead
-   of stranding it. DESIGN.md carries the same number and the same reasoning.
+   said plainly.
 
-   The arithmetic is the thing to keep, not the pixels: this width follows from
-   the face and the language, so if either changes, re-measure. */
+The measure has been argued four times, so here is the method that settles
+   it. Every earlier number came from dividing the column by an average
+   character advance, and that average depends on what you average over —
+   alphabet or prose, spaces in or out — which is how the same face at the same
+   size produced 8.04px, 9.1px and 9.4px. Counting a paragraph's characters and
+   dividing by its line count is no better: the last line of a paragraph is
+   partial but counts as whole, so it reads short, and the shorter the
+   paragraph the worse the error.
+
+   Measured exactly — a Range walked character by character, grouped into line
+   boxes by their top edge, with each paragraph's final partial line discarded
+   — Fira Sans setting this page's Ukrainian at 16px runs 8.26px per character.
+   That makes 620px 75 characters, not the 66 one pass claimed, and 700px 85,
+   which is the width the first version ran at and was corrected away from.
+
+   660px is 80: wider, because the column read as stranded in the 1180px rail
+   twice over, and still short of the 85 that started all this. */
 .casepage .read {
-  max-width: 620px;
+  max-width: 660px;
   counter-reset: disp;
 }
 .casepage .read .lead {
@@ -128,7 +144,12 @@
   border-top: 1px solid var(--prule);
   font-family: var(--brand-font-display), serif;
   font-weight: 700;
-  font-size: var(--t-h2);
+  /* --t-h3, fixed, not --t-h2's clamp(23px, 2.4vw, 29px). A heading inside a
+     column of fixed width has no business scaling with the viewport: at 1440
+     the clamp hit its 29px ceiling while the measure under it stayed 620, so
+     the heading grew to 1.8x its own body text and read as shouting. Against
+     16px prose, 22.5px is 1.4x — the ratio a section heading wants. */
+  font-size: var(--t-h3);
   line-height: 1.15;
   color: var(--ink);
   scroll-margin-top: var(--space-6);

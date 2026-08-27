@@ -96,16 +96,27 @@ display type reads as a different register, not just bigger body text.
 
 - **Never go below 14px** for anything a reader must read. The page previously
   ran 12–13.5px and felt cramped.
-- Reading measure is **around 77 characters** (`.read { max-width: 620px }`).
-  The width follows from the face and the language, so it is not transferable:
-  Fira Sans setting Ukrainian at 16px averages **8.04px per character**.
-  This line has been wrong twice and the history is the useful part. It said
-  680px and called it 60–70 characters; 680px is 85, which is what the decision
-  pages actually ran at. Corrected to 560px, which is 70 exactly — and against
-  a 1180px rail that read starved. 620px is the settled answer: past the
-  textbook 60–70, well short of 85, and it holds the column against the rail.
-  If the body size or the body face ever changes, re-measure rather than
-  keeping the pixels.
+- Reading measure is **80 characters** (`.read { max-width: 660px }`). Fira
+  Sans setting Ukrainian at 16px runs **8.26px per character**.
+
+  **How to measure it.** This line has been wrong four times and every wrong
+  version used a shortcut. Dividing the column by an average glyph advance
+  depends on which glyphs you average — alphabet or prose, spaces counted or
+  not — and produced 8.04, 9.1 and 9.4px for the same face at the same size.
+  Dividing a paragraph's characters by its line count is no better: the last
+  line is partial but counts as whole, so every paragraph reads short.
+
+  Measure it exactly instead. Walk a `Range` character by character over a
+  paragraph's text node, group the characters into line boxes by the rounded
+  `top` of each rect, discard each paragraph's final partial line, and average
+  what is left. Twenty-seven full lines of this page's own prose give 8.26px
+  per character, and that number is not an estimate — it is what the browser
+  did.
+
+  The history: 680px, called 60–70, actually 85. Then 560px — 68, and against
+  a 1180px rail it read starved. Then 620px, called 77 and later 66, actually
+  75, and the owner still read it as narrow twice. 660px is 80: wider, and
+  still short of the 85 the first version was corrected away from.
 - Uppercase labels get `letter-spacing: 0.14em`; display gets `-0.028em`.
 - Slogans follow the brandbook: Charis SIL, uppercase, wide tracking.
 
