@@ -132,9 +132,19 @@ const nextConfig: NextConfig = {
           // has not been an iframe since EventsMap became inline SVG.)
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
           // No page here uses a camera, a microphone or a location.
+          //
+          // `browsing-topics=()` joins them because `interest-cohort=()` had
+          // stopped denying anything: FLoC never shipped past its origin trial
+          // and was withdrawn in 2022, so no browser reads that token today.
+          // The Topics API is what replaced it and what is actually live in
+          // Chrome, so the opt-out this line was always meant to express has
+          // to name it. `interest-cohort` stays alongside — a directive
+          // nothing understands costs nothing, and Chromium forks kept FLoC
+          // for a while.
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+            value:
+              "camera=(), microphone=(), geolocation=(), browsing-topics=(), interest-cohort=()",
           },
           // Kept out of search until launch. See `isIndexable` in lib/seo.ts
           // for why this is a noindex rather than a robots.txt Disallow.
