@@ -60,7 +60,7 @@ const footMail: React.CSSProperties = {
 
 /** The legal bar reads at 11px, so its links are footLink at that size —
  *  same colour and same no-underline as every other link in the footer. */
-const legalLink: React.CSSProperties = { ...footLink, fontSize: 11 };
+const legalLink: React.CSSProperties = { ...footLink, fontSize: "var(--t-micro)" };
 
 /** Dark site footer: brand, link columns, contacts, legal bar. */
 export default function Footer({
@@ -154,6 +154,7 @@ export default function Footer({
         {column(f.colArchive, [
           { label: f.linkRegistry, href: `/${locale}/registry` },
           { label: f.linkMap, href: `/${locale}/map` },
+          { label: f.linkGlossary, href: `/${locale}/glossary` },
           { label: f.linkCourts },
           { label: f.linkDocs },
         ])}
@@ -197,7 +198,7 @@ export default function Footer({
       >
         {/* --brand-muted-brown is 3.01:1 on this ground — under AA at 11px, so
             the whole legal bar reads in --brand-faint-dark (4.62:1) instead. */}
-        <span style={{ fontSize: 11, color: "var(--brand-faint-dark)" }}>{f.rights}</span>
+        <span style={{ fontSize: "var(--t-micro)", color: "var(--brand-faint-dark)" }}>{f.rights}</span>
         <span style={{ display: "flex", gap: 18 }}>
           <Link href={`/${locale}/privacy`} style={legalLink}>
             {f.privacy}

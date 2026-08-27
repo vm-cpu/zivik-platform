@@ -1,7 +1,16 @@
 /* ---- 1. Masthead ---------------------------------------------------------- */
 .casepage .mast {
   background:
-    radial-gradient(120% 90% at 50% -10%, #331311 0%, rgba(51, 19, 17, 0) 55%),
+    /* The far stop is the same colour at zero alpha, written as a mix rather
+       than the bare keyword: `transparent` is defined as transparent black,
+       and while current engines interpolate gradients premultiplied and get
+       this right, spelling the hue out keeps the stop honest about what it
+       is fading from. */
+    radial-gradient(
+        120% 90% at 50% -10%,
+        var(--brand-ember) 0%,
+        color-mix(in srgb, var(--brand-ember) 0%, transparent) 55%
+      ),
     var(--bg);
   color: var(--cream);
   padding-block: clamp(30px, 4vw, 60px) clamp(28px, 3.5vw, 48px);
@@ -62,7 +71,7 @@
 .casepage .parties a {
   color: var(--gold);
   text-decoration: none;
-  border-bottom: 1px solid rgba(230, 182, 92, 0.35);
+  border-bottom: 1px solid color-mix(in srgb,var(--brand-gold-lit) 35%,transparent);
 }
 .casepage .parties a:hover {
   border-bottom-color: var(--gold);
@@ -107,7 +116,10 @@
 }
 .casepage .btn-primary {
   background: var(--accent);
-  color: #fbeee9;
+  /* --brand-cream-warm is the token whose one stated job is "text on solid
+     red buttons", and this is one. The literal it replaces was #fbeee9,
+     9.09:1 on the cherry; the token is 9.76:1. */
+  color: var(--brand-cream-warm);
   box-shadow: var(--shadow-md);
 }
 .casepage .btn-ghost {

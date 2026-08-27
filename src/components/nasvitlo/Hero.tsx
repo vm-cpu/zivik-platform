@@ -61,7 +61,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
       >
         <h1
           className="wm"
-          style={{ fontSize: 88, letterSpacing: "-.012em", margin: "0 0 24px" }}
+          style={{ letterSpacing: "-.012em", margin: "0 0 24px" }}
         >
           <span className="dim">{dict.brand.wordmark}</span>
           <span className="lit" aria-hidden="true">
@@ -73,7 +73,7 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             // Prose, so it takes the prose face and size like every other
             // paragraph on the site; the wordmark above carries the display face.
             fontFamily: "var(--brand-font-body),sans-serif",
-            fontSize: 16,
+            fontSize: "var(--t-body)",
             lineHeight: 1.5,
             color: "var(--brand-cream)",
             margin: "0 0 16px",

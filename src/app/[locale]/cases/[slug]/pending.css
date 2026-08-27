@@ -59,7 +59,10 @@
   margin: 0 0 var(--space-5);
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
-  font-size: clamp(23px, 3.4vw, 31px);
+  /* clamp(23,3.4vw,31) was a fifth heading ramp for one element. --t-h2
+     is the ramp the site already has, and it lands within a pixel of the
+     old top end. */
+  font-size: var(--t-h2);
   line-height: 1.22;
   color: var(--brand-cream);
   text-wrap: balance;

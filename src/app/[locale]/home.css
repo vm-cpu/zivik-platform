@@ -8,32 +8,32 @@
   /* Five children: abbr, name, count, dots, chevron. This template used to
      live behind `.regprog~` and the base was four columns — so removing the
      progress strip dropped the chevron onto a row of its own. */
-  .acc summary{list-style:none;display:grid;grid-template-columns:104px 1fr auto auto 20px;align-items:center;gap:20px;padding:17px 28px;cursor:pointer}
+  .acc summary{list-style:none;display:grid;grid-template-columns:104px 1fr auto auto 20px;align-items:center;gap:var(--space-5);padding:var(--space-4) var(--space-7);cursor:pointer}
   .acc summary::-webkit-details-marker{display:none}
   .acc summary:hover,.acc details[open] summary{background:var(--paper2)}
-  .acc .ab{font:700 13px var(--brand-font-body);letter-spacing:.05em;color:var(--red)}
-  .acc .fn{font-size:13.5px;color:var(--ink)}
+  .acc .ab{font:700 var(--t-cap) var(--brand-font-body);letter-spacing:.05em;color:var(--red)}
+  .acc .fn{font-size:var(--t-sm);color:var(--ink)}
   .acc .fn i{color:var(--faint);font-style:normal}
-  .acc .cn{font-family:var(--brand-font-display),serif;font-size:23px;line-height:1;color:var(--ink)}
+  .acc .cn{font-family:var(--brand-font-display),serif;font-size:var(--t-h3);line-height:1;color:var(--ink)}
   .acc .cv{width:8px;height:8px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg) translateY(-2px);transition:transform .25s ease;justify-self:end}
   .acc details[open] .cv{transform:rotate(-135deg) translateY(-2px)}
-  .acc .body{padding:0 28px 20px;display:flex;flex-direction:column}
-  .acc .arow{display:grid;grid-template-columns:1fr 118px 88px;align-items:center;gap:16px;padding:14px 14px;margin:0 -14px;border-radius:var(--r-sm);border-top:1px solid var(--rule);text-decoration:none;transition:background-color var(--dur) var(--ease)}
+  .acc .body{padding:0 var(--space-7) var(--space-5);display:flex;flex-direction:column}
+  .acc .arow{display:grid;grid-template-columns:1fr 118px 88px;align-items:center;gap:var(--space-4);padding:var(--space-3) var(--space-3);margin:0 -var(--space-3);border-radius:var(--r-sm);border-top:1px solid var(--rule);text-decoration:none;transition:background-color var(--dur) var(--ease)}
   .acc .arow:hover{background:var(--paper2);border-top-color:transparent}
   .acc .arow:hover .at{color:var(--red)}
   .acc .arow>span:has(.at){display:flex;flex-direction:column}
-  .acc .at{font-family:var(--brand-font-display),serif;font-size:16.5px;line-height:1.25;color:var(--ink)}
-  .acc .an{font-size:12.5px;color:var(--ink2);margin-top:3px}
+  .acc .at{font-family:var(--brand-font-display),serif;font-size:var(--t-body);line-height:1.25;color:var(--ink)}
+  .acc .an{font-size:var(--t-cap);color:var(--ink2);margin-top:3px}
   /* .chip and .st-* live in shared.css — used by the registry table too */
   .acc .arow .chip{justify-self:start}
-  .acc .ad{font:500 12px var(--brand-font-body);color:var(--faint);text-align:right}
-  .acc .more{align-self:start;margin-top:13px;font:700 10.5px var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--red);text-decoration:none}
+  .acc .ad{font:500 var(--t-cap) var(--brand-font-body);color:var(--faint);text-align:right}
+  .acc .more{align-self:start;margin-top:var(--space-3);font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--red);text-decoration:none}
   /* ---- turn 15: readiness — lit (analysed) vs queued ---- */
   .acc .prog{display:flex;align-items:center;gap:5px;justify-self:end}
   .acc .prog i{width:7px;height:7px;border-radius:50%;background:var(--rule)}
-  .acc .prog i.on{background:var(--brand-gold-mark);box-shadow:0 0 6px rgba(199,154,60,.65)}
+  .acc .prog i.on{background:var(--brand-gold-mark);box-shadow:0 0 6px color-mix(in srgb,var(--brand-gold-mark) 65%,transparent)}
   .acc .arow .mk{width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px}
-  .acc .arow.lit .mk{background:var(--brand-gold-mark);box-shadow:0 0 8px 1px rgba(199,154,60,.5)}
+  .acc .arow.lit .mk{background:var(--brand-gold-mark);box-shadow:0 0 8px 1px color-mix(in srgb,var(--brand-gold-mark) 50%,transparent)}
   .acc .arow.dim .mk{border:1.5px solid var(--rule);background:transparent}
   .acc .arow{grid-template-columns:9px 1fr 118px 88px;align-items:start}
   .acc .arow.dim .at{color:var(--muted)}
@@ -43,31 +43,31 @@
   .acc .arow.inert:hover .at{color:var(--ink)}
   .acc .arow.dim.inert:hover .at{color:var(--muted)}
   .acc .arow.dim .an{color:var(--muted)}
-  .acc .queued{font:600 10px var(--brand-font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--faint);justify-self:start;padding:3px 0}
+  .acc .queued{font:600 var(--t-micro) var(--brand-font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--faint);justify-self:start;padding:3px 0}
   /* ---- mobile adaptation of the home page blocks ---- */
-  .mob.acc summary{position:relative;grid-template-columns:1fr auto;gap:5px 12px;padding:15px 44px 15px 16px;min-height:58px}
-  .mob.acc .ab{grid-column:1;grid-row:1;font-size:12px}
-  .mob.acc .cn{grid-column:2;grid-row:1;font-size:20px;justify-self:end}
-  .mob.acc .fn{grid-column:1/3;grid-row:2;font-size:12.5px;line-height:1.4}
+  .mob.acc summary{position:relative;grid-template-columns:1fr auto;gap:5px var(--space-3);padding:var(--space-4) var(--space-10) var(--space-4) var(--space-4);min-height:58px}
+  .mob.acc .ab{grid-column:1;grid-row:1;font-size:var(--t-cap)}
+  .mob.acc .cn{grid-column:2;grid-row:1;font-size:var(--t-lead);justify-self:end}
+  .mob.acc .fn{grid-column:1/3;grid-row:2;font-size:var(--t-cap);line-height:1.4}
   .mob.acc .prog{grid-column:1/3;grid-row:3;justify-self:start;margin-top:3px;gap:4px}
   .mob.acc .prog i{width:6px;height:6px}
   .mob.acc .cv{position:absolute;right:18px;top:26px;justify-self:auto}
-  .mob.acc .body{padding:0 16px 16px}
-  .mob.acc .arow{grid-template-columns:9px 1fr auto;gap:5px 11px;padding:13px 0}
+  .mob.acc .body{padding:0 var(--space-4) var(--space-4)}
+  .mob.acc .arow{grid-template-columns:9px 1fr auto;gap:5px var(--space-3);padding:var(--space-3) 0}
   .mob.acc .arow>span:has(.at){grid-column:2/4;grid-row:1}
-  .mob.acc .at{font-size:15.5px}
+  .mob.acc .at{font-size:var(--t-body)}
   .mob.acc .arow .chip,.mob.acc .arow .queued{grid-column:2;grid-row:2;align-self:center}
   .mob.acc .arow .ad{grid-column:3;grid-row:2;align-self:center;text-align:right}
-  .mob.acc .more{margin-top:15px;min-height:44px;display:flex;align-items:center}
-  .mob .legend{margin:0 16px;padding:14px 0 0;flex-direction:column;gap:10px}
-  .legend{display:flex;flex-wrap:wrap;gap:22px;padding:15px 28px 0;border-top:1px solid var(--rule);margin:0 28px}
-  .legend span{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2)}
+  .mob.acc .more{margin-top:var(--space-4);min-height:44px;display:flex;align-items:center}
+  .mob .legend{margin:0 var(--space-4);padding:var(--space-3) 0 0;flex-direction:column;gap:var(--space-2)}
+  .legend{display:flex;flex-wrap:wrap;gap:var(--space-5);padding:var(--space-4) var(--space-7) 0;border-top:1px solid var(--rule);margin:0 var(--space-7)}
+  .legend span{display:flex;align-items:center;gap:var(--space-2);font-size:var(--t-cap);color:var(--ink2)}
   .legend i{width:9px;height:9px;border-radius:50%;flex:none}
-  .lbl{display:flex;align-items:center;gap:11px;margin-bottom:14px}
+  .lbl{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)}
   .lbl::before{content:"";width:34px;height:3px;background:var(--red);flex:none}
-  .lbl span{font:700 11px var(--brand-font-body),sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+  .lbl span{font:700 var(--t-micro) var(--brand-font-body),sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
   .dot{width:6px;height:6px;border-radius:50%;flex:none}
-  .btn{display:inline-flex;align-items:center;gap:8px;font:700 11px var(--brand-font-body),sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:12px 22px;border-radius:var(--r-pill);border:2px solid var(--red);cursor:pointer;text-decoration:none;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+  .btn{display:inline-flex;align-items:center;gap:var(--space-2);font:700 var(--t-micro) var(--brand-font-body),sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:var(--space-3) var(--space-5);border-radius:var(--r-pill);border:2px solid var(--red);cursor:pointer;text-decoration:none;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background-color var(--dur) var(--ease),color var(--dur) var(--ease)}
   .btn:hover{transform:translateY(-1px)}
   .btn-o{background:transparent;color:var(--red)}
   /* On the lamp scene the paper red is too dark to read, and a saturated red
@@ -77,9 +77,9 @@
      same type: only the colours change. */
   .page a.btn-lit{background:var(--brand-gold-lit);border-color:var(--brand-gold-lit);color:var(--brand-night)}
   .page a.btn-lit:hover{background:var(--brand-gold-bright);border-color:var(--brand-gold-bright)}
-  .page a.btn-ghost{background:transparent;border-color:rgba(240,221,168,.45);color:var(--brand-gold-pale)}
+  .page a.btn-ghost{background:transparent;border-color:color-mix(in srgb,var(--brand-gold-pale) 45%,transparent);color:var(--brand-gold-pale)}
   .page a.btn-ghost:hover{border-color:var(--brand-gold-pale);color:var(--brand-cream-warm)}
-  .lang{font:600 12px var(--brand-font-body),sans-serif;color:var(--faint)}
+  .lang{font:600 var(--t-cap) var(--brand-font-body),sans-serif;color:var(--faint)}
   .lang b{color:var(--red)}
   .flag{width:26px;height:17px;border-radius:2px;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.25)}
   /* ---- lamp: light/dark toggle ---- */
@@ -87,12 +87,12 @@
   .chain .wire{width:2px;height:52px;background:linear-gradient(var(--faint),var(--gold));transition:height .16s ease}
   .chain:hover .wire{height:60px}
   .chain:active .wire{height:66px}
-  .chain .lab{margin-top:9px;font:700 9px var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+  .chain .lab{margin-top:var(--space-2);font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.11em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
   /* ---- lamplighter stage: start dark, reveal on light ---- */
   @keyframes bulbhint{0%,100%{box-shadow:0 0 0 0 rgba(230,182,92,0)}50%{box-shadow:0 0 24px 5px rgba(230,182,92,.42)}}
   /* ---- second visit: focus mode ---- */
   .det .switch .cord{width:2px;height:22px;background:linear-gradient(rgba(230,182,92,.12),var(--gold))}
-  .det .switch .t{font:700 11px var(--brand-font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--red)}
+  .det .switch .t{font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--red)}
   /* ---- weigh: scales that weigh claim vs ruling (light) ---- */
   .weigh .balance{position:relative;width:236px;height:118px;margin:0 auto}
   .weigh .balance .top{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:10px;height:10px;border:2px solid var(--red);border-radius:50%}
@@ -113,7 +113,7 @@
   .roll .cord:hover .ln{height:56px}
   .roll[data-open="yes"] .cord .ln{height:26px}
   .roll .cord .kb{width:14px;height:20px;border-radius:7px;background:var(--gold);box-shadow:0 2px 5px rgba(0,0,0,.32);margin-top:1px}
-  .roll .cord .cl{margin-top:9px;font:700 9px var(--brand-font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+  .roll .cord .cl{margin-top:var(--space-2);font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.09em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
   /* ---- turn 10: projector ("виводимо на світло") ---- */
   .pj{--rule:#3A2320;--surface:#20100E;--panel:#1C0C0B;--muted:#C9AFA8;--faint:#8E736C;--gold:var(--brand-gold-lit);--cream:var(--brand-cream);--red:var(--brand-cherry);
     position:relative;overflow:hidden;background:#160807;color:var(--cream)}
@@ -135,7 +135,7 @@
   .pj[data-aim="2"] .rig{transform:rotate(34deg)}
   .pj[data-aim="0"] .t0,.pj[data-aim="1"] .t1,.pj[data-aim="2"] .t2{opacity:1;background:rgba(228,238,250,.07);border-color:rgba(228,238,250,.42);box-shadow:0 0 46px 6px rgba(216,230,246,.1)}
   .pj.paper[data-aim="0"] .t0,.pj.paper[data-aim="1"] .t1,.pj.paper[data-aim="2"] .t2{background:#FFFFFF;border-color:rgba(90,104,118,.45);box-shadow:0 0 34px 4px rgba(90,104,118,.12)}
-  .pj .rc{border:1px solid var(--rule);background:var(--surface);padding:19px;text-decoration:none;display:flex;flex-direction:column;gap:7px;cursor:pointer;transition:box-shadow .4s ease,border-color .4s ease}
+  .pj .rc{border:1px solid var(--rule);background:var(--surface);padding:var(--space-5);text-decoration:none;display:flex;flex-direction:column;gap:7px;cursor:pointer;transition:box-shadow .4s ease,border-color .4s ease}
   .pj .rc:hover{border-color:rgba(226,238,252,.45);box-shadow:0 0 38px 4px rgba(216,230,246,.12)}
   @media (prefers-reduced-motion: reduce){ .pj .rig,.pj .tgt{transition-duration:1ms !important} }
   /* ---- turn 12: interrogation lamp ---- */
@@ -169,7 +169,7 @@
   .lmp .dchain i::after{content:"";position:absolute;left:-4.5px;bottom:-16px;width:10px;height:17px;border-radius:5px 5px 6px 6px/6px 6px 9px 9px;background:linear-gradient(160deg,#F0E6D2,#C6B593 46%,#8E7C5E);box-shadow:0 2px 5px rgba(0,0,0,.45)}
   .lmp .dchain:hover i{height:62px}
   .lmp[data-on="no"] .dchain i{height:44px}
-  .lmp .chint{position:absolute;left:494px;top:242px;font:700 9px var(--brand-font-body);letter-spacing:.12em;text-transform:uppercase;color:#8E736C;white-space:nowrap;z-index:5}
+  .lmp .chint{position:absolute;left:494px;top:242px;font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--brand-faint-dark);white-space:nowrap;z-index:5}
   .lmp[data-on="yes"] .chint{opacity:0;transition:opacity .4s ease}
   .lmp .bcone,.lmp .bpool,.lmp .bmouth,.lmp .wm .lit,.lmp .bshade{transition:opacity .55s ease,background .55s ease,box-shadow .55s ease}
   .lmp .bcone,.lmp .bpool,.lmp .bmouth,.lmp .wm .lit{opacity:var(--lit,1)}
@@ -178,15 +178,21 @@
   .lmp[data-on="no"] .bmouth i{opacity:.1}
   .lmp .chint{left:548px;top:150px}
 
-  .lmp .wm{position:relative;display:inline-block;font-family:var(--brand-font-display),Georgia,serif;font-weight:400;line-height:1;white-space:nowrap}
+  /* The wordmark's size lives here now, as one clamp, instead of 88px on the
+     element and a `!important` clamp in the 760px block fighting it back down.
+     Inline styles beat stylesheets, which is why that override needed the
+     bang; with nothing inline there is nothing to shout over. Deliberately
+     off the type scale — this is the lamp's own lettering, and DESIGN.md
+     gives illustrations their own register. */
+  .lmp .wm{position:relative;display:inline-block;font-family:var(--brand-font-display),Georgia,serif;font-weight:400;font-size:clamp(46px,15vw,88px);line-height:1;white-space:nowrap}
   .lmp .wm .dim{color:rgba(243,232,226,.32)}
   .lmp .wm .lit{position:absolute;left:0;top:0;color:#FFF9EC;text-shadow:0 0 34px rgba(255,240,205,.4);-webkit-mask-image:radial-gradient(circle 250px at var(--mx,50%) 52%,#000 0%,rgba(0,0,0,.9) 36%,rgba(0,0,0,.35) 64%,transparent 84%);mask-image:radial-gradient(circle 250px at var(--mx,50%) 52%,#000 0%,rgba(0,0,0,.9) 36%,rgba(0,0,0,.35) 64%,transparent 84%)}
-  .lmp .rc{display:flex;flex-direction:column;gap:7px;padding:19px;text-decoration:none;cursor:pointer;background:rgba(243,232,226,.03);border:1px solid rgba(243,232,226,.13);transition:box-shadow .4s ease,border-color .4s ease}
+  .lmp .rc{display:flex;flex-direction:column;gap:7px;padding:var(--space-5);text-decoration:none;cursor:pointer;background:rgba(243,232,226,.03);border:1px solid rgba(243,232,226,.13);transition:box-shadow .4s ease,border-color .4s ease}
   .lmp .rc:hover{border-color:rgba(240,221,168,.5);box-shadow:0 0 34px 4px rgba(255,238,196,.1)}
-  .lmp .rc.line{flex-direction:row;align-items:center;gap:16px;padding:14px 18px}
+  .lmp .rc.line{flex-direction:row;align-items:center;gap:var(--space-4);padding:var(--space-3) var(--space-4)}
   .page{--red:var(--brand-red);--redd:var(--brand-red-dark);--gold:var(--brand-gold);--paper:var(--brand-paper);--paper2:var(--brand-paper-2);--surface:var(--brand-surface);--ink:var(--brand-ink);--ink2:var(--brand-ink-2);--muted:var(--brand-ink-2);--faint:var(--brand-faint);--rule:var(--brand-rule);
     --measure:var(--measure-page);
-    width:100%;max-width:none;margin:0 auto;background:var(--paper);color:var(--ink);font-family:var(--brand-font-body),sans-serif;font-size:14px;line-height:1.55;box-shadow:none}
+    width:100%;max-width:none;margin:0 auto;background:var(--paper);color:var(--ink);font-family:var(--brand-font-body),sans-serif;font-size:var(--t-sm);line-height:1.55;box-shadow:none}
   .page h1,.page h2,.page h3,.page h4{font-family:var(--brand-font-display),Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   /* Content links only. As a blanket `.page a` this reached into the header
      and footer too, and at (0,1,1) it outranked anything they set with a
@@ -217,25 +223,25 @@
 /* Each partner is a mark with its name under it, not a mark alone: a reader
    who does not recognise a wordmark learns nothing from a row of them. The
    hairline between entries stays, so several still read as one row. */
-.nsv-partnerrow{display:flex;flex-wrap:wrap;align-items:flex-start;gap:18px 0}
-.nsv-partnerrow .pmark{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:0 26px;border-left:1px solid var(--rule);text-decoration:none}
+.nsv-partnerrow{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-4) 0}
+.nsv-partnerrow .pmark{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-2);padding:0 var(--space-6);border-left:1px solid var(--rule);text-decoration:none}
 .nsv-partnerrow .pmark:first-child{padding-left:0;border-left:0}
-.nsv-partnerrow .pmark-name{font:700 12px var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);transition:color var(--dur) var(--ease)}
+.nsv-partnerrow .pmark-name{font:700 var(--t-cap) var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);transition:color var(--dur) var(--ease)}
 .nsv-partnerrow a.pmark:hover .pmark-name{color:var(--red)}
 
 /* brand slogan divider — Charis SIL caps, wide tracking (UCU "гасла" style) */
-.nsv-slogan{display:flex;align-items:center;gap:24px;padding:30px 28px;background:var(--paper2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.nsv-slogan{display:flex;align-items:center;gap:var(--space-6);padding:var(--space-7) var(--space-7);background:var(--paper2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
 .nsv-slogan .rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rule))}
 .nsv-slogan .rule.r2{background:linear-gradient(90deg,var(--rule),transparent)}
-.nsv-slogan .motto{font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(15px,2.3vw,21px);letter-spacing:.16em;text-transform:uppercase;color:var(--red);text-align:center}
+.nsv-slogan .motto{font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(var(--t-sm),2.3vw,var(--t-lead));letter-spacing:.16em;text-transform:uppercase;color:var(--red);text-align:center}
 
 /* newsletter — quieter editorial sign-off */
 
 /* The map band carries no side padding of its own any more, so the negative
    margins that used to punch through it now overshoot the viewport by exactly
    the gutter they were cancelling. */
-.nsv-map{margin:22px 0 0;background:var(--brand-night);border-top:1px solid var(--brand-night-rule);border-bottom:1px solid var(--brand-night-rule)}
-.nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:16px}
+.nsv-map{margin:var(--space-5) 0 0;background:var(--brand-night);border-top:1px solid var(--brand-night-rule);border-bottom:1px solid var(--brand-night-rule)}
+.nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:var(--space-4)}
 
 /* Both paragraphs in the About band are body prose of one rank, so they carry
    one colour. The opening one used to be painted --ink (#1a1917, 17.57:1 on
@@ -249,7 +255,7 @@
    Measured after: 7.78:1 on --surface (#ffffff) — AA at 16px needs 4.5:1.
    The colour lives here rather than inline in About.tsx because an inline
    style outranks every rule in this file, which is how the two ranks got in. */
-.nsv-about-main p{margin:0;font-size:16px;line-height:1.65;color:var(--ink2)}
+.nsv-about-main p{margin:0;font-size:var(--t-body);line-height:1.65;color:var(--ink2)}
 
 /* ============================================================
    Keep the lamp centred on the now-fluid hero stage at any width.
@@ -280,30 +286,34 @@
 }
 
 @media (max-width:760px){
-  .lmp .wm{font-size:clamp(46px,15vw,88px) !important}
-  .nsv-hero{padding:158px 18px 0 !important}
-  .pj{min-height:auto !important;padding-bottom:44px !important}
+  /* 158px is not a rhythm value and does not want to be one: it is the
+     clearance the lamp needs above the wordmark on a phone. Left off the
+     scale on purpose — DESIGN.md gives the illustration its own register,
+     and this padding belongs to the illustration. */
+  /* design-lint-ignore space: lamp clearance above the wordmark, not rhythm */
+  .nsv-hero{padding:158px var(--space-4) 0 !important}
+  .pj{min-height:auto !important;padding-bottom:var(--space-10) !important}
   /* keep the lamp; only drop the hover hint on small screens */
   .lmp .chint{display:none !important}
   .acc details{position:relative}
-  .acc summary{grid-template-columns:1fr auto !important;gap:4px 12px !important;padding:14px 16px !important}
+  .acc summary{grid-template-columns:1fr auto !important;gap:4px var(--space-3) !important;padding:var(--space-3) var(--space-4) !important}
   .acc .ab{grid-column:1;grid-row:1}
   .acc .cn{grid-column:2;grid-row:1;justify-self:end}
   .acc .fn{grid-column:1 / 3;grid-row:2}
   .acc .prog{grid-column:1 / 3;grid-row:3;justify-self:start;margin-top:5px}
   .acc .cv{position:absolute;right:16px;top:22px}
-  .acc .body{padding:0 16px 16px}
-  .acc .arow{grid-template-columns:9px 1fr auto !important;gap:4px 10px !important}
+  .acc .body{padding:0 var(--space-4) var(--space-4)}
+  .acc .arow{grid-template-columns:9px 1fr auto !important;gap:4px var(--space-2) !important}
   .acc .arow > span:has(.at){grid-column:2 / 4}
   .acc .arow .chip,.acc .arow .queued{grid-column:2}
   .acc .arow .ad{grid-column:3;justify-self:end;text-align:right}
-  .legend{flex-direction:column;gap:10px}
-  .nsv-slogan{gap:14px;padding:24px 18px}
+  .legend{flex-direction:column;gap:var(--space-2)}
+  .nsv-slogan{gap:var(--space-3);padding:var(--space-6) var(--space-4)}
   .nsv-slogan .rule{display:none}
 }
 
 @media (max-width:760px){
-  .nsv-sechead{flex-wrap:wrap;gap:14px !important}
+  .nsv-sechead{flex-wrap:wrap;gap:var(--space-3) !important}
   .nsv-sechead > a{flex:none}
 }
 
@@ -344,18 +354,18 @@
 
 /* ---- hero credit: who stands behind the archive ------------------------ */
 .nsv-credit{
-  display:flex;flex-direction:column;align-items:center;gap:18px;
-  margin-top:52px;
+  display:flex;flex-direction:column;align-items:center;gap:var(--space-4);
+  margin-top:var(--space-12);
 }
 .nsv-credit p{
   margin:0;display:flex;flex-direction:column;gap:3px;text-align:center;
 }
 .cr-centre{
   font-family:var(--brand-font-display),Georgia,serif;
-  font-size:15px;line-height:1.3;color:var(--brand-gold-pale);
+  font-size:var(--t-sm);line-height:1.3;color:var(--brand-gold-pale);
 }
 .cr-faculty{
-  font:500 12px var(--brand-font-body);letter-spacing:.04em;
+  font:500 var(--t-cap) var(--brand-font-body);letter-spacing:.04em;
   color:var(--brand-muted-dark);
 }
 
@@ -364,7 +374,7 @@
    reads centre first and faculty as its address. */
 .nsv-credit{
   display:flex;flex-direction:column;align-items:center;gap:5px;
-  margin:52px 0 0;padding-top:22px;
+  margin:var(--space-12) 0 0;padding-top:var(--space-5);
   border-top:1px solid var(--brand-night-rule);
   width:min(360px,100%);
   text-align:center;text-wrap:balance;
@@ -378,7 +388,7 @@
   color:var(--brand-muted-dark);
 }
 .nsv-credit .cr-centre{
-  font:400 15px/1.3 var(--brand-font-display),Georgia,serif;
+  font:400 var(--t-sm)/1.3 var(--brand-font-display),Georgia,serif;
   color:var(--brand-cream);
 }
 .nsv-credit .cr-faculty{
@@ -391,8 +401,8 @@
 /* Below 900px the heading stays in flow above the drawing: a floating panel
    on a 390px screen would cover most of the map it is introducing. */
 .page .nsv-mapband > .nsv-sechead{
-  flex-direction:column;align-items:flex-start;gap:10px;
-  padding:22px var(--page-gutter) 18px;
+  flex-direction:column;align-items:flex-start;gap:var(--space-2);
+  padding:var(--space-5) var(--page-gutter) var(--space-4);
 }
 
 /* At wide widths it becomes the same panel the map's own page uses — dark,
@@ -419,7 +429,7 @@
     position:absolute;z-index:4;top:18px;
     left:var(--page-gutter);
     width:min(440px, calc(100% - 36px));
-    padding:16px 20px 18px;
+    padding:var(--space-4) var(--space-5) var(--space-4);
     background:color-mix(in srgb, var(--brand-night) 88%, transparent);
     border:1px solid var(--brand-night-rule);
     backdrop-filter:blur(6px);
@@ -433,7 +443,12 @@
   }
   .page .nsv-mapband > .nsv-sechead > *,
   .page .nsv-mapband > .nsv-sechead a{pointer-events:auto}
-  .page .nsv-mapband > .nsv-sechead h2{font-size:25px}
+  /* On wide screens this heading stops being a band title and becomes a
+     panel floating over the drawing — the same object `.mp-mast h1` is on the
+     map page, and now the same step. It overrides `.nsv-sechead h2` in
+     shared.css; until this pass it was overriding nothing, because all three
+     band headings carried inline sizes that no stylesheet could reach. */
+  .page .nsv-mapband > .nsv-sechead h2{font-size:var(--t-h3)}
   .page .nsv-mapband > .nsv-sechead p{max-width:none}
   /* The drawing runs to the band's top edge, under the panel. */
   .page .nsv-mapband .nsv-map{margin-top:0;border-top:0}
@@ -448,7 +463,12 @@
    it belongs to the map rather than sitting on top of it. */
 .page .nsv-mapband > .nsv-sechead h2{
   color:var(--brand-cream-warm);
-  text-shadow:0 0 18px rgba(255,238,196,.4),0 0 44px rgba(240,221,168,.2);
+  /* Two literals here, rgb(255,238,196) and rgb(240,221,168), and only the
+     second was a token exactly (--brand-gold-pale). The first sat between
+     --brand-cream-warm and --brand-gold-pale, near-equidistant (ΔRGB 57 and
+     58), so the pair now runs on one token at two strengths rather than
+     inventing a twenty-eighth colour for an 18px blur nobody can name. */
+  text-shadow:0 0 18px color-mix(in srgb,var(--brand-cream-warm) 40%,transparent),0 0 44px color-mix(in srgb,var(--brand-gold-pale) 20%,transparent);
 }
 .page .nsv-mapband > .nsv-sechead p{color:var(--brand-muted-dark)}
 .page .nsv-mapband > .nsv-sechead .lbl span{color:var(--brand-gold-mark)}

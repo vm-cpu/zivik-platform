@@ -78,7 +78,7 @@ const stageWord = (k: string | undefined) =>
           <div className="lbl">
             <span>{dict.mapSection.label}</span>
           </div>
-          <h2 style={{ fontSize: 27, margin: "0 0 8px" }}>
+          <h2 style={{ margin: "0 0 8px" }}>
             {dict.mapSection.heading}
           </h2>
           <p
@@ -86,7 +86,7 @@ const stageWord = (k: string | undefined) =>
                the stylesheet that knows that. home.css sets the whole heading
                for the dark ground. */
             style={{
-              fontSize: 13.5,
+              fontSize: "var(--t-sm)",
               lineHeight: 1.6,
               margin: 0,
               maxWidth: 520,

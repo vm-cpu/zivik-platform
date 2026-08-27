@@ -64,12 +64,12 @@ export default function Registry({
           }}
         >
           <div style={{ maxWidth: 560 }}>
-            <h2 style={{ fontSize: 31, marginBottom: 9 }}>
+            <h2 style={{ marginBottom: 9 }}>
               {dict.registry.heading}
             </h2>
             <p
               style={{
-                fontSize: 14,
+                fontSize: "var(--t-sm)",
                 lineHeight: 1.6,
                 color: "var(--ink2)",
                 margin: 0,

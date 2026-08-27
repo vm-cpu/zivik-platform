@@ -11,6 +11,23 @@
    button ended up wearing a 2px border in the colour we reserve for breaches.
    ========================================================================== */
 
+/* Band headings ------------------------------------------------------------
+   `.nsv-sechead` is the heading block above a band, rendered by Registry,
+   Partners and MapSection — three components, three surfaces, one pattern.
+   It had no size rule anywhere. Each of the three set its own with an inline
+   React style instead, and inline beats every stylesheet, so the home page
+   carried three sibling h2 of the same rank at 31px, 27px and 26px, and an
+   existing `@media (min-width:1150px) ... {font-size:25px}` rule in home.css
+   silently lost to all of them.
+
+   One rank, one size, and it is the token. The map band still overrides it —
+   on wide screens that heading becomes a floating panel over the drawing, the
+   same object `.mp-mast h1` is on the map page — but it now overrides a rule
+   rather than an inline attribute nothing could reach. */
+.nsv-sechead h2 {
+  font-size: var(--t-h2);
+}
+
 /* Skip link ---------------------------------------------------------------
    Rendered by Header, so it exists on every surface. It used to live only on
    the decision page, which left keyboard users tabbing through the whole top
@@ -23,9 +40,9 @@
   z-index: 10;
   background: var(--brand-night);
   color: var(--brand-gold-lit);
-  font: 700 14px var(--brand-font-body);
+  font: 700 var(--t-sm) var(--brand-font-body);
   border-radius: var(--r-pill);
-  padding: 12px 24px;
+  padding: var(--space-3) var(--space-6);
   text-decoration: none;
 }
 .nsv-skiplink:focus-visible {
@@ -57,7 +74,7 @@
   align-items: center;
   font: 600 var(--t-micro) / 1.2 var(--brand-font-body), sans-serif;
   letter-spacing: 0.04em;
-  padding: 3px 9px;
+  padding: 3px var(--space-2);
   border-radius: var(--r-pill);
   border: 1px solid transparent;
   white-space: nowrap;
@@ -120,7 +137,7 @@
   align-items: center;
   gap: var(--space-2);
   min-height: 44px;
-  padding: 12px 22px;
+  padding: var(--space-3) var(--space-5);
   border-radius: var(--r-pill);
   /* Filled cherry, not gold. The lit gold is only 1.8:1 against paper, so the
      pill needed a dark ring to have an edge at all — and a brown 2px ring

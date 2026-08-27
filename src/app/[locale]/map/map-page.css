@@ -48,7 +48,7 @@
 .mp-mast {
   max-width: 780px;
   margin: 0 auto;
-  padding: 42px clamp(20px, 5vw, 44px) 26px;
+  padding: var(--space-10) clamp(20px, 5vw, 44px) var(--space-6);
 }
 /* The one control in the masthead, and it measured 89.8 x 13 — an 11px cap
    line with nothing round it, against the 24px floor every other control on
@@ -57,19 +57,20 @@
 .mp-back {
   display: inline-block;
   padding-block: 6px;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
-.mp-mast h1 {
-  margin: 0 0 12px;
-  font-family: var(--brand-font-display), Georgia, serif;
-  font-weight: 400;
-  font-size: clamp(28px, 4.4vw, 40px);
-  line-height: 1.1;
-  color: var(--ink);
-}
+/* The `.mp-mast h1` rule that used to sit here is gone.
+
+   It set margin, family, weight, `clamp(28px, 4.4vw, 40px)`, line-height and
+   `--ink` — and a second `.mp-mast h1` further down this same file sets every
+   one of those properties again. Same specificity, so source order decided it
+   and the later block won all six: nothing here ever painted. It is a
+   leftover from when this masthead was a header on a light page, before it
+   became the dark panel floating over the drawing. Its `--ink` colour is the
+   tell — on the panel's near-black ground that would have been unreadable. */
 .mp-lede {
   margin: 0;
   font-size: var(--t-sm);
@@ -152,16 +153,29 @@
   top: 18px;
   left: 18px;
   max-width: min(420px, calc(100% - 36px));
-  padding: 16px 20px 18px;
+  padding: var(--space-4) var(--space-5) var(--space-4);
   background: color-mix(in srgb, var(--brand-night) 88%, transparent);
   border: 1px solid var(--brand-night-rule);
   backdrop-filter: blur(6px);
 }
 .mp-mast h1 {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-2);
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
-  font-size: 25px;
+  /* --t-h3, not the clamp(30px, 5vw, 44px) every other page's h1 carries.
+
+     An audit flagged this as "25px against 44px everywhere else, one role
+     with four answers". That reading was wrong, and the wrongness is worth
+     keeping written down: this is not a page masthead. `.mp-mast` is an
+     absolutely positioned 420px panel floating over a full-bleed map, with
+     `pointer-events: none` on the box so the map keeps the drag under it.
+     A 44px display line in it would take a quarter of the panel and start
+     covering the country it labels.
+
+     What was actually wrong is that 25px is not a step. 22.5px is, it is the
+     step the site gives a card title, and a floating label panel is closer to
+     a card than to a masthead. */
+  font-size: var(--t-h3);
   line-height: 1.12;
   color: var(--brand-cream);
 }
@@ -237,8 +251,8 @@
     background: var(--brand-night-2);
     border: 1px solid var(--brand-night-rule);
     box-shadow: var(--shadow-dark);
-    padding: 13px 15px 14px;
-    gap: 14px;
+    padding: var(--space-3) var(--space-4) var(--space-3);
+    gap: var(--space-3);
   }
   /* Tighter than the block below the drawing was: this one is 282px wide and
      lying on the map, so every row it saves is map. */
@@ -251,8 +265,8 @@
      read as prose; at 11.5 it takes two, and the glyph comes down with it so
      the mark and its name stay the same weight beside each other. */
   .mp-stage .emap-legend .emap-key {
-    gap: 8px;
-    font-size: 11.5px;
+    gap: var(--space-2);
+    font-size: var(--t-cap);
     line-height: 1.35;
   }
   .mp-stage .emap-legend .emap-key svg {
@@ -260,30 +274,30 @@
     height: 18px;
   }
   .mp-stage .emap-leg-how {
-    font-size: 11.5px;
+    font-size: var(--t-cap);
     line-height: 1.4;
   }
   .mp-stage .emap-legend .emap-leg-group :is(h2, h3) {
-    font-size: 10px;
+    font-size: var(--t-micro);
   }
   .mp-stage .emap-legend ul {
     gap: 2px;
   }
   .mp-stage .emap-leg-how {
-    margin-top: 8px;
+    margin-top: var(--space-2);
   }
   /* Folded it is one line, and it stops reserving anything. */
   .mp-stage .emap[data-legend="off"] .emap-legend {
     width: auto;
-    padding: 10px 14px;
+    padding: var(--space-2) var(--space-3);
   }
 }
 
 .mp-stage .emap-legend {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 22px;
-  padding: 22px max(clamp(20px, 4vw, 56px), 0px);
+  gap: var(--space-5);
+  padding: var(--space-5) max(clamp(20px, 4vw, 56px), 0px);
   border-inline: 0;
 }
 
@@ -394,8 +408,8 @@
 .mappage .mp-mast .lbl {
   display: flex;
   align-items: center;
-  gap: 11px;
-  margin-bottom: 12px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 .mappage .mp-mast .lbl::before {
   content: "";
@@ -453,10 +467,10 @@
      the label rule is decoration. What has to survive is where you are and how
      to leave. */
   .mp-mast {
-    padding-block: 8px;
+    padding-block: var(--space-2);
   }
   .mp-mast h1 {
-    font-size: 17px;
+    font-size: var(--t-body);
     line-height: 1.2;
     margin-bottom: 0;
   }
@@ -489,10 +503,15 @@
      matter: the figure's height is the window minus the chrome above it, so a
      title that takes a second line takes it out of the map. */
   .mp-mast {
+    /* 330px, and it is measured against the zoom control to its right
+       rather than chosen off a scale — see the note above. A step would
+       let the title run under the control, which is the exact thing this
+       is here to prevent. */
+    /* design-lint-ignore space: the zoom control's width, measured */
     padding-right: 330px;
   }
   .mp-mast h1 {
-    font-size: 15px;
+    font-size: var(--t-sm);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

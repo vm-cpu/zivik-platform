@@ -70,7 +70,7 @@
 .abt-mast h1 {
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
-  font-size: clamp(30px, 5vw, 44px);
+  font-size: var(--t-mast);
   line-height: 1.08;
   color: var(--ink);
   margin: 0 0 var(--space-3);
@@ -200,7 +200,8 @@
   gap: var(--space-1);
 }
 .abt-meta .mv {
-  font: 400 clamp(26px, 4vw, 34px) var(--brand-font-display), Georgia, serif;
+  /* The same figure the library's stats row carries, so the same step. */
+  font: 400 var(--t-h2) var(--brand-font-display), Georgia, serif;
   line-height: 1;
   color: var(--ink);
 }
@@ -234,14 +235,14 @@
    the wrapper 28px out on each side puts the marks on the reading column's
    left edge while the band's rule runs wider than the column. */
 .abt-partners {
-  margin: var(--space-10) -28px 0;
+  margin: var(--space-10) -var(--space-7) 0;
 }
 /* Section label and partner row: defined in home.css, which this page does not
    load. Scoped to .aboutpage so nothing leaks back to the surfaces that do. */
 .aboutpage .lbl {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: var(--space-3);
   margin-bottom: var(--space-3);
 }
 .aboutpage .lbl::before {

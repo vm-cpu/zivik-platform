@@ -54,14 +54,14 @@
   display: none;
   flex-direction: column;
   gap: 2px;
-  padding: 8px 30px 16px;
+  padding: var(--space-2) var(--space-7) var(--space-4);
   background: var(--brand-night);
   /* --brand-cream at 10% / 7%, mixed rather than written out as rgba: the
      literals held the token's own value and would not have followed it. */
   border-bottom: 1px solid color-mix(in srgb, var(--brand-cream) 10%, transparent);
 }
 .nsv-mobnav a {
-  padding: 11px 0;
+  padding: var(--space-3) 0;
   font: 500 var(--t-ui) var(--brand-font-body);
   color: var(--brand-cream);
   text-decoration: none;

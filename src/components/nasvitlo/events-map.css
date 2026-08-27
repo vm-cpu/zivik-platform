@@ -9,7 +9,7 @@
    ========================================================================== */
 
 .emap {
-  padding-bottom: 28px;
+  padding-bottom: var(--space-7);
   /* One colour for every site. Three category hues used to live here, but the
      criterion behind them did not hold — see the note in EventsMap.tsx — so
      colour no longer classifies anything. The markers take the lamp's gold,
@@ -315,7 +315,7 @@
   scrollbar-color: color-mix(in srgb, var(--brand-gold-lamp) 70%, transparent)
     var(--brand-night-rule);
   width: min(300px, calc(100% - 32px));
-  padding: 14px 16px 15px;
+  padding: var(--space-3) var(--space-4) var(--space-4);
   background: var(--brand-night-2);
   border: 1px solid var(--brand-night-rule);
   border-left: 3px solid var(--c, var(--brand-gold));
@@ -337,7 +337,7 @@
   background: none;
   border: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: var(--t-body);
   line-height: 1;
   color: var(--brand-faint-dark);
   cursor: pointer;
@@ -346,7 +346,7 @@
   color: var(--brand-cream);
 }
 .emap-when {
-  font: 600 10px var(--brand-font-mono);
+  font: 600 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--c);
@@ -354,24 +354,24 @@
 }
 .emap-title {
   font-family: var(--brand-font-display), Georgia, serif;
-  font-size: 17px;
+  font-size: var(--t-body);
   line-height: 1.2;
   color: var(--brand-cream);
   margin-bottom: 6px;
 }
 .emap-note {
-  margin: 0 0 8px;
-  font-size: 12.5px;
+  margin: 0 0 var(--space-2);
+  font-size: var(--t-cap);
   line-height: 1.5;
   color: var(--brand-muted-dark);
 }
 .emap-forums {
-  font: 500 11.5px var(--brand-font-body);
+  font: 500 var(--t-cap) var(--brand-font-body);
   color: var(--brand-gold-pale);
   margin-bottom: 3px;
 }
 .emap-count {
-  font: 600 10.5px var(--brand-font-mono);
+  font: 600 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   /* --brand-faint-dark measured 4.01:1 on the card ground — under AA at this
@@ -403,7 +403,7 @@
   gap: 3px;
   width: 100%;
   height: 100%;
-  padding: 13px 15px;
+  padding: var(--space-3) var(--space-4);
   text-align: left;
   background: none;
   border: 0;
@@ -416,24 +416,24 @@
   background: var(--brand-night-2);
 }
 .emap-li-when {
-  font: 600 9.5px var(--brand-font-mono);
+  font: 600 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brand-faint-dark);
 }
 .emap-li-title {
   font-family: var(--brand-font-display), Georgia, serif;
-  font-size: 15px;
+  font-size: var(--t-sm);
   line-height: 1.25;
   color: var(--brand-cream);
 }
 .emap-li-forums {
-  font-size: 12px;
+  font-size: var(--t-cap);
   line-height: 1.4;
   color: var(--brand-muted-dark);
 }
 .emap-li-count {
-  font: 600 10px var(--brand-font-mono);
+  font: 600 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-faint-dark);
@@ -492,14 +492,14 @@
 .emap-legend {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 22px 34px;
-  padding: 20px max(clamp(28px, 5vw, 96px), 0px);
+  gap: var(--space-5) var(--space-8);
+  padding: var(--space-5) max(clamp(28px, 5vw, 96px), 0px);
   background: var(--brand-night-2);
   border: 1px solid var(--brand-night-rule);
   border-top: 0;
 }
 .emap-leg-group :is(h2, h3) {
-  margin: 0 0 9px;
+  margin: 0 0 var(--space-2);
   font: 700 var(--t-micro) / 1 var(--brand-font-body);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -516,7 +516,7 @@
 .emap-key {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: var(--space-2);
   font: 500 var(--t-cap) var(--brand-font-body);
   color: var(--brand-muted-dark);
 }
@@ -549,7 +549,7 @@
    the count on each of the six site cards, and the one thing the seat list
    held that a reader could not get without clicking every city in turn. */
 .emap-seat-count {
-  font: 600 10px var(--brand-font-mono);
+  font: 600 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-faint-dark);
@@ -559,12 +559,12 @@
 /* The map's payload. Until now it showed which court hears a case and gave no
    way to reach the decision from here. */
 .emap-reads {
-  margin-top: 14px;
-  padding-top: 12px;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
   border-top: 1px solid var(--brand-night-rule);
 }
 .emap-reads-h {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
   font: 700 var(--t-micro) / 1 var(--brand-font-body);
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -582,7 +582,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 8px 10px;
+  padding: var(--space-2) var(--space-2);
   background: var(--brand-night);
   border-left: 2px solid var(--brand-gold-lamp);
   text-decoration: none;
@@ -599,13 +599,13 @@
   color: var(--brand-gold-pale);
 }
 .emap-read-f {
-  font: 400 10.5px var(--brand-font-mono);
+  font: 400 var(--t-micro) var(--brand-font-mono);
   color: var(--brand-faint-dark);
 }
 /* Said plainly rather than left as an empty space the reader has to interpret. */
 .emap-pending {
-  margin: 14px 0 0;
-  padding-top: 12px;
+  margin: var(--space-3) 0 0;
+  padding-top: var(--space-3);
   border-top: 1px solid var(--brand-night-rule);
   font: 500 var(--t-cap) var(--brand-font-body);
   color: var(--brand-faint-dark);
@@ -646,7 +646,7 @@
   flex-direction: column;
   gap: 2px;
   width: 100%;
-  padding: 8px 10px;
+  padding: var(--space-2) var(--space-2);
   background: var(--brand-night);
   border: 0;
   border-left: 2px solid var(--c);
@@ -703,7 +703,7 @@
   border: 1px solid var(--brand-night-rule);
 }
 .emap-zoom button {
-  padding: 7px 13px;
+  padding: 7px var(--space-3);
   background: var(--brand-night);
   border: 0;
   cursor: pointer;
@@ -837,8 +837,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 8px 26px;
-  padding-block: 13px;
+  gap: var(--space-2) var(--space-6);
+  padding-block: var(--space-3);
   background: none;
   border: 0;
 }
@@ -853,7 +853,7 @@
 .emap-legend[data-variant="band"] ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 26px;
+  gap: var(--space-2) var(--space-6);
   margin: 0;
 }
 
@@ -1105,7 +1105,7 @@
 }
 .emap-zoom-step {
   min-width: 34px;
-  font-size: 15px;
+  font-size: var(--t-sm);
   line-height: 1;
   font-family: var(--brand-font-body);
 }
@@ -1121,7 +1121,7 @@
    reserves one row's worth of space above the drawing for it. */
 @media (max-width: 480px) {
   .emap-zoom button {
-    padding-inline: 8px;
+    padding-inline: var(--space-2);
     letter-spacing: 0.06em;
   }
 }
@@ -1204,8 +1204,8 @@
    the loudest line on the card, over the name of the institution it is a
    footnote to. A count is a footnote. */
 .emap-caseload {
-  margin: 9px 0 0;
-  font: 600 10px var(--brand-font-mono);
+  margin: var(--space-2) 0 0;
+  font: 600 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-muted-dark);
@@ -1242,7 +1242,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: calc(100% - 32px);
-  padding: 9px 16px;
+  padding: var(--space-2) var(--space-4);
   text-align: center;
   background: color-mix(in srgb, var(--brand-night) 88%, transparent);
   border: 1px solid var(--brand-night-rule);
@@ -1289,9 +1289,9 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 10px 16px;
+  gap: var(--space-2) var(--space-4);
   margin-top: 1px;
-  padding: 12px 16px;
+  padding: var(--space-3) var(--space-4);
   background: var(--brand-night-2);
   border: 1px solid var(--brand-night-rule);
 }
@@ -1304,7 +1304,7 @@
 .emap-gofull {
   flex: none;
   min-height: 34px;
-  padding: 8px 14px;
+  padding: var(--space-2) var(--space-3);
   background: var(--brand-gold-pale);
   color: var(--brand-night);
   border: 0;
@@ -1383,7 +1383,7 @@
   background: var(--brand-gold-pale);
   color: var(--brand-night);
   border: 0;
-  font: 400 20px/1 var(--brand-font-body);
+  font: 400 var(--t-lead)/1 var(--brand-font-body);
   cursor: pointer;
 }
 .emap-unfull:hover {
@@ -1429,7 +1429,7 @@
 /* And the way to all of it. */
 .emap-card a.emap-more {
   display: inline-block;
-  margin-top: 12px;
+  margin-top: var(--space-3);
   padding: 7px 0;
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.09em;
@@ -1447,14 +1447,14 @@
    reader can open. Quieter than the links under it: it is a fact about the
    list, not another entry in it. */
 .emap-written {
-  margin: -2px 0 8px;
-  font: 400 11px var(--brand-font-mono);
+  margin: -2px 0 var(--space-2);
+  font: 400 var(--t-micro) var(--brand-font-mono);
   color: var(--brand-faint-dark);
 }
 
 /* What the marks do, under the keys that say what they are. */
 .emap-leg-how {
-  margin: 10px 0 0;
+  margin: var(--space-2) 0 0;
   max-width: 46ch;
   font: 400 var(--t-cap) / 1.45 var(--brand-font-body);
   color: var(--brand-muted-dark);
@@ -1591,7 +1591,7 @@ button.emap-key[aria-pressed="true"]::after {
    not be made. Rows, hairlines, and the number in a right-hand column in
    figures that share a width, so the eye runs down them. */
 .emap-index {
-  padding: 0 max(clamp(28px, 5vw, 96px), 0px) 8px;
+  padding: 0 max(clamp(28px, 5vw, 96px), 0px) var(--space-2);
   background: var(--brand-night-2);
   border: 1px solid var(--brand-night-rule);
   border-top: 0;
@@ -1605,8 +1605,8 @@ button.emap-key[aria-pressed="true"]::after {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: baseline;
-  gap: 8px 18px;
-  padding: 9px 0;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-2) 0;
   border-top: 1px solid var(--brand-night-rule);
 }
 .emap-index button {
@@ -1636,7 +1636,7 @@ button.emap-key[aria-pressed="true"]::after {
    to a page's own `a`. */
 .emap-index a.emap-seat-count,
 .emap-index .emap-seat-count {
-  font: 600 15px var(--brand-font-mono);
+  font: 600 var(--t-sm) var(--brand-font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   text-transform: none;
@@ -1671,7 +1671,7 @@ a.emap-seat-count:focus-visible {
   padding: 2px 6px;
   background: var(--brand-night-2);
   border: 1px solid var(--brand-night-rule);
-  font: 600 9.5px/1.5 var(--brand-font-body);
+  font: 600 var(--t-micro)/1.5 var(--brand-font-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-muted-dark);
@@ -1688,7 +1688,7 @@ a.emap-seat-count:focus-visible {
 /* The listed rows are not links, so their tags need the indent the link's own
    padding gives the others. */
 .emap-listed .emap-tags {
-  padding-left: 10px;
+  padding-left: var(--space-2);
   margin-bottom: 4px;
 }
 
@@ -1702,7 +1702,7 @@ a.emap-seat-count:focus-visible {
   -webkit-line-clamp: 2;
   line-clamp: 2;
   overflow: hidden;
-  font: 400 10px/1.4 var(--brand-font-mono);
+  font: 400 var(--t-micro)/1.4 var(--brand-font-mono);
   color: var(--brand-faint-dark);
 }
 
@@ -1713,7 +1713,7 @@ a.emap-seat-count:focus-visible {
 .emap-leg-toggle {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   width: 100%;
   padding: 0 0 4px;
   background: none;
@@ -1775,7 +1775,7 @@ a.emap-seat-count:focus-visible {
 /* Folded, the block is one line and needs none of the air an eight-key column
    wanted under it. */
 .emap[data-legend="off"] .emap-legend {
-  padding-block: 14px;
+  padding-block: var(--space-3);
 }
 
 /* The seat index belongs to the page, not to the overlay. It was not in the
@@ -1801,9 +1801,9 @@ a.emap-seat-count:focus-visible {
 .emap-fold-h {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2);
   width: 100%;
-  padding: 13px max(clamp(28px, 5vw, 96px), 0px);
+  padding: var(--space-3) max(clamp(28px, 5vw, 96px), 0px);
   background: var(--brand-night-2);
   border: 1px solid var(--brand-night-rule);
   border-bottom: 0;
@@ -1873,8 +1873,8 @@ a.emap-seat-count:focus-visible {
     width: 236px;
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 12px 14px 13px;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-3) var(--space-3);
     background: var(--brand-night-2);
     border: 1px solid var(--brand-night-rule);
     box-shadow: var(--shadow-dark);
@@ -1886,8 +1886,8 @@ a.emap-seat-count:focus-visible {
     opacity: 1;
   }
   .emap-legend[data-variant="band"] .emap-key {
-    gap: 8px;
-    font-size: 11.5px;
+    gap: var(--space-2);
+    font-size: var(--t-cap);
     line-height: 1.35;
   }
   .emap-legend[data-variant="band"] .emap-key svg {
@@ -1898,7 +1898,7 @@ a.emap-seat-count:focus-visible {
     flex: none;
     margin: 0;
     max-width: none;
-    font-size: 11.5px;
+    font-size: var(--t-cap);
     line-height: 1.4;
   }
   /* The band reserves nothing for this block, unlike the map's own page.
@@ -1928,7 +1928,7 @@ a.emap-seat-count:focus-visible {
 }
 /* Except where the list really is under the drawing, and needs air after it. */
 .emap[data-variant="band"][data-coarse="yes"] {
-  padding-bottom: 20px;
+  padding-bottom: var(--space-5);
 }
 
 /* The recentre control. A ring with four ticks off it — drawn rather than
@@ -1997,18 +1997,18 @@ a.emap-seat-count:focus-visible {
    and a line below. */
 .emap-read-cite {
   margin-top: 1px;
-  font-size: 10.5px;
+  font-size: var(--t-micro);
   color: var(--brand-faint-dark);
 }
 .emap-listed .emap-read-f {
   margin-top: 2px;
-  font-size: 9.5px;
+  font-size: var(--t-micro);
   color: var(--brand-faint-dark);
 }
 /* Air between one case and the next. They were 1px apart with three lines
    each, so nine lines read as one paragraph. */
 .emap-listed li {
-  padding: 7px 0 8px 10px;
+  padding: 7px 0 var(--space-2) var(--space-2);
   border-left: 2px solid var(--brand-night-rule);
 }
 .emap-listed li + li {
@@ -2026,10 +2026,10 @@ a.emap-seat-count:focus-visible {
    never affected because it already carries a descendant `a`. */
 .emap-card a.emap-more {
   display: block;
-  margin-top: 11px;
-  padding-top: 10px;
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
   border-top: 1px solid var(--brand-night-rule);
-  font: 600 10px var(--brand-font-mono);
+  font: 600 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-muted-dark);

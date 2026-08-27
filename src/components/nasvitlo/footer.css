@@ -15,7 +15,7 @@
 @media (max-width: 760px) {
   .nsv-foot {
     grid-template-columns: 1fr 1fr !important;
-    gap: 26px !important;
+    gap: var(--space-6) !important;
   }
 }
 

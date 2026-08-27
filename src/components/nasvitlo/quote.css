@@ -118,7 +118,9 @@
   margin: 0 auto;
   text-align: center;
   font-family: var(--brand-font-display), Georgia, serif;
-  font-size: clamp(19px, 1.9vw, 25px);
+  /* Both ends on steps: 20px at the bottom, 22.5 at the top. It was
+     19->25, a ramp of its own that agreed with nothing else on the site. */
+  font-size: clamp(var(--t-lead), 1.9vw, var(--t-h3));
   /* Generous for a serif at this size — a pull-quote is read slowly. */
   line-height: 1.48;
   /* Was -0.012em. Optical tightening is a fix for large type; nine pixels

@@ -12,17 +12,27 @@
    ========================================================================== */
 
 .casepage {
-  /* Dark "court" ground — all from the brand tokens, no local copies. */
+  /* Dark "court" ground — all from the brand tokens, no local copies.
+
+     That sentence is true now. Until this pass five of these twelve were hex
+     literals sitting here, which is what AGENTS.md forbids and what the line
+     above already claimed was not happening. Two were near-duplicates of
+     tokens that already existed and now point at them: --muted was #cbbdb8
+     against --brand-muted-dark #c9afa8 (10.25:1 and 9.06:1 on this ground,
+     both far clear of AA), --faint was #968a85 against --brand-faint-dark
+     #9c8279 (5.58:1 and 5.24:1). The other three were real colours with no
+     equivalent and went to globals.css keeping their exact values — see the
+     note there for why breach red is not cherry. */
   --bg: var(--brand-night);
   --panel: var(--brand-night-2);
   --rule: var(--brand-night-rule);
-  --rule-soft: #2a201c;
+  --rule-soft: var(--brand-night-rule-soft);
   --cream: var(--brand-cream);
-  --muted: #cbbdb8;
-  --faint: #968a85;
+  --muted: var(--brand-muted-dark);
+  --faint: var(--brand-faint-dark);
   --gold: var(--brand-gold-lit);
-  --gold-dim: #b98a3f;
-  --red: #e0685c; /* breach only */
+  --gold-dim: var(--brand-gold-dim);
+  --red: var(--brand-breach); /* breach only */
   --accent: var(--brand-red);
 
   /* Light ground */
@@ -51,7 +61,11 @@
      --t-fig (clamp(29px, 3.6vw, 44px)) is gone: its only user was the KPI
      figure, which read as a headline at 44px beside a 14px caption. The strip
      is data, so the figure now takes --t-h2, the top of the shared ramp. */
-  --t-h1: clamp(32px, 5vw, 68px);
+  /* --t-h1 was declared here and nowhere else, which made it invisible to
+     every other surface: five page mastheads that reached for it got nothing,
+     and an unresolved var() drops the whole declaration, so their titles
+     rendered at body size. It lives on :root in globals.css now, at the same
+     value, and this private copy is gone. */
 
   /* rhythm */
   --gutter: clamp(24px, 5vw, 72px);

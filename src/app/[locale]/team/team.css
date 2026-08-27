@@ -20,7 +20,7 @@
   background: var(--paper);
   color: var(--ink);
   font-family: var(--brand-font-body), sans-serif;
-  font-size: 14px;
+  font-size: var(--t-sm);
   line-height: 1.55;
 }
 /* Scoped to the page body, not the whole surface. As `.teampage a` this
@@ -38,17 +38,17 @@
 .team-wrap {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 clamp(20px, 5vw, 44px) 80px;
+  padding: 0 clamp(20px, 5vw, 44px) var(--space-16);
 }
 
 .team-mast {
-  padding: 44px 0 26px;
+  padding: var(--space-10) 0 var(--space-6);
   border-bottom: 1px solid var(--rule);
 }
 .team-back {
   display: inline-block;
-  margin-bottom: 20px;
-  font: 700 11px var(--brand-font-body);
+  margin-bottom: var(--space-5);
+  font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--faint);
@@ -59,14 +59,14 @@
 .team-mast h1 {
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
-  font-size: clamp(30px, 5vw, 44px);
+  font-size: var(--t-mast);
   line-height: 1.08;
   color: var(--ink);
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-3);
 }
 .team-lede {
   max-width: 60ch;
-  font-size: 15px;
+  font-size: var(--t-sm);
   line-height: 1.6;
   color: var(--ink2);
   margin: 0;
@@ -94,7 +94,7 @@
 .team-frame {
   position: relative;
   aspect-ratio: 1;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
   overflow: hidden;
   background: var(--paper2);
   /* A hairline rather than a hard edge: these portraits were shot against a
@@ -118,12 +118,12 @@
 }
 .team-name {
   font-family: var(--brand-font-display), Georgia, serif;
-  font-size: 19px;
+  font-size: var(--t-lead);
   line-height: 1.25;
   color: var(--ink);
 }
 .team-role {
-  font: 600 11px var(--brand-font-body);
+  font: 600 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--faint);

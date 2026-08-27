@@ -54,7 +54,6 @@ export default function Partners({
             style={{
               fontFamily: "var(--brand-font-display),serif",
               fontWeight: 400,
-              fontSize: 26,
               color: "var(--ink)",
               margin: 0,
             }}

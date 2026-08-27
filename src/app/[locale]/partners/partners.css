@@ -65,7 +65,7 @@
 .prt-mast h1 {
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
-  font-size: clamp(30px, 5vw, 44px);
+  font-size: var(--t-mast);
   line-height: 1.08;
   color: var(--ink);
   margin: 0 0 var(--space-3);
