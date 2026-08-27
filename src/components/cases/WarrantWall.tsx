@@ -69,7 +69,10 @@ export default function WarrantWall({
   }, [open]);
 
   const detail = sel === null ? null : (
-    <div className="wr-detail" id="wr-detail" ref={panelRef} data-wave={sel.wi}>
+    /* aria-live because selecting a second suspect while the first is open
+       replaces this panel's text in place: the page changes, the focus does
+       not move, and without it a screen reader is told nothing happened. */
+    <div className="wr-detail" id="wr-detail" ref={panelRef} data-wave={sel.wi} aria-live="polite">
       <div className="wr-detail-head">
         <span className="wr-detail-name">{sel.p.name}</span>
         <span className="wr-detail-wave">
@@ -130,7 +133,11 @@ export default function WarrantWall({
                     type="button"
                     className="suspect"
                     aria-expanded={open === `${wi}-${pi}`}
-                    onClick={() => setOpen(`${wi}-${pi}`)}
+                    aria-controls={sel === null ? undefined : "wr-detail"}
+                    /* Toggling, like the ladder's nodes. It only ever set,
+                       so a control reporting aria-expanded="true" could not
+                       be closed by the key that opened it. */
+                    onClick={() => setOpen(open === `${wi}-${pi}` ? null : `${wi}-${pi}`)}
                   >
                     <span className="suspect-name">{p.name}</span>
                     <span className="suspect-role">{p.role}</span>
@@ -184,7 +191,12 @@ export default function WarrantWall({
                     data-wave={f.wi}
                     data-on={open === f.key ? "yes" : "no"}
                     aria-expanded={open === f.key}
-                    aria-controls="wr-detail"
+                    /* Only while the panel is in the document. Nothing is
+                       selected on arrival, so #wr-detail does not exist yet,
+                       and all six nodes pointed at an id that was not on the
+                       page — a dangling reference every assistive technology
+                       has to decide what to do with. */
+                    aria-controls={sel === null ? undefined : "wr-detail"}
                     onClick={() => setOpen(open === f.key ? null : f.key)}
                   >
                     <span className="wr-node-name">{f.p.name}</span>

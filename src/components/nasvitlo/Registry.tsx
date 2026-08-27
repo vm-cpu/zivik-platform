@@ -1,4 +1,4 @@
-import { type Locale } from "@/i18n/config";
+import { foreignLang, type Locale } from "@/i18n/config";
 import { plural } from "@/i18n/plural";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { pick, type Institution, type RegistryCase } from "@/content/types";
@@ -132,7 +132,13 @@ export default function Registry({
                   >
                     <span className="mk" />
                     <span>
-                      <span className="at">{c.name}</span>
+                      {/* The library page marks these and this preview of it
+                          did not, so the same Latin-script name was read in
+                          English on /registry and phonetically on the home
+                          page. See foreignLang(). */}
+                      <span className="at" lang={foreignLang(c.name, locale)}>
+                        {c.name}
+                      </span>
                       <span className="an">{pick(c.note, locale)}</span>
                     </span>
                     <span className="chip">

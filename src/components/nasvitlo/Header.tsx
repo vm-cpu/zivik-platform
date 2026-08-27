@@ -279,13 +279,24 @@ export default function Header({
         </div>
       </header>
 
-      <div id="nsv-mobnav" className="nsv-mobnav" data-open={open ? "yes" : "no"}>
+      {/* A <nav>, not a <div>. `.nsv-nav` above is display:none under 880px and
+          this drawer replaces it, so on a phone the site carried no navigation
+          landmark at all — the one landmark a screen-reader user jumps to
+          first. Only ever one of the two is rendered, so they cannot be
+          confused with each other; the label is the one the burger already
+          announces. */}
+      <nav
+        id="nsv-mobnav"
+        className="nsv-mobnav"
+        aria-label={dict.nav.menu}
+        data-open={open ? "yes" : "no"}
+      >
         {nav.map((item) => (
           <Link key={item.label} href={item.href} onClick={() => setOpen(false)}>
             {item.label}
           </Link>
         ))}
-      </div>
+      </nav>
     </>
   );
 }

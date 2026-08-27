@@ -341,17 +341,51 @@ body {
 /* On dark scenes the cherry ring disappears — use the lamp gold: --brand-red
    is 1.81:1 on --brand-night and --brand-gold-lit is 9.98:1.
 
-   This list has to follow the bands rather than the components, and it has
-   been wrong in both directions. `.casepage .dash` was in it after the
-   dashboard moved to paper, so the money bars' key buttons wore a gold ring at
-   1.70:1 on --brand-paper-2 — no ring at all for the only people who need one.
-   It was then narrowed to `.casepage .vpanel`, the one dark thing left in that
-   band. The band is --brand-night again and the panel has no ground of its
-   own, so the whole dashboard is back: the key buttons, the glossary links in
-   a ledger value and the matrix's track links are all standing on the night
-   ground and all take the gold. */
-:where(.lamp, .court, .casepage .mast, .casepage .dash)
-  :where(a, button, summary, [tabindex]):focus-visible {
+   Two passes met here and both were right about different halves.
+
+   The list has to follow the bands, and it had been wrong in both directions.
+   `.casepage .dash` was in it, then out of it when the dashboard moved to
+   paper — where a gold ring measures 1.70:1, which is no ring at all for the
+   only people who need one — and the band is `--brand-night` again, so it is
+   back. That is the smaller half.
+
+   The larger half: the list named four scenes and reached two. `.lamp` and
+   `.court` match no element on any page — the lamp stage is `.lmp`, the court
+   masthead is `.casepage .mast` — so the only dark grounds actually answered
+   were the decision page's masthead and its dispositif panel. Everything else
+   dark on this site drew the cherry ring, measured on the built pages at 1440:
+   the header on every page and its drawer at 1.81:1, the footer 1.95:1, the
+   map scene 1.69–1.81:1, the decision page's side nav in both its renderings
+   1.81:1, the home page's hero buttons over the lamp 1.79:1. That is the
+   site's whole navigation — the wordmark, seven nav links, both language
+   links, eleven section links per decision page — failing 1.4.11 for the only
+   readers a focus ring exists for.
+
+   Named band by band, and every one checked to the leaf, because naming a
+   wrapper instead of a scene is how this broke the first time. The home page's
+   `.lmp` is exactly that trap: it is the whole of <main>, so it holds the lamp
+   stage and the map and the pull quote — and also the library accordion on
+   white and the partners band on paper. Gold on white is 1.87:1 against the
+   cherry's 8.68, so reaching for the wrapper would have taken a working ring
+   off forty-seven controls to fix three. */
+:where(
+    .pj,
+    .nsv-mapband,
+    .nsvq,
+    .nsv-topbar,
+    .nsv-mobnav,
+    .nsv-footband,
+    .nsv-map,
+    .emap,
+    .mp-stage,
+    .pagenav,
+    .pagenav-v,
+    .casepage .mast,
+    .casepage .dash
+  )
+  :where(a, button, summary, input, select, textarea, [tabindex]):focus-visible,
+/* The skip link is itself the control, not a band around one. */
+.nsv-skiplink:focus-visible {
   outline-color: var(--brand-gold-lit);
 }
 

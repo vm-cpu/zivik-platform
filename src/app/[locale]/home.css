@@ -185,7 +185,14 @@
      off the type scale — this is the lamp's own lettering, and DESIGN.md
      gives illustrations their own register. */
   .lmp .wm{position:relative;display:inline-block;font-family:var(--brand-font-display),Georgia,serif;font-weight:400;font-size:clamp(46px,15vw,88px);line-height:1;white-space:nowrap}
-  .lmp .wm .dim{color:rgba(243,232,226,.32)}
+  /* The unlit half of the wordmark, and it is text — the site's own name, the
+     page's h1 — not part of the drawing. The lamp's cone is 250px across and
+     the word is 344px at 1440, so the letters at both ends are only ever this
+     layer: measured on the built page, composited over the stage at its
+     darkest (rgb 34 16 14), .32 painted rgb(101 85 82) and 2.59:1, under the
+     3:1 that 88px large text asks for. At .40 it is 3.36:1 and still reads as
+     the shadowed half against the lit one, which is 19:1 beside it. */
+  .lmp .wm .dim{color:rgba(243,232,226,.40)}
   .lmp .wm .lit{position:absolute;left:0;top:0;color:#FFF9EC;text-shadow:0 0 34px rgba(255,240,205,.4);-webkit-mask-image:radial-gradient(circle 250px at var(--mx,50%) 52%,#000 0%,rgba(0,0,0,.9) 36%,rgba(0,0,0,.35) 64%,transparent 84%);mask-image:radial-gradient(circle 250px at var(--mx,50%) 52%,#000 0%,rgba(0,0,0,.9) 36%,rgba(0,0,0,.35) 64%,transparent 84%)}
   .lmp .rc{display:flex;flex-direction:column;gap:7px;padding:var(--space-5);text-decoration:none;cursor:pointer;background:rgba(243,232,226,.03);border:1px solid rgba(243,232,226,.13);transition:box-shadow .4s ease,border-color .4s ease}
   .lmp .rc:hover{border-color:rgba(240,221,168,.5);box-shadow:0 0 34px 4px rgba(255,238,196,.1)}
