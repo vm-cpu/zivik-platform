@@ -1,8 +1,9 @@
 /* ---- responsive ------------------------------------------------------------ */
 
 @media (max-width: 820px) {
-  .casepage .lede-grid,
-  .casepage .refs-grid {
+  /* `.refs-grid` was listed here too and matched nothing: no markup has
+     carried that class since the reference band was split in two. */
+  .casepage .lede-grid {
     grid-template-columns: 1fr;
   }
   .casepage .why {

@@ -3,29 +3,72 @@
   border-bottom: 1px solid var(--seam);
   padding-block: clamp(34px, 4.5vw, 60px);
 }
+/* ---- the holdings: a ledger, not cards -------------------------------------
+   Two things were wrong here, and the layout was the smaller of them.
+
+   The cards flowed through `columns: 2` with `break-inside: avoid`. Multicol
+   balances by height, so entries of 105 and 388 characters landed with ragged
+   bottoms and the second column ended in a hole as deep as an entry; and the
+   reading order ran down column one before column two, which is not how a set
+   of holdings is read.
+
+   The card was the deeper problem. A white box with a serif headline over
+   grey prose is the shape of an article teaser, and these are not teasers —
+   they are propositions: what the Court held the law to *mean*, the half of a
+   decision that goes into a filing. A ledger says that. The doctrine's name
+   sits in a rail, the proposition reads as prose beside it, a hairline
+   separates entries: the same apparatus-and-prose idiom as the glance ledger
+   and the verdict matrix, which is the language the rest of the page already
+   speaks. One column, so three entries and six read alike and there is no
+   second column left to empty.
+
+   The name takes the prose's own size and is set apart by face, weight and
+   colour instead — the rule the standfirst follows, for the same reason. It
+   was --t-h3 over 14px card prose (1.6x, a headline), then --t-lead over 14px
+   (1.43x); beside 16px prose, in a column of its own, it needs no ratio at
+   all. The prose moves 14px → 16px because it is no longer card furniture: it
+   is the longest continuous reading in the band and takes the reading size and
+   the reading measure. */
+.casepage .rulings {
+  margin: var(--space-6) 0 0;
+}
 .casepage .ruling {
-  background: var(--card);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-5) var(--space-6);
-  margin-bottom: var(--space-3);
+  display: grid;
+  /* 14rem takes the longest term on the eight pages — «Персональна юрисдикція
+     через летальну силу», 42 characters — in two lines, and leaves the prose
+     its full 660px inside the 1180 rail. */
+  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-2) var(--space-8);
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--prule);
 }
-.casepage .ruling b {
-  display: block;
-  font-family: var(--brand-font-display), serif;
-  /* 22.5px over 14px card prose was 1.6x and made a holding read like a blog
-     headline. --t-lead is 1.43x, the same ratio the objection cards settled
-     on for the same reason. */
-  font-size: var(--t-lead);
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: var(--space-2);
-}
-.casepage .ruling p {
+.casepage .ruling dt {
   margin: 0;
-  font-size: var(--t-sm);
-  line-height: 1.6;
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: var(--t-body);
+  line-height: 1.35;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.casepage .ruling dd {
+  margin: 0;
+  font-size: var(--t-body);
+  line-height: 1.62;
   color: var(--ink2);
+  max-width: var(--prose);
+  text-wrap: pretty;
+}
+/* At 801px the rail and the gutters leave the proposition 465px — 56
+   characters, measured, and the narrowest any prose on this page is allowed to
+   run. Below that the name goes back above it and the hairlines keep the
+   entries apart on their own. */
+@media (max-width: 800px) {
+  .casepage .ruling {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
 }
 .casepage .pmeasures {
   list-style: none;
@@ -122,7 +165,7 @@ The measure has been argued four times, so here is the method that settles
    660px is 80: wider, because the column read as stranded in the 1180px rail
    twice over, and still short of the 85 that started all this. */
 .casepage .read {
-  max-width: 660px;
+  max-width: var(--prose);
   counter-reset: disp;
 }
 .casepage .read .lead {
