@@ -52,14 +52,16 @@ const T = {
   },
   site: { uk: "Сайт організації", en: "The organisation’s site" },
   runH: { uk: "Хто веде бібліотеку", en: "Who runs the library" },
-  /* Traceable to `content/partners.ts`, which records why the three were taken
-     off the list, and to /about, which names them. Stated here so that their
-     absence reads as a distinction and not as an omission. */
+  /* One sentence, and it states the fact rather than explaining an absence.
+     It used to run to 180 characters saying that the University, the Faculty
+     and the Centre are *not* in the partner list and why — an answer to a
+     question the reader had not asked, written from the list-keeper's side of
+     the page. Owner's decision. The «Про проєкт →» link went with it: /about
+     is already in the main navigation and in the footer. */
   run: {
-    uk: "Український католицький університет, його Факультет права і Дослідницький центр імені Луї Б. Зона не значаться серед партнерів, бо вони ведуть бібліотеку, а не партнерують із нею.",
-    en: "The Ukrainian Catholic University, its Faculty of Law and the Louis B. Sohn Research Centre are not listed among the partners: they run the library rather than partner with it.",
+    uk: "Бібліотеку веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
+    en: "The library is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
   },
-  runLink: { uk: "Про проєкт", en: "About the project" },
   writeH: { uk: "Написати нам", en: "Write to us" },
   write: {
     uk: "Хочете співпрацювати з бібліотекою — напишіть.",
@@ -176,9 +178,6 @@ export default async function PartnersPage({
         <section className="prt-sec">
           <h2>{L(T.runH)}</h2>
           <p className="prt-prose">{L(T.run)}</p>
-          <p className="prt-more">
-            <Link href={`/${locale}/about`}>{L(T.runLink)} →</Link>
-          </p>
         </section>
 
         <section className="prt-sec">
