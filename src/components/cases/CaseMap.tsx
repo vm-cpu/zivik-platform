@@ -44,6 +44,7 @@ export interface CaseMapTheatre {
 export default function CaseMap({
   frame,
   strip,
+  unit,
   context,
   uaPath,
   regions,
@@ -56,6 +57,8 @@ export default function CaseMap({
   frame: string;
   /** How much of `frame` is the strip reserved for the key, 0–1. */
   strip: number;
+  /** Projection units per CSS pixel at the band's full width. */
+  unit: number;
   context: string[];
   uaPath: string;
   /** Ukraine's internal oblast boundaries, as one mesh. */
@@ -124,6 +127,19 @@ export default function CaseMap({
   const state = (key: string) =>
     sel === null ? "rest" : sel === key ? "on" : "off";
 
+  /* The marks, in pixels, measured off the events map at a 1440px window
+     rather than chosen: its place dot comes out 11.3px across, its halo 16.9
+     to 24.4 depending on how much a place is carrying (19.3 is the middle of
+     that, and a theatre carries no such number), and its court ring 9.4. This
+     drawing had 17.9, 79.5 and 19.9 — the halo four times over, which is what
+     was reading as a glow rather than as a mark. `px` puts a pixel back into
+     the frame's own units. */
+  const px = (n: number) => Math.round(n * unit * 100) / 100;
+  const R_ZONE = px(5.65);
+  const R_ZONE_HALO = px(9.65);
+  const R_COURT = px(4.7);
+  const R_CITY = px(4.4);
+
   return (
     <div className="map-wrap" data-sel={sel ?? "none"}>
       {/* The strip's size travels with the drawing rather than being written
@@ -190,9 +206,29 @@ export default function CaseMap({
               x2={reach[0]}
               y2={reach[1]}
             />
+            {/* The light itself, the events map's own: one short bright
+                segment runs the length of the connector and is gone. Drawn
+                from the ground in dispute towards the forum, whichever end the
+                reader picked, because that is the direction the case
+                travelled. pathLength normalises the line to 100 so the dash
+                figures are constants rather than a measurement per case.
+
+                Keyed by the selection so that picking a second place runs it
+                again: the attribute stays "on" across two selections, and a
+                CSS animation only restarts when the rule starts matching. */}
+            <line
+              key={`glint-${sel ?? "none"}`}
+              className="glint"
+              data-state={sel === null ? "rest" : "on"}
+              pathLength={100}
+              x1={reach[0]}
+              y1={reach[1]}
+              x2={seat.at[0]}
+              y2={seat.at[1]}
+            />
 
             <g className="mk-seat" data-state={state("seat")}>
-              <circle className="mk-court" cx={seat.at[0]} cy={seat.at[1]} r={10} />
+              <circle className="mk-court" cx={seat.at[0]} cy={seat.at[1]} r={R_COURT} />
               <circle
                 className="mk-hit"
                 data-mk="seat"
@@ -208,14 +244,14 @@ export default function CaseMap({
               />
             </g>
 
-            <circle className="mk-city" cx={kyiv.at[0]} cy={kyiv.at[1]} r={7} />
+            <circle className="mk-city" cx={kyiv.at[0]} cy={kyiv.at[1]} r={R_CITY} />
 
             {theatres.map((t) => (
               <g key={t.id} className="mk-zone" data-state={state(t.id)}>
                 {t.pts.map((p, i) => (
                   <g key={i}>
-                    <circle className="zone-halo" cx={p[0]} cy={p[1]} r={40} />
-                    <circle className="zone" cx={p[0]} cy={p[1]} r={9} />
+                    <circle className="zone-halo" cx={p[0]} cy={p[1]} r={R_ZONE_HALO} />
+                    <circle className="zone" cx={p[0]} cy={p[1]} r={R_ZONE} />
                   </g>
                 ))}
                 {/* One target per theatre, on its first mark: two dots eight

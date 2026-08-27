@@ -73,6 +73,11 @@
 .casepage .mk-zone[data-state="on"] .zone {
   filter: drop-shadow(0 0 5px var(--brand-gold-lamp))
     drop-shadow(0 0 12px var(--brand-gold-lamp));
+  /* The warm rim the events map puts on a selected place, so the mark reads as
+     a source rather than as a disc that got brighter. */
+  stroke: var(--brand-cream-warm);
+  stroke-width: 1.8;
+  vector-effect: non-scaling-stroke;
 }
 .casepage .mk-seat[data-state="on"] .mk-court {
   stroke: var(--brand-gold-pale);
@@ -82,8 +87,59 @@
 .casepage .zone-area[data-state="on"] {
   fill: color-mix(in srgb, var(--brand-gold-lamp) 30%, transparent);
 }
+/* The connector, selected: the events map's own figures — 0.85 and 1.6, not
+   0.9 and a hairline, so it stops being a line and becomes the beam between
+   the two. */
+.casepage .map .reach {
+  transition:
+    opacity var(--dur) var(--ease),
+    stroke-width var(--dur) var(--ease);
+}
 .casepage .map .reach[data-state="on"] {
-  opacity: 0.9;
+  opacity: 0.85;
+  stroke-width: 1.6;
+}
+
+/* ---- the light travelling to the forum ---- */
+/* Copied from the events map, figures and all, because it is the same claim
+   being drawn: this map says a case reaches from a place to a court, and until
+   now a selection said it by brightening a dashed line. One short bright
+   segment runs the length of the connector and stops. It runs once, on --ease
+   rather than --ease-out, which was measured there to put 65% of the travel
+   into the first 80ms and read as a flash rather than as something crossing a
+   distance.
+
+   pathLength="100" on the element normalises the line, so the dash is 11% of
+   it and the run from 11 to -100 carries the light from just before the place
+   to just past the forum. */
+.casepage .map .glint {
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-dasharray: 11 100;
+  stroke-dashoffset: 11;
+  opacity: 0;
+  pointer-events: none;
+  vector-effect: non-scaling-stroke;
+}
+.casepage .map .glint[data-state="on"] {
+  animation: case-glint 680ms var(--ease) both;
+}
+@keyframes case-glint {
+  0% {
+    stroke-dashoffset: 11;
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.92;
+  }
+  72% {
+    opacity: 0.92;
+  }
+  100% {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
 }
 .casepage .map-labels [data-state="on"] b {
   color: var(--cream);
@@ -136,6 +192,11 @@
   .casepage .mk-seat .mk-court,
   .casepage .map .reach {
     transition: none;
+  }
+  /* The highlight still applies — the line brightens and both ends light — it
+     simply arrives instead of travelling. */
+  .casepage .map .glint[data-state="on"] {
+    animation: none;
   }
 }
 

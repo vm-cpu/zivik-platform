@@ -403,6 +403,12 @@ function TheatreMap({
          margin the forum had before the reservation rather than putting it on
          the frame's edge. */
       strip={Math.round((extra / w) * 10000) / 10000}
+      /* Projection units per CSS pixel at the band's full 1000px. The marks
+         are sized from the events map in pixels — measured there, not guessed
+         — and every case frames itself, so a radius written in units comes out
+         a different size on each of the eight. This is what turns one back
+         into the other. */
+      unit={Math.round((w / 1000) * 1000) / 1000}
       context={mapContext}
       uaPath={atlas.ukraine}
       regions={atlas.regions}
