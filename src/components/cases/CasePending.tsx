@@ -17,6 +17,24 @@ import { registryCases } from "@/content/cases";
  */
 const T = {
   amount: { uk: "Сума у спорі", en: "Amount in dispute" },
+  seat: { uk: "Місце розгляду", en: "Seat" },
+  pages: { uk: "Обсяг рішення", en: "Length of the decision" },
+  pagesN: { uk: "с.", en: "pp." },
+  /* The heading over the siblings. Deliberately says what the relation IS —
+     same forum — and claims nothing about the law. These proceedings are
+     neighbours on a docket, not authority for one another. */
+  siblings: { uk: "Інші провадження в цьому суді", en: "Other proceedings before this forum" },
+  /* Shown only when the forum has no analysed sibling to offer. */
+  kindred: { uk: "Розібрані рішення тієї ж категорії", en: "Analysed decisions of the same kind" },
+  /* The last resort, for a proceeding that is the only one of its forum and
+     the only one of its field. Three records are: the ITLOS case, the ICC
+     commercial arbitration and the EU enforcement decision. */
+  kin2: {
+    uk: { international: "Розібрані рішення міжнародних судів", arbitration: "Розібрані арбітражні рішення", national: "Розібрані рішення національних судів", executive: "Розібрані рішення бібліотеки" },
+    en: { international: "Analysed decisions of international courts", arbitration: "Analysed arbitral awards", national: "Analysed decisions of national courts", executive: "Analysed decisions in the library" },
+  },
+  hasSummary: { uk: "є розбір", en: "analysed" },
+  allOfForum: { uk: "Усі провадження цього суду", en: "All proceedings before this forum" },
 } as const;
 
 /** The registry row behind a `/cases/{id}` URL that has no summary. */
@@ -88,6 +106,91 @@ export default function CasePending({
   const inst = institutions.find((i) => i.id === entry.institutionId);
   const t = dict.pending;
 
+  /* Thirty-one of the thirty-nine proceedings are in this state, and each was
+     a leaf: a card, an apology and two links back to lists. What the registry
+     already knows is that none of them stands alone — the ten pending Crimea
+     BIT arbitrations sit beside Oschadbank and DTEK, which are written up, and
+     the six pending ICC records are the individual warrants under a situation
+     that is written up. Saying so turns a dead end into the cluster it belongs
+     to, and the two relations below are the two the data actually supports.
+
+     Same forum first. It is a fact about a docket, not about the law, and it
+     is stated as such — nothing here claims one proceeding is authority for
+     another. */
+  const siblings = registryCases.filter(
+    (c) => c.institutionId === entry.institutionId && c.id !== entry.id,
+  );
+  const SHOWN = 8;
+
+  /* Only when the forum has no analysed neighbour to offer. A reader on the
+     ITLOS case or the Lithuanian prosecution has no sibling at all, and the
+     nearest useful thing the archive holds is a decision of the same kind. */
+  const kindred =
+    siblings.some((c) => c.lit)
+      ? []
+      : registryCases.filter(
+          (c) =>
+            c.lit &&
+            c.id !== entry.id &&
+            pick(c.type, locale) === pick(entry.type, locale),
+        );
+
+  /* And a proceeding that is alone in its forum AND alone in its field still
+     has somewhere to go: the analysed decisions of forums of the same kind.
+     That is a weaker relation than the two above and it is named as one — an
+     international court's decision, an arbitral award — rather than dressed up
+     as a connection between these particular cases. */
+  const catOf = (c: RegistryCase) =>
+    institutions.find((i) => i.id === c.institutionId)?.category;
+  const category = inst?.category;
+  /* The test is whether a written-up decision has been offered yet, not
+     whether any neighbour has. Tied to `siblings.length` it left the two SCC
+     arbitrations pointing at each other and nowhere else — both are stubs, so
+     the page led a reader from one apology to another. */
+  const offeredAnalysed = siblings.some((c) => c.lit) || kindred.length > 0;
+  const kin2 =
+    !offeredAnalysed && category
+      ? registryCases.filter((c) => c.lit && c.id !== entry.id && catOf(c) === category)
+      : [];
+  /* `executive` has exactly one member — the EU decision — so a category match
+     returns nothing for it. That record falls back to the library's analysed
+     decisions, which is what its heading says. */
+  const kin2Final =
+    !offeredAnalysed && kin2.length === 0
+      ? registryCases.filter((c) => c.lit && c.id !== entry.id)
+      : kin2;
+
+  const caseHref = (c: RegistryCase) =>
+    `/${locale}/cases/${c.summarySlug ?? c.id}`;
+  const caseName = (c: RegistryCase) =>
+    locale === "uk" && c.nameUk ? c.nameUk : c.name;
+
+  const relations = (items: RegistryCase[], heading: string) => (
+    <section className="pend-rel">
+      <h2>{heading}</h2>
+      <ul>
+        {items.slice(0, SHOWN).map((c) => (
+          <li key={c.id} data-lit={c.lit ? "yes" : "no"}>
+            <Link href={caseHref(c)}>
+              <span className="pend-rel-name" lang={foreignLang(caseName(c), locale)}>
+                {caseName(c)}
+              </span>
+              <span className="pend-rel-meta">
+                {c.year ?? ""}
+                {c.lit && <b> · {pick(T.hasSummary, locale)}</b>}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {items.length > SHOWN && (
+        <Link className="pend-rel-more" href={`/${locale}/registry?court=${entry.institutionId}`}>
+          {pick(T.allOfForum, locale)} ({items.length}) →
+        </Link>
+      )}
+    </section>
+  );
+
   return (
     <div className="page pendingpage">
       <main id="content" tabIndex={-1} className="pend">
@@ -132,13 +235,41 @@ export default function CasePending({
               <dd className="pend-mono">{money(entry.amountUsd, locale)}</dd>
             </div>
           )}
+          {inst?.seat && (
+            <div>
+              <dt>{pick(T.seat, locale)}</dt>
+              <dd>{pick(inst.seat, locale)}</dd>
+            </div>
+          )}
           {entry.note && (
             <div>
               <dt>{t.docket}</dt>
               <dd className="pend-mono">{pick(entry.note, locale)}</dd>
             </div>
           )}
+          {/* Four of the thirty-nine records carry a page count. It was kept
+              in the model with a note saying it should either get a surface or
+              be cleared deliberately; this is the surface. On a page whose
+              honest subject is a document the reader has not been given yet,
+              how long that document is turns out to be one of the more useful
+              things it can say. */}
+          {entry.pages != null && (
+            <div>
+              <dt>{pick(T.pages, locale)}</dt>
+              <dd className="pend-mono">
+                {entry.pages} {pick(T.pagesN, locale)}
+              </dd>
+            </div>
+          )}
         </dl>
+
+        {siblings.length > 0 && relations(siblings, pick(T.siblings, locale))}
+        {kindred.length > 0 && relations(kindred, pick(T.kindred, locale))}
+        {kin2Final.length > 0 &&
+          relations(
+            kin2Final,
+            T.kin2[locale === "uk" ? "uk" : "en"][category ?? "executive"],
+          )}
 
         <div className="pend-ways">
           {entry.decisionUrl && (

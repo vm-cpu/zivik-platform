@@ -161,3 +161,85 @@
     gap: var(--space-1);
   }
 }
+
+/* ---- the neighbours ------------------------------------------------------
+   A proceeding without a write-up was a leaf: a card, an honest apology and
+   two links back to lists. It is not a leaf in the data — the ten pending
+   Crimea BIT arbitrations sit beside two that are written up, and the six
+   pending ICC records are warrants under a situation that is written up. This
+   is that relation, set as a list of ways onward rather than as cards, because
+   the reader arrived wanting one case and is being offered a shelf. */
+.pend-rel {
+  margin-top: var(--space-10);
+  width: 100%;
+  max-width: 46rem;
+  text-align: left;
+}
+.pend-rel h2 {
+  margin: 0 0 var(--space-4);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.pend-rel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pend-rel li {
+  border-top: 1px solid var(--rule-soft);
+}
+.pend-rel li:last-child {
+  border-bottom: 1px solid var(--rule-soft);
+}
+.pend-rel a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-4) 0;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color var(--dur) var(--ease);
+}
+.pend-rel a:hover {
+  color: var(--cream);
+}
+.pend-rel-name {
+  font-size: var(--t-sm);
+  line-height: 1.45;
+}
+/* A row that leads to a written-up decision is the most useful row in the
+   list, and it is the one thing here a reader can actually go and read. */
+.pend-rel li[data-lit="yes"] .pend-rel-name {
+  color: var(--cream);
+}
+.pend-rel-meta {
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pend-rel-meta b {
+  color: var(--gold);
+  font-weight: 600;
+}
+.pend-rel-more {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+}
+.pend-rel-more:hover {
+  color: var(--cream);
+}
+@media (max-width: 620px) {
+  .pend-rel a {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
