@@ -363,46 +363,6 @@
   margin: 0;
   padding: 0;
 }
-/* The key to the chronology's typography.
-
-   The four kinds have been set differently since the day `data-kind` was
-   styled — gold and bold for an act of the court, ink for a filing, ink at the
-   secondary weight for an order, receded for background — and nothing told the
-   reader what the difference meant. A visual language without a key is not a
-   language.
-
-   Each word carries the treatment it names, so the key and the rows are read
-   the same way, and it needs no swatches. Separators are `::before` on the
-   siblings rather than characters in the text, so a screen reader gets four
-   words and not three interpuncts. */
-.casepage .ctl-key {
-  margin: var(--space-4) 0 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px var(--space-3);
-  font-size: var(--t-cap);
-}
-.casepage .ctl-key span + span::before {
-  content: "·";
-  margin-right: var(--space-3);
-  color: var(--faint);
-}
-.casepage .ctl-key [data-kind="judgment"] {
-  color: var(--pgold);
-  font-weight: 600;
-}
-.casepage .ctl-key [data-kind="order"] {
-  color: var(--ink);
-  font-weight: 500;
-}
-.casepage .ctl-key [data-kind="filing"] {
-  color: var(--ink);
-}
-.casepage .ctl-key [data-kind="context"] {
-  color: var(--muted);
-}
-
 .casepage .ctl-list li {
   /* No max-width here, and the one that was here was a mistake worth naming.
 
@@ -492,29 +452,66 @@
   line-height: 1.45;
   color: var(--ink);
 }
-/* Four kinds are authored, 136 times across the eight write-ups, and the
-   component has always emitted all four as `data-kind`. Only `judgment` was
-   ever styled, so the other three — a filing, a procedural order, a piece of
-   context — arrived on the page looking identical. Telling one from the other
-   at a glance is most of what a lawyer scans a chronology for.
+/* Two states, not four.
 
-   The distinction is weight and colour, in that order, so it survives a
-   monochrome screen: an operative act is gold and bold, a filing is ink, an
-   order is ink at the secondary weight, and context recedes to --muted. No
-   red anywhere — on this page red is a breach, and none of these is one. */
+   Four kinds are authored across the 75 events of the eight chronologies —
+   judgment 13, order 21, filing 15, context 26 — and each used to get its own
+   setting: gold and bold, ink at 500, ink at 400, --muted. The owner asked
+   twice what the colours meant, the second time after a key had been added
+   under the filters. A key the person who commissioned the page has to consult
+   is the finding: the encoding was not carrying its own weight.
+
+   `order` and `filing` are gone as a distinction, because the boundary their
+   names promise is not in the data. `order` holds the Paris Court of Appeal
+   annulling the award and the Cassation quashing that annulment, the US
+   appellate refusal of Russian immunity, the Grand Chamber's admissibility
+   ruling, the Court's effective-control finding, the ICJ's provisional
+   measures — and, beside them, "hearings in Paris", "the trial opens in The
+   Hague", Russia's expulsion from the Council of Europe and a €87m seizure in
+   France. `filing` holds the Application, the Memorial, the Counter-Memorial,
+   six preliminary objections and 33 declarations of intervention — and an
+   arrest at Helsinki airport. Neither bucket is "what the court ordered" or
+   "what a party filed"; both are "a step in the proceedings". A weight of 500
+   against 400 was being asked to carry a line that does not exist, at a
+   difference nobody can see in running text anyway.
+
+   What is left is the distinction a chronology is actually read for, and both
+   halves of it say so in their own words, so neither needs a key:
+
+   - The operative acts, at 600. Eleven of the thirteen name themselves in the
+     label — «Рішення», «Вирок», «Ордери» — so the weight confirms what the
+     line already says rather than encoding something the reader must look up.
+     The gold is gone with the key: on this page gold is structure and
+     furniture (the date column, the rail, the +), and DESIGN.md keeps prose in
+     ink. Weight alone survives greyscale, which colour never did.
+   - Background — Euromaidan, MH17, the full-scale invasion — recedes, and does
+     it in italic as well as in tone, so the distinction survives a monochrome
+     screen and does not rest on colour (WCAG 1.4.1).
+
+   --muted is why the tone changed, and it was not a taste call. It resolves to
+   --brand-muted-dark, which is a dark-ground colour, and this band moved to
+   paper: #c9afa8 measures 1.99:1 on --brand-paper and 1.87:1 on
+   --brand-paper-2 — the chronology alternates between the two — and 2.06:1 on
+   the white a row lifts to on hover. A third of every chronology was a ghost,
+   and this is body content, not decoration. --ink3 (--brand-faint, #6d6964)
+   is 5.26 / 4.95 / 5.45:1 on the same three grounds. The rest of the rows are
+   --ink at 15.95:1 or better, and the gold date is 5.10:1 at its worst.
+
+   The date recedes with the label, in tone only. Gold mono reads as a docket
+   date; a world event is not one, and tinting the label alone left the row
+   looking like a step of the case that had merely been dimmed. */
 .casepage .ctl-list li[data-kind="judgment"] .ctl-label {
-  color: var(--pgold);
   font-weight: 600;
 }
-.casepage .ctl-list li[data-kind="filing"] .ctl-label {
-  color: var(--ink);
-}
-.casepage .ctl-list li[data-kind="order"] .ctl-label {
-  color: var(--ink);
-  font-weight: 500;
-}
 .casepage .ctl-list li[data-kind="context"] .ctl-label {
-  color: var(--muted);
+  color: var(--ink3);
+  font-style: italic;
+}
+/* The date recedes in tone only. It is set in IBM Plex Mono, which is loaded
+   at 400 and 500 upright and has no italic here — asking for one would get a
+   synthetic slant of a monospace face. */
+.casepage .ctl-list li[data-kind="context"] .ctl-date {
+  color: var(--ink3);
 }
 .casepage .ctl-note {
   margin: 0;

@@ -135,12 +135,6 @@ const T = {
      and the reader saw four dots for twenty events. Placed by date and
      pressable, it is the index of the chronology under it. */
   railLabel: { uk: "Перейти до події за датою", en: "Jump to an event by date" },
-  /* The key to the chronology's own typography — see `kindKey` in
-     CaseTimeline. The four words are set in the four treatments they name. */
-  kindJudgment: { uk: "акт суду", en: "act of the court" },
-  kindOrder: { uk: "процедурний наказ", en: "procedural order" },
-  kindFiling: { uk: "подання сторони", en: "a party's filing" },
-  kindContext: { uk: "тло", en: "background" },
   amountsH: { uk: "Суми", en: "Amounts" },
   shareOf: { uk: "від суми", en: "of the total" },
   attributionH: { uk: "Чия поведінка — це поведінка держави", en: "Whose conduct counts as the State's" },
@@ -1376,12 +1370,6 @@ export default async function CasePage({
               all: pick(T.allEvents, locale),
               openDetail: pick(T.openDetail, locale),
               railLabel: pick(T.railLabel, locale),
-              kindKey: {
-                judgment: pick(T.kindJudgment, locale),
-                order: pick(T.kindOrder, locale),
-                filing: pick(T.kindFiling, locale),
-                context: pick(T.kindContext, locale),
-              },
             }}
           />
         </div>

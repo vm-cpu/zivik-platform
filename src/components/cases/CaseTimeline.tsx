@@ -42,17 +42,6 @@ export default function CaseTimeline({
      * the index of the chronology below it.
      */
     railLabel: string;
-    /**
-     * The key to how a row is set.
-     *
-     * Four kinds are authored on every event — an act of the court, a filing
-     * by a party, a procedural order, and background — and the rows are set
-     * differently for each: gold and bold for an act, ink for a filing, ink at
-     * the secondary weight for an order, receded for background. That reading
-     * arrived without a key, which is a visual language nobody was taught. It
-     * is spelled out under the filters now.
-     */
-    kindKey: { judgment: string; filing: string; order: string; context: string };
   };
 }) {
   const [active, setActive] = useState<string>("all");
@@ -193,6 +182,14 @@ export default function CaseTimeline({
 
   const trackLabel = (id?: string) => (id ? tracks.find((t) => t.id === id)?.label : undefined);
 
+  /* `kind` still rides out on every row as `data-kind`, but only two of its
+     four values are set differently now — an operative act is bold, background
+     is receded and italic, and a filing and a procedural order are the same
+     line of a docket. The key that used to stand above the rail is gone with
+     the other two treatments: it named a distinction the reader had to hold in
+     their head, and the owner asked twice what the colours meant. See the note
+     on .ctl-list li[data-kind] in 40-instruments.css. */
+
   return (
     // data-tracks drives the row grid: with no tracks at all there is no
     // track column to reserve, and the event text takes the width the track
@@ -224,17 +221,6 @@ export default function CaseTimeline({
           ))}
         </div>
       )}
-
-      {/* The key to how a row is set. Not a legend box: each word carries the
-          treatment it names, so the key is read the same way the rows are. It
-          sits outside the rail's guard — a chronology without a rail still
-          sets its rows this way. */}
-      <p className="ctl-key">
-        <span data-kind="judgment">{labels.kindKey.judgment}</span>
-        <span data-kind="order">{labels.kindKey.order}</span>
-        <span data-kind="filing">{labels.kindKey.filing}</span>
-        <span data-kind="context">{labels.kindKey.context}</span>
-      </p>
 
       {dated.length > 1 && (
         <div className="ctl-rail" role="group" aria-label={labels.railLabel}>
