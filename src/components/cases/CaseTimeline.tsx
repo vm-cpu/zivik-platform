@@ -95,6 +95,34 @@ export default function CaseTimeline({
     if (m && tracks.some((t) => t.id === m[1])) setActive(m[1]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  /* A jump into a filtered chronology must not land on nothing.
+
+     The filter hides rows, and a link from elsewhere on the page names an
+     event, not a filter — so arriving at #ev-2023-03-17 while the reader (or a
+     previous shared link) had narrowed to "Юрисдикція" would scroll to an
+     element that is not in the list. The filter opens rather than the link
+     failing silently: the reader asked to see this event.
+
+     Also on hashchange, not only on mount. The filter hash was read once when
+     the component mounted, so a link clicked on this same page changed the
+     address bar and nothing else. */
+  useEffect(() => {
+    const apply = () => {
+      const h = window.location.hash;
+      const f = h.match(/^#chronology:(\w[\w-]*)$/);
+      if (f && tracks.some((t) => t.id === f[1])) {
+        setActive(f[1]);
+        return;
+      }
+      const ev = h.match(/^#ev-(\d{4}-\d{2}-\d{2})$/);
+      if (!ev) return;
+      const target = events.find((e) => e.iso === ev[1]);
+      if (target && target.track) setActive("all");
+    };
+    window.addEventListener("hashchange", apply);
+    return () => window.removeEventListener("hashchange", apply);
+  }, [events, tracks]);
+
   const pickTrack = (id: string) => {
     setActive(id);
     const hash = id === "all" ? "#chronology" : `#chronology:${id}`;
@@ -278,7 +306,18 @@ export default function CaseTimeline({
           const isOpen = open === idx;
           const label = trackLabel(e.track);
           return (
-            <li key={idx} data-idx={idx} data-kind={e.kind} data-track={e.track}>
+            /* An anchor per dated event. The verdict matrix links here when a
+               track names a date this chronology also records — the ICC's
+               tracks are the days its warrants issued. Keyed by the date
+               rather than by position, so appending an event does not move
+               every link that already exists. */
+            <li
+              key={idx}
+              id={e.iso ? `ev-${e.iso}` : undefined}
+              data-idx={idx}
+              data-kind={e.kind}
+              data-track={e.track}
+            >
               {e.note ? (
                 <button
                   type="button"

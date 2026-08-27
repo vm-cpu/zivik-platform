@@ -166,6 +166,7 @@ const T = {
   navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
   navRulings: { uk: "Тлумачення", en: "Key rulings" },
   toTop: { uk: "Нагору", en: "Top" },
+  toChronology: { uk: "До цієї дати в хронології", en: "To this date in the chronology" },
   ofLargest: { uk: "від найбільшої суми тут", en: "of the largest sum here" },
   /* Said on a bar the minimum width had to widen, so the drawing does not
      quietly overstate a small figure. */
@@ -670,6 +671,24 @@ export default async function CasePage({
     href: `/${locale}/glossary#${idOf(g.term.uk)}`,
   }));
 
+  /* Where a verdict's track is also a moment in the chronology.
+
+     Two of the eight decisions key their tracks to something else on the page.
+     The ICC's tracks are the dates its warrants issued — "17.03.2023" — and
+     every one of those dates is an entry in the chronology below. Nothing is
+     inferred here: the two are joined only when the same day appears on both
+     sides, so a page whose tracks are articles or defendants simply gets no
+     link rather than a guessed one. */
+  const chronoIsos = new Set(
+    (summary.timeline ?? []).map((e) => e.iso).filter((x): x is string => !!x),
+  );
+  const chronoAnchor = (track: string): string | undefined => {
+    const m = track.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+    if (!m) return undefined;
+    const iso = `${m[3]}-${m[2]}-${m[1]}`;
+    return chronoIsos.has(iso) ? `#ev-${iso}` : undefined;
+  };
+
   const { theatres = [], provisionalMeasures = [], timelineTracks = [], glance = [] } = summary;
   const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
   const parties = summary.title
@@ -1094,6 +1113,7 @@ export default async function CasePage({
             <VerdictMatrix
               rows={verdicts.map((v, i) => {
                 const url = trackUrl(v.track);
+                const inHref = chronoAnchor(v.track);
                 return {
                   /* The track key doubles as an instrument abbr where one
                      exists, and that is the form the official-text link is
@@ -1104,6 +1124,8 @@ export default async function CasePage({
                       ? pick(v.trackLabel, locale)
                       : v.track,
                   href: url,
+                  inHref: url ? undefined : inHref,
+                  inLabel: pick(T.toChronology, locale),
                   opensTrack: i === 0 || verdicts[i - 1].track !== v.track,
                   outcome: v.outcome,
                   outcomeLabel: pick(OUTCOME_LABEL[v.outcome], locale),

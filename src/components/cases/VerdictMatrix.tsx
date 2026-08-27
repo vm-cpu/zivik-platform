@@ -9,6 +9,17 @@ export interface VerdictRow {
   track: string;
   /** Official text of the instrument, where the track names one. */
   href?: string;
+  /**
+   * A place on this page instead — the chronology entry for this track.
+   *
+   * Two of the eight decisions key their tracks to something the page already
+   * holds: the ICC's tracks are the dates its warrants issued, and every one
+   * of them is also an entry in the chronology below. Where that join exists
+   * in the data it is offered; where it does not, nothing is invented.
+   */
+  inHref?: string;
+  /** What the inward link is, for anyone who cannot see where it points. */
+  inLabel?: string;
   /** First claim under this track — the only row that prints the track. */
   opensTrack: boolean;
   outcome: Outcome;
@@ -112,6 +123,10 @@ export default function VerdictMatrix({ rows }: { rows: VerdictRow[] }) {
              wants by then anyway. */
           style={{ transitionDelay: `${Math.min(i * 45, 360)}ms` }}
         >
+          {/* Three shapes, and the arrow is the tell. An outward link leaves
+              for the instrument's official text and says so with ↗; an inward
+              one moves the reader down this same page to the moment the track
+              names, and an arrow that means "new tab" would be a lie on it. */}
           {r.opensTrack &&
             (r.href ? (
               <a
@@ -121,6 +136,14 @@ export default function VerdictMatrix({ rows }: { rows: VerdictRow[] }) {
                 rel="noopener noreferrer"
               >
                 {r.track} ↗
+              </a>
+            ) : r.inHref ? (
+              <a
+                className="v-track v-track-link v-track-in"
+                href={r.inHref}
+                title={r.inLabel}
+              >
+                {r.track} ↓
               </a>
             ) : (
               <span className="v-track">{r.track}</span>

@@ -771,3 +771,22 @@
   fill: color-mix(in srgb, var(--brand-gold-lamp) 17%, transparent);
   stroke: none;
 }
+
+/* An inward track link — down this page rather than out to a document.
+
+   It carries the forum hue rather than gold, and that is the point of having a
+   third colour: a link that moves the reader between two blocks of the same
+   decision is not a finding in anyone's favour, and it no longer has to borrow
+   the colour of one to be visible. */
+.casepage .v-track-in {
+  color: var(--forum);
+}
+.casepage .v-track-in:hover,
+.casepage .v-track-in:focus-visible {
+  color: var(--cream);
+}
+/* Landing below the sticky bar rather than under it, the same allowance the
+   band anchors already take. */
+.casepage .ctl-list li[id] {
+  scroll-margin-top: calc(var(--pagenav-h) + var(--space-6));
+}
