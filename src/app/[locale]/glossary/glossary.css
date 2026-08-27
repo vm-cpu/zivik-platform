@@ -1,0 +1,395 @@
+/* ============================================================
+   Glossary — the library's terms as a dictionary.
+
+   Built on the same surface contract the library page uses: its own --brand-*
+   aliases at the root so nothing depends on another stylesheet loading first,
+   the rail's measure and gutter, and the hairline ledger rather than cards.
+   A dictionary is a list of headwords with hanging definitions; that is what
+   this draws, not a grid of tiles.
+   ============================================================ */
+
+.glossarypage {
+  --red: var(--brand-red);
+  --redd: var(--brand-red-dark);
+  --gold: var(--brand-gold);
+  --goldink: var(--brand-gold-ink);
+  --paper: var(--brand-paper);
+  --paper2: var(--brand-paper-2);
+  --surface: var(--brand-surface);
+  --ink: var(--brand-ink);
+  --ink2: var(--brand-ink-2);
+  --faint: var(--brand-faint);
+  --rule: var(--brand-rule);
+  --seam: var(--brand-seam);
+  /* Same 3:1 control edge the library defines, for the same WCAG 1.4.11
+     reason: these controls have no fill to separate them from the page. */
+  --ctl-edge: color-mix(in srgb, var(--brand-ink-2) 68%, var(--brand-paper));
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--brand-font-body), sans-serif;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+}
+.glossarypage .gl-wrap a {
+  color: var(--red);
+  text-decoration: none;
+}
+.glossarypage .gl-wrap a:hover {
+  color: var(--redd);
+}
+.glossarypage .gl-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 44px) var(--space-16);
+}
+
+/* ---- masthead ---- */
+.gl-mast {
+  padding: var(--space-10) 0 var(--space-6);
+  border-bottom: 1px solid var(--rule);
+}
+.gl-back {
+  display: inline-block;
+  margin-bottom: var(--space-5);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+  text-decoration: none;
+}
+.gl-back:hover {
+  color: var(--red);
+}
+.gl-mast h1 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  /* --t-mast: the step for a section page's title. This read
+     `clamp(var(--t-h2), 5vw, var(--t-h1))`, which is wrong twice over — a
+     clamp() nested inside clamp()'s own argument is invalid CSS, and --t-h1
+     was declared only on `.casepage`, so it resolved to nothing here. Either
+     fault alone drops the whole declaration, and the title rendered at the
+     page's body size. */
+  font-size: var(--t-mast);
+  line-height: 1.08;
+  color: var(--ink);
+  margin: 0 0 var(--space-3);
+}
+.gl-lede {
+  max-width: 60ch;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+  margin: 0;
+}
+.gl-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-8);
+  margin-top: var(--space-6);
+}
+.gl-meta .m {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--rule);
+}
+.gl-meta .m:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.gl-meta .mv {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-h2);
+  line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.gl-meta .m.gilt .mv {
+  color: var(--goldink);
+}
+.gl-meta .ml {
+  font: 600 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* ---- search and the alphabet ---- */
+.gl-tools {
+  margin-top: var(--space-6);
+}
+.gl-searchwrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--ctl-edge);
+  transition: border-color var(--dur) var(--ease);
+}
+.gl-searchwrap:hover {
+  border-bottom-color: var(--ink2);
+}
+.gl-searchwrap:focus-within {
+  border-bottom-color: var(--gold);
+  box-shadow: 0 1px 0 0 var(--gold);
+}
+.gl-si {
+  display: flex;
+  flex: none;
+  color: var(--faint);
+}
+.gl-searchwrap:focus-within .gl-si {
+  color: var(--goldink);
+}
+/* 16px on a phone and 14 above it — mobile Safari zooms the page when a field
+   under 16px takes focus, which is the library's search line's reasoning too. */
+.gl-search {
+  flex: 1 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
+  min-height: 44px;
+  font: 400 var(--t-body) var(--brand-font-body);
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: var(--space-3) 0;
+  outline: none;
+}
+@media (min-width: 641px) {
+  .gl-search {
+    font-size: var(--t-sm);
+  }
+}
+.gl-search::placeholder {
+  color: var(--faint);
+  opacity: 1;
+}
+.gl-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.gl-x {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-pill);
+  font-size: var(--t-cap);
+  line-height: 1;
+  color: var(--ink2);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.gl-x:hover {
+  background: var(--paper2);
+  color: var(--ink);
+}
+
+/* The index. Letters, not pills: an alphabet is a row of characters, and
+   twenty-nine bordered buttons would read as a toolbar. The active one takes
+   a gold underline, so the state survives a monochrome screen as a shape. */
+.gl-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding-top: var(--space-3);
+}
+.gl-letter {
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--ink2);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+}
+.gl-letter:hover:not(:disabled) {
+  color: var(--ink);
+  border-bottom-color: var(--rule);
+}
+.gl-letter[data-on] {
+  color: var(--ink);
+  font-weight: 700;
+  border-bottom-color: var(--gold);
+}
+/* A letter that leads nowhere from here is a dead control, so it says so
+   rather than returning an empty page. */
+.gl-letter:disabled {
+  color: var(--rule);
+  cursor: default;
+}
+
+/* ---- count line ---- */
+.gl-count {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px var(--space-4);
+  padding: var(--space-4) 0 var(--space-2);
+  font: 600 var(--t-cap) var(--brand-font-body);
+  color: var(--faint);
+}
+.gl-count p {
+  margin: 0;
+}
+.gl-count b {
+  color: var(--ink);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.gl-count .of {
+  color: var(--faint);
+  font-weight: 400;
+}
+.gl-filterby {
+  font-weight: 400;
+}
+.gl-filterby b {
+  font-weight: 600;
+}
+.gl-reset {
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--red);
+  background: none;
+  border: 0;
+  padding: 0 2px;
+  cursor: pointer;
+}
+.gl-reset:hover {
+  color: var(--redd);
+}
+
+/* ---- the dictionary itself ---- */
+.gl-group {
+  margin-top: var(--space-8);
+}
+/* The letter, set as the page's structural marker: display serif, gold, and a
+   rule that runs the width of the rail — the way a printed dictionary breaks
+   its columns. */
+.gl-initial {
+  margin: 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--seam);
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--t-h3);
+  line-height: 1;
+  color: var(--goldink);
+}
+.gl-entries {
+  margin: 0;
+}
+.gl-entry {
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--rule);
+  /* Headword left, definitions right — a hanging indent, which is what makes a
+     dictionary scannable by term. Below 720 it stacks: at that width the
+     headword column steals the measure the definition needs. */
+  display: grid;
+  grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+  gap: var(--space-3) var(--space-8);
+  align-items: start;
+}
+.gl-entry dt {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-body);
+  line-height: 1.3;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.gl-entry dd {
+  margin: 0;
+  grid-column: 2;
+}
+/* Two senses stack with air between them, so the pair reads as two readings
+   rather than one run-on paragraph. */
+.gl-entry dd + dd {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--rule);
+}
+.gl-def {
+  margin: 0;
+  max-width: 66ch;
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+/* The trail back to the decision. Two lines: the forum, then the case, which
+   is the order a lawyer reads a citation in. */
+.glossarypage .gl-wrap a.gl-src {
+  display: inline-grid;
+  gap: 2px;
+  margin-top: var(--space-2);
+  min-height: 24px;
+  text-decoration: none;
+}
+.gl-src-forum {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--goldink);
+}
+.gl-src-title {
+  font-size: var(--t-cap);
+  line-height: 1.35;
+  color: var(--red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--red) 38%, transparent);
+}
+.glossarypage .gl-wrap a.gl-src:hover .gl-src-title {
+  color: var(--redd);
+  text-decoration-color: currentColor;
+}
+
+/* ---- empty state ---- */
+.gl-empty {
+  margin-top: var(--space-4);
+  padding: var(--space-14) var(--space-6);
+  text-align: center;
+  background: var(--surface);
+  border: 1px dashed var(--rule);
+  border-radius: var(--r-md);
+}
+.gl-empty .eh {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-lead);
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+.gl-empty p {
+  font-size: var(--t-sm);
+  color: var(--faint);
+  margin: 0 0 var(--space-4);
+}
+.gl-empty .gl-reset {
+  margin: 0 auto;
+}
+
+@media (max-width: 720px) {
+  .gl-entry {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+  .gl-entry dd {
+    grid-column: 1;
+  }
+}

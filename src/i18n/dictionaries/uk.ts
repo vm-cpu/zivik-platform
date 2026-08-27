@@ -265,6 +265,7 @@ const uk = {
     colContacts: "Контакти",
     linkRegistry: "Бібліотека рішень",
     linkMap: "Мапа подій",
+    linkGlossary: "Словник",
     linkCourts: "Суди та інстанції",
     linkDocs: "Документи",
     linkAbout: "Про нас",

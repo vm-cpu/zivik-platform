@@ -180,6 +180,7 @@ const en: Dictionary = {
     colContacts: "Contacts",
     linkRegistry: "Library of decisions",
     linkMap: "Events map",
+    linkGlossary: "Glossary",
     linkCourts: "Courts and institutions",
     linkDocs: "Documents",
     linkAbout: "About us",

@@ -59,6 +59,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: registryLanguages },
   }));
 
+  /* The glossary. It changes when a write-up lands, since its fifty headwords
+     are gathered from the eight — so it tracks the library's cadence, not a
+     decision page's. */
+  const glossaryLanguages = languagesFor((l) => `/${l}/glossary`);
+  const glossary: MetadataRoute.Sitemap = locales.map((locale) => ({
+    url: `${siteUrl}/${locale}/glossary`,
+    changeFrequency: "monthly",
+    priority: locale === "uk" ? 0.7 : 0.6,
+    alternates: { languages: glossaryLanguages },
+  }));
+
   // One entry per decision page per locale, with hreflang between the pair.
   // The registry is the source of truth for which summaries exist.
   const slugs = registryCases
@@ -130,5 +141,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
-  return [...homes, ...registry, ...map, ...about, ...team, ...partners, ...cases, ...legal];
+  return [
+    ...homes,
+    ...registry,
+    ...glossary,
+    ...map,
+    ...about,
+    ...team,
+    ...partners,
+    ...cases,
+    ...legal,
+  ];
 }
