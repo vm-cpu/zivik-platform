@@ -707,6 +707,29 @@ export const dtekKrymenergo: DecisionSummary = {
   ],
 
   sources: [
+    /* The seizure of Gazprom-linked shares is in the lede and the enforcement
+       line and had no source of its own: it is a preliminary attachment of
+       Gazprom International's 50% holding in Wintershall Noordzee B.V., upheld
+       on appeal. The judgment below is the Dutch court's own text in English
+       translation. */
+    {
+      url: "https://cisarbitration.com/wp-content/uploads/2026/03/Gazprom_DTEK_CoA_Judgment_English.pdf",
+      title:
+        "JSC DTEK Krymenergo v Russian Federation — Judgment of the Hague Court of Appeal in summary proceedings, 24 February 2026 (English translation)",
+      authors: "Gerechtshof Den Haag",
+      publication: "CIS Arbitration Forum",
+      date: "2026",
+      type: "official/court",
+    },
+    {
+      url: "https://www.iareporter.com/articles/dutch-court-confirms-preliminary-attachment-of-gazproms-shares-in-wintershall-noordzee-to-satisfy-dtek-v-russia-award/",
+      title:
+        "Dutch court confirms preliminary attachment of Gazprom's shares in Wintershall Noordzee to satisfy DTEK v. Russia award",
+      authors: "Investment Arbitration Reporter",
+      publication: "IAReporter",
+      date: "2025",
+      type: "news/insight",
+    },
     // — the award and the instruments (the doc's own in-text links) —
     {
       url: "https://www.italaw.com/sites/default/files/case-documents/180426.pdf",

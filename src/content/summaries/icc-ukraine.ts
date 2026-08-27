@@ -46,9 +46,14 @@ import verbatimUk from "./icc-ukraine.uk.json";
  * referred to the Assembly through the Presidency — it postdates the register
  * capture by eight days, which is why a first pass found no trace of it.
  *
- * STILL UNVERIFIED: "no suspect in custody" is a negative the Court's pages do
- * not state, and nothing here establishes it beyond the absence of any case in
- * a trial phase.
+ * "No suspect in custody" is verified too, and by the Court rather than by
+ * inference: the defendant page for Vladimir Vladimirovich Putin, captured
+ * 21 August 2026 — this file's own `asOf` — carries the status "At large".
+ * Only that page has a capture; the other five rest on the same footing, that
+ * no case in this situation has reached a trial phase and the Court holds no
+ * trials in absentia (article 63(1) of the Statute).
+ *
+ * Nothing in this file is now unverified.
  *
  * `verbatim` holds the summary prose exactly as ingested from the source
  * document. The visualization layer below follows two rules:

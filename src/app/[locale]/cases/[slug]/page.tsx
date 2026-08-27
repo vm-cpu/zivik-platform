@@ -929,11 +929,6 @@ export default async function CasePage({
       {/* 1a — Sticky page navigation: every band, not just the article */}
       <PageNav sections={pageSections} ariaLabel={pick(T.navAria, locale)} />
 
-      {/* 1c — What this text is. Above the plain-language lede, because the
-          lede is written from the same provisional summary the notice is
-          about; a reader meets the caveat before the first sentence they
-          might quote. Nothing renders on a page whose flags set no notice. */}
-
       {/* 1b — Plain-language lede */}
       <section className="lede">
         <div className="rail lede-grid">
@@ -1379,9 +1374,6 @@ export default async function CasePage({
       <section className="readzone" id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
         <div className="rail">
           <article className="read">
-            {/* The same caveat, again, at the head of the text it is about —
-                the page nav lets a reader jump straight here and skip the
-                band under the masthead. */}
             {glossary.length > 0 && (
               <nav className="termchips" aria-label={pick(T.termsInText, locale)}>
                 <span className="termchips-lbl">{pick(T.termsInText, locale)}:</span>

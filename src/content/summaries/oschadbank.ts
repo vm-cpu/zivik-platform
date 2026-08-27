@@ -1001,6 +1001,18 @@ export const oschadbank: DecisionSummary = {
   ],
 
   sources: [
+    /* The EUR 87 million French attachment is stated six times on this page —
+       the FAQ, a stat tile, a timeline entry, the amounts card — and until now
+       no source here covered it. It is real; it was simply uncited. */
+    {
+      url: "https://en.interfax.com.ua/news/economic/1066322.html",
+      title:
+        "Ukraine's Oschadbank secures EUR 87 mln asset freeze in France over Crimean losses",
+      authors: "Interfax-Ukraine",
+      publication: "Interfax-Ukraine",
+      date: "2025",
+      type: "news/insight",
+    },
     {
       url: "https://www.iisd.org/itn/2023/07/01/pca-tribunal-finds-that-russia-committed-an-illegal-expropriation-against-ukrainian-bank/",
       title:
