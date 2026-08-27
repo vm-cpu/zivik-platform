@@ -50,7 +50,6 @@ export default function CaseMap({
   regions,
   seat,
   reach,
-  kyiv,
   theatres,
   labels,
 }: {
@@ -65,7 +64,6 @@ export default function CaseMap({
   regions?: string;
   seat: { name: string; caption: string; at: [number, number] };
   reach: [number, number];
-  kyiv: { label: string; at: [number, number] };
   theatres: CaseMapTheatre[];
   labels: { alt: string; seatRole: string; pick: string };
 }) {
@@ -138,14 +136,15 @@ export default function CaseMap({
   const R_ZONE = px(5.65);
   const R_ZONE_HALO = px(9.65);
   const R_COURT = px(4.7);
-  const R_CITY = px(4.4);
 
   return (
     <div className="map-wrap" data-sel={sel ?? "none"}>
       {/* The strip's size travels with the drawing rather than being written
           into the stylesheet: it is derived per case, and only the frame that
           reserved it knows how much it took. */}
-      <div className="map-plot" style={{ "--map-strip": strip } as CSSProperties}>
+      <div className="map-plot" style={
+          { "--map-strip": strip, "--map-unit": unit } as CSSProperties
+        }>
         <svg
           ref={svgRef}
           className="map"
@@ -244,8 +243,6 @@ export default function CaseMap({
               />
             </g>
 
-            <circle className="mk-city" cx={kyiv.at[0]} cy={kyiv.at[1]} r={R_CITY} />
-
             {theatres.map((t) => (
               <g key={t.id} className="mk-zone" data-state={state(t.id)}>
                 {t.pts.map((p, i) => (
@@ -283,9 +280,6 @@ export default function CaseMap({
           <span className="ml-seat" data-state={state("seat")} style={at(...seat.at)}>
             <b>{seat.name}</b>
             <i>{seat.caption}</i>
-          </span>
-          <span className="ml-city" style={at(...kyiv.at)}>
-            {kyiv.label}
           </span>
           {theatres.map((t) => {
             const cx = t.pts.reduce((s, p) => s + p[0], 0) / t.pts.length;

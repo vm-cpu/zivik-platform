@@ -10,15 +10,24 @@
    `.casepage .map-legend span` is (0,2,1) and sets a one-line flex row; the
    rules below are (0,3,0) and (0,3,1), so they win on specificity rather
    than on file order — the load order of a component stylesheet is not
-   something this page controls.
+   something this page controls. They are written without an element name so
+   that they keep matching whatever the entry is made of: it has already been
+   a span and is now a button.
 
    Colour comes only from --brand-* tokens. On --brand-night the sentence uses
    --brand-faint-dark, the documented AA-clearing muted colour for that ground.
    ============================================================ */
 
 /* Each theatre becomes a two-line entry: the dot and the place on the first
-   line, the sentence under it, indented past the dot. */
-.casepage .map-legend span.lg-theatre {
+   line, the sentence under it, indented past the dot.
+
+   Not `span.lg-theatre`: the entry became a button when the key became the
+   other end of the map's control, and this rule quietly stopped matching.
+   What survived was `.lg-note { grid-column: 2 }` forcing a second column with
+   no gaps in it at all, so the dot sat against the place and the sentence sat
+   against the line above — measured as `gap: normal` and a dot ending on the
+   same pixel the text began. */
+.casepage .map-legend .lg-theatre {
   display: grid;
   grid-template-columns: 11px 1fr;
   column-gap: var(--space-2);

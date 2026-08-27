@@ -418,13 +418,21 @@ function TheatreMap({
         at: [seat[0], seat[1]],
       }}
       reach={(() => {
-        const r = MK[forum.reachTo] ?? MK.kyiv;
+        /* The far end has to be a mark. `reachTo` names a place, and on three
+           of the eight cases that place is Kyiv — which the drawing named as a
+           reference point and no longer does, because it was the one thing on
+           the map that looked like a mark and answered nothing. A line drawn
+           to it now ends in open country. So the setting is honoured only when
+           it names ground some theatre actually stands on; otherwise the reach
+           ends where the case is about, which is what it was always for. */
+        const drawn = new Set(theatres.flatMap((t) => t.markerKeys));
+        const key =
+          drawn.has(forum.reachTo) && MK[forum.reachTo]
+            ? forum.reachTo
+            : theatres[0]?.markerKeys.find((k) => MK[k]);
+        const r = (key ? MK[key] : undefined) ?? seat;
         return [r[0], r[1]];
       })()}
-      kyiv={{
-        label: locale === "uk" ? "Київ" : "Kyiv",
-        at: [MK.kyiv[0], MK.kyiv[1]],
-      }}
       theatres={theatres.map((t, i) => ({
         id: `t${i}`,
         place: pick(t.place, locale),
