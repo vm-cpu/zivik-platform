@@ -96,7 +96,12 @@ display type reads as a different register, not just bigger body text.
 
 - **Never go below 14px** for anything a reader must read. The page previously
   ran 12–13.5px and felt cramped.
-- Reading measure stays **60–70 characters** (`.read { max-width: 680px }`).
+- Reading measure stays **60–70 characters** (`.read { max-width: 560px }`).
+  The width follows from the face and the language, so it is not transferable:
+  Fira Sans setting Ukrainian at 16px averages **8.04px per character**, which
+  puts 70 characters at 563px. This line used to say 680px, which is 85
+  characters — the number the decision pages actually ran at. If the body size
+  or the body face ever changes, re-measure rather than keeping the pixels.
 - Uppercase labels get `letter-spacing: 0.14em`; display gets `-0.028em`.
 - Slogans follow the brandbook: Charis SIL, uppercase, wide tracking.
 
@@ -218,7 +223,8 @@ from both. Two definitions of one class name is always a bug in waiting.
   the registry and on the map alike — and one still in preparation is a hollow
   ring. Selecting a marker turns its light up rather than drawing a box round
   it.
-- **Side nav** (`SideToc`) is sticky with scrollspy, collapsing to a sticky bar
+- **Side nav** (`PageNav`, `components/cases/PageNav.tsx`) is sticky with
+  scrollspy, collapsing to a sticky bar
   under 1000px.
 - **Buttons** are pills; primary is cherry with elevation, ghost is a hairline
   that warms to gold on hover.
@@ -226,7 +232,36 @@ from both. Two definitions of one class name is always a bug in waiting.
 
 ---
 
-## 4. Non-negotiables
+## 4. Enforcement
+
+    npm run design    # this document, checked
+    npm run check     # design + tsc + eslint
+
+`scripts/design-lint.mjs` reads the scale out of `globals.css` — it cannot
+drift from the system it enforces — and fails the run on a font size off the
+`--t-*` steps, a padding/margin/gap off the 4px grid, a colour literal outside
+`globals.css`, or a `fontSize` set inline in JSX.
+
+This exists because everything above was already written down and largely
+ignored. An audit on 26 August 2026 measured 94 hard-coded font sizes producing
+**26 distinct sizes on a nine-step scale**, 151 off-grid spacing values, 13
+colour literals, and three sibling headings of the same rank at 31px, 27px and
+26px — set as inline React styles, where no stylesheet could reach them. None
+of that was visible to anyone reading the code file by file.
+
+Three things are not violations, and the linter knows it: authored
+illustrations (the lamp, the projector, the map) keep their own register;
+`@media print` wants real black on real white; and lengths under 8px are
+hairlines and optical nudges rather than rhythm. Anything else that genuinely
+has no token wants a token in `globals.css` — not an exception. The escape
+hatch, `/* design-lint-ignore <rule>: <reason> */`, needs a reason to parse at
+all, and there are exactly two in the repository: the lamp's clearance above
+the wordmark, and a padding measured against the width of the map's zoom
+control.
+
+---
+
+## 5. Non-negotiables
 
 - **Accessibility.** One `:focus-visible` ring covers every control, switching
   to lamp gold on dark scenes. AA contrast everywhere. Reduced motion honoured.
@@ -238,7 +273,7 @@ from both. Two definitions of one class name is always a bug in waiting.
 - **Bilingual.** Every human-facing string is `Localized`. Verbatim judgment
   prose stays in its source language; the chrome around it is translated.
 
-## 5. Deliberately rejected
+## 6. Deliberately rejected
 
 Gamification, dopamine palettes, maximalism, collage, retrofuturism, 3D/WebGL,
 AI chatbots and voice UI. They fight the subject matter — this is a record of a
