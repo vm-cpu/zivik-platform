@@ -72,11 +72,6 @@ const T = {
   inCase: { uk: "у справі", en: "in" },
   mTerms: { uk: "термінів", en: "terms" },
   mCases: { uk: "рішень", en: "decisions" },
-  /* «З двома прочитаннями» was my phrasing and it did not land — the owner
-     had to ask what the tile counted. It counts headwords that more than one
-     decision defines, and in all four cases the two courts read the word
-     differently. Say the concrete thing. */
-  mShared: { uk: "пояснені двома судами", en: "defined by two courts" },
 } as const;
 
 export function generateStaticParams() {
@@ -164,8 +159,6 @@ export default async function GlossaryPage({
       title: s.title ? pick(s.title, locale) : s.masthead.parties,
     }));
 
-  const shared = entries.filter((e) => e.senses.length > 1).length;
-
   return (
     <div className="page glossarypage">
       <main id="content" tabIndex={-1} className="gl-wrap">
@@ -183,10 +176,6 @@ export default async function GlossaryPage({
             <div className="m">
               <span className="mv">{cases.length}</span>
               <span className="ml">{pick(T.mCases, locale)}</span>
-            </div>
-            <div className="m">
-              <span className="mv">{shared}</span>
-              <span className="ml">{pick(T.mShared, locale)}</span>
             </div>
           </div>
         </header>
