@@ -529,8 +529,10 @@ The measure has been argued four times, so here is the method that settles
   padding: var(--space-2) 0;
   outline: none;
 }
-/* 16px on a phone, where a smaller field makes mobile Safari zoom the page. */
-@media (min-width: 641px) {
+/* 16px wherever a smaller field makes mobile Safari zoom the page — which is
+   a tablet as well as a phone, so the guard asks about the pointer rather
+   than about the width the two share with a laptop. */
+@media (pointer: fine) {
   .casepage .terms-search input {
     font-size: var(--t-sm);
   }
@@ -824,6 +826,20 @@ The measure has been argued four times, so here is the method that settles
   font-family: var(--brand-font-display), serif;
   font-size: var(--t-sm);
   color: var(--gold);
+}
+/* The note stands 8px clear of the word it explains, and that clearance is
+   dead ground: measured on the built page the pointer crosses 4px where it is
+   over neither the mark nor the note, and the note hides mid-journey. WCAG
+   1.4.13 asks that the pointer be able to reach the content, and a reader
+   moving slowly — which is who this is for — does not make it. This strip
+   fills the gap and is invisible; it belongs to the note, so it only exists
+   while the note does, and it takes no clicks the note was not already
+   taking. */
+.casepage .gl-pop::before {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto 0;
+  height: var(--space-3);
 }
 /* Shown on hover, on keyboard focus, and while the pointer is over the note
    itself — without that last one the note vanishes the moment a reader moves

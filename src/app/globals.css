@@ -337,9 +337,50 @@ body {
    Oschadbank and DTEK — wore a gold ring at 1.70:1 on --brand-paper-2, which
    is no ring at all for the only people who need one. The one dark thing left
    inside that band is the dispositif panel, so it takes the gold and the band
-   goes back to cherry at 9.36:1. */
-:where(.lamp, .court, .casepage .mast, .casepage .vpanel)
-  :where(a, button, summary, [tabindex]):focus-visible {
+   goes back to cherry at 9.36:1.
+
+   The list named four scenes and reached two of them. `.lamp` and `.court`
+   match no element on any page — the lamp stage is `.lmp` and the court
+   masthead is `.casepage .mast`, which was already listed — so the only dark
+   grounds actually answered were the decision page's masthead and its
+   dispositif panel. Everything else dark on this site drew the cherry ring,
+   measured on the built pages at 1440: the header on every page and its
+   drawer 1.81:1, the footer 1.95:1, the map scene 1.69–1.81:1, the decision
+   page's side nav in both its renderings 1.81:1, and the home page's hero
+   buttons over the lamp 1.79:1. That is the site's whole navigation — the
+   wordmark, seven nav links, both language links, eleven section links per
+   decision page — failing 1.4.11 for the only readers the ring exists for.
+
+   Named band by band, and every one of them checked to the leaf: the failure
+   this replaces is the one `.casepage .dash` above already made, and naming a
+   wrapper rather than a scene makes it again. The home page's `.lmp` is that
+   trap — it is the whole of `<main>`, so it holds the lamp stage and the map
+   and the pull quote, and also the library accordion on white and the
+   partners band on paper. Gold on white is 1.87:1 against the cherry's 8.68,
+   so reaching for the wrapper would have taken a working ring off forty-seven
+   controls to fix three. The three dark bands are named instead.
+
+   Every selector below carries --brand-night, --brand-night-2 or
+   --brand-ink-black to its own leaves — walked on the built pages, not read
+   off the stylesheet. */
+:where(
+    .pj,
+    .nsv-mapband,
+    .nsvq,
+    .nsv-topbar,
+    .nsv-mobnav,
+    .nsv-footband,
+    .nsv-map,
+    .emap,
+    .mp-stage,
+    .pagenav,
+    .pagenav-v,
+    .casepage .mast,
+    .casepage .vpanel
+  )
+  :where(a, button, summary, input, select, textarea, [tabindex]):focus-visible,
+/* The skip link is itself the control, not a band around one. */
+.nsv-skiplink:focus-visible {
   outline-color: var(--brand-gold-lit);
 }
 

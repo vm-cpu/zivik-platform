@@ -34,6 +34,8 @@ export default function CaseTimeline({
   tracks?: TimelineTrackR[];
   labels: {
     all: string;
+    /** Names the filter row. See the note on the row itself. */
+    trackFilter: string;
     openDetail: string;
     /**
      * The rail. It used to be `aria-hidden` decoration — and decoration is
@@ -68,7 +70,18 @@ export default function CaseTimeline({
     setJump(null);
     const row = listRef.current?.querySelector<HTMLElement>(`[data-idx="${jump}"]`);
     if (!row) return;
-    row.scrollIntoView({ block: "center", behavior: "smooth" });
+    /* scrollIntoView names its own behaviour, and a named "smooth" animates
+       whatever the stylesheet says — globals.css forces scroll-behavior: auto
+       under prefers-reduced-motion and CSS cannot reach a script's argument.
+       PageNav already answers this for its two scrolls; the rail's jump into
+       the chronology was the one left animating for a reader who asked for
+       no motion. */
+    row.scrollIntoView({
+      block: "center",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
     // Without preventScroll the browser jumps to the row instantly and the
     // smooth scroll above has nowhere left to go.
     row.querySelector<HTMLElement>("button")?.focus({ preventScroll: true });
@@ -223,12 +236,22 @@ export default function CaseTimeline({
     // track column to reserve, and the event text takes the width the track
     // column would have had. See .ctl-row in 40-instruments.css.
     <div className="ctl" data-tracks={tracks.length > 0 ? "yes" : "no"}>
+      {/* A group of toggles, not a tablist.
+
+          role="tablist" promises the tabs pattern and none of it was here: no
+          element carried role="tabpanel", every tab was aria-controls nothing,
+          all five were tab stops rather than one with a roving tabindex, and
+          the arrow keys the role tells a screen-reader user to press moved
+          nothing. A reader was told "tab 1 of 5" and handed a widget that did
+          not behave like one. These are filters over the list below — a
+          pressed state is what they have and aria-pressed is how it is said.
+          The group takes its own name; it used to borrow «Усе» from the first
+          button inside it. */}
       {tracks.length > 0 && (
-        <div className="ctl-filters" role="tablist" aria-label={labels.all}>
+        <div className="ctl-filters" role="group" aria-label={labels.trackFilter}>
           <button
             type="button"
-            role="tab"
-            aria-selected={active === "all"}
+            aria-pressed={active === "all"}
             data-on={active === "all" ? "yes" : "no"}
             onClick={() => pickTrack("all")}
           >
@@ -238,8 +261,7 @@ export default function CaseTimeline({
             <button
               key={t.id}
               type="button"
-              role="tab"
-              aria-selected={active === t.id}
+              aria-pressed={active === t.id}
               data-on={active === t.id ? "yes" : "no"}
               data-track={t.id}
               onClick={() => pickTrack(t.id)}

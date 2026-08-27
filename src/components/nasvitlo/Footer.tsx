@@ -89,7 +89,12 @@ export default function Footer({
   );
 
   return (
+    /* Named, because this element and not `.nsv-foot` is what carries the dark
+       ground: the legal bar is `.nsv-foot`'s sibling inside it, so a rule
+       hung on `.nsv-foot` reaches the link columns and stops short of the two
+       links under them. globals.css hangs the on-dark focus ring here. */
     <div
+      className="nsv-footband"
       style={{
         position: "relative",
         zIndex: 3,

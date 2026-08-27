@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { foreignLang, type Locale } from "@/i18n/config";
+
 /**
  * The citation, as one thing a reader can take away.
  *
@@ -19,6 +21,7 @@ import { useEffect, useRef, useState } from "react";
  */
 export default function CiteBlock({
   lines,
+  locale,
   citation,
   label,
   copy,
@@ -27,6 +30,10 @@ export default function CiteBlock({
 }: {
   /** What is shown, in reading order. */
   lines: string[];
+  /** Which language the page is in. The lines are not: this doc comment says
+      they "keep the language of the judgment", and on a Ukrainian page that
+      leaves the title and the parties to be read out phonetically. */
+  locale: Locale;
   /** What lands on the clipboard — the same facts as one line. */
   citation: string;
   label: string;
@@ -66,7 +73,11 @@ export default function CiteBlock({
           drag over it takes the whole thing rather than the page's chrome. */}
       <div className="citeas-body">
         {lines.map((l, i) => (
-          <p key={i} className={i === 0 ? "citeas-title" : "citeas-line"}>
+          <p
+            key={i}
+            className={i === 0 ? "citeas-title" : "citeas-line"}
+            lang={foreignLang(l, locale)}
+          >
             {l}
           </p>
         ))}

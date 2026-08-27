@@ -138,21 +138,31 @@
 }
 .reg-searchwrap:hover{border-bottom-color:var(--ink2)}
 /* The rule doubles and turns gold while the field has focus — a shape change,
-   not only a colour one. The global cherry focus ring still draws on top for
-   the keyboard. */
+   not only a colour one, and it is the whole of the indicator rather than an
+   addition to it: the field below sets `outline: none`, which is the same
+   specificity as globals.css's `:where(…):focus-visible` rule and comes later
+   in the cascade, so the cherry ring this comment used to promise "still
+   draws on top" has never drawn here. Measured focused against unfocused, the
+   gold rule is 4.86:1 against the ground it replaces, so the indicator clears
+   1.4.11 on its own. Anything that weakens it has to replace it. */
 .reg-searchwrap:focus-within{
   border-bottom-color:var(--gold);
   box-shadow:0 1px 0 0 var(--gold);
 }
 .reg-si{display:flex;flex:none;color:var(--faint)}
 .reg-searchwrap:focus-within .reg-si{color:var(--goldink)}
-/* 16px here and 14px from 641px up, which is the one place on this page the
-   size is not purely an editorial choice: mobile Safari zooms the whole page
-   when a field smaller than 16px takes focus, and a reader who taps the
-   search box should not have to pinch back out to see the results. Above that
-   width there is no such behaviour and the field takes the same step down the
-   scale the pills beside it do. The 44px minimum is the touch target and does
-   not move. */
+/* 16px where the page can be zoomed under the reader, 14px where it cannot —
+   the one place on this page the size is not purely an editorial choice.
+   Mobile Safari zooms the whole page when a field smaller than 16px takes
+   focus, and a reader who taps the search box should not have to pinch back
+   out to see the results.
+
+   The guard was `min-width: 641px`, which is not the condition. An iPad runs
+   mobile Safari at 768–1024 CSS px and zooms exactly the same way, so every
+   tablet reader got the 14px field and the pinch. Ask what actually decides
+   it — whether the pointer is a mouse — and a phone and a tablet both keep
+   the 16px, while a desktop takes the step down the scale that the pills
+   beside it take. The 44px minimum is the touch target and does not move. */
 .reg-search{
   flex:1 1 auto;min-width:0;box-sizing:border-box;
   min-height:44px;
@@ -160,7 +170,7 @@
   background:transparent;border:0;border-radius:0;
   padding:var(--space-3) 0;outline:none;
 }
-@media (min-width:641px){
+@media (pointer:fine){
   .reg-search{font-size:var(--t-sm)}
 }
 .reg-search::placeholder{color:var(--faint);opacity:1}

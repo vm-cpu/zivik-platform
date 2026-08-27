@@ -123,6 +123,10 @@ const T = {
 
   // Instruments an arbitral award earns.
   allEvents: { uk: "Усе", en: "All" },
+  /* The name of the filter row itself. It used to be labelled with
+     `allEvents`, so the group announced itself as «Усе» — the name of the
+     first control inside it, not of the set. */
+  trackFilter: { uk: "Фільтр за напрямом", en: "Filter by track" },
   openDetail: { uk: "Показати деталі", en: "Show detail" },
   /* That the marks on the theatre map answer. Only rendered where the case has
      more than one theatre — with a single one there is nothing to tell apart,
@@ -975,7 +979,11 @@ export default async function CasePage({
           <span className="dot" aria-hidden="true">
             ·
           </span>
-          <span>{masthead.judgment}</span>
+          {/* Some of these are the court's own English — "WARRANTS OF 17 MARCH
+              2023 · 5 MARCH 2024 · 24 JUNE 2024" on the ICC page. foreignLang
+              returns nothing for the Ukrainian ones, so the mixed and the
+              translated are left alone. */}
+          <span lang={foreignLang(masthead.judgment, locale)}>{masthead.judgment}</span>
           <span className="dot" aria-hidden="true">
             ·
           </span>
@@ -1011,7 +1019,13 @@ export default async function CasePage({
             </span>
           ))}
         </p>
-        <p className="fullname">{masthead.official}</p>
+        {/* The same reasoning as the h1 above, and it was applied only there.
+            This is the judgment's own title — "IN THE MATTER OF AN ARBITRATION
+            UNDER THE AGREEMENT BETWEEN THE GOVERNMENT OF…", the longest run of
+            English on a Ukrainian page — read out with Ukrainian phonetics. */}
+        <p className="fullname" lang={foreignLang(masthead.official, locale)}>
+          {masthead.official}
+        </p>
 
         <div className="actions">
           {/* The sub-label says who stands behind the document at the other
@@ -1393,6 +1407,7 @@ export default async function CasePage({
             tracks={timelineTracks.map((t) => ({ id: t.id, label: L(t.label) }))}
             labels={{
               all: pick(T.allEvents, locale),
+              trackFilter: pick(T.trackFilter, locale),
               openDetail: pick(T.openDetail, locale),
               railLabel: pick(T.railLabel, locale),
             }}
@@ -1580,11 +1595,27 @@ export default async function CasePage({
                     return (
                       <li key={i}>
                         <div className="cite-body">
-                          <a href={s.url} target="_blank" rel="noopener noreferrer">
+                          <a
+                            href={s.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            lang={foreignLang(s.title, locale)}
+                          >
                             {s.title}
                           </a>
                           {meta.length > 0 && (
-                            <span className="cite-meta">{meta.join(" \u00b7 ")}</span>
+                            /* Author, publisher and date, and on most rows all
+                               three are English \u2014 "International Criminal
+                               Court \u00b7 9 April 2014". The title above already
+                               reads in its own language because it is a link
+                               to it; this line was the one left for a
+                               Ukrainian voice to guess at. */
+                            <span
+                              className="cite-meta"
+                              lang={foreignLang(meta.join(" "), locale)}
+                            >
+                              {meta.join(" \u00b7 ")}
+                            </span>
                           )}
                         </div>
                         <span
@@ -1620,6 +1651,7 @@ export default async function CasePage({
                 this is the last thing on the page they need. */}
             <CiteBlock
               lines={citeLines}
+              locale={locale}
               citation={citation}
               label={pick(T.citeH, locale)}
               copy={pick(T.citeCopy, locale)}

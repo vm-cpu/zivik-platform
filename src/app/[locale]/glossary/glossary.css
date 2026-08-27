@@ -144,8 +144,10 @@
 .gl-searchwrap:focus-within .gl-si {
   color: var(--goldink);
 }
-/* 16px on a phone and 14 above it — mobile Safari zooms the page when a field
-   under 16px takes focus, which is the library's search line's reasoning too. */
+/* 16px wherever the page can be zoomed under the reader and 14 where it
+   cannot — mobile Safari zooms the page when a field under 16px takes focus,
+   which is the library's search line's reasoning, including why the guard is
+   the pointer and not a width: an iPad is 768–1024 CSS px and zooms too. */
 .gl-search {
   flex: 1 1 auto;
   min-width: 0;
@@ -159,7 +161,7 @@
   padding: var(--space-3) 0;
   outline: none;
 }
-@media (min-width: 641px) {
+@media (pointer: fine) {
   .gl-search {
     font-size: var(--t-sm);
   }
