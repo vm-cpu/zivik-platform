@@ -67,6 +67,14 @@ export default function Header({
       href: `${home}/registry`,
       active: pathname === `${home}/registry`,
     },
+    /* Next to the library, because that is what it is drawn from: the fifty
+       headwords are gathered out of the decisions, and a reader who wants a
+       term rather than a case should not have to find a case first. */
+    {
+      label: dict.nav.glossary,
+      href: `${home}/glossary`,
+      active: pathname === `${home}/glossary`,
+    },
     // The map has its own page now — full screen, zoom and pan — so the menu
     // points at it rather than at the band on the home page.
     { label: dict.nav.map, href: `${home}/map`, active: pathname === `${home}/map` },

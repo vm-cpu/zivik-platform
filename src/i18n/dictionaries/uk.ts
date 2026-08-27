@@ -48,6 +48,7 @@ const uk = {
     home: "Головна",
       about: "Про нас",
     decisions: "Бібліотека рішень",
+    glossary: "Словник",
     map: "Мапа",
     team: "Команда",
     partners: "Партнери",

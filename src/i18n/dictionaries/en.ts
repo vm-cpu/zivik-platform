@@ -32,6 +32,7 @@ const en: Dictionary = {
     home: "Home",
       about: "About us",
     decisions: "Library of decisions",
+    glossary: "Glossary",
     map: "Map",
     team: "Team",
     partners: "Partners",

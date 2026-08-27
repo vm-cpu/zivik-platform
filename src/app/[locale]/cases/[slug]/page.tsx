@@ -7,6 +7,7 @@ import { plural } from "@/i18n/plural";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import CiteBlock from "@/components/cases/CiteBlock";
+import TermSearch from "@/components/cases/TermSearch";
 import PageNav from "@/components/cases/PageNav";
 import CaseTimeline from "@/components/cases/CaseTimeline";
 import MoneyBars from "@/components/cases/MoneyBars";
@@ -21,6 +22,7 @@ import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
 import { SUMMARIES } from "@/content/summaries";
+import { sortKey } from "@/content/glossary";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -173,6 +175,13 @@ const T = {
   /* A clipboard write can be refused, and a button that pretends otherwise is
      worse than one that says so — the text stays selectable either way. */
   citeFailed: { uk: "Не вдалося — виділіть текст", en: "Blocked — select the text" },
+  termsSearch: { uk: "Знайти термін…", en: "Find a term…" },
+  termsSearchLabel: { uk: "Пошук у словнику справи", en: "Search this case's terms" },
+  termsClear: { uk: "Очистити пошук", en: "Clear search" },
+  termsEmpty: {
+    uk: "Такого терміна тут немає. Спробуйте словник бібліотеки — там усі.",
+    en: "No such term here. Try the library's glossary — it has them all.",
+  },
   glossaryAll: {
     uk: "Ці терміни у словнику бібліотеки",
     en: "These terms in the library's glossary",
@@ -603,7 +612,22 @@ export default async function CasePage({
   if (!summary) return <CasePending slug={slug} locale={locale} dict={dict} />;
 
   const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
-  const { interpretations, plain, glossary, whoIsWho, faq, related } = summary;
+  const { interpretations, plain, whoIsWho, faq, related } = summary;
+  /* Alphabetical, in the reader's own collation, and sorted here rather than
+     in the band: the term chips at the head of the verbatim text link to
+     `#term-N`, and the band renders the same array, so both have to number
+     the same list. Sorting once, on the server, keeps the anchors in the HTML
+     and keeps the two in step.
+
+     `sortKey` strips leading guillemets before comparing — «ДНР» files under Д,
+     not under «, which is the same rule the dictionary page uses. */
+  const glossary = [...summary.glossary].sort((a, b) =>
+    sortKey(pick(a.term, locale)).localeCompare(
+      sortKey(pick(b.term, locale)),
+      locale === "uk" ? "uk" : "en",
+      { sensitivity: "base" },
+    ),
+  );
   const { theatres = [], provisionalMeasures = [], timelineTracks = [], glance = [] } = summary;
   const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
   const parties = summary.title
@@ -1322,7 +1346,14 @@ export default async function CasePage({
             const group = whoIsWho.filter((w) => w.kind === kind);
             if (group.length === 0) return null;
             return (
-              <div className="who-group" key={kind} data-kind={kind}>
+              <div
+                className="who-group"
+                key={kind}
+                data-kind={kind}
+                /* The stylesheet needs the count: a group of one is the only
+                   case where filling the rail would be wrong. */
+                data-count={group.length}
+              >
                 <h3 className="who-groupname">
                   {pick(WHO_GROUP[kind], locale)}
                 </h3>
@@ -1354,14 +1385,16 @@ export default async function CasePage({
       <section className="terms" id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
         <div className="rail">
           <h2 className="lbl lbl-onpaper">{pick(T.glossaryH, locale)}</h2>
-          <dl className="glossary">
-            {glossary.map((g, i) => (
-              <div key={i} id={`term-${i}`}>
-                <dt>{pick(g.term, locale)}</dt>
-                <dd>{pick(g.def, locale)}</dd>
-              </div>
-            ))}
-          </dl>
+          <TermSearch
+            terms={glossary.map((g) => ({
+              term: pick(g.term, locale),
+              def: pick(g.def, locale),
+            }))}
+            placeholder={pick(T.termsSearch, locale)}
+            label={pick(T.termsSearchLabel, locale)}
+            clear={pick(T.termsClear, locale)}
+            empty={pick(T.termsEmpty, locale)}
+          />
           <p className="terms-more">
             <Link href={`/${locale}/glossary?case=${slug}`}>
               {pick(T.glossaryAll, locale)} →

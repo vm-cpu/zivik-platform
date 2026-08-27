@@ -72,7 +72,11 @@ const T = {
   inCase: { uk: "у справі", en: "in" },
   mTerms: { uk: "термінів", en: "terms" },
   mCases: { uk: "рішень", en: "decisions" },
-  mShared: { uk: "з двома прочитаннями", en: "read two ways" },
+  /* «З двома прочитаннями» was my phrasing and it did not land — the owner
+     had to ask what the tile counted. It counts headwords that more than one
+     decision defines, and in all four cases the two courts read the word
+     differently. Say the concrete thing. */
+  mShared: { uk: "пояснені двома судами", en: "defined by two courts" },
 } as const;
 
 export function generateStaticParams() {
