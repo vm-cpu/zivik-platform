@@ -7,6 +7,42 @@ import verbatimUk from "./icc-ukraine.uk.json";
  * arrest issued by Pre-Trial Chamber II (17 March 2023, 5 March 2024,
  * 24 June 2024).
  *
+ * ── Verifying this file when icc-cpi.int will not answer ───────────────────
+ * The Court's site sits behind a Cloudflare rule that refuses automated
+ * fetches, curl and a real browser alike ("Sorry, you have been blocked").
+ * The way through is the Internet Archive's captures of the Court's own
+ * pages — the ICC's text, not a secondary account of it:
+ *
+ *     http://archive.org/wayback/available?url=icc-cpi.int/situations/ukraine
+ *     curl -sL --compressed "http://web.archive.org/web/<ts>id_/<url>"
+ *
+ * `--compressed` matters; without it the body comes back as gzip and reads as
+ * binary noise. `id_` after the timestamp asks for the original bytes rather
+ * than the archive's rewritten page.
+ *
+ * Checked this way on 27 August 2026, against captures of 25 and 15 August:
+ * the situation number, Pre-Trial Chamber II and its three judges, "referred
+ * to the ICC by 43 States Parties: March - April 2022", the 21 November 2013
+ * scope, all three warrant dates and all six names, and every Rome Statute
+ * article cited below — 8(2)(a)(vii), 8(2)(b)(viii), 8(2)(b)(ii), 8(2)(b)(iv),
+ * 7(1)(k), 25(3)(a), 25(3)(b), 28(a), 28(b).
+ *
+ * The two figures that looked like staleness risks are both right, and both
+ * were worth checking rather than assuming:
+ *   - 125 States Parties. The Assembly's own page, captured 15 August 2026 —
+ *     six days before this file's `asOf` — reads "125 countries are States
+ *     Parties", its regional breakdown sums to 125 (33+19+20+28+25), and
+ *     Hungary is still on the list despite its announced withdrawal.
+ *   - Karim Khan led the OTP 2022-2025. The Office's page, captured 23 August
+ *     2026, has it "under the leadership of Deputy Prosecutors Mame Mandiaye
+ *     Niang and Nazhat Shameem Khan, pending any future decisions". Note the
+ *     trap: that second Khan is a different person, from Fiji.
+ *
+ * STILL UNVERIFIED against the Court's own text: the Pre-Trial Chamber's
+ * finding of 24 October 2024 that Mongolia failed to cooperate, and the
+ * Tajikistan episode of October 2025. Neither has a capture in the archive.
+ * "No suspect in custody" is a negative the situation page does not state.
+ *
  * `verbatim` holds the summary prose exactly as ingested from the source
  * document. The visualization layer below follows two rules:
  *
