@@ -24,18 +24,29 @@
 .casepage .mk-hit {
   r: 16;
   fill: transparent;
+  stroke: none;
   cursor: pointer;
+  /* `all`, not the default `visiblePainted`: the events map found that a hit
+     circle is only hit-tested where it is painted, so any rule that takes the
+     fill away turns the marker into a hole in the drawing. */
+  pointer-events: all;
+  /* Unconditionally, not scoped to one state. That scoping is what left the
+     browser's own ring showing — a blue square around a round mark, reported
+     from a screenshot of exactly that — and answering it with a gold outline
+     of my own only changed the square's colour. */
+  outline: none;
 }
-/* The browser's own ring is a blue rounded square on a gold-and-night map, and
-   it was drawing because `outline: none` on an SVG shape does not stop it in
-   every engine — reported from a screenshot of exactly that. An explicit
-   outline in the map's own gold replaces it rather than removing it: a focus
-   ring that is merely absent is worse than one that is the wrong colour. */
-.casepage .mk-hit:focus-visible {
-  outline: 2px solid var(--brand-gold-pale);
-  outline-offset: 2px;
+/* An `outline` on an SVG circle is drawn around its bounding box: a square
+   around a round mark, which is the second thing that came back from the map.
+   A stroke follows the shape, which is what the events map does with the same
+   problem — and there the ring is the shape of the mark, not a box near it. */
+.casepage .mk-hit:focus {
   stroke: var(--brand-gold-pale);
-  stroke-width: 2;
+  /* Real pixels rather than projection units: one unit is 1.4px on a wide
+     window and 0.5px on a phone, and a focus ring that thins with the drawing
+     is the one indicator that must not. */
+  vector-effect: non-scaling-stroke;
+  stroke-width: 2.5;
 }
 @media (max-width: 700px) {
   .casepage .mk-hit {

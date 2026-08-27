@@ -35,7 +35,14 @@
   margin-top: 0.32em;
 }
 
+/* Prose, not a row. `.casepage .map-legend span` makes every span here a flex
+   container, and this one holds three things — the place, the dash and the tag
+   in bold — which at the band's full width sat side by side and read as one
+   line. In a 300px block standing on the map they had nowhere to go and drew
+   on top of each other: «Донеччина та Луганщина —» and «Genocide Convention»
+   in the same 255px. As text they simply wrap. */
 .casepage .map-legend .lg-place {
+  display: block;
   align-self: center;
 }
 
