@@ -404,55 +404,90 @@
   color: var(--pred);
   font-weight: 700;
 }
+/* the verdict matrix ---------------------------------------------------------
+   Twelve articles, each with what was claimed under it and what the Court did
+   with the claim. It ran as `1fr auto` across the whole rail: the claim at the
+   left margin, the outcome pinned to the right edge, and on a 1180 rail that
+   left something like 900px of nothing between a sentence and the word that
+   answers it. Two failures at once — the eye loses the row on the way across,
+   and the outcomes, which are the point of the block, sat in a column so far
+   from the text that reading them meant reading the block twice.
+
+   Rebuilt as a ledger, the same idiom as the case card, and with the outcome
+   moved to the front. Putting it in a fixed column after the claim lined the
+   dots up but did not close the gap: a claim column is as wide as its longest
+   claim, so a short one still left half a screen between the sentence and the
+   word that answers it. In the first column there is no gap to leave — the
+   outcomes are a rail down the left edge, and every claim starts where its own
+   outcome ends. Below the articles this was always a table of claims and their
+   dispositions; now it reads like one. */
 .casepage .verdicts {
   list-style: none;
   margin: 0;
   padding: 0;
+  max-width: 60rem;
 }
 .casepage .verdicts li {
-  /* Same mistake as `.ctl-list li`, same removal — see the note there. This
-     row is `1fr auto`: a claim and the chip that says how it was disposed of.
-     Capping it at 70ch pulled the chip in off the rail's right edge, which is
-     the one place the eye goes to read a verdict matrix down its outcomes. */
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
   align-items: baseline;
-  gap: var(--space-2) var(--space-5);
+  gap: var(--space-2) var(--space-6);
   padding: var(--space-4) 0;
   border-bottom: 1px solid var(--prule);
 }
+/* The article the claims below it were brought under. It is a heading for the
+   run that follows, so it gets air above and a hairline under it rather than
+   sitting flush against the first claim as one more row. */
 .casepage .v-track,
 .casepage .v-track-link {
   grid-column: 1 / -1;
-  margin-top: var(--space-4);
+  margin-top: var(--space-6);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--pgold);
   font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--pgold);
   text-decoration: none;
 }
+.casepage .verdicts li:first-child .v-track,
+.casepage .verdicts li:first-child .v-track-link {
+  margin-top: 0;
+}
 .casepage .v-track-link:hover {
   color: var(--ink);
 }
 .casepage .v-claim {
   font-size: var(--t-ui);
-  line-height: 1.4;
+  line-height: 1.5;
   color: var(--ink);
+  text-wrap: pretty;
 }
 .casepage .v-out {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--space-2);
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  white-space: nowrap;
+}
+/* Stacked below the ledger's width: an 11rem column beside a claim cannot hold
+   two words of Ukrainian at phone width without hyphenating both. */
+@media (max-width: 640px) {
+  .casepage .verdicts li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
 }
 .casepage .v-out::before {
   content: "";
+  flex: none;
   width: 7px;
   height: 7px;
   border-radius: 50%;
+  /* Baseline-aligned children put a 7px disc on the baseline, sitting under
+     the label rather than beside it; this lifts it onto the x-height. */
+  transform: translateY(-2px);
 }
 .casepage .v-out[data-o="violation"] {
   color: var(--pred);

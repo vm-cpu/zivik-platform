@@ -97,13 +97,16 @@
    not 65. Sixty-three of the seventy-eight prose blocks on this page ran past
    seventy.
 
-   70 x 8.04 = 563. This is the top of the range the contract asks for, which
-   is the conservative end of the fix: it shortens the line without making the
-   page longer than it has to be. Getting there by raising the type instead
-   would need about 19px, which is a different decision about the whole
-   surface. DESIGN.md is corrected alongside this. */
+   560px was 70 characters exactly, the top of the range the contract asked
+   for — and measured against a 1180px rail it read starved, which the owner
+   said plainly. 620px is 77 characters: past the textbook 60-70 and well short
+   of the 85 that was wrong, and it holds the column against the rail instead
+   of stranding it. DESIGN.md carries the same number and the same reasoning.
+
+   The arithmetic is the thing to keep, not the pixels: this width follows from
+   the face and the language, so if either changes, re-measure. */
 .casepage .read {
-  max-width: 560px;
+  max-width: 620px;
   counter-reset: disp;
 }
 .casepage .read .lead {
@@ -347,6 +350,81 @@
 }
 .casepage .lbl-onpaper .lbl-sub {
   color: var(--ink3);
+}
+
+/* ---- the citation, at the foot of the sources -----------------------------
+   It sat under the masthead on the dark ground for a while, which put an
+   apparatus block between the title and the first sentence for every reader,
+   most of whom did not come to cite. Here it is on paper, at the end of the
+   text and its sources, in the mono face the site gives the machinery —
+   dockets, dates, paragraph refs. Quiet: the reader who wants it is looking
+   for it, and everyone else should scroll past without being sold to. */
+/* Named `citeas`, not `cite`: the sources list above already owns `.cite-body`,
+   `.cite-meta` and `.cite-kind` for its own entries, and a second block reusing
+   those names in the same stylesheet is a collision waiting for whoever edits
+   next. Every child is also selected through its parent — this block lives
+   inside `.read`, whose `.casepage .read p` rule outranks a bare child class,
+   so set flat the citation silently took the colour and size of body prose and
+   the hierarchy inside it vanished. */
+.casepage .citeas {
+  margin-top: var(--space-12);
+  padding: var(--space-5) var(--space-6);
+  border: 1px solid var(--prule);
+  border-radius: var(--r-md);
+  background: var(--card);
+  max-width: 68ch;
+}
+.casepage .citeas .citeas-label {
+  margin: 0 0 var(--space-3);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* --ink3, not --faint: at 11px this is normal-size text for WCAG, and faint
+     on paper is 3.57:1. */
+  color: var(--ink3);
+}
+.casepage .citeas .citeas-body {
+  font-family: var(--brand-font-mono);
+  font-size: var(--t-cap);
+  line-height: 1.55;
+}
+/* The face and size live here, on the paragraph, not on the wrapper: `.read p`
+   sets both for body prose and outranks a class on the container, so a mono
+   rule one level up never reached the lines it was written for. */
+.casepage .citeas .citeas-body p {
+  margin: 0;
+  font-family: var(--brand-font-mono);
+  font-size: var(--t-cap);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+/* The official title carries the weight; the rest is apparatus. */
+.casepage .citeas .citeas-title {
+  font-weight: 600;
+  color: var(--ink);
+}
+.casepage .citeas .citeas-line {
+  color: var(--ink2);
+}
+.casepage .citeas .citeas-copy {
+  margin-top: var(--space-4);
+  min-height: 32px;
+  padding: 0 var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--pgold);
+  background: none;
+  border: 1px solid var(--seam);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.casepage .citeas .citeas-copy:hover {
+  color: var(--ink);
+  border-color: var(--pgold);
 }
 
 /* The band's own search. A line, not a boxed field — the same editorial

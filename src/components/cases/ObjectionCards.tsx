@@ -45,11 +45,24 @@ export default function ObjectionCards({
               aria-expanded={isOpen}
               onClick={() => setOpen(isOpen ? null : i)}
             >
-              {/* Stacked, not one baseline row: the counter and the Latin
-                  term used to sit inline beside the heading and take the
-                  width it needed to wrap in. */}
-              <span className="obj-head">
+              {/* The outcome leads.
+
+                  It used to close each card, under the text of the objection,
+                  so a reader scanning six cards for what the Court did read
+                  six paragraphs of what Russia argued first. The question this
+                  block answers is "which of these worked" — five of six did
+                  not — and that has to be legible in one pass across the
+                  grid's top edge. The counter and the outcome share the first
+                  line; the ground follows as the heading it is. */}
+              <span className="obj-top">
                 <span className="obj-n">{String(i + 1).padStart(2, "0")}</span>
+                <span className="obj-verdict">
+                  {o.outcome === "rejected" ? labels.rejected : labels.upheld}
+                  <i aria-hidden="true" />
+                </span>
+              </span>
+
+              <span className="obj-head">
                 <span className="obj-ground">{o.ground}</span>
                 {o.latin && <em className="obj-latin">{o.latin}</em>}
               </span>
@@ -57,11 +70,6 @@ export default function ObjectionCards({
               <span className="obj-body">
                 <span className="obj-lbl">{labels.objection}</span>
                 {o.objection}
-              </span>
-
-              <span className="obj-verdict">
-                {o.outcome === "rejected" ? labels.rejected : labels.upheld}
-                <i aria-hidden="true" />
               </span>
 
               {benchSize > 0 && o.votes && o.votes.length > 0 && (

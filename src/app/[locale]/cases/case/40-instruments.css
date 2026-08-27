@@ -645,6 +645,21 @@
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
+/* The outcome and the counter share the card's first line.
+
+   The verdict used to be pinned to the foot with `margin-top: auto`, which
+   lined the six outcomes up along the bottom of the row — tidy, and the wrong
+   place. What a reader wants from this block is which of the six objections
+   worked (one, on one ground, in part), and that answer sat below three lines
+   of what Russia argued. Moved to the top edge, the six outcomes read across
+   the grid in one pass, and the argument is what the reader descends into. */
+.casepage .obj-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--prule);
+}
 .casepage .obj-head {
   display: grid;
   gap: var(--space-1);
@@ -684,11 +699,11 @@
   padding-top: var(--space-3);
   border-top: 1px solid var(--prule);
 }
-/* The verdict is pinned to the foot of the card, so a row of cards of
-   unequal content still lines its outcomes up. Grid stretch used to leave
-   the slack under the last element of the shortest card. */
+/* The dot carries the outcome as well as the word does — red for rejected,
+   gold for the one that got somewhere — so the colour is legible before the
+   label is read, and the label is there for anyone who cannot see it. */
 .casepage .obj-verdict {
-  margin-top: auto;
+  margin-left: auto;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -719,6 +734,8 @@
    not earned its place, so the bar is gone and the tally is set the way this
    system sets a figure — the mono face, tabular, with its scope beneath. */
 .casepage .obj-votes {
+  margin-top: auto;
+  padding-top: var(--space-3);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);

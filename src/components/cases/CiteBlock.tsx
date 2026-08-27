@@ -60,18 +60,18 @@ export default function CiteBlock({
   };
 
   return (
-    <div className="cite" aria-label={label}>
-      <p className="cite-label">{label}</p>
+    <div className="citeas" aria-label={label}>
+      <p className="citeas-label">{label}</p>
       {/* Selectable, and the whole citation is one <p> per line so a mouse
           drag over it takes the whole thing rather than the page's chrome. */}
-      <div className="cite-body">
+      <div className="citeas-body">
         {lines.map((l, i) => (
-          <p key={i} className={i === 0 ? "cite-title" : "cite-line"}>
+          <p key={i} className={i === 0 ? "citeas-title" : "citeas-line"}>
             {l}
           </p>
         ))}
       </div>
-      <button type="button" className="cite-copy" onClick={onCopy}>
+      <button type="button" className="citeas-copy" onClick={onCopy}>
         {state === "ok" ? copied : state === "fail" ? failed : copy}
       </button>
       {/* The button's own label changes, which a sighted reader sees; this is

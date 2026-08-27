@@ -96,12 +96,16 @@ display type reads as a different register, not just bigger body text.
 
 - **Never go below 14px** for anything a reader must read. The page previously
   ran 12–13.5px and felt cramped.
-- Reading measure stays **60–70 characters** (`.read { max-width: 560px }`).
+- Reading measure is **around 77 characters** (`.read { max-width: 620px }`).
   The width follows from the face and the language, so it is not transferable:
-  Fira Sans setting Ukrainian at 16px averages **8.04px per character**, which
-  puts 70 characters at 563px. This line used to say 680px, which is 85
-  characters — the number the decision pages actually ran at. If the body size
-  or the body face ever changes, re-measure rather than keeping the pixels.
+  Fira Sans setting Ukrainian at 16px averages **8.04px per character**.
+  This line has been wrong twice and the history is the useful part. It said
+  680px and called it 60–70 characters; 680px is 85, which is what the decision
+  pages actually ran at. Corrected to 560px, which is 70 exactly — and against
+  a 1180px rail that read starved. 620px is the settled answer: past the
+  textbook 60–70, well short of 85, and it holds the column against the rail.
+  If the body size or the body face ever changes, re-measure rather than
+  keeping the pixels.
 - Uppercase labels get `letter-spacing: 0.14em`; display gets `-0.028em`.
 - Slogans follow the brandbook: Charis SIL, uppercase, wide tracking.
 

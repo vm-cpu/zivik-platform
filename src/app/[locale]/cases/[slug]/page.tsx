@@ -971,20 +971,6 @@ export default async function CasePage({
             {fileSrc.caption && <em>{fileSrc.caption}</em>}
           </a>
         </div>
-
-        {/* The one thing a reader who came to cite actually needs, as one
-            thing. Its parts were three bands apart: the official name is the
-            `.fullname` line above, the act and the date are in the eyebrow,
-            the docket is a row in the case card, and the permalink was
-            nowhere but the address bar. */}
-        <CiteBlock
-          lines={citeLines}
-          citation={citation}
-          label={pick(T.citeH, locale)}
-          copy={pick(T.citeCopy, locale)}
-          copied={pick(T.citeCopied, locale)}
-          failed={pick(T.citeFailed, locale)}
-        />
         </div>
       </header>
 
@@ -1067,10 +1053,19 @@ export default async function CasePage({
                             {v.trackLabel ? pick(v.trackLabel, locale) : v.track}
                           </span>
                         ))}
-                      <span className="v-claim">{pick(v.claim, locale)}</span>
+                      {/* Outcome first, then the claim it disposes of.
+
+                          The claim used to lead and the outcome was pushed to
+                          the far edge of the rail, which put most of a screen
+                          of nothing between a sentence and the word that
+                          answers it. Reversed, the twelve outcomes are a rail
+                          the eye runs down and each claim starts right where
+                          its outcome ends — and the row reads as a sentence
+                          either way: «Порушення — право на життя». */}
                       <span className="v-out" data-o={v.outcome}>
                         {pick(OUTCOME_LABEL[v.outcome], locale)}
                       </span>
+                      <span className="v-claim">{pick(v.claim, locale)}</span>
                     </li>
                   );
                 })}
@@ -1529,6 +1524,21 @@ export default async function CasePage({
             })()}
           </>
         )}
+
+            {/* The citation, at the foot of the sources rather than under the
+                masthead. It opened the page for a while, which put an
+                apparatus block between the title and the first sentence for
+                every reader, most of whom did not come to cite. A reader who
+                did arrives here — through the text, past the sources — and
+                this is the last thing on the page they need. */}
+            <CiteBlock
+              lines={citeLines}
+              citation={citation}
+              label={pick(T.citeH, locale)}
+              copy={pick(T.citeCopy, locale)}
+              copied={pick(T.citeCopied, locale)}
+              failed={pick(T.citeFailed, locale)}
+            />
           </article>
         </div>
       </section>
