@@ -43,43 +43,52 @@ export default function TakingsGrid({
   useEffect(() => {
     const el = root.current;
     if (!el) return;
-    if (
+
+    /* Two ways the bar can end up drawn, and both go through the same timer.
+
+       A reader who has asked for reduced motion, or a browser with no
+       observer, should see the finished bar rather than an animation or an
+       empty track — but setting that state straight from the body of an effect
+       cascades a second render before paint, so it is scheduled at zero delay
+       instead and lands on the next tick.
+
+       The other way is the failsafe. The fill's width is driven by this state,
+       so anything that stops the observer speaking — a throttled tab, a
+       restore into the background, a pipeline that is not running — would
+       leave a reader looking at an empty track and reading it as "none
+       returned". That is a worse failure than no animation, and it is silent.
+       After two seconds the bar draws whether the observer spoke or not. */
+    const still =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      typeof IntersectionObserver === "undefined"
-    ) {
-      setShown(true);
-      return;
+      typeof IntersectionObserver === "undefined";
+
+    let io: IntersectionObserver | null = null;
+    const settle = window.setTimeout(
+      () => {
+        setShown(true);
+        io?.disconnect();
+      },
+      still ? 0 : 2000,
+    );
+
+    if (!still) {
+      /* Once. A bar that re-draws every time it re-enters the viewport turns a
+         fact into an ornament the reader has to sit through again. */
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            setShown(true);
+            io?.disconnect();
+          }
+        },
+        { threshold: 0.35 },
+      );
+      io.observe(el);
     }
 
-    /* Once. A bar that re-draws every time it re-enters the viewport turns a
-       fact into an ornament the reader has to sit through again. */
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setShown(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.35 },
-    );
-    io.observe(el);
-
-    /* The bar must never be left at nought.
-
-       Its width is driven by this state, so anything that stops the observer
-       firing — a browser that throttles it, a tab restored in the background,
-       a rendering pipeline that is not running — would leave a reader looking
-       at an empty track and reading it as "none returned". That is a worse
-       failure than having no animation at all, and it is silent. After two
-       seconds the bar draws whether or not the observer has spoken. */
-    const failsafe = window.setTimeout(() => {
-      setShown(true);
-      io.disconnect();
-    }, 2000);
-
     return () => {
-      window.clearTimeout(failsafe);
-      io.disconnect();
+      window.clearTimeout(settle);
+      io?.disconnect();
     };
   }, []);
 
