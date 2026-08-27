@@ -7,11 +7,22 @@ import { useState } from "react";
  *
  * Props arrive locale-resolved (see CaseTimeline for why).
  *
- * One branch is always open, unlike the warrant ladder next door where nothing
- * is selected until a reader asks. The difference is what the closed state
- * would say: an unselected ladder is a list of names, which is still an answer,
- * while this block closed is a root, some branches and a blank — the sentence
- * under it is the whole point of the drawing, so the drawing opens on one.
+ * ── Two stems, not five branches ───────────────────────────────────────────
+ * The five bodies here are not five parallel facts. Three were organs of the
+ * State (ILC art. 4) and two acted on its instructions or under its control
+ * (art. 8), and those are different routes with different proofs — which is
+ * the whole reason attribution is worth a diagram at all. Drawn as five equal
+ * siblings, the one thing a tree could show was the one thing it did not: the
+ * distinction survived only as small type inside each card's eyebrow.
+ *
+ * The stems are labelled from the block's own paragraph, which already said
+ * "article 4 for organs of the State, article 8 for conduct directed or
+ * controlled by it" — the words are promoted, not invented.
+ *
+ * One branch is always open, unlike the warrant ladder next door. The
+ * difference is what the closed state would say: an unselected ladder is a
+ * list of names, which is still an answer, while this closed is a root, some
+ * branches and a blank — the sentence under it is the point of the drawing.
  */
 export interface AttributionNodeR {
   actor: string;
@@ -23,9 +34,12 @@ export interface AttributionNodeR {
 export default function AttributionTree({
   respondent,
   nodes,
+  routes = [],
 }: {
   respondent: string;
   nodes: AttributionNodeR[];
+  /** Label per `basis`, in drawing order. */
+  routes?: { basis: string; label: string }[];
 }) {
   const [open, setOpen] = useState(0);
 
@@ -35,29 +49,58 @@ export default function AttributionTree({
   if (nodes.length === 0) return null;
   const shown = nodes[Math.min(open, nodes.length - 1)];
 
+  /* Grouped by the rule relied on, in the order `routes` gives — and any basis
+     the routes do not name still gets a stem, in first-appearance order, so a
+     future write-up that adds art. 5 or art. 11 is drawn rather than dropped. */
+  const order = [
+    ...routes.map((r) => r.basis),
+    ...nodes.map((n) => n.basis).filter((b) => !routes.some((r) => r.basis === b)),
+  ];
+  const stems = [...new Set(order)]
+    .map((basis) => ({
+      basis,
+      label: routes.find((r) => r.basis === basis)?.label,
+      items: nodes
+        .map((n, i) => ({ n, i }))
+        .filter(({ n }) => n.basis === basis),
+    }))
+    .filter((s) => s.items.length > 0);
+
   return (
     <div className="attr">
       <div className="attr-root">{respondent}</div>
       <div className="attr-stem" aria-hidden="true" />
 
-      <ul className="attr-branches">
-        {nodes.map((n, i) => (
-          <li key={i} data-on={open === i ? "yes" : "no"}>
-            <button
-              type="button"
-              className="attr-node"
-              aria-expanded={open === i}
-              aria-controls="attr-did"
-              onClick={() => setOpen(i)}
-            >
-              <span className="attr-basis">
-                {n.basis} · {n.basisNote}
-              </span>
-              <span className="attr-actor">{n.actor}</span>
-            </button>
-          </li>
+      <div className="attr-routes">
+        {stems.map((s) => (
+          <section className="attr-route" key={s.basis}>
+            <h3 className="attr-route-head">
+              <span className="attr-route-art">{s.basis}</span>
+              {s.label && <span className="attr-route-label">{s.label}</span>}
+            </h3>
+
+            <ul className="attr-branches">
+              {s.items.map(({ n, i }) => (
+                <li key={i} data-on={open === i ? "yes" : "no"}>
+                  <button
+                    type="button"
+                    className="attr-node"
+                    aria-expanded={open === i}
+                    aria-controls="attr-did"
+                    onClick={() => setOpen(i)}
+                  >
+                    <span className="attr-actor">{n.actor}</span>
+                    {/* The article now labels the stem, so the card carries
+                        only what is particular to this body — which is what
+                        the eyebrow was competing with the name to say. */}
+                    <span className="attr-basis">{n.basisNote}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
         ))}
-      </ul>
+      </div>
 
       {/* Named and pointed at, so the branch buttons announce that they change
           this paragraph rather than leading somewhere. aria-live because the

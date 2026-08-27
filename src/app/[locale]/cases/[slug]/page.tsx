@@ -1322,6 +1322,10 @@ export default async function CasePage({
                     basisNote: L(n.basisNote),
                     did: L(n.did),
                   }))}
+                  routes={(attribution.routes ?? []).map((r) => ({
+                    basis: r.basis,
+                    label: L(r.label),
+                  }))}
                 />
               </div>
             )}

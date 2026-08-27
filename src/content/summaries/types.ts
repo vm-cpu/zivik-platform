@@ -485,7 +485,25 @@ export interface DecisionSummary extends VerbatimSummary {
    */
   mapFocus?: { forumKey: string; reachTo?: string };
   takings?: { heading: Localized; note?: Localized; metrics: Metric[] };
-  attribution?: { respondent: Localized; note: Localized; nodes: AttributionNode[] };
+  attribution?: {
+    respondent: Localized;
+    note: Localized;
+    /**
+     * The routes, in the order they should be drawn.
+     *
+     * The nodes carry a `basis` each — "ILC art. 4", "ILC art. 8" — and those
+     * are not five parallel facts but two doctrinal routes with three bodies
+     * on one and two on the other. The drawing showed five equal siblings, so
+     * the only thing worth drawing a tree for was the thing it did not draw.
+     *
+     * The labels are not authored here: they are lifted out of `note`, which
+     * already said "article 4 for organs of the State, article 8 for conduct
+     * directed or controlled by it". Promoting them to a field lets the stems
+     * carry what the paragraph underneath was carrying alone.
+     */
+    routes?: { basis: string; label: Localized }[];
+    nodes: AttributionNode[];
+  };
   amounts?: { note?: Localized; figures: MoneyFigure[] };
   objections?: {
     heading: Localized;

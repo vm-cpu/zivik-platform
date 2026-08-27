@@ -710,6 +710,19 @@ export const oschadbank: DecisionSummary = {
 
   attribution: {
     respondent: { uk: "Російська Федерація", en: "The Russian Federation" },
+    routes: [
+      {
+        basis: "ILC art. 4",
+        label: { uk: "органи держави", en: "organs of the State" },
+      },
+      {
+        basis: "ILC art. 8",
+        label: {
+          uk: "діяли за вказівкою або під контролем держави",
+          en: "conduct directed or controlled by the State",
+        },
+      },
+    ],
     note: {
       uk: "Заходи здійснювали різні органи. Арбітраж застосував Статті КМП ООН про відповідальність держав: стаття 4 — для органів держави, стаття 8 — для тих, хто діяв за її вказівкою чи під її контролем.",
       en: "The measures were carried out by different bodies. The tribunal applied the ILC Articles on State Responsibility: article 4 for organs of the State, article 8 for conduct directed or controlled by it.",

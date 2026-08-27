@@ -815,15 +815,48 @@
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: var(--space-4);
 }
+/* The rule over each stage is one continuous line across the strip, and it is
+   the state of the award: gold while it stands, red where it does not. On
+   Oschadbank that line runs gold — 2018, breaks red — 2021, and resumes gold —
+   2022, 2025. The award fell and came back, which is the most interesting fact
+   in the block, and as four separate cards with four separate flags a reader
+   had to assemble it from four readings and hold it in their head.
+
+   The segments meet: negative margins on the gaps carry the line across them,
+   so it reads as one thing that changes rather than four things that differ.
+   The flag under each stage is untouched — the state is never in the colour
+   alone. */
 .casepage .afterlife li {
   display: grid;
   gap: var(--space-2);
   align-content: start;
   padding-top: var(--space-4);
-  border-top: 3px solid var(--pgold);
+  position: relative;
 }
-.casepage .afterlife li[data-standing="no"] {
-  border-top-color: var(--pred);
+.casepage .afterlife li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(var(--space-4) * -1);
+  right: calc(var(--space-4) * -1);
+  height: 3px;
+  background: var(--pgold);
+}
+.casepage .afterlife li:first-child::before {
+  left: 0;
+}
+.casepage .afterlife li:last-child::before {
+  right: 0;
+}
+/* The break. A stage where the award did not stand is drawn as a gap in the
+   line rather than a differently-coloured length of it — the award was not a
+   different colour in 2021, it was not there. */
+.casepage .afterlife li[data-standing="no"]::before {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--pred) 0 6px,
+    transparent 6px 12px
+  );
 }
 .casepage .af-year {
   font: 500 var(--t-cap) var(--brand-font-mono);
@@ -868,4 +901,43 @@
   font-family: var(--brand-font-body);
   font-style: normal;
   color: var(--pred);
+}
+
+/* ---- attribution: two stems, not five branches ---------------------------
+   Three of these bodies were organs of the State and two acted on its
+   instructions or under its control. Those are different routes with
+   different proofs, and it is the only reason attribution is worth a diagram.
+   Drawn as five equal siblings the diagram showed everything except that. */
+.casepage .attr-routes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-6) clamp(24px, 4vw, 48px);
+  margin-top: var(--space-5);
+}
+.casepage .attr-route {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  /* Each stem carries its own rule up to the root, so the two routes read as
+     two, and a card belongs to the article above it rather than to the note
+     three hundred pixels below. */
+  border-top: 2px solid var(--pgold);
+  padding-top: var(--space-4);
+}
+.casepage .attr-route-head {
+  margin: 0;
+  display: grid;
+  gap: 2px;
+}
+.casepage .attr-route-art {
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+.casepage .attr-route-label {
+  font-size: var(--t-sm);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink2);
 }
