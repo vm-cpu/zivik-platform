@@ -236,7 +236,10 @@ export const echrUkraineNetherlands: DecisionSummary = {
 
     // cases.ts records 304; without it the button omits "PDF, N pp."
 
-    pages: 304,
+    /* 501, the PDF's own page count (its printed pagination runs to 497,
+       then Annexes A-C). It read 304, which is not a number that appears
+       anywhere in the document. */
+    pages: 501,
     court: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
     url: "https://hudoc.echr.coe.int/eng#{%22appno%22:[%2243800/14%22],%22itemid%22:[%22001-244292%22]}",
     caseUrl: "https://www.echr.coe.int/w/ukraine-and-the-netherlands-v.-russia-nos.-8019/16-43800/14-and-28525/20-1",
@@ -268,7 +271,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       em: true,
     },
     {
-      value: "11",
+      value: "12",
       label: { uk: "статей Конвенції і протоколів порушено", en: "Convention and Protocol articles breached" },
     },
     {
@@ -401,8 +404,8 @@ export const echrUkraineNetherlands: DecisionSummary = {
         en: "Merits judgment: Russia responsible for systemic violations",
       },
       note: {
-        uk: "Порушення 11 статей Конвенції і протоколів — здебільшого одностайно; щодо депортації дітей — більшістю.",
-        en: "Breaches of 11 Convention and Protocol articles — mostly unanimous; on the deportation of children, by majority.",
+        uk: "Порушення 12 статей Конвенції і протоколів — усі одностайно, крім одного пункту (16 голосів проти 1).",
+        en: "Breaches of 12 Convention and Protocol articles — every one unanimous but a single item, carried 16 votes to 1.",
       },
     },
     {
@@ -475,8 +478,8 @@ export const echrUkraineNetherlands: DecisionSummary = {
       track: "Діти · Children",
       trackLabel: { uk: "Депортація дітей", en: "Deportation of children" },
       claim: {
-        uk: "Ст. 3, 5, 8 і П4-2: викрадення і переміщення до Росії трьох груп дітей (більшістю)",
-        en: "Arts. 3, 5, 8 and P4-2: abduction and transfer to Russia of three groups of children (by majority)",
+        uk: "Ст. 3, 5 і 8: викрадення і переміщення до Росії трьох груп дітей (одностайно)",
+        en: "Arts. 3, 5 and 8: abduction and transfer to Russia of three groups of children (unanimously)",
       },
       outcome: "violation",
     },

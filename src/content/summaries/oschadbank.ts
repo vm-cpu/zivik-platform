@@ -499,20 +499,6 @@ export const oschadbank: DecisionSummary = {
       },
     },
     {
-      date: { uk: "24 лип. 2025", en: "24 Jul 2025" },
-      iso: "2025-07-24",
-      track: "arbitration",
-      kind: "context",
-      label: {
-        uk: "Ощадбанк заявляє про другий спір проти Росії",
-        en: "Oschadbank notifies Russia of a second dispute",
-      },
-      note: {
-        uk: "Окрема справа за тим самим договором 1998 року — про втрати на Донеччині, Луганщині, Херсонщині та Запоріжжі. Це повідомлення про спір, а не рішення; склад арбітражу формується.",
-        en: "A separate case under the same 1998 treaty, over losses in Donetsk, Luhansk, Kherson and Zaporizhzhia. This is a notice of dispute, not a ruling; the tribunal is being constituted.",
-      },
-    },
-    {
       date: { uk: "1 лип. 2025", en: "1 Jul 2025" },
       iso: "2025-07-01",
       track: "french-courts",
@@ -524,6 +510,20 @@ export const oschadbank: DecisionSummary = {
       note: {
         uk: "Cour d'appel de Paris, pôle 5 ch. 16, № 24/05336: усі три заперечення щодо юрисдикції відхилено. У Франції рішення остаточне.",
         en: "Cour d'appel de Paris, pôle 5 ch. 16, no. 24/05336: all three jurisdiction objections rejected. The award is final in France.",
+      },
+    },
+    {
+      date: { uk: "24 лип. 2025", en: "24 Jul 2025" },
+      iso: "2025-07-24",
+      track: "arbitration",
+      kind: "context",
+      label: {
+        uk: "Ощадбанк заявляє про другий спір проти Росії",
+        en: "Oschadbank notifies Russia of a second dispute",
+      },
+      note: {
+        uk: "Окрема справа за тим самим договором 1998 року — про втрати на Донеччині, Луганщині, Херсонщині та Запоріжжі. Це повідомлення про спір, а не рішення; склад арбітражу формується.",
+        en: "A separate case under the same 1998 treaty, over losses in Donetsk, Luhansk, Kherson and Zaporizhzhia. This is a notice of dispute, not a ruling; the tribunal is being constituted.",
       },
     },
     {

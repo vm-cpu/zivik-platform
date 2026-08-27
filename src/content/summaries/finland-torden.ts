@@ -141,8 +141,8 @@ export const finlandTorden: DecisionSummary = {
     {
       q: { uk: "Який вирок і чи остаточний він?", en: "What was the verdict, and is it final?" },
       a: {
-        uk: "14 березня 2025 року суд визнав Тордена винним за чотирма з п'яти пунктів і призначив довічне ув'язнення. Один пункт відхилено. Торден заявив про апеляцію, тож справа може ще розглядатися вищими інстанціями.",
-        en: "On 14 March 2025 the court found Torden guilty on four of the five charges and imposed life imprisonment. One charge was dismissed. Torden announced an appeal, so higher instances may yet hear the case.",
+        uk: "14 березня 2025 року суд визнав Тордена винним за пунктами 2–5 і призначив довічне ув'язнення. За пунктом 1 — неправомірне використання прапора — його виправдали: суд не визнав доведеним, що саме «Русич» організував і провів засідку. Апеляцію подали обидві сторони: прокуратура — на виправдання, захист — на вирок.",
+        en: "On 14 March 2025 the court convicted Torden on charges 2–5 and imposed life imprisonment. He was acquitted on charge 1, improper use of a flag: the court did not find it established that Rusich organised and carried out the ambush. Both sides appealed — the prosecution against the acquittal, the defence against the conviction.",
       },
     },
     {
@@ -291,8 +291,8 @@ export const finlandTorden: DecisionSummary = {
         en: "Verdict: guilty on 4 of 5 charges, life imprisonment",
       },
       note: {
-        uk: "Перше у Фінляндії засудження за воєнні злочини у війні проти України. Торден заявив про апеляцію.",
-        en: "Finland's first war-crimes conviction from the war on Ukraine. Torden announced an appeal.",
+        uk: "Перше у Фінляндії засудження за воєнні злочини у війні проти України. Апеляцію подали обидві сторони.",
+        en: "Finland's first war-crimes conviction from the war on Ukraine. Both sides appealed.",
       },
     },
   ],
@@ -318,7 +318,7 @@ export const finlandTorden: DecisionSummary = {
     {
       track: "Далі",
       trackLabel: { uk: "Оскарження", en: "Appeal" },
-      claim: { uk: "Торден оголосив апеляцію", en: "Torden announced an appeal" },
+      claim: { uk: "Апеляції обох сторін", en: "Appeals by both sides" },
       outcome: "not-decided",
     },
   ],

@@ -44,8 +44,8 @@ export const dtekKrymenergo: DecisionSummary = {
 
   plain: {
     tldr: {
-      uk: "«Крименерго» — кримський енергооператор групи ДТЕК: 27 тисяч км² мережі, понад 780 тисяч споживачів. У 2015 році Росія забрала компанію. Арбітраж у Гаазі відхилив усі шість заперечень Росії і визнав незаконну експропріацію: 207,8 млн доларів відшкодування плюс відсотки — разом близько 267 млн. Росія добровільно не платить, тож ДТЕК стягує борг через суди США і Нідерландів — аж до арешту акцій структур «Газпрому».",
-      en: "Krymenergo was DTEK's Crimean grid operator: 27,000 km² of network, more than 780,000 customers. In 2015 Russia took the company. A tribunal in The Hague rejected all six of Russia's objections and found an unlawful expropriation: USD 207.8 million in damages plus interest — about USD 267 million in all. Russia has not paid, so DTEK is enforcing through US and Dutch courts — up to the seizure of Gazprom-linked shares.",
+      uk: "«Крименерго» — кримський енергооператор групи ДТЕК: 27 тисяч км² мережі, понад 780 тисяч споживачів. У 2015 році Росія забрала компанію. Арбітраж у Гаазі відхилив усі п'ять заперечень Росії і визнав незаконну експропріацію: 207,8 млн доларів відшкодування плюс відсотки — разом близько 267 млн. Росія добровільно не платить, тож ДТЕК стягує борг через суди США і Нідерландів — аж до арешту акцій структур «Газпрому».",
+      en: "Krymenergo was DTEK's Crimean grid operator: 27,000 km² of network, more than 780,000 customers. In 2015 Russia took the company. A tribunal in The Hague rejected all five of Russia's objections and found an unlawful expropriation: USD 207.8 million in damages plus interest — about USD 267 million in all. Russia has not paid, so DTEK is enforcing through US and Dutch courts — up to the seizure of Gazprom-linked shares.",
     },
     whyMatters: {
       uk: "Це друге «кримське» рішення на платформі за тим самим договором 1998 року — і воно пішло далі за Ощадбанк у двох речах: трибунал прямо застосував естопель (Росія не може називати Крим своїм і водночас не своїм) і чітко визначив, коли інвестицію «зроблено» за ст. 12. А стягнення вже дотяглося до активів «Газпрому» в Нідерландах.",
@@ -125,7 +125,7 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       name: { uk: "Російська Федерація", en: "Russian Federation" },
       role: {
-        uk: "Відповідач. На відміну від справи Ощадбанку, брала участь у процесі й висунула шість попередніх заперечень — усі відхилено.",
+        uk: "Відповідач. На відміну від справи Ощадбанку, брала участь у процесі й висунула п'ять попередніх заперечень — усі відхилено.",
         en: "Respondent. Unlike in Oschadbank, it took part and raised six preliminary objections — all rejected.",
       },
       kind: "party",
@@ -159,8 +159,8 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       q: { uk: "Чим ця справа відрізняється від Ощадбанку?", en: "How does this differ from Oschadbank?" },
       a: {
-        uk: "Той самий договір і той самий висновок про «територію», але процесуально — протилежність: Росія тут брала участь, наймала адвокатів і висунула шість заперечень, включно зі звинуваченням у корупційному придбанні акцій. Трибунал відхилив усі шість — тож це рішення пройшло повноцінний змагальний процес.",
-        en: "Same treaty, same territory holding — but procedurally the opposite: Russia participated, briefed counsel and raised six objections, including a corruption allegation. The tribunal rejected all six — so this award survived a fully contested process.",
+        uk: "Той самий договір і той самий висновок про «територію», але процесуально — протилежність: Росія тут брала участь, наймала адвокатів і висунула п'ять заперечень, включно зі звинуваченням у корупційному придбанні акцій. Трибунал відхилив усі п'ять — тож це рішення пройшло повноцінний змагальний процес.",
+        en: "Same treaty, same territory holding — but procedurally the opposite: Russia participated, briefed counsel and raised five objections, including a corruption allegation. The tribunal rejected all five — so this award survived a fully contested process.",
       },
     },
     {
@@ -248,7 +248,7 @@ export const dtekKrymenergo: DecisionSummary = {
       },
       em: true,
     },
-    { value: "6", label: { uk: "заперечень Росії — всі відхилено", en: "objections by Russia — all rejected" } },
+    { value: "5", label: { uk: "заперечень Росії — всі відхилено", en: "objections by Russia — all rejected" } },
     {
       value: { uk: "27 000 км²", en: "27,000 km²" },
       label: { uk: "території обслуговувала мережа", en: "of territory the grid served" },
@@ -333,8 +333,8 @@ export const dtekKrymenergo: DecisionSummary = {
         en: "Award: unlawful expropriation, USD 207.8M plus interest",
       },
       note: {
-        uk: "Усі шість заперечень відхилено; порушено статті 2, 3 і 5 ДІД; з відсотками — близько 267 млн доларів.",
-        en: "All six objections rejected; Articles 2, 3 and 5 of the BIT breached; about USD 267 million with interest.",
+        uk: "Усі п'ять заперечень відхилено; порушено статті 2, 3 і 5 ДІД; з відсотками — близько 267 млн доларів.",
+        en: "All five objections rejected; Articles 2, 3 and 5 of the BIT breached; about USD 267 million with interest.",
       },
     },
     {
@@ -381,7 +381,7 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       track: "Jurisdiction",
       trackLabel: { uk: "Юрисдикція", en: "Jurisdiction" },
-      claim: { uk: "Усі шість попередніх заперечень Росії", en: "All six of Russia's preliminary objections" },
+      claim: { uk: "Усі п'ять попередніх заперечень Росії", en: "All five of Russia's preliminary objections" },
       outcome: "rejected",
     },
     {
@@ -524,29 +524,29 @@ export const dtekKrymenergo: DecisionSummary = {
   },
 
   objections: {
-    heading: { uk: "Шість заперечень Росії", en: "Russia's six objections" },
+    heading: { uk: "П'ять заперечень Росії", en: "Russia's five objections" },
     note: {
-      uk: "На відміну від справи Ощадбанку, Росія брала участь і боронилася. Трибунал відхилив усі заперечення; щодо «території» — більшістю голосів.",
-      en: "Unlike in Oschadbank, Russia appeared and fought. The tribunal rejected every objection; on territory, by majority.",
+      uk: "На відміну від справи Ощадбанку, Росія брала участь і боронилася. Трибунал відхилив усі заперечення. Щодо «території» — одностайно; щодо строку за статтею 12 — більшістю голосів.",
+      en: "Unlike in Oschadbank, Russia appeared and fought. The tribunal rejected every objection — on territory unanimously, on the Article 12 timing point by majority.",
     },
     benchSize: 3,
-    // FOR THE RESEARCHERS — five cards, six objections, and the six is right.
-    //
-    // The award's own heading (verbatim block 10) reads "The Respondent raised
-    // 6 preliminary objections". The list that follows it (block 11) sets out
-    // only four: territory, timing under Article 12, the Article 1(1)
-    // definition of an investment, and investor status under Article 1(2)(b).
-    // The fifth card below — corruption — is not in that list at all; it is
-    // built from block 27, which is prose ("Respondent alleges that the DTEK
-    // Energy Group corruptly acquired its additional 45% stake…"). Block 43
-    // says only that the claimant prevailed "in all its defenses to
-    // Respondent's multiple jurisdictional objections", without a number.
-    //
-    // So these cards under-enumerate a number the source supports. The sixth
-    // objection has to be identified in the award itself and written up here.
-    // Do NOT close the gap the other way by deleting the sixth from the prose,
-    // the heading or the stat tile: that would put the site in conflict with
-    // its own verbatim, which is the one thing it may never be.
+    /* The count is five, and it is the award's own.
+     *
+     * § 210: "Russia raises four jurisdictional objections and one
+     * admissibility objection, which, Claimant submits, should all be
+     * dismissed." The dispositif dismisses exactly those five — First to
+     * Fourth Jurisdictional plus the Admissibility Objection.
+     *
+     * A long note here used to argue the opposite: that the site under-counted
+     * and a sixth objection had to be found in the award and written up. It
+     * reasoned from verbatim block 10, "The Respondent raised 6 preliminary
+     * objections" — but that line is the summary author's heading, not the
+     * award's text, and the award says six nowhere. The note also instructed
+     * whoever came next NOT to close the gap by correcting the six, on the
+     * ground that doing so would put the site in conflict with its own
+     * verbatim. It is the verbatim block's heading that was wrong. If that
+     * block is ever re-ingested, take the number from § 210.
+     */
     items: [
       {
         ground: { uk: "Територія", en: "Territory" },
@@ -556,7 +556,16 @@ export const dtekKrymenergo: DecisionSummary = {
           en: "\"Territory\" in the BIT means sovereign territory only; the territorial dispute takes Crimea outside it.",
         },
         outcome: "rejected",
-        votes: [{ for: 2, against: 1 }],
+        /* Unanimous. § 291: "The First Jurisdictional Objection is dismissed
+           for two reasons – the first reason is adopted by majority, and the
+           second unanimously (so that, in the end, the First Jurisdictional
+           Objection is dismissed unanimously)." Dispositif item 1 carries no
+           "by majority" qualifier. What was 2-1 is the reading of "territory"
+           in Article 1(4) (§ 292, the President and Mr Rowley); the estoppel
+           ground carried the whole bench, and it is the dismissal that this
+           field records. This was recorded as 2-1 and the objection below as
+           3-0 — the two were the wrong way round. */
+        votes: [{ for: 3, against: 0 }],
         reasoning: {
           uk: "«Територія РФ» — це простір під її контролем на відповідну дату; Крим безспірно був під контролем Росії. І естопель: не можна проголошувати Крим своїм суверенним і водночас заперечувати це для цілей ДІД.",
           en: "\"Territory of the Russian Federation\" is the area under its control at the relevant date; Crimea indisputably was. And estoppel: a State cannot proclaim Crimea sovereign territory while denying it for BIT purposes.",
@@ -570,7 +579,12 @@ export const dtekKrymenergo: DecisionSummary = {
           en: "Much of the assets are \"Soviet\", built before 1 Jan 1992, so Article 12 leaves them unprotected.",
         },
         outcome: "rejected",
-        votes: [{ for: 3, against: 0 }],
+        /* By majority. § 371: "The necessary overall consequence is that the
+           Tribunal, by majority, dismisses Respondent's Second Jurisdictional
+           Exception", and dispositif item 2 reads "Dismisses by majority the
+           Second Jurisdictional Objection". Unanimous (§§ 368-369) is the
+           interpretation of Article 12, not the dismissal. */
+        votes: [{ for: 2, against: 1 }],
         reasoning: {
           uk: "Одностайно: інвестицію «зроблено», коли інвестор набув власність (ius in rem), а це сталося після 1992 року за версією обох сторін (1995 або 2012).",
           en: "Unanimously: an investment is \"made\" when the investor acquires ownership (ius in rem) — after 1992 on both parties' versions (1995 or 2012).",

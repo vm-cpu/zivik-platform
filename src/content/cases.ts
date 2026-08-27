@@ -19,7 +19,7 @@ export const registryCases: RegistryCase[] = [
     year: 2017,
     amountUsd: null,
     note: { uk: "ICJ GL 166 · Крим, Донбас", en: "ICJ GL 166 · Crimea, Donbas" },
-    pages: 213,
+    pages: 139,
     decisionUrl: "https://www.icj-cij.org/sites/default/files/case-related/166/166-20240131-jud-01-00-en.pdf",
     summarySlug: "icj-cerd-icsft",
     lit: true,
@@ -105,7 +105,7 @@ export const registryCases: RegistryCase[] = [
     year: 2014,
     amountUsd: null,
     note: { uk: "Apps 8019/16 et al. · MH17 і схід", en: "Apps 8019/16 et al. · MH17 and the east" },
-    pages: 304,
+    pages: 501,
     decisionUrl: "https://hudoc.echr.coe.int/eng#{%22appno%22:[%2243800/14%22],%22itemid%22:[%22001-244292%22]}",
     summarySlug: "echr-ukraine-netherlands",
     lit: true,
@@ -361,6 +361,11 @@ export const registryCases: RegistryCase[] = [
     name: "JSC Oschadbank v. The Russian Federation, PCA Case No. 2016-14",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
+    /* Both of these have a final award — 26 Nov 2018 and 1 Nov 2023 — and
+       carried no `outcome`, while the sibling arbitration pca-24 carries
+       "award". On the field's own definition, what the forum issued, this is
+       an award. */
+    outcome: "award",
     status: { uk: "Виконання", en: "Enforcement" },
     year: 2016,
     amountUsd: 1100000000,
@@ -439,6 +444,11 @@ export const registryCases: RegistryCase[] = [
     name: "JSC DTEK Krymenergo v. The Russian Federation, PCA Case No. 2018-41",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
+    /* Both of these have a final award — 26 Nov 2018 and 1 Nov 2023 — and
+       carried no `outcome`, while the sibling arbitration pca-24 carries
+       "award". On the field's own definition, what the forum issued, this is
+       an award. */
+    outcome: "award",
     status: { uk: "Виконання", en: "Enforcement" },
     year: 2018,
     amountUsd: 207800000,
@@ -592,9 +602,13 @@ export const registryCases: RegistryCase[] = [
     institutionId: "fi",
     name: "Finland v Yan Petrovsky (UJ, Rusich)",
     type: { uk: "Нац. кримінальне", en: "National criminal" },
-    stage: "concluded",
+    /* "appeal", not "concluded": both the prosecution and the defence appealed
+       the judgment of 14 March 2025 (EJIL:Talk!, 15 Dec 2025), and the
+       summary's own verdict matrix carries the appeal as `not-decided`. The
+       vocabulary has a key for exactly this state. */
+    stage: "appeal",
     outcome: "verdict",
-    status: { uk: "Вирок", en: "Verdict" },
+    status: { uk: "Вирок, оскаржується обома сторонами", en: "Convicted; on appeal by both sides" },
     year: 2024,
     amountUsd: null,
     note: { uk: "Helsinki · перше UJ засудження", en: "Helsinki · first universal-jurisdiction conviction" },

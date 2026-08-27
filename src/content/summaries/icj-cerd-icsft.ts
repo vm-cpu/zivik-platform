@@ -208,7 +208,14 @@ export const icjCerdIcsft: DecisionSummary = {
     court: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
     url: "https://www.icj-cij.org/sites/default/files/case-related/166/166-20240131-jud-01-00-en.pdf",
     caseUrl: "https://www.icj-cij.org/case/166",
-    pages: 213,
+    /* 139 — the page count of the PDF at `url`, which is the convention
+       icj-genocide already uses (70 there is likewise a file count). It read
+       213: that is the number printed on the judgment's last page, because
+       the judgment opens at I.C.J. Reports p. 80 and closes at p. 213, so it
+       runs 134 Reports pages. The page renders this as "PDF, {n} с.", which
+       made the button promise a reader seventy-four pages that are not
+       there. */
+    pages: 139,
     date: "2024-01-31",
   },
 
@@ -237,7 +244,7 @@ export const icjCerdIcsft: DecisionSummary = {
     { value: "2", label: { uk: "конвенції", en: "conventions" } },
     { value: "4", label: { uk: "порушення", en: "violations found" } },
     { value: "7", label: { uk: "років розгляду", en: "years to judgment" } },
-    { value: "213", label: { uk: "сторінок", en: "pages" } },
+    { value: "139", label: { uk: "сторінок", en: "pages" } },
   ],
 
   glance: [
