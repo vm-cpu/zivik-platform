@@ -70,6 +70,11 @@
   /* rhythm */
   --gutter: clamp(24px, 5vw, 72px);
   --measure: 1180px;
+  /* The reading measure — 80 characters of Fira Sans at 16px, argued out four
+     times and finally measured; the working is in 30-paper.css above `.read`.
+     It is named here because the holdings ledger now takes the same measure,
+     and a number that has been wrong four times should not be written twice. */
+  --prose: 660px;
   --pagenav-h: 46px;
 
   background: var(--paper);

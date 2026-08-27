@@ -1195,14 +1195,24 @@ export default async function CasePage({
       <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
         <div className="rail">
           <h2 className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</h2>
-          <div className="rulings-grid">
+          {/* A definition list, because that is what these are: a doctrine
+              and what the Court held it to mean. They were cards — a white
+              box with a serif headline over grey prose, which is the shape of
+              an article teaser and not of a holding.
+
+              Deliberately unnumbered. On most of these pages the entries do
+              follow the order the reasoning runs in — jurisdiction before
+              merits — but nothing in the data says so, `interpretations` is
+              authored as a set, and a numeral would assert a sequence the
+              content does not have. */}
+          <dl className="rulings">
             {interpretations.map((it, i) => (
               <div key={i} className="ruling">
-                <b>{pick(it.term, locale)}</b>
-                <p>{pick(it.ruling, locale)}</p>
+                <dt>{pick(it.term, locale)}</dt>
+                <dd>{pick(it.ruling, locale)}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </div>
       </section>
 
