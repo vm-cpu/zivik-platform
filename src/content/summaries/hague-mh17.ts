@@ -239,7 +239,7 @@ export const hagueMh17: DecisionSummary = {
          one ECLI unqualified sent a citing reader to the wrong document for
          three of them. */
       value: {
-        uk: "ECLI:NL:RBDHA:2022:14037 (Гіркін) · 14036 Дубінський · 14039 Харченко · 14040 Пулатов",
+        uk: "ECLI:NL:RBDHA:2022:14037 (Гіркін) · 14036 Дубинський · 14039 Харченко · 14040 Пулатов",
         en: "ECLI:NL:RBDHA:2022:14037 (Girkin) · 14036 Dubinskiy · 14039 Kharchenko · 14040 Pulatov",
       },
     },

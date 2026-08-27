@@ -257,6 +257,10 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
   "preprint/repository": { uk: "препринт / репозиторій", en: "preprint / repository" },
   "official/ICC": { uk: "офіційний документ МКС", en: "ICC official document" },
   "official/award": { uk: "текст рішення", en: "award text" },
+  /* A national court's own judgment — dtek-krymenergo cites the Hague Court
+     of Appeal's. Without an entry here the fallback printed the raw key,
+     "official/court", into the kind chip beside the citation. */
+  "official/court": { uk: "рішення суду", en: "court judgment" },
   "official/treaty": { uk: "текст договору", en: "treaty text" },
   "official/filing": { uk: "процесуальний документ", en: "court filing" },
 };
@@ -1066,7 +1070,7 @@ export default async function CasePage({
       <section className="dash" id="overview" data-navsec aria-label={pick(T.overview, locale)}>
         <div className="rail dash-stack">
           {/* The docket facts, then the figures. `glance` is authored on all
-              eight summaries — 48 facts — and rendered nowhere until now. */}
+              eight summaries — 57 facts — and rendered nowhere until now. */}
           {glance.length > 0 && (
             <div>
               {/* No `lbl-onpaper` on any label in this band: the band is
@@ -1092,7 +1096,13 @@ export default async function CasePage({
                 <div
                   key={i}
                   className="kpi"
-                  data-em={s.em || s.label.en === "violations found" ? "1" : undefined}
+                  /* `em` and nothing else. This used to also test
+                     `s.label.en === "violations found"`, which gave the one
+                     tile its accent from the English wording of its label:
+                     reword the label in either locale and the emphasis
+                     disappears with it. The tile that needed it now says so
+                     in the data (icj-cerd-icsft, stats[1]). */
+                  data-em={s.em ? "1" : undefined}
                 >
                   <b>{typeof s.value === "string" ? s.value : pick(s.value, locale)}</b>
                   <span>{pick(s.label, locale)}</span>

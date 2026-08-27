@@ -195,7 +195,10 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       label: { uk: "ПАТ «Укрнафта» проти РФ", en: "PJSC Ukrnafta v. Russian Federation" },
       note: { uk: "PCA 2015-34 · кримська серія", en: "PCA 2015-34 · the Crimea line of cases" },
-      href: "#registry",
+      /* pca-24, the registry row for PCA 2015-34. It has no write-up, and
+         its own page says so; `#registry` sent a reader who wanted this
+         arbitration to the home page's preview of the whole library. */
+      href: "/cases/pca-24",
     },
     {
       label: {

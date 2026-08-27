@@ -195,12 +195,16 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       label: { uk: "Ордери МКС на арешт", en: "ICC arrest warrants" },
       note: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },
-      href: "#registry",
+      /* The situation page, which is where the six warrants are. `#registry`
+         was written when nothing here had a page and it resolves to the home
+         page's preview band — a card that names a decision and lands the
+         reader on a list of thirty-nine. */
+      href: "/cases/icc-ukraine",
     },
     {
       label: { uk: "MH17 (ЄСПЛ)", en: "MH17 (ECtHR)" },
       note: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
-      href: "#registry",
+      href: "/cases/echr-ukraine-netherlands",
     },
   ],
 
@@ -242,7 +246,10 @@ export const icjCerdIcsft: DecisionSummary = {
 
   stats: [
     { value: "2", label: { uk: "конвенції", en: "conventions" } },
-    { value: "4", label: { uk: "порушення", en: "violations found" } },
+    /* The accented tile of this dashboard. The template used to give it the
+       accent by matching the English label string; the flag the model already
+       has for it carries the same fact and survives a rewording. */
+    { value: "4", label: { uk: "порушення", en: "violations found" }, em: true },
     { value: "7", label: { uk: "років розгляду", en: "years to judgment" } },
     { value: "139", label: { uk: "сторінок", en: "pages" } },
   ],

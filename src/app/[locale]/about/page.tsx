@@ -196,7 +196,11 @@ const T = {
     en: "The site is in test mode. Neither the list of proceedings nor the summaries are finished: a proceeding goes into the library first and is written up later. Cases we have not reached yet are marked as such in the library and on the map; a proceeding's absence here does not mean it does not exist.",
   },
   mProceedings: { uk: "проваджень", en: "proceedings" },
-  mCourts: { uk: "інстанцій", en: "courts" },
+  /* «Інстанцій» / "institutions", not "courts": this counts the same figure
+     the library page counts, and one of the twelve bodies — EU / Belgium
+     enforcement measures, filed as `executive` — is not a court. The two
+     pages printed the same number under two different nouns. */
+  mInstitutions: { uk: "інстанцій", en: "institutions" },
   mAnalysed: { uk: "з конспектом", en: "written up" },
   stateLink: { uk: "Уся бібліотека", en: "The whole library" },
 
@@ -338,7 +342,7 @@ export default async function AboutPage({
             </div>
             <div className="m">
               <span className="mv">{courtCount}</span>
-              <span className="ml">{L(T.mCourts)}</span>
+              <span className="ml">{L(T.mInstitutions)}</span>
             </div>
             <div className="m">
               <span className="mv">{analysed}</span>

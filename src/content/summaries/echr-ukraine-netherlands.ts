@@ -492,7 +492,11 @@ export const echrUkraineNetherlands: DecisionSummary = {
     },
   ],
 
-  mapFocus: { forumKey: "hague", reachTo: "donetsk" },
+  /* Strasbourg, which is where this Court sits. `forumKey` names the marker
+     the seat is drawn on and the label beside it comes from `forum.seat`
+     above — so with "hague" here the map printed «Страсбург» / "Strasbourg"
+     over The Hague's point, and framed the picture from the wrong city. */
+  mapFocus: { forumKey: "strasbourg", reachTo: "donetsk" },
 
   theatres: [
     {

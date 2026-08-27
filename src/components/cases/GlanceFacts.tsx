@@ -4,7 +4,7 @@ import "./glance.css";
  * The case at a glance — the docket facts a reader needs before anything else.
  *
  * `DecisionSummary.glance` has been authored on every one of the eight pages
- * (48 facts, 96 localized strings) and was rendered nowhere: the field existed
+ * (57 facts, 114 localized strings) and was rendered nowhere: the field existed
  * in `types.ts`, the data existed in every summary module, and no component
  * ever read it. This renders it, in the overview band, above the headline
  * figures — who prosecuted, on what basis, over what period, decided when.
@@ -24,7 +24,7 @@ export interface GlanceFactR {
  * This was four equal columns of label-and-value, which treats thirteen facts
  * as thirteen equal things. They are not: «Заявник: Україна» is who the case
  * is, «Автентичний текст: французький» is a footnote. Worse, the content is
- * wildly uneven — 34 of the 55 facts across the eight pages are twenty
+ * wildly uneven — 37 of the 57 facts across the eight pages are twenty
  * characters or fewer while one is eighty-five — so equal cells either crush
  * the long values or, once they are allowed to span, leave holes where a
  * two-column entry could not fit the tail of a row. Both were tried. The holes
