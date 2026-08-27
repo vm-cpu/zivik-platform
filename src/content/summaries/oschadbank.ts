@@ -33,6 +33,24 @@ export const oschadbank: DecisionSummary = {
   // (same 104 blocks, same kinds) — draft, pending legal review.
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
+  /* This docket is live, so the page needs a date on its out-of-record figures
+     — it had none, while carrying enforcement facts into 2026.
+
+     Checked 27 August 2026 against Jus Mundi's case page (PCA 2016-14, its own
+     "Updated on: 10 Aug 2026"). Four entries postdate the last one in the
+     timeline below, and they are NOT written up here because their texts are
+     not yet published — Jus Mundi has them as "Summary coming soon":
+
+       Judgment, Paris Court of Appeal (pôle 5 ch. 16) 24/05331 — 23 June 2026
+       Judgment, Paris Court of Appeal (pôle 5 ch. 16) 24/16339 — 23 June 2026
+       Consent Order, High Court of Justice of England and Wales — 13 July 2026
+       Resumed Revision Proceeding (pending) — 19 July 2026
+
+     The last of those bears directly on the wording of the 1 July 2025 entry,
+     which says the award is final in France: a revision proceeding has been
+     resumed and is pending. Do not soften or restate that line by guesswork —
+     read 24/05331 and 24/16339 first, then say what they held. */
+  asOf: "2026-08-27",
   title: {
     uk: "Ощадбанк проти Російської Федерації",
     en: "JSC Oschadbank v. the Russian Federation",

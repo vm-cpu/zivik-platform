@@ -38,10 +38,17 @@ import verbatimUk from "./icc-ukraine.uk.json";
  *     Niang and Nazhat Shameem Khan, pending any future decisions". Note the
  *     trap: that second Khan is a different person, from Fiji.
  *
- * STILL UNVERIFIED against the Court's own text: the Pre-Trial Chamber's
- * finding of 24 October 2024 that Mongolia failed to cooperate, and the
- * Tajikistan episode of October 2025. Neither has a capture in the archive.
- * "No suspect in custody" is a negative the situation page does not state.
+ * Both non-cooperation findings are verified too, and the second was missing
+ * from this file entirely. The Assembly's own non-cooperation register lists,
+ * for this situation, "Finding under article 87(7) … on the non-compliance by
+ * Mongolia … and referral to the Assembly of States Parties", ICC-01/22-90,
+ * 24-10-2024. The Tajikistan finding is ICC-01/22-143 of 19 March 2026,
+ * referred to the Assembly through the Presidency — it postdates the register
+ * capture by eight days, which is why a first pass found no trace of it.
+ *
+ * STILL UNVERIFIED: "no suspect in custody" is a negative the Court's pages do
+ * not state, and nothing here establishes it beyond the absence of any case in
+ * a trial phase.
  *
  * `verbatim` holds the summary prose exactly as ingested from the source
  * document. The visualization layer below follows two rules:
@@ -178,7 +185,7 @@ export const iccUkraine: DecisionSummary = {
     {
       name: { uk: "Палата досудового провадження II", en: "Pre-Trial Chamber II" },
       role: {
-        uk: "Видала всі шість ордерів і констатувала невиконання Монголією обов'язку арешту.",
+        uk: "Видала всі шість ордерів і констатувала невиконання обов'язку арешту Монголією (2024) і Таджикистаном (2026).",
         en: "Issued all six warrants and found Mongolia's failure to arrest.",
       },
       kind: "court",
@@ -223,7 +230,7 @@ export const iccUkraine: DecisionSummary = {
     {
       q: { uk: "Хто зобов'язаний його заарештувати?", en: "Who is obliged to arrest him?" },
       a: {
-        uk: "Усі 125 держав-учасниць Римського статуту, щойно підозрюваний опиниться на їхній території. Практика поки інша: у вересні 2024 року Монголія прийняла Путіна без арешту — Палата досудового провадження II констатувала порушення і передала питання Асамблеї держав-учасниць; у жовтні 2025-го так само вчинив Таджикистан. До Південної Африки на саміт БРІКС-2023 Путін натомість не поїхав.",
+        uk: "Усі 125 держав-учасниць Римського статуту, щойно підозрюваний опиниться на їхній території. Практика поки інша, і двічі Суд це зафіксував: у вересні 2024 року Монголія прийняла Путіна без арешту, у жовтні 2025-го — Таджикистан, і щодо обох Палата досудового провадження II ухвалила констатацію за статтею 87(7) з передачею Асамблеї держав-учасниць (ICC-01/22-90 від 24.10.2024 і ICC-01/22-143 від 19.03.2026). До Південної Африки на саміт БРІКС-2023 Путін натомість не поїхав.",
         en: "All 125 States Parties to the Rome Statute, the moment a suspect enters their territory. Practice has lagged: in September 2024 Mongolia hosted Putin without arresting him — Pre-Trial Chamber II found a breach and referred it to the Assembly of States Parties; Tajikistan did the same in October 2025. Putin chose not to travel to South Africa for the 2023 BRICS summit.",
       },
     },
@@ -526,8 +533,28 @@ export const iccUkraine: DecisionSummary = {
         en: "Tajikistan fails to arrest; Russia \"sentences\" the ICC's Prosecutor and judges in absentia",
       },
       note: {
-        uk: "Московський суд заочно призначив Каріму Хану та вісьмом суддям МКС від 3,5 до 15 років. Спецдоповідачі ООН зажадали припинити репресії.",
-        en: "A Moscow court handed Karim Khan and eight ICC judges 3.5 to 15 years in absentia. UN Special Rapporteurs demanded the reprisals end.",
+        uk: "Путін прибув до Душанбе 9 жовтня 2025 року на саміт СНД; Таджикистан — держава-учасниця Статуту — його не заарештував, пославшись на зобов'язання в межах СНД щодо імунітету глав держав. Того ж кварталу московський суд заочно призначив Каріму Хану та вісьмом суддям МКС від 3,5 до 15 років; спецдоповідачі ООН зажадали припинити репресії.",
+        en: "Putin arrived in Dushanbe on 9 October 2025 for a CIS summit; Tajikistan, a State Party, did not arrest him, citing CIS undertakings on head-of-State immunity. In the same quarter a Moscow court handed Karim Khan and eight ICC judges 3.5 to 15 years in absentia; UN Special Rapporteurs demanded the reprisals end.",
+      },
+    },
+    {
+      /* The second article 87(7) finding in this situation, and it was missing
+         here: the page had Tajikistan's failure to arrest but not the Court's
+         response to it, which is the part that carries legal weight. Same
+         instrument as the Mongolia finding of 24 October 2024, referred to the
+         Assembly the same way — see ICC-01/22-143 and the Presidency's referral
+         notice. */
+      date: { uk: "19 берез. 2026", en: "19 Mar 2026" },
+      iso: "2026-03-19",
+      track: "cooperation",
+      kind: "order",
+      label: {
+        uk: "Палата констатує порушення Таджикистаном обов'язку арешту",
+        en: "The Chamber finds Tajikistan failed to arrest",
+      },
+      note: {
+        uk: "Палата досудового провадження II за статтею 87(7) Статуту констатувала, що Таджикистан не виконав запит про арешт і передачу Путіна, і передала питання Асамблеї держав-учасниць через Президію Суду (ICC-01/22-143). Друга така констатація в цій ситуації після монгольської.",
+        en: "Pre-Trial Chamber II found under article 87(7) that Tajikistan failed to execute the request to arrest and surrender Mr Putin, and referred the matter to the Assembly of States Parties through the Presidency (ICC-01/22-143). The second such finding in this situation after Mongolia's.",
       },
     },
   ],
