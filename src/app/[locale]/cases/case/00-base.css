@@ -32,6 +32,8 @@
   --faint: var(--brand-faint-dark);
   --gold: var(--brand-gold-lit);
   --gold-dim: var(--brand-gold-dim);
+  /* Which court, on the night grounds. */
+  --forum: var(--brand-forum-lit);
   --red: var(--brand-breach); /* breach only */
   --accent: var(--brand-red);
 
@@ -55,6 +57,8 @@
      no loss; the brand colour itself is untouched and still available. */
   --pgold: var(--brand-gold-ink);
   --pred: var(--brand-red);
+  /* Which court, on paper. Never an outcome — see the note in globals.css. */
+  --pforum: var(--brand-forum);
 
   /* Steps shared with the rest of the site live in globals.css; this one
      exists only here — the masthead.

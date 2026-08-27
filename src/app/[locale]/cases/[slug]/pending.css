@@ -53,7 +53,9 @@
   font: 700 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--brand-gold-pale);
+  /* The forum's own hue rather than gold: this line names a court and a year,
+     and gold on this site is a finding in someone's favour. */
+  color: var(--brand-forum-lit);
 }
 .pend-name {
   margin: 0 0 var(--space-5);

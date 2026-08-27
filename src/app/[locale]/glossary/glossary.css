@@ -13,6 +13,8 @@
   --redd: var(--brand-red-dark);
   --gold: var(--brand-gold);
   --goldink: var(--brand-gold-ink);
+  /* Which court. Not an outcome colour — see globals.css. */
+  --forum: var(--brand-forum);
   --paper: var(--brand-paper);
   --paper2: var(--brand-paper-2);
   --surface: var(--brand-surface);
@@ -340,11 +342,14 @@
   min-height: 24px;
   text-decoration: none;
 }
+/* The forum, in the hue reserved for forums. It was gold, which on this site
+   means relief granted — so a definition taken from a judgment that granted
+   nothing still announced itself in the colour of a win. */
 .gl-src-forum {
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--goldink);
+  color: var(--forum);
 }
 .gl-src-title {
   font-size: var(--t-cap);

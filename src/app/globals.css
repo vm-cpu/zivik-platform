@@ -177,6 +177,27 @@
   --brand-night-rule-soft: #2a201c;
   --brand-gold-dim: #b98a3f;
   --brand-breach: #e0685c;
+  /* ---- the third hue: which forum, and nothing else --------------------
+     The palette held exactly two colours — red in seven shades and gold in
+     eight — plus paper, night and ink. Every distinction the site draws had to
+     be said in one of those two, so outcome, kind of event, standing of an
+     award and which court decided it were all competing for the same ink. The
+     owner's "бракує кольору" was a fact about the system, not a preference.
+
+     This is a cool counterpoint to a warm site, and it is reserved: it names
+     the institution a proceeding belongs to and NEVER an outcome. Red stays
+     breach, gold stays relief, and a reader who has learnt that on one page
+     does not have it taken away on the next. Because it never carries a
+     verdict, it can appear beside one without confusion.
+
+     Measured: 7.64:1 on --brand-paper, 7.19:1 on --brand-paper-2, 7.91:1 on
+     --brand-surface; the lit variant 8.35:1 on --brand-night and 7.80:1 on
+     --brand-night-2. Against gold and red it sits at 1.4 and 1.3 — close in
+     weight on purpose, so the newcomer does not shout over the two colours
+     that carry the findings. */
+  --brand-forum: #3b5468;      /* institutional identity, on paper */
+  --brand-forum-lit: #8fb3c0;  /* the same, on the night grounds */
+
   --brand-cream-warm: #fff8ea; /* text on solid red buttons */
   --brand-ink-black: #0e0504;  /* darkest surface (footer) */
   --brand-quote: #1e0c0b;    /* the pull-quote band, its own ground */

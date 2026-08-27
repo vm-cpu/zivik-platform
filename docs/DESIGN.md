@@ -46,8 +46,28 @@ court mastheads — which are dark in the design, not in a theme.
 | `--brand-rule` | `#e7e5e1` | `#322c26` | hairline dividers |
 | `--brand-seam` | `#c6c0b6` | — | the edge between two full-bleed paper bands |
 | `--brand-night` | `#17110f` | — | scenes that are dark by design |
+| `--brand-forum` | `#3b5468` | — | which court — on paper. Never an outcome |
+| `--brand-forum-lit` | `#8fb3c0` | — | the same, on the night grounds |
 
 **Rules**
+
+- **Colour means one thing at a time, and the three meanings do not trade
+  places.** The palette held only two hues — red in seven shades, gold in
+  eight — so every distinction the site drew competed for the same ink: the
+  outcome of a claim, the kind of a chronology entry, whether an award still
+  stands, and which court decided it. A reader could learn on one page that
+  gold means relief granted and meet it on the next naming a forum.
+
+  | hue | says | examples |
+  |---|---|---|
+  | red | a breach, a conviction, a loss | `violation`, `convicted`, the unreturned share of a proportion |
+  | gold | relief, a finding in someone's favour, the archive's own structure | `granted`, rules, labels, the drawn share |
+  | forum | which institution — **and nothing else** | the court in a library row, on a glossary definition's trail back, in a pending page's eyebrow |
+
+  The forum hue is deliberately close in weight to the other two (1.4 against
+  gold, 1.3 against red on paper) so that a newcomer does not shout over the
+  colours that carry the findings. Because it never states a verdict, it can
+  sit beside one without confusion. Do not reach for it to mark anything else.
 
 - **Never introduce a hex in a component or section file.** If a value is
   missing, add a token. One documented exception: the lamp illustration in

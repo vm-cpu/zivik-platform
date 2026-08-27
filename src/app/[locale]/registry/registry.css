@@ -16,6 +16,8 @@
    stylesheet loading first. */
 .registrypage{
   --red:var(--brand-red);
+  /* Which court. Not an outcome colour — see globals.css. */
+  --forum:var(--brand-forum);
   --redd:var(--brand-red-dark);
   --gold:var(--brand-gold);
   /* Pantone 874 C is 4.32:1 on the recessed grounds — under AA for the small
@@ -425,7 +427,7 @@
 .reg-drow:hover{background:var(--paper2)}
 .reg-court{
   display:flex;align-items:center;gap:7px;
-  font:700 var(--t-cap) var(--brand-font-body);letter-spacing:.03em;color:var(--red);
+  font:700 var(--t-cap) var(--brand-font-body);letter-spacing:.03em;color:var(--forum);
   padding-top:2px;
 }
 .reg-court .dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--rule)}
