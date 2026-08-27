@@ -381,7 +381,10 @@
    band is absent, and two --brand-paper-2 sections meeting at 1.06:1 have
    nothing between them at all. */
 .casepage .pmeas {
-  background: var(--paper);
+  /* --paper2: the bands moved, so the alternation moved with them. The run is
+     dash(p2), rulings(p), measures(p2), machinery(p), chronology(p2), the map
+     as a dark island, then who's who on paper. */
+  background: var(--paper2);
   border-top: 1px solid var(--seam);
   padding: var(--space-14) 0 var(--space-16);
 }

@@ -6,6 +6,7 @@ import { foreignLang, isLocale, type Locale } from "@/i18n/config";
 import { plural } from "@/i18n/plural";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
+import CiteBlock from "@/components/cases/CiteBlock";
 import PageNav from "@/components/cases/PageNav";
 import CaseTimeline from "@/components/cases/CaseTimeline";
 import MoneyBars from "@/components/cases/MoneyBars";
@@ -139,7 +140,12 @@ const T = {
   objUpheld: { uk: "Прийнято", en: "Upheld" },
   standing: { uk: "Рішення чинне", en: "Award stands" },
   notStanding: { uk: "Рішення скасовано", en: "Award annulled" },
-  seatLabel: { uk: "Місце арбітражу", en: "Seat" },
+  /* «Місце розгляду», not «Місце арбітражу». This is the default heading for
+     the map band on any case that names one theatre and authors no heading of
+     its own — and it was rendering on ICJ CERD/ICSFT, which is not an
+     arbitration. The two locales did not agree either: the English has always
+     read the neutral "Seat". */
+  seatLabel: { uk: "Місце розгляду", en: "Seat" },
 
   // Warrant wall.
   chargesLbl: { uk: "Звинувачення", en: "Charges" },
@@ -161,6 +167,12 @@ const T = {
      this destination, gets its own entry below. */
   navHandbook: { uk: "Хто є хто", en: "Who's who" },
   navGlossary: { uk: "Словник", en: "Glossary" },
+  citeH: { uk: "Як цитувати", en: "How to cite" },
+  citeCopy: { uk: "Копіювати", en: "Copy" },
+  citeCopied: { uk: "Скопійовано", en: "Copied" },
+  /* A clipboard write can be refused, and a button that pretends otherwise is
+     worse than one that says so — the text stays selectable either way. */
+  citeFailed: { uk: "Не вдалося — виділіть текст", en: "Blocked — select the text" },
   glossaryAll: {
     uk: "Ці терміни у словнику бібліотеки",
     en: "These terms in the library's glossary",
@@ -603,6 +615,20 @@ export default async function CasePage({
     institution: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
     seat: { uk: "Гаага", en: "The Hague" },
   };
+  /* The citation, assembled from what the record already holds.
+
+     Title, parties and the act keep the language of the judgment — that is
+     what a citation carries, and `masthead` is deliberately the source
+     language. The forum and the seat follow the reader, and the permalink is
+     the canonical URL this page already declares. Nothing new is authored. */
+  const citeLines = [
+    masthead.official,
+    `${masthead.parties} · ${masthead.judgment}`,
+    `${pick(forum.institution, locale)}, ${pick(forum.seat, locale)}`,
+    `${siteUrl}/${locale}/cases/${slug}`,
+  ];
+  const citation = citeLines.join(" ").replace(/\s+/g, " ").trim();
+
   const mapForum = {
     key: summary.mapFocus?.forumKey ?? "hague",
     name: forum.seat,
@@ -668,6 +694,23 @@ export default async function CasePage({
   const hasMachinery = Boolean(summary.warrants || attribution || objections || afterlife);
   const pageSections = [
     { id: "overview", label: pick(T.overview, locale) },
+    /* This list is the page's order, and the sticky bar is drawn from it — so
+       it moves when the bands move. Rulings and measures now follow the
+       dispositif directly; the chronology and the map fall in behind the
+       machinery. */
+    { id: "rulings", label: pick(T.navRulings, locale) },
+    ...(provisionalMeasures.length > 0
+      ? [{ id: "measures", label: pick(T.provMeasures, locale) }]
+      : []),
+    ...(hasMachinery
+      ? [
+          {
+            id: "machinery",
+            label: pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale),
+          },
+        ]
+      : []),
+    { id: "chronology", label: pick(T.timeline, locale) },
     /* The map band. It renders on every case that names a theatre and had no
        entry here at all — see the note on the section itself. Guarded the same
        way the band is, so the chip never points at nothing. */
@@ -678,19 +721,6 @@ export default async function CasePage({
             label: pick(summary.theatresHeading ?? T.seatLabel, locale),
           },
         ]
-      : []),
-    { id: "chronology", label: pick(T.timeline, locale) },
-    ...(hasMachinery
-      ? [
-          {
-            id: "machinery",
-            label: pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale),
-          },
-        ]
-      : []),
-    { id: "rulings", label: pick(T.navRulings, locale) },
-    ...(provisionalMeasures.length > 0
-      ? [{ id: "measures", label: pick(T.provMeasures, locale) }]
       : []),
     { id: "handbook", label: pick(T.navHandbook, locale) },
     { id: "glossary", label: pick(T.navGlossary, locale) },
@@ -879,6 +909,20 @@ export default async function CasePage({
             {fileSrc.caption && <em>{fileSrc.caption}</em>}
           </a>
         </div>
+
+        {/* The one thing a reader who came to cite actually needs, as one
+            thing. Its parts were three bands apart: the official name is the
+            `.fullname` line above, the act and the date are in the eyebrow,
+            the docket is a row in the case card, and the permalink was
+            nowhere but the address bar. */}
+        <CiteBlock
+          lines={citeLines}
+          citation={citation}
+          label={pick(T.citeH, locale)}
+          copy={pick(T.citeCopy, locale)}
+          copied={pick(T.citeCopied, locale)}
+          failed={pick(T.citeFailed, locale)}
+        />
         </div>
       </header>
 
@@ -1023,59 +1067,67 @@ export default async function CasePage({
         </div>
       </section>
 
-      {/* 2m — Where it was decided and what ground it is about.
-          A wide-format band of its own: the drawing runs edge to edge and only
-          the heading and legend keep the gutter, the way the events map does
-          on the home page. Inside .dash-stack it was a 1036px picture in the
-          middle of the reading column, letterboxed down to 821px of drawing. */}
-      {/* id, data-navsec and a nav entry. It had none of the three: the
-          biggest band on the page, and the navigation did not admit it
-          existed. */}
-      {theatres.length > 0 && (
-        <section
-          className="mapband"
-          id="theatres"
-          data-navsec
-          aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}
-        >
-          <h2 className="lbl">
-            {pick(
-              summary.theatresHeading ??
-                (theatres.length > 1 ? T.tracks : T.seatLabel),
-              locale,
-            )}
-          </h2>
-          <TheatreMap
-            theatres={theatres}
-            locale={locale}
-            forum={mapForum}
-          />
-        </section>
-      )}
+      {/* The two halves of the holding, together.
 
-      {/* 2t — Chronology. Its own band, its own heading: it used to be the
-          tail of the dashboard, below the money bars, under a <div> label. */}
-      <section className="chron" id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
+          The dispositif is band three — it says how each claim was disposed
+          of. `interpretations` says what the Court held the law to *mean*,
+          which is the half that goes into a filing, and it used to sit four
+          bands below with a dark map, a timeline and the machinery between
+          them. A reader scrolling from the dispositif for the ratio hit
+          scenery. The context that explains the holding now follows it
+          instead of interrupting it: rulings, measures, machinery, then the
+          chronology, then the map.
+
+          The grounds re-alternate with it — `.refs` takes --paper and
+          `.pmeas` --paper2 — so the run stays p2, p, p2, p, p2, dark, p, and
+          the map keeps paper on both sides, which DESIGN.md requires of a
+          dark island. */
+      }
+      {/* 2b — Reference: doctrine and the interim order, on paper */}
+      <section className="refs" id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
         <div className="rail">
-          <h2 className="lbl lbl-onpaper">{pick(T.timeline, locale)}</h2>
-          <CaseTimeline
-            events={timeline.map((e) => ({
-              date: L(e.date),
-              label: L(e.label),
-              note: e.note && L(e.note),
-              kind: e.kind,
-              track: e.track,
-              iso: e.iso,
-            }))}
-            tracks={timelineTracks.map((t) => ({ id: t.id, label: L(t.label) }))}
-            labels={{
-              all: pick(T.allEvents, locale),
-              openDetail: pick(T.openDetail, locale),
-              railLabel: pick(T.railLabel, locale),
-            }}
-          />
+          <h2 className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</h2>
+          <div className="rulings-grid">
+            {interpretations.map((it, i) => (
+              <div key={i} className="ruling">
+                <b>{pick(it.term, locale)}</b>
+                <p>{pick(it.ruling, locale)}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
+
+      {/* How the Court read the law and whether its interim orders were obeyed
+          are different subjects; they were sharing one section and one nav
+          entry, so the second was invisible. */}
+      {provisionalMeasures.length > 0 && (
+        <section className="pmeas" id="measures" data-navsec aria-label={pick(T.provMeasures, locale)}>
+          <div className="rail">
+            <h2 className="lbl lbl-onpaper">
+              {pick(T.provMeasures, locale)}
+              {summary.provisionalMeasuresOrder && (
+                <em className="lbl-sub">{pick(summary.provisionalMeasuresOrder, locale)}</em>
+              )}
+            </h2>
+            <ul className="pmeasures">
+              {provisionalMeasures.map((m, i) => (
+                <li key={i} data-order={m.order}>
+                  <div className="pm-head">
+                    <span className="pm-measure">{pick(m.measure, locale)}</span>
+                    <span className="pm-flag">
+                      {m.order === "violated"
+                        ? pick(T.orderBreached, locale)
+                        : pick(T.orderComplied, locale)}
+                    </span>
+                  </div>
+                  {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* 2w — The warrants, wave by wave (ICC situation pages) */}
       {warrants && (
@@ -1187,49 +1239,57 @@ export default async function CasePage({
         </section>
       )}
 
-      {/* 2b — Reference: doctrine and the interim order, on paper */}
-      <section className="refs" id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
+      {/* 2t — Chronology. Its own band, its own heading: it used to be the
+          tail of the dashboard, below the money bars, under a <div> label. */}
+      <section className="chron" id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
         <div className="rail">
-          <h2 className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</h2>
-          <div className="rulings-grid">
-            {interpretations.map((it, i) => (
-              <div key={i} className="ruling">
-                <b>{pick(it.term, locale)}</b>
-                <p>{pick(it.ruling, locale)}</p>
-              </div>
-            ))}
-          </div>
+          <h2 className="lbl lbl-onpaper">{pick(T.timeline, locale)}</h2>
+          <CaseTimeline
+            events={timeline.map((e) => ({
+              date: L(e.date),
+              label: L(e.label),
+              note: e.note && L(e.note),
+              kind: e.kind,
+              track: e.track,
+              iso: e.iso,
+            }))}
+            tracks={timelineTracks.map((t) => ({ id: t.id, label: L(t.label) }))}
+            labels={{
+              all: pick(T.allEvents, locale),
+              openDetail: pick(T.openDetail, locale),
+              railLabel: pick(T.railLabel, locale),
+            }}
+          />
         </div>
       </section>
 
-      {/* How the Court read the law and whether its interim orders were obeyed
-          are different subjects; they were sharing one section and one nav
-          entry, so the second was invisible. */}
-      {provisionalMeasures.length > 0 && (
-        <section className="pmeas" id="measures" data-navsec aria-label={pick(T.provMeasures, locale)}>
-          <div className="rail">
-            <h2 className="lbl lbl-onpaper">
-              {pick(T.provMeasures, locale)}
-              {summary.provisionalMeasuresOrder && (
-                <em className="lbl-sub">{pick(summary.provisionalMeasuresOrder, locale)}</em>
-              )}
-            </h2>
-            <ul className="pmeasures">
-              {provisionalMeasures.map((m, i) => (
-                <li key={i} data-order={m.order}>
-                  <div className="pm-head">
-                    <span className="pm-measure">{pick(m.measure, locale)}</span>
-                    <span className="pm-flag">
-                      {m.order === "violated"
-                        ? pick(T.orderBreached, locale)
-                        : pick(T.orderComplied, locale)}
-                    </span>
-                  </div>
-                  {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
-                </li>
-              ))}
-            </ul>
-          </div>
+      {/* 2m — Where it was decided and what ground it is about.
+          A wide-format band of its own: the drawing runs edge to edge and only
+          the heading and legend keep the gutter, the way the events map does
+          on the home page. Inside .dash-stack it was a 1036px picture in the
+          middle of the reading column, letterboxed down to 821px of drawing. */}
+      {/* id, data-navsec and a nav entry. It had none of the three: the
+          biggest band on the page, and the navigation did not admit it
+          existed. */}
+      {theatres.length > 0 && (
+        <section
+          className="mapband"
+          id="theatres"
+          data-navsec
+          aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}
+        >
+          <h2 className="lbl">
+            {pick(
+              summary.theatresHeading ??
+                (theatres.length > 1 ? T.tracks : T.seatLabel),
+              locale,
+            )}
+          </h2>
+          <TheatreMap
+            theatres={theatres}
+            locale={locale}
+            forum={mapForum}
+          />
         </section>
       )}
 

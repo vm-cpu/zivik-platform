@@ -15,6 +15,63 @@
   color: var(--cream);
   padding-block: clamp(30px, 4vw, 60px) clamp(28px, 3.5vw, 48px);
 }
+/* ---- the citation ----------------------------------------------------------
+   A quiet panel at the foot of the masthead, in the mono face the site gives
+   the machinery — dockets, dates, paragraph refs. It is not a call to action
+   and does not wear a button's weight: the reader who wants it is looking for
+   it, and everyone else should be able to scroll past without being sold to. */
+.casepage .cite {
+  margin-top: var(--space-8);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--rule-soft);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--panel) 70%, transparent);
+  max-width: 68ch;
+}
+.casepage .cite-label {
+  margin: 0 0 var(--space-3);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.casepage .cite-body {
+  font-family: var(--brand-font-mono);
+  font-size: var(--t-cap);
+  line-height: 1.55;
+}
+.casepage .cite-body p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+/* The official title carries the weight; the rest is apparatus. */
+.casepage .cite-title {
+  color: var(--cream);
+}
+.casepage .cite-line {
+  color: var(--muted);
+}
+.casepage .cite-copy {
+  margin-top: var(--space-4);
+  min-height: 32px;
+  padding: 0 var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: none;
+  border: 1px solid var(--gold-dim);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.casepage .cite-copy:hover {
+  color: var(--cream);
+  border-color: var(--gold);
+}
+
 .casepage .backlink {
   display: inline-flex;
   align-items: center;
