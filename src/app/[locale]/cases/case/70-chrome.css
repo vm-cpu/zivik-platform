@@ -244,16 +244,48 @@
   .casepage .lede,
   .casepage .refs,
   .casepage .machinery,
-  .casepage .aids,
-  /* The dispositif is a dark panel on screen; on paper it is the block a
-     reader is most likely to be printing the page for. */
-  .casepage .vpanel {
+  .casepage .aids {
     background: #fff !important;
     color: #000 !important;
   }
+  /* Forcing a band white does nothing for the type inside it: every colour in
+     the dashboard is set on the element that wears it, and the whole band is
+     on the night token set, so a printed page would have carried a lit gold
+     figure and a cream ledger onto white paper. Rather than name thirty
+     children, the band re-points its own aliases at their paper twins for the
+     length of the print sheet — the declarations underneath are unchanged and
+     resolve to ink. --bg and --panel go with them, which is what turns the
+     dispositif's frame and the KPI cards back into boxes on white. */
+  .casepage .dash {
+    --bg: #fff;
+    --panel: #fff;
+    --cream: #000;
+    --muted: #000;
+    --faint: #333;
+    --gold: var(--brand-gold-ink);
+    --gold-dim: var(--brand-ink-2);
+    --red: var(--brand-red);
+    --forum: var(--brand-forum);
+    --rule: #999;
+    --rule-soft: #ccc;
+  }
+  /* The dispositif is a hairline frame on screen; on paper it is the block a
+     reader is most likely to be printing the page for, so its edge is the one
+     that goes to black. */
   .casepage .vpanel {
+    border-color: #000 !important;
+  }
+  /* The ledger reads --brand-* directly rather than the band's aliases, so it
+     is named here. */
+  .casepage .glance dt,
+  .casepage .glance dd {
+    color: #000 !important;
+  }
+  .casepage .glance-item {
+    border-top-color: #999 !important;
+  }
+  .casepage .kpi {
     box-shadow: none !important;
-    border: 1px solid #000 !important;
   }
   .casepage .official,
   .casepage .kpi b,

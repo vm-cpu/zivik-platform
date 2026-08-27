@@ -28,7 +28,8 @@ with the lamp-shaped toggle that drove it. `color-scheme: light` is pinned on
 `:root` so a dark-OS browser does not repaint scrollbars and form controls
 against a light page. The "Dark" column below is kept only where a token still
 has a lit counterpart used on the dark scenes — the lamp stage, the map, the
-court mastheads — which are dark in the design, not in a theme.
+court mastheads, the decision page's overview band — which are dark in the
+design, not in a theme.
 
 | Token | Light | Dark | Role |
 | --- | --- | --- | --- |
@@ -217,8 +218,18 @@ are forbidden: they read as neither sharp nor round.
   gets paper on both sides. The decision page had four consecutive dark bands
   — masthead, dashboard, map, chronology, 4359px of it at 1440 — and the fix
   was to move the two that are not scenes onto paper, not to recolour them.
-  The scenes that stay dark are the ones named above: the lamp stage, the map,
-  the court mastheads.
+
+  The dashboard has since gone back to `--brand-night`, and the rule is what
+  says when that is allowed. It is not a recolour of the old arrangement: the
+  chronology stayed on paper, and the white `.lede` above the dashboard and the
+  `.refs` band below it are both unconditional, so the band has paper on both
+  sides — 18.69:1 and 18.05:1 — and four paper bands stand between it and the
+  map. Measured on all eight decisions in both languages, no two dark grounds
+  touch. **A dark band is judged by what is above and below it, not by what is
+  in it**; nothing else here changed.
+
+  The grounds that are dark: the lamp stage, the map, the court mastheads, and
+  the decision page's overview band.
 - Instruments are **full width in one column**. Two dense columns of unrelated
   content read as clutter.
 

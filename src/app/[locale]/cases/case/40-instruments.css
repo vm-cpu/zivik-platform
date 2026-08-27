@@ -1,9 +1,10 @@
-/* ---- what was taken (paper) -------------------------------------------------
-   These sit inside .dash, which is paper now, so every colour here moved with
-   it: --pgold for the figures and the marks, --ink/--ink2 for the words,
-   --seam for the track a bar or a dot field is drawn on. --brand-gold-ink on
-   --brand-seam is 3.11:1, so a half-filled bar clears the graphics floor
-   against its own track; on --brand-paper-2 it is 5.10:1. */
+/* ---- what was taken (night) -------------------------------------------------
+   These sit inside .dash, which is --brand-night again, so every colour here
+   moved back with it: --gold for the figures and the marks (9.98:1 on the
+   band), --cream and --muted for the words (15.53:1 and 9.06:1), --red for the
+   half of a proportion that is a breach (5.61:1). The paper twins they wore in
+   between measure 3.33:1, 1.06:1, 2.40:1 and 1.81:1 here — under AA every one
+   of them, and the values in the ledger would simply have gone out. */
 .casepage .takings {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -19,13 +20,15 @@
   gap: var(--space-4);
   padding-bottom: var(--space-2);
 }
+/* 9.06:1. */
 .casepage .taking-label {
   font-size: var(--t-sm);
-  color: var(--ink2);
+  color: var(--muted);
 }
+/* 9.98:1. */
 .casepage .taking-value {
   font: 700 var(--t-h3) var(--brand-font-display), serif;
-  color: var(--pgold);
+  color: var(--gold);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
@@ -35,11 +38,12 @@
   gap: 5px;
   margin-top: var(--space-2);
 }
+/* One mark per unit, 9.98:1 on the band. */
 .casepage .dotfield i {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--pgold);
+  background: var(--gold);
 }
 /* The proportion, both sides of it.
 
@@ -51,23 +55,34 @@
 .casepage .taking-bar {
   height: 12px;
   border-radius: var(--r-pill);
-  /* --pred, the page's own paper red, not --brand-breach. Breach is a bright
-     coral mixed for the dark scenes; on paper it sat a shade away from the red
-     the split label under it uses, so the block carried two reds that meant
-     the same thing. This is the colour every other breach on the page wears. */
-  background: var(--pred);
+  /* --red, --brand-breach: the same red the split label under the bar takes,
+     and the same one every other breach in this band wears. It was --pred, the
+     paper red, and on this ground --pred is 1.81:1 — the track would have been
+     a black bar on a black band, and the remainder is the half of this
+     proportion that the block exists to state. 5.61:1. */
+  background: var(--red);
   overflow: hidden;
 }
 .casepage .taking-bar i {
   display: block;
   height: 100%;
   border-radius: var(--r-pill);
-  /* --gold, the lit gold, not --pgold. The track is a dark red ground, and
-     --pgold is the gold mixed to sit on paper: measured against this track it
-     came out at 1.84:1, so the 9.5% that is the whole point of the bar was
-     very nearly invisible on it. Inside a dark bar the dark-scene tokens are
-     the right ones. */
+  /* --gold, 9.98:1 on the band. On paper this pair was a dark red track under
+     a lit gold fill and read as a proportion at 5.50:1 between the two halves.
+     On the night ground both halves are lit — the red had to come up to be
+     seen at all — and 5.50 collapses to 1.78, which is one bar in two tones of
+     the same brightness. Nothing in the palette fixes that: a fill that clears
+     3:1 against --brand-breach would have to be darker than the band.
+
+     So the boundary is drawn by the ground instead of by the pair. The gold
+     ends two pixels short of where the share ends and the band shows through,
+     which is the device .money-bar already uses between its segments; each
+     half is then read against --brand-night — 9.98:1 and 5.61:1 — rather than
+     against the other. The shadow has no blur and no spread and the track
+     clips it, so at a share of 100% there is no notch and the gold runs to the
+     end. */
   background: var(--gold);
+  box-shadow: 2px 0 0 var(--bg);
   /* Drawn once, when the bar is first scrolled to. The width is set from
      React; this is only how it gets there. --ease-out lands rather than
      bounces, which is the only register this subject allows. */
@@ -83,17 +98,20 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+/* 9.98:1. */
 .casepage .ts-share {
-  color: var(--pgold);
+  color: var(--gold);
 }
+/* 5.61:1 — the track's own colour, which is the point of the pair. */
 .casepage .ts-rest {
-  color: var(--pred);
+  color: var(--red);
 }
 /* Said out loud when the field cannot draw every unit. */
+/* 5.24:1. */
 .casepage .taking-capped {
   margin: var(--space-2) 0 0;
   font-size: var(--t-cap);
-  color: var(--ink3);
+  color: var(--faint);
 }
 @media (prefers-reduced-motion: reduce) {
   .casepage .taking-bar i,
@@ -112,7 +130,8 @@
 .casepage .taking-note {
   margin: var(--space-2) 0 0;
   font-size: var(--t-cap);
-  color: var(--ink2);
+  /* 9.06:1. */
+  color: var(--muted);
   /* This note sits in a card that spans the full 1180px rail, and it is
      running prose at 12.5px: measured at 194 characters to the line, the
      longest on the site by a wide margin and nearly three times the measure
@@ -122,7 +141,7 @@
   max-width: 70ch;
 }
 
-/* ---- money (paper) --------------------------------------------------------- */
+/* ---- money (night) --------------------------------------------------------- */
 .casepage .money {
   display: grid;
   gap: var(--space-7);
@@ -134,16 +153,32 @@
   gap: var(--space-4);
   padding-bottom: var(--space-3);
 }
+/* 9.06:1. */
 .casepage .money-label {
   font-size: var(--t-sm);
-  color: var(--ink2);
+  color: var(--muted);
 }
+/* 9.98:1. */
 .casepage .money-value {
   font: 700 var(--t-h3) var(--brand-font-display), serif;
-  color: var(--pgold);
+  color: var(--gold);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
+/* A bar with no parts is a solid gold lozenge, 9.98:1 on the band.
+
+   A bar WITH parts takes the band's own ground, because its 2px gaps show
+   whatever is behind the segments and the segments themselves have to be read
+   against something. On paper that something could be the bar's gold, since
+   the ramp below runs light-dark-light against it. On night every step of the
+   ramp is lit — there is nothing under the ground to be the dark end of a
+   ramp — so gold gaps would leave 1.56:1 and 1.66:1 boundaries between the
+   parts. Against --brand-night the same three read 9.98:1, 15.53:1 and
+   6.03:1.
+
+   :empty rather than :has(.money-seg), because that is literally the state:
+   MoneyBars renders the bar with the segments as its only children and no
+   text, so a bar with no parts has no child nodes at all. */
 .casepage .money-bar {
   display: flex;
   gap: 2px;
@@ -151,41 +186,52 @@
   min-width: 8px;
   border-radius: var(--r-xs);
   overflow: hidden;
-  background: var(--pgold);
+  background: var(--bg);
   transition: width var(--dur) var(--ease);
 }
+.casepage .money-bar:empty {
+  background: var(--gold);
+}
 /* An estimate is hatched rather than solid — the hatch runs gold over the
-   band's own paper, so the bar still reads as gold at a glance and as
-   provisional up close. */
+   band's own ground, so the bar still reads as gold at a glance and as
+   provisional up close. It was gold over --seam, the paper band's edge grey,
+   which on this ground would be a 10.34:1 pale stripe alternating with the
+   gold: two lit colours, and no reading of which one is the bar. */
 .casepage .money-bar[data-estimated="yes"] {
   background: repeating-linear-gradient(
     -45deg,
-    var(--pgold) 0 8px,
-    var(--seam) 8px 16px
+    var(--gold) 0 8px,
+    var(--bg) 8px 16px
   );
-  outline: 1px solid var(--pgold);
+  outline: 1px solid var(--gold);
   outline-offset: -1px;
 }
-/* Three segments of one award. On the dark ground they were gold / dim gold /
-   faint grey — the first two 1.4:1 apart. On paper the ramp is gold, the
-   band's seam grey and ink: 3.11:1 and 5.30:1 between neighbours, so the
-   parts of the bar are told apart by an eye and not only by the key. */
+/* Three segments of one award, on a gold ramp — never red, so a sum is never
+   mistaken for a finding. Gold, cream, dim gold: 9.98:1, 15.53:1 and 6.03:1
+   against the ground each of them is separated from its neighbours by, and
+   three different things to the eye — lit gold, near-white, brown-gold.
+   The paper version of this ramp puts its light step in the middle for the
+   same reason and its dark step at the end, which is the move this ground has
+   no room for. */
 /* The segments draw the split; they are no longer buttons, so nothing here
    should suggest they can be pressed. The key below the bar is the control. */
 .casepage .money-seg {
   border: 0;
   padding: 0;
-  background: var(--pgold);
+  background: var(--gold);
 }
 .casepage .money-seg[data-seg="1"] {
-  background: var(--seam);
+  background: var(--cream);
 }
 .casepage .money-seg[data-seg="2"] {
-  background: var(--ink2);
+  background: var(--gold-dim);
 }
-/* Lit from the key, which is where the pointer is. */
+/* Lit from the key, which is where the pointer is. A keyline of the band's own
+   ground, inset: every segment here is a lit colour, so the ring that marks
+   one has to be the dark — 9.98:1, 15.53:1 and 6.03:1 against the three. On
+   paper it is --ink for the same reason with the tones the other way up. */
 .casepage .money-seg[data-on="yes"] {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--bg);
   outline-offset: -2px;
 }
 .casepage .money-key {
@@ -196,6 +242,7 @@
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-6);
 }
+/* 9.06:1. */
 .casepage .money-key button {
   display: inline-flex;
   align-items: center;
@@ -205,39 +252,45 @@
   padding: 0;
   cursor: pointer;
   font: 500 var(--t-cap) var(--brand-font-body);
-  color: var(--ink2);
+  color: var(--muted);
 }
+/* 15.53:1. */
 .casepage .money-key b {
   font-family: var(--brand-font-mono), monospace;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--cream);
   font-variant-numeric: tabular-nums;
 }
+/* 9.98:1. */
 .casepage .money-key em {
   font-style: normal;
-  color: var(--pgold);
+  color: var(--gold);
 }
+/* The key's swatches are the bar's segments and have to stay the same three
+   colours. 9.98:1, 15.53:1, 6.03:1 on the band. */
 .casepage .money-key i {
   width: 10px;
   height: 10px;
   border-radius: 2px;
-  background: var(--pgold);
+  background: var(--gold);
 }
 .casepage .money-key i[data-seg="1"] {
-  background: var(--seam);
+  background: var(--cream);
 }
 .casepage .money-key i[data-seg="2"] {
-  background: var(--ink2);
+  background: var(--gold-dim);
 }
+/* 15.53:1 — the picked entry brightens rather than changing hue. */
 .casepage .money-key li[data-on="yes"] button {
-  color: var(--ink);
+  color: var(--cream);
 }
+/* 9.06:1. */
 .casepage .money-note {
   margin: var(--space-3) 0 0;
   max-width: 62ch;
   font-size: var(--t-cap);
   line-height: 1.6;
-  color: var(--ink2);
+  color: var(--muted);
 }
 
 /* ---- interactive timeline (paper) -------------------------------------------
@@ -858,14 +911,18 @@
    of the rail is not visible at all, so it is floored. That compromise is fine
    as long as it is not silent: on a page about money the number is the record
    and the drawing is the aid. */
+/* 5.24:1. */
 .casepage .money-share {
   margin: var(--space-2) 0 0;
   font: 500 var(--t-cap) var(--brand-font-mono);
-  color: var(--ink3);
+  color: var(--faint);
   font-variant-numeric: tabular-nums;
 }
+/* The admission that a bar had to be widened. 5.61:1 — --pred is 1.81:1 here,
+   so the one line on the drawing that says it is not to be trusted would have
+   been the least legible thing in the block. */
 .casepage .money-share em {
   font-family: var(--brand-font-body);
   font-style: normal;
-  color: var(--pred);
+  color: var(--red);
 }

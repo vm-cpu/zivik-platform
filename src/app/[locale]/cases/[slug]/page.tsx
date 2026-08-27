@@ -809,7 +809,10 @@ export default async function CasePage({
   let alt = 0;
   for (const [name, shown] of bands) {
     if (!shown) continue;
-    /* The dashboard above these is paper-2, so the first of them is paper. */
+    /* The dashboard above these is --brand-night now, so there is no parity to
+     * carry on from — the run simply starts on paper, which is also what makes
+     * the dashboard an island: whichever of the conditional bands render,
+     * `refs` is always first and always light. */
     ground[name] = alt % 2 === 0 ? "p" : "p2";
     alt++;
   }
@@ -1066,7 +1069,13 @@ export default async function CasePage({
               eight summaries — 48 facts — and rendered nowhere until now. */}
           {glance.length > 0 && (
             <div>
-              <h2 className="lbl lbl-onpaper">{pick(T.glanceH, locale)}</h2>
+              {/* No `lbl-onpaper` on any label in this band: the band is
+                  --brand-night, where --pgold is 3.33:1 and the class would be
+                  a lie about its own name. Plain `.lbl` is the dark-ground
+                  label — lit gold at 9.98:1, with the trailing rule that
+                  .lbl-onpaper suppresses — and it is what .mapband, the page's
+                  other dark band, already uses. */}
+              <h2 className="lbl">{pick(T.glanceH, locale)}</h2>
               <GlanceFacts
                 facts={glance.map((g) => ({
                   label: pick(g.label, locale),
@@ -1077,7 +1086,7 @@ export default async function CasePage({
           )}
 
           <div>
-            <h2 className="lbl lbl-onpaper">{pick(T.overview, locale)}</h2>
+            <h2 className="lbl">{pick(T.overview, locale)}</h2>
             <div className="kpis">
               {stats.map((s, i) => (
                 <div
@@ -1092,16 +1101,16 @@ export default async function CasePage({
             </div>
           </div>
 
-          {/* The dispositif, on its own ground.
+          {/* The dispositif.
 
               It sat on the same paper as the docket facts and the figures
               above it, which made the one instrument on this page that carries
-              the holding read as a third strip of furniture. It is a panel now,
-              on --brand-night, and it is an island: the KPI strip is paper
-              above it and either the takings grid or the band's own padding is
-              paper below, so the rule that no two dark grounds may touch still
-              holds. Everything else about it — one row per claim, the track in
-              the row rather than over it, the staggered arrival — is in
+              the holding read as a third strip of furniture. Giving it
+              --brand-night fixed that, and it is what the whole band wears now
+              — so the panel keeps its shape and gives up its ground, and is
+              drawn by its edge and its air (see .vpanel in 20-dashboard.css).
+              Everything else about it — one row per claim, the track in the
+              row rather than over it, the staggered arrival — is in
               VerdictMatrix. */}
           <div className="vpanel">
             <div className="score-head">
@@ -1137,7 +1146,7 @@ export default async function CasePage({
 
           {takings && (
             <div>
-              <h2 className="lbl lbl-onpaper">{pick(takings.heading, locale)}</h2>
+              <h2 className="lbl">{pick(takings.heading, locale)}</h2>
               <TakingsGrid
                 metrics={takings.metrics}
                 locale={locale}
@@ -1163,7 +1172,7 @@ export default async function CasePage({
 
           {amounts && (
             <div>
-              <h2 className="lbl lbl-onpaper">{pick(T.amountsH, locale)}</h2>
+              <h2 className="lbl">{pick(T.amountsH, locale)}</h2>
               <MoneyBars
                 figures={amounts.figures.map((f) => ({
                   label: L(f.label),
@@ -1202,9 +1211,9 @@ export default async function CasePage({
           chronology, then the map.
 
           The grounds re-alternate with it — `.refs` takes --paper and
-          `.pmeas` --paper2 — so the run stays p2, p, p2, p, p2, dark, p, and
-          the map keeps paper on both sides, which DESIGN.md requires of a
-          dark island. */
+          `.pmeas` --paper2 — so the run reads dark, p, p2, p, p2, dark, p:
+          the dashboard and the map are each a dark island with paper on both
+          sides, which is what DESIGN.md requires of them. */
       }
       {/* 2b — Reference: doctrine and the interim order, on paper */}
       <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>

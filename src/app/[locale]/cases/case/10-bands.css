@@ -134,12 +134,17 @@
 }
 
 /* ---- 2. Plain-language lede (paper) --------------------------------------- */
-/* The one white band on the page, between the dark masthead and the paper
-   dashboard. --brand-surface against --brand-paper-2 is 1.06:1, so the edge
-   below it is carried by --brand-seam, not by the grounds. */
+/* The one white band on the page, and the paper the dark dashboard below it
+   stands on — it is what makes that band an island rather than a second storey
+   of the masthead, so it renders on every decision and is never conditional.
+
+   It used to draw a --brand-seam hairline underneath itself, because
+   --brand-surface against --brand-paper-2 is 1.06:1 and an edge that faint has
+   to be drawn rather than implied. The ground below is --brand-night now,
+   18.69:1, and the seam over it was a 1.75:1 grey line lying on a black band —
+   the grounds carry this edge on their own. */
 .casepage .lede {
   background: var(--card);
-  border-bottom: 1px solid var(--seam);
   padding-block: clamp(32px, 4vw, 56px);
 }
 .casepage .lede-grid {
