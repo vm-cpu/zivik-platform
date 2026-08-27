@@ -41,17 +41,65 @@
   border-radius: 50%;
   background: var(--pgold);
 }
+/* The proportion, both sides of it.
+
+   The track is the remainder and carries the breach colour, because on this
+   page the remainder is nine deported children in ten who have not come back.
+   The fill is what was recovered. Read together they are a proportion; read as
+   gold-on-grey, which is how this was set before, the empty part of the bar
+   said nothing at all and the band looked like a small gain. */
 .casepage .taking-bar {
-  height: 10px;
+  height: 12px;
   border-radius: var(--r-pill);
-  background: var(--seam);
+  /* --pred, the page's own paper red, not --brand-breach. Breach is a bright
+     coral mixed for the dark scenes; on paper it sat a shade away from the red
+     the split label under it uses, so the block carried two reds that meant
+     the same thing. This is the colour every other breach on the page wears. */
+  background: var(--pred);
   overflow: hidden;
 }
 .casepage .taking-bar i {
   display: block;
   height: 100%;
   border-radius: var(--r-pill);
-  background: var(--pgold);
+  /* --gold, the lit gold, not --pgold. The track is a dark red ground, and
+     --pgold is the gold mixed to sit on paper: measured against this track it
+     came out at 1.84:1, so the 9.5% that is the whole point of the bar was
+     very nearly invisible on it. Inside a dark bar the dark-scene tokens are
+     the right ones. */
+  background: var(--gold);
+  /* Drawn once, when the bar is first scrolled to. The width is set from
+     React; this is only how it gets there. --ease-out lands rather than
+     bounces, which is the only register this subject allows. */
+  transition: width 900ms var(--ease-out);
+}
+/* Both ends named, so neither half of the proportion is left to inference. */
+.casepage .taking-split {
+  margin: var(--space-2) 0 0;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font: 600 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.casepage .ts-share {
+  color: var(--pgold);
+}
+.casepage .ts-rest {
+  color: var(--pred);
+}
+/* Said out loud when the field cannot draw every unit. */
+.casepage .taking-capped {
+  margin: var(--space-2) 0 0;
+  font-size: var(--t-cap);
+  color: var(--ink3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .casepage .taking-bar i,
+  .casepage .dotfield i {
+    transition: none;
+  }
 }
 .casepage .taking[data-shape="plain"] .taking-head {
   flex-direction: column;

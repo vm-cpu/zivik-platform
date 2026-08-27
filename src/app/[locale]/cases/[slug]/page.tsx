@@ -169,6 +169,11 @@ const T = {
   navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
   navRulings: { uk: "Тлумачення", en: "Key rulings" },
   toTop: { uk: "Нагору", en: "Top" },
+  /* Only printed when a dot field runs past what it can draw. */
+  dotCap: {
+    uk: "На полі показано перші {n} позначок.",
+    en: "The field draws the first {n} marks.",
+  },
   /* The chip has to name the band it lands on. It said «Що варто знати» /
      "What to know" and landed on a band headed «Хто є хто» / "Who's who" — a
      reader clicking for a primer got a cast list. The band's own heading is
@@ -1080,7 +1085,11 @@ export default async function CasePage({
           {takings && (
             <div>
               <h2 className="lbl lbl-onpaper">{pick(takings.heading, locale)}</h2>
-              <TakingsGrid metrics={takings.metrics} locale={locale} />
+              <TakingsGrid
+                metrics={takings.metrics}
+                locale={locale}
+                labels={{ andMore: pick(T.dotCap, locale) }}
+              />
               {takings.note && (
                 <p className="dash-note">
                   {pick(takings.note, locale)}

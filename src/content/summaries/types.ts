@@ -149,6 +149,19 @@ export interface Metric {
   value: string | Localized;
   /** Share of a whole, 0–100 — draws a bar instead of a plain figure. */
   percent?: number;
+  /**
+   * What the unfilled part of that bar is.
+   *
+   * A share of something terrible has two sides and the bar was only drawing
+   * one: 9.5% of the deported children returned read as a small gold gain on
+   * an empty track, when the finding is the 90.5% still held. Naming the
+   * remainder gives the empty part of the bar its meaning.
+   *
+   * Deliberately a label and not a number. The whole it is a share of is
+   * often itself a floor — "19,546+" — so subtracting would state an exact
+   * figure that no source does.
+   */
+  restLabel?: Localized;
   /** Countable units — draws one mark per unit (capped in the component). */
   count?: number;
   note?: Localized;
