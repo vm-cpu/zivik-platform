@@ -285,7 +285,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       label: { uk: "Заявники", en: "Applicants" },
       value: { uk: "Україна (×3) і Нідерланди", en: "Ukraine (×3) and the Netherlands" },
     },
-    { label: { uk: "Відповідачка", en: "Respondent" }, value: { uk: "Російська Федерація", en: "Russian Federation" } },
+    { label: { uk: "Відповідач", en: "Respondent" }, value: { uk: "Російська Федерація", en: "Russian Federation" } },
     { label: { uk: "Склад", en: "Formation" }, value: { uk: "Велика палата (17 суддів)", en: "Grand Chamber (17 judges)" } },
     {
       label: { uk: "Заяви", en: "Applications" },

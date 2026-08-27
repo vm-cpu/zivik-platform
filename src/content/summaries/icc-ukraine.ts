@@ -333,12 +333,12 @@ export const iccUkraine: DecisionSummary = {
 
   glance: [
     { label: { uk: "Ситуація", en: "Situation" }, value: { uk: "Україна", en: "Ukraine" } },
-    { label: { uk: "Номер", en: "Number" }, value: { uk: "ICC-01/22", en: "ICC-01/22" } },
     {
       label: { uk: "Орган", en: "Chamber" },
       value: { uk: "Палата досудового провадження II", en: "Pre-Trial Chamber II" },
     },
     { label: { uk: "Місце", en: "Seat" }, value: { uk: "Гаага", en: "The Hague" } },
+    { label: { uk: "Номер", en: "Number" }, value: { uk: "ICC-01/22", en: "ICC-01/22" } },
     {
       label: { uk: "Охоплення", en: "Scope" },
       value: {

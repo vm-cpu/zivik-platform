@@ -56,7 +56,36 @@ export interface Stat {
   em?: boolean;
 }
 
-/** A single key/value fact for the "at a glance" instrument. */
+/**
+ * A single key/value fact for the "at a glance" instrument.
+ *
+ * ── The order is the contract ──────────────────────────────────────────────
+ * Every card reads in the same sequence, so a reader who learns its shape on
+ * one decision can carry that to the next. Skip what a case does not have;
+ * never reorder what it does:
+ *
+ *   1. the sides        — who brought it, who answers
+ *   2. the forum        — the institution, its composition, where it sat
+ *   3. the basis        — the rules or the head of jurisdiction it runs on
+ *   4. the identifier   — the docket, the applications, the situation number
+ *   5. the period       — what stretch of events the case is about
+ *   6. the dates        — filed, heard, decided
+ *   7. what it settled  — votes, status, what survives, what was cut off
+ *
+ * The cards were authored in whatever order each was written: one opened with
+ * the parties, another with the docket number, a third with the situation. The
+ * genocide case put five outcome facts among its identifiers, which is why its
+ * card ran to eleven entries reading as one undifferentiated list; under this
+ * order they fall to the end where they belong.
+ *
+ * Labels are NOT normalised across cases, and that is deliberate. «Установа»,
+ * «Суд» and «Орган» name three different kinds of body — an arbitral
+ * institution is not a court and a Pre-Trial Chamber is neither. «Загальний
+ * список», «Номер справи» and «Ідентифікатор» are the ICJ's General List, the
+ * PCA's case number and an ECLI: each registry's own name for its own
+ * reference. Flattening those would make the cards look consistent by making
+ * them less accurate.
+ */
 export interface GlanceFact {
   label: Localized;
   value: Localized;

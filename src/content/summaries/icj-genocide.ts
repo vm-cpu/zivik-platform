@@ -315,6 +315,18 @@ export const icjGenocide: DecisionSummary = {
      paragraph that closes the judgment. */
   glance: [
     {
+      label: { uk: "Склад Суду", en: "Bench" },
+      value: { uk: "15 суддів і суддя ad hoc", en: "15 Members and one judge ad hoc" },
+    },
+    {
+      label: { uk: "Підстава юрисдикції", en: "Basis of jurisdiction" },
+      value: { uk: "Стаття IX Конвенції про геноцид", en: "Article IX, Genocide Convention" },
+    },
+    {
+      label: { uk: "Автентичний текст", en: "Authoritative text" },
+      value: { uk: "французький", en: "French" },
+    },
+    {
       label: { uk: "Загальний список", en: "General List" },
       value: { uk: "№ 182", en: "No. 182" },
     },
@@ -323,16 +335,8 @@ export const icjGenocide: DecisionSummary = {
       value: { uk: "26 лютого 2022", en: "26 February 2022" },
     },
     {
-      label: { uk: "Підстава юрисдикції", en: "Basis of jurisdiction" },
-      value: { uk: "Стаття IX Конвенції про геноцид", en: "Article IX, Genocide Convention" },
-    },
-    {
       label: { uk: "Слухання", en: "Hearings" },
       value: { uk: "18–27 вересня 2023", en: "18–27 September 2023" },
-    },
-    {
-      label: { uk: "Склад Суду", en: "Bench" },
-      value: { uk: "15 суддів і суддя ad hoc", en: "15 Members and one judge ad hoc" },
     },
     {
       label: { uk: "Юрисдикцію встановлено", en: "Jurisdiction upheld" },
@@ -345,10 +349,6 @@ export const icjGenocide: DecisionSummary = {
     {
       label: { uk: "Окремі думки й заяви", en: "Opinions and declarations" },
       value: { uk: "10 — від 11 суддів", en: "10, from 11 judges" },
-    },
-    {
-      label: { uk: "Автентичний текст", en: "Authoritative text" },
-      value: { uk: "французький", en: "French" },
     },
     {
       label: { uk: "Що йде далі по суті", en: "What proceeds to the merits" },

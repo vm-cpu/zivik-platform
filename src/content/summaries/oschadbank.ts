@@ -334,11 +334,11 @@ export const oschadbank: DecisionSummary = {
       label: { uk: "Установа", en: "Institution" },
       value: { uk: "Постійна палата третейського суду", en: "Permanent Court of Arbitration" },
     },
+    { label: { uk: "Місце арбітражу", en: "Seat" }, value: { uk: "Париж", en: "Paris" } },
     {
       label: { uk: "Регламент", en: "Rules" },
       value: { uk: "ЮНСІТРАЛ, 1976", en: "UNCITRAL, 1976" },
     },
-    { label: { uk: "Місце арбітражу", en: "Seat" }, value: { uk: "Париж", en: "Paris" } },
     { label: { uk: "Номер справи", en: "Case number" }, value: { uk: "PCA 2016-14", en: "PCA 2016-14" } },
     {
       label: { uk: "Рішення", en: "Award" },
