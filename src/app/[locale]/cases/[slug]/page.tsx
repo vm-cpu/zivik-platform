@@ -168,6 +168,7 @@ const T = {
   navWarrants: { uk: "Ордери", en: "Warrants" },
   navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
   navRulings: { uk: "Тлумачення", en: "Key rulings" },
+  toTop: { uk: "Нагору", en: "Top" },
   /* The chip has to name the band it lands on. It said «Що варто знати» /
      "What to know" and landed on a band headed «Хто є хто» / "Who's who" — a
      reader clicking for a primer got a cast list. The band's own heading is
@@ -975,7 +976,11 @@ export default async function CasePage({
       </header>
 
       {/* 1a — Sticky page navigation: every band, not just the article */}
-      <PageNav sections={pageSections} ariaLabel={pick(T.navAria, locale)} />
+      <PageNav
+        sections={pageSections}
+        ariaLabel={pick(T.navAria, locale)}
+        topLabel={pick(T.toTop, locale)}
+      />
 
       {/* 1b — Plain-language lede */}
       <section className="lede">

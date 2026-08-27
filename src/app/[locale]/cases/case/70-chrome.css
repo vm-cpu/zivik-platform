@@ -37,6 +37,62 @@
 .casepage .pagenav-row::-webkit-scrollbar {
   display: none;
 }
+/* ---- return to top ------------------------------------------------------
+   Pinned to the right end of the bar, over the chips rather than after them:
+   the row scrolls sideways when the sections overflow it, and a reader who is
+   deep enough in the page to want this is exactly the reader whose row has
+   scrolled. It carries the bar's own ground so chips pass under it cleanly. */
+.casepage .pagenav-top {
+  position: sticky;
+  right: 0;
+  margin-left: auto;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2) 0 var(--space-5);
+  height: var(--pagenav-h);
+  background: linear-gradient(to right, transparent, var(--bg) var(--space-5));
+  border: 0;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.casepage .pagenav-top:hover {
+  color: var(--cream);
+}
+/* Hidden until there is something to come back from, and taken out of the tab
+   order with it — a focusable control a reader cannot see is worse than none. */
+.casepage .pagenav-top[data-show="no"] {
+  opacity: 0;
+  pointer-events: none;
+}
+/* The rail's own copy sits at the foot of the spine, under the last band. */
+.casepage .pagenav-v-top {
+  margin-top: var(--space-4);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: 0;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  cursor: pointer;
+  transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.casepage .pagenav-v-top:hover {
+  color: var(--cream);
+}
+.casepage .pagenav-v-top[data-show="no"] {
+  opacity: 0;
+  pointer-events: none;
+}
 .casepage .pagenav a {
   display: inline-flex;
   align-items: center;

@@ -139,6 +139,10 @@
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --dur: 180ms;
+  /* One step slower, for a disclosure that arrives rather than a hover that
+     responds. Anything the reader asked for and now has to read wants the
+     longer beat; anything under the cursor wants the shorter one. */
+  --dur-slow: 240ms;
   /* on-dark scene palette (header, footer, hero over the dark backdrop) */
   --brand-gold-pale: #f0dda8;  /* accent / active text on dark */
   --brand-gold-mark: #c79a3c;  /* "analysed / lit" indicator gold */

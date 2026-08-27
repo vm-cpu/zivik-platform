@@ -217,6 +217,11 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: var(--space-3);
+  /* Cards keep the height their own text needs. Grid stretches items by
+     default, and the open detail panel shares this grid, so selecting a
+     suspect used to inflate the card next to the panel to the panel's height
+     — a name, a role, a date, and then a hand's width of nothing under them. */
+  align-items: start;
 }
 .casepage .wr-node {
   display: grid;
@@ -266,10 +271,17 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* detail panel for the selected suspect */
+/* The detail panel for the selected suspect.
+
+   Full width of the rung, under the row of cards rather than beside one of
+   them. In a shared auto-fit grid it took a 240px-minimum cell like any card,
+   so the charges were read in a column narrower than the ladder while the rest
+   of the rung sat empty — and the card beside it was stretched to match. */
 .casepage .wr-detail {
+  grid-column: 1 / -1;
   display: grid;
   gap: var(--space-3);
+  animation: wr-open var(--dur-slow) var(--ease) both;
   background: var(--card);
   border-left: 3px solid var(--pgold);
   border-radius: var(--r-md);
@@ -313,3 +325,23 @@
   }
 }
 
+
+/* The panel is an answer to a click, so it arrives rather than appearing.
+   8px and a fade — enough to say where it came from, not enough to perform.
+   These are warrants for the deportation of children; the motion here exists
+   to make the structure legible, and stops at that. */
+@keyframes wr-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .casepage .wr-detail {
+    animation: none;
+  }
+}

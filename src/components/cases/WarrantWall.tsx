@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./warrant-wave.css";
 
 /**
@@ -48,13 +48,28 @@ export default function WarrantWall({
     art: string;
   };
 }) {
-  const [open, setOpen] = useState<string>("0-0");
+  /* Nobody is selected on arrival. The first suspect used to be open before
+     the reader had asked anything, which made the panel look like part of the
+     page rather than an answer to a click, and pinned the ladder's first rung
+     open at whatever height that one man's charges happened to be. */
+  const [open, setOpen] = useState<string | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   const flat = waves.flatMap((w, wi) => w.persons.map((p, pi) => ({ w, wi, p, key: `${wi}-${pi}` })));
-  const sel = flat.find((f) => f.key === open) ?? flat[0];
+  const sel = flat.find((f) => f.key === open) ?? null;
 
-  const detail = (
-    <div className="wr-detail" data-wave={sel.wi}>
+  /* Escape closes it, the way every other disclosure on the web does. */
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const detail = sel === null ? null : (
+    <div className="wr-detail" id="wr-detail" ref={panelRef} data-wave={sel.wi}>
       <div className="wr-detail-head">
         <span className="wr-detail-name">{sel.p.name}</span>
         <span className="wr-detail-wave">
@@ -123,7 +138,7 @@ export default function WarrantWall({
                 </li>
               ))}
             </ul>
-            {sel.wi === wi && detail}
+            {sel !== null && sel.wi === wi && detail}
           </section>
         ))}
       </div>
@@ -169,14 +184,15 @@ export default function WarrantWall({
                     data-wave={f.wi}
                     data-on={open === f.key ? "yes" : "no"}
                     aria-expanded={open === f.key}
-                    onClick={() => setOpen(f.key)}
+                    aria-controls="wr-detail"
+                    onClick={() => setOpen(open === f.key ? null : f.key)}
                   >
                     <span className="wr-node-name">{f.p.name}</span>
                     <span className="wr-node-role">{f.p.role}</span>
                     <span className="wr-node-date">{f.w.date}</span>
                   </button>
                 ))}
-                {here.some((f) => f.key === sel.key) && detail}
+                {sel !== null && here.some((f) => f.key === sel.key) && detail}
               </div>
             </div>
           );

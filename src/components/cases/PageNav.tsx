@@ -22,11 +22,19 @@ export interface PageSection {
 export default function PageNav({
   sections,
   ariaLabel,
+  topLabel,
 }: {
   sections: PageSection[];
   ariaLabel: string;
+  /** "Нагору" — the label on the return-to-top control. */
+  topLabel: string;
 }) {
   const [active, setActive] = useState<string>(sections[0]?.id ?? "");
+  /* The decision pages run long — the ECtHR judgment is twelve bands — and
+     the way back to the masthead was the scrollbar or a lot of scrolling. The
+     control only exists once there is something to return from; offered at the
+     top of the page it would be a button that does nothing. */
+  const [deep, setDeep] = useState(false);
   const rowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,6 +51,7 @@ export default function PageNav({
         else break;
       }
       setActive(current.id);
+      setDeep(window.scrollY > window.innerHeight * 1.5);
     };
 
     update();
@@ -74,6 +83,18 @@ export default function PageNav({
     else if (row.scrollLeft < right) row.scrollTo({ left: right, behavior });
   }, [active]);
 
+  /* Same reasoning as the chip scroll above: scrollTo names its own
+     behaviour, so a reader who asked for no motion has to be answered here
+     too rather than left to the stylesheet. */
+  const toTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  };
+
   return (
     <>
       <nav className="pagenav-v" aria-label={ariaLabel}>
@@ -88,6 +109,17 @@ export default function PageNav({
             </li>
           ))}
         </ol>
+        <button
+          type="button"
+          className="pagenav-v-top"
+          data-show={deep ? "yes" : "no"}
+          onClick={toTop}
+          tabIndex={deep ? 0 : -1}
+          aria-hidden={deep ? undefined : true}
+        >
+          <span aria-hidden="true">↑</span>
+          {topLabel}
+        </button>
       </nav>
 
       <nav className="pagenav" aria-label={ariaLabel}>
@@ -102,6 +134,20 @@ export default function PageNav({
               {s.label}
             </a>
           ))}
+          {/* Sticky inside the scrolling row rather than after it: the chips
+              overflow and scroll sideways, so a plain last child would drift
+              off the end exactly when a reader deep in the page wants it. */}
+          <button
+            type="button"
+            className="pagenav-top"
+            data-show={deep ? "yes" : "no"}
+            onClick={toTop}
+            tabIndex={deep ? 0 : -1}
+            aria-hidden={deep ? undefined : true}
+          >
+            <span aria-hidden="true">↑</span>
+            {topLabel}
+          </button>
         </div>
       </nav>
     </>
