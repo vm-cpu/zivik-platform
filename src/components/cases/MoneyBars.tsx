@@ -3,8 +3,25 @@
 import { useState } from "react";
 
 /**
- * The money in the award, drawn to one shared scale. Props arrive
- * locale-resolved (see CaseTimeline for why).
+ * The money in the award, drawn to one shared scale.
+ *
+ * Props arrive locale-resolved (see CaseTimeline for why).
+ *
+ * ── Two things the drawing has to admit ────────────────────────────────────
+ *
+ * **The floor distorts.** A bar narrower than a hairline is not a bar, so a
+ * figure gets at least 1.2% of the rail whatever its true share. On the DTEK
+ * page the smallest sum is 0.26% of the largest and is therefore drawn some
+ * four times too wide. That is a defensible compromise for legibility and an
+ * indefensible one to make silently, in a graphic about money: every figure
+ * now prints its share of the largest as text, so the number is the record and
+ * the bar is only an aid to it, and a bar that had to be widened says so.
+ *
+ * **The segments are not controls.** Each part of a split bar used to be its
+ * own button, duplicating the entry for that part in the key below — two focus
+ * stops for one fact, and on Oschadbank the smallest part is 2.6% of the sum,
+ * which draws as roughly seventeen pixels of clickable target. The segments are
+ * the picture now; the key is where a reader points.
  */
 export interface MoneyFigureR {
   label: string;
@@ -18,17 +35,32 @@ export interface MoneyFigureR {
 export default function MoneyBars({
   figures,
   shareLabel,
+  ofLargestLabel,
+  flooredLabel,
+  locale,
 }: {
   figures: MoneyFigureR[];
   shareLabel: string;
+  /** "від найбільшої суми" — what every bar is drawn against. */
+  ofLargestLabel: string;
+  /** Said on a bar the floor had to widen. */
+  flooredLabel: string;
+  locale: string;
 }) {
   const [picked, setPicked] = useState<string | null>(null);
   const scale = Math.max(...figures.map((f) => f.amount));
+
+  const FLOOR = 1.2;
+  const pct = (n: number) =>
+    n.toLocaleString(locale === "uk" ? "uk-UA" : "en-GB", {
+      maximumFractionDigits: n < 1 ? 2 : 1,
+    });
 
   return (
     <div className="money">
       {figures.map((f, i) => {
         const width = (f.amount / scale) * 100;
+        const floored = width < FLOOR;
         return (
           <div key={i} className="money-row">
             <div className="money-head">
@@ -39,24 +71,32 @@ export default function MoneyBars({
             <div
               className="money-bar"
               data-estimated={f.estimated ? "yes" : "no"}
-              style={{ width: `${Math.max(width, 1.2)}%` }}
+              data-floored={floored ? "yes" : "no"}
+              style={{ width: `${Math.max(width, FLOOR)}%` }}
             >
-              {f.parts?.map((p, j) => {
-                const key = `${i}-${j}`;
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    className="money-seg"
-                    data-seg={j}
-                    data-on={picked === key ? "yes" : "no"}
-                    style={{ flexGrow: p.amount }}
-                    aria-label={`${p.label} — ${p.display}`}
-                    onClick={() => setPicked(picked === key ? null : key)}
-                  />
-                );
-              })}
+              {f.parts?.map((p, j) => (
+                /* A picture, not a control — the key below is where a reader
+                   points. As buttons these duplicated every key entry and,
+                   for a part worth 2.6% of its sum, offered a target about
+                   seventeen pixels wide. */
+                <i
+                  key={`${i}-${j}`}
+                  className="money-seg"
+                  data-seg={j}
+                  data-on={picked === `${i}-${j}` ? "yes" : "no"}
+                  style={{ flexGrow: p.amount }}
+                />
+              ))}
             </div>
+
+            {/* The share, in words, for every figure and without being asked.
+                The bar is drawn against the largest sum on the page and cannot
+                be read to two decimal places by eye; on a page about money the
+                number has to be legible, not inferred from a length. */}
+            <p className="money-share">
+              {pct(width)}% {ofLargestLabel}
+              {floored && <em> · {flooredLabel}</em>}
+            </p>
 
             {f.parts && (
               <ul className="money-key">

@@ -171,6 +171,13 @@ const T = {
   navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
   navRulings: { uk: "Тлумачення", en: "Key rulings" },
   toTop: { uk: "Нагору", en: "Top" },
+  ofLargest: { uk: "від найбільшої суми тут", en: "of the largest sum here" },
+  /* Said on a bar the minimum width had to widen, so the drawing does not
+     quietly overstate a small figure. */
+  floored: {
+    uk: "смуга ширша за частку — інакше її не було б видно",
+    en: "the bar is wider than the share, or it would not be visible",
+  },
   /* Only printed when a dot field runs past what it can draw. */
   dotCap: {
     uk: "На полі показано перші {n} позначок.",
@@ -1157,6 +1164,9 @@ export default async function CasePage({
                   })),
                 }))}
                 shareLabel={pick(T.shareOf, locale)}
+                ofLargestLabel={pick(T.ofLargest, locale)}
+                flooredLabel={pick(T.floored, locale)}
+                locale={locale}
               />
               {amounts.note && <p className="dash-note">{pick(amounts.note, locale)}</p>}
             </div>

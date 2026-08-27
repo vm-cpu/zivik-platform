@@ -170,10 +170,11 @@
    faint grey — the first two 1.4:1 apart. On paper the ramp is gold, the
    band's seam grey and ink: 3.11:1 and 5.30:1 between neighbours, so the
    parts of the bar are told apart by an eye and not only by the key. */
+/* The segments draw the split; they are no longer buttons, so nothing here
+   should suggest they can be pressed. The key below the bar is the control. */
 .casepage .money-seg {
   border: 0;
   padding: 0;
-  cursor: pointer;
   background: var(--pgold);
 }
 .casepage .money-seg[data-seg="1"] {
@@ -182,6 +183,7 @@
 .casepage .money-seg[data-seg="2"] {
   background: var(--ink2);
 }
+/* Lit from the key, which is where the pointer is. */
 .casepage .money-seg[data-on="yes"] {
   outline: 2px solid var(--ink);
   outline-offset: -2px;
@@ -851,3 +853,22 @@
   color: var(--pred);
 }
 
+
+/* Every figure's share of the largest, in words.
+
+   The bar is drawn to a shared scale and cannot be read to a decimal place by
+   eye, and the smallest sums are drawn wider than they are — a bar under 1.2%
+   of the rail is not visible at all, so it is floored. That compromise is fine
+   as long as it is not silent: on a page about money the number is the record
+   and the drawing is the aid. */
+.casepage .money-share {
+  margin: var(--space-2) 0 0;
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--ink3);
+  font-variant-numeric: tabular-nums;
+}
+.casepage .money-share em {
+  font-family: var(--brand-font-body);
+  font-style: normal;
+  color: var(--pred);
+}
