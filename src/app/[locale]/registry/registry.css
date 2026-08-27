@@ -638,3 +638,34 @@
      The line meant to be quieter than the name was exactly as loud. */
   color: var(--ink2);
 }
+
+/* ---- print ---------------------------------------------------------------
+   What survives is the list and the line that says how much of it this is. The
+   toolbar does not: a search field, six filter pills and a reset button are
+   controls, and on paper they are a picture of controls.
+
+   The active filters DO print. A reader who filtered to the ICJ and pressed
+   print is holding three rows out of thirty-nine, and the sheet has to say so
+   or it reads as the whole archive. */
+@media print {
+  .reg-toolbar,
+  .reg-combine,
+  .reg-reset,
+  .reg-pop,
+  .reg-lb {
+    display: none !important;
+  }
+  .reg-count,
+  .reg-active {
+    display: block !important;
+  }
+  .reg-list li,
+  .reg-row {
+    break-inside: avoid;
+    border-bottom: 1px solid #ccc;
+  }
+  .reg-mast,
+  .reg-meta {
+    break-after: avoid;
+  }
+}

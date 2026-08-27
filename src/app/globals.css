@@ -363,3 +363,53 @@ textarea:disabled {
     );
   }
 }
+
+/* ---- print ---------------------------------------------------------------
+   A legal archive gets printed. Until now only the decision pages knew that:
+   the library, the dictionary and the home page carried the site's navigation,
+   its footer and its dark grounds onto paper, which wastes a cartridge and
+   hands the reader a page of furniture they cannot click.
+
+   Ink on white here, deliberately as literals — a printer has no theme to
+   follow, and the paper is the ground whatever the reader's screen was doing. */
+@media print {
+  :root {
+    --paper: #fff;
+    --paper2: #fff;
+    --card: #fff;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  /* Navigation is unusable on paper, and the footer is three screens of links. */
+  .nsv-topbar,
+  .nsv-mobnav,
+  .nsv-foot,
+  .skip,
+  .newsletter {
+    display: none !important;
+  }
+  /* Nothing casts a shadow on paper. */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  /* A heading at the foot of a sheet, with its section overleaf, is a heading
+     that has lost its job. */
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  /* The point of printing a page from an archive is to take its sources with
+     you. On screen the address is behind the link text; on paper it has to be
+     the text, or the citation cannot be followed. Internal links are left
+     alone — their targets are hidden navigation or pages in the same site. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+}

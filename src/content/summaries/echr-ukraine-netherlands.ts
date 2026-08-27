@@ -403,9 +403,16 @@ export const echrUkraineNetherlands: DecisionSummary = {
         uk: "Рішення по суті: Росія відповідальна за системні порушення",
         en: "Merits judgment: Russia responsible for systemic violations",
       },
+      /* The 16–1 was attached to the wrong thing here. Checked against the
+         judgment's operative part (pp. 493–497, after § 1652): every one of
+         the breach findings was unanimous. Twenty-eight of the twenty-nine
+         operative points were unanimous, and the exception — point 9 — is not
+         a breach at all but the decision that it was not necessary to examine
+         the Article 13 complaint separately in respect of MH17. As written
+         the sentence said one of the twelve violations had a dissenter. */
       note: {
-        uk: "Порушення 12 статей Конвенції і протоколів — усі одностайно, крім одного пункту (16 голосів проти 1).",
-        en: "Breaches of 12 Convention and Protocol articles — every one unanimous but a single item, carried 16 votes to 1.",
+        uk: "Порушення 12 статей Конвенції і протоколів — усі одностайно. З 29 пунктів резолютивної частини 28 ухвалено одностайно; виняток — рішення не розглядати одну скаргу окремо (16 голосів проти 1).",
+        en: "Breaches of 12 Convention and Protocol articles, every one unanimous. Twenty-eight of the twenty-nine operative points were unanimous; the exception is a decision not to examine one complaint separately (16 votes to 1).",
       },
     },
     {

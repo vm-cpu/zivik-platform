@@ -393,3 +393,39 @@
     grid-column: 1;
   }
 }
+
+/* ---- print ---------------------------------------------------------------
+   The dictionary is the page on this site most likely to be printed and kept
+   beside the reader, so it prints as a dictionary: headwords, definitions, and
+   the case each definition comes from.
+
+   The search line and the alphabet go. An index of letters is a set of jump
+   targets, and on paper there is nowhere to jump to; the letters themselves
+   stay as the headings they already are. */
+@media print {
+  .gl-tools,
+  .gl-searchwrap,
+  .gl-index,
+  .gl-reset {
+    display: none !important;
+  }
+  /* Kept: a printed sheet that was filtered to one decision must say which. */
+  .gl-count,
+  .gl-filterby {
+    display: block !important;
+  }
+  .gl-entry {
+    break-inside: avoid;
+  }
+  .gl-initial {
+    break-after: avoid;
+  }
+  .gl-group {
+    break-before: auto;
+  }
+  /* The trail back is a link to a page the reader is not holding; on paper the
+     forum and the case name are the useful part and they are already text. */
+  .gl-src {
+    text-decoration: none;
+  }
+}

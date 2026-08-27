@@ -145,7 +145,10 @@ export const registryCases: RegistryCase[] = [
     id: "icc-9",
     institutionId: "icc",
     name: "Putin",
-    nameUk: "Ордер на арешт: Володимир Путін",
+    /* «Владімір», transliterated, not «Володимир», domesticated. The owner
+       settled this: the registry and the ICC write-up spelled the same accused
+       two ways, and an archive that a filing may cite cannot do that. */
+    nameUk: "Ордер на арешт: Владімір Путін",
     type: { uk: "Кримінальне", en: "Criminal" },
     outcome: "warrant",
     status: { uk: "Ордер видано", en: "Warrant issued" },
