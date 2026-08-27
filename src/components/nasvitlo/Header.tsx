@@ -150,10 +150,28 @@ export default function Header({
             textDecoration: "none",
           }}
         >
-          {/* White Faculty-of-Law mark on the dark bar. eslint-disable-next-line @next/next/no-img-element */}
+          {/* White Faculty-of-Law mark on the dark bar.
+              A plain <img>, and `npm run check` will keep warning about it.
+              next/image cannot serve this file: ask the optimizer for it and
+              it answers 400, "image type is not allowed", because SVG is off
+              unless `dangerouslyAllowSVG` is set — which turns the optimizer
+              into a same-origin endpoint that will echo arbitrary SVG back as
+              an image, and next.config.ts spends fifty lines closing exactly
+              that kind of hole. There is nothing to optimize either: the file
+              is 13,975 B over the wire, one request, and the mark is a mask,
+              not a photograph.
+              The intrinsic size is on the tag so the bar does not reflow when
+              it arrives. CSS sets the height and leaves the width auto, which
+              before these attributes meant a 0px-wide box until the SVG
+              landed and then a 107.56px one — measured with the request held
+              open — which slid the wordmark 107.6px and the nav 53.1px across
+              the bar on every page of the site.
+              eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/logos/fp-logo-white-${locale}.svg`}
             alt={dict.brand.facultyAlt}
+            width={1917}
+            height={998}
             /* 40px until now, which put the faculty's own name — the second
                line of the mark — at the edge of legibility on the dark bar.
                The wordmark beside it is the archive's; this one is the

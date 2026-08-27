@@ -206,6 +206,16 @@
      Own namespace avoids Tailwind's @theme --font-display. */
   --brand-font-body: var(--font-fira), 'Fira Sans';
   --brand-font-display: var(--font-charis), 'Charis SIL';
+  /* Italic is loaded by its own next/font call. The loader emits the cross
+     product of weight and style, so asking one call for both got eight Fira
+     italics and four Charis italics preloaded on every page when the site
+     sets italic in four rules at three weights; splitting them dropped
+     120,660 B. Both calls end up under the same CSS family name, so these two
+     resolve to the same faces `--brand-font-body` would — they are named so
+     that the four italic rules say which faces they mean, and keep saying it
+     if the loader ever starts hashing family names apart. */
+  --brand-font-body-italic: var(--font-fira-italic), 'Fira Sans';
+  --brand-font-display-italic: var(--font-charis-italic), 'Charis SIL';
   /* Monospace carries the machinery of a judgment — paragraph refs (§ 392),
      docket numbers, dates. Pairing a neo-serif with mono is what keeps a legal
      archive from reading like a brochure. */

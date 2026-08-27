@@ -63,7 +63,10 @@
 }
 .casepage .parties {
   margin: var(--space-4) 0 0;
-  font-family: var(--brand-font-display), serif;
+  /* Charis's italics come from their own loader call, at 400 only — see
+     globals.css. Named rather than left to font-style, which would be a
+     skewed roman the day the loader stops merging the two under one family. */
+  font-family: var(--brand-font-display-italic), serif;
   font-style: italic;
   font-size: var(--t-lead);
   color: var(--gold);
