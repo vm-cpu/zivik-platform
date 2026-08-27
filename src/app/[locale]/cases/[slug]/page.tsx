@@ -1158,7 +1158,14 @@ export default async function CasePage({
             <div>
               <h2 className="lbl">{pick(takings.heading, locale)}</h2>
               <TakingsGrid
-                metrics={takings.metrics}
+                metrics={takings.metrics.map((m) => ({
+                  label: L(m.label),
+                  value: typeof m.value === "string" ? m.value : L(m.value),
+                  percent: m.percent,
+                  restLabel: m.restLabel && L(m.restLabel),
+                  count: m.count,
+                  note: m.note && L(m.note),
+                }))}
                 locale={locale}
                 labels={{ andMore: pick(T.dotCap, locale) }}
               />

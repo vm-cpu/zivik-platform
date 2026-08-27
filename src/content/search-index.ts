@@ -90,6 +90,12 @@ export const SECTIONS = [
   "rulings",
   "measures",
   "handbook",
+  /* The glossary got a band of its own (#glossary) when it was split out of
+     the who's-who. The index went on filing its fifty headwords under
+     `handbook`, so a reader who searched a decision page for a term was landed
+     one band too high, on the who's-who, and had to find the word themselves.
+     The link resolved, which is why nothing caught it. */
+  "glossary",
   "questions",
   "fulltext",
 ] as const;
@@ -158,6 +164,7 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
     rulings: [],
     measures: [],
     handbook: [],
+    glossary: [],
     questions: [],
     fulltext: [],
   };
@@ -259,11 +266,11 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
       .join(" "),
   );
 
-  // ── handbook: the glossary and the who's-who ──
-  out.handbook.push(
-    s.glossary.map((g) => all(g.term, g.def)).join(" "),
-    s.whoIsWho.map((w) => all(w.name, w.role)).join(" "),
-  );
+  // ── handbook: the who's-who ──
+  out.handbook.push(s.whoIsWho.map((w) => all(w.name, w.role)).join(" "));
+
+  // ── glossary: the terms this decision defines, in their own band ──
+  out.glossary.push(s.glossary.map((g) => all(g.term, g.def)).join(" "));
 
   // ── questions: the FAQ, and the pointers to neighbouring cases ──
   out.questions.push(
@@ -393,6 +400,7 @@ export const contentIndex: ContentIndex = build();
     "rulings",
     "measures",
     "handbook",
+    "glossary",
     "fulltext",
     "questions",
   ]);

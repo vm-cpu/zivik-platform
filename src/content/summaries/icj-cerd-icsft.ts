@@ -272,6 +272,15 @@ export const icjCerdIcsft: DecisionSummary = {
     },
   ],
 
+  /* Two of these four carry a sort key and two cannot.
+
+     «19 квітня 2017» and «31 січня 2024» are single days and were simply
+     missing one — which is why this page was the only one of the eight with
+     no year rail and no anchors on its events, so nothing could link to a
+     moment in it. «Поч. 2014» and «2017» are a season and a year: widening
+     either into 1 January would invent a date and corrupt every sort built on
+     it, which is the rule `CaseDate` in content/types.ts already states. They
+     keep their authored position and sort last, as the timeline provides. */
   timeline: [
     {
       date: { uk: "поч. 2014", en: "Early 2014" },
@@ -291,6 +300,7 @@ export const icjCerdIcsft: DecisionSummary = {
     },
     {
       date: { uk: "19 квіт. 2017", en: "19 Apr 2017" },
+      iso: "2017-04-19",
       label: {
         uk: "Наказ про тимчасові заходи",
         en: "Order indicating provisional measures",
@@ -299,6 +309,7 @@ export const icjCerdIcsft: DecisionSummary = {
     },
     {
       date: { uk: "31 січ. 2024", en: "31 Jan 2024" },
+      iso: "2024-01-31",
       label: { uk: "Рішення по суті", en: "Judgment on the merits" },
       kind: "judgment",
     },

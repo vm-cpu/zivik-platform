@@ -169,6 +169,10 @@ const T = {
        old wording, so a search hit still offered "What to know" and landed on
        "Who's who". */
     handbook: { uk: "Хто є хто", en: "Who's who" },
+    /* Its own band since the glossary was split out of the who's-who, and its
+       own section here since the index was still filing terms under the one
+       above — a term search landed on the cast list. */
+    glossary: { uk: "Словник", en: "Glossary" },
     questions: { uk: "Часті запитання", en: "Common questions" },
     fulltext: { uk: "Самері", en: "Summary" },
   },

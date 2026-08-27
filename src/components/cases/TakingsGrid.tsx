@@ -1,9 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { pick } from "@/content/types";
-import type { Locale } from "@/i18n/config";
-import type { Metric } from "@/content/summaries/types";
+/* Locale-resolved props, like every other client component here.
+
+   This one took `Metric[]` straight off the summary — raw {uk, en} pairs — and
+   being a client component it serialised them into the payload, so every
+   reader downloaded both languages of every figure, label and note. That is
+   the rule ARCHITECTURE.md states and the reason CaseTimeline's docstring
+   gives for resolving on the server; this component was made client-side for
+   the reveal and the prop shape came along unchanged. */
 
 /**
  * The size of the loss, in three registers.
@@ -27,13 +32,23 @@ import type { Metric } from "@/content/summaries/types";
  * A reader who has asked for reduced motion gets the bar at full width with
  * no animation at all.
  */
+export interface MetricR {
+  label: string;
+  value: string;
+  percent?: number;
+  restLabel?: string;
+  count?: number;
+  note?: string;
+}
+
 export default function TakingsGrid({
   metrics,
   locale,
   labels,
 }: {
-  metrics: Metric[];
-  locale: Locale;
+  metrics: MetricR[];
+  /** Still needed: the share is formatted with the reader's own separator. */
+  locale: string;
   /** "of which" and the over-cap note for a dot field too large to draw. */
   labels?: { andMore?: string };
 }) {
@@ -124,10 +139,8 @@ export default function TakingsGrid({
           }
         >
           <div className="taking-head">
-            <span className="taking-label">{pick(m.label, locale)}</span>
-            <b className="taking-value">
-              {typeof m.value === "string" ? m.value : pick(m.value, locale)}
-            </b>
+            <span className="taking-label">{m.label}</span>
+            <b className="taking-value">{m.value}</b>
           </div>
 
           {/* `!== undefined`, not truthiness — the sibling `percent` test two
@@ -154,20 +167,20 @@ export default function TakingsGrid({
               <div
                 className="taking-bar"
                 role="img"
-                aria-label={`${pick(m.label, locale)}: ${pct(m.percent)}%`}
+                aria-label={`${m.label}: ${pct(m.percent)}%`}
               >
                 <i style={{ width: shown ? `${m.percent}%` : "0%" }} />
               </div>
               {m.restLabel && (
                 <p className="taking-split">
                   <span className="ts-share">{pct(m.percent)}%</span>
-                  <span className="ts-rest">{pick(m.restLabel, locale)}</span>
+                  <span className="ts-rest">{m.restLabel}</span>
                 </p>
               )}
             </>
           )}
 
-          {m.note && <p className="taking-note">{pick(m.note, locale)}</p>}
+          {m.note && <p className="taking-note">{m.note}</p>}
         </div>
       ))}
     </div>
