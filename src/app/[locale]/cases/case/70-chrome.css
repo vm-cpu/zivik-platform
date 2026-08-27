@@ -39,7 +39,7 @@
 /* anchors land below the sticky bar, not under it */
 .casepage [data-navsec],
 .casepage .read h2 {
-  scroll-margin-top: calc(var(--pagenav-h) + 16px);
+  scroll-margin-top: calc(var(--pagenav-h) + var(--space-4));
 }
 
 
@@ -214,7 +214,7 @@
 }
 /* glossary entries are jump targets now */
 .casepage .glossary > div {
-  scroll-margin-top: calc(var(--pagenav-h) + 16px);
+  scroll-margin-top: calc(var(--pagenav-h) + var(--space-4));
 }
 
 
@@ -254,11 +254,13 @@
    the measure that actually matters, the answer's, is capped on the answer
    itself. Two columns were the alternative and were wrong: a reader works
    down a list of questions, not across one.
-   Every answer is open on arrival. This is a reference page that exists to be
-   quoted — eight collapsed rows hide the substance from a reader scanning for
-   the one paragraph they came for, and from anyone reading the page top to
-   bottom. The disclosure stays, so a reader who wants the index back can
-   close them. */
+   Every answer used to be open on arrival, on the argument that a reference
+   page should not hide its substance behind eight disclosures. The owner has
+   decided the other way, and the reasoning is sound: closed, the band is an
+   index of the questions the decision raises, which is what a reader scanning
+   for one answer actually wants, and it stops eight long answers from pushing
+   «Пов'язані рішення» off the end of a page that is already long. Anyone
+   reading top to bottom opens as they go. */
 .casepage .qa-list {
   margin-top: var(--space-6);
   border-top: 1px solid var(--prule);
@@ -315,7 +317,12 @@
   margin: var(--space-6) 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  /* auto-fill, not auto-fit. They agree for two cards or more; they differ
+     for one, and one is a case that happens here — auto-fit collapses the
+     empty tracks and lets the single card stretch across the whole 1180px
+     rail, which measured 150 characters to the line. auto-fill keeps the
+     tracks, so a lone card stays card-width. */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: var(--space-4);
 }
 .casepage .nb-grid a {

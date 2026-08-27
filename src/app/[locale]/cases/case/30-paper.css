@@ -88,9 +88,24 @@
 
 /* sticky side nav */
 
-/* reading column */
+/* reading column
+
+   560px, not 680.
+
+   DESIGN.md sets the reading measure at 60-70 characters and gives 680px as
+   the way to get it. Both halves are true on their own and do not meet:
+   measured with `canvas.measureText` over this page's own Ukrainian prose,
+   Fira Sans at 16px averages 8.04px per character, so 680px is 85 characters,
+   not 65. Sixty-three of the seventy-eight prose blocks on this page ran past
+   seventy.
+
+   70 x 8.04 = 563. This is the top of the range the contract asks for, which
+   is the conservative end of the fix: it shortens the line without making the
+   page longer than it has to be. Getting there by raising the type instead
+   would need about 19px, which is a different decision about the whole
+   surface. DESIGN.md is corrected alongside this. */
 .casepage .read {
-  max-width: 680px;
+  max-width: 560px;
   counter-reset: disp;
 }
 .casepage .read .lead {
@@ -291,7 +306,7 @@
   color: var(--ink3);
   border: 1px solid var(--prule);
   border-radius: var(--r-pill);
-  padding: 3px 10px;
+  padding: 3px var(--space-2);
 }
 .casepage .cite-kind[data-official="yes"] {
   color: var(--pgold);
@@ -338,16 +353,37 @@
   color: var(--ink3);
 }
 
+/* The way out of the band and into the whole dictionary. Set like the other
+   arrow links on this page rather than as a button: it is a continuation of
+   the list above it, not a call to action. */
+.casepage .terms-more {
+  margin: var(--space-6) 0 0;
+  font: 600 var(--t-cap) var(--brand-font-body);
+}
+
 /* Who's who — a cast list, and now it looks like one: a card per actor across
    the whole rail rather than a 336px column beside a wider block. The name is
    in the display serif, the same register as the case title, because these
    are proper names of parties and forums. */
+/* One group per role. `auto-fill` rather than `auto-fit`: a group of one — the
+   court, on every case — would otherwise stretch its single card across the
+   whole 1180px rail and read as a band of its own. */
+.casepage .who-group + .who-group {
+  margin-top: var(--space-8);
+}
+.casepage .who-groupname {
+  margin: 0;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink2);
+}
 .casepage .who {
   list-style: none;
-  margin: var(--space-6) 0 0;
+  margin: var(--space-4) 0 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--space-4);
 }
 .casepage .who li {
@@ -377,11 +413,13 @@
   color: var(--ink2);
   border: 1px solid var(--seam);
   border-radius: var(--r-pill);
-  padding: 3px 10px;
+  padding: 3px var(--space-2);
 }
-.casepage .who li[data-kind="court"] .who-kind {
-  color: var(--ink);
-  border-color: var(--pgold);
+/* The court's gold edge. It was on the chip; the chip is gone with grouping,
+   and this was the one thing it said that the group heading does not — so it
+   moves to the card itself rather than being lost. */
+.casepage .who li[data-kind="court"] {
+  box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--pgold);
 }
 .casepage .who b {
   font: 700 var(--t-lead) var(--brand-font-display), serif;
@@ -431,37 +469,9 @@
     columns: 1;
   }
 }
-.casepage .faq details {
-  background: var(--card);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-4) var(--space-5);
-  margin-bottom: var(--space-3);
-}
-.casepage .faq summary {
-  cursor: pointer;
-  font: 700 var(--t-ui) var(--brand-font-body);
-  color: var(--ink);
-  list-style: none;
-}
-.casepage .faq summary::-webkit-details-marker {
-  display: none;
-}
-.casepage .faq summary::after {
-  content: "+";
-  float: right;
-  color: var(--pgold);
-  font-weight: 700;
-}
-.casepage .faq details[open] summary::after {
-  content: "–";
-}
-.casepage .faq p {
-  margin: var(--space-3) 0 0;
-  font-size: var(--t-sm);
-  line-height: 1.6;
-  color: var(--ink2);
-}
+/* The six `.casepage .faq …` rules that were here are gone. The FAQ renders
+   `.qa-list` (page.tsx, the `#questions` band); `.faq` appears in no component
+   in the repository, so none of them had matched anything for some time. */
 .casepage .related {
   list-style: none;
   margin: 0;

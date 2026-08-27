@@ -65,6 +65,13 @@
   margin: var(--space-2) 0 0;
   font-size: var(--t-cap);
   color: var(--ink2);
+  /* This note sits in a card that spans the full 1180px rail, and it is
+     running prose at 12.5px: measured at 194 characters to the line, the
+     longest on the site by a wide margin and nearly three times the measure
+     the reading column is held to. Capped in `ch`, which is the right unit
+     here because the cap has to follow this block's own smaller type rather
+     than the body size the rail was drawn for. */
+  max-width: 70ch;
 }
 
 /* ---- money (paper) --------------------------------------------------------- */
@@ -242,7 +249,7 @@
   top: -4px;
   width: 24px;
   height: 24px;
-  margin-left: -12px;
+  margin-left: -var(--space-3);
   padding: 0;
   background: none;
   border: 0;
@@ -307,6 +314,11 @@
   padding: 0;
 }
 .casepage .ctl-list li {
+  /* Running prose across the full 1180px rail, measured at 151ch to the line —
+     the reading column beside it is held to 70. A cap in `ch` follows this
+     block's own type rather than the rail the box was drawn for, and narrows
+     only the text: the box, its rules and its grid stay where they are. */
+  max-width: 70ch;
   border-top: 1px solid var(--prule);
 }
 .casepage .ctl-list li:last-child {
@@ -381,10 +393,29 @@
   line-height: 1.45;
   color: var(--ink);
 }
-/* the ruling itself carries the accent — gold, not red: on this page red is
-   reserved for a breach, and a warrant or judgment is not one */
+/* Four kinds are authored, 136 times across the eight write-ups, and the
+   component has always emitted all four as `data-kind`. Only `judgment` was
+   ever styled, so the other three — a filing, a procedural order, a piece of
+   context — arrived on the page looking identical. Telling one from the other
+   at a glance is most of what a lawyer scans a chronology for.
+
+   The distinction is weight and colour, in that order, so it survives a
+   monochrome screen: an operative act is gold and bold, a filing is ink, an
+   order is ink at the secondary weight, and context recedes to --muted. No
+   red anywhere — on this page red is a breach, and none of these is one. */
 .casepage .ctl-list li[data-kind="judgment"] .ctl-label {
   color: var(--pgold);
+  font-weight: 600;
+}
+.casepage .ctl-list li[data-kind="filing"] .ctl-label {
+  color: var(--ink);
+}
+.casepage .ctl-list li[data-kind="order"] .ctl-label {
+  color: var(--ink);
+  font-weight: 500;
+}
+.casepage .ctl-list li[data-kind="context"] .ctl-label {
+  color: var(--muted);
 }
 .casepage .ctl-note {
   margin: 0;

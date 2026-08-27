@@ -28,7 +28,11 @@ export default function TakingsGrid({
             </b>
           </div>
 
-          {m.count && (
+          {/* `!== undefined`, not truthiness — the sibling `percent` test two
+              blocks down already gets this right. A metric recorded as
+              `count: 0` (nought of something, which is a finding) rendered a
+              bare "0" into the tile instead of an empty dot field. */}
+          {m.count !== undefined && (
             <div className="dotfield" aria-hidden="true">
               {Array.from({ length: Math.min(m.count, 400) }, (_, d) => (
                 <i key={d} />

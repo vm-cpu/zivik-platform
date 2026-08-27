@@ -154,7 +154,17 @@ const T = {
   navWarrants: { uk: "Ордери", en: "Warrants" },
   navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
   navRulings: { uk: "Тлумачення", en: "Key rulings" },
-  navHandbook: { uk: "Що варто знати", en: "What to know" },
+  /* The chip has to name the band it lands on. It said «Що варто знати» /
+     "What to know" and landed on a band headed «Хто є хто» / "Who's who" — a
+     reader clicking for a primer got a cast list. The band's own heading is
+     the label now; the glossary underneath it, which was silently annexed to
+     this destination, gets its own entry below. */
+  navHandbook: { uk: "Хто є хто", en: "Who's who" },
+  navGlossary: { uk: "Словник", en: "Glossary" },
+  glossaryAll: {
+    uk: "Ці терміни у словнику бібліотеки",
+    en: "These terms in the library's glossary",
+  },
   navFulltext: { uk: "Самері", en: "Summary" },
   navSources: { uk: "Джерела", en: "Sources" },
   officialH: { uk: "Офіційні документи Суду", en: "Official court documents" },
@@ -174,6 +184,18 @@ const WHO_KIND: Record<"party" | "court" | "actor", Localized> = {
   party: T.whoKindParty,
   court: T.whoKindCourt,
   actor: T.whoKindActor,
+};
+
+/** The order the groups are read in: the sides, then the forum, then the rest.
+ *  Fixed, so the band has the same shape on every case. */
+const WHO_ORDER = ["party", "court", "actor"] as const;
+
+/** Plural headings for the groups. The singular chips above still name one
+ *  entry — these name a set, which is a different word in both languages. */
+const WHO_GROUP: Record<"party" | "court" | "actor", Localized> = {
+  party: { uk: "Сторони", en: "Parties" },
+  court: { uk: "Суд", en: "The court" },
+  actor: { uk: "Учасники", en: "Others involved" },
 };
 
 /** Chrome label for each way a claim can be disposed of. */
@@ -607,10 +629,6 @@ export default async function CasePage({
   const words = body.map((b) => b.text).join(" ").split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.round(words / 180));
   const readTime = pick(T.minRead, locale).replace("{n}", String(minutes));
-  const sections = body
-    .filter((b) => b.kind === "h2")
-    .map((b, i) => ({ id: `sec-${i}`, text: b.text.trim() }));
-
   /** Official-text URL for a verdict track, when one exists. Only acronym
    *  (string) abbrs double as verdict track keys. */
   const trackUrl = (track: string): string | undefined =>
@@ -650,6 +668,17 @@ export default async function CasePage({
   const hasMachinery = Boolean(summary.warrants || attribution || objections || afterlife);
   const pageSections = [
     { id: "overview", label: pick(T.overview, locale) },
+    /* The map band. It renders on every case that names a theatre and had no
+       entry here at all — see the note on the section itself. Guarded the same
+       way the band is, so the chip never points at nothing. */
+    ...(theatres.length > 0
+      ? [
+          {
+            id: "theatres",
+            label: pick(summary.theatresHeading ?? T.seatLabel, locale),
+          },
+        ]
+      : []),
     { id: "chronology", label: pick(T.timeline, locale) },
     ...(hasMachinery
       ? [
@@ -664,6 +693,7 @@ export default async function CasePage({
       ? [{ id: "measures", label: pick(T.provMeasures, locale) }]
       : []),
     { id: "handbook", label: pick(T.navHandbook, locale) },
+    { id: "glossary", label: pick(T.navGlossary, locale) },
     { id: "fulltext", label: pick(T.navFulltext, locale) },
     ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
     ...(faq.length > 0 ? [{ id: "questions", label: pick(T.faqH, locale) }] : []),
@@ -948,7 +978,7 @@ export default async function CasePage({
 
           {takings && (
             <div>
-              <div className="lbl lbl-onpaper">{pick(takings.heading, locale)}</div>
+              <h2 className="lbl lbl-onpaper">{pick(takings.heading, locale)}</h2>
               <TakingsGrid metrics={takings.metrics} locale={locale} />
               {takings.note && (
                 <p className="dash-note">
@@ -970,7 +1000,7 @@ export default async function CasePage({
 
           {amounts && (
             <div>
-              <div className="lbl lbl-onpaper">{pick(T.amountsH, locale)}</div>
+              <h2 className="lbl lbl-onpaper">{pick(T.amountsH, locale)}</h2>
               <MoneyBars
                 figures={amounts.figures.map((f) => ({
                   label: L(f.label),
@@ -998,8 +1028,16 @@ export default async function CasePage({
           the heading and legend keep the gutter, the way the events map does
           on the home page. Inside .dash-stack it was a 1036px picture in the
           middle of the reading column, letterboxed down to 821px of drawing. */}
+      {/* id, data-navsec and a nav entry. It had none of the three: the
+          biggest band on the page, and the navigation did not admit it
+          existed. */}
       {theatres.length > 0 && (
-        <section className="mapband" aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}>
+        <section
+          className="mapband"
+          id="theatres"
+          data-navsec
+          aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}
+        >
           <h2 className="lbl">
             {pick(
               summary.theatresHeading ??
@@ -1045,7 +1083,7 @@ export default async function CasePage({
           aria-label={pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale)}>
           <div className="rail machinery-stack">
             <div>
-              <div className="lbl lbl-onpaper">{pick(warrants.heading, locale)}</div>
+              <h2 className="lbl lbl-onpaper">{pick(warrants.heading, locale)}</h2>
               <p className="mach-note">{pick(warrants.note, locale)}</p>
               <WarrantWall
                 waves={warrants.waves.map((w) => ({
@@ -1089,7 +1127,7 @@ export default async function CasePage({
           <div className="rail machinery-stack">
             {attribution && (
               <div>
-                <div className="lbl lbl-onpaper">{pick(T.attributionH, locale)}</div>
+                <h2 className="lbl lbl-onpaper">{pick(T.attributionH, locale)}</h2>
                 <p className="mach-note">{pick(attribution.note, locale)}</p>
                 <AttributionTree
                   respondent={pick(attribution.respondent, locale)}
@@ -1105,7 +1143,7 @@ export default async function CasePage({
 
             {objections && (
               <div>
-                <div className="lbl lbl-onpaper">{pick(objections.heading, locale)}</div>
+                <h2 className="lbl lbl-onpaper">{pick(objections.heading, locale)}</h2>
                 <p className="mach-note">{pick(objections.note, locale)}</p>
                 <ObjectionCards
                   items={objections.items.map((o) => ({
@@ -1133,7 +1171,7 @@ export default async function CasePage({
 
             {afterlife && (
               <div>
-                <div className="lbl lbl-onpaper">{pick(afterlife.heading, locale)}</div>
+                <h2 className="lbl lbl-onpaper">{pick(afterlife.heading, locale)}</h2>
                 <p className="mach-note">{pick(afterlife.note, locale)}</p>
                 <AfterlifeStrip
                   stages={afterlife.stages}
@@ -1152,7 +1190,7 @@ export default async function CasePage({
       {/* 2b — Reference: doctrine and the interim order, on paper */}
       <section className="refs" id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
         <div className="rail">
-          <div className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</div>
+          <h2 className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</h2>
           <div className="rulings-grid">
             {interpretations.map((it, i) => (
               <div key={i} className="ruling">
@@ -1170,12 +1208,12 @@ export default async function CasePage({
       {provisionalMeasures.length > 0 && (
         <section className="pmeas" id="measures" data-navsec aria-label={pick(T.provMeasures, locale)}>
           <div className="rail">
-            <div className="lbl lbl-onpaper">
+            <h2 className="lbl lbl-onpaper">
               {pick(T.provMeasures, locale)}
               {summary.provisionalMeasuresOrder && (
                 <em className="lbl-sub">{pick(summary.provisionalMeasuresOrder, locale)}</em>
               )}
-            </div>
+            </h2>
             <ul className="pmeasures">
               {provisionalMeasures.map((m, i) => (
                 <li key={i} data-order={m.order}>
@@ -1205,22 +1243,60 @@ export default async function CasePage({
           and they now have different shapes: the roster is a grid of cards
           across the full rail, each led by a kind chip; the glossary is a
           ruled dictionary poured into two columns. Different grounds, too. */}
+      {/* Grouped by role, in the order a case has them: who is fighting, who
+          decides, everyone else.
+
+          It was one flat grid in whatever order the entries were authored,
+          and in six of the eight write-ups the roles interleave — this page
+          runs party, party, court, actor, actor, court; MH17 runs party,
+          actor, actor, actor, actor, court. A reader met the same three kinds
+          shuffled differently on every case and had to read the chip on each
+          card to reconstruct the shape.
+
+          Grouped, not filtered: there are four to six cards here. A filter
+          over six things is a control that costs more than the reading it
+          saves. The group heading also does the chip's old job, so the chip
+          comes off — repeating «СТОРОНА» on each card under a heading that
+          already says «Сторони» is the same word twice. The court keeps its
+          gold edge, which was the one distinction the chip carried that is
+          not a word; it moves to the card. */}
       <section className="aids" id="handbook" data-navsec aria-label={pick(T.whoH, locale)}>
         <div className="rail">
           <h2 className="lbl lbl-onpaper">{pick(T.whoH, locale)}</h2>
-          <ul className="who">
-            {whoIsWho.map((w, i) => (
-              <li key={i} data-kind={w.kind}>
-                <span className="who-kind">{pick(WHO_KIND[w.kind], locale)}</span>
-                <b>{pick(w.name, locale)}</b>
-                <span className="who-role">{pick(w.role, locale)}</span>
-              </li>
-            ))}
-          </ul>
+          {WHO_ORDER.map((kind) => {
+            const group = whoIsWho.filter((w) => w.kind === kind);
+            if (group.length === 0) return null;
+            return (
+              <div className="who-group" key={kind} data-kind={kind}>
+                <h3 className="who-groupname">
+                  {pick(WHO_GROUP[kind], locale)}
+                </h3>
+                <ul className="who">
+                  {group.map((w, i) => (
+                    <li key={i} data-kind={w.kind}>
+                      <b>{pick(w.name, locale)}</b>
+                      <span className="who-role">{pick(w.role, locale)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      <section className="terms" aria-label={pick(T.glossaryH, locale)}>
+      {/* Its own id and its own nav entry. It had neither, so it was reached
+          only by scrolling past «Хто є хто» — and the chip that was supposed
+          to lead here was pointing at that band instead. */}
+      {/* This band is the library's glossary, filtered to one decision.
+
+          The fifty headwords in the archive were only ever reachable through
+          whichever decision happened to define them, so a reader who wanted to
+          know what «hors de combat» means had to already know which case to
+          open. They have a page of their own now, and the link below is this
+          band's own contents on it — same terms, plus the other decisions'
+          readings of the four words that two courts define differently. */}
+      <section className="terms" id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
         <div className="rail">
           <h2 className="lbl lbl-onpaper">{pick(T.glossaryH, locale)}</h2>
           <dl className="glossary">
@@ -1231,6 +1307,11 @@ export default async function CasePage({
               </div>
             ))}
           </dl>
+          <p className="terms-more">
+            <Link href={`/${locale}/glossary?case=${slug}`}>
+              {pick(T.glossaryAll, locale)} →
+            </Link>
+          </p>
         </div>
       </section>
 
@@ -1329,12 +1410,16 @@ export default async function CasePage({
         click. They were one grid, which made the second look like more prose.
       */}
       {faq.length > 0 && (
-        <section className="qa" id="questions" aria-label={pick(T.faqH, locale)}>
+        <section className="qa" id="questions" data-navsec aria-label={pick(T.faqH, locale)}>
           <div className="rail">
-            <div className="lbl lbl-onpaper">{pick(T.faqH, locale)}</div>
+            <h2 className="lbl lbl-onpaper">{pick(T.faqH, locale)}</h2>
+            {/* Closed on arrival. The band reads as an index of the questions
+                the decision raises, and a reader opens the one they came for.
+                See the note on `.qa-list` in 70-chrome.css for the argument
+                this replaces — owner's decision. */}
             <div className="qa-list">
               {faq.map((f, i) => (
-                <details key={i} open>
+                <details key={i}>
                   <summary>{pick(f.q, locale)}</summary>
                   <p>{pick(f.a, locale)}</p>
                 </details>
@@ -1345,21 +1430,33 @@ export default async function CasePage({
       )}
 
       {related.length > 0 && (
-        <section className="neighbours" id="related" aria-label={pick(T.relatedH, locale)}>
+        <section className="neighbours" id="related" data-navsec aria-label={pick(T.relatedH, locale)}>
           <div className="rail">
-            <div className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</div>
+            <h2 className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</h2>
             <ul className="nb-grid">
               {related.map((r, i) => {
-                // The note is "court · detail"; the court leads the card so the
-                // set can be scanned by forum. I tried the generated share
-                // cards here first — at 240px their headline is illegible and
-                // repeats the title underneath, for 130kB each.
+                /* The note is "court · detail"; the court leads the card so
+                   the set can be scanned by forum. I tried the generated share
+                   cards here first — at 240px their headline is illegible and
+                   repeats the title underneath, for 130kB each.
+
+                   Nine of the twenty-three notes carry no separator, and the
+                   split treated the whole sentence as the forum: `.nb-forum`
+                   is 11px uppercase gold with 0.1em tracking, so
+                   icj-genocide's «Рішення по суті від 31 січня 2024 — за день
+                   до цього…» rendered as ninety-one characters of gold
+                   micro-caps with an empty detail line under it. Without a
+                   separator there is no forum to lead with, so the note is
+                   just the note. */
                 const note = pick(r.note, locale);
-                const [forum, ...rest] = note.split("·").map((x) => x.trim());
+                const hasForum = note.includes("·");
+                const [forum, ...rest] = hasForum
+                  ? note.split("·").map((x) => x.trim())
+                  : ["", note];
                 return (
                   <li key={i}>
                     <a href={`/${locale}${r.href}`}>
-                      <span className="nb-forum">{forum}</span>
+                      {forum && <span className="nb-forum">{forum}</span>}
                       <b>{pick(r.label, locale)}</b>
                       {rest.length > 0 && (
                         <span className="nb-note">{rest.join(" · ")}</span>
