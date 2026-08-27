@@ -178,7 +178,8 @@
    arrow beside it is the only affordance a case name needs to read as a way
    into the case. */
 .nsvq-case {
-  font-family: var(--brand-font-display), Georgia, serif;
+  /* Charis's italics are their own loader call, at 400 only — see globals.css. */
+  font-family: var(--brand-font-display-italic), Georgia, serif;
   font-style: italic;
   /* --t-lead (20px) before — 319px of italic across the band. Against a 25px
      quote it competes with the words it attributes; --t-body puts two steps of

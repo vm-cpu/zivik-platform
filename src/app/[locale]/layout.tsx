@@ -27,9 +27,36 @@ import "./shared.css";
  * reached globals.css as --font-serif and --font-display, and no rule and no
  * class ever used either.
  */
+/**
+ * Roman and italic are declared separately because the Google loader emits the
+ * cross product of `weight` and `style`, and the cross product was buying
+ * faces nothing renders. One call for `["400","700"] × ["normal","italic"]`
+ * preloads twelve files; a walk of all 96 prerendered routes in headless
+ * Chrome, asking `CSS.getPlatformFontsForNode` which face actually drew each
+ * run, found italic Charis on exactly two selectors — `.parties` on the
+ * sixteen decision mastheads and `.nsvq-case` in the home pull quote — both
+ * at 400. Bold italic drew nothing anywhere: `document.fonts` reported all
+ * five of its faces `unloaded` on every page, while three of them were
+ * preloaded on all of them. That was 40,608 B of forced download.
+ *
+ * Two calls for one typeface are safe here because this version of the Google
+ * loader names the CSS family after the font — plain `Charis SIL`, no hash —
+ * so both calls contribute @font-face rules to the same family and
+ * `font-style: italic` still finds the italic ones. That is a property of the
+ * loader, not of CSS: style matching happens inside a family and never falls
+ * through to the next one, so under a loader that hashed the family names the
+ * italic rules would silently render a skewed roman instead. The four rules
+ * that go italic name `--brand-font-display-italic` /
+ * `--brand-font-body-italic` so the split does not rest on that.
+ *
+ * The failure mode is quiet either way — a synthetic oblique looks like an
+ * italic until you measure it. Setting the same string at both styles gives
+ * different advance widths (150.6 against 161.9px for Charis at 16px), so a
+ * width that matches the roman is the tell.
+ */
 const charis = Charis_SIL({
   weight: ["400", "700"],
-  style: ["normal", "italic"],
+  style: ["normal"],
   /* latin-ext dropped: measured across every route in both locales,
      the rendered text contains zero characters in U+0100–024F, and the
      subset was preloaded on all 24 pages regardless. cyrillic-ext stays —
@@ -41,9 +68,30 @@ const charis = Charis_SIL({
   display: "swap",
 });
 
+/* Only 400. The masthead parties line and the pull-quote case name are the
+   whole of the italic display type on the site; both inherit their weight. */
+const charisItalic = Charis_SIL({
+  weight: ["400"],
+  style: ["italic"],
+  subsets: ["latin", "cyrillic", "cyrillic-ext"],
+  variable: "--font-charis-italic",
+  display: "swap",
+});
+
+/**
+ * Four weights × two styles was twenty-four preloaded files, 306,548 B — the
+ * largest single item on every page. All four romans are genuinely used
+ * (700 in 102 declarations, 400 in 48, 600 in 47, 500 in 36). The italics are
+ * not: across all 96 routes the only italic Fira that draws a glyph is the
+ * chronology's context rows at 400 (52 runs, 18 routes) and `.obj-latin` at
+ * 500 (16 runs, 6 routes). Italic 600 and 700 are reached only by empty `<i>`
+ * elements used as bars, dots and legend swatches — they inherit the style
+ * and draw no text — so their six files, 80,052 B, were downloaded on every
+ * page to set nothing.
+ */
 const firaSans = Fira_Sans({
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
+  style: ["normal"],
   /* latin-ext dropped: measured across every route in both locales,
      the rendered text contains zero characters in U+0100–024F, and the
      subset was preloaded on all 24 pages regardless. cyrillic-ext stays —
@@ -52,6 +100,16 @@ const firaSans = Fira_Sans({
      in that range would still render, just fetched on demand. */
   subsets: ["latin", "cyrillic", "cyrillic-ext"],
   variable: "--font-fira",
+  display: "swap",
+});
+
+/* 400 for the chronology's context rows, 500 for the Latin objection grounds.
+   Nothing on the site sets italic Fira at any other weight. */
+const firaSansItalic = Fira_Sans({
+  weight: ["400", "500"],
+  style: ["italic"],
+  subsets: ["latin", "cyrillic", "cyrillic-ext"],
+  variable: "--font-fira-italic",
   display: "swap",
 });
 
@@ -108,7 +166,7 @@ export default async function LocaleLayout({
        * modes, none of which run the effect.
        */
       lang={localeHtmlLang[safe]}
-      className={`${charis.variable} ${firaSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${charis.variable} ${charisItalic.variable} ${firaSans.variable} ${firaSansItalic.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         {/* One header and one footer for the whole locale. Every page used to

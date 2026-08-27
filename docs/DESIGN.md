@@ -97,6 +97,22 @@ mid-render).
 - `--brand-font-mono` — **IBM Plex Mono**. The machinery: docket meta, dates,
   paragraph refs (§ 392), counters, citations, track labels.
 
+**Italic is a fourth and fifth token, not a style of the first two.**
+`next/font` emits the cross product of the weights and styles it is given, so
+one call for four Fira weights in both styles preloads eight italic files on
+every page. The site sets italic in four rules — the decision masthead's
+parties line, the home pull quote's case name, the chronology's context labels
+and `.obj-latin` — at Charis 400 and Fira 400 and 500. Everything else that
+computes to italic is an empty `<i>` used as a bar, a dot or a legend swatch
+and draws no glyph. So the italics are loaded separately, at those weights
+only, as `--brand-font-display-italic` and `--brand-font-body-italic`.
+
+**A rule that goes italic names one of those two.** A family that has no
+italic face does not fall through to the next family in the stack — it answers
+with a skewed roman, which looks like an italic until it is measured. Setting
+one string in both styles at 16px gives 150.6px against 161.9px in Charis, and
+that difference is the test.
+
 **Scale** (defined per surface as `--t-*`; the decision page is canonical).
 Steps sit ~1.11–1.14 apart through the UI/prose range and open up at the top so
 display type reads as a different register, not just bigger body text.

@@ -323,8 +323,17 @@ for (const file of files(join(ROOT, "src"), [".css"])) {
   }
 }
 /* Values that come from somewhere other than a stylesheet. next/font writes
-   these onto the html element as inline styles. */
-for (const n of ["--font-charis", "--font-fira", "--font-ibm-plex-mono"]) {
+   these onto the html element as inline styles. The `-italic` pair are their
+   own loader calls: the Google loader emits the cross product of weight and
+   style, so roman and italic are declared separately to stop it preloading
+   italic weights nothing sets. See app/[locale]/layout.tsx. */
+for (const n of [
+  "--font-charis",
+  "--font-charis-italic",
+  "--font-fira",
+  "--font-fira-italic",
+  "--font-ibm-plex-mono",
+]) {
   DEFINED.add(n);
 }
 

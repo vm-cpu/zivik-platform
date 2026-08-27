@@ -558,6 +558,9 @@
 }
 .casepage .ctl-list li[data-kind="context"] .ctl-label {
   color: var(--ink3);
+  /* Fira's italics are their own loader call, at 400 and 500 — see
+     globals.css. This row is the 400 of the two. */
+  font-family: var(--brand-font-body-italic), sans-serif;
   font-style: italic;
 }
 /* The date recedes in tone only. It is set in IBM Plex Mono, which is loaded
@@ -777,7 +780,9 @@
   text-wrap: pretty;
 }
 .casepage .obj-latin {
-  font: italic 500 var(--t-cap) var(--brand-font-body);
+  /* Fira's italics are their own loader call — see globals.css. This is the
+     only thing on the site that asks for one at 500. */
+  font: italic 500 var(--t-cap) var(--brand-font-body-italic);
   color: var(--ink3);
 }
 .casepage .obj-lbl {
