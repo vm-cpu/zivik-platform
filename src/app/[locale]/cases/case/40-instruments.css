@@ -313,6 +313,46 @@
   margin: 0;
   padding: 0;
 }
+/* The key to the chronology's typography.
+
+   The four kinds have been set differently since the day `data-kind` was
+   styled — gold and bold for an act of the court, ink for a filing, ink at the
+   secondary weight for an order, receded for background — and nothing told the
+   reader what the difference meant. A visual language without a key is not a
+   language.
+
+   Each word carries the treatment it names, so the key and the rows are read
+   the same way, and it needs no swatches. Separators are `::before` on the
+   siblings rather than characters in the text, so a screen reader gets four
+   words and not three interpuncts. */
+.casepage .ctl-key {
+  margin: var(--space-4) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px var(--space-3);
+  font-size: var(--t-cap);
+}
+.casepage .ctl-key span + span::before {
+  content: "·";
+  margin-right: var(--space-3);
+  color: var(--faint);
+}
+.casepage .ctl-key [data-kind="judgment"] {
+  color: var(--pgold);
+  font-weight: 600;
+}
+.casepage .ctl-key [data-kind="order"] {
+  color: var(--ink);
+  font-weight: 500;
+}
+.casepage .ctl-key [data-kind="filing"] {
+  color: var(--ink);
+}
+.casepage .ctl-key [data-kind="context"] {
+  color: var(--muted);
+}
+
 .casepage .ctl-list li {
   /* No max-width here, and the one that was here was a mistake worth naming.
 

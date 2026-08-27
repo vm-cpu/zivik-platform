@@ -314,6 +314,20 @@ export const icjGenocide: DecisionSummary = {
      the hearing dates from § 23, and the count of appended opinions from the
      paragraph that closes the judgment. */
   glance: [
+    /* The parties. This card had none — it opened on the composition of the
+       Court — so the page for the genocide case did not say who was suing
+       whom, while every other claim-type case did.
+
+       Taken from the judgment's own party block: "between Ukraine, represented
+       by … and the Russian Federation, represented by …". The 32 intervening
+       States are deliberately NOT here: they intervene under Article 63 and
+       are not parties. They have their own card in «Хто є хто», and the case
+       title names them, which is where the judgment names them too. */
+    { label: { uk: "Заявник", en: "Applicant" }, value: { uk: "Україна", en: "Ukraine" } },
+    {
+      label: { uk: "Відповідач", en: "Respondent" },
+      value: { uk: "Російська Федерація", en: "Russian Federation" },
+    },
     {
       label: { uk: "Склад Суду", en: "Bench" },
       value: { uk: "15 суддів і суддя ad hoc", en: "15 Members and one judge ad hoc" },
