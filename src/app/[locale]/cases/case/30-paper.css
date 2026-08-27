@@ -739,12 +739,15 @@ The measure has been argued four times, so here is the method that settles
    never mistaken for a finding.
    ========================================================================== */
 
+/* The note under a takings grid or a set of money bars, and so a line that
+   only ever renders inside .dash. That band is --brand-night, where --ink2 is
+   2.40:1; --muted is 9.06:1. */
 .casepage .dash-note {
   margin: var(--space-4) 0 0;
   max-width: 62ch;
   font-size: var(--t-sm);
   line-height: 1.6;
-  color: var(--ink2);
+  color: var(--muted);
 }
 
 /* provenance notice at the head of the summary text: quiet, but on record */
