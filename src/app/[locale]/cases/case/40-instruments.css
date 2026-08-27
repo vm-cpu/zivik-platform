@@ -314,11 +314,20 @@
   padding: 0;
 }
 .casepage .ctl-list li {
-  /* Running prose across the full 1180px rail, measured at 151ch to the line —
-     the reading column beside it is held to 70. A cap in `ch` follows this
-     block's own type rather than the rail the box was drawn for, and narrows
-     only the text: the box, its rules and its grid stay where they are. */
-  max-width: 70ch;
+  /* No max-width here, and the one that was here was a mistake worth naming.
+
+     A pass over the page's reading measure capped this row at 70ch on a
+     reading of "151 characters to the line". That number was an artefact: the
+     script measuring it divided each element's width by the average glyph
+     advance of its whole text content, which for a grid row concatenates the
+     date, the track chip, the label and the note. Those are four columns, not
+     one line. The row never ran 151 characters.
+
+     The cap then squeezed the row itself — its box, its hairline and its grid
+     — to about 850px of a 1180px rail, which is what the owner saw and asked
+     about. The prose inside was already held: `.ctl-note` below caps at 66ch,
+     which is the right place for a measure, on the paragraph rather than on
+     the ledger row that contains it. */
   border-top: 1px solid var(--prule);
 }
 .casepage .ctl-list li:last-child {

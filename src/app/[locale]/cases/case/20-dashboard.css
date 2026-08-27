@@ -410,11 +410,10 @@
   padding: 0;
 }
 .casepage .verdicts li {
-  /* Running prose across the full 1180px rail, measured at 154ch to the line —
-     the reading column beside it is held to 70. A cap in `ch` follows this
-     block's own type rather than the rail the box was drawn for, and narrows
-     only the text: the box, its rules and its grid stay where they are. */
-  max-width: 70ch;
+  /* Same mistake as `.ctl-list li`, same removal — see the note there. This
+     row is `1fr auto`: a claim and the chip that says how it was disposed of.
+     Capping it at 70ch pulled the chip in off the rail's right edge, which is
+     the one place the eye goes to read a verdict matrix down its outcomes. */
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: baseline;

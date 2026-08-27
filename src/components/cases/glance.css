@@ -19,11 +19,25 @@
    the hairline.
    ============================================================ */
 
+/* Four columns, not `auto-fit` at 230px.
+
+   auto-fit gave five on the 1180px rail, so every value had about 215px —
+   enough for «Гаага» and not for «Постійна палата третейського суду», which
+   is a third of these. Four fixed columns give about 270px, and an entry that
+   needs more takes two of them or the whole row (see `span()` in
+   GlanceFacts.tsx). Fixed rather than fluid because the spans are counted in
+   columns: `span 2` only means "half the rail" if the count is known. */
 .casepage .glance {
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   column-gap: var(--space-8);
+}
+.casepage .glance-item[data-span="2"] {
+  grid-column: span 2;
+}
+.casepage .glance-item[data-span="4"] {
+  grid-column: 1 / -1;
 }
 
 .casepage .glance-item {
@@ -47,8 +61,19 @@
   text-wrap: pretty;
 }
 
+/* Two columns from 900px down, and the spans halve with them — a `span 2` on
+   a two-column grid is the full row, which is what it should be at that
+   width. */
+@media (max-width: 900px) {
+  .casepage .glance {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 @media (max-width: 520px) {
   .casepage .glance {
     grid-template-columns: 1fr;
+  }
+  .casepage .glance-item[data-span="2"] {
+    grid-column: auto;
   }
 }
