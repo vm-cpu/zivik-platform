@@ -249,7 +249,10 @@ export const oschadbank: DecisionSummary = {
         en: "PJSC Ukrnafta v. Russian Federation",
       },
       note: { uk: "PCA 2015-34 · той самий ДІД", en: "PCA 2015-34 · same treaty" },
-      href: "#registry",
+      /* pca-24, the registry row for PCA 2015-34. It has no write-up, and
+         its own page says so; `#registry` sent a reader who wanted this
+         arbitration to the home page's preview of the whole library. */
+      href: "/cases/pca-24",
     },
     {
       label: {
@@ -686,7 +689,10 @@ export const oschadbank: DecisionSummary = {
       },
       {
         label: { uk: "Кредити групі ActivSolar", en: "Loans to the ActivSolar Group" },
-        value: "> USD 500,000,000",
+        /* A pair, not a bare string: a bare one printed the English grouping
+           on the Ukrainian page, next to money bars that spell the same
+           magnitudes «$597 771 793». */
+        value: { uk: "> USD 500 000 000", en: "> USD 500,000,000" },
         note: { uk: "16 кредитних ліній", en: "16 loan facilities" },
       },
       {

@@ -182,12 +182,13 @@ export interface RegistryCase {
   /**
    * Page count of the decision, if known — four of the thirty-nine.
    *
-   * Nothing renders it. It is kept rather than dropped because those four
-   * numbers are facts about documents that exist nowhere else in this repo
-   * (the `pages` read by the decision pages is `judgment.pages`, a different
-   * field on the summaries), and deleting the field would delete them. Either
-   * give it a surface or clear it deliberately; it should not sit here
-   * unread indefinitely.
+   * It has a surface now: `components/cases/CasePending.tsx` prints it as
+   * «Обсяг рішення» on the page of a proceeding that has no write-up yet,
+   * where how long the unread document is turns out to be worth saying. That
+   * covers one of the four (pca-20); the other three — icj-1, icj-2, ecthr-5
+   * — carry a summary, and there the figure the page prints is
+   * `judgment.pages`, a different field. The checker holds the two together
+   * where a row has both.
    */
   pages: number | null;
   /** Link to the decision or case page. */

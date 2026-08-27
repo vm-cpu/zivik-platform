@@ -163,7 +163,12 @@ const T = {
     machinery: { uk: "Розбір рішення", en: "Anatomy" },
     rulings: { uk: "Тлумачення", en: "Key rulings" },
     measures: { uk: "Тимчасові заходи", en: "Provisional measures" },
-    handbook: { uk: "Що варто знати", en: "What to know" },
+    /* The band at `#handbook` is headed «Хто є хто» / "Who's who" on the
+       decision page — it was retitled there when the chip that led to it was
+       found promising a primer and delivering a cast list. This copy kept the
+       old wording, so a search hit still offered "What to know" and landed on
+       "Who's who". */
+    handbook: { uk: "Хто є хто", en: "Who's who" },
     questions: { uk: "Часті запитання", en: "Common questions" },
     fulltext: { uk: "Самері", en: "Summary" },
   },

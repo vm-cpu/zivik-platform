@@ -4,19 +4,40 @@
  *     node scripts/data-check.mjs
  *
  * ── What this can and cannot tell you ──────────────────────────────────────
- * It checks the record against ITSELF: that `lit` and `summarySlug` agree,
- * that a docket year is not in the future, that a proceeding recorded as
- * concluded names what concluded it, that an act the record names has a
- * document behind it, that no id or slug is used twice, that a stage does not
- * contradict the status text it was derived from, and that an amount is
- * plausibly denominated.
+ * It checks the record against ITSELF, in two passes.
+ *
+ * The registry (`cases.ts`): that `lit` and `summarySlug` agree, that a docket
+ * year is not in the future, that a proceeding recorded as concluded names
+ * what concluded it, that an act the record names has a document behind it,
+ * that no id or slug is used twice, that a stage does not contradict the
+ * status text it was derived from, and that an amount is plausibly
+ * denominated.
+ *
+ * The write-ups (`summaries/*.ts`) against the registry and against the pages
+ * that render them: that a related card leads to a case that exists, that a
+ * citation's kind is one the decision page can name, that the seat the map
+ * draws is the seat the summary names, that every chronology entry carries a
+ * sort key and that the key falls inside the date printed above it, that a
+ * verdict track is authored in one run and that a track keyed to a day has
+ * that day in the chronology, that the row and the summary agree about the
+ * document's length and about which came first, and that the library's search
+ * captions a decision page's band with the name that band actually wears.
+ *
+ * It reads the source files as TEXT — the same crude method the registry pass
+ * uses, and for the same reason: these are TypeScript modules with path
+ * aliases and plain `node` cannot import them. So it knows what a file SAYS,
+ * and a change to the shape of these files (an entry reindented, a field split
+ * across lines) can make a rule stop seeing its subject rather than fail. When
+ * a rule is added, break something on purpose and watch it fire.
  *
  * It CANNOT tell you whether any of it is true. Whether ICJ GL 182 really was
  * decided on 2 February 2024, whether the Naftogaz award really was 4.63bn,
  * whether the ICC warrant really names those articles of the Rome Statute —
  * none of that is in this file's reach. Those are checks against the courts'
  * own documents, one case at a time, and a green run here says nothing about
- * them.
+ * them. Nor does it reach a claim made in prose: «≈6% основної суми» in an
+ * `amounts.note` is a sentence, and no rule here divides one number in a
+ * sentence by another.
  */
 import { readFileSync } from "node:fs";
 
@@ -49,6 +70,9 @@ const flag = (id, kind, msg) => issues.push({ id, kind, msg });
 
 const ids = new Set();
 const slugs = new Set();
+/** summarySlug → the row's own `pages` / `year`, for the write-up pass below. */
+const rowPages = new Map();
+const rowYear = new Map();
 
 for (const r of records) {
   const id = strField(r, "id");
@@ -64,10 +88,15 @@ for (const r of records) {
   const slug = strField(r, "summarySlug");
   const url = strField(r, "decisionUrl");
   const amount = field(r, "amountUsd");
+  const pages = field(r, "pages");
 
   if (slug) {
     if (slugs.has(slug)) flag(id, "duplicate-slug", `slug ${slug} used twice`);
     slugs.add(slug);
+    /* Kept for the write-up pass below: the row and the summary each record a
+       page count and they are two transcriptions of one document. */
+    rowPages.set(slug, pages && pages !== "null" ? Number(pages) : null);
+    rowYear.set(slug, year && year !== "null" ? Number(year) : null);
   }
 
   // 1. lit and summarySlug must agree — one says "there is a write-up", the
@@ -131,7 +160,194 @@ for (const s of slugs)
   if (summaryKeys.length && !summaryKeys.includes(s))
     flag(s, "slug-no-file", "summarySlug has no entry in summaries/index.ts");
 
-console.log(`checked ${ids.size} records, ${slugs.size} with write-ups\n`);
+
+/* ============================================================================
+   The write-ups, against the registry and against themselves.
+
+   Same method as above and the same limits: this reads the source files as
+   text, so it knows what they SAY, never whether it is true. Each rule below
+   is one contradiction the archive actually shipped, or the shape of one.
+   ========================================================================== */
+
+const summarySrc = new Map();
+for (const slug of summaryKeys) {
+  try {
+    summarySrc.set(slug, readFileSync(`src/content/summaries/${slug}.ts`, "utf8"));
+  } catch {
+    flag(slug, "summary-file-missing", `summaries/index.ts names ${slug} and no module exists`);
+  }
+}
+
+/** The text of a top-level `  key: [ … ],` / `  key: { … },` in a summary. */
+const listOf = (src, key, open = "[", close = "]") => {
+  const start = src.indexOf(`\n  ${key}: ${open}\n`);
+  if (start < 0) return null;
+  const end = src.indexOf(`\n  ${close},`, start);
+  return end < 0 ? null : src.slice(start, end);
+};
+/** The object literals directly inside such a list — four spaces of indent. */
+const itemsOf = (list) =>
+  list ? list.split(/\n    \{\n/).slice(1).map((e) => e.split(/\n    \},?/)[0]) : [];
+const each = (text, re) => [...(text ?? "").matchAll(re)].map((m) => m[1]);
+
+/* The vocabulary the decision page can label. A `Citation.type` outside it
+   falls through to the raw key and prints "official/court" at the reader. */
+const casePage = readFileSync("src/app/[locale]/cases/[slug]/page.tsx", "utf8");
+const typeBlock = casePage.slice(
+  casePage.indexOf("const TYPE_LABEL"),
+  casePage.indexOf("\n};", casePage.indexOf("const TYPE_LABEL")),
+);
+const CITATION_TYPES = new Set(each(typeBlock, /^\s*"([^"]+)":/gm));
+
+/* Where each seat on the map is. `mapFocus.forumKey` picks the marker a
+   decision page draws its seat on, and the label beside it comes from
+   `forum.seat` — so the two have to name the same city. */
+const mapSrc = readFileSync("src/content/map.ts", "utf8");
+const cityOfCourt = new Map(
+  [...mapSrc.matchAll(/key: "([a-z]+)",[\s\S]{0,1200}?city: \{ uk: "([^"]+)"/g)].map(
+    (m) => [m[1], m[2]],
+  ),
+);
+const markers = new Set(
+  Object.keys(JSON.parse(readFileSync("src/content/europe-map.json", "utf8")).markers),
+);
+
+for (const [slug, src] of summarySrc) {
+  /* 7. a related card that names a decision must lead to it. Every registry
+        row is addressable, so "#registry" — the fallback from before that was
+        true — now lands a reader on the home page's preview of all 39. */
+  for (const href of each(listOf(src, "related"), /^\s*href: "([^"]+)"/gm)) {
+    const m = /^\/cases\/([a-z0-9-]+)$/.exec(href);
+    if (!m) flag(slug, "related-not-a-case", `related href "${href}" is not /cases/<slug|id>`);
+    else if (!summaryKeys.includes(m[1]) && !ids.has(m[1]))
+      flag(slug, "related-dead-end", `related href "${href}" names neither a write-up nor a row`);
+  }
+
+  /* 8. a citation kind the page cannot name is printed raw to the reader. */
+  for (const t of each(listOf(src, "sources"), /^\s*type: "([^"]+)"/gm))
+    if (!CITATION_TYPES.has(t))
+      flag(slug, "citation-type-unlabelled", `source type "${t}" has no entry in TYPE_LABEL`);
+
+  /* 9. the seat drawn and the seat named have to be one city. echr's map
+        printed «Страсбург» over The Hague's point because `forumKey` was
+        left at the default. */
+  const forumKey = /\n  mapFocus: \{ forumKey: "([^"]+)"/.exec(src)?.[1] ?? "hague";
+  const seat = /\n  forum: \{[\s\S]*?seat: \{ uk: "([^"]+)"/.exec(src)?.[1];
+  if (!markers.has(forumKey))
+    flag(slug, "seat-no-marker", `mapFocus.forumKey "${forumKey}" is not a point in europe-map.json`);
+  else if (seat && cityOfCourt.get(forumKey) !== seat)
+    flag(
+      slug,
+      "seat-mismatch",
+      `forum.seat is «${seat}» but mapFocus draws it on ${forumKey} («${cityOfCourt.get(forumKey) ?? "?"}»)`,
+    );
+
+  /* 10. every dated event needs its sort key. Without `iso` the chronology
+         falls back to authoring order, the year rail does not draw at all,
+         and the `#ev-<iso>` anchor the verdict matrix links to is absent. */
+  const events = itemsOf(listOf(src, "timeline"));
+  const isos = new Set();
+  for (const e of events) {
+    const iso = /^\s*iso: "(\d{4}-\d{2}-\d{2})"/m.exec(e)?.[1];
+    const date = /date: \{ uk: "([^"]*)", en: "([^"]*)" \}/.exec(e);
+    const label = date ? date[2] : (/^\s*iso: "([^"]*)"/m.exec(e)?.[1] ?? "?");
+    if (!iso) {
+      flag(slug, "event-no-iso", `chronology entry «${label}» carries no iso sort key`);
+      continue;
+    }
+    isos.add(iso);
+    /* 11. and the key has to agree with the date printed above it. A visible
+           date may be a range — «2014–2022», "Nov 2013 – Feb 2014" — and the
+           key is then a moment inside it, so the test is containment and not
+           equality. */
+    if (date) {
+      const years = [...`${date[1]} ${date[2]}`.matchAll(/\b(\d{4})\b/g)].map((m) =>
+        Number(m[1]),
+      );
+      const y = Number(iso.slice(0, 4));
+      if (years.length && (y < Math.min(...years) || y > Math.max(...years)))
+        flag(slug, "iso-vs-date", `entry «${date[2]}» sorts as ${iso}`);
+    }
+  }
+
+  /* 12. the verdict matrix prints a track on the row that opens a run of it
+         and leaves it empty underneath, so a track split across the array
+         renders as two groups with the same name. The grouping is authoring
+         order; nothing sorts it. */
+  const tracks = each(listOf(src, "verdicts"), /^\s{6}track: "([^"]+)"/gm);
+  const opened = new Set();
+  tracks.forEach((t, i) => {
+    if (opened.has(t) && tracks[i - 1] !== t)
+      flag(slug, "verdict-track-split", `track "${t}" is authored in two runs`);
+    opened.add(t);
+  });
+
+  /* 13. a track keyed to a day links down to that day in the chronology, and
+         the join is made only where both sides carry it. A track whose day is
+         not in the chronology loses the link silently. */
+  for (const t of new Set(tracks)) {
+    const d = /^(\d{2})\.(\d{2})\.(\d{4})$/.exec(t);
+    if (d && !isos.has(`${d[3]}-${d[2]}-${d[1]}`))
+      flag(slug, "track-no-event", `verdict track "${t}" has no chronology entry to link to`);
+  }
+
+  /* 14. the row and the write-up each transcribe the document's length. */
+  const jPages = /\n  judgment: \{[\s\S]*?\n    pages: (\d+),/.exec(src)?.[1];
+  const rPages = rowPages.get(slug);
+  if (jPages != null && rPages != null && Number(jPages) !== rPages)
+    flag(slug, "pages-disagree", `registry says ${rPages} pages, judgment.pages says ${jPages}`);
+
+  /* 15. a proceeding cannot be decided before the year it was commenced in. */
+  const jDate = /\n  judgment: \{[\s\S]*?\n    date: "(\d{4})-\d{2}-\d{2}",/.exec(src)?.[1];
+  const rYear = rowYear.get(slug);
+  if (jDate && rYear != null && Number(jDate) < rYear)
+    flag(slug, "decided-before-filed", `row year ${rYear}, judgment ${jDate}`);
+}
+
+/* 16. the library's search offers a hit as a link into a band of a decision
+       page, captioned with that band's name. The two lists are separate
+       literals in two files, and they drifted: `#handbook` was still offered
+       as «Що варто знати» / "What to know" after the band it lands on was
+       retitled «Хто є хто» / "Who's who". */
+{
+  const pairs = {
+    overview: "overview",
+    chronology: "timeline",
+    machinery: "navAnatomy",
+    rulings: "navRulings",
+    measures: "provMeasures",
+    handbook: "navHandbook",
+    questions: "faqH",
+    fulltext: "navFulltext",
+  };
+  const label = (src, key) => {
+    const m = new RegExp(
+      `^\\s*${key}: \\{ uk: "([^"]*)", en: "([^"]*)" \\},$`,
+      "m",
+    ).exec(src);
+    return m ? `${m[1]} / ${m[2]}` : null;
+  };
+  const registrySrc = readFileSync("src/app/[locale]/registry/page.tsx", "utf8");
+  const sectionBlock = registrySrc.slice(
+    registrySrc.indexOf("\n  section: {"),
+    registrySrc.indexOf("\n  },", registrySrc.indexOf("\n  section: {")),
+  );
+  for (const [id, key] of Object.entries(pairs)) {
+    const said = label(sectionBlock, id);
+    const band = label(casePage, key);
+    if (said && band && said !== band)
+      flag(
+        id,
+        "section-label-drift",
+        `the library calls #${id} «${said}»; the decision page heads it «${band}»`,
+      );
+  }
+}
+
+console.log(
+  `checked ${ids.size} records, ${summarySrc.size} write-ups, ` +
+    `${slugs.size} links between them\n`,
+);
 if (!issues.length) {
   console.log("no internal contradictions found.");
 } else {
