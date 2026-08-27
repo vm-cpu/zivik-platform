@@ -380,90 +380,164 @@
   font-weight: 700;
 }
 
-/* verdict scorecard */
+/* ---- the dispositif -------------------------------------------------------
+   "What the Court found" is the one instrument on this page that carries the
+   holding, and it was standing on the same paper2 as the docket facts and the
+   headline figures above it — a third grey strip in a stack of grey strips.
+   It gets its own ground now. --brand-night against the band is 16.97:1, so
+   the panel is an object on the page rather than another section of it, and it
+   is the same ground the masthead uses, which is where a reader has already
+   seen this page speak in its own voice.
+
+   It is an island and stays one. DESIGN.md: two dark grounds in a row read as
+   one field whatever values they take, so a dark scene gets paper on both
+   sides. This one is inset in a paper band — the KPI strip is above it and
+   either the takings grid, the money bars or the band's own 34–60px of bottom
+   padding is below — so nothing dark ever touches it. */
+.casepage .vpanel {
+  background: var(--bg);
+  color: var(--cream);
+  border-radius: var(--r-md);
+  padding: clamp(24px, 3vw, 40px);
+  box-shadow: var(--shadow-md);
+}
+
 .casepage .score-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-3);
-  margin-bottom: var(--space-1);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--rule);
 }
 .casepage .score-head h2 {
   margin: 0;
   font-family: var(--brand-font-display), serif;
   font-size: var(--t-h3);
   font-weight: 700;
-  color: var(--ink);
+  /* 15.53:1 on --brand-night. */
+  color: var(--cream);
 }
 .casepage .score-count {
   font: 600 var(--t-sm) var(--brand-font-body);
-  color: var(--ink2);
+  /* 9.06:1. */
+  color: var(--muted);
 }
+/* Red is a finding of breach and nothing else, so the figure only wears it
+   when that is what it counts. A conviction is a breach found against a
+   person; relief granted is not, and an award the claimant won outright used
+   to print "6 upheld" in the colour this system reserves for a violation. On
+   paper that was --brand-red, dark enough to pass for emphasis. Here it would
+   be --brand-breach, and it would read as exactly what it is not. */
 .casepage .score-count b {
-  color: var(--pred);
   font-weight: 700;
 }
-/* the verdict matrix ---------------------------------------------------------
-   Twelve articles, each with what was claimed under it and what the Court did
-   with the claim. It ran as `1fr auto` across the whole rail: the claim at the
-   left margin, the outcome pinned to the right edge, and on a 1180 rail that
-   left something like 900px of nothing between a sentence and the word that
-   answers it. Two failures at once — the eye loses the row on the way across,
-   and the outcomes, which are the point of the block, sat in a column so far
-   from the text that reading them meant reading the block twice.
+/* 5.61:1. */
+.casepage .score-count[data-of="breach"] b {
+  color: var(--red);
+}
+/* 9.98:1. */
+.casepage .score-count[data-of="relief"] b {
+  color: var(--gold);
+}
 
-   Rebuilt as a ledger, the same idiom as the case card, and with the outcome
-   moved to the front. Putting it in a fixed column after the claim lined the
-   dots up but did not close the gap: a claim column is as wide as its longest
-   claim, so a short one still left half a screen between the sentence and the
-   word that answers it. In the first column there is no gap to leave — the
-   outcomes are a rail down the left edge, and every claim starts where its own
-   outcome ends. Below the articles this was always a table of claims and their
-   dispositions; now it reads like one. */
+/* the verdict matrix ---------------------------------------------------------
+   One line per claim: the track it was brought under, how it was disposed of,
+   and the claim itself. Two things were wrong with the ledger this replaces.
+
+   The track was a full-width heading over each run of claims, which is right
+   for a dispositif where an article carries several of them and wasteful where
+   it carries one. Eighteen of the twenty-eight tracks in this archive carry
+   one, and on three of the eight decisions — the ECtHR judgment, MH17 and the
+   ICC warrants — every single track does: heading, hairline, one row, 150px of
+   air, eight times over, three screens to say that Ukraine won on all eight
+   counts. The track is a cell now. It prints on the row that opens a run and
+   the cell is left empty under it, so one claim costs one line and four claims
+   still read as one group.
+
+   And the outcomes, which are the point of the block, are still a rail the eye
+   runs down — the column moved right by the width of the track, not away from
+   the claims. Each claim still starts where its own outcome ends.
+
+   The claim column is capped rather than fluid. At 1fr it ran 788px on the
+   rail, which is 95 characters of Fira Sans at 14px; 42rem is 81, the measure
+   this system sets for prose. */
 .casepage .verdicts {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-width: 60rem;
 }
+/* The fallback shape, and the one every row falls back to below the panel's
+   width: each row is its own grid on columns wide enough for the longest label
+   any of these eight dispositifs could hold. Guessed columns, in other words —
+   which is the price of lining eight separate grids up. */
 .casepage .verdicts li {
   display: grid;
-  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 12rem) minmax(0, 10rem) minmax(0, 42rem);
   align-items: baseline;
-  gap: var(--space-2) var(--space-6);
-  padding: var(--space-4) 0;
-  border-bottom: 1px solid var(--prule);
+  gap: var(--space-2) var(--space-5);
+  padding-bottom: var(--space-3);
 }
-/* The article the claims below it were brought under. It is a heading for the
-   run that follows, so it gets air above and a hairline under it rather than
-   sitting flush against the first claim as one more row. */
+/* With subgrid the guess goes away. The list owns the columns and every row
+   borrows them, so track and outcome are exactly as wide as the widest label
+   this decision actually contains — 126px of track on the ECtHR judgment
+   rather than a 192px column sized for the ICC's dated waves, and 106px of
+   outcome rather than 160. Its claims start 150px earlier because of it, and
+   dead ground between a claim and the word that answers it is the failure the
+   previous two versions of this block were both corrected for.
+
+   The 14rem cap is the ICC's longest wave label, «Перша хвиля · 17 березня
+   2023», at 211px: past that the column would be sized by one page's dates for
+   all eight. Anything longer wraps inside the cell rather than widening it. */
+@supports (grid-template-columns: subgrid) {
+  .casepage .verdicts {
+    display: grid;
+    grid-template-columns: fit-content(14rem) max-content minmax(0, 42rem);
+  }
+  .casepage .verdicts li {
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
+  }
+}
+/* Runs are separated by rhythm, not by a stronger hairline: --rule is 1.28:1
+   on this ground and --rule-soft 1.18:1, and one tenth of a contrast step
+   cannot carry a grouping. A rule plus 20px of air can. */
+.casepage .verdicts li[data-run="start"] {
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--rule);
+}
+.casepage .verdicts li:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.casepage .verdicts li:last-child {
+  padding-bottom: 0;
+}
+
+/* The article, treaty, stage or defendant. Mono, because on this site mono is
+   the machinery of a judgment — dockets, dates, paragraph refs, track labels. */
 .casepage .v-track,
 .casepage .v-track-link {
-  grid-column: 1 / -1;
-  margin-top: var(--space-6);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--pgold);
+  grid-column: 1;
   font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.06em;
+  line-height: 1.45;
   text-transform: uppercase;
-  color: var(--pgold);
+  /* 9.98:1. */
+  color: var(--gold);
   text-decoration: none;
 }
-.casepage .verdicts li:first-child .v-track,
-.casepage .verdicts li:first-child .v-track-link {
-  margin-top: 0;
-}
+/* 15.53:1 — the link brightens rather than changing hue, so the hover does not
+   have to be read as a change of meaning. */
 .casepage .v-track-link:hover {
-  color: var(--ink);
-}
-.casepage .v-claim {
-  font-size: var(--t-ui);
-  line-height: 1.5;
-  color: var(--ink);
-  text-wrap: pretty;
+  color: var(--cream);
 }
 .casepage .v-out {
+  grid-column: 2;
   display: inline-flex;
   align-items: baseline;
   gap: var(--space-2);
@@ -471,13 +545,13 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-/* Stacked below the ledger's width: an 11rem column beside a claim cannot hold
-   two words of Ukrainian at phone width without hyphenating both. */
-@media (max-width: 640px) {
-  .casepage .verdicts li {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2);
-  }
+.casepage .v-claim {
+  grid-column: 3;
+  font-size: var(--t-ui);
+  line-height: 1.5;
+  /* 15.53:1. */
+  color: var(--cream);
+  text-wrap: pretty;
 }
 .casepage .v-out::before {
   content: "";
@@ -489,39 +563,118 @@
      the label rather than beside it; this lifts it onto the x-height. */
   transform: translateY(-2px);
 }
+/* The mark is never the only carrier: the word is always there, and filled /
+   hollow / dashed separates the three families for a reader who cannot use the
+   colour at all. Every figure below is measured on --brand-night. */
+/* 5.61:1. */
 .casepage .v-out[data-o="violation"] {
-  color: var(--pred);
+  color: var(--red);
 }
 .casepage .v-out[data-o="violation"]::before {
-  background: var(--pred);
+  background: var(--red);
 }
+/* 9.06:1. */
 .casepage .v-out[data-o="no-violation"] {
-  color: var(--ink2);
+  color: var(--muted);
 }
 .casepage .v-out[data-o="no-violation"]::before {
-  border: 1.5px solid var(--ink2);
+  border: 1.5px solid var(--muted);
 }
 /* An arbitral dispositif also grants, rejects and leaves things undecided.
-   These are outcomes, not breaches, so they run on gold — never red. */
+   These are outcomes, not breaches, so they run on gold — never red. 9.98:1. */
 .casepage .v-out[data-o="granted"] {
-  color: var(--pgold);
+  color: var(--gold);
 }
 .casepage .v-out[data-o="granted"]::before {
-  background: var(--pgold);
+  background: var(--gold);
 }
-/* Rejected is not a breach and not an award: neutral ink, hollow ring. On the
-   dark ground it was --gold-dim beside --gold, two golds 1.4:1 apart. */
+/* Rejected is not a breach and not an award: neutral, hollow ring. It never
+   appears on the same page as no-violation, and the word tells them apart
+   where a mark could not. 9.06:1. */
 .casepage .v-out[data-o="rejected"] {
-  color: var(--ink2);
+  color: var(--muted);
 }
 .casepage .v-out[data-o="rejected"]::before {
-  border: 1.5px solid var(--ink2);
+  border: 1.5px solid var(--muted);
 }
+/* Undecided steps back a further tone and takes the dashed ring: it sits
+   beside rejected on three of these pages and the two must not read alike.
+   5.24:1. */
 .casepage .v-out[data-o="not-decided"] {
-  color: var(--ink2);
+  color: var(--faint);
 }
 .casepage .v-out[data-o="not-decided"]::before {
-  border: 1.5px dashed var(--ink2);
+  border: 1.5px dashed var(--faint);
+}
+
+/* The reveal.
+
+   Rows arrive in order, 45ms apart, the first time the block is scrolled into
+   view — a dispositif is read out item by item and this is that gesture, not
+   an entrance. It is also the only way to see, before reading a word, that the
+   ECtHR outcome column is eight of the same finding.
+
+   The hidden state lives inside this query and the visible state is the base
+   rule, so every way this can fail leaves the rows on the page:
+     - scripting off, or a browser that does not know the feature — the query
+       never matches and nothing is ever hidden. The other way round, hiding by
+       default and unhiding on mount, costs a flash of the whole block on every
+       load, because an effect runs after the first paint.
+     - reduced motion — excluded here, and globals.css collapses transitions to
+       0.01ms anyway.
+     - the observer never speaking — VerdictMatrix's two-second failsafe.
+   The per-row delay is inline, from the component. */
+@media screen and (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .casepage .verdicts li {
+    transition:
+      opacity var(--dur-slow) var(--ease-out),
+      transform var(--dur-slow) var(--ease-out);
+  }
+  .casepage .verdicts[data-shown="no"] li {
+    opacity: 0;
+    /* 6px, not a rise the reader watches — enough to give the row a direction
+       and nothing more. */
+    transform: translateY(6px);
+  }
+}
+
+/* Below the panel's width the three columns cannot hold: a 10rem outcome
+   column beside a 12rem track leaves a claim column narrower than the words in
+   it. The track goes over the row it opens — as a caption, not the heading
+   this block used to build — and outcome and claim keep their pairing.
+
+   The list stops being a grid here, so the rows stop being subgrids and have
+   to be given columns of their own again: `subgrid` on an item whose parent is
+   not a grid computes to `none`, and every cell would pile into one column. */
+@media (max-width: 900px) {
+  .casepage .verdicts {
+    display: block;
+  }
+  .casepage .verdicts li {
+    grid-column: auto;
+    grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
+  }
+  .casepage .v-track,
+  .casepage .v-track-link {
+    grid-column: 1 / -1;
+  }
+  .casepage .v-out {
+    grid-column: 1;
+  }
+  .casepage .v-claim {
+    grid-column: 2;
+  }
+}
+/* And at phone width even that fails: a 10rem column cannot set «НЕ
+   РОЗГЛЯДАЛОСЯ» without hyphenating it. One column, three lines. */
+@media (max-width: 560px) {
+  .casepage .verdicts li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .casepage .v-out,
+  .casepage .v-claim {
+    grid-column: 1;
+  }
 }
 
 /* timeline */

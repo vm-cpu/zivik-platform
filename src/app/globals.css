@@ -307,8 +307,17 @@ body {
   outline: none;
 }
 
-/* On dark scenes the cherry ring disappears — use the lamp gold. */
-:where(.lamp, .court, .casepage .mast, .casepage .dash)
+/* On dark scenes the cherry ring disappears — use the lamp gold: --brand-red
+   is 1.81:1 on --brand-night and --brand-gold-lit is 9.98:1.
+
+   `.casepage .dash` used to be in this list and no longer belongs in it. The
+   dashboard was a dark band; it is paper now, and the exchange never happened,
+   so every control still standing on it — the money bars' segment buttons on
+   Oschadbank and DTEK — wore a gold ring at 1.70:1 on --brand-paper-2, which
+   is no ring at all for the only people who need one. The one dark thing left
+   inside that band is the dispositif panel, so it takes the gold and the band
+   goes back to cherry at 9.36:1. */
+:where(.lamp, .court, .casepage .mast, .casepage .vpanel)
   :where(a, button, summary, [tabindex]):focus-visible {
   outline-color: var(--brand-gold-lit);
 }
