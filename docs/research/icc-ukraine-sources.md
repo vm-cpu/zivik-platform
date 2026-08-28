@@ -67,6 +67,11 @@ presented as a finding of the Court unless the ICC itself is the source.
   - https://www.asil.org/ILIB/icc-finds-mongolia-violated-rome-statute-failing-arrest-putin
   - https://www.ejiltalk.org/the-iccs-turn-to-cynical-solipsism-the-ptc-iis-finding-of-mongolias-non-compliance-in-the-case-against-putin/
 - Tajikistan non-arrest (Oct 2025): https://www.coalitionfortheicc.org/news/tajikistans-failure-arrest-vladimir-putin-undermines-fight-against-impunity
+- Putin visited Tajikistan (State Party) 9 Oct 2025 for the CIS summit; on 19 Mar 2026 Pre-Trial Chamber II made the SECOND article 87(7) finding in this situation and referred it to the Assembly of States Parties through the Presidency. This is the finding the verdict matrix was missing while the prose, the chronology and the takings tile all counted two.
+  - ICC court record, ICC-01/22-143, "Finding under article 87(7) of the Rome Statute on the non-compliance by Tajikistan with the request by the Court to cooperate in the arrest and surrender of Vladimir Vladimirovich Putin and referral to the Assembly of States Parties", 19 March 2026: https://www.icc-cpi.int/court-record/icc-01/22-143
+  - Decision PDF (header reads "No. ICC-01/22 … 19 March 2026"): https://www.icc-cpi.int/sites/default/files/CourtRecords/0902ebd180e05738.pdf
+  - Presidency referral to the Assembly, 7 May 2026, under regulation 109(4) of the Regulations of the Court: https://www.icc-cpi.int/news/referral-presidency-international-criminal-court-tajikistans-non-compliance-assembly-states
+  - icc-cpi.int is Cloudflare-gated to plain clients; the finding's date, document number, article and referral route were read off the two secondary reports of the Presidency referral, which agree on all four: https://www.miragenews.com/icc-refers-tajikistan-non-compliance-to-state-1669391/ and https://zmina.info/en/news-en/international-criminal-court-declares-tajikistans-failure-to-execute-arrest-warrant-for-putin/
 - South Africa BRICS 2023 — Putin did not travel: https://www.ejiltalk.org/the-putin-south-africa-arrest-warrant-saga-a-tale-of-the-shrinking-world-of-an-accused-war-criminal/
 
 ## Russia's retaliation

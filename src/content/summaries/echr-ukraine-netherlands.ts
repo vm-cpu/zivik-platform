@@ -270,6 +270,31 @@ export const echrUkraineNetherlands: DecisionSummary = {
       label: { uk: "загиблих на борту MH17", en: "people killed aboard MH17" },
       em: true,
     },
+    /* Twelve, counted from the judgment's own operative part (HUDOC 001-244292,
+       pp. 493-497, after § 1652) rather than from the verbatim list below —
+       which is where the audit's rival "11" comes from, and which is wrong in
+       two directions at once. The distinct Convention and Protocol articles the
+       Court found breached are Articles 2 (points 5, 6, 11, 12), 3 (8, 11, 13,
+       22), 4 § 2 (14), 5 (15, 22), 8 (11, 16, 20, 22), 9 (17), 10 (18), 11
+       (19), 13 (7, 24), 14 (23), and Articles 1 (11, 20) and 2 (21) of Protocol
+       No. 1. That is twelve.
+
+       The two directions: the verbatim's list omits Article 11 (freedom of
+       assembly, operative point 19) and Article 13 (effective remedy, points 7
+       and 24) altogether, and it adds Article 2 of Protocol No. 4, under which
+       the Court found NO violation — points 11 and 22 both say it was "not
+       necessary to examine separately" the P4-2 complaint. Drop P4-2 and add
+       the two missing articles and the eleven becomes twelve.
+
+       And the deliberate exclusion: operative point 25 holds that Russia failed
+       to comply with Article 38, the obligation to furnish the Court with
+       facilities to establish the facts. It is a breach, and it is a thirteenth
+       article, but it is an obligation owed to the Court about the conduct of
+       the proceedings, not one of the Convention rights the respondent violated
+       against people. This tile counts the rights; the count is twelve. A page
+       that wanted thirteen would have to say "articles of the Convention and
+       its Protocols breached, Article 38 included", which is not what a reader
+       of this tile's own label hears. */
     {
       value: "12",
       label: { uk: "статей Конвенції і протоколів порушено", en: "Convention and Protocol articles breached" },
@@ -457,11 +482,49 @@ export const echrUkraineNetherlands: DecisionSummary = {
       claim: { uk: "Викрадення, незаконні арешти й затримання", en: "Abductions, unlawful arrests and detention" },
       outcome: "violation",
     },
+    /* Article 8 stood on this page only inside the children row, where it is
+       one of three articles in a single sentence — so the finding that carries
+       it in its own right, the administrative practice of forced transfer,
+       displacement, filtration and the destruction and looting of homes
+       (operative points 11, 16 and 20), had no row at all. */
+    {
+      track: "Art. 8",
+      claim: {
+        uk: "Примусове переміщення, фільтрація, знищення і пограбування житла",
+        en: "Forced transfer and displacement, filtration, the destruction and looting of homes",
+      },
+      outcome: "violation",
+    },
     {
       track: "Art. 9–10",
       claim: {
         uk: "Переслідування релігійних громад; журналістів і мовників",
         en: "Persecution of religious congregations; of journalists and broadcasters",
+      },
+      outcome: "violation",
+    },
+    /* Articles 11 and 13 were missing from the matrix, which is most of why
+       the twelve in the stat tile could not be counted off this page. Both are
+       in the operative part: point 19, an administrative practice of
+       interference with peaceful assembly in violation of Article 11; and
+       points 7 and 24, Article 13 taken with Article 2 for MH17 and taken with
+       Articles 2, 3, 4 § 2, 5, 8, 9, 10, 11 and 14 and Articles 1 and 2 of
+       Protocol No. 1 for the practices. Neither appears in the verbatim
+       findings list this matrix otherwise restates, so both are taken from the
+       judgment itself (HUDOC 001-244292, pp. 495-496). */
+    {
+      track: "Art. 11",
+      claim: {
+        uk: "Втручання у свободу мирних зібрань",
+        en: "Interference with the right to peaceful assembly",
+      },
+      outcome: "violation",
+    },
+    {
+      track: "Art. 13",
+      claim: {
+        uk: "Відсутність ефективного засобу юридичного захисту — щодо MH17 і щодо всіх адміністративних практик",
+        en: "No effective remedy — both for MH17 and for every administrative practice found",
       },
       outcome: "violation",
     },
@@ -481,6 +544,23 @@ export const echrUkraineNetherlands: DecisionSummary = {
       },
       outcome: "violation",
     },
+    /* CHECKED, AND LEFT AS IT STANDS. The verbatim findings block says this
+       finding was "in breach of Articles 3, 5 and 8 of the Convention and
+       Article 2 of Protocol No. 4 … (by majority)", and this row says only
+       Articles 3, 5 and 8, unanimously. The row is the one that matches the
+       Court. Operative point 22 reads, in full: "Holds, unanimously, that there
+       has been an administrative practice of the transfer to Russia and, in
+       many cases, the adoption there of Ukrainian children in violation of
+       Articles 3, 5 and 8 of the Convention and that it is not necessary to
+       examine separately the complaint under Article 2 of Protocol No. 4 to the
+       Convention" (HUDOC 001-244292, p. 496). So P4-2 was declined, not found,
+       and the vote was unanimous rather than by a majority — the verbatim
+       overstates the holding on both counts.
+
+       The verbatim is not corrected: it is the source document's tab ingested
+       unedited, quirks kept, and this is one of the quirks. It is recorded here
+       and in docs/research/echr-ukraine-netherlands-sources.md so that the next
+       ingest of that tab does not quietly "fix" this row to match it. */
     {
       track: "Діти · Children",
       trackLabel: { uk: "Депортація дітей", en: "Deportation of children" },

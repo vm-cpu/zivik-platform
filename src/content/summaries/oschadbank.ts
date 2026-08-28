@@ -188,9 +188,22 @@ export const oschadbank: DecisionSummary = {
   faq: [
     {
       q: { uk: "Чи отримав Ощадбанк гроші?", en: "Has Oschadbank been paid?" },
+      /* The «≈6% основної суми» that used to close the first sentence is gone
+         from all three places it was said — here, the April 2025 chronology
+         entry and the `amounts.note` — because nothing supports it. The
+         reporting of the seizure gives the two figures and no ratio: Interfax-
+         Ukraine, "Ukraine's Oschadbank secures EUR 87 mln asset freeze in
+         France over Crimean losses" (24 April 2025), carries «EUR 87 million»
+         and «over $1.11 billion in damages» and stops there, as do the
+         Ukrainian reports of the same announcement. The arithmetic does not
+         rescue it either: 87 000 000 against the 1 111 300 729 principal is
+         7,8% before any exchange rate, and ~5,8% of the accrued «> $1,5 млрд».
+         A share across two currencies needs a rate and a date this page has no
+         source for, so the two figures stand on their own rather than being
+         hedged or recomputed. See the note in `amounts.figures` below. */
       a: {
-        uk: "Добровільно — ні. Стягнення йде через арешт російських державних активів за кордоном: у квітні 2025 року у Франції заарештовано майна приблизно на 87 млн євро — це близько 6% від основної суми. Процедура визнання рішення у США триває.",
-        en: "Not voluntarily. Recovery runs through attaching Russian state assets abroad: in April 2025 about EUR 87 million of property was seized in France, roughly 6% of the principal. Confirmation proceedings in the United States are pending.",
+        uk: "Добровільно — ні. Стягнення йде через арешт російських державних активів за кордоном: у квітні 2025 року у Франції заарештовано майна приблизно на 87 млн євро. Процедура визнання рішення у США триває.",
+        en: "Not voluntarily. Recovery runs through attaching Russian state assets abroad: in April 2025 about EUR 87 million of property was seized in France. Confirmation proceedings in the United States are pending.",
       },
     },
     {
@@ -514,9 +527,12 @@ export const oschadbank: DecisionSummary = {
         uk: "У Франції арештовано російського майна на €87 млн",
         en: "EUR 87 million of Russian property seized in France",
       },
+      /* «близько 6% основної суми» removed here too — see the FAQ above. What
+         is left is what the reporting says: this is the first attachment of
+         any size under the award. */
       note: {
-        uk: "Перше відчутне стягнення за рішенням — близько 6% основної суми.",
-        en: "The first substantial recovery under the award — about 6% of the principal.",
+        uk: "Перше відчутне стягнення за рішенням.",
+        en: "The first substantial recovery under the award.",
       },
     },
     {
@@ -783,9 +799,11 @@ export const oschadbank: DecisionSummary = {
   },
 
   amounts: {
+    /* The third and last statement of «≈6% основної суми» — see the FAQ. The
+       sentence it closed carried the point on its own. */
     note: {
-      uk: "Росія не сплатила рішення добровільно, тому стягнення відбувається через арешт її державних активів за кордоном. €87 млн, заарештовані у Франції, — це приблизно 6% основної суми.",
-      en: "Russia has not paid voluntarily, so recovery proceeds by attaching Russian state assets abroad. The EUR 87 million seized in France is roughly 6% of the principal.",
+      uk: "Росія не сплатила рішення добровільно, тому стягнення відбувається через арешт її державних активів за кордоном.",
+      en: "Russia has not paid voluntarily, so recovery proceeds by attaching Russian state assets abroad.",
     },
     // NOTATION. Every `display` here is a pair, because Ukrainian and English
     // group and point numbers differently and this card printed one notation
@@ -865,14 +883,18 @@ export const oschadbank: DecisionSummary = {
         // magnitude on a dollar bar, which is a comparison this card cannot
         // make, and for a while it printed a percentage of it.
         //
-        // FOR THE RESEARCHERS — the "≈ 6% of the principal" said here, in the
-        // note above this block and in the FAQ does not come out of these
-        // numbers. 87 000 000 is 7,8% of the 1 111 300 729 principal. It is
-        // ~5,8% of the "> $1,5 млрд" accrued figure in the bar above, so the
-        // six per cent looks like a share of the award WITH interest rather
-        // than of the principal — but the source for the 6% is not recorded
-        // here, and the currencies are being mixed either way. Both readings
-        // are set out rather than one being chosen.
+        // FOR THE RESEARCHERS — the "≈ 6% of the principal" that this bar, the
+        // note above this block and the FAQ all used to state is now off the
+        // page. It never came out of these numbers: 87 000 000 is 7,8% of the
+        // 1 111 300 729 principal and ~5,8% of the "> $1,5 млрд" accrued
+        // figure in the bar above, so the six per cent read like a share of the
+        // award WITH interest rather than of the principal — but no source on
+        // this page or in the reporting of the seizure states any ratio, and
+        // the currencies are being mixed on either reading. Both readings are
+        // recorded here so a later editor can see what was checked; neither is
+        // printed, because a claim with no source is removed, not hedged, and
+        // substituting our own division would be the same error at a different
+        // number.
         display: { uk: "≈ €87 000 000", en: "≈ €87,000,000" },
         amount: 87000000,
         currency: "EUR",
