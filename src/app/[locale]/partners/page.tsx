@@ -55,17 +55,6 @@ const T = {
     en: "The organisations the NaSvitlo library of decisions works with, and who runs the library itself.",
   },
   site: { uk: "Сайт організації", en: "The organisation’s site" },
-  runH: { uk: "Хто веде бібліотеку", en: "Who runs the library" },
-  /* One sentence, and it states the fact rather than explaining an absence.
-     It used to run to 180 characters saying that the University, the Faculty
-     and the Centre are *not* in the partner list and why — an answer to a
-     question the reader had not asked, written from the list-keeper's side of
-     the page. Owner's decision. The «Про проєкт →» link went with it: /about
-     is already in the main navigation and in the footer. */
-  run: {
-    uk: "Бібліотеку веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
-    en: "The library is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
-  },
   writeH: { uk: "Написати нам", en: "Write to us" },
   write: {
     uk: "Хочете співпрацювати з бібліотекою — напишіть.",
@@ -179,10 +168,10 @@ export default async function PartnersPage({
           })}
         </ul>
 
-        <section className="prt-sec">
-          <h2>{L(T.runH)}</h2>
-          <p className="prt-prose">{L(T.run)}</p>
-        </section>
+        {/* The «Хто веде бібліотеку» section is gone. It was one heading over
+            one sentence naming the Centre — which the footer names under the
+            wordmark on this page and every other, so the section restated the
+            page's own furniture in a bigger type size. */}
 
         <section className="prt-sec">
           <h2>{L(T.writeH)}</h2>

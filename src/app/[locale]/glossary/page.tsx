@@ -42,25 +42,16 @@ import "./glossary.css";
  */
 const T = {
   title: { uk: "Словник", en: "Glossary" },
-  lede: {
-    uk: "Терміни, які трапляються в рішеннях бібліотеки, — з поясненням і посиланням на справу, де термін ужито. Там, де два суди читають слово по-різному, тут стоять обидва прочитання.",
-    en: "The terms that appear in the library's decisions, each explained and traced back to the case that uses it. Where two courts read a word differently, both readings stand here.",
-  },
+  /* No lede and no note. The page had two paragraphs before the first
+     headword — one describing what a glossary is, one warning that the
+     explanations are editorial rather than official. The owner had both
+     removed: an archive that explains itself before it shows anything is
+     spending the reader's attention on its own housekeeping. The entries
+     carry the forum and the case they come from, which is the same claim
+     made where it can be checked. */
   metaDesc: {
     uk: "Словник термінів міжнародного права з рішень проти Росії: пояснення простою мовою і посилання на справу, де термін ужито.",
     en: "A glossary of the international-law terms used in the decisions against Russia, in plain language, each traced to the case that uses it.",
-  },
-  /* What these explanations are, said before the reader uses one.
-     OWNER'S CONCERN, and it is not fully answered by this note. The
-     definitions are drafted rather than taken from an authority: they are not
-     official, they are not verbatim from the decisions, and some of them read
-     more generally than a lawyer would write them. The library invites people
-     to cite it, so a reader who mistakes one of these for an authoritative
-     definition is the library's own doing. Until the entries are rewritten by
-     the editors, the page says what they are. */
-  caveat: {
-    uk: "Пояснення тут — робочі, редакційні. Це не офіційні визначення й не дослівні цитати з рішень: вони переказують, як термін ужито у справі. Покликатися варто на текст суду, посилання на який стоїть біля кожного пояснення.",
-    en: "These explanations are the editors' working notes. They are not official definitions and not verbatim quotations from the decisions: they restate how a term is used in a case. What to cite is the court's own text, linked beside every explanation.",
   },
   back: { uk: "← На головну", en: "← Home" },
   search: { uk: "Термін або слово з пояснення…", en: "A term, or a word from a definition…" },
@@ -179,7 +170,6 @@ export default async function GlossaryPage({
             {pick(T.back, locale)}
           </Link>
           <h1>{pick(T.title, locale)}</h1>
-          <p className="gl-lede">{pick(T.lede, locale)}</p>
           <div className="gl-meta">
             <div className="m gilt">
               <span className="mv">{entries.length}</span>
@@ -190,7 +180,6 @@ export default async function GlossaryPage({
               <span className="ml">{pick(T.mCases, locale)}</span>
             </div>
           </div>
-          <p className="gl-caveat">{pick(T.caveat, locale)}</p>
         </header>
 
         <GlossaryList

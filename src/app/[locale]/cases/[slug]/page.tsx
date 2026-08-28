@@ -207,19 +207,11 @@ const T = {
     uk: "Ці терміни у словнику бібліотеки",
     en: "These terms in the library's glossary",
   },
-  /* The same caveat the glossary page carries under its masthead, in one
-     sentence. A reader who never opens /glossary meets these explanations
-     here, and this is where they would be mistaken for the court's own. */
-  glossaryCaveat: {
-    uk: "Пояснення — робочі, редакційні: не офіційні визначення й не дослівні цитати з рішення.",
-    en: "The explanations are the editors' working notes: not official definitions, and not verbatim quotations from the decision.",
-  },
   navFulltext: { uk: "Самері", en: "Summary" },
   navSources: { uk: "Джерела", en: "Sources" },
   officialH: { uk: "Офіційні документи Суду", en: "Official court documents" },
   commentaryH: { uk: "Дослідження та коментарі", en: "Research and commentary" },
   updated: { uk: "оновлено", en: "updated" },
-  termsInText: { uk: "Терміни в цьому тексті", en: "Terms in this text" },
 } as const;
 
 /**
@@ -1565,7 +1557,6 @@ export default async function CasePage({
             clear={pick(T.termsClear, locale)}
             empty={pick(T.termsEmpty, locale)}
           />
-          <p className="terms-caveat">{pick(T.glossaryCaveat, locale)}</p>
           <p className="terms-more">
             <Link href={`/${locale}/glossary?case=${slug}`}>
               {pick(T.glossaryAll, locale)} →
@@ -1578,16 +1569,13 @@ export default async function CasePage({
       <section className="readzone" data-ground={ground["readzone"]} id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
         <div className="rail">
           <article className="read">
-            {glossary.length > 0 && (
-              <nav className="termchips" aria-label={pick(T.termsInText, locale)}>
-                <span className="termchips-lbl">{pick(T.termsInText, locale)}:</span>
-                {glossary.map((g, i) => (
-                  <a key={i} href={`#term-${i}`}>
-                    {pick(g.term, locale)}
-                  </a>
-                ))}
-              </nav>
-            )}
+            {/* The «Терміни в цьому тексті» chip row is gone. It listed the
+                decision's headwords above the verbatim and linked each to the
+                glossary band below — which made sense while the terms were
+                only defined at the foot of the page. They are marked in the
+                prose itself now, each carrying its definition where the reader
+                meets the word, so the row was a table of contents for
+                something the text already does. */}
         {(() => {
           let h2i = 0;
           /* One set for the whole article, filled as the blocks are walked in

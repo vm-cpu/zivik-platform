@@ -18,9 +18,16 @@ import "./team.css";
 const T = {
   back: { uk: "На головну", en: "Home" },
   title: { uk: "Команда", en: "Team" },
-  lede: {
-    uk: "Проєкт веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
-    en: "The project is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
+  /* No lede. It said who runs the project — which the footer says on this
+     page and on every other one, under the wordmark. A page that opens by
+     repeating its own footer has spent its first line on nothing.
+
+     The description a search result and a link preview need is separate, and
+     is written for that job: it says what this page lists rather than who the
+     library belongs to. */
+  metaDesc: {
+    uk: "Дослідники, редактори й технічна команда бібліотеки рішень «насвітло».",
+    en: "The researchers, editors and technical team behind the nasvitlo library of decisions.",
   },
   contact: { uk: "Написати нам", en: "Write to us" },
   contactH: { uk: "Написати нам", en: "Write to us" },
@@ -46,7 +53,7 @@ export async function generateMetadata({
   if (!isLocale(locale)) return {};
   const dict = await getDictionary(locale);
   const title = pick(T.title, locale);
-  const description = pick(T.lede, locale);
+  const description = pick(T.metaDesc, locale);
   return {
     metadataBase: new URL(siteUrl),
     title,
@@ -96,7 +103,6 @@ export default async function TeamPage({
             ← {L(T.back)}
           </Link>
           <h1>{L(T.title)}</h1>
-          <p className="team-lede">{L(T.lede)}</p>
         </header>
 
         {/* A grid, not a line-per-person list: the portraits are half-body

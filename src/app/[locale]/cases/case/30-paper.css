@@ -235,8 +235,19 @@ The measure has been argued four times, so here is the method that settles
   line-height: 1.62;
   color: var(--ink2);
 }
+/* A link is not a finding.
+
+   Every anchor in the reading text and the source list took --pred, which on
+   this site means a breach — so a bibliography of fourteen citations read as
+   fourteen alerts, and the one colour the page reserves for what a court found
+   against Russia was spent on the act of linking. Ink carries the text and the
+   underline carries the link, which is what a citation list does on paper; the
+   gold under it is the site's own structural colour, so a link still announces
+   itself without borrowing a verdict. */
 .casepage .read a {
-  color: var(--pred);
+  color: var(--ink);
+  text-decoration-color: var(--pgold);
+  text-decoration-thickness: 1px;
   text-underline-offset: 2px;
   word-break: break-word;
 }
@@ -431,12 +442,17 @@ The measure has been argued four times, so here is the method that settles
    so set flat the citation silently took the colour and size of body prose and
    the hierarchy inside it vanished. */
 .casepage .citeas {
+  /* The rail, like the source list it stands under. It was 607px inside a
+     660px reading column while the citations above it ran the full 1180 — so
+     the one block on the page a reader is meant to copy out of was the
+     narrowest thing on it, breaking a case name across four lines. */
+  width: min(var(--measure), calc(100vw - var(--gutter) * 2));
+  max-width: none;
   margin-top: var(--space-12);
   padding: var(--space-5) var(--space-6);
   border: 1px solid var(--prule);
   border-radius: var(--r-md);
   background: var(--card);
-  max-width: 68ch;
 }
 .casepage .citeas .citeas-label {
   margin: 0 0 var(--space-3);

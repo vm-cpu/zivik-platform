@@ -203,17 +203,6 @@ const T = {
   },
   decidedOn: { uk: "рішення", en: "decided" },
   noDate: { uk: "—", en: "—" },
-  /* The one thing a reader could not learn here without having read /about
-     first, and the owner was told as much by readers: the counter says «8
-     опрацьовано» beside «39 проваджень», and nothing on the page said what the
-     other thirty-one are. They are proceedings that are in the library and not
-     yet written up — a row exists, a summary does not. Said in one sentence,
-     directly under the figures it explains, so the table below can be read for
-     what it is. */
-  note: {
-    uk: "Не всі провадження тут уже опрацьовані. Справу вносимо до бібліотеки раніше, ніж пишемо огляд: рядки без огляду позначені в таблиці, і кожен із них веде до документа суду, якщо той у відкритому доступі.",
-    en: "Not every proceeding here has been written up yet. A case enters the library before its summary is written: rows without one are marked in the table, and each still leads to the court's own document where it is public.",
-  },
   mProceedings: { uk: "проваджень", en: "proceedings" },
   /* Twelve bodies, and one of them — EU / Belgium enforcement measures — is
      not a court: `content/institutions.ts` files it as `executive`. "Courts"
@@ -474,7 +463,6 @@ export default async function RegistryPage({
               <span className="ml">{pick(T.mAnalysed, locale)}</span>
             </div>
           </div>
-          <p className="reg-note">{pick(T.note, locale)}</p>
         </header>
 
         {/* No Suspense boundary, and that is the point.

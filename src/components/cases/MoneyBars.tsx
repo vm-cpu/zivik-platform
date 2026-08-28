@@ -69,6 +69,15 @@ export default function MoneyBars({
   const scale = Math.max(...figures.filter(onScale).map((f) => f.amount));
 
   const FLOOR = 1.2;
+
+  /* Below this share of the rail a bar cannot show a split.
+
+     DTEK's costs are 2.6% of the largest sum on its page — about 23px — and
+     inside that the two parts divide 13/87, so the smaller one is three pixels
+     and the weave that distinguishes them is noise at that size. The bar draws
+     solid instead and the key underneath carries both parts with their
+     figures, which is where a reader was going to read them anyway. */
+  const SEG_MIN = 15;
   const pct = (n: number) =>
     n.toLocaleString(locale === "uk" ? "uk-UA" : "en-GB", {
       maximumFractionDigits: n < 1 ? 2 : 1,
@@ -80,6 +89,7 @@ export default function MoneyBars({
         const drawn = onScale(f);
         const width = (f.amount / scale) * 100;
         const floored = drawn && width < FLOOR;
+        const segmented = drawn && width >= SEG_MIN;
         return (
           <div key={i} className="money-row">
             <div className="money-head">
@@ -94,7 +104,8 @@ export default function MoneyBars({
               data-floored={floored ? "yes" : "no"}
               style={{ width: `${Math.max(width, FLOOR)}%` }}
             >
-              {f.parts?.map((p, j) => (
+              {segmented &&
+                f.parts?.map((p, j) => (
                 /* A picture, not a control — the key below is where a reader
                    points. As buttons these duplicated every key entry and,
                    for a part worth 2.6% of its sum, offered a target about
@@ -106,7 +117,7 @@ export default function MoneyBars({
                   data-on={picked === `${i}-${j}` ? "yes" : "no"}
                   style={{ flexGrow: p.amount }}
                 />
-              ))}
+                ))}
             </div>
             )}
 

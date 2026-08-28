@@ -289,7 +289,12 @@ export default function GlossaryList({
                           that makes the pair legible — the same words read
                           differently in a criminal court and in Strasbourg. */}
                       <a className="gl-src" href={s.href}>
-                        <span className="gl-src-forum">{s.forum}</span>
+                        {/* The space is written, not left to the layout. The
+                            two names are separated visually by the flex gap and
+                            by the divider the stylesheet draws, neither of which
+                            is text — so the link announced itself as one run,
+                            «…судСитуація в Україні». */}
+                        <span className="gl-src-forum">{s.forum}</span>{" "}
                         <span className="gl-src-title">{s.caseTitle}</span>
                       </a>
                     </dd>

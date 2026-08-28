@@ -104,7 +104,13 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: var(--faint);
+  /* --muted, not --faint. Every neutral on this palette is warm, and at
+     --faint's lightness (#9c8279, 5.24:1) the warmth stops reading as neutral
+     and starts reading as colour — a salmon that this site's own vocabulary
+     says means a breach, on eleven section links that mean nothing of the
+     kind. --muted is the same family two steps lighter: 9.06:1, and light
+     enough that the hue reads as grey rather than as red. */
+  color: var(--muted);
   text-decoration: none;
   border-block: 2px solid transparent;
   transition: color var(--dur) var(--ease);
@@ -400,8 +406,12 @@
   padding: var(--space-5) var(--space-8) var(--space-5) 0;
   position: relative;
   font-family: var(--brand-font-display), Georgia, serif;
-  font-size: var(--t-lead);
-  line-height: 1.35;
+  /* --t-body, not --t-lead. A question runs the full 1180px rail, and 20px of
+     display serif across that width reads as a section heading rather than as
+     one of six questions in a list. At 16px it is still the largest thing in
+     the band and no longer competes with the band's own title. */
+  font-size: var(--t-body);
+  line-height: 1.4;
   color: var(--ink);
 }
 .casepage .qa-list summary::-webkit-details-marker {
