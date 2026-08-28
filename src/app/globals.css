@@ -269,7 +269,12 @@
      section heading; giving it --t-h1 would have doubled it, and --t-h2 would
      have made a page's title the same size as the headings inside it. */
   --t-mast: clamp(28px, 3.6vw, 44px);
-  --t-h1: clamp(32px, 5vw, 68px);
+  /* The decision page's hero, and its only user. It was clamp(32px, 5vw,
+     68px): on a wide window the title of a judgment ran at 68px over two
+     lines and was the loudest thing in the archive, above the judgment's own
+     words. 50px keeps it a step clear of a section masthead's 44px — the
+     hierarchy is intact — and gives the page back to the text. */
+  --t-h1: clamp(30px, 3.6vw, 50px);
 
   /* Case status — the registry's primary signal, so it has to survive both
      themes. These were hex literals in shared.css and did not follow the

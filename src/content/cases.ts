@@ -11,7 +11,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icj-1",
     institutionId: "icj",
-    name: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation), Judgment, I.C.J. Reports 2024, 31 January 2024",
+    name: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     stage: "concluded",
     outcome: "judgment",
@@ -27,7 +27,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icj-2",
     institutionId: "icj",
-    name: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening), Preliminary Objections, Judgment, I.C.J. Reports 2024, 2 February 2024",
+    name: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening)",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     /* The ICJ issues no arrest warrants. What this row was pointing at is the
        Order on provisional measures of 16 March 2022 (judgment § 10), and in
@@ -237,7 +237,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "itlos-15",
     institutionId: "itlos",
-    name: "Detention of Ukrainian Naval Vessels (ITLOS/PCA) — Case Concerning the Detention of Three Ukrainian Naval Vessels (Ukraine v. Russian Federation), Provisional Measures, Order of 25 May 2019, ITLOS Case No. 26; Dispute Concerning the Detention of Ukrainian Naval Vessels and Servicemen (Ukraine v. The Russian Federation), PCA Case No. 2019-28",
+    name: "Detention of Ukrainian Naval Vessels and Servicemen (Ukraine v. Russian Federation) — ITLOS and PCA arbitration",
     nameUk: "Затримання трьох українських військових кораблів і моряків (ITLOS та арбітраж PCA)",
     type: { uk: "Морське право", en: "Law of the sea" },
     stage: "merits",
@@ -252,7 +252,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icao-16",
     institutionId: "icao",
-    name: "Australia & Netherlands v Russia (ICAO, MH17) Australia and the Netherlands v. Russian Federation, ICAO Council Decision under Article 84 of the Chicago Convention, 12 May 2025 (formal decision document - 30 June 2025)",
+    name: "Australia and the Netherlands v. Russian Federation — ICAO Council, MH17",
     nameUk: "Австралія і Нідерланди проти РФ — Рада ICAO, справа MH17",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     stage: "appeal",
@@ -268,7 +268,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "scc-17",
     institutionId: "scc",
-    name: "National Joint Stock Company «Naftogaz of Ukraine» v. PJSC «Gazprom», SCC Arbitration No. V 2014/078/080 - Gas Sales Arbitration",
+    name: "National Joint Stock Company «Naftogaz of Ukraine» v. PJSC «Gazprom» — Gas Sales Arbitration",
     nameUk: "Нафтогаз України проти Газпрому — арбітраж щодо купівлі-продажу газу",
     type: { uk: "Комерційний арбітраж", en: "Commercial arbitration" },
     stage: "concluded",
@@ -284,7 +284,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "scc-18",
     institutionId: "scc",
-    name: "National Joint Stock Company «Naftogaz of Ukraine» v. PJSC «Gazprom», SCC Arbitration No. V 2014/129 - Gas Transit Arbitration",
+    name: "National Joint Stock Company «Naftogaz of Ukraine» v. PJSC «Gazprom» — Gas Transit Arbitration",
     nameUk: "Нафтогаз України проти Газпрому — арбітраж щодо транзиту газу",
     type: { uk: "Комерційний арбітраж", en: "Commercial arbitration" },
     stage: "concluded",
@@ -300,7 +300,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icc-arb-19",
     institutionId: "icc-arb",
-    name: "National Joint Stock Company «Naftogaz of Ukraine» v. PJSC «Gazprom» (III), ICC Case No. 27245/GL",
+    name: "National Joint Stock Company «Naftogaz of Ukraine» v. PJSC «Gazprom» (III)",
     nameUk: "Нафтогаз України проти Газпрому — третій арбітраж",
     type: { uk: "Комерційний арбітраж", en: "Commercial arbitration" },
     stage: "concluded",
@@ -316,7 +316,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-20",
     institutionId: "pca",
-    name: "NJSC Naftogaz of Ukraine, PJSC State Joint Stock Company Chornomornaftogaz, PJSC Ukrgasvydobuvannya and others v. The Russian Federation, PCA Case No. 2017-16",
+    name: "NJSC Naftogaz of Ukraine, Chornomornaftogaz, Ukrgasvydobuvannya and others v. The Russian Federation",
     nameUk: "Нафтогаз України, Чорноморнафтогаз, Укргазвидобування та інші проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
@@ -340,7 +340,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-21",
     institutionId: "pca",
-    name: "Aeroport Belbek LLC and Mr. Igor Valerievich Kolomoisky v. The Russian Federation, PCA Case No. 2015-07",
+    name: "Aeroport Belbek LLC and Igor Kolomoisky v. The Russian Federation",
     nameUk: "Аеропорт «Бельбек» і Ігор Коломойський проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     outcome: "liability",
@@ -357,7 +357,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-22",
     institutionId: "pca",
-    name: "PJSC CB PrivatBank and Finance Company Finilon LLC v. The Russian Federation, PCA Case No. 2015-21",
+    name: "PJSC CB PrivatBank and Finilon LLC v. The Russian Federation",
     nameUk: "ПриватБанк і «Фінілон» проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     outcome: "liability",
@@ -373,7 +373,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-23",
     institutionId: "pca",
-    name: "JSC Oschadbank v. The Russian Federation, PCA Case No. 2016-14",
+    name: "JSC Oschadbank v. The Russian Federation",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
     /* Both of these have a final award — 26 Nov 2018 and 1 Nov 2023 — and
@@ -393,7 +393,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-24",
     institutionId: "pca",
-    name: "PJSC Ukrnafta v. The Russian Federation, PCA Case No. 2015-34",
+    name: "PJSC Ukrnafta v. The Russian Federation",
     nameUk: "Укрнафта проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "concluded",
@@ -411,7 +411,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-25",
     institutionId: "pca",
-    name: "Stabil LLC, Rubenor LLC, Rustel LLC, Novel-Estate LLC, PII Kirovograd-Nafta LLC, Crimea-Petrol LLC, Pirsan LLC, Trade-Trust LLC, Elefteria LLC, VKF Satek LLC, Stemv Group LLC v. The Russian Federation, PCA Case No. 2015-35",
+    name: "Stabil LLC and ten other companies v. The Russian Federation",
     nameUk: "«Стабіл» та десять інших компаній проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "concluded",
@@ -427,7 +427,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-26",
     institutionId: "pca",
-    name: "Everest Estate LLC, Edelveis-2000 PE, Fortuna CJSC and others v. The Russian Federation, PCA Case No. 2015-36",
+    name: "Everest Estate LLC, Edelveis-2000 PE, Fortuna CJSC and others v. The Russian Federation",
     nameUk: "«Еверест Естейт» та інші проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "remitted",
@@ -444,7 +444,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-27",
     institutionId: "pca",
-    name: "Limited Liability Company Lugzor, Limited Liability Company Libset, Limited Liability Company Ukrinterinvest, Public Joint Stock Company DniproAzot, Limited Liability Company Aberon Ltd v. The Russian Federation, PCA Case No. 2015-29",
+    name: "Lugzor LLC, Libset LLC, Ukrinterinvest LLC, DniproAzot PJSC and Aberon Ltd v. The Russian Federation",
     nameUk: "«Лугзор», «Лібсет», «Укрінтерінвест», «ДніпроАзот» і «Аберон» проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "concluded",
@@ -466,7 +466,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-28",
     institutionId: "pca",
-    name: "JSC DTEK Krymenergo v. The Russian Federation, PCA Case No. 2018-41",
+    name: "JSC DTEK Krymenergo v. The Russian Federation",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
     /* Both of these have a final award — 26 Nov 2018 and 1 Nov 2023 — and
@@ -486,7 +486,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-29",
     institutionId: "pca",
-    name: "National Power Company Ukrenergo v. The Russian Federation, PCA Case No. 2020-17",
+    name: "National Power Company Ukrenergo v. The Russian Federation",
     nameUk: "Укренерго проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "merits",

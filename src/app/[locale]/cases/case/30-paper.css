@@ -586,17 +586,9 @@ The measure has been argued four times, so here is the method that settles
   color: var(--faint);
 }
 
-/* What the explanations in this band are. The same caveat the glossary page
-   carries; here it sits between the terms and the way out to the full
-   dictionary, in the page's quietest tone, because it is a qualification of
-   what the reader has just read rather than part of it. */
-.casepage .terms-caveat {
-  margin: var(--space-5) 0 0;
-  max-width: 60ch;
-  font-size: var(--t-cap);
-  line-height: 1.55;
-  color: var(--faint);
-}
+/* `.terms-caveat` stood here and is gone with the sentence it styled: the
+   band explained that its explanations were editorial, which is what a
+   glossary is. The terms are the band. */
 
 /* The way out of the band and into the whole dictionary. Set like the other
    arrow links on this page rather than as a button: it is a continuation of
@@ -812,7 +804,12 @@ The measure has been argued four times, so here is the method that settles
      line of its own. */
   display: inline;
 }
-.casepage .gl-mark {
+/* `a.gl-mark`, not `.gl-mark`. `.casepage .read a` sets the ink colour of
+   every link in the prose and is two classes and an element; written without
+   the `a` this rule lost by one element and every marked term rendered a shade
+   darker than the sentence around it — the one thing `inherit` is here to
+   prevent, since the dotted rule is what marks a term. */
+.casepage a.gl-mark {
   color: inherit;
   text-decoration: none;
   /* A dotted rule, not the solid underline of an ordinary link: this points

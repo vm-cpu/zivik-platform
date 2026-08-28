@@ -137,7 +137,20 @@ export interface RegistryCase {
      route, link and filter on the site uses. */
   /** References `Institution.id`. */
   institutionId: string;
-  /** Official citation — identical in both locales. */
+  /**
+   * The name of the proceeding — identical in both locales.
+   *
+   * The name, not the full citation. These carried their docket and their
+   * reporter as well — «…v. PJSC «Gazprom», SCC Arbitration No. V 2014/129 -
+   * Gas Transit Arbitration» — and every surface that lists a case already
+   * carries the docket separately: it is `note` in the registry row, the
+   * DOCKET line on a pending page, and a column of its own in the library. So
+   * a heading repeated it, twice on one screen, and pushed the party names off
+   * the first line. What distinguishes two proceedings between the same
+   * parties stays — «— Gas Transit Arbitration» against «— Gas Sales
+   * Arbitration» — because that is part of the name and not part of the
+   * citation.
+   */
   name: string;
   /**
    * The same case, said in Ukrainian.

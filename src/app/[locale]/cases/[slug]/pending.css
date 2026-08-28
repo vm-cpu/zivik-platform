@@ -199,11 +199,15 @@
 .pend-rel li:last-child {
   border-bottom: 1px solid var(--rule-soft);
 }
+/* Year, then name — the columns the markup now renders in that order. The
+   year is a fixed narrow column so every name in the list starts on the same
+   axis; `auto` for the names, because a long one has the whole rest of the row
+   and wraps under itself rather than around a figure. */
 .pend-rel a {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 3.25rem minmax(0, 1fr);
   align-items: baseline;
-  gap: var(--space-2) var(--space-5);
+  gap: var(--space-2) var(--space-4);
   padding: var(--space-4) 0;
   text-decoration: none;
   color: var(--muted);
@@ -211,6 +215,12 @@
 }
 .pend-rel a:hover {
   color: var(--cream);
+}
+.pend-rel-year {
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
 }
 .pend-rel-name {
   font-size: var(--t-sm);
@@ -221,18 +231,15 @@
 .pend-rel li[data-lit="yes"] .pend-rel-name {
   color: var(--cream);
 }
-.pend-rel-meta {
+/* And it says so, at the end of the name rather than in a column of its own:
+   the mark belongs to the row it qualifies. 500 rather than a bold — mono is
+   loaded at 400 and 500, and the gold is what marks it. */
+.pend-rel-lit {
+  margin-left: var(--space-2);
   font: 500 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.04em;
-  color: var(--faint);
-  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
   white-space: nowrap;
-}
-.pend-rel-meta b {
   color: var(--gold);
-  /* Level with the mono around it — the gold is what marks it. 600 here was a
-     synthesised bold, and the browser default `bolder` would be 700. */
-  font-weight: 500;
 }
 .pend-rel-more {
   display: inline-block;
@@ -246,8 +253,5 @@
 .pend-rel-more:hover {
   color: var(--cream);
 }
-@media (max-width: 620px) {
-  .pend-rel a {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
+/* The year column survives the phone: it is 3.25rem, and dropping it there
+   would put the year on a line of its own above every name. */

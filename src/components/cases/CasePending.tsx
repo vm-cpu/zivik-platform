@@ -189,15 +189,30 @@ export default function CasePending({
     <section className="pend-rel">
       <h2>{heading}</h2>
       <ul>
+        {/* The year leads, then the name.
+            It used to be name first with the year in a column at the right
+            edge, and the names here are long enough to wrap: the year floated
+            alone opposite the second line of a title, with a hand's width of
+            empty rail between them. Ranged left in a narrow mono column it is
+            a ledger — the years line up, the names start on one axis, and the
+            row has no gap in the middle of it. */}
         {items.slice(0, SHOWN).map((c) => (
           <li key={c.id} data-lit={c.lit ? "yes" : "no"}>
             <Link href={caseHref(c)}>
-              <span className="pend-rel-name" lang={foreignLang(caseName(c), locale)}>
-                {caseName(c)}
-              </span>
-              <span className="pend-rel-meta">
-                {c.year ?? ""}
-                {c.lit && <b> · {pick(T.hasSummary, locale)}</b>}
+              <span className="pend-rel-year">{c.year ?? ""}</span>
+              <span className="pend-rel-name">
+                {/* `lang` belongs to the case name and not to the mark beside
+                    it: the names are English on a Ukrainian page, the mark is
+                    the page's own word. */}
+                <span lang={foreignLang(caseName(c), locale)}>{caseName(c)}</span>
+                {/* The space is a character, not a margin: without it the mark
+                    is announced joined to the last word of the name. */}
+                {c.lit && (
+                  <>
+                    {" "}
+                    <b className="pend-rel-lit">{pick(T.hasSummary, locale)}</b>
+                  </>
+                )}
               </span>
             </Link>
           </li>

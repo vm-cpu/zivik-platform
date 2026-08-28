@@ -49,10 +49,13 @@ const T = {
     uk: "Організації, з якими працює «НаСвітло».",
     en: "The organisations NaSvitlo works with.",
   },
-  /* 118 / 138 characters — both inside the ~160 a search result shows. */
+  /* 71 / 96 characters — both inside the ~160 a search result shows. The
+     description promised «і хто її веде» after the section that answered it
+     was taken off the page; a search result is not the place to advertise
+     something the page no longer says. */
   metaDesc: {
-    uk: "Організації, з якими працює бібліотека рішень «НаСвітло», і хто її веде.",
-    en: "The organisations the NaSvitlo library of decisions works with, and who runs the library itself.",
+    uk: "Організації, з якими працює бібліотека рішень «НаСвітло».",
+    en: "The organisations the NaSvitlo library of decisions works with.",
   },
   site: { uk: "Сайт організації", en: "The organisation’s site" },
   writeH: { uk: "Написати нам", en: "Write to us" },

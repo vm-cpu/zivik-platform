@@ -311,35 +311,9 @@
   color: var(--pgold);
 }
 
-/* term chips at the head of the summary — one tap to a definition */
-.casepage .termchips {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-2) var(--space-3);
-  margin-bottom: var(--space-7);
-  padding-bottom: var(--space-5);
-  border-bottom: 1px solid var(--prule);
-}
-.casepage .termchips-lbl {
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--pgold);
-}
-.casepage .termchips a {
-  font: 600 var(--t-cap) var(--brand-font-body);
-  color: var(--ink2);
-  text-decoration: none;
-  background: var(--paper2);
-  border-radius: var(--r-pill);
-  padding: var(--space-1) var(--space-3);
-  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-.casepage .termchips a:hover {
-  color: var(--pred);
-  background: var(--card);
-}
+/* The `.termchips` rules stood here and are gone with the row they styled: a
+   line of pill links at the head of the summary, repeating terms the prose now
+   marks where they are actually used. */
 /* glossary entries are jump targets now */
 .casepage .glossary > div {
   scroll-margin-top: calc(var(--pagenav-h) + var(--space-4));
@@ -496,11 +470,15 @@
 .casepage .nb-grid a:hover {
   background: var(--paper2);
 }
+/* A card in this grid is a way out of the page, not a headline. At --t-h3 in
+   the display face a three-line case name filled the card and the row of them
+   read as three more titles under the one the reader came for; at --t-body
+   with the weight up, the same name is a link you can scan. */
 .casepage .nb-grid b {
   font-family: var(--brand-font-display), Georgia, serif;
-  font-weight: 400;
-  font-size: var(--t-h3);
-  line-height: 1.2;
+  font-weight: 700;
+  font-size: var(--t-body);
+  line-height: 1.35;
   color: var(--ink);
 }
 .casepage .nb-grid .nb-note {

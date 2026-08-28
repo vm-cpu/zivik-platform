@@ -355,15 +355,14 @@
    `.nsv-cta` sets its ground and its border but takes its text colour from
    whatever it stands in, and this section's colour is the page's red — so the
    label sat on the pill at 1:1 and the button rendered as an empty red
-   lozenge. It has been unreadable since the pill replaced the arrow link.
+   lozenge. --brand-cream-warm is the token this system already keeps for text
+   on solid red: 12.4:1.
 
-   --brand-cream-warm is the token this system already keeps for text on solid
-   red: 12.4:1. */
-/* `a.nsv-cta`, not `.nsv-cta`. The rule above paints every anchor in the
-   about prose — `.aboutpage .abt-wrap a:not(.abt-cite-link)` — and that is
-   three classes and an element, which outweighs three classes alone. Written
-   without the `a` this correction lost the cascade and the button went on
-   rendering its label in the red of its own ground. */
+   `a.nsv-cta`, not `.nsv-cta`: the rule above paints every anchor in the about
+   prose — `.aboutpage .abt-wrap a:not(.abt-cite-link)` — and that is three
+   classes and an element, which outweighs three classes alone. Written without
+   the `a` this correction lost the cascade and the button went on rendering
+   its label in the red of its own ground. */
 .aboutpage .abt-wrap a.nsv-cta {
   color: var(--brand-cream-warm);
 }

@@ -77,25 +77,10 @@
   color: var(--ink);
   margin: 0 0 var(--space-3);
 }
-.gl-lede {
-  max-width: 60ch;
-  font-size: var(--t-sm);
-  line-height: 1.6;
-  color: var(--ink2);
-  margin: 0;
-}
-/* What the explanations are. Marked with the gold rule the site gives its own
-   voice — the same treatment as `.reg-note` on the library page — so it reads
-   as the editors speaking about their own work rather than as more lede. */
-.gl-caveat {
-  max-width: 60ch;
-  margin: var(--space-6) 0 0;
-  padding-left: var(--space-4);
-  border-left: 2px solid var(--gold);
-  font-size: var(--t-cap);
-  line-height: 1.6;
-  color: var(--ink2);
-}
+/* `.gl-lede` and `.gl-caveat` stood here and are gone with the two paragraphs
+   they styled: the page opened with a sentence saying it was a glossary above
+   a heading that said so, and closed with a note explaining that explanations
+   are editorial. The entries are the page. */
 
 .gl-meta {
   display: flex;
@@ -353,8 +338,6 @@
   line-height: 1.55;
   color: var(--ink2);
 }
-/* The trail back to the decision. Two lines: the forum, then the case, which
-   is the order a lawyer reads a citation in. */
 /* One line, not two stacked.
 
    The trail back was a forum in 11px uppercase over a case name underlined in
