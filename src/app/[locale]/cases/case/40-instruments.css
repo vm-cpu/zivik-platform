@@ -711,37 +711,34 @@
   margin-inline: auto;
   background: var(--prule);
 }
+/* The cards of one route stack, one per row.
+
+   They were a grid of their own — `auto-fit minmax(190px)` inside a column
+   already 566px wide — so the route with three bodies drew two side by side
+   and left the third alone under them, while the route with two drew a tidy
+   pair. Nothing in the case makes the Bank of Russia a sibling of the military
+   and the Crimean authorities its subordinate; that shape was the grid
+   filling rows. A stack has one reading order, and the cards line up across
+   both routes. */
 .casepage .attr-branches {
-  position: relative;
   list-style: none;
   margin: 0;
-  padding: var(--space-4) 0 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
-/* the bracket: one rule across the branches, a tick down into each card */
-.casepage .attr-branches::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 10%;
-  right: 10%;
-  height: 1px;
-  background: var(--prule);
-}
-.casepage .attr-branches li {
-  position: relative;
-}
-.casepage .attr-branches li::before {
-  content: "";
-  position: absolute;
-  top: calc(var(--space-4) * -1);
-  left: 50%;
-  width: 1px;
-  height: var(--space-4);
-  background: var(--prule);
-}
+/* The bracket that used to be drawn here — a rule across the cards with a tick
+   into each — is gone. Its rule sat a few pixels under the route's own gold
+   border and drew a second bracket for the same set: two horizontals, one
+   grey, one gold, four pixels apart. The route's border is the bracket. */
+/* A card is quiet until it is the one being read.
+
+   The whole selected state was a 2px gold line along the top edge of one card
+   in five, on cards that all carried the same white ground and the same
+   shadow — at a glance nothing on the drawing said which body the sentence
+   underneath was about. Now the ground carries it: the four that are not
+   selected sit flat on the band with a hairline, the one that is rises onto
+   the page's card white with a shadow and its gold edge. */
 .casepage .attr-node {
   position: relative;
   display: grid;
@@ -749,20 +746,25 @@
   width: 100%;
   height: 100%;
   text-align: left;
-  padding: var(--space-5);
+  padding: var(--space-4) var(--space-5);
   border: 0;
-  border-top: 2px solid var(--prule);
+  border-top: 2px solid transparent;
   border-radius: 0 0 var(--r-md) var(--r-md);
-  background: var(--card);
-  box-shadow: var(--shadow-sm);
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--prule);
   cursor: pointer;
-  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition:
+    background var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
 }
 .casepage .attr-node:hover {
-  transform: translateY(-2px);
+  background: var(--paper);
 }
 .casepage .attr-branches li[data-on="yes"] .attr-node {
   border-top-color: var(--pgold);
+  background: var(--card);
+  box-shadow: var(--shadow-md);
 }
 .casepage .attr-basis {
   /* 500: the heaviest mono face loaded. See --brand-font-mono. */
@@ -775,14 +777,24 @@
   font: 700 var(--t-ui) var(--brand-font-body);
   color: var(--ink);
 }
+/* The sentence names the body it is about.
+
+   It sits under both routes, and a reader who had just pressed a card in the
+   right-hand column found the answer at the foot of the left one — the gold
+   rule beside it pointed at nothing in particular. Naming the actor makes the
+   sentence self-contained, whichever card it came from. */
 .casepage .attr-did {
-  margin: var(--space-5) 0 0;
+  margin: var(--space-6) 0 0;
   padding-left: var(--space-5);
   border-left: 2px solid var(--pgold);
   max-width: 68ch;
   font-size: var(--t-sm);
   line-height: 1.6;
   color: var(--ink2);
+}
+.casepage .attr-did-who {
+  font-weight: 700;
+  color: var(--ink);
 }
 
 /* jurisdiction objections ----------------------------------------------------
@@ -1058,13 +1070,46 @@
    instructions or under its control. Those are different routes with
    different proofs, and it is the only reason attribution is worth a diagram.
    Drawn as five equal siblings the diagram showed everything except that. */
+/* The root reaches the routes.
+
+   `.attr-stem` dropped a 1px line from the respondent's card into the gap
+   between two columns and stopped there, so the drawing had a root, two
+   columns, and nothing joining them. The rule below runs the full width of the
+   routes — no arithmetic about column centres, so it is right at any number of
+   columns — and each route drops its own tick onto it. */
 .casepage .attr-routes {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--space-6) clamp(24px, 4vw, 48px);
-  margin-top: var(--space-5);
+  margin-top: 0;
+  padding-top: var(--space-5);
+}
+.casepage .attr-routes::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--prule);
+}
+/* The ticks are drawn only where the routes stand side by side. Stacked, a
+   tick above the second route would rise out of the first route's last card
+   towards a rule that is nowhere near it. */
+@media (min-width: 900px) {
+  .casepage .attr-route::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--space-5) * -1);
+    left: 50%;
+    width: 1px;
+    height: var(--space-5);
+    background: var(--prule);
+  }
 }
 .casepage .attr-route {
+  position: relative;
   display: grid;
   align-content: start;
   gap: var(--space-3);

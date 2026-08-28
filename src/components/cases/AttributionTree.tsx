@@ -106,7 +106,11 @@ export default function AttributionTree({
           this paragraph rather than leading somewhere. aria-live because the
           text under a reader's selection is replaced in place. */}
       <p className="attr-did" id="attr-did" aria-live="polite">
-        {shown.did}
+        {/* The body, then what it did. The sentence stands under both routes
+            and a reader who pressed a card in the right-hand column was
+            reading an answer at the foot of the left one, with nothing in it
+            to say which card it belonged to. */}
+        <b className="attr-did-who">{shown.actor}</b> — {shown.did}
       </p>
     </div>
   );

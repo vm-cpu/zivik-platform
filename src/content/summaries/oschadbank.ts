@@ -904,8 +904,8 @@ export const oschadbank: DecisionSummary = {
            Any percentage across two currencies needs a rate and a date that no
            source here supplies, so the figure stands on its own. */
         note: {
-          uk: "у євро — не звіряється зі шкалою в доларах",
-          en: "in euros — not to the dollar scale",
+          uk: "у євро — поза шкалою",
+          en: "in euros — off this scale",
         },
       },
     ],

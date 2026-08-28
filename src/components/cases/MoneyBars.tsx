@@ -14,15 +14,18 @@ import { useState } from "react";
  * page the smallest sum is 0.26% of the largest and is therefore drawn some
  * four times too wide. That is a defensible compromise for legibility and an
  * indefensible one to make silently, in a graphic about money: every figure
- * now prints its share of the largest as text, so the number is the record and
- * the bar is only an aid to it, and a bar that had to be widened says so.
+ * prints its share of the largest as text, so the number is the record and the
+ * bar is only an aid to it.
  *
- * And every bar is drawn inside its rail rather than alone on the ground. A
- * floored bar was a gold stub in the dark with a red line under it saying not
- * to trust its width: nothing to compare it to, so it read as a fault rather
- * than as a small sum. The rail is the largest figure on the page, drawn full
- * width and unlit, and the stub sitting at the left end of it is legible as
- * what it is — 0.26% of that.
+ * That printed share, and the rail, are the whole of the admission now. Every
+ * bar is drawn inside a rail that is the largest figure on the page, so a
+ * small sum reads as a small sum rather than as a stub of unknown meaning; the
+ * one on the Oschadbank page is 14px of a 1152px rail with «0,26%» beside it.
+ * A sentence used to say as well that the bar had been widened — nine words in
+ * the brightest colour in the block, under a figure that was already legible.
+ * The floor still distorts, and the distortion is still bounded by the printed
+ * number: at 1.2% of the rail no bar can overstate a sum by more than that
+ * share, and it is the percentage a reader is reading, not the pixels.
  *
  * **The segments are not controls.** Each part of a split bar used to be its
  * own button, duplicating the entry for that part in the key below — two focus
@@ -45,15 +48,12 @@ export default function MoneyBars({
   figures,
   shareLabel,
   ofLargestLabel,
-  flooredLabel,
   locale,
 }: {
   figures: MoneyFigureR[];
   shareLabel: string;
   /** "від найбільшої суми" — what every bar is drawn against. */
   ofLargestLabel: string;
-  /** Said on a bar the floor had to widen. */
-  flooredLabel: string;
   locale: string;
 }) {
   const [picked, setPicked] = useState<string | null>(null);
@@ -114,7 +114,6 @@ export default function MoneyBars({
       {figures.map((f, i) => {
         const drawn = onScale(f);
         const width = (f.amount / scale) * 100;
-        const floored = drawn && width < FLOOR;
         const parts = f.parts ?? [];
         const narrowest = parts.length
           ? (Math.min(...parts.map((p) => p.amount)) / scale) * 100
@@ -137,7 +136,6 @@ export default function MoneyBars({
               <div
                 className="money-bar"
                 data-estimated={f.estimated ? "yes" : "no"}
-                data-floored={floored ? "yes" : "no"}
                 data-thin={thin ? "yes" : "no"}
                 style={{ width: `${Math.max(width, FLOOR)}%` }}
               >
@@ -167,7 +165,6 @@ export default function MoneyBars({
             {drawn && (
               <p className="money-share">
                 {pct(width)}% {ofLargestLabel}
-                {floored && <em> · {flooredLabel}</em>}
               </p>
             )}
 

@@ -172,12 +172,13 @@ const T = {
   toTop: { uk: "Нагору", en: "Top" },
   toChronology: { uk: "До цієї дати в хронології", en: "To this date in the chronology" },
   ofLargest: { uk: "від найбільшої суми тут", en: "of the largest sum here" },
-  /* Said on a bar the minimum width had to widen, so the drawing does not
-     quietly overstate a small figure. */
-  floored: {
-    uk: "смуга ширша за частку — інакше її не було б видно",
-    en: "the bar is wider than the share, or it would not be visible",
-  },
+  /* `floored` stood here — a sentence on any bar the minimum width had to
+     widen. It was written when a small bar was a stub alone on the ground and
+     nothing else on the row said how small the sum was. Both of those are
+     answered now: the bar sits in a rail that is the largest figure on the
+     page, and the share is printed beside it to two decimal places. What was
+     left was nine words of apology, in the brightest colour in the block,
+     under a figure that was already legible. */
   /* Only printed when a dot field runs past what it can draw. */
   dotCap: {
     uk: "На полі показано перші {n} позначок.",
@@ -1223,7 +1224,6 @@ export default async function CasePage({
                 }))}
                 shareLabel={pick(T.shareOf, locale)}
                 ofLargestLabel={pick(T.ofLargest, locale)}
-                flooredLabel={pick(T.floored, locale)}
                 locale={locale}
               />
               {amounts.note && <p className="dash-note">{pick(amounts.note, locale)}</p>}
