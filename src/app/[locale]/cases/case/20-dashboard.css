@@ -1,39 +1,34 @@
-/* ---- 3. Dashboard (night) --------------------------------------------------
-   This band has been dark before, and everything that was wrong with it then
-   is still true of that arrangement: it was the head of a 3563px run of dark
-   — .dash (1364) -> .mapband (1018) -> .chron (1180), measured at 1440 on
-   icj-genocide. The first two shared one rgb, so the seam between them was
-   1.00:1; the third is --brand-night-2, 1.07:1 against --brand-night. Three
-   intended layers separated by seven per cent of luminance is one dark field,
-   and there is no fixing that by going deeper: --brand-night against pure
-   black is 1.12:1.
+/* Two bands where there was one.
 
-   What has changed since is not the palette but the order of the page. The
-   dispositif was given the night ground inside this band, the owner read it
-   and asked for the whole band in that voice, and the band can now take it
-   because it is an island where in the old arrangement it was not:
+   The whole overview went to --brand-night first, which the owner asked for
+   and which the dispositif panel had earned. Measured afterwards, it put a
+   280px light band between a 569px masthead and 2,566px of dark — 1.1% of a
+   26,000px page, and at that proportion the light does not read as a band
+   separating two scenes. It reads as a slot cut in a dark field. Softening it
+   from white to paper moved the contrast against night from 18.69 to 18.05,
+   which is a change nobody can see, and darkening the summary as well was
+   refused: the page should not open as one unbroken night.
 
-     - above it, .lede is --brand-surface — white, unconditional, on all eight
-       decisions. 18.69:1 against this ground;
-     - below it, .refs is the first of the alternating paper bands and so
-       always takes --paper, whichever of the conditional bands render (the
-       `bands` array in page.tsx computes that). 18.05:1;
-     - .mapband, the other dark scene, is four paper bands further down.
+   So the band is split at the point where the content changes register. The
+   docket card and the counters are apparatus — what the case is, who is in it,
+   how many of what — and they stay on paper where they were. What goes dark is
+   the holding and what it cost: the dispositif, the figures, the money. That
+   is the half with a voice.
 
-   So DESIGN.md's rule holds as written — a dark scene gets paper on both
-   sides, and no two dark grounds touch anywhere on this page.
-
-   The band carries no --seam edge, and .lede has lost the one it used to draw
-   underneath itself. The seam exists because --brand-surface against
-   --brand-paper-2 is 1.06:1 and an edge that faint has to be drawn rather than
-   implied; against this ground the edge is the ground, and a 1.75:1 grey
-   hairline lying on top of it is a stray line, which is what .mapband — dark,
-   seamless, between two paper bands — has always known.
-
-   Every instrument in the band moved with it: the ledger (glance.css), the KPI
-   cards, the takings bars and the money bars (40-instruments.css) and the
-   section labels. Each pair is measured where it is set. */
+   The rule still holds, and more easily than before: .score has .dash's paper
+   above it and .refs's paper below, and .mapband is four bands further down.
+   No two dark grounds touch. */
 .casepage .dash {
+  background: var(--paper2);
+  color: var(--ink);
+  border-bottom: 1px solid var(--seam);
+  padding-block: clamp(34px, 4.5vw, 60px);
+}
+/* The holding and the sums. No --seam edge: the seam exists because
+   --brand-surface against --brand-paper-2 is 1.06:1 and has to be drawn; here
+   the edge is the ground, and a grey hairline on it is a stray line — which
+   .mapband, dark between two paper bands, has always known. */
+.casepage .score {
   background: var(--bg);
   color: var(--cream);
   padding-block: clamp(34px, 4.5vw, 60px);
@@ -71,11 +66,12 @@
    They stay cards rather than becoming another ruled ledger: the glance
    ledger directly above them is hairline rows of identifiers, and two ruled
    ledgers in a row would read as one instrument. */
+/* Paper again: the counters stayed with the docket card when the band split,
+   and --panel on --paper-2 is 1.06:1 — a card with no edge at all. */
 .casepage .kpi {
-  background: var(--panel);
-  border: 1px solid var(--rule);
+  background: var(--card);
   border-radius: var(--r-md);
-  box-shadow: var(--shadow-dark);
+  box-shadow: var(--shadow-sm);
   padding: var(--space-6) var(--space-6);
   display: flex;
   flex-direction: column;
@@ -90,25 +86,27 @@
    for the figure to carry the strip. */
 /* The figure is gold, and gold on this card is --gold, not --pgold: the ink
    gold is mixed to sit on paper and measures 3.11:1 on --brand-night-2 — under
-   AA, on the largest type in the strip. 9.32:1. */
+   AA, on the largest type in the strip.
+
+   Paper again since the band split: --gold, the lit one, is 1.87:1 on a white
+   card, so the strip goes back to --pgold, which is what it wore before the
+   band ever went dark. */
 .casepage .kpi b {
   font-family: var(--brand-font-display), serif;
   font-weight: 700;
   font-size: var(--t-h2);
   line-height: 1.05;
-  color: var(--gold);
+  color: var(--pgold);
   font-variant-numeric: tabular-nums;
 }
-/* The figure that counts violations, in the colour this page gives a breach.
-   --pred is 1.69:1 on the card; --brand-breach, which is the red mixed for the
-   dark scenes, is 5.24:1. */
+/* The figure that counts violations, in the colour this page gives a breach —
+   the paper red, since the card is white again. */
 .casepage .kpi[data-em="1"] b {
-  color: var(--red);
+  color: var(--pred);
 }
-/* 8.46:1. */
 .casepage .kpi span {
   font: 500 var(--t-sm) var(--brand-font-body);
-  color: var(--muted);
+  color: var(--ink2);
 }
 
 /* ---- map band -------------------------------------------------------------

@@ -346,8 +346,9 @@ body {
    The list has to follow the bands, and it had been wrong in both directions.
    `.casepage .dash` was in it, then out of it when the dashboard moved to
    paper — where a gold ring measures 1.70:1, which is no ring at all for the
-   only people who need one — and the band is `--brand-night` again, so it is
-   back. That is the smaller half.
+   only people who need one — then back when the band went dark, and now it is
+   `.casepage .score`: the band split, and only the half carrying the holding
+   and the sums kept the night. That is the smaller half of this rule.
 
    The larger half: the list named four scenes and reached two. `.lamp` and
    `.court` match no element on any page — the lamp stage is `.lmp`, the court
@@ -381,7 +382,7 @@ body {
     .pagenav,
     .pagenav-v,
     .casepage .mast,
-    .casepage .dash
+    .casepage .score
   )
   :where(a, button, summary, input, select, textarea, [tabindex]):focus-visible,
 /* The skip link is itself the control, not a band around one. */

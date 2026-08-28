@@ -241,6 +241,7 @@
   .casepage,
   .casepage .mast,
   .casepage .dash,
+  .casepage .score,
   .casepage .lede,
   .casepage .refs,
   .casepage .machinery,
@@ -255,8 +256,9 @@
      children, the band re-points its own aliases at their paper twins for the
      length of the print sheet — the declarations underneath are unchanged and
      resolve to ink. --bg and --panel go with them, which is what turns the
-     dispositif's frame and the KPI cards back into boxes on white. */
-  .casepage .dash {
+     dispositif's frame back into a box on white. The KPI cards left with the
+     band split and are on paper tokens already. */
+  .casepage .score {
     --bg: #fff;
     --panel: #fff;
     --cream: #000;

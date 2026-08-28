@@ -1087,13 +1087,10 @@ export default async function CasePage({
               eight summaries — 57 facts — and rendered nowhere until now. */}
           {glance.length > 0 && (
             <div>
-              {/* No `lbl-onpaper` on any label in this band: the band is
-                  --brand-night, where --pgold is 3.33:1 and the class would be
-                  a lie about its own name. Plain `.lbl` is the dark-ground
-                  label — lit gold at 9.98:1, with the trailing rule that
-                  .lbl-onpaper suppresses — and it is what .mapband, the page's
-                  other dark band, already uses. */}
-              <h2 className="lbl">{pick(T.glanceH, locale)}</h2>
+              {/* `lbl-onpaper` again: the docket card stayed on paper when
+                  the band split, and the plain `.lbl` is the dark-ground
+                  label. */}
+              <h2 className="lbl lbl-onpaper">{pick(T.glanceH, locale)}</h2>
               <GlanceFacts
                 facts={glance.map((g) => ({
                   label: pick(g.label, locale),
@@ -1104,7 +1101,7 @@ export default async function CasePage({
           )}
 
           <div>
-            <h2 className="lbl">{pick(T.overview, locale)}</h2>
+            <h2 className="lbl lbl-onpaper">{pick(T.overview, locale)}</h2>
             <div className="kpis">
               {stats.map((s, i) => (
                 <div
@@ -1125,17 +1122,24 @@ export default async function CasePage({
             </div>
           </div>
 
-          {/* The dispositif.
+        </div>
+      </section>
 
-              It sat on the same paper as the docket facts and the figures
-              above it, which made the one instrument on this page that carries
-              the holding read as a third strip of furniture. Giving it
-              --brand-night fixed that, and it is what the whole band wears now
-              — so the panel keeps its shape and gives up its ground, and is
-              drawn by its edge and its air (see .vpanel in 20-dashboard.css).
-              Everything else about it — one row per claim, the track in the
-              row rather than over it, the staggered arrival — is in
-              VerdictMatrix. */}
+      {/* 2b — The holding and the sums, on the night ground.
+
+          One band was tried first: the docket facts, the figures, the
+          dispositif and the money all on --brand-night together. It put a
+          280px light band between a 569px masthead and 2,566px of dark, which
+          is 1.1% of the page — not a band separating two scenes but a slot cut
+          in a dark field, and no amount of softening the light answered it.
+
+          Split here instead. The card and the counters stay on paper, where
+          they were; what goes dark is the part that earns it — what the forum
+          held, and what it cost. The dark scene now has paper above it and
+          paper below, which is the rule, and the summary above is no longer
+          squeezed between two dark expanses. */}
+      <section className="score" aria-label={pick(T.found, locale)}>
+        <div className="rail dash-stack">
           <div className="vpanel">
             <div className="score-head">
               <h2>{pick(summary.verdictsHeading ?? T.found, locale)}</h2>
