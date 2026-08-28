@@ -399,7 +399,13 @@ export interface ProvisionalMeasure {
 export interface Citation {
   url: string;
   title: string;
-  authors: string;
+  /**
+   * Optional: a wire report or an institutional page has no byline, and the
+   * agency's name belongs in `publication`. Filling both with it printed
+   * «Interfax-Ukraine · Interfax-Ukraine · 2025». The renderer already drops
+   * empty parts of the meta line.
+   */
+  authors?: string;
   publication: string;
   date: string;
   /** "blog post" | "journal article" | "news/insight" | "preprint/repository" */
@@ -423,6 +429,26 @@ export interface DecisionSummary extends VerbatimSummary {
    * normally repeats the verbatim parties line.
    */
   title?: Localized;
+  /**
+   * The masthead's two verbatim lines, said in Ukrainian.
+   *
+   * `masthead.official` and `masthead.judgment` come out of the verbatim
+   * ingest and are the decision's own words: the caption it files itself under
+   * and the line naming what it is and when. They are the record and they stay
+   * English in `masthead` — the citation block reproduces them unchanged,
+   * because a citation that translates a caption cannot be looked up.
+   *
+   * But they are also the two largest pieces of type under the H1, and on the
+   * Ukrainian page they read as eight lines of English capitals. This is the
+   * Ukrainian rendering, shown in the masthead only: `official` under the
+   * title, `judgment` in the eyebrow beside the forum and the seat. Where a
+   * treaty or a court has an established Ukrainian name it is used — «Угода
+   * … про заохочення та взаємний захист інвестицій», «Арбітражний регламент
+   * ЮНСІТРАЛ» — rather than a fresh translation of the English.
+   *
+   * NEEDS THE OWNER'S REVIEW: these are renderings, not official texts.
+   */
+  mastheadUk?: { official?: string; judgment?: string };
   /**
    * Date the page's context layer was last verified against its sources
    * (ISO 8601). For live dockets — an ICC situation, an enforcement stage —

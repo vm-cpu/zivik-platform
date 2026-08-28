@@ -37,6 +37,15 @@ export const finlandTorden: DecisionSummary = {
     uk: "Фінляндія проти Воїслава Тордена",
     en: "Finland v. Voislav Torden",
   },
+  /* The masthead in Ukrainian — the caption under the title and the line
+     in the eyebrow. `masthead` keeps the decision's own English, which is
+     what the citation block reproduces; this is what a Ukrainian reader
+     sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
+  mastheadUk: {
+    official:
+      "Фінляндія проти Яна Петровського (Воїслава Тордена) — переслідування за воєнні злочини на підставі універсальної юрисдикції, окружний суд Гельсінкі",
+    judgment: "Вирок від 14 березня 2025",
+  },
 
   asOf: "2026-08-22",
   provisionalSource: true,

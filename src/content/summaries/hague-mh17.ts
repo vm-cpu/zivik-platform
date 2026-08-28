@@ -26,6 +26,15 @@ export const hagueMh17: DecisionSummary = {
     uk: "Справа MH17: вирок у Гаазі",
     en: "The MH17 verdict in The Hague",
   },
+  /* The masthead in Ukrainian — the caption under the title and the line
+     in the eyebrow. `masthead` keeps the decision's own English, which is
+     what the citation block reproduces; this is what a Ukrainian reader
+     sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
+  mastheadUk: {
+    official:
+      "Прокуратура проти Гіркіна, Дубінського, Пулатова і Харченка (рейс MH17) — окружний суд Гааги, ECLI:NL:RBDHA:2022:14037",
+    judgment: "Вирок від 17 листопада 2022",
+  },
 
   asOf: "2026-08-22",
   provisionalSource: true,

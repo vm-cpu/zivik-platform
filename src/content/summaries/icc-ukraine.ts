@@ -87,6 +87,15 @@ export const iccUkraine: DecisionSummary = {
     uk: "Ситуація в Україні",
     en: "Situation in Ukraine",
   },
+  /* The masthead in Ukrainian — the caption under the title and the line
+     in the eyebrow. `masthead` keeps the decision's own English, which is
+     what the citation block reproduces; this is what a Ukrainian reader
+     sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
+  mastheadUk: {
+    official:
+      "Ситуація в Україні, ICC-01/22 — розслідування та ордери на арешт, видані Палатою попереднього провадження II",
+    judgment: "Ордери від 17 березня 2023 · 5 березня 2024 · 24 червня 2024",
+  },
 
   forum: {
     institution: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },

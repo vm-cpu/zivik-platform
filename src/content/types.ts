@@ -114,6 +114,28 @@ export type InstitutionCategory =
   | "national"
   | "executive";
 
+/**
+ * The one line a surface shows when it has room for one line.
+ *
+ * Three of them do: the home page's list of proceedings, a pending page's
+ * heading, and the rows of neighbours under it. They take Ukrainian where the
+ * record has it, and the heading name — `nameShort ?? name` — otherwise. The
+ * library is the exception and keeps both lines: there the English caption is
+ * the record and the Ukrainian line sits under it, which is how a reader who
+ * knows the case by either name finds it.
+ *
+ * The rule lived in CasePending as a local const while the home page printed
+ * `name` straight, so the same case read «Ощадбанк проти РФ» on one surface
+ * and «JSC Oschadbank v. The Russian Federation, PCA Case No. 2016-14» on the
+ * other.
+ */
+export function caseName(
+  c: Pick<RegistryCase, "name" | "nameShort" | "nameUk">,
+  locale: string,
+): string {
+  return locale === "uk" && c.nameUk ? c.nameUk : (c.nameShort ?? c.name);
+}
+
 /** A court, tribunal or body that hears cases against Russia. */
 export interface Institution {
   /** Stable slug, e.g. `"ecthr"`. */

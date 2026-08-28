@@ -30,6 +30,15 @@ export const icjCerdIcsft: DecisionSummary = {
     uk: "Україна проти Російської Федерації",
     en: "Ukraine v. Russian Federation",
   },
+  /* The masthead in Ukrainian — the caption under the title and the line
+     in the eyebrow. `masthead` keeps the decision's own English, which is
+     what the citation block reproduces; this is what a Ukrainian reader
+     sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
+  mastheadUk: {
+    official:
+      "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації",
+    judgment: "Рішення від 31 січня 2024",
+  },
 
   /**
    * Explicit rather than relying on the page template's default. That default

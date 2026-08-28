@@ -55,6 +55,15 @@ export const oschadbank: DecisionSummary = {
     uk: "Ощадбанк проти Російської Федерації",
     en: "JSC Oschadbank v. the Russian Federation",
   },
+  /* The masthead in Ukrainian — the caption under the title and the line
+     in the eyebrow. `masthead` keeps the decision's own English, which is
+     what the citation block reproduces; this is what a Ukrainian reader
+     sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
+  mastheadUk: {
+    official:
+      "Арбітраж за Угодою між Урядом Російської Федерації та Кабінетом Міністрів України про заохочення та взаємний захист інвестицій від 27 листопада 1998 року і за Арбітражним регламентом ЮНСІТРАЛ 1976 року",
+    judgment: "Арбітражне рішення від 26 листопада 2018",
+  },
 
   forum: {
     institution: {
@@ -721,7 +730,10 @@ export const oschadbank: DecisionSummary = {
       },
       {
         label: { uk: "Вилучено під час рейдів", en: "Seized in the May 2014 raids" },
-        value: "UAH 32M + RUB 605M",
+        /* A pair for the same reason as the ActivSolar line above: the codes
+           and the abbreviated millions are English, and this sat on a
+           Ukrainian page beside «85» and «> USD 500 000 000». */
+        value: { uk: "32 млн грн + 605 млн руб", en: "UAH 32M + RUB 605M" },
         note: {
           uk: "готівка, золото, ювелірні вироби, коштовне каміння",
           en: "cash, gold, jewellery and precious stones",
@@ -1059,7 +1071,9 @@ export const oschadbank: DecisionSummary = {
       url: "https://en.interfax.com.ua/news/economic/1066322.html",
       title:
         "Ukraine's Oschadbank secures EUR 87 mln asset freeze in France over Crimean losses",
-      authors: "Interfax-Ukraine",
+      /* The agency is the publication, not an author beside it: the meta line
+         read «Interfax-Ukraine · Interfax-Ukraine · 2025». A wire report has
+         no byline here, so the field it belongs in is the publication. */
       publication: "Interfax-Ukraine",
       date: "2025",
       type: "news/insight",

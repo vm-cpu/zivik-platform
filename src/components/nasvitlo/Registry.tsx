@@ -1,7 +1,7 @@
 import { foreignLang, type Locale } from "@/i18n/config";
 import { plural } from "@/i18n/plural";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { pick, type Institution, type RegistryCase } from "@/content/types";
+import { caseName, pick, type Institution, type RegistryCase } from "@/content/types";
 
 /**
  * Ukrainian agreement: 1 справа, 2–4 справи, 5+ справ, with the teens taking
@@ -132,12 +132,18 @@ export default function Registry({
                   >
                     <span className="mk" />
                     <span>
-                      {/* The library page marks these and this preview of it
-                          did not, so the same Latin-script name was read in
-                          English on /registry and phonetically on the home
-                          page. See foreignLang(). */}
-                      <span className="at" lang={foreignLang(c.name, locale)}>
-                        {c.name}
+                      {/* The case, said in the reader's language.
+
+                          This preview was showing `name` — the full caption
+                          with its docket, in English — so a Ukrainian reader
+                          met thirty-nine English titles on the home page while
+                          the library beneath showed each with its Ukrainian
+                          line. Same rule as the pending page: Ukrainian where
+                          the record has it, the heading name otherwise, and
+                          `lang` on it either way so a screen reader does not
+                          read a Latin caption with Ukrainian phonetics. */}
+                      <span className="at" lang={foreignLang(caseName(c, locale), locale)}>
+                        {caseName(c, locale)}
                       </span>
                       <span className="an">{pick(c.note, locale)}</span>
                     </span>

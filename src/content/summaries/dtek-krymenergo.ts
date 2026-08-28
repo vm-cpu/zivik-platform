@@ -30,6 +30,15 @@ export const dtekKrymenergo: DecisionSummary = {
     uk: "ДТЕК Крименерго проти Російської Федерації",
     en: "JSC DTEK Krymenergo v. the Russian Federation",
   },
+  /* The masthead in Ukrainian — the caption under the title and the line
+     in the eyebrow. `masthead` keeps the decision's own English, which is
+     what the citation block reproduces; this is what a Ukrainian reader
+     sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
+  mastheadUk: {
+    official:
+      "Арбітраж ad hoc перед трибуналом, сформованим за Угодою між Урядом Російської Федерації та Кабінетом Міністрів України про заохочення та взаємний захист інвестицій від 27 листопада 1998 року і за Арбітражним регламентом Комісії ООН з права міжнародної торгівлі 1976 року",
+    judgment: "Арбітражне рішення від 1 листопада 2023",
+  },
 
   asOf: "2026-08-22",
   provisionalSource: true,

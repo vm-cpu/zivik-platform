@@ -5,7 +5,7 @@ import Link from "next/link";
 import { foreignLang, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { decisionMetadata } from "@/lib/seo";
-import { pick } from "@/content/types";
+import { caseName, pick } from "@/content/types";
 import type { RegistryCase } from "@/content/types";
 import { institutions } from "@/content/institutions";
 import { registryCases } from "@/content/cases";
@@ -93,13 +93,13 @@ export function pendingMetadata({
   return decisionMetadata({
     locale,
     slug,
-    /* The heading's name, not the caption. A tab, a search result and a
-       shared link all show this string, and the caption runs to forty words:
+    /* The heading's name, in the reader's language. A tab, a search result and
+       a shared link all show this string, and the caption runs to forty words:
        «National Joint Stock Company «Naftogaz of Ukraine» v. PJSC «Gazprom»,
        SCC Arbitration No. V 2014/129 - Gas Transit Arbitration — Арбітражний
        інститут…» is 130 characters before the forum's name begins. The full
        caption is on the page, in the row that carries it. */
-    title: `${entry.nameShort ?? entry.name} — ${inst ? pick(inst.name, locale) : entry.institutionId}`,
+    title: `${caseName(entry, locale)} — ${inst ? pick(inst.name, locale) : entry.institutionId}`,
     description: `${t.title}. ${pick(entry.status, locale)} · ${pick(entry.note, locale)}${
       entry.year ? ` · ${entry.year}` : ""
     }.`,
@@ -193,9 +193,9 @@ export default function CasePending({
   const caseHref = (c: RegistryCase) =>
     `/${locale}/cases/${c.summarySlug ?? c.id}`;
   /* A heading takes the short name; the full caption is a fact of the record
-     and is set out in the table below. */
-  const caseName = (c: RegistryCase) =>
-    locale === "uk" && c.nameUk ? c.nameUk : (c.nameShort ?? c.name);
+     and is set out in the table below. The rule is shared with the home page's
+     list — see `caseName` in content/types.ts. */
+  const named = (c: RegistryCase) => caseName(c, locale);
 
   const relations = (items: RegistryCase[], heading: string) => (
     <section className="pend-rel">
@@ -216,7 +216,7 @@ export default function CasePending({
                 {/* `lang` belongs to the case name and not to the mark beside
                     it: the names are English on a Ukrainian page, the mark is
                     the page's own word. */}
-                <span lang={foreignLang(caseName(c), locale)}>{caseName(c)}</span>
+                <span lang={foreignLang(named(c), locale)}>{named(c)}</span>
                 {/* The space is a character, not a margin: without it the mark
                     is announced joined to the last word of the name. */}
                 {c.lit && (
@@ -250,8 +250,8 @@ export default function CasePending({
           {entry.year ? ` · ${entry.year}` : ""}
         </p>
 
-        <h1 className="pend-name" lang={foreignLang(caseName(entry), locale)}>
-          {caseName(entry)}
+        <h1 className="pend-name" lang={foreignLang(named(entry), locale)}>
+          {named(entry)}
         </h1>
 
         <p className="pend-status">{t.title}</p>

@@ -13,6 +13,7 @@ export const registryCases: RegistryCase[] = [
     institutionId: "icj",
     name: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation), Judgment, I.C.J. Reports 2024, 31 January 2024",
     nameShort: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
+    nameUk: "Україна проти РФ — фінансування тероризму і расова дискримінація",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     stage: "concluded",
     outcome: "judgment",
@@ -30,6 +31,7 @@ export const registryCases: RegistryCase[] = [
     institutionId: "icj",
     name: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening), Preliminary Objections, Judgment, I.C.J. Reports 2024, 2 February 2024",
     nameShort: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening)",
+    nameUk: "Україна проти РФ — звинувачення у геноциді",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     /* The ICJ issues no arrest warrants. What this row was pointing at is the
        Order on provisional measures of 16 March 2022 (judgment § 10), and in
@@ -100,6 +102,7 @@ export const registryCases: RegistryCase[] = [
     id: "ecthr-5",
     institutionId: "ecthr",
     name: "Ukraine and Netherlands v Russia [GC]",
+    nameUk: "Україна і Нідерланди проти Росії — Велика палата",
     type: { uk: "Права людини", en: "Human rights" },
     stage: "satisfaction",
     outcome: "judgment",
@@ -132,6 +135,7 @@ export const registryCases: RegistryCase[] = [
     id: "icc-situation",
     institutionId: "icc",
     name: "Situation in Ukraine",
+    nameUk: "Ситуація в Україні",
     type: { uk: "Кримінальне", en: "Criminal" },
     stage: "investigation",
     status: { uk: "Розслідування", en: "Investigation" },
@@ -385,6 +389,7 @@ export const registryCases: RegistryCase[] = [
     institutionId: "pca",
     name: "JSC Oschadbank v. The Russian Federation, PCA Case No. 2016-14",
     nameShort: "JSC Oschadbank v. The Russian Federation",
+    nameUk: "Ощадбанк проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
     /* Both of these have a final award — 26 Nov 2018 and 1 Nov 2023 — and
@@ -483,6 +488,7 @@ export const registryCases: RegistryCase[] = [
     institutionId: "pca",
     name: "JSC DTEK Krymenergo v. The Russian Federation, PCA Case No. 2018-41",
     nameShort: "JSC DTEK Krymenergo v. The Russian Federation",
+    nameUk: "ДТЕК Крименерго проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
     /* Both of these have a final award — 26 Nov 2018 and 1 Nov 2023 — and
@@ -558,6 +564,7 @@ export const registryCases: RegistryCase[] = [
     id: "nl-32",
     institutionId: "nl",
     name: "PPS v Girkin, Dubinskiy, Pulatov, Kharchenko (MH17)",
+    nameUk: "Прокуратура проти Гіркіна, Дубінського, Пулатова і Харченка (MH17)",
     type: { uk: "Нац. кримінальне", en: "National criminal" },
     stage: "concluded",
     outcome: "verdict",
@@ -661,6 +668,7 @@ export const registryCases: RegistryCase[] = [
        every count; "Yan Petrovsky" is the earlier name, common in the
        literature and in no Finnish official source. */
     name: "Finland v Voislav Torden (UJ, Rusich)",
+    nameUk: "Фінляндія проти Воїслава Тордена (універсальна юрисдикція, «Русич»)",
     type: { uk: "Нац. кримінальне", en: "National criminal" },
     /* "appeal", not "concluded": both the prosecution and the defence appealed
        the judgment of 14 March 2025 (EJIL:Talk!, 15 Dec 2025), and the

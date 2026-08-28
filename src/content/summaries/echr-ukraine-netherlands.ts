@@ -30,6 +30,15 @@ export const echrUkraineNetherlands: DecisionSummary = {
     uk: "Україна і Нідерланди проти Росії",
     en: "Ukraine and the Netherlands v. Russia",
   },
+  /* The masthead in Ukrainian — the caption under the title and the line
+     in the eyebrow. `masthead` keeps the decision's own English, which is
+     what the citation block reproduces; this is what a Ukrainian reader
+     sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
+  mastheadUk: {
+    official:
+      "Справа «Україна та Нідерланди проти Росії» (заяви № 8019/16, 43800/14, 28525/20 і 11055/22) — Велика палата, Європейський суд з прав людини",
+    judgment: "Рішення по суті від 9 липня 2025",
+  },
 
   asOf: "2026-08-22",
   provisionalSource: true,

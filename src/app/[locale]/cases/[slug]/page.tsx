@@ -702,6 +702,13 @@ export default async function CasePage({
   const parties = summary.title
     ? pick(summary.title, locale)
     : masthead.parties.replace(/^\(|\)$/g, "");
+  /* The masthead's two verbatim lines, in the reader's language where the
+     summary carries a rendering. `masthead` itself is untouched — the citation
+     below is assembled from it and has to reproduce the caption as published. */
+  const officialLine =
+    (locale === "uk" ? summary.mastheadUk?.official : null) ?? masthead.official;
+  const judgmentLine =
+    (locale === "uk" ? summary.mastheadUk?.judgment : null) ?? masthead.judgment;
 
   // Institution and seat: the ICJ in The Hague unless the summary says otherwise.
   const forum = summary.forum ?? {
@@ -986,11 +993,13 @@ export default async function CasePage({
           <span className="dot" aria-hidden="true">
             ·
           </span>
-          {/* Some of these are the court's own English — "WARRANTS OF 17 MARCH
-              2023 · 5 MARCH 2024 · 24 JUNE 2024" on the ICC page. foreignLang
-              returns nothing for the Ukrainian ones, so the mixed and the
-              translated are left alone. */}
-          <span lang={foreignLang(masthead.judgment, locale)}>{masthead.judgment}</span>
+          {/* Ukrainian where the summary carries a rendering. The verbatim
+              line is the decision's own — "AWARD OF 26 NOVEMBER 2018" — and it
+              stood between «ПАРИЖ» and «24 ХВ ЧИТАННЯ», the one English
+              fragment in a Ukrainian eyebrow. `masthead` still holds it and the
+              citation block still prints it; see `mastheadUk` in
+              summaries/types.ts. */}
+          <span lang={foreignLang(judgmentLine, locale)}>{judgmentLine}</span>
           <span className="dot" aria-hidden="true">
             ·
           </span>
@@ -1026,12 +1035,13 @@ export default async function CasePage({
             </span>
           ))}
         </p>
-        {/* The same reasoning as the h1 above, and it was applied only there.
-            This is the judgment's own title — "IN THE MATTER OF AN ARBITRATION
-            UNDER THE AGREEMENT BETWEEN THE GOVERNMENT OF…", the longest run of
-            English on a Ukrainian page — read out with Ukrainian phonetics. */}
-        <p className="fullname" lang={foreignLang(masthead.official, locale)}>
-          {masthead.official}
+        {/* The caption the decision files itself under, in the reader's
+            language where the summary carries it. In English it was the longest
+            run of Latin type on a Ukrainian page — eight lines of capitals
+            under a Ukrainian headline — and a screen reader gave it Ukrainian
+            phonetics, which `lang` fixed and nothing else did. */}
+        <p className="fullname" lang={foreignLang(officialLine, locale)}>
+          {officialLine}
         </p>
 
         <div className="actions">

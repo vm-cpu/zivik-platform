@@ -62,6 +62,15 @@ export const icjGenocide: DecisionSummary = {
     uk: "Україна проти Російської Федерації: 32 держави-інтервенти",
     en: "Ukraine v. Russian Federation: 32 States intervening",
   },
+  /* The masthead in Ukrainian — the caption under the title and the line
+     in the eyebrow. `masthead` keeps the decision's own English, which is
+     what the citation block reproduces; this is what a Ukrainian reader
+     sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
+  mastheadUk: {
+    official:
+      "Звинувачення у геноциді за Конвенцією про запобігання злочину геноциду та покарання за нього",
+    judgment: "Рішення від 2 лютого 2024",
+  },
 
   /* The docket is live: the merits phase, the counter-claims and the second
      round of interventions all post-date the judgment this page is about. */
