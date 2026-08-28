@@ -98,6 +98,52 @@ export default function Header({
     return `/${next}`;
   };
 
+  /* Two two-letter links measured 15×15 — under the 24×24 floor of WCAG 2.5.8,
+     with no larger control anywhere that does the same job. `.nsv-langsw a` in
+     header.css gives each one a 24px box without moving the glyphs. The `lang`
+     attribute matters as much: "EN" inside a lang="uk" document is spoken with
+     Ukrainian phonetics, and `aria-label` names the language in the language
+     being offered rather than leaving a bare code.
+
+     Rendered twice — once in the bar, once in the drawer — because below 420px
+     the bar cannot hold it: «НаСвітло» ends four pixels from «UA» at 375, and
+     at 320 the two were drawn on top of each other. Exactly one of the two is
+     displayed at any width; header.css carries the measurements. */
+  const langSwitch = (extra?: string) => (
+    <span
+      className={extra ? `nsv-langsw ${extra}` : "nsv-langsw"}
+      style={{ font: "600 var(--t-cap) var(--brand-font-body)", color: "var(--brand-faint-dark)" }}
+    >
+      <Link
+        href={localeHref("uk")}
+        hrefLang="uk"
+        lang="uk"
+        aria-label={localeNames.uk}
+        aria-current={locale === "uk" ? "true" : undefined}
+        style={{
+          color: locale === "uk" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
+          fontWeight: locale === "uk" ? 700 : 600,
+        }}
+      >
+        UA
+      </Link>
+      <span aria-hidden="true">/</span>
+      <Link
+        href={localeHref("en")}
+        hrefLang="en"
+        lang="en"
+        aria-label={localeNames.en}
+        aria-current={locale === "en" ? "true" : undefined}
+        style={{
+          color: locale === "en" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
+          fontWeight: locale === "en" ? 700 : 600,
+        }}
+      >
+        EN
+      </Link>
+    </span>
+  );
+
   return (
     <>
       <a className="nsv-skiplink" href={skipTo}>
@@ -237,45 +283,7 @@ export default function Header({
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          {/* Two two-letter links measured 15×15 — under the 24×24 floor of
-              WCAG 2.5.8, with no larger control anywhere that does the same
-              job. `.nsv-langsw a` in header.css gives each one a 24px box
-              without moving the glyphs. The `lang` attribute matters as much:
-              "EN" inside a lang="uk" document is spoken with Ukrainian
-              phonetics, and `aria-label` names the language in the language
-              being offered rather than leaving a bare code. */}
-          <span
-            className="nsv-langsw"
-            style={{ font: "600 var(--t-cap) var(--brand-font-body)", color: "var(--brand-faint-dark)" }}
-          >
-            <Link
-              href={localeHref("uk")}
-              hrefLang="uk"
-              lang="uk"
-              aria-label={localeNames.uk}
-              aria-current={locale === "uk" ? "true" : undefined}
-              style={{
-                color: locale === "uk" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
-                fontWeight: locale === "uk" ? 700 : 600,
-              }}
-            >
-              UA
-            </Link>
-            <span aria-hidden="true">/</span>
-            <Link
-              href={localeHref("en")}
-              hrefLang="en"
-              lang="en"
-              aria-label={localeNames.en}
-              aria-current={locale === "en" ? "true" : undefined}
-              style={{
-                color: locale === "en" ? "var(--brand-gold-pale)" : "var(--brand-faint-dark)",
-                fontWeight: locale === "en" ? 700 : 600,
-              }}
-            >
-              EN
-            </Link>
-          </span>
+          {langSwitch()}
           <button
             type="button"
             className="nsv-burger"
@@ -307,6 +315,10 @@ export default function Header({
             {item.label}
           </Link>
         ))}
+        {/* The same switch, for the widths where the bar cannot hold it. Below
+            420px it is the only one displayed — header.css shows one and hides
+            the other, so a screen reader is never offered two. */}
+        {langSwitch("nsv-langsw-drawer")}
       </nav>
     </>
   );
