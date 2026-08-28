@@ -109,17 +109,7 @@ export default function PageNav({
             </li>
           ))}
         </ol>
-        <button
-          type="button"
-          className="pagenav-v-top"
-          data-show={deep ? "yes" : "no"}
-          onClick={toTop}
-          tabIndex={deep ? 0 : -1}
-          aria-hidden={deep ? undefined : true}
-        >
-          <span aria-hidden="true">↑</span>
-          {topLabel}
-        </button>
+        
       </nav>
 
       <nav className="pagenav" aria-label={ariaLabel}>
@@ -144,19 +134,43 @@ export default function PageNav({
             </a>
           ))}
           </div>
-          <button
-            type="button"
-            className="pagenav-top"
-            data-show={deep ? "yes" : "no"}
-            onClick={toTop}
-            tabIndex={deep ? 0 : -1}
-            aria-hidden={deep ? undefined : true}
-          >
-            <span aria-hidden="true">↑</span>
-            {topLabel}
-          </button>
         </div>
       </nav>
+
+      {/* The way back, in the corner of the page rather than in the bar.
+
+          It lived in the sticky bar, sticky against the right edge of the row
+          of sections — which put it over whichever chip happened to be under
+          it once the sections overflowed, and on Oschadbank that read as «ПОВ ↑
+          НАГОРУ ННЯ». Moved out of the bar entirely at the owner's request: a
+          corner control belongs to the page, not to the navigation, and it has
+          the whole viewport's corner to itself.
+
+          An arrow and nothing else, so it is named for anyone who cannot see
+          which way it points. It sits below the map's fullscreen layer on
+          purpose — a reader who has taken the map full-screen is not looking
+          for the top of the page underneath it. */}
+      <button
+        type="button"
+        className="totop"
+        data-show={deep ? "yes" : "no"}
+        onClick={toTop}
+        tabIndex={deep ? 0 : -1}
+        aria-hidden={deep ? undefined : true}
+        aria-label={topLabel}
+        title={topLabel}
+      >
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+          <path
+            d="M12 19V6M12 6l-6 6M12 6l6 6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
     </>
   );
 }

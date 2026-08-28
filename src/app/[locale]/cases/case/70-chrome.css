@@ -48,58 +48,54 @@
   display: none;
 }
 /* ---- return to top ------------------------------------------------------
-   Beside the scrolling row, never over it. It was sticky *inside* the row,
-   which pinned it to the right edge of the visible area and floated it across
-   whichever section chip was underneath — «ПОВ ↑ НАГОРУ ННЯ» where «Пов'язані
-   рішення» should have been. As a sibling it simply takes its width and the
-   row gets the rest. */
-.casepage .pagenav-top {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0;
-  height: var(--pagenav-h);
-  background: none;
-  border: 0;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
+   A disc in the corner of the viewport. It was in the sticky bar, sticky
+   against the right end of the scrolling row, which floated it across whatever
+   section chip was underneath — «ПОВ ↑ НАГОРУ ННЯ» where «Пов'язані рішення»
+   should have been. Out of the bar entirely now.
+
+   It has to read on both grounds, because it floats over a page that
+   alternates paper and night. A night disc gives it against paper; a gold ring
+   gives it against night. The arrow is gold on night at 9.98:1 either way.
+
+   48px, which is past the 24px WCAG 2.5.8 asks and inside what a thumb wants;
+   the corner offset clears the same gutter the rail uses. */
+.casepage .totop {
+  position: fixed;
+  right: clamp(16px, 3vw, 32px);
+  bottom: clamp(16px, 3vw, 32px);
+  /* Below the map's fullscreen layer (60) and below the sticky bar (6): a
+     reader who has taken the map full-screen is not looking for the top of the
+     page underneath it. */
+  z-index: 5;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--brand-night);
+  border: 1px solid var(--brand-gold-lit);
+  color: var(--brand-gold-lit);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
-  transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+  transition:
+    opacity var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
 }
-.casepage .pagenav-top:hover {
-  color: var(--cream);
+.casepage .totop:hover {
+  color: var(--brand-cream);
+  border-color: var(--brand-cream);
 }
-/* Hidden until there is something to come back from, and taken out of the tab
-   order with it — a focusable control a reader cannot see is worse than none. */
-.casepage .pagenav-top[data-show="no"] {
+/* Hidden until there is something to come back from, and out of the tab order
+   with it — a focusable control a reader cannot see is worse than none. */
+.casepage .totop[data-show="no"] {
   opacity: 0;
   pointer-events: none;
 }
-/* The rail's own copy sits at the foot of the spine, under the last band. */
-.casepage .pagenav-v-top {
-  margin-top: var(--space-4);
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  background: none;
-  border: 0;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold);
-  cursor: pointer;
-  transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
-}
-.casepage .pagenav-v-top:hover {
-  color: var(--cream);
-}
-.casepage .pagenav-v-top[data-show="no"] {
-  opacity: 0;
-  pointer-events: none;
+@media print {
+  .casepage .totop {
+    display: none;
+  }
 }
 .casepage .pagenav a {
   display: inline-flex;
