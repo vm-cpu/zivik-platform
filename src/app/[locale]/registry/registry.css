@@ -80,6 +80,20 @@
    text a reader actually reads, so it goes to the token rather than below it. */
 .reg-lede{max-width:680px;font-size:var(--t-sm);line-height:1.6;color:var(--ink2);margin:0}
 
+/* The state of the collection, under the figures that raise the question.
+   Marked off with the gold rule the site uses wherever it speaks about itself
+   rather than about a court — the same left rule as the pull-quote on /about —
+   so it does not read as a second standfirst. */
+.reg-note{
+  max-width:680px;
+  margin:var(--space-6) 0 0;
+  padding-left:var(--space-4);
+  border-left:2px solid var(--gold);
+  font-size:var(--t-sm);
+  line-height:1.6;
+  color:var(--ink2);
+}
+
 /* stats row (data-display "stats" pattern) */
 .reg-meta{
   display:flex;flex-wrap:wrap;

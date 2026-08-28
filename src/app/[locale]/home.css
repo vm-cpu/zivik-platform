@@ -216,10 +216,17 @@
      specificity does not fix it either: `:not()` takes the weight of its
      heaviest argument, so this rule is (0,2,2) and `.emap-card a.emap-more`
      is (0,2,1). The exclusion is the fix. */
-  .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a){
+  /* `.abt-cite-link` joins the list for the same reason as `.emap a`, and it
+     is the third surface to walk into this trap. It is the citation of the
+     General Assembly resolution inside the About band's prose (see
+     content/about-prose.tsx), and it is styled in globals.css because the same
+     paragraph renders on /about too. Cherry is this site's colour for a
+     finding of breach; a link to the document a sentence cites is not one, and
+     `.page a.abt-cite-link` at (0,2,1) cannot outrank this rule's (0,2,2). */
+  .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link){
     color:var(--red);text-decoration:none
   }
-  .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a):hover{color:var(--redd)}
+  .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link):hover{color:var(--redd)}
   /* the lamp gradient is the header's ground on this page, so the bar itself
      stays transparent — everywhere else it supplies its own dark */
   .page .lmp{border:0}
@@ -456,6 +463,14 @@
      shared.css; until this pass it was overriding nothing, because all three
      band headings carried inline sizes that no stylesheet could reach. */
   .page .nsv-mapband > .nsv-sechead h2{font-size:var(--t-h3)}
+  /* The scope line is a caveat under the description, so it takes the panel's
+     quietest tone and the caption step. Kept to one sentence — see the note on
+     `scope` in i18n/dictionaries/uk.ts — because this panel's height is
+     measured against the markers it floats over. */
+  .page .nsv-mapband > .nsv-sechead .nsv-mapscope{
+    margin:var(--space-2) 0 0;font-size:var(--t-cap);line-height:1.55;
+    color:var(--brand-faint);
+  }
   .page .nsv-mapband > .nsv-sechead p{max-width:none}
   /* The drawing runs to the band's top edge, under the panel. */
   .page .nsv-mapband .nsv-map{margin-top:0;border-top:0}
@@ -494,3 +509,13 @@
   color:var(--red);white-space:nowrap;
 }
 .page a.nsv-map-full:hover{color:var(--redd)}
+
+/* Below 1150px the map heading sits in flow above the drawing, and the scope
+   line is a caveat there too. */
+.nsv-mapscope{
+  margin:var(--space-2) 0 0;
+  font-size:var(--t-cap);
+  line-height:1.55;
+  color:var(--brand-faint);
+  max-width:520px;
+}

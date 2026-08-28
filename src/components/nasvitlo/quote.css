@@ -247,3 +247,35 @@
     height: 90px;
   }
 }
+
+/* The third line under the quotation: the order the sentence is taken from,
+   on the ICJ's own site. Set in the mono face beside `.nsvq-meta` rather than
+   in the italic of `.nsvq-case` — the case name is the destination the band
+   has always had, and this is a citation of a document, which is what this
+   site sets in mono everywhere else. Gold, so it reads as a control on the
+   dark ground; the arrow says it leaves the site. */
+/* `.page .nsvq a.nsvq-doc`, not `.nsvq-doc`: home.css paints every content
+   link in `.page` cherry at (0,2,2) — `:not()` carries the weight of its
+   heaviest argument — and on this band's night ground that is 1.69:1, a link
+   the reader cannot see. `.nsvq-case` escapes it only because it is a span
+   inside the anchor setting its own colour. Three classes beat two. */
+.page .nsvq a.nsvq-doc {
+  display: inline-block;
+  margin-top: var(--space-2);
+  font-family: var(--brand-font-mono), ui-monospace, monospace;
+  font-size: var(--t-cap);
+  letter-spacing: 0.02em;
+  color: var(--brand-gold-lit);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.page .nsvq a.nsvq-doc:hover,
+.page .nsvq a.nsvq-doc:focus-visible {
+  color: var(--brand-gold-pale);
+  border-bottom-color: color-mix(in srgb, var(--brand-gold-pale) 45%, transparent);
+}
+.page .nsvq a.nsvq-doc:focus-visible {
+  outline: 2px solid var(--brand-gold-lit);
+  outline-offset: 4px;
+}

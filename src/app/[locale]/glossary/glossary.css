@@ -84,6 +84,19 @@
   color: var(--ink2);
   margin: 0;
 }
+/* What the explanations are. Marked with the gold rule the site gives its own
+   voice — the same treatment as `.reg-note` on the library page — so it reads
+   as the editors speaking about their own work rather than as more lede. */
+.gl-caveat {
+  max-width: 60ch;
+  margin: var(--space-6) 0 0;
+  padding-left: var(--space-4);
+  border-left: 2px solid var(--gold);
+  font-size: var(--t-cap);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+
 .gl-meta {
   display: flex;
   flex-wrap: wrap;

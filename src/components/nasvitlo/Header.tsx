@@ -172,17 +172,26 @@ export default function Header({
             alt={dict.brand.facultyAlt}
             width={1917}
             height={998}
-            /* 40px until now, which put the faculty's own name — the second
-               line of the mark — at the edge of legibility on the dark bar.
+            /* 40px, then clamp(46px, 5vw, 56px), and the owner asked for it
+               bigger again: the faculty's own name is the second line of the
+               mark and it was still the smallest legible thing on the bar.
                The wordmark beside it is the archive's; this one is the
                institution's, and it carries the credibility.
-               Fluid, not a flat 56: the mark is nearly two to one, so 56px
-               costs 108px of bar width, and at 375px that was enough to wrap
-               the UA / EN switch onto two lines. 46px is the widest the mark
-               goes before that happens, and it is still larger than what was
-               there. */
+
+               The ceiling moves and the floor barely does, because they are
+               constrained by different things. On a wide screen nothing is
+               competing for the bar, so the cap goes 56 → 72px. Below 880px
+               the nav is a burger and the bar holds the mark, the wordmark,
+               the burger and the UA / EN switch; the mark is nearly two to
+               one, so every pixel of height costs two of width, and at 375px
+               56px was already enough to wrap the switch onto a second line.
+               48px is the floor, one step over what was there.
+
+               Blur is not a size problem and was fixed separately: this is an
+               SVG now (public/logos/fp-logo-white-*.svg), not the 131 kB
+               fp-logo.webp it used to be, so it is crisp at any height. */
             style={{
-              height: "clamp(46px, 5vw, 56px)",
+              height: "clamp(48px, 6.2vw, 72px)",
               width: "auto",
               display: "block",
             }}
@@ -190,7 +199,9 @@ export default function Header({
           <span
             style={{
               width: 1,
-              height: "clamp(36px, 4vw, 44px)",
+              /* The divider tracks the mark it divides — about four-fifths of
+                 its height, the proportion it had at 46/36. */
+              height: "clamp(38px, 5vw, 58px)",
               /* --brand-cream at 16% — the divider between the faculty mark and
                  the wordmark. Mixed from the token, not spelled as a literal. */
               background:

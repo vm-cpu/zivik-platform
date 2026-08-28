@@ -21,10 +21,10 @@ import type { Dictionary } from "./uk";
  */
 const en: Dictionary = {
   meta: {
-    title: "nasvitlo — international court decisions on the aggression against Ukraine",
+    title: "NaSvitlo — international court decisions on the war against Ukraine",
     description:
-      "An open library of international court decisions on Russia's aggression against Ukraine: the ECtHR, ICJ, ICC and arbitral tribunals. UCU Faculty of Law.",
-    ogAlt: "nasvitlo — library of international court decisions",
+      "An open library of international court decisions on Russia's war against Ukraine: the ECtHR, ICJ, ICC and arbitral tribunals. UCU Faculty of Law.",
+    ogAlt: "NaSvitlo — library of international court decisions",
   },
   nav: {
     skip: "Skip to content",
@@ -40,7 +40,9 @@ const en: Dictionary = {
   },
   brand: {
     facultyAlt: "UCU Faculty of Law",
-    wordmark: "nasvitlo",
+    /* "NaSvitlo", to match «НаСвітло» — see the note in uk.ts. The English
+       source materials in content/about.ts already spell it this way. */
+    wordmark: "NaSvitlo",
   },
   hero: {
     credit: "A project of",
@@ -53,7 +55,7 @@ const en: Dictionary = {
     lampLabel: "Turn the lamp on or off",
   },
   intro: {
-    text: "An online library of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, arising from Ukraine's initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
+    text: "An online library of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, in the proceedings brought by Ukraine and by foreign States to hold Russia accountable for violations committed during the war against Ukraine.",
     about: "About us",
   },
   about: {
@@ -82,7 +84,8 @@ const en: Dictionary = {
     label: "Map",
     heading: "Alleged violations and the courts assessing them",
     description:
-      "Alleged violations — shelling, deportations and seizures — linked by a dotted line to the court where their legal assessment is made.",
+      "Alleged violations, linked by a dotted line to the court where their legal assessment is made.",
+    scope: "The map carries only the cases we have already written up.",
     fullMap: "Full map →",
     legendCourt: "Court",
     legendLit: "Written up",
@@ -124,7 +127,7 @@ const en: Dictionary = {
   },
   registry: {
     label: "Library of decisions",
-    heading: "Every proceeding against Russia, in one library",
+    heading: "Proceedings against Russia, in one library",
     description:
       "Here the light is already on. Every proceeding carries its year, its forum, where it stands, and a link to the source.",
     fullRegistry: "The whole library",
@@ -174,7 +177,7 @@ const en: Dictionary = {
   },
   footer: {
     tagline:
-      "A library of international court decisions on Russia's aggression against Ukraine. We shed light on what they say.",
+      "A library of international court decisions on Russia's war against Ukraine. We shed light on what they say.",
     org: "The Louis B. Sohn Research Centre",
     faculty: "UCU Faculty of Law",
     colArchive: "Library",

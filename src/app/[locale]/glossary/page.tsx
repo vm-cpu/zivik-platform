@@ -50,6 +50,18 @@ const T = {
     uk: "Словник термінів міжнародного права з рішень проти Росії: пояснення простою мовою і посилання на справу, де термін ужито.",
     en: "A glossary of the international-law terms used in the decisions against Russia, in plain language, each traced to the case that uses it.",
   },
+  /* What these explanations are, said before the reader uses one.
+     OWNER'S CONCERN, and it is not fully answered by this note. The
+     definitions are drafted rather than taken from an authority: they are not
+     official, they are not verbatim from the decisions, and some of them read
+     more generally than a lawyer would write them. The library invites people
+     to cite it, so a reader who mistakes one of these for an authoritative
+     definition is the library's own doing. Until the entries are rewritten by
+     the editors, the page says what they are. */
+  caveat: {
+    uk: "Пояснення тут — робочі, редакційні. Це не офіційні визначення й не дослівні цитати з рішень: вони переказують, як термін ужито у справі. Покликатися варто на текст суду, посилання на який стоїть біля кожного пояснення.",
+    en: "These explanations are the editors' working notes. They are not official definitions and not verbatim quotations from the decisions: they restate how a term is used in a case. What to cite is the court's own text, linked beside every explanation.",
+  },
   back: { uk: "← На головну", en: "← Home" },
   search: { uk: "Термін або слово з пояснення…", en: "A term, or a word from a definition…" },
   searchLabel: { uk: "Пошук у словнику", en: "Search the glossary" },
@@ -178,6 +190,7 @@ export default async function GlossaryPage({
               <span className="ml">{pick(T.mCases, locale)}</span>
             </div>
           </div>
+          <p className="gl-caveat">{pick(T.caveat, locale)}</p>
         </header>
 
         <GlossaryList

@@ -11,6 +11,7 @@ import {
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContentRepository } from "@/content/repository";
 import { pick } from "@/content/types";
+import { linkAboutProse } from "@/content/about-prose";
 import {
   siteUrl,
   pathAlternates,
@@ -34,36 +35,43 @@ import "../about.css";
 const T = {
   back: { uk: "На головну", en: "Home" },
   title: { uk: "Про нас", en: "About us" },
-  lede: {
-    uk: "«Насвітло» — бібліотека рішень міжнародних судів і трибуналів, що постали з українських ініціатив притягнути Росію до відповідальності. Проєкт веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
-    en: "nasvitlo is a library of decisions of the international courts and tribunals arising from Ukraine's initiatives to hold Russia accountable. It is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
-  },
+  /* No standfirst under the H1. There used to be one, and it said the library
+     holds decisions «міжнародних судів і трибуналів, що постали з українських
+     ініціатив» — two claims the owner corrected in the same breath: the
+     collection covers foreign national courts as well as international ones,
+     and not every proceeding in it was brought by Ukraine. `scope`, one
+     section below, already says both correctly and at length, so the paragraph
+     was removed rather than fixed into a duplicate of the paragraph under it.
+     Owner's decision. */
   /* Which courts' practice this library covers. It was the home page's intro
      band, a screen above a section that said nearly the same thing at greater
      length; the user asked for it here and off the home page entirely. Kept in
      this page's own prose rather than in `content/about.ts`, because that file
      feeds the home band too. */
   scope: {
-    uk: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів, що стосується українських ініціатив для притягнення Росії до відповідальності за порушення, вчинені під час війни проти України.",
-    en: "An online library of international case-law — the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration — and of foreign national courts, arising from Ukraine\u2019s initiatives to hold Russia accountable for violations committed during the war against Ukraine.",
+    uk: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів у справах, які порушили Україна та іноземні держави, щоб притягнути Росію до відповідальності за порушення, вчинені під час війни проти України.",
+    en: "An online library of international case-law — the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration — and of foreign national courts, in the proceedings brought by Ukraine and by foreign States to hold Russia accountable for violations committed during the war against Ukraine.",
   },
 
   metaDesc: {
-    uk: "Хто веде бібліотеку «насвітло», як готуємо конспекти рішень і в якому стані бібліотека.",
-    en: "Who runs the nasvitlo library, how a decision summary is prepared, and how far the library has got.",
+    uk: "Хто веде бібліотеку «НаСвітло», як готуємо огляди рішень і в якому стані бібліотека.",
+    en: "Who runs the NaSvitlo library, how a decision summary is prepared, and how far the library has got.",
   },
 
   notH: { uk: "Чого тут немає", en: "What you will not find here" },
   not: {
     uk: [
-      "Конспект не заміняє рішення. Першоджерелом лишається текст суду, і посилання на нього стоїть на сторінці кожної справи, де документ у відкритому доступі.",
-      "Ми не додаємо оцінок, яких немає в самому рішенні. Хронологія, таблиця висновків і цифри на сторінці справи переказують те, що вже сказано в конспекті; якщо якесь значення взяте поза ним — із протоколу чи повідомлення суду, — це зафіксовано в джерелі сторінки.",
-      "Це довідкова бібліотека, а не юридична консультація.",
+      "Огляд не заміняє рішення. Першоджерелом лишається текст суду, і посилання на нього стоїть на сторінці кожної справи, де документ у відкритому доступі.",
+      "Ми не додаємо оцінок, яких немає в самому рішенні. Хронологія, таблиця висновків і цифри на сторінці справи переказують те, що вже сказано в огляді; якщо якесь значення взяте поза ним — із протоколу чи повідомлення суду, — це зафіксовано в джерелі сторінки.",
+      /* «Це довідкова бібліотека, а не юридична консультація» stood here as a
+         third bullet. Owner's decision to drop it: the disclaimer belongs in
+         content/legal.ts, which carries it, and on a page about editorial
+         method it read as a lawyer's footer rather than as one of the two
+         genuine limits above it. */
     ],
     en: [
       "A summary does not replace the decision. The court's own text remains the source, and every case page carries a link to it where the document is public.",
       "We add no assessment that is not in the decision itself. The timeline, the table of findings and the figures on a case page restate what the summary already says; where a value comes from outside it — from the court's record or its press release — that is recorded in the page's source.",
-      "This is a reference library, not legal advice.",
     ],
   },
 
@@ -89,6 +97,10 @@ const T = {
     en: "The Centre joins scholarly analysis to practical legal work: it conducts research, holds public debate, and supports the professional development of lawyers willing to take on the hardest questions of their time. This library is one of those answers.",
   },
   missionH: { uk: "Місія Центру", en: "The Centre’s mission" },
+  /* Quoted material. «російської агресії» stands here against the site's own
+     rule — see the note at the top of i18n/dictionaries/uk.ts — because this
+     is the Centre's statement of its own mission in its own words, not the
+     library speaking. Do not "unify" it. */
   mission: {
     uk: [
       "Розвиток національного права України на засадах верховенства права, прав людини та конституційної демократії",
@@ -111,70 +123,37 @@ const T = {
   voiceBy: { uk: "Ольга Денькович", en: "Olha Denkovych" },
   voiceRole: { uk: "керівниця Центру Луї Зона", en: "Head of the Louis Sohn Centre" },
 
-  methodH: {
-    uk: "Як рішення потрапляє в бібліотеку",
-    en: "How a decision gets into the library",
-  },
-  methodLede: {
-    uk: "Порядок той самий для кожної справи. Ми описуємо його тут, щоб читач міг перевірити нас за першоджерелом, а не повірити на слово.",
-    en: "The order is the same for every case. We set it out here so that a reader can check us against the source rather than take our word for it.",
-  },
-  steps: {
-    uk: [
-      {
-        h: "Спершу картка справи",
-        p: "Провадження вносимо до бібліотеки: суд, реєстраційний номер, рік, стан розгляду, коротка нота про предмет і посилання на документ суду, якщо він оприлюднений. На цьому етапі конспекту ще немає — справа стоїть у черзі, і сторінка про це говорить прямо.",
-      },
-      {
-        h: "Потім конспект",
-        p: "Конспект пишуть із тексту рішення окремо від сайту й переносять сюди дослівно. Далі його не редагують вручну: те, що читач бачить у тілі конспекту, — це те, що було написано за рішенням, а не переказ переказу.",
-      },
-      {
-        h: "Навколо конспекту — інструменти",
-        p: "Хронологія, таблиця висновків суду, ключові цифри та мапа театрів дій — це шар візуалізації над конспектом. Кожне їхнє значення переказує твердження, яке вже є в тексті конспекту; винятки зазначені поіменно там, де їх узято з іншого документа суду.",
-      },
-      {
-        h: "Мова",
-        p: "Рішення цитуємо мовою, якою його ухвалено; перекладаємо все, що навколо. Українські версії конспектів — чернетки, доки не пройдуть правничої вичитки.",
-      },
-      {
-        h: "Перевірка за джерелом",
-        p: "На сторінці справи лишаються офіційна назва, дата й посилання на документ суду. Бібліотека існує для того, щоб на неї посилалися, тож перевірка має бути в один клік.",
-      },
-    ],
-    en: [
-      {
-        h: "First the case record",
-        p: "The proceeding goes into the library: court, docket number, year, stage, a short note on the subject matter, and a link to the court's document where one is public. At this point there is no summary — the case is queued, and the page says so plainly.",
-      },
-      {
-        h: "Then the summary",
-        p: "The summary is written from the text of the decision, away from the site, and carried across verbatim. It is not edited by hand afterwards: what a reader sees in the body of a summary is what was written against the decision, not a retelling of a retelling.",
-      },
-      {
-        h: "Instruments around the summary",
-        p: "The timeline, the table of the court's findings, the headline figures and the map of theatres are a layer of visualization over the summary. Every value in them restates a statement already in the summary; the exceptions are named where a value is taken from another document of the court.",
-      },
-      {
-        h: "Language",
-        p: "A decision is quoted in the language it was handed down in; everything around it is translated. Ukrainian versions of the summaries are drafts until they have passed legal review.",
-      },
-      {
-        h: "Checking against the source",
-        p: "Each case page keeps the official case name, the date and the link to the court's document. The library exists to be cited, so checking it should take one click.",
-      },
-    ],
-  },
+  /* ── «Як рішення потрапляє в бібліотеку» — removed, owner's decision ──────
+     A five-step account of the editorial method used to stand here. It is
+     gone, and it is not to be restored as written. Three separate reasons,
+     each one of them sufficient:
+
+       • It fixed a methodology the project has not settled. Step 01 said a
+         case enters as a record and step 02 that the summary is written from
+         the text of the decision — but where no decision is published, the
+         library works from reports of it, which step 02 denied outright.
+       • Step 04 called the Ukrainian summaries «чернетки, доки не пройдуть
+         правничої вичитки». Publishing a page that calls its own Ukrainian
+         text a draft is not a caveat a reader can use.
+       • Step 05 promised that checking a summary «має бути в один клік». The
+         library links a decision as a whole; it does not link the individual
+         paragraphs its summaries cite, so the promise was wider than the
+         thing delivered.
+
+     What the block was for — telling a reader that a case can be in the
+     library before it is written up — is said in `state` below and on the
+     library page itself, in one sentence each, without committing the project
+     to a procedure it may change. */
 
   stateH: { uk: "Стан бібліотеки", en: "Where the library stands" },
   state: {
     /*
-     * This used to read «Реєстр повний, конспекти — ні» / "The registry is
+     * This used to read «Реєстр повний, огляди — ні» / "The registry is
      * complete; the summaries are not", and it was the only place on the site
      * that said so. Three others say the opposite, one of them on this very
      * page:
      *   • src/content/legal.ts — «Бібліотека наповнюється… Відсутність справи,
-     *     документа чи конспекту не означає, що провадження не існує» /
+     *     документа чи огляду не означає, що провадження не існує» /
      *     "The library is still being filled… The absence of a case, a
      *     document or a summary does not mean that the proceeding does not
      *     exist";
@@ -192,8 +171,8 @@ const T = {
      * are finished" is a tautology once the library *is* the summaries: the
      * two incomplete things are the list of proceedings and the write-ups.
      */
-    uk: "Сайт працює в тестовому режимі. Ні перелік проваджень, ні конспекти не завершені: спершу справу вносимо до бібліотеки, потім готуємо конспект. Справи, до яких ще не дійшли руки, позначені в бібліотеці та на мапі як такі; відсутність провадження тут не означає, що його не існує.",
-    en: "The site is in test mode. Neither the list of proceedings nor the summaries are finished: a proceeding goes into the library first and is written up later. Cases we have not reached yet are marked as such in the library and on the map; a proceeding's absence here does not mean it does not exist.",
+    uk: "Бібліотека наповнюється. Провадження вносимо до неї раніше, ніж встигаємо їх опрацювати, тому частина справ поки що стоїть без огляду — у бібліотеці та на мапі вони позначені як такі. Відсутність провадження тут не означає, що його не існує.",
+    en: "The library is still being filled. Proceedings enter it faster than they can be written up, so some cases stand without a summary for now — they are marked as such in the library and on the map. A proceeding's absence here does not mean it does not exist.",
   },
   mProceedings: { uk: "проваджень", en: "proceedings" },
   /* «Інстанцій» / "institutions", not "courts": this counts the same figure
@@ -201,12 +180,12 @@ const T = {
      enforcement measures, filed as `executive` — is not a court. The two
      pages printed the same number under two different nouns. */
   mInstitutions: { uk: "інстанцій", en: "institutions" },
-  mAnalysed: { uk: "з конспектом", en: "written up" },
+  mAnalysed: { uk: "з оглядом", en: "written up" },
   stateLink: { uk: "Уся бібліотека", en: "The whole library" },
 
   contactH: { uk: "Написати нам", en: "Write to us" },
   contact: {
-    uk: "Помітили помилку в конспекті або знаєте про провадження, якого тут немає — напишіть.",
+    uk: "Помітили помилку в огляді або знаєте про провадження, якого тут немає — напишіть.",
     en: "If you have spotted an error in a summary, or know of a proceeding that is missing, write to us.",
   },
   /* No `as const` here, unlike the team page. Two of these entries are arrays;
@@ -280,6 +259,8 @@ export default async function AboutPage({
   ]);
 
   const L = <V,>(x: Record<Locale, V>) => pick(x, locale);
+  /* The citation table travels with the prose — see content/about.ts. */
+  const aboutLinks = about.links ? L(about.links) : [];
 
   /* Counted, never written down. The library page counts the same three
      figures the same way — instances are the institutions that actually have
@@ -296,7 +277,6 @@ export default async function AboutPage({
             ← {L(T.back)}
           </Link>
           <h1>{L(T.title)}</h1>
-          <p className="abt-lede">{L(T.lede)}</p>
         </header>
 
         {/* The library's own description, from the content layer, so the
@@ -306,7 +286,7 @@ export default async function AboutPage({
           <div className="abt-prose">
             <p>{L(T.scope)}</p>
             {L(about.paragraphs).map((text, i) => (
-              <p key={i}>{text}</p>
+              <p key={i}>{linkAboutProse(text, aboutLinks)}</p>
             ))}
           </div>
         </section>
@@ -318,19 +298,6 @@ export default async function AboutPage({
               <li key={i}>{text}</li>
             ))}
           </ul>
-        </section>
-
-        <section className="abt-sec">
-          <h2>{L(T.methodH)}</h2>
-          <p className="abt-standfirst">{L(T.methodLede)}</p>
-          <ol className="abt-steps">
-            {L(T.steps).map((step) => (
-              <li key={step.h}>
-                <h3>{step.h}</h3>
-                <p>{step.p}</p>
-              </li>
-            ))}
-          </ol>
         </section>
 
         <section className="abt-sec">
@@ -383,7 +350,12 @@ export default async function AboutPage({
             </figcaption>
           </figure>
 
-          <p className="abt-addr">{dict.footer.address}</p>
+          {/* The street address used to sit here, directly under Olha
+              Denkovych's name. It is the data controller's address and it
+              belongs to the privacy notice, which carries it; under a
+              quotation about the Centre's mission it read as though the
+              speaker were being served with something. Owner's decision.
+              content/legal.ts still holds it, and so does the footer. */}
           <p className="abt-more">
             <Link href={`/${locale}/team`}>{L(T.whoLink)} →</Link>
           </p>

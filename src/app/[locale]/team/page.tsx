@@ -28,7 +28,7 @@ const T = {
      the same words, so the two pages do not offer a reader two different
      reasons to use one address. */
   contactText: {
-    uk: "Помітили помилку в конспекті або знаєте про провадження, якого тут немає — напишіть.",
+    uk: "Помітили помилку в огляді або знаєте про провадження, якого тут немає — напишіть.",
     en: "If you have spotted an error in a summary, or know of a proceeding that is missing, write to us.",
   },
 } as const;

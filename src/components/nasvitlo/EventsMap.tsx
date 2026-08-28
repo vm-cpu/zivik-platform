@@ -144,6 +144,9 @@ export interface MapGeometry {
  */
 const LABEL_SIDE: Record<string, "left" | "right" | "above" | "below"> = {
   crimea: "left",
+  /* `kerch` has no event behind it today — «Затримання кораблів» is off the
+     map, see content/map.ts. The entry stays because the placement was worked
+     out against Crimea's label and would have to be worked out again. */
   kerch: "right",
   energy: "left",
   mariupol: "below",
@@ -2884,19 +2887,28 @@ export default function EventsMap({
                 {labels.legendLit}
               </button>
             </li>
-            <li>
-              <button
-                type="button"
-                className="emap-key"
-                aria-pressed={hi === "unlit"}
-                onClick={() => setHi(hi === "unlit" ? null : "unlit")}
-              >
-                <svg viewBox="0 0 22 22" aria-hidden="true">
-                  <circle className="k-unlit" cx="11" cy="11" r="5" />
-                </svg>
-                {labels.legendUnlit}
-              </button>
-            </li>
+            {/* «Ще досліджуємо», and only where there is one to point at.
+                It used to render unconditionally, and after «Затримання
+                кораблів» was taken off the map (see content/map.ts) it would
+                have been a key, a colour and a filter standing for nothing —
+                a reader pressing it would light up an empty map. Rendered
+                from the data, so putting an unwritten event back restores the
+                key with it. */}
+            {events.some((e) => !e.cases?.length) && (
+              <li>
+                <button
+                  type="button"
+                  className="emap-key"
+                  aria-pressed={hi === "unlit"}
+                  onClick={() => setHi(hi === "unlit" ? null : "unlit")}
+                >
+                  <svg viewBox="0 0 22 22" aria-hidden="true">
+                    <circle className="k-unlit" cx="11" cy="11" r="5" />
+                  </svg>
+                  {labels.legendUnlit}
+                </button>
+              </li>
+            )}
             {/* The ground a mark speaks for, where a point is not the whole
                 truth about it. Only where some site actually has one. */}
             {variant === "full" && events.some((e) => e.area) && (

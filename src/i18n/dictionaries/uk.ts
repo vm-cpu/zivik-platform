@@ -34,13 +34,36 @@
  * with no reader on the other end. If the route is ever renamed it needs a
  * redirect and a sitemap change, neither of which is a vocabulary question.
  * ────────────────────────────────────────────────────────────────────────────
+ *
+ * ── One word: «огляд», not «конспект» ───────────────────────────────────────
+ * USER DECISION. What this library publishes about a decision is an «огляд».
+ * The word was «конспект» in twenty-one places — the library's filters and
+ * column, the map's legend and card, the pending-case page, the newsletter,
+ * /about, /team and both legal documents — and it is «огляд» in all of them
+ * now. «Конспект» is what a student takes from a lecture; the register was
+ * wrong for a research library.
+ *
+ * The English is unchanged: "summary" for the thing, "write-up" where the
+ * sentence is about the act of writing it. Those already read correctly and
+ * the owner's correction was about the Ukrainian.
+ *
+ * `content/summaries/` is exempt in both languages — those files hold the
+ * courts' own words, and the directory name is an identifier, not copy.
+ * ────────────────────────────────────────────────────────────────────────────
  */
 const uk = {
   meta: {
-    title: "насвітло — рішення міжнародних судів щодо агресії проти України",
+    /* «Війна проти України», not «агресія». The platform is named for the war
+       and says the word in its own strapline; «агресія» appeared beside it in
+       the title, the description and the footer, so the site used two names
+       for its subject on the same screen. Owner's decision: «війна проти
+       України» everywhere the site speaks in its own voice. The summaries are
+       exempt — a court's own characterisation of the conduct is quoted as the
+       court wrote it, and several of them write «агресія». */
+    title: "НаСвітло — рішення міжнародних судів щодо війни проти України",
     description:
-      "Відкрита бібліотека рішень міжнародних судів щодо російської агресії проти України: ЄСПЛ, Міжнародний суд ООН, ICC, арбітражі. Проєкт Факультету права УКУ.",
-    ogAlt: "насвітло — бібліотека рішень міжнародних судів",
+      "Відкрита бібліотека рішень міжнародних судів щодо війни Росії проти України: ЄСПЛ, Міжнародний суд ООН, ICC, арбітражі. Проєкт Факультету права УКУ.",
+    ogAlt: "НаСвітло — бібліотека рішень міжнародних судів",
   },
   nav: {
     skip: "Перейти до змісту",
@@ -56,7 +79,12 @@ const uk = {
   },
   brand: {
     facultyAlt: "Факультет права УКУ",
-    wordmark: "насвітло",
+    /* One capitalisation of the name, everywhere, and it is «НаСвітло».
+       Owner's decision, and it reaches the logotype: the wordmark in the bar,
+       the browser tab, the search result and the running prose all carried
+       different casings of the same word — «насвітло», «НаСвітло»,
+       «Насвітло» — which reads as three names for one library. */
+    wordmark: "НаСвітло",
   },
   hero: {
     credit: "Проєкт",
@@ -69,7 +97,11 @@ const uk = {
     lampLabel: "Увімкнути або вимкнути лампу",
   },
   intro: {
-    text: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів, що стосується українських ініціатив для притягнення Росії до відповідальності за порушення, вчинені під час війни проти України.",
+    /* Not «українських ініціатив». The Netherlands brought one of the four
+       inter-State applications behind the MH17 judgment, and Finland tried
+       Torden on its own motion — the collection is not only Ukraine's doing.
+       Owner's correction; content/about.ts and /about carry the same fix. */
+    text: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів у справах, які порушили Україна та іноземні держави, щоб притягнути Росію до відповідальності за порушення, вчинені під час війни проти України.",
     about: "Про нас",
   },
   about: {
@@ -81,7 +113,7 @@ const uk = {
   slogan: "Досліджуємо · Пояснюємо · Висвітлюємо",
   pending: {
     title: "Ще досліджуємо",
-    body: "Цю справу вже внесено до бібліотеки, але конспекту ще немає — ми над ним працюємо. Нижче те, що вже відомо, і посилання на документ суду, якщо він у відкритому доступі.",
+    body: "Цю справу вже внесено до бібліотеки, але огляду ще немає — ми над ним працюємо. Нижче те, що вже відомо, і посилання на документ суду, якщо він у відкритому доступі.",
     forum: "Суд",
     status: "Стан",
     kind: "Галузь",
@@ -100,11 +132,29 @@ const uk = {
     moveCard: "Перетягнути картку",
     label: "Мапа",
     heading: "Факти порушень та суди, які здійснюють їх правову оцінку",
+    /* The three nouns used to be set off by dashes — «обстріли, депортації та
+       захоплення» — which reads as the list of what Russia is accused of. It
+       is not: it was a sample of what six markers happen to show, on a map
+       whose own registry carries thirty-nine proceedings. The sentence states
+       the mechanic and names nothing it cannot finish. Owner's correction. */
     description:
-      "Заявлені порушення — обстріли, депортації та захоплення — зʼєднані пунктиром із судом, де здійснюється їх правова оцінка.",
+      "Заявлені порушення зʼєднані пунктиром із судом, де здійснюється їх правова оцінка.",
+    /* What the drawing does and does not carry, said above it rather than
+       discovered from it. The map used to answer this with a legend key —
+       «Ще досліджуємо» — which stood for exactly one event and so implied the
+       archive had one unwritten case, when it has thirty-one. The key is gone
+       with the event (see content/map.ts); the sentence replaces it, and it
+       is the truthful version of the same fact. Owner's decision. */
+    /* Kept to one line on purpose. On a wide screen this heading is a panel
+       floating over the drawing, and its height is measured against the
+       markers underneath it — see the 1150px note in home.css. A second
+       sentence about where the full list lives would cost three lines of
+       panel, and both the band's own «Повна мапа →» and the library in the
+       navigation already answer it. */
+    scope: "На мапі — лише ті справи, які ми вже опрацювали.",
     fullMap: "Повна мапа →",
     legendCourt: "Суд",
-    legendLit: "Є конспект",
+    legendLit: "Є огляд",
     legendUnlit: "Ще досліджуємо",
     courtsSeat: "Суди засідають у",
     courtHears: "Розглядає справи",
@@ -147,7 +197,7 @@ const uk = {
        file, and it is the last thing a reader sees before landing on the
        page that calls itself «Бібліотека рішень». */
     allInRegistry: "Дивитися в бібліотеці →",
-    pending: "Конспект у підготовці",
+    pending: "Огляд у підготовці",
     /* The registry's own wording for this field, not a new one: the sign in
        the source says which way the money ran, so what a tag can honestly
        print is the magnitude, called the sum in dispute. */
@@ -185,7 +235,12 @@ const uk = {
        and the footer link carry. The key stays `registry.*`; the words the
        reader sees do not. See the note at the top of this file. */
     label: "Бібліотека рішень",
-    heading: "Кожне провадження проти Росії — в одній бібліотеці",
+    /* It read «Кожне провадження проти Росії — в одній бібліотеці». That is a
+       claim of completeness, and the library is still being filled: one
+       proceeding we have not reached yet makes the heading false. The band
+       says where the proceedings are gathered, not that they are all here.
+       Owner's correction. */
+    heading: "Провадження проти Росії — в одній бібліотеці",
     description:
       "Тут уже світло. Кожне провадження — з роком, судом, станом розгляду і посиланням на першоджерело.",
     fullRegistry: "Уся бібліотека",
@@ -195,7 +250,7 @@ const uk = {
        справ" on the home page. */
     caseWord: { one: "справа", few: "справи", many: "справ" },
     legendLit: "Можна прочитати: переказ, хронологія, документи",
-    legendQueued: "Поки тільки картка справи — конспект пишемо",
+    legendQueued: "Поки тільки картка справи — огляд пишемо",
     /* One chip used to carry «У розгляді», «Ордер» and «Рішення» side by side,
        which mixes two questions: where the proceedings stand, and what the
        forum issued. They are two tag dimensions now. Every label below is the
@@ -238,11 +293,11 @@ const uk = {
     },
   },
   newsletter: {
-    heading: "Щомісяця — ще кілька рішень насвітло",
+    heading: "Щомісяця — ще кілька рішень НаСвітло",
     text: "Лист про те, які рішення ми опрацювали за місяць: що встановив суд і на що з цього можна опертися.",
     subscribe: "Отримувати листа",
     support: "Підтримати бібліотеку",
-    assurance: "Тільки конспекти. Відписатися можна з будь-якого листа.",
+    assurance: "Тільки огляди. Відписатися можна з будь-якого листа.",
   },
   partners: {
     label: "Партнери",
@@ -259,7 +314,7 @@ const uk = {
   },
   footer: {
     tagline:
-      "Бібліотека рішень міжнародних судів щодо російської агресії проти України. Ми проливаємо на них світло.",
+      "Бібліотека рішень міжнародних судів щодо війни Росії проти України. Ми проливаємо на них світло.",
     org: "Дослідницький центр імені Луї Б. Зона",
     faculty: "Факультет права УКУ",
     colArchive: "Бібліотека",

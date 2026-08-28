@@ -569,11 +569,25 @@ The measure has been argued four times, so here is the method that settles
   color: var(--faint);
 }
 
+/* What the explanations in this band are. The same caveat the glossary page
+   carries; here it sits between the terms and the way out to the full
+   dictionary, in the page's quietest tone, because it is a qualification of
+   what the reader has just read rather than part of it. */
+.casepage .terms-caveat {
+  margin: var(--space-5) 0 0;
+  max-width: 60ch;
+  font-size: var(--t-cap);
+  line-height: 1.55;
+  color: var(--faint);
+}
+
 /* The way out of the band and into the whole dictionary. Set like the other
    arrow links on this page rather than as a button: it is a continuation of
    the list above it, not a call to action. */
 .casepage .terms-more {
-  margin: var(--space-6) 0 0;
+  /* space-6 before the caveat existed; space-4 now, because the caveat above
+     it already opens the gap and two full steps read as a break in the band. */
+  margin: var(--space-4) 0 0;
   font: 600 var(--t-cap) var(--brand-font-body);
 }
 

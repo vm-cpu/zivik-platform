@@ -58,7 +58,7 @@ export const legalPhone = "+38 (032) 240-99-40";
 /**
  * The production host.
  *
- * NOT used in the prose: both documents refer to the site by name («насвітло»
+ * NOT used in the prose: both documents refer to the site by name («НаСвітло»
  * / the Site) precisely because the final domain is unsettled — today the
  * library answers on a Vercel preview host. This constant exists only so
  * there is one place to correct if a clause ever has to name the host.
@@ -142,8 +142,8 @@ export const privacy: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Ця Політика конфіденційності (далі — Політика) пояснює, які персональні дані збирає та обробляє Факультет права Українського католицького університету (далі — Факультет, ми) через вебсайт бібліотеки «насвітло» (далі — Сайт), з якою метою та на яких підставах.",
-            en: "This Privacy Policy (the Policy) explains what personal data the Faculty of Law of the Ukrainian Catholic University (the Faculty, we) collects and processes through the website of the насвітло library (the Site), for what purposes and on what grounds.",
+            uk: "Ця Політика конфіденційності (далі — Політика) пояснює, які персональні дані збирає та обробляє Факультет права Українського католицького університету (далі — Факультет, ми) через вебсайт бібліотеки «НаСвітло» (далі — Сайт), з якою метою та на яких підставах.",
+            en: "This Privacy Policy (the Policy) explains what personal data the Faculty of Law of the Ukrainian Catholic University (the Faculty, we) collects and processes through the website of the NaSvitlo library (the Site), for what purposes and on what grounds.",
           },
         },
         {
@@ -415,7 +415,7 @@ export const terms: LegalDocument = {
   slug: "terms",
   title: { uk: "Умови користування", en: "Terms of use" },
   lede: {
-    uk: "Бібліотека відкрита і безкоштовна. Головне, про що просимо пам'ятати: конспект — це не рішення, і ніщо тут не є юридичною консультацією.",
+    uk: "Бібліотека відкрита і безкоштовна. Головне, про що просимо пам'ятати: огляд — це не рішення, і ніщо тут не є юридичною консультацією.",
     en: "The library is open and free to use. The main things to keep in mind: a summary is not the decision, and nothing here is legal advice.",
   },
   sections: [
@@ -426,8 +426,8 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Ці Умови користування (далі — Умови) регулюють доступ до вебсайту бібліотеки «насвітло» (далі — Сайт) і користування ним. Сайт веде Дослідницький центр імені Луї Б. Зона Факультету права Українського католицького університету, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна.",
-            en: "These Terms of use (the Terms) govern access to and use of the website of the насвітло library (the Site). The Site is run by the Louis B. Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, 17 Svientsitskoho St., Lviv, 79011, Ukraine.",
+            uk: "Ці Умови користування (далі — Умови) регулюють доступ до вебсайту бібліотеки «НаСвітло» (далі — Сайт) і користування ним. Сайт веде Дослідницький центр імені Луї Б. Зона Факультету права Українського католицького університету, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна.",
+            en: "These Terms of use (the Terms) govern access to and use of the website of the NaSvitlo library (the Site). The Site is run by the Louis B. Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, 17 Svientsitskoho St., Lviv, 79011, Ukraine.",
           },
         },
         {
@@ -446,14 +446,14 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, конспекти рішень, хронології, мапа подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
+            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, огляди рішень, хронології, мапа подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
             en: "The Site is an open library of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a list of cases, decision summaries, chronologies, an events map and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
           },
         },
         {
           kind: "p",
           text: {
-            uk: `Бібліотека наповнюється: у ній ${registryTotal} проваджень, з яких опрацьовано ${registrySummarised}. Відсутність справи, документа чи конспекту не означає, що провадження не існує, що воно завершилося або що воно неважливе.`,
+            uk: `Бібліотека наповнюється: у ній ${registryTotal} проваджень, з яких опрацьовано ${registrySummarised}. Відсутність справи, документа чи огляду не означає, що провадження не існує, що воно завершилося або що воно неважливе.`,
             en: `The library is still being filled: it holds ${registryTotal} proceedings, of which ${registrySummarised} have been summarised. The absence of a case, a document or a summary does not mean that the proceeding does not exist, that it has ended, or that it is unimportant.`,
           },
           link: { label: { uk: "Переглянути бібліотеку", en: "Open the library" }, to: "registry" },
@@ -470,7 +470,7 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Конспект — це не рішення. Матеріали Сайту є стислим викладом, аналізом і неофіційним перекладом судових актів, який готують дослідники Центру. Автентичним є лише текст, оприлюднений відповідним судом чи трибуналом мовою судочинства; у разі будь-якої розбіжності діє він, а не наш виклад.",
+            uk: "Огляд — це не рішення. Матеріали Сайту є стислим викладом, аналізом і неофіційним перекладом судових актів, який готують дослідники Центру. Автентичним є лише текст, оприлюднений відповідним судом чи трибуналом мовою судочинства; у разі будь-якої розбіжності діє він, а не наш виклад.",
             en: "A summary is not the decision. The materials on the Site are a condensed account, an analysis and an unofficial translation of judicial acts, prepared by the Centre’s researchers. Only the text published by the court or tribunal itself, in the language of the proceedings, is authoritative; in the event of any discrepancy that text prevails, not our account.",
           },
         },
@@ -514,15 +514,15 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Що справді є нашим — це те, що ми створюємо самі: конспекти й аналітичні тексти, хронології, неофіційні переклади, добір та впорядкування матеріалів у бібліотеці, мапи, ілюстрації, дизайн і код Сайту. Ці матеріали є об'єктами авторського права і належать Факультету права УКУ та Дослідницькому центру імені Луї Б. Зона або використовуються на законних підставах.",
+            uk: "Що справді є нашим — це те, що ми створюємо самі: огляди й аналітичні тексти, хронології, неофіційні переклади, добір та впорядкування матеріалів у бібліотеці, мапи, ілюстрації, дизайн і код Сайту. Ці матеріали є об'єктами авторського права і належать Факультету права УКУ та Дослідницькому центру імені Луї Б. Зона або використовуються на законних підставах.",
             en: "What is ours is what we make ourselves: the summaries and analytical texts, the chronologies, the unofficial translations, the selection and arrangement of the material in the library, the maps, the illustrations, and the design and code of the Site. These are subject to copyright and belong to the UCU Faculty of Law and the Louis B. Sohn Research Centre, or are used on lawful grounds.",
           },
         },
         {
           kind: "p",
           text: {
-            uk: "Наші матеріали поширюються на умовах ліцензії Creative Commons Attribution 4.0 International (CC BY 4.0). Ви можете вільно копіювати, поширювати, переробляти й використовувати їх — зокрема в комерційних цілях — за єдиної умови: зазначте авторство («насвітло», Дослідницький центр імені Луї Б. Зона Факультету права УКУ), дайте активне посилання на відповідну сторінку Сайту й вкажіть, чи вносили ви зміни.",
-            en: "Our materials are released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). You are free to copy, redistribute, adapt and build upon them — including commercially — on one condition: give attribution (насвітло, the Louis B. Sohn Research Centre at the UCU Faculty of Law), link to the relevant page of the Site, and indicate whether you made changes.",
+            uk: "Наші матеріали поширюються на умовах ліцензії Creative Commons Attribution 4.0 International (CC BY 4.0). Ви можете вільно копіювати, поширювати, переробляти й використовувати їх — зокрема в комерційних цілях — за єдиної умови: зазначте авторство («НаСвітло», Дослідницький центр імені Луї Б. Зона Факультету права УКУ), дайте активне посилання на відповідну сторінку Сайту й вкажіть, чи вносили ви зміни.",
+            en: "Our materials are released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). You are free to copy, redistribute, adapt and build upon them — including commercially — on one condition: give attribution (NaSvitlo, the Louis B. Sohn Research Centre at the UCU Faculty of Law), link to the relevant page of the Site, and indicate whether you made changes.",
           },
         },
         {

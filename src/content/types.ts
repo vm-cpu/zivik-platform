@@ -254,8 +254,24 @@ export interface Partner {
   url?: string;
 }
 
+/**
+ * One outbound link inside the about prose.
+ *
+ * `text` is a literal substring of one of the paragraphs, not a separate
+ * label: the sentence names the document — «резолюція «Територіальна
+ * цілісність України»» — and the name itself is what the reader clicks. A
+ * `text` that no paragraph contains renders as nothing, which is why
+ * `checkAbout` in content/about.ts fails the build on one.
+ */
+export interface AboutLink {
+  text: string;
+  href: string;
+}
+
 /** "About the library" prose, per locale. */
 export interface AboutContent {
   title: Localized;
   paragraphs: Localized<string[]>;
+  /** Optional; absent means the paragraphs are plain text. */
+  links?: Localized<AboutLink[]>;
 }

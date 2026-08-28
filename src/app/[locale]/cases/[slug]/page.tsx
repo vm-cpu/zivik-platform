@@ -207,6 +207,13 @@ const T = {
     uk: "Ці терміни у словнику бібліотеки",
     en: "These terms in the library's glossary",
   },
+  /* The same caveat the glossary page carries under its masthead, in one
+     sentence. A reader who never opens /glossary meets these explanations
+     here, and this is where they would be mistaken for the court's own. */
+  glossaryCaveat: {
+    uk: "Пояснення — робочі, редакційні: не офіційні визначення й не дослівні цитати з рішення.",
+    en: "The explanations are the editors' working notes: not official definitions, and not verbatim quotations from the decision.",
+  },
   navFulltext: { uk: "Самері", en: "Summary" },
   navSources: { uk: "Джерела", en: "Sources" },
   officialH: { uk: "Офіційні документи Суду", en: "Official court documents" },
@@ -1558,6 +1565,7 @@ export default async function CasePage({
             clear={pick(T.termsClear, locale)}
             empty={pick(T.termsEmpty, locale)}
           />
+          <p className="terms-caveat">{pick(T.glossaryCaveat, locale)}</p>
           <p className="terms-more">
             <Link href={`/${locale}/glossary?case=${slug}`}>
               {pick(T.glossaryAll, locale)} →

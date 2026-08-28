@@ -17,6 +17,24 @@ import "./quote.css";
 const QUOTE_SLUG = "icj-genocide";
 
 /**
+ * The document the sentence is taken from: the ICJ's Order on provisional
+ * measures of 16 March 2022 in *Allegations of Genocide*, on the Court's own
+ * site.
+ *
+ * The band linked only the case page, and the case page writes up a different
+ * decision — the Judgment on Preliminary Objections of 2 February 2024. So a
+ * reader who wanted the words above could reach the case but not the order
+ * they come from. Owner's request, and it is the archive's own rule: a quoted
+ * court is quoted with the document behind it.
+ *
+ * The URL is the one the owner gave, with its `fbclid` stripped — that
+ * parameter is a click identifier from the referring site and has no business
+ * in a citation.
+ */
+const QUOTE_DOC =
+  "https://www.icj-cij.org/public/files/case-related/182/182-20220316-ORD-01-00-EN.pdf";
+
+/**
  * The quotation marks, per language. Ukrainian sets «…», English “…”.
  * The dictionary's `quote.text` carries no marks of its own, so nothing is
  * doubled here — check before changing either side.
@@ -92,9 +110,10 @@ export default function Quote({
         page carries it, and no question a reader has on a home page is
         answered by it.
 
-        `dict.quote.read` ("Читати рішення" / "Read the decision") has had no
-        consumer since the earlier repair, and `dict.quote.source` is now
-        rendered whole — a matter for whoever owns the dictionaries.
+        `dict.quote.read` ("Читати рішення" / "Read the decision") is the label
+        on the third line, which the owner asked for: the order itself, on the
+        Court's site. It is the one link on this band that does deliver the
+        quoted decision.
       */}
       <figcaption className="nsvq-cite">
         <Link href={href} className="nsvq-link">
@@ -102,6 +121,18 @@ export default function Quote({
           <span aria-hidden="true"> →</span>
         </Link>
         <span className="nsvq-meta">{dict.quote.source}</span>
+        {/* `dict.quote.read` — «Читати рішення» / "Read the decision" — has a
+            consumer again, and this time it delivers what it promises: the
+            order the sentence above is quoted from, not the case page. */}
+        <a
+          className="nsvq-doc"
+          href={QUOTE_DOC}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {dict.quote.read}
+          <span aria-hidden="true"> ↗</span>
+        </a>
       </figcaption>
     </figure>
   );

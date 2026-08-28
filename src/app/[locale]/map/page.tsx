@@ -116,6 +116,9 @@ const stageWord = (k: string | undefined) =>
             </div>
             <h1>{dict.mapSection.heading}</h1>
             <p className="mp-lede">{dict.mapSection.pageLede}</p>
+            {/* Same sentence as the home band's, and for the same reason: the
+                map holds the written-up cases, the library holds them all. */}
+            <p className="mp-scope">{dict.mapSection.scope}</p>
           </header>
 
           <EventsMap

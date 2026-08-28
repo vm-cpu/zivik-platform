@@ -490,3 +490,28 @@ textarea:disabled {
     word-break: break-all;
   }
 }
+
+/* ── The citation link inside the about prose ───────────────────────────────
+   `content/about.ts` names the General Assembly resolution and links it, and
+   that paragraph renders in two places — the home page's About band and
+   /about — which are styled by two different files. The rule lives here so the
+   link cannot be styled on one page and bare on the other.
+
+   Underlined rather than coloured, and the colour is explicitly held at
+   `inherit`: `home.css` turns every unclassed link in `.page` cherry on hover,
+   and cherry on this site means a finding of breach, not a destination.
+   Specificity (0,2,0) beats that rule's (0,1,1)… only on the hover selector,
+   so both are stated. */
+.page a.abt-cite-link,
+.abt-cite-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--dur) var(--ease);
+}
+.page a.abt-cite-link:hover,
+.page a.abt-cite-link:focus-visible {
+  color: inherit;
+  text-decoration-color: currentColor;
+}

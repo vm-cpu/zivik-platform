@@ -46,13 +46,13 @@ const T = {
      same twenty-two words twice on a page of fifty-two, which is a third of
      everything it says. */
   lede: {
-    uk: "Організації, з якими працює «насвітло».",
-    en: "The organisations nasvitlo works with.",
+    uk: "Організації, з якими працює «НаСвітло».",
+    en: "The organisations NaSvitlo works with.",
   },
   /* 118 / 138 characters — both inside the ~160 a search result shows. */
   metaDesc: {
-    uk: "Організації, з якими працює бібліотека рішень «насвітло», і хто її веде.",
-    en: "The organisations the nasvitlo library of decisions works with, and who runs the library itself.",
+    uk: "Організації, з якими працює бібліотека рішень «НаСвітло», і хто її веде.",
+    en: "The organisations the NaSvitlo library of decisions works with, and who runs the library itself.",
   },
   site: { uk: "Сайт організації", en: "The organisation’s site" },
   runH: { uk: "Хто веде бібліотеку", en: "Who runs the library" },

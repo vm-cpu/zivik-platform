@@ -1,6 +1,7 @@
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { pick, type AboutContent } from "@/content/types";
+import { linkAboutProse } from "@/content/about-prose";
 
 /**
  * "About the Library" — main text plus a marginalia side-rail (law-journal
@@ -17,6 +18,7 @@ export default function About({
   institutionCount: number;
 }) {
   const paragraphs = pick(about.paragraphs, locale);
+  const links = about.links ? pick(about.links, locale) : [];
 
   return (
     <div
@@ -42,7 +44,7 @@ export default function About({
             whose text is all the same rank. Emphasis is the eyebrow's and
             the button's job. */}
         {paragraphs.map((text, i) => (
-          <p key={i}>{text}</p>
+          <p key={i}>{linkAboutProse(text, links)}</p>
         ))}
       </div>
     </div>

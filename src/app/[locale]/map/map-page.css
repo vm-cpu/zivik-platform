@@ -144,7 +144,8 @@
 }
 .mp-mast a,
 .mp-mast h1,
-.mp-lede {
+.mp-lede,
+.mp-scope {
   pointer-events: auto;
 }
 .mp-mast {
@@ -184,6 +185,15 @@
   font-size: var(--t-cap);
   line-height: 1.55;
   color: var(--brand-muted-dark);
+}
+/* What the drawing carries, under what it means. A step quieter than the lede
+   above it — this is a caveat, not the page's argument — and it hides with the
+   lede on a short window, where the masthead has room for the title only. */
+.mp-scope {
+  margin: var(--space-2) 0 0;
+  font-size: var(--t-cap);
+  line-height: 1.55;
+  color: var(--brand-faint);
 }
 .mappage .mp-mast a {
   color: var(--brand-gold-pale);
@@ -479,7 +489,8 @@
     padding-block: 4px;
   }
   .mappage .mp-mast .lbl,
-  .mp-lede {
+  .mp-lede,
+  .mp-scope {
     display: none;
   }
   /* And the framing strip moves up out of the drawing into the masthead's own

@@ -53,7 +53,7 @@ const T = {
     uk: "39 проваджень проти Росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
     en: "39 proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
   },
-  // The wordmark is lowercase everywhere, and the English one is "nasvitlo".
+  // The wordmark is «НаСвітло» / "NaSvitlo" everywhere — see i18n/dictionaries/uk.ts.
   // Team and map both say "Home"/"На головну" — so does this now.
   back: { uk: "← На головну", en: "← Home" },
   search: {
@@ -83,7 +83,7 @@ const T = {
      RegistryTable for why it exists and why the sort control is not inside
      it. */
   filters: { uk: "Фільтри", en: "Filters" },
-  matLit: { uk: "Є конспект", en: "Has a summary" },
+  matLit: { uk: "Є огляд", en: "Has a summary" },
   matDoc: { uk: "Є документ суду", en: "Has a court document" },
   /* The link itself, in the wording `dict.pending.official` already uses on
      the page a row without a summary leads to — the reader meets the same
@@ -145,7 +145,7 @@ const T = {
   matched: { uk: "збіг:", en: "matched:" },
   /* Distinct from `matched`, which names a hidden field of the *row*. This one
      names a part of the write-up behind the row, and each part is a link. */
-  matchedIn: { uk: "у конспекті:", en: "in the write-up:" },
+  matchedIn: { uk: "в огляді:", en: "in the write-up:" },
   /* The decision page's own bands, in its own words — these labels have to be
      the ones a reader sees on arriving at the anchor, or the link lies about
      where it goes. Copied from `T` and `pageSections` in
@@ -185,6 +185,17 @@ const T = {
   },
   decidedOn: { uk: "рішення", en: "decided" },
   noDate: { uk: "—", en: "—" },
+  /* The one thing a reader could not learn here without having read /about
+     first, and the owner was told as much by readers: the counter says «8
+     опрацьовано» beside «39 проваджень», and nothing on the page said what the
+     other thirty-one are. They are proceedings that are in the library and not
+     yet written up — a row exists, a summary does not. Said in one sentence,
+     directly under the figures it explains, so the table below can be read for
+     what it is. */
+  note: {
+    uk: "Не всі провадження тут уже опрацьовані. Справу вносимо до бібліотеки раніше, ніж пишемо огляд: рядки без огляду позначені в таблиці, і кожен із них веде до документа суду, якщо той у відкритому доступі.",
+    en: "Not every proceeding here has been written up yet. A case enters the library before its summary is written: rows without one are marked in the table, and each still leads to the court's own document where it is public.",
+  },
   mProceedings: { uk: "проваджень", en: "proceedings" },
   /* Twelve bodies, and one of them — EU / Belgium enforcement measures — is
      not a court: `content/institutions.ts` files it as `executive`. "Courts"
@@ -442,6 +453,7 @@ export default async function RegistryPage({
               <span className="ml">{pick(T.mAnalysed, locale)}</span>
             </div>
           </div>
+          <p className="reg-note">{pick(T.note, locale)}</p>
         </header>
 
         {/* No Suspense boundary, and that is the point.

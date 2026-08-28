@@ -94,6 +94,12 @@ const stageWord = (k: string | undefined) =>
           >
             {dict.mapSection.description}
           </p>
+          {/* What the drawing carries. It is a second, quieter line rather
+              than a clause on the one above: the sentence above says what the
+              marks mean, this one says which cases are on the map at all, and
+              a reader who wants only one of those answers should not have to
+              read past the other. */}
+          <p className="nsv-mapscope">{dict.mapSection.scope}</p>
         </div>
         <Link href={`/${locale}/map`} className="nsv-map-full">
           {dict.mapSection.fullMap}

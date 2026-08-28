@@ -422,31 +422,27 @@ export const MAP_EVENTS: MapEvent[] = [
     // records as an enforcement measure and not a proceeding.
     count: { uk: "11 проваджень", en: "11 proceedings" },
   },
-  {
-    key: "kerch",
-    // No `cases`: ITLOS and the PCA arbitration over the vessels are both
-    // still unwritten. The card says so rather than linking nowhere.
-    weight: 2,
-    when: { uk: "Затримання · 2018", en: "Seizure · 2018" },
-    title: { uk: "Затримання кораблів", en: "Seizure of the naval vessels" },
-    note: {
-      uk: "3 кораблі, 24 моряки. ITLOS та арбітраж PCA за Конвенцією з морського права.",
-      en: "Three vessels, 24 sailors. ITLOS and a PCA arbitration under the Law of the Sea Convention.",
-    },
-    courts: ["hamburg", "hague"],
-    forums: {
-      uk: "ITLOS (Гамбург) · PCA (Гаага)",
-      en: "ITLOS (Hamburg) · PCA (The Hague)",
-    },
-    // WHAT THIS COUNTS: two proceedings — the ITLOS provisional-measures case
-    // (ITLOS Case No. 26) and the Annex VII merits arbitration (PCA Case No.
-    // 2019-28). Both are correct and both are named in the registry, but the
-    // registry carries them on ONE row, itlos-15, whose citation recites both.
-    // So the map counts two where the registry counts one, on purpose: this is
-    // a difference in what a "row" is, not a disagreement about the facts.
-    // Do not reconcile it by changing either side.
-    count: { uk: "2 провадження", en: "2 proceedings" },
-  },
+  /* ── «Затримання кораблів» (key `kerch`) — removed, owner's decision ───────
+     It was the only event on this map with no `cases`, which made it the only
+     member of the «Ще досліджуємо» category — so a legend key, a colour and a
+     third of the map's vocabulary existed to describe one dot. Worse, it read
+     as a claim about the archive: a reader met one unwritten event and could
+     reasonably conclude that one is all there is, when the library holds
+     thirty-one proceedings without a write-up. The map carries only what has
+     been worked through, and the band above it now says so.
+
+     Nothing about the proceedings is disputed and none of it is lost — they
+     are itlos-15 in `content/cases.ts`, whose citation recites both the ITLOS
+     provisional-measures case (ITLOS Case No. 26) and the Annex VII merits
+     arbitration (PCA Case No. 2019-28). The marker's own note recorded three
+     vessels and 24 sailors, seized in 2018, heard at ITLOS (Hamburg) and the
+     PCA (The Hague); the `kerch` point is still in europe-map.json.
+
+     TO RESTORE IT: put the event back with a `cases` array once one of the two
+     proceedings is written up. Restoring it *without* a write-up also means
+     restoring the «Ще досліджуємо» key — `legendUnlit` in both dictionaries is
+     still there, and the legend renders that key from the data (see the
+     `hasUnlit` test in EventsMap), so it will reappear on its own. */
   {
     key: "mh17",
     cases: ["hague-mh17", "echr-ukraine-netherlands"],
