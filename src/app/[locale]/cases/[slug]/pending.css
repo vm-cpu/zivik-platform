@@ -50,7 +50,11 @@
 
 .pend-eyebrow {
   margin: 0 0 var(--space-3);
-  font: 700 var(--t-micro) var(--brand-font-mono);
+  /* 500 rather than 700: mono is loaded at 400 and 500 only, so the 700 this
+     asked for rendered as a synthesised bold of the 500 face. What separates
+     this line from the title under it is the tracking, the uppercase and
+     --brand-forum-lit, none of which changed. */
+  font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   /* The forum's own hue rather than gold: this line names a court and a year,
@@ -226,7 +230,9 @@
 }
 .pend-rel-meta b {
   color: var(--gold);
-  font-weight: 600;
+  /* Level with the mono around it — the gold is what marks it. 600 here was a
+     synthesised bold, and the browser default `bolder` would be 700. */
+  font-weight: 500;
 }
 .pend-rel-more {
   display: inline-block;

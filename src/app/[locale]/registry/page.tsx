@@ -29,7 +29,7 @@ import Newsletter from "@/components/nasvitlo/Newsletter";
 import RegistryTable, {
   type RegRow,
 } from "@/components/nasvitlo/RegistryTable";
-import { contentIndex, SECTIONS } from "@/content/search-index";
+import { CONTENT_INDEX_PATH, SECTIONS } from "@/content/search-index";
 import "./registry.css";
 
 /** Localized page chrome (the case data itself is localized from content). */
@@ -141,6 +141,24 @@ const T = {
   emptyBody: {
     uk: "Спробуйте змінити фільтри або пошуковий запит.",
     en: "Try adjusting the filters or the search query.",
+  },
+  /* The two states the search can be in while it is only half itself.
+
+     The index over the eight write-ups is a file now (`/search-index.json`),
+     asked for the moment a reader reaches for the field. Until it lands, a
+     query runs against the thirty-nine rows and nothing else — which is what
+     the library did before the index existed, and which finds «Ощадбанк» but
+     not «депортація дітей». A search that answers short without saying so is
+     the exact failure the index was built to end, so the count line says
+     which half is running rather than letting the reader conclude the archive
+     holds nothing. */
+  searchLoading: {
+    uk: "Пошук поки що лише в рядках — покажчик конспектів ще завантажується.",
+    en: "Searching the rows only for now — the write-up index is still loading.",
+  },
+  searchNoIndex: {
+    uk: "Покажчик конспектів не завантажився — пошук лише в рядках.",
+    en: "The write-up index did not load — this is searching the rows only.",
   },
   matched: { uk: "збіг:", en: "matched:" },
   /* Distinct from `matched`, which names a hidden field of the *row*. This one
@@ -406,14 +424,17 @@ export default async function RegistryPage({
     fields.push({ key, label: pick(c.type, locale) });
   }
 
-  /* The content index, built at build time and localized here only in its
-     section labels — the postings themselves are language-agnostic because
-     both locales of every field went into them. */
+  /* What is left of the content index on this page: eight section labels.
+
+     The postings are language-agnostic — both locales of every field went into
+     them — but the page carrying them was not, so the same 24,137 gzipped
+     bytes shipped inside /uk/registry and again inside /en/registry, to every
+     reader who opened the library and not only to the ones who searched it.
+     They are one static file now, fetched once, cached, and shared by both
+     locales; the labels stay because they are localized and tiny. */
   const content = {
-    cases: contentIndex.cases,
-    terms: contentIndex.terms,
-    prefix: contentIndex.prefix,
     sections: SECTIONS.map((id) => ({ id, label: pick(T.section[id], locale) })),
+    url: CONTENT_INDEX_PATH,
   };
 
   const analysed = cases.filter((c) => c.lit).length;
@@ -507,6 +528,8 @@ export default async function RegistryPage({
             clearSearch: pick(T.clearSearch, locale),
             emptyHead: pick(T.emptyHead, locale),
             emptyBody: pick(T.emptyBody, locale),
+            searchLoading: pick(T.searchLoading, locale),
+            searchNoIndex: pick(T.searchNoIndex, locale),
             matched: pick(T.matched, locale),
             matchedIn: pick(T.matchedIn, locale),
             group: {

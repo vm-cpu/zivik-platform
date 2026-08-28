@@ -60,6 +60,17 @@ import type { Localized } from "@/content/types";
 export const PREFIX = 6;
 
 /**
+ * Where the built index is served from.
+ *
+ * It is a file, not part of the library page — see `app/search-index.json/
+ * route.ts`, which is prerendered from `contentIndex` below and asserts that
+ * its own directory name matches this string. The registry page hands this
+ * path to `RegistryTable`, which asks for it the first time a reader reaches
+ * for the search field.
+ */
+export const CONTENT_INDEX_PATH = "/search-index.json";
+
+/**
  * Index the verbatim summary body as well as the authored layer.
  *
  * Measured both ways during the build (gzipped bytes of the whole prerendered
@@ -357,34 +368,21 @@ function build(): ContentIndex {
 export const contentIndex: ContentIndex = build();
 
 /**
- * Announce what the index weighs, on every build.
+ * What the index weighs is announced on every build — from
+ * `app/search-index.json/route.ts`, which is the module that serves it.
  *
  * Weight is a live concern on this project — the home page is already ~100 kB
  * gzipped — and an index is exactly the kind of thing that grows quietly with
  * the ninth summary and the tenth. `next.config.ts` already prints one line
  * per build about a setting nobody would otherwise notice; this is the same
- * idea for a number nobody would otherwise measure. The figure is the index
- * alone, before it is embedded in the page's flight payload, so it is
- * comparable build to build.
+ * idea for a number nobody would otherwise measure.
+ *
+ * It is printed there rather than here because this module is now reached by
+ * three build graphs — the Ukrainian library, the English one and the route —
+ * and each worker gets its own module instance, so one number printed three
+ * times. The route is reached by one, and it is also where the number and the
+ * bytes a reader downloads are the same string.
  */
-{
-  const json = JSON.stringify(contentIndex);
-  // `zlib` is only reachable while this evaluates on the server, which is the
-  // only place it ever evaluates: the module is imported by a server component
-  // and its output crosses to the client as plain data.
-  let gz = -1;
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    gz = (require("node:zlib") as typeof import("node:zlib")).gzipSync(json).length;
-  } catch {
-    /* No zlib (an edge runtime): print the raw size only. */
-  }
-  console.log(
-    `  content search index: ${Object.keys(contentIndex.terms).length} terms, ` +
-      `${contentIndex.cases.length} write-ups, ${json.length} B raw` +
-      (gz >= 0 ? `, ${gz} B gzipped` : ""),
-  );
-}
 
 /* ============================================================================
    Build guards. This file cannot be wrong quietly.

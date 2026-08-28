@@ -20,7 +20,6 @@ import {
   seatsLine,
 } from "@/content/map";
 import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
-import geo from "@/content/europe-map.json";
 import EventsMap from "@/components/nasvitlo/EventsMap";
 import "./map-page.css";
 
@@ -119,7 +118,9 @@ const stageWord = (k: string | undefined) =>
           </header>
 
           <EventsMap
-            geo={geo}
+            /* Geometry is the component's own import, not a prop: as a prop it
+               travelled in this page's flight payload as well as in the markup
+               it renders. See the note above `geo` in EventsMap.tsx. */
             events={MAP_EVENTS.map((e) => ({
               key: e.key,
                 size: markerSize(e.weight),

@@ -11,7 +11,6 @@ import {
 } from "@/content/map";
 import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
 import Link from "next/link";
-import geo from "@/content/europe-map.json";
 import EventsMap from "./EventsMap";
 
 /**
@@ -101,13 +100,12 @@ const stageWord = (k: string | undefined) =>
       </div>
       <div className="nsv-map">
         <EventsMap
-          /* The far ring is not in this object at all any more — it is a file
-             the component asks for the first time a reader asks for the
-             Atlantic framing. That is what lets the band offer the framing:
-             the geometry used to be withheld here to keep 17.5 kB gzipped of
-             North America off the home page, and withholding it withheld the
-             framing with it. */
-          geo={geo}
+          /* No geometry here any more. The near ring is imported by the
+             component itself — a prop would have put it in this page's flight
+             payload as well as in the markup — and the far ring is a file it
+             asks for the first time a reader asks for the Atlantic framing.
+             Everything below is what the server does know and the component
+             cannot: the reader's language. */
           events={MAP_EVENTS.map((e) => ({
             key: e.key,
             size: markerSize(e.weight),

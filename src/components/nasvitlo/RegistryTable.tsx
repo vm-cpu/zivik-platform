@@ -168,13 +168,37 @@ const HIDDEN_GROUPS: FindGroup[] = ["court", "status", "type", "date"];
    reader types.
    ========================================================================== */
 
-/** What the server hands over. Kept structural so the type is not imported
- *  from a module that would drag the summaries into the client graph. */
+/**
+ * What the server hands over: eight section labels, and where the rest is.
+ *
+ * The postings used to come with it. They are the archive's largest single
+ * block of data and they were in the document whether or not the reader ever
+ * typed — 24,137 gzipped bytes of a 53,379-byte page. They are a file now,
+ * fetched on the reader's first move towards the field.
+ *
+ * The labels stay: there are eight of them, they are localized, and they are
+ * needed to render a row's «Знайдено в» line the moment a match exists.
+ */
 export interface ContentIndexProp {
-  /** Summary slugs, in posting order. */
-  cases: string[];
   /** Section ids and their labels, in posting order. */
   sections: Array<{ id: string; label: string }>;
+  /** The static asset carrying the postings. `CONTENT_INDEX_PATH`. */
+  url: string;
+}
+
+/**
+ * The fetched half. Kept structural so the type is not imported from a module
+ * that would drag the summaries into the client graph.
+ *
+ * `cases` travels with `terms` rather than staying on the page, even though it
+ * is eight strings: a posting is an offset into it, so the two are one fact.
+ * Split across a prop and a fetch they could disagree between a cached file
+ * and a new deployment, and the failure would be a hit rendered against the
+ * wrong case — the worst kind of wrong an archive can be.
+ */
+export interface ContentIndexFile {
+  /** Summary slugs, in posting order. */
+  cases: string[];
   /** Sorted term prefixes → concatenated postings. */
   terms: Record<string, string>;
   /** Characters kept per term. A query token is truncated the same way. */
@@ -203,7 +227,7 @@ function lowerBound(keys: string[], needle: string): number {
  * prefix — so one code path covers both.
  */
 function tokenHits(
-  idx: ContentIndexProp,
+  idx: ContentIndexFile,
   keys: string[],
   token: string,
 ): Map<number, Set<number>> {
@@ -240,7 +264,7 @@ function tokenHits(
  * to look.
  */
 function contentMatches(
-  idx: ContentIndexProp,
+  idx: ContentIndexFile,
   keys: string[],
   tokens: string[],
 ): Map<number, number[]> {
@@ -550,6 +574,10 @@ export interface RegistryLabels {
   clearSearch: string;
   emptyHead: string;
   emptyBody: string;
+  /** The write-up index is on its way; the query is running on rows alone. */
+  searchLoading: string;
+  /** It is not coming. Same half-answer, and it will not fill in. */
+  searchNoIndex: string;
   matched: string;
   /** Prefix on the line that names which part of a write-up matched. */
   matchedIn: string;
@@ -941,6 +969,40 @@ export default function RegistryTable({
   const [filtersOpen, setFiltersOpen] = useState(false);
   const filtersId = useId();
 
+  /* ── The index over the eight write-ups, as a file ──────────────────────
+     It used to arrive with the page: 24,137 gzipped bytes of postings in a
+     53,379-byte document, downloaded by every reader who opened the library
+     and read only by the ones who searched it. It is asked for now the first
+     time a reader reaches for the field — hovering it, focusing it, or
+     arriving with a ?q= in the URL.
+
+     What the field does before it lands: it works. The thirty-nine rows and
+     their five haystacks are already here — name, note, court, status, field,
+     date — and that half of the search needs nothing fetched. What is missing
+     is the other half, the summaries behind eight of the rows, and a search
+     that quietly returns a short answer is the failure this index was built
+     to fix in the first place. So while it is in flight, or if it never
+     arrives, the count line says which half is running. It is never disabled:
+     a field that refuses to take a query it could answer is a worse lie than
+     a slow one. */
+  const [index, setIndex] = useState<ContentIndexFile | null>(null);
+  const [indexState, setIndexState] = useState<
+    "idle" | "loading" | "ready" | "failed"
+  >("idle");
+  const indexAsked = useRef(false);
+  const wantIndex = useCallback(() => {
+    if (indexAsked.current) return;
+    indexAsked.current = true;
+    setIndexState("loading");
+    fetch(content.url)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((d: ContentIndexFile) => {
+        setIndex(d);
+        setIndexState("ready");
+      })
+      .catch(() => setIndexState("failed"));
+  }, [content.url]);
+
   /** The values a query string may name — the options this page is showing. */
   const allow: Allowed = useMemo(
     () => ({
@@ -968,7 +1030,13 @@ export default function RegistryTable({
     /* Set only what the URL actually named. Calling every setter would hand
        React six fresh array identities and force a re-render for a link that
        carried no query string at all. */
-    if (u.q !== "") setQ(u.q);
+    if (u.q !== "") {
+      setQ(u.q);
+      /* A shared filtered link is a query nobody is going to retype, and its
+         reader never touches the field — so the field's own triggers would
+         never fire and the write-ups would never be searched. */
+      wantIndex();
+    }
     if (u.court.length) setCourt(u.court);
     if (u.stage.length) setStage(u.stage);
     if (u.outcome.length) setOutcome(u.outcome);
@@ -987,6 +1055,7 @@ export default function RegistryTable({
   useEffect(() => {
     const onPop = () => {
       const u = readUrl(allow);
+      if (u.q !== "") wantIndex();
       setQ(u.q);
       setCourt(u.court);
       setStage(u.stage);
@@ -997,7 +1066,7 @@ export default function RegistryTable({
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
-  }, [allow]);
+  }, [allow, wantIndex]);
 
   /* Write the URL. Skipped exactly once: on mount this runs with the defaults
      still in place — the reader's values are set by the layout effect above
@@ -1046,14 +1115,18 @@ export default function RegistryTable({
   );
 
   /** The index's own key list, sorted once rather than per keystroke. */
-  const termKeys = useMemo(() => Object.keys(content.terms), [content]);
+  const termKeys = useMemo(
+    () => (index ? Object.keys(index.terms) : []),
+    [index],
+  );
 
   /** slug → the sections of its write-up that carry the whole query. */
   const inWriteup = useMemo(() => {
-    const byIndex = contentMatches(content, termKeys, tokens);
     const out = new Map<string, string[]>();
+    if (!index) return out;
+    const byIndex = contentMatches(index, termKeys, tokens);
     for (const [ci, sections] of byIndex) {
-      const slug = content.cases[ci];
+      const slug = index.cases[ci];
       if (!slug) continue;
       out.set(
         slug,
@@ -1061,7 +1134,7 @@ export default function RegistryTable({
       );
     }
     return out;
-  }, [content, termKeys, tokens]);
+  }, [index, content.sections, termKeys, tokens]);
 
   const view = useMemo(() => {
     const out = rows.filter((r) => {
@@ -1310,7 +1383,18 @@ export default function RegistryTable({
             type="search"
             placeholder={t.search}
             value={q}
-            onChange={(e) => setQ(e.target.value)}
+            /* Three chances to have the postings in hand before the first
+               keystroke lands, in the order a reader gets there: the pointer
+               arriving over the field, the field taking focus (which covers
+               the keyboard and a tap), and the keystroke itself as the
+               backstop. All three run through one ref, so this is one request
+               however many of them fire. */
+            onPointerEnter={wantIndex}
+            onFocus={wantIndex}
+            onChange={(e) => {
+              wantIndex();
+              setQ(e.target.value);
+            }}
           />
           {q !== "" && (
             <button
@@ -1493,6 +1577,14 @@ export default function RegistryTable({
           <span className="of"> · {t.ofTotal.replace("{total}", String(rows.length))}</span>
         </p>
         {multiCount > 0 && <p className="reg-combine">{t.combine}</p>}
+        {/* Which half of the search is running. Only ever shown while there is
+            a query to be half-answered — with the field empty the reader is
+            looking at all thirty-nine rows and nothing is missing. */}
+        {tokens.length > 0 && indexState !== "ready" && (
+          <p className="reg-partial">
+            {indexState === "failed" ? t.searchNoIndex : t.searchLoading}
+          </p>
+        )}
         {active && (
           <button type="button" className="reg-reset" onClick={reset}>
             {t.reset}

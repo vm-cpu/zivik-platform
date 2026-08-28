@@ -346,7 +346,7 @@
   color: var(--brand-cream);
 }
 .emap-when {
-  font: 600 var(--t-micro) var(--brand-font-mono);
+  font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--c);
@@ -371,7 +371,7 @@
   margin-bottom: 3px;
 }
 .emap-count {
-  font: 600 var(--t-micro) var(--brand-font-mono);
+  font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   /* --brand-faint-dark measured 4.01:1 on the card ground — under AA at this
@@ -416,7 +416,7 @@
   background: var(--brand-night-2);
 }
 .emap-li-when {
-  font: 600 var(--t-micro) var(--brand-font-mono);
+  font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brand-faint-dark);
@@ -433,7 +433,7 @@
   color: var(--brand-muted-dark);
 }
 .emap-li-count {
-  font: 600 var(--t-micro) var(--brand-font-mono);
+  font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-faint-dark);
@@ -549,7 +549,7 @@
    the count on each of the six site cards, and the one thing the seat list
    held that a reader could not get without clicking every city in turn. */
 .emap-seat-count {
-  font: 600 var(--t-micro) var(--brand-font-mono);
+  font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-faint-dark);
@@ -1005,7 +1005,10 @@
    sans; the institution is mono, as it is in every citation on this site. */
 .emap-court text.emap-court-abbr {
   font-family: var(--brand-font-mono), monospace;
-  font-weight: 600;
+  /* The roman above this is body face at 600 and has a 600 file; this one is
+     mono, which stops at 500, so 600 here was the browser smearing the 500
+     face — inside a stroked halo, where a smear reads as a fuzzy edge. */
+  font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: none;
   fill: var(--brand-gold-pale);
@@ -1205,7 +1208,7 @@
    footnote to. A count is a footnote. */
 .emap-caseload {
   margin: var(--space-2) 0 0;
-  font: 600 var(--t-micro) var(--brand-font-mono);
+  font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-muted-dark);
@@ -1636,7 +1639,7 @@ button.emap-key[aria-pressed="true"]::after {
    to a page's own `a`. */
 .emap-index a.emap-seat-count,
 .emap-index .emap-seat-count {
-  font: 600 var(--t-sm) var(--brand-font-mono);
+  font: 500 var(--t-sm) var(--brand-font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
   text-transform: none;
@@ -1825,6 +1828,9 @@ a.emap-seat-count:focus-visible {
 .emap-fold-n {
   margin-left: auto;
   font-family: var(--brand-font-mono);
+  /* The heading is body face at 700 and this count inherited that weight into
+     a family with no 700 file. Mono's own top weight, stated. */
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.06em;
   color: var(--brand-gold-pale);
@@ -2029,7 +2035,7 @@ a.emap-seat-count:focus-visible {
   margin-top: var(--space-3);
   padding-top: var(--space-2);
   border-top: 1px solid var(--brand-night-rule);
-  font: 600 var(--t-micro) var(--brand-font-mono);
+  font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand-muted-dark);
