@@ -191,7 +191,11 @@ export const iccUkraine: DecisionSummary = {
       name: { uk: "Палата досудового провадження II", en: "Pre-Trial Chamber II" },
       role: {
         uk: "Видала всі шість ордерів і констатувала невиконання обов'язку арешту Монголією (2024) і Таджикистаном (2026).",
-        en: "Issued all six warrants and found Mongolia's failure to arrest.",
+        /* Both findings, in both locales. The Ukrainian side named Mongolia and
+           Tajikistan; the English side named only Mongolia, so a reader of the
+           English page met the second finding in the chronology below without
+           ever having been told the Chamber made it. */
+        en: "Issued all six warrants and found the failures to arrest by Mongolia (2024) and Tajikistan (2026).",
       },
       kind: "court",
     },
@@ -600,6 +604,27 @@ export const iccUkraine: DecisionSummary = {
       claim: {
         uk: "Монголія порушила обов'язок заарештувати Путіна; імунітет глави держави перед МКС не діє",
         en: "Mongolia breached its duty to arrest Putin; head-of-state immunity is not opposable before the ICC",
+      },
+      outcome: "violation",
+    },
+    /* The matrix stopped at Mongolia while the prose, the chronology and the
+       takings tile all counted two article 87(7) findings — so the one panel
+       that is meant to enumerate what the Chamber decided was the one panel
+       that disagreed with the rest of the page. The second finding is
+       ICC-01/22-143 of 19 March 2026, "Finding under article 87(7) of the Rome
+       Statute on the non-compliance by Tajikistan with the request by the Court
+       to cooperate in the arrest and surrender of Vladimir Vladimirovich Putin
+       and referral to the Assembly of States Parties" (Pre-Trial Chamber II);
+       the Presidency referred it on to the Assembly on 7 May 2026 under
+       regulation 109(4). The track is keyed to the day of the finding, which is
+       the chronology entry it links down to — not to Putin's 9 October 2025
+       visit, which is the non-arrest and not the decision. */
+    {
+      track: "19.03.2026",
+      trackLabel: { uk: "Виконання · 19 березня 2026", en: "Enforcement · 19 March 2026" },
+      claim: {
+        uk: "Таджикистан не виконав запит про арешт і передачу Путіна; питання передано Асамблеї держав-учасниць",
+        en: "Tajikistan failed to execute the request to arrest and surrender Putin; referred to the Assembly of States Parties",
       },
       outcome: "violation",
     },
@@ -1055,6 +1080,24 @@ export const iccUkraine: DecisionSummary = {
       authors: "Pre-Trial Chamber II",
       publication: "International Criminal Court",
       date: "24 October 2024",
+      type: "official/ICC",
+    },
+    {
+      url: "https://www.icc-cpi.int/court-record/icc-01/22-143",
+      title:
+        "Finding under article 87(7) of the Rome Statute on the non-compliance by Tajikistan with the request by the Court to cooperate in the arrest and surrender of Vladimir Vladimirovich Putin and referral to the Assembly of States Parties",
+      authors: "Pre-Trial Chamber II",
+      publication: "International Criminal Court",
+      date: "19 March 2026",
+      type: "official/ICC",
+    },
+    {
+      url: "https://www.icc-cpi.int/news/referral-presidency-international-criminal-court-tajikistans-non-compliance-assembly-states",
+      title:
+        "Referral by the Presidency of Tajikistan's non-compliance to the Assembly of States Parties",
+      authors: "",
+      publication: "International Criminal Court",
+      date: "7 May 2026",
       type: "official/ICC",
     },
     {

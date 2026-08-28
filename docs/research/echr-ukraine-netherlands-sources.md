@@ -22,8 +22,56 @@ kept: "art. 43" in the lead, footnote digits [6]/[7], a Cyrillic "С" in
 - ULAG analysis: https://ulag.org.ua/articles-and-publications/ecthr-ukraine-netherlands-v-russia/
 - Queritius takeaways: https://queritius.com/landmark-for-justice-key-legal-takeaways-from-the-echr-grand-chambers-judgment-in-ukraine-and-the-netherlands-v-russia/
 
-## Verdict matrix mapping (all rows restate the tab's findings list)
-Art 2; Art 3; Art 4§2; Art 5; Art 9; Art 10; P1-1; P1-2; Art 14 (unanimous);
-children: Arts 3, 5, 8 + P4-2 (by majority). The "11 articles" KPI counts the
-distinct Convention/Protocol articles across that list (2,3,4,5,8,9,10,14,
-P1-1, P1-2, P4-2).
+## Verdict matrix mapping — counted from the operative part, not from the tab
+Checked 2026-08-28 against the judgment's own operative part, "FOR THESE
+REASONS, THE COURT", pp. 493-497 (after § 1652) of the HUDOC PDF
+(https://hudoc.echr.coe.int/app/conversion/docx/pdf?library=ECHR&id=001-244292&filename=001-244292.pdf).
+
+Distinct Convention and Protocol articles found breached, with the operative
+points that carry them:
+
+| Article | Operative points |
+| --- | --- |
+| 2 | 5, 6 (MH17, substantive and procedural), 11, 12 |
+| 3 | 8 (next of kin), 11, 13, 22 |
+| 4 § 2 | 14 |
+| 5 | 15, 22 |
+| 8 | 11, 16, 20, 22 |
+| 9 | 17 |
+| 10 | 18 |
+| 11 | 19 |
+| 13 | 7 (with Art 2, MH17), 24 (with Arts 2, 3, 4§2, 5, 8, 9, 10, 11, 14, P1-1, P1-2) |
+| 14 | 23 |
+| P1-1 | 11, 20 |
+| P1-2 | 21 |
+
+**Twelve.** The page's stat tile and its 9 July 2025 chronology note both say
+twelve, and that is this count.
+
+**Article 38 is deliberately outside it.** Operative point 25 holds that Russia
+failed to comply with Article 38 (furnishing the Court with facilities to
+establish the facts). It is a breach and it is a thirteenth article, but it is
+an obligation owed to the Court about the conduct of the proceedings rather
+than one of the Convention rights violated against people, and the tile counts
+rights. A page that wanted thirteen would have to say so in the label.
+
+**Where the tab's findings list is wrong**, and why it must not be used to
+recount this (the earlier version of this file did exactly that and produced
+"11"):
+- it omits **Article 11** (peaceful assembly, operative point 19) entirely;
+- it omits **Article 13** (effective remedy, operative points 7 and 24) entirely;
+- it adds **Article 2 of Protocol No. 4**, under which the Court found NO
+  violation — operative points 11 and 22 each say it was "not necessary to
+  examine separately" the P4-2 complaint;
+- and on the children finding it says "(by majority)" where operative point 22
+  says "unanimously".
+
+The verbatim tab is left unedited — it is ingested as the source document has
+it, quirks kept, and these are quirks. The visualization layer takes the
+articles and the vote from the judgment instead. **On re-ingest of the "ECHR
+mh-17" tab, do not conform the children verdict row or the article count to the
+tab.**
+
+Verdict matrix rows as they now stand: Art 2; Art 3; Art 4§2; Art 5; Art 8;
+Art 9-10; Art 11; Art 13; P1-1, P1-2; Art 14 (unanimous); children: Arts 3, 5
+and 8 (unanimous).

@@ -35,9 +35,10 @@
  * whether the ICC warrant really names those articles of the Rome Statute —
  * none of that is in this file's reach. Those are checks against the courts'
  * own documents, one case at a time, and a green run here says nothing about
- * them. Nor does it reach a claim made in prose: «≈6% основної суми» in an
- * `amounts.note` is a sentence, and no rule here divides one number in a
- * sentence by another.
+ * them. Nor does it reach a claim made in prose: the «≈6% основної суми» that
+ * stood in Oschadbank's `amounts.note` for months was a sentence, and no rule
+ * here divides one number in a sentence by another. It came out by hand, when
+ * a person did the division.
  */
 import { readFileSync } from "node:fs";
 
