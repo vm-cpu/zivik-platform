@@ -146,8 +146,19 @@
    to be drawn rather than implied. The ground below is --brand-night now,
    18.69:1, and the seam over it was a 1.75:1 grey line lying on a black band —
    the grounds carry this edge on their own. */
+/* Paper, not pure white.
+
+   This band separates the masthead from the overview, and it has to: both of
+   them are night grounds now, and DESIGN.md's rule is that a dark scene gets
+   light on both sides. But `--card` is #ffffff, the sharpest edge the palette
+   can make against #17110f, and at 280px between two tall dark bands it read
+   as a small lit window cut into the page rather than as a band of its own.
+
+   --paper is the page's own ground and still parts the two scenes: 17.6:1
+   against the night above it and below it, against pure white's 18.7. What it
+   loses is the glare. */
 .casepage .lede {
-  background: var(--card);
+  background: var(--paper);
   padding-block: clamp(32px, 4vw, 56px);
 }
 .casepage .lede-grid {

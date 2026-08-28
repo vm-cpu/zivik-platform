@@ -166,6 +166,11 @@ export default function TakingsGrid({
             <>
               <div
                 className="taking-bar"
+                /* Only a share whose remainder has been named is drawn against
+                   a breach-coloured track — see the note in the stylesheet.
+                   The other four shares on the site are shares of a whole, not
+                   of a loss. */
+                data-rest={m.restLabel ? "named" : "none"}
                 role="img"
                 aria-label={`${m.label}: ${pct(m.percent)}%`}
               >

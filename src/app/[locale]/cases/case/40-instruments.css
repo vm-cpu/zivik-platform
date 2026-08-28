@@ -45,23 +45,33 @@
   border-radius: 50%;
   background: var(--gold);
 }
-/* The proportion, both sides of it.
+/* The proportion — and the track only means something on one of these bars.
 
-   The track is the remainder and carries the breach colour, because on this
-   page the remainder is nine deported children in ten who have not come back.
-   The fill is what was recovered. Read together they are a proportion; read as
-   gold-on-grey, which is how this was set before, the empty part of the bar
-   said nothing at all and the band looked like a small gain. */
+   The red track was written for a single figure: 9.5% of the deported children
+   returned, where the unfilled part is nine in ten who have not, and drawing
+   it as empty grey said nothing at all. Then it was applied to every share on
+   the site, and four of the five say nothing of the kind. «Частка кредитування
+   в Криму — 45%» has a remainder of 55%, and that 55% is the bank's lending
+   everywhere else. Painting it the colour this site gives a breach asserts
+   something no source does.
+
+   So the breach track belongs to a share that has named its remainder — which
+   `restLabel` already marks, because naming it is exactly the editorial act of
+   saying the other side means something. Everything else gets a quiet track:
+   the fill is the statement, and the rest is the rest. */
 .casepage .taking-bar {
   height: 12px;
   border-radius: var(--r-pill);
-  /* --red, --brand-breach: the same red the split label under the bar takes,
-     and the same one every other breach in this band wears. It was --pred, the
-     paper red, and on this ground --pred is 1.81:1 — the track would have been
-     a black bar on a black band, and the remainder is the half of this
-     proportion that the block exists to state. 5.61:1. */
-  background: var(--red);
+  /* --rule: a trough, not a claim. 1.28:1 against the band, which is what a
+     divider inside a component is allowed — the information is the fill's
+     length and the figure printed above it. */
+  background: var(--rule);
   overflow: hidden;
+}
+/* --red / --brand-breach at 5.61:1, the same red every other breach in this
+   band wears, and the same one the split label under the bar takes. */
+.casepage .taking-bar[data-rest="named"] {
+  background: var(--red);
 }
 .casepage .taking-bar i {
   display: block;
@@ -206,25 +216,45 @@
   outline: 1px solid var(--gold);
   outline-offset: -1px;
 }
-/* Three segments of one award, on a gold ramp — never red, so a sum is never
-   mistaken for a finding. Gold, cream, dim gold: 9.98:1, 15.53:1 and 6.03:1
-   against the ground each of them is separated from its neighbours by, and
-   three different things to the eye — lit gold, near-white, brown-gold.
-   The paper version of this ramp puts its light step in the middle for the
-   same reason and its dark step at the end, which is the move this ground has
-   no room for. */
-/* The segments draw the split; they are no longer buttons, so nothing here
-   should suggest they can be pressed. The key below the bar is the control. */
+/* Three segments of one award — and colour alone cannot tell them apart.
+
+   The comment that stood here reported each segment's contrast against the
+   ground (9.98, 15.53, 6.03) and called that three different things to the
+   eye. It measured the wrong pair. In a stacked bar what a reader has to
+   separate is each segment from the one it touches, and those were 1.56, 1.66
+   and 2.58 — every one under the 3:1 that adjacent graphical parts need.
+
+   It cannot be fixed with colour, and that is arithmetic rather than a want of
+   palette. Three tones each 3:1 from the next need luminances near 0.02, 0.25
+   and 0.85; the darkest must also clear 3:1 against this ground, which forces
+   it up to about 0.07, and the lightest would then have to exceed 1.0. No
+   three colours in this palette manage it — checked, all 120 combinations.
+
+   So the separation moves to a second channel. Each segment keeps its place on
+   the gold ramp — never red, so a sum is never mistaken for a finding — and
+   takes a weave of the ground: solid, then vertical, then dotted. The key
+   below wears the same three treatments, so a swatch identifies its segment
+   without the reader counting positions. This also survives the reader who
+   cannot separate the tones at all, which the old version did not.
+
+   The estimated bar keeps the -45° hatch it already had; none of these repeat
+   that angle, so "estimated" stays its own statement. */
 .casepage .money-seg {
   border: 0;
   padding: 0;
   background: var(--gold);
 }
 .casepage .money-seg[data-seg="1"] {
-  background: var(--cream);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cream) 0 3px,
+    var(--bg) 3px 5px
+  );
 }
 .casepage .money-seg[data-seg="2"] {
-  background: var(--gold-dim);
+  background:
+    radial-gradient(var(--bg) 1px, transparent 1.2px) 0 0 / 5px 5px,
+    var(--gold-dim);
 }
 /* Lit from the key, which is where the pointer is. A keyline of the band's own
    ground, inset: every segment here is a lit colour, so the ring that marks
@@ -268,17 +298,30 @@
 }
 /* The key's swatches are the bar's segments and have to stay the same three
    colours. 9.98:1, 15.53:1, 6.03:1 on the band. */
+/* Each swatch wears the weave of the segment it names, not only its tone —
+   the tones are 1.56 to 2.58 apart and cannot carry the mapping alone. These
+   rules live here, beside the rest of the key, because the pair of them further
+   up the file lost to these on order and drew nothing.
+
+   The 2px corner was against DESIGN.md, which forbids 2-3px radii; --r-xs is
+   the step the system has for a mark this small. */
 .casepage .money-key i {
   width: 10px;
   height: 10px;
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   background: var(--gold);
 }
 .casepage .money-key i[data-seg="1"] {
-  background: var(--cream);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cream) 0 3px,
+    var(--bg) 3px 5px
+  );
 }
 .casepage .money-key i[data-seg="2"] {
-  background: var(--gold-dim);
+  background:
+    radial-gradient(var(--bg) 1px, transparent 1.2px) 0 0 / 5px 5px,
+    var(--gold-dim);
 }
 /* 15.53:1 — the picked entry brightens rather than changing hue. */
 .casepage .money-key li[data-on="yes"] button {
