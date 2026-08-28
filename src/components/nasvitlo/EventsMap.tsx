@@ -10,6 +10,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { plural, type PluralForms } from "@/i18n/plural";
+import geometry from "@/content/europe-map.json";
 import "./events-map.css";
 
 /**
@@ -122,6 +123,40 @@ export interface MapGeometry {
   areas?: Record<string, string>;
   markers: Record<string, number[]>;
 }
+
+/**
+ * The projected drawing, imported here rather than handed down as a prop.
+ *
+ * It is the same file `scripts/europe-map.mjs` writes, and it used to arrive
+ * from the two server components that render this one. That put it in the
+ * document twice: once as the `d="…"` attributes React server-rendered — which
+ * is the drawing, and has to be there — and once more inside the flight
+ * payload, because everything a client component is handed is serialized for
+ * hydration. Measured on the built documents, the second copy cost 18,574
+ * gzipped bytes of /uk's 66,149 and 18,958 of /uk/map's 56,377 — and there is
+ * no deduplicating the two, because gzip's window is 32 kB and the copies are
+ * a hundred kilobytes apart in the file.
+ *
+ * A prop was the wrong shape for it. Props are how the server tells this
+ * component things it could not know — which locale, which strings, which
+ * cases — and the coastline is none of those: it is the same 45,616 bytes on
+ * both map surfaces in both languages, and it changes only when the generator
+ * is re-run. As an import it is in the component's own chunk, which the
+ * browser fetches once, caches, and reuses across all four routes, instead of
+ * in four documents that cannot cache and cannot share.
+ *
+ * The trade, stated: that chunk goes from 8,000 to 25,681 gzipped bytes, and
+ * it is only ever loaded on the two routes that draw a map. A reader who opens
+ * one map page and no other pays about the same either way; a reader who opens
+ * the home page and then the map's own page pays 19 kB less, and so does every
+ * reader who comes back.
+ *
+ * Nothing about what is drawn or when changes: the paths are still in the
+ * server-rendered HTML, so the map is in the first frame and hydration finds
+ * the markup it expects. That is the whole reason this is an import and not a
+ * second fetch — a fetched drawing would paint an empty frame first.
+ */
+const geo = geometry as MapGeometry;
 
 /**
  * Which way a site's label leans off its marker.
@@ -496,14 +531,12 @@ function LegendH({
 }
 
 export default function EventsMap({
-  geo,
   events,
   courts,
   labels,
   locale,
   variant = "full",
 }: {
-  geo: MapGeometry;
   events: MapEventR[];
   courts: MapCourtR[];
   labels: {
@@ -925,7 +958,9 @@ export default function EventsMap({
   const BASE = useMemo(() => {
     const [x, y, w, h] = geo.viewBox.split(" ").map(Number);
     return { x, y, w, h };
-  }, [geo.viewBox]);
+    /* No dependency: `geo` is a module constant now, not a prop, so there is
+       nothing here that can change between renders. */
+  }, []);
   /**
    * Measured, not assumed: the element's size and the strips the floating
    * panels have claimed, which the stylesheets declare as --emap-safe-* so the
@@ -1005,7 +1040,7 @@ export default function EventsMap({
     // declared window rather than returning an infinite rect.
     if (!Number.isFinite(x0)) return BASE;
     return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
-  }, [BASE, events, courts, geo.markers]);
+  }, [BASE, events, courts]);
   /** The third framing: North America beside Europe. */
   const WIDE = useMemo(() => fitView(SPAN, box), [SPAN, box]);
   /**
@@ -1025,7 +1060,7 @@ export default function EventsMap({
       else if (c.offAt) pts.push([c.offAt.x, c.offAt.y]);
     }
     return pts;
-  }, [events, courts, geo.markers]);
+  }, [events, courts]);
   /**
    * Is there anything out there to frame, and is this the surface to frame it
    * on? Nothing off the frame, no button — and not on the home band either.
@@ -1208,7 +1243,7 @@ export default function EventsMap({
     // `view` is read to decide whether to move at all; re-running on every
     // frame the reader drags would fight them for control of the map.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusReq, box, OUTER, ANCHORS, FULL.w, FULL.h, events, courts, geo.markers]);
+  }, [focusReq, box, OUTER, ANCHORS, FULL.w, FULL.h, events, courts]);
 
   /**
    * The full screen opens on something, not on the whole of Europe.

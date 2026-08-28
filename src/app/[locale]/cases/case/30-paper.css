@@ -464,7 +464,8 @@ The measure has been argued four times, so here is the method that settles
 }
 /* The official title carries the weight; the rest is apparatus. */
 .casepage .citeas .citeas-title {
-  font-weight: 600;
+  /* 500, not 600: this line is mono, and mono stops at 500. */
+  font-weight: 500;
   color: var(--ink);
 }
 .casepage .citeas .citeas-line {

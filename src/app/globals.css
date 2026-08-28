@@ -218,7 +218,18 @@
   --brand-font-display-italic: var(--font-charis-italic), 'Charis SIL';
   /* Monospace carries the machinery of a judgment — paragraph refs (§ 392),
      docket numbers, dates. Pairing a neo-serif with mono is what keeps a legal
-     archive from reading like a brochure. */
+     archive from reading like a brochure.
+
+     **Two weights exist: 400 and 500.** That is what `layout.tsx` loads, and
+     it is the whole vocabulary a mono rule may use. A rule that asks for 600
+     or 700 does not fall back to 500 quietly — Blink synthesises a bold from
+     it, smearing the 500 face sideways, and at 11px uppercase with tracking
+     the result is a blur rather than a heavier label. Fifteen rules asked for
+     one: 200 elements across 82 routes at 600 and 66 across 64 at 700, all of
+     them micro labels, counters and eyebrows. They ask for 500 now. Loading
+     the real faces was the other way out and cost 10,052 B of preload per
+     weight on every one of the 96 routes, which is the wrong trade for text
+     this size when tracking and colour are already carrying it. */
   --brand-font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
 
   /* ── Type scale ─────────────────────────────────────────────────

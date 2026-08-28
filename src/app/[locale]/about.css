@@ -335,6 +335,14 @@
   font-weight: 400;
   color: var(--faint);
 }
+/* The name inside the caption. `<b>` defaults to `bolder`, which against this
+   caption's own 600 resolves to 900 — a weight Fira is not loaded at, so both
+   /uk/about and /en/about drew a synthesised bold of the 600 face. The caption
+   is already the heavy half of the pair: the role beside it drops to 400, and
+   that contrast is what separates them, not a ninth weight. */
+.aboutpage .abt-voice figcaption b {
+  font-weight: 600;
+}
 
 @media (max-width: 560px) {
   .aboutpage .abt-mission {

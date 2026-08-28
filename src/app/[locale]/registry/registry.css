@@ -272,7 +272,8 @@
   flex:none;min-width:17px;height:17px;padding:0 5px;box-sizing:border-box;
   display:inline-flex;align-items:center;justify-content:center;
   border-radius:var(--r-pill);
-  font:700 var(--t-micro)/1 var(--brand-font-mono);
+  /* 500: mono has no 700 face. See --brand-font-mono in globals.css. */
+  font:500 var(--t-micro)/1 var(--brand-font-mono);
   font-variant-numeric:tabular-nums;
   background:var(--goldink);color:var(--surface);
 }
@@ -377,6 +378,15 @@
 .reg-count b{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
 .reg-count .of{color:var(--faint);font-weight:400}
 .reg-combine{font-weight:400;font-size:var(--t-cap);color:var(--faint);flex:1 1 auto}
+/* Which half of the search is running while the write-up index is in flight.
+   The same register as .reg-combine beside it — this is a note about the
+   count, not a warning, and it is gone as soon as the file lands. `flex-basis
+   100%` puts it on its own line rather than letting it squeeze the count:
+   both Ukrainian and English run past 60 characters. */
+.reg-partial{
+  flex:1 1 100%;
+  font-weight:400;font-size:var(--t-cap);line-height:1.4;color:var(--faint);
+}
 .reg-reset{
   min-height:24px;display:inline-flex;align-items:center;
   font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.06em;text-transform:uppercase;

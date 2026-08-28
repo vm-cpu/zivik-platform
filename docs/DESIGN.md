@@ -97,6 +97,24 @@ mid-render).
 - `--brand-font-mono` — **IBM Plex Mono**. The machinery: docket meta, dates,
   paragraph refs (§ 392), counters, citations, track labels.
 
+**Every family has a list of weights, and asking for one outside it is not a
+fallback.** Charis is loaded at 400 and 700, Fira at 400/500/600/700, mono at
+400 and 500. A rule that asks for a weight the family does not carry gets a
+*synthesised* bold — the browser smearing the nearest lighter face sideways —
+which looks like a heavier face until it is measured, and at 11px uppercase
+with tracking it reads as a blur. Fifteen mono rules asked for 600 or 700
+(200 elements across 82 routes, and 66 across 64), and one `<b>` in the about
+page's pull-quote caption reached Fira 900 through the browser's default
+`bolder` against a caption already set at 600. All of them now name a weight
+that exists. Loading the missing faces was the other way out and it is
+measured, not assumed: 10,052 B of preload per mono weight on all 96 routes,
+36,904 B for Fira 900 — the wrong trade for labels this size, where colour
+and tracking are doing the work.
+
+**The weight a `<b>` inherits is `bolder`, not 700.** Against a parent at 600
+that resolves to 900. Any `<b>` inside a block that already sets a weight has
+to name its own.
+
 **Italic is a fourth and fifth token, not a style of the first two.**
 `next/font` emits the cross product of the weights and styles it is given, so
 one call for four Fira weights in both styles preloads eight italic files on
@@ -261,6 +279,7 @@ are forbidden: they read as neither sharp nor round.
 | `cases/case.css` | decision pages | every rule scoped under `.casepage` |
 | `registry/registry.css` | the registry | scoped |
 | `nasvitlo/header.css` | wherever `<Header>` renders | owns its own chrome |
+| `nasvitlo/footer.css` | wherever `<Footer>` renders | owns its own chrome, the typeface included |
 
 **A surface's stylesheet is imported by that surface, never by the layout.**
 `home.css` used to load from `[locale]/layout.tsx`, which put **399 unscoped
@@ -276,7 +295,13 @@ from both. Two definitions of one class name is always a bug in waiting.
 ## 3. Components
 
 - **Header** owns its chrome (`components/nasvitlo/header.css`) so any page
-  that renders it gets the responsive collapse and the drawer. It is rendered
+  that renders it gets the responsive collapse and the drawer.
+- **Footer** owns its chrome the same way, and that includes the face.
+  `globals.css` sets no `font-family` on `body` — every surface names its own —
+  so anything that names none inherits Tailwind's `ui-sans-serif` preflight
+  stack rather than Fira. The footer named one in three places out of
+  seventeen, and the fourteen it missed were in the wrong typeface on all 96
+  routes without ever looking broken. It is rendered
   once, in the locale layout, with one ground on every page — it used to be
   transparent over the home page's lamp and `#14100e` on the decision pages,
   which is three different headers on one site.
