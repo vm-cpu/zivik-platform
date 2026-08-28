@@ -150,17 +150,28 @@
    each place, with no way to tell the reader which mark that sentence belongs
    to — on a case with two theatres, the only way to pair them was to match
    the words by eye. */
+/* The hit area grows upwards and downwards only.
+
+   It was `padding: 8px` against `margin: -8px` on every side — the usual way
+   to give a control a bigger target without moving what it looks like. On a
+   phone the legend is back in the flow at the full width of the band, so the
+   button measured 391px inside a 375px page and hung 8px off the right edge:
+   the whole document scrolled sideways by those 8px, on every decision page
+   with a map. Bleeding out of a full-width container has nowhere to bleed to.
+   Vertically it does — and vertical is where the target was short. */
 .casepage .map-legend button {
   display: grid;
-  padding: var(--space-2);
-  margin: calc(var(--space-2) * -1);
+  padding: var(--space-2) 0;
+  margin: calc(var(--space-2) * -1) 0;
   background: none;
   border: 0;
   text-align: left;
   color: inherit;
   font: inherit;
   cursor: pointer;
-  border-radius: 2px;
+  /* --r-xs, not 2px: DESIGN.md forbids 2–3px radii, and this is the step the
+     system keeps for a mark this small. */
+  border-radius: var(--r-xs);
 }
 .casepage .map-legend button:hover,
 .casepage .map-legend button[aria-pressed="true"] {

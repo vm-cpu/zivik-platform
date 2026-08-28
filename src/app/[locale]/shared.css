@@ -185,3 +185,82 @@
   border-color: var(--brand-red-dark);
   color: var(--brand-red-dark);
 }
+
+/* Touch targets ------------------------------------------------------------
+   WCAG 2.5.8 asks for 24×24 CSS pixels on anything a finger has to hit, and
+   exempts a link sitting inside a sentence — a citation in the prose, a term
+   in a paragraph — because moving those would break the line. Everything below
+   is the other kind: a control on a line of its own, measured on a 375px
+   viewport and coming up short. The library's own row names were 20px, the
+   footer's six navigation links 21, and the back link at the top of every
+   section page 14 — the smallest target on the site was the one that takes a
+   reader out of it.
+
+   min-height rather than padding, so nothing shifts sideways and a control
+   that is already tall enough is untouched. It does nothing on an inline box,
+   which is why the display is set alongside it where the element was inline.
+
+   Scoped to touch: `(max-width: 900px)` is the width the rest of the site
+   folds at, and `(pointer: coarse)` catches a tablet held wide. A mouse is
+   precise and the desktop composition stays as it was drawn.
+
+   These selectors belong to other surfaces' stylesheets, which is normally
+   forbidden here — the rule is that a surface's rules live with the surface.
+   The exception is deliberate: this is one accessibility floor with one
+   argument behind it, and split across nine files it would be nine rules
+   nobody could audit together. No selector below is defined anywhere else. */
+@media (max-width: 900px), (pointer: coarse) {
+  .nsv-foot a,
+  .nsv-footband a,
+  .reg-name,
+  .reg-back,
+  .gl-back,
+  .abt-back,
+  .team-back,
+  .prt-back,
+  .legal-back,
+  .mp-back,
+  .casepage .backlink,
+  /* `.terms-more` is the paragraph; the control is the link inside it. */
+  .casepage .terms-more a,
+  .casepage .money-key button,
+  .nsv-more,
+  .more,
+  .nsvq-doc,
+  .emap-leg-toggle {
+    min-height: 24px;
+  }
+  /* Already flex or grid; these are the ones that were plain text boxes and
+     need the line centred in the taller box rather than sitting at the top. */
+  .nsv-foot a,
+  .nsv-footband a,
+  .reg-back,
+  .gl-back,
+  .abt-back,
+  .team-back,
+  .prt-back,
+  .legal-back,
+  .mp-back,
+  .casepage .terms-more a,
+  .more,
+  .nsvq-doc {
+    display: inline-flex;
+    align-items: center;
+  }
+  /* The lamp's pull chain is 22px of button around a 1.5px chain and a bead,
+     absolutely placed. Its `<i>` is positioned from the button's left edge, so
+     two more pixels of width move nothing that is drawn. */
+  .lmp .dchain {
+    min-width: 24px;
+  }
+  /* The case name under the home page's pull quote is an inline link with a
+     `<cite>` and an arrow in it, so it cannot become a flex box without
+     taking the arrow onto its own line. Padding gives it the target instead:
+     the hit area is the padding box, and 4px above and below turns 17px into
+     25 without moving a pixel of the sentence. */
+  .nsvq-link,
+  /* The title of a source is the link, set inline inside the citation. */
+  .casepage .cite-body a {
+    padding-block: var(--space-1);
+  }
+}

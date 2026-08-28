@@ -93,7 +93,13 @@ export function pendingMetadata({
   return decisionMetadata({
     locale,
     slug,
-    title: `${entry.name} — ${inst ? pick(inst.name, locale) : entry.institutionId}`,
+    /* The heading's name, not the caption. A tab, a search result and a
+       shared link all show this string, and the caption runs to forty words:
+       «National Joint Stock Company «Naftogaz of Ukraine» v. PJSC «Gazprom»,
+       SCC Arbitration No. V 2014/129 - Gas Transit Arbitration — Арбітражний
+       інститут…» is 130 characters before the forum's name begins. The full
+       caption is on the page, in the row that carries it. */
+    title: `${entry.nameShort ?? entry.name} — ${inst ? pick(inst.name, locale) : entry.institutionId}`,
     description: `${t.title}. ${pick(entry.status, locale)} · ${pick(entry.note, locale)}${
       entry.year ? ` · ${entry.year}` : ""
     }.`,
