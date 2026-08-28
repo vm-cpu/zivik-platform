@@ -53,6 +53,8 @@ export interface MapEventR {
   courts: string[];
   forums: string;
   count: string;
+  /** The linked case is not one of the things this marker counts. */
+  linksOutsideCount?: boolean;
   /** Decisions this site leads to. Empty means nothing is summarised yet. */
   cases: { slug: string; title: string; forum: string; stage?: string; amount?: string }[];
 }
@@ -519,6 +521,8 @@ export default function EventsMap({
      * and nothing said whether the other eight existed.
      */
     writtenOf: string;
+    /** For a marker whose linked case is not one of the things it counts. */
+    writtenBehind: string;
     /**
      * "See them in the registry". A seat's full caseload is the registry's
      * job, not a 300px card's: The Hague's ran to 3011px of scroll against a
@@ -2523,13 +2527,22 @@ export default function EventsMap({
                   question with a named list; a site's proceedings are not all
                   in one forum, so it answers with the arithmetic. Only where
                   the two numbers differ: "3 of 3" is noise. */}
-              {selected.total > selected.cases.length && (
-                <p className="emap-written">
-                  {labels.writtenOf
-                    .replace("{n}", String(selected.cases.length))
-                    .replace("{total}", String(selected.total))}
-                </p>
-              )}
+              {/* Mariupol counts six warrants and links the situation they
+                  issue from, which is not one of the six — so the arithmetic
+                  read «1 of 6», claiming a warrant was written up when none
+                  is. A marker that says its link sits outside its count gets
+                  the relation stated instead. */}
+              {selected.linksOutsideCount
+                ? selected.cases.length > 0 && (
+                    <p className="emap-written">{labels.writtenBehind}</p>
+                  )
+                : selected.total > selected.cases.length && (
+                    <p className="emap-written">
+                      {labels.writtenOf
+                        .replace("{n}", String(selected.cases.length))
+                        .replace("{total}", String(selected.total))}
+                    </p>
+                  )}
               <ul>
                 {selected.cases.map((c) => (
                   <li key={c.slug}>

@@ -136,6 +136,7 @@ const uk = {
        проваджень, рішення, арбітражів, ордерів — and the count line above
        already carries the right one. */
     writtenOf: "Опрацьовано {n} з {total}",
+    writtenBehind: "Розібрано ситуацію, з якої видано ці ордери",
     /* The rest of a seat's caseload, in the library, instead of printed into
        a 300px card. The Hague's ran to 3011px of scroll against a 753px
        window before this.

@@ -322,9 +322,17 @@ export const registryCases: RegistryCase[] = [
     stage: "enforcement",
     status: { uk: "Виконання", en: "Enforcement" },
     year: 2016,
+    /* The claim, not the award. The tribunal ordered USD 4,222,875,858.81 plus
+       interest and USD 23,889,036.26 in costs — read from the dispositif of
+       the Final Award itself, § 717(1)-(2). The five billion is the figure the
+       claim was reported at, which is what this field is for; the award is a
+       different number and belongs to a write-up. See the note on `amountUsd`
+       in content/types.ts, where two rows still disagree with that. */
     amountUsd: 5000000000,
     note: { uk: "PCA 2017-16", en: "PCA 2017-16" },
-    pages: 218,
+    /* 236, counted in the PDF. It said 218, which is neither the page count
+       nor any figure the award prints. */
+    pages: 236,
     /* Final Award, 12 April 2023, 236 pp. — the award itself. */
     decisionUrl: "https://www.italaw.com/sites/default/files/case-documents/180074_0.pdf",
     lit: false,

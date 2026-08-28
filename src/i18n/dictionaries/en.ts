@@ -105,6 +105,7 @@ const en: Dictionary = {
     closeFull: "Leave full screen",
     reads: "Decisions written up",
     writtenOf: "Written up: {n} of {total}",
+    writtenBehind: "The situation these warrants issue from is written up",
     allInRegistry: "See them in the library →",
     pending: "Summary in preparation",
     amountLabel: "Amount in dispute",

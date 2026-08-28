@@ -175,7 +175,22 @@ export interface RegistryCase {
    * instead, so it is never transcribed twice; nothing sets this today.
    */
   decidedOn?: CaseDate;
-  /** Amount at stake in USD, if applicable. */
+  /**
+   * Amount at stake in USD — the sum claimed, not the sum awarded.
+   *
+   * That is what the field is labelled as everywhere it renders («Сума у
+   * спорі» / "Amount in dispute"), and it is the only meaning that works
+   * across all thirty-nine rows: thirty-one of them have no award to state.
+   *
+   * TWO ROWS DISAGREE WITH THAT AND NEED THE OWNER. `pca-28` (DTEK) holds
+   * 207,800,000, which is exactly the sum awarded — its own write-up records
+   * the claim as ≥ USD 421,198,000. `pca-23` (Oschadbank) holds 1,100,000,000,
+   * which is the award of 1,111,300,729 rounded. Neither claim figure can be
+   * sourced from this repository for both rows, so nothing was changed: a
+   * registry that sorts and filters on this column must not have two of its
+   * rows quietly measuring something else, and picking a number to make the
+   * column consistent would be worse than the inconsistency.
+   */
   amountUsd: number | null;
   /** Short context / docket reference. */
   note: Localized;

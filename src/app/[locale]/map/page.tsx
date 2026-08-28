@@ -131,6 +131,7 @@ const stageWord = (k: string | undefined) =>
               courts: e.courts,
               forums: pick(e.forums, locale),
               count: pick(e.count, locale),
+            linksOutsideCount: e.linksOutsideCount,
               cases: caseLinksFor(e.key, locale).map((c) => ({
               ...c,
               stage: stageWord(c.stage),
@@ -162,6 +163,7 @@ const stageWord = (k: string | undefined) =>
               legendUnlit: dict.mapSection.legendUnlit,
               reads: dict.mapSection.reads,
             writtenOf: dict.mapSection.writtenOf,
+            writtenBehind: dict.mapSection.writtenBehind,
             allInRegistry: dict.mapSection.allInRegistry,
               pending: dict.mapSection.pending,
             amountLabel: dict.mapSection.amountLabel,

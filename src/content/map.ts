@@ -15,6 +15,16 @@ export interface MapEvent {
   /** Marker key in europe-map.json. */
   key: string;
   /**
+   * The linked case is not one of the things this marker counts.
+   *
+   * Every other marker counts proceedings and links the ones that are written
+   * up, so "n of total" is a true sentence about the same set. Mariupol counts
+   * warrants and links the situation those warrants issue from, which is not a
+   * warrant — so the arithmetic compares two different things and the card says
+   * what the case actually is instead.
+   */
+  linksOutsideCount?: boolean;
+  /**
    * How many items in the registry this site accounts for — the number its
    * own `count` string states, as a number.
    *
@@ -542,6 +552,13 @@ export const MAP_EVENTS: MapEvent[] = [
     // icc-14 Gerasimov. Warrants, not proceedings: the umbrella situation
     // (icc-situation, ICC-01/22) is the investigation they issue from and is
     // not one of the six.
+    //
+    // Which is why this marker cannot use the "written up: n of total" line
+    // every other one uses. The case linked below is that situation, so the
+    // card was reading «Опрацьовано 1 з 6» — one of the six warrants written
+    // up, when none is. `linksOutsideCount` says so, and the card states the
+    // relation instead of doing arithmetic across two different things.
+    linksOutsideCount: true,
     count: { uk: "6 ордерів", en: "6 warrants" },
   },
 ];
