@@ -33,6 +33,10 @@ const T = {
     uk: { international: "Розібрані рішення міжнародних судів", arbitration: "Розібрані арбітражні рішення", national: "Розібрані рішення національних судів", executive: "Розібрані рішення бібліотеки" },
     en: { international: "Analysed decisions of international courts", arbitration: "Analysed arbitral awards", national: "Analysed decisions of national courts", executive: "Analysed decisions in the library" },
   },
+  /* The row that carries the caption as the forum files it. «Повна назва»
+     rather than «Цитування»: it is the name of the case, not a citation
+     format. */
+  caption: { uk: "Повна назва", en: "Full caption" },
   hasSummary: { uk: "є розбір", en: "analysed" },
   allOfForum: { uk: "Усі провадження цього суду", en: "All proceedings before this forum" },
   /* What the link actually opens. `dict.pending.official` stays the label for
@@ -182,8 +186,10 @@ export default function CasePending({
 
   const caseHref = (c: RegistryCase) =>
     `/${locale}/cases/${c.summarySlug ?? c.id}`;
+  /* A heading takes the short name; the full caption is a fact of the record
+     and is set out in the table below. */
   const caseName = (c: RegistryCase) =>
-    locale === "uk" && c.nameUk ? c.nameUk : c.name;
+    locale === "uk" && c.nameUk ? c.nameUk : (c.nameShort ?? c.name);
 
   const relations = (items: RegistryCase[], heading: string) => (
     <section className="pend-rel">
@@ -238,8 +244,8 @@ export default function CasePending({
           {entry.year ? ` · ${entry.year}` : ""}
         </p>
 
-        <h1 className="pend-name" lang={foreignLang(entry.name, locale)}>
-          {entry.name}
+        <h1 className="pend-name" lang={foreignLang(caseName(entry), locale)}>
+          {caseName(entry)}
         </h1>
 
         <p className="pend-status">{t.title}</p>
@@ -280,6 +286,17 @@ export default function CasePending({
             <div>
               <dt>{t.docket}</dt>
               <dd className="pend-mono">{pick(entry.note, locale)}</dd>
+            </div>
+          )}
+          {/* The caption in full, and only where the heading is not already
+              it. Eleven of these captions carry something that is nowhere else
+              on the record — ten co-claimants, a second docket, the date of a
+              Council decision — so shortening the title cannot be allowed to
+              take them off the page. */}
+          {entry.nameShort && (
+            <div>
+              <dt>{pick(T.caption, locale)}</dt>
+              <dd lang={foreignLang(entry.name, locale)}>{entry.name}</dd>
             </div>
           )}
           {/* Four of the thirty-nine records carry a page count. It was kept

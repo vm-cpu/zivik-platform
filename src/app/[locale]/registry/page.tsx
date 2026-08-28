@@ -359,7 +359,10 @@ export default async function RegistryPage({
       courtId: c.institutionId,
       court: inst ? pick(inst.abbr, locale) : c.institutionId,
       courtOrder: inst ? inst.order : Number.MAX_SAFE_INTEGER,
-      name: c.name,
+      /* The heading is the short name where there is one; the full caption
+         stays in `find.visible` below, so a claimant who appears only in it is
+         still reachable by search. */
+      name: c.nameShort ?? c.name,
       nameUk: locale === "uk" ? (c.nameUk ?? "") : "",
       note: pick(c.note, locale),
       stage: c.stage ?? null,
@@ -387,7 +390,7 @@ export default async function RegistryPage({
          whatever locale is being read, so a Ukrainian query finds the case on
          the English page too. */
       find: {
-        visible: `${c.name} ${c.nameUk ?? ""} ${both(c.note)}`,
+        visible: `${c.name} ${c.nameShort ?? ""} ${c.nameUk ?? ""} ${both(c.note)}`,
         court: `${both(inst?.abbr)} ${both(inst?.name)} ${both(inst?.seat)} ${c.institutionId}`,
         status: `${both(c.status)} ${both(stageLabels)} ${both(outcomeLabels)}`,
         type: both(c.type),

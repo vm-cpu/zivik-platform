@@ -189,19 +189,6 @@
    :empty rather than :has(.money-seg), because that is literally the state:
    MoneyBars renders the bar with the segments as its only children and no
    text, so a bar with no parts has no child nodes at all. */
-/* The rail is the largest sum on the page, drawn full width and unlit.
-
-   Without it a bar was a gold shape alone on the ground, and a small one had
-   nothing to be small against: DTEK's costs are 0.26% of the award on that
-   page and drew as a stub with a red line under it explaining that its width
-   was not to be believed — which reads as a fault in the drawing rather than
-   as a small sum. In the rail the same stub is legible as what it is. --rule
-   is the hairline colour of these dark bands, so the track is a groove rather
-   than a second lit shape competing with the bar in it. */
-.casepage .money-rail {
-  border-radius: var(--r-xs);
-  background: var(--rule);
-}
 .casepage .money-bar {
   display: flex;
   gap: 2px;
@@ -214,6 +201,19 @@
 }
 .casepage .money-bar:empty {
   background: var(--gold);
+}
+/* The rail is the largest sum on the page, drawn full width and unlit.
+
+   Without it a bar was a gold shape alone on the ground, and a small one had
+   nothing to be small against: DTEK's costs are 0.26% of the award on that
+   page and drew as a stub with a red line under it explaining that its width
+   was not to be believed — which reads as a fault in the drawing rather than
+   as a small sum. In the rail the same stub is legible as what it is. --rule
+   is the hairline colour of these dark bands, so the track is a groove rather
+   than a second lit shape competing with the bar in it. */
+.casepage .money-rail {
+  border-radius: var(--r-xs);
+  background: var(--rule);
 }
 /* An estimate is hatched rather than solid — the hatch runs gold over the
    band's own ground, so the bar still reads as gold at a glance and as
@@ -339,16 +339,16 @@
 /* A bar too narrow to divide draws solid, and then the weaves name nothing:
    the key was showing a dotted swatch and a striped one for parts a reader
    could not find on the drawing, and picking an entry lit a segment that was
-   not rendered. Solid swatches, and the entry says its figure and its share —
-   which is the whole of what the key can honestly offer here. `[data-seg]`
-   is still on the marks, because it is the segment's identity and not only
-   its decoration. */
-.casepage .money-key[data-solid="yes"] i[data-seg] {
-  background: var(--gold);
-}
-/* The same, for the bars whose split is legible on a desktop and not on a
-   phone. `data-thin` is set on the narrow ones — a part between 1% and 2.5% of
-   the rail — and 900px is where 2.5% of the rail stops being eight pixels.
+   not rendered. On those keys MoneyBars leaves `data-seg` off the swatch
+   altogether, so the two rules above do not match and every mark falls back to
+   the plain gold of `.money-key i` — no rule here is needed for that, and the
+   one that stood here could never match: a key without segments has no
+   `[data-seg]` to select.
+
+   What does need a rule is the bar whose split is legible on a desktop and
+   not on a phone. `data-thin` is set on the narrow ones — a part between 1%
+   and 2.5% of the rail — and 900px is where 2.5% of a rail stops being eight
+   pixels.
    `[data-estimated="no"]` so an estimated bar keeps its hatch when its
    segments go: the two rules are the same weight, and this one is written
    later. */

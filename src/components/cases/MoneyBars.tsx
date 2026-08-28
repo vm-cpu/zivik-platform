@@ -172,11 +172,7 @@ export default function MoneyBars({
             )}
 
             {parts.length > 0 && (
-              <ul
-                className="money-key"
-                data-solid={segmented ? "no" : "yes"}
-                data-thin={thin ? "yes" : "no"}
-              >
+              <ul className="money-key" data-thin={thin ? "yes" : "no"}>
                 {parts.map((p, j) => {
                   const key = `${i}-${j}`;
                   const share = Math.round((p.amount / f.amount) * 100);

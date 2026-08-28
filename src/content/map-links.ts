@@ -157,7 +157,7 @@ export function courtCaseloadFor(courtKey: string, locale: Locale) {
         // The citation, and — for a Ukrainian reader — the same case said in
         // Ukrainian. Never both in the English locale: there the caption is
         // already in the reader's language and a second line would repeat it.
-        name: c.name,
+        name: c.nameShort ?? c.name,
         nameUk: locale === "uk" ? c.nameUk : undefined,
         note: pick(c.note, locale),
         stage: c.stage,

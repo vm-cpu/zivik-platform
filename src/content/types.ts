@@ -138,20 +138,34 @@ export interface RegistryCase {
   /** References `Institution.id`. */
   institutionId: string;
   /**
-   * The name of the proceeding — identical in both locales.
+   * Official citation — identical in both locales, and as the forum files it.
    *
-   * The name, not the full citation. These carried their docket and their
-   * reporter as well — «…v. PJSC «Gazprom», SCC Arbitration No. V 2014/129 -
-   * Gas Transit Arbitration» — and every surface that lists a case already
-   * carries the docket separately: it is `note` in the registry row, the
-   * DOCKET line on a pending page, and a column of its own in the library. So
-   * a heading repeated it, twice on one screen, and pushed the party names off
-   * the first line. What distinguishes two proceedings between the same
-   * parties stays — «— Gas Transit Arbitration» against «— Gas Sales
-   * Arbitration» — because that is part of the name and not part of the
-   * citation.
+   * The whole caption: every party, the docket, the reporter where there is
+   * one. Nothing here is shortened, because for eleven of these records this
+   * string is the only place a fact lives — the ten co-claimants of pca-25,
+   * the PCA docket of the naval-vessels arbitration, the dates of the ICAO
+   * Council decision. It is also the registry's search haystack, so a reader
+   * who types a claimant's name reaches the row that is about it.
+   *
+   * What a heading shows is `nameShort`.
    */
   name: string;
+  /**
+   * The same proceeding, said short enough for a heading.
+   *
+   * The captions run to forty words: the pending page's title was «…v. PJSC
+   * «Gazprom», SCC Arbitration No. V 2014/129 - Gas Transit Arbitration» over
+   * three lines, with the docket repeated in the DOCKET row directly under it
+   * and in the note on every list that links here. This is the same case with
+   * the apparatus taken off — the parties and, where two proceedings share
+   * them, whatever distinguishes the two («— Gas Transit Arbitration» against
+   * «— Gas Sales Arbitration»).
+   *
+   * Optional: a caption already short enough is its own heading. Every surface
+   * that displays a case name takes `nameShort ?? name`; every surface that
+   * searches or cites one takes `name`.
+   */
+  nameShort?: string;
   /**
    * The same case, said in Ukrainian.
    *
