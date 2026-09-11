@@ -32,17 +32,6 @@ import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "src/content/europe-map.json");
-/**
- * The Atlantic ring, on its own, in `public/`.
- *
- * 60 paths and 17.5 kB gzipped, and inside europe-map.json it travelled twice
- * in every document that imported it — in the HTML and again in the RSC
- * payload — including the home page, which is 72 kB. It is only ever wanted by
- * one of the three framings, so `EventsMap` fetches it the first time a reader
- * asks for that framing. Written by this script so the two halves of the
- * geometry are always generated together and cannot drift.
- */
-const OUT_FAR = join(ROOT, "public/europe-far.json");
 
 /** Fixed drawing surface. The SVG scales to its container through viewBox. */
 const W = 1200;
@@ -211,50 +200,17 @@ const projection = geoMercator().fitExtent(
 const path = geoPath(projection).digits(1);
 
 /**
- * The two windows the context layer is generated for.
+ * The window the context layer is generated for: the 1200 x 460 drawing
+ * itself, plus a 20-unit skirt.
  *
- * NEAR is the 1200 x 460 drawing itself, plus a 20-unit skirt — the frame the
- * viewBox declares and the two original framings live inside.
- *
- * WIDE is the Atlantic framing added later: the reader can now put Montreal,
- * where the ICAO Council sits, beside Europe. The projection already reaches
- * that far — Montreal lands at (-936.9, 407.1) on a frame that runs 0…1200 —
- * so the framing was only ever a viewBox question. But the context layer was
- * generated for NEAR, so zooming out showed an ocean where North America is.
- *
- * The numbers are the widest view the component can be driven to, measured
- * rather than guessed: `EventsMap` fits the span from Montreal to Ukraine's
- * eastern edge into the element minus the strips the floating panels claim,
- * and the tallest result across the widths the site is read at — a 1000px
- * window on the map's own page, where the element is nearly square and the fit
- * is bound by the width — is about 2400 x 1990 units centred near (200, -20).
- * These bounds cover that with room to spare, and panning is clamped inside
- * the same rect, so nothing the reader can reach falls outside them.
- *
- * x0 moved from -1030 to -1400 when the Atlantic framing was widened.
- *
- * That framing used to stop 64 units west of Montreal (-936.9) and keep the
- * projection's whole 0…1200 window on the other side, so it spent 323 units on
- * empty steppe east of the last marker and gave North America the Gulf of St
- * Lawrence: measured at 1440, Montreal rendered 2.9% of the frame width inside
- * the western edge. `EventsMap` now frames the markers themselves — 64 units
- * round the ones inside the window, 360 round a seat that is off it — which
- * puts the western edge at -1296.9, about 96°W. Everything between -1400 and
- * -1030 is land that had no country to be drawn from: Canada and the United
- * States were already here whole (their bounds reach x = -2658), but Mexico's
- * easternmost point projects to -1149 and its whole outline fell outside the
- * old window, so the new framing would have shown a hole where the Rio Grande
- * is. -1400 is the -1296.9 the component can reach, with a hundred units in
- * hand for a narrower element.
- *
- * NOTHING ABOUT THE PROJECTION CHANGES. fitExtent, FRAME, W, H and the marker
- * list are exactly as they were, so `ukraine`, `regions`, `markers` and
- * `viewBox` regenerate byte-identical and Europe's framing does not move. Only
- * `context` grows — and it grows by appending, so its first entries are the
- * same strings in the same order they have always been.
+ * There used to be a second, far wider one. The Atlantic framing let a reader
+ * put Montreal beside Europe, so the generator emitted a second ring of 60
+ * paths — North America and the Atlantic rim — into public/europe-far.json,
+ * fetched the first time anyone asked for that framing. The ICAO Council is
+ * off the map now, so the framing is gone and so is the only thing that ever
+ * requested the file.
  */
 const NEAR = { x0: -20, y0: -20, x1: W + 20, y1: H + 20 };
-const WIDE = { x0: -1400, y0: -1060, x1: 1430, y1: 1030 };
 
 /** Does this shape land anywhere inside the given window at all? */
 const within = (f, b) => {
@@ -270,14 +226,7 @@ const isUkraine = (f) => f.properties?.name === "Ukraine";
 // the committed output grows at the end rather than being reshuffled.
 const rest = countries.features.filter((f) => !isUkraine(f));
 const nearRing = rest.filter((f) => within(f, NEAR));
-const farRing = rest.filter((f) => !within(f, NEAR) && within(f, WIDE));
-/* Emitted as two lists, not one. The Atlantic framing is map-page only, so the
-   home band can never draw the far ring — and shipping it there cost ~31 kB
-   gzipped on every home-page view, twice over, because the geometry travels in
-   the HTML and again in the RSC payload. `context` stays the near ring so its
-   bytes are unchanged; `contextFar` is additive. */
 const context = nearRing.map((f) => path(f)).filter(Boolean);
-const contextFar = farRing.map((f) => path(f)).filter(Boolean);
 
 /**
  * The states that host a forum, as named shapes rather than anonymous context.
@@ -356,16 +305,6 @@ for (const name of FORUM_STATES) {
   const d = path({ type: "Feature", properties: {}, geometry });
   if (!d) throw new Error(`forum state "${name}" did not project`);
   forums[name] = d;
-}
-
-/**
- * The Atlantic framing exists to show one thing, and it must not ship without
- * it — the same guard, and the same reasoning, as Crimea below.
- */
-for (const name of ["Canada", "United States of America"]) {
-  if (!farRing.some((f) => f.properties?.name === name)) {
-    throw new Error(`${name} did not project — the Atlantic framing must not ship without it`);
-  }
 }
 
 const atlasUkraine = countries.features.filter(isUkraine).map((f) => path(f))[0];
@@ -645,12 +584,12 @@ writeFileSync(
   ) + "\n",
 );
 
-writeFileSync(OUT_FAR, JSON.stringify({ contextFar }) + "\n");
 
 console.log(
-  `wrote ${OUT} and ${OUT_FAR}\n  ${context.length} + ${contextFar.length} country paths` +
+  `wrote ${OUT}
+  ${context.length} country paths` +
     `\n  ${Object.keys(forums).length} forum states: ${Object.keys(forums).join(", ")}` +
-    ` (${nearRing.length} inside the frame, ${farRing.length} for the Atlantic framing),` +
+    ` (all inside the frame),` +
     ` ${Object.keys(markers).length} markers` +
     `\n  Ukraine outline includes Crimea and Sevastopol` +
     `\n  ${Object.keys(areas).length} named area(s): ${Object.keys(areas).join(", ")}` +

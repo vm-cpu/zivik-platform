@@ -62,7 +62,17 @@ export interface MapEventR {
 export interface MapCourtR {
   key: string;
   city: string;
+  /** The seats joined into one line — still what the list under the map on
+   *  the full page prints. The card uses `seatList` instead. */
   seats: string;
+  /**
+   * The same seats one by one, each carrying the institution it is — where it
+   * is one — so the card can make that court name a link into the registry.
+   * `id` is absent for a seat that is not a registry institution: Paris holds
+   * the PCA as the *venue* of the Oschadbank arbitration, and the PCA itself
+   * sits in The Hague. Such a seat is named and not linked.
+   */
+  seatList: { id?: string; abbr?: string; name: string }[];
   /**
    * The city is off the projection's frame, so it has no point in
    * europe-map.json and is docked against the frame's edge instead.
@@ -101,13 +111,6 @@ export interface MapCourtR {
 export interface MapGeometry {
   viewBox: string;
   context: string[];
-  /**
-   * The Atlantic ring. Absent from the bundle now and fetched when it is
-   * first needed — see `far` in the component. It is 60 paths and 17.5 kB
-   * gzipped, and it travelled twice in every document that carried it, once
-   * in the HTML and again in the RSC payload.
-   */
-  contextFar?: string[];
   ukraine: string;
   /**
    * Ukraine's internal oblast boundaries, as one mesh of open polylines — the
@@ -357,18 +360,6 @@ const SPAN_FAR = 360;
  */
 const FOCUS_EDGE = 90;
 
-/**
- * How many unwritten proceedings a court card names before handing over.
- *
- * The Hague seats four institutions and 28 proceedings, and the card printed
- * all 22 of the unwritten ones: measured, 3011px of scroll against a 753px
- * window, in raw registry captions — forty-word arbitration styles in English
- * inside a Ukrainian page, and the same paragraph of Rome Statute articles
- * repeated for each of six arrest warrants. Four is enough to show what kind
- * of thing they are; the registry, which has six filters and a search box, is
- * where the rest belongs.
- */
-const LISTED_MAX = 4;
 
 /**
  * How far a press may travel and still count as a click, in CSS pixels.
@@ -764,34 +755,6 @@ export default function EventsMap({
   const cardDrag = useRef<{ id: number; x: number; y: number } | null>(null);
 
 
-  /**
-   * North America and the Atlantic rim, fetched rather than bundled.
-   *
-   * The band used to be denied the Atlantic framing partly to keep this off
-   * the home page: 60 paths, 17.5 kB gzipped, travelling twice in every
-   * document that carried them — in the HTML and again in the RSC payload — on
-   * a page that is 72 kB. Withholding the geometry withheld the framing.
-   *
-   * It is a file now, asked for the first time a reader asks for the framing.
-   * Nothing waits on it: pressing «Атлантика» reframes immediately and draws
-   * the near ring and every marker; the far coast fills in behind them when it
-   * arrives, and if it never arrives the reader gets the framing they asked
-   * for over open water, which is exactly what the band gave before.
-   */
-  const [far, setFar] = useState<string[] | null>(geo.contextFar ?? null);
-  const farAsked = useRef(false);
-  const loadFar = useCallback(() => {
-    if (farAsked.current) return;
-    farAsked.current = true;
-    fetch("/europe-far.json")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d: { contextFar?: string[] } | null) => {
-        if (d?.contextFar) setFar(d.contextFar);
-      })
-      .catch(() => {
-        // The framing still works; it is the coast behind it that is missing.
-      });
-  }, []);
 
   /**
    * Is the key open?
@@ -1090,36 +1053,6 @@ export default function EventsMap({
     return pts;
   }, [events, courts]);
   /**
-   * Is there anything out there to frame, and is this the surface to frame it
-   * on? Nothing off the frame, no button — and not on the home band either.
-   *
-   * The Atlantic framing is a good answer to a question a reader asks once
-   * they are already looking at the map, and a bad one to put in the middle of
-   * a scrolling document. The band is 500 units tall for 1200 wide; the
-   * Atlantic span is 2323.8 by 705.6, so fitting it there leaves Europe at 25%
-   * of the frame's width and Ukraine at 12%, under a card the band has no room
-   * to move out of the way. Measured on the deployed build at 1440, pressing
-   * «Атлантика» on the home page gave the reader a band of open ocean with the
-   * subject of the map half behind the info card and the six sites unusable —
-   * it cost Europe's legibility and did not deliver America in exchange.
-   *
-   * On the map's own page the drawing has the viewport, the seat list is
-   * underneath, and the framing does what it was added for. So the band keeps
-   * «Європа» and «Україна» and the link to the full map, which is where the
-   * third framing lives.
-   *
-   * The consequence for weight, since the band can no longer draw anything
-   * outside the projection's own window: the generator emits the far ring as
-   * its own list (`contextFar`, 60 paths of North America and the Atlantic
-   * rim) and MapSection withholds it, so those paths travel to the map's own
-   * page and nowhere else. Measured as an A/B of two builds, same JSON, one
-   * prop apart: the home page went from 100,293 to 62,782 bytes gzipped in
-   * Ukrainian and 96,922 to 59,582 in English — 37.5 kB and 37.3 kB, a little
-   * over a third of the document, because the geometry travelled twice, once
-   * in the HTML and again in the RSC payload. The map page is unchanged; the
-   * near ring is byte-identical, so Crimea and the oblast mesh have not moved.
-   */
-  /**
    * Is there a third framing at all?
    *
    * It exists for one thing: a seat the projection's window cannot hold. That
@@ -1158,33 +1091,6 @@ export default function EventsMap({
   const [nav, setNav] = useState<Nav>(null);
   const view = useMemo(() => viewFrom(nav, FULL, OUTER, ANCHORS), [nav, FULL, OUTER, ANCHORS]);
 
-  /**
-   * Ask for the far coast when the view actually reaches it.
-   *
-   * It used to be asked for by the «Вся мапа» button, on the reasoning that
-   * that is the framing it exists for. It is not the only way out there: a
-   * link to `?court=montreal`, the stepper, a wheel with the modifier held and
-   * a drag all take the view past the projection's own window, and by none of
-   * those routes was the button pressed. Reported from a screenshot of the
-   * result — the ICAO Council's marker sitting in open ocean, in exactly the
-   * right place, with no continent under it.
-   *
-   * Asked of the view instead, every route is covered and the home page still
-   * pays nothing until a reader goes looking.
-   */
-  useEffect(() => {
-    /* 80 units of slack, not 1. The opening framing is already a little wider
-       than the projection's declared window — the frame takes the container's
-       aspect ratio, so at 1440 x 829 it comes out 1218 units against 1200 —
-       and at one unit of tolerance that counted as "reaching the far coast",
-       which fetched North America on every visit to the map. 80 is past any
-       fit of the window itself and well short of the first thing out there:
-       Montreal is 937 units west of it. */
-    const slack = 80;
-    if (view.x < BASE.x - slack || view.x + view.w > BASE.x + BASE.w + slack) {
-      loadFar();
-    }
-  }, [view.x, view.w, BASE.x, BASE.w, loadFar]);
 
   /**
    * Bring both ends of the picked relation into the picture.
@@ -1965,11 +1871,6 @@ export default function EventsMap({
       ? geo.ukraine
       : (geo.areas?.[selected.area] ?? null);
 
-  /** Where the rest of a seat's caseload lives. */
-  const registryHref = selectedCourt?.caseload.courtIds.length
-    ? `/${locale}/registry?court=${selectedCourt.caseload.courtIds.join(",")}`
-    : null;
-
   return (
     <div
       className="emap"
@@ -2250,9 +2151,6 @@ export default function EventsMap({
           </defs>
           {geo.context.map((d, i) => (
             <path key={i} className="emap-ctx" d={d} />
-          ))}
-          {(far ?? []).map((d, i) => (
-            <path key={`f${i}`} className="emap-ctx" d={d} />
           ))}
           {/* The states that host a forum, lit out of the grey.
 
@@ -2750,134 +2648,42 @@ export default function EventsMap({
                 This opened with the legend's own wording ("the courts sit in")
                 and put the city where the name belongs. */}
             <div className="emap-when">{selectedCourt.city}</div>
-            <div className="emap-title emap-court-name">{selectedCourt.seats}</div>
-            {/* What the registry says this court is hearing. The map draws six
-                places where harm happened; the archive holds 39 proceedings,
-                and the ten heard by the Dutch courts, the ICAO Council, the
-                ICC arbitration court, Lithuania and the EU were tied to none
-                of those six places, so they appeared nowhere at all. */}
+            {/* The seats as a list, one link each.
+
+                This was a single run-on line — "ICJ — Міжнародний суд ООН ·
+                ICC — Міжнародний кримінальний суд · …" — under which sat the
+                court's whole caseload: every summarised decision with its
+                status chip, then four more from the registry, then a link to
+                the rest. The owner's note is to keep the court names and the
+                number of proceedings and nothing else, and to make every name
+                a way into the registry.
+
+                So the card answers two questions and stops: which courts sit
+                here, and how much of the archive they hold. Everything it used
+                to list is one click away, in the one place that can sort and
+                filter it. */}
+            <ul className="emap-seats">
+              {selectedCourt.seatList.map((seat) => (
+                <li key={seat.id ?? seat.name}>
+                  {/* A seat with no institution of its own is a fact about
+                      where something sat, not a way into a caseload — so it is
+                      named and not linked, rather than linked at something
+                      else. */}
+                  {seat.id ? (
+                    <Link href={`/${locale}/registry?court=${seat.id}`}>
+                      {seat.abbr && <span className="emap-seat-abbr">{seat.abbr}</span>}
+                      <span className="emap-seat-name">{seat.name}</span>
+                    </Link>
+                  ) : (
+                    <span className="emap-seat-plain">
+                      {seat.abbr && <span className="emap-seat-abbr">{seat.abbr}</span>}
+                      <span className="emap-seat-name">{seat.name}</span>
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
             <p className="emap-caseload">{caseload(selectedCourt.caseload.total)}</p>
-            {selectedCourt.caseload.written.length > 0 && (
-              <div className="emap-reads">
-                <div className="emap-reads-h">{labels.reads}</div>
-                <ul>
-                  {selectedCourt.caseload.written.map((w) => (
-                    <li key={w.slug}>
-                      <Link href={`/${locale}/cases/${w.slug}`}>
-                        <span className="emap-read-t">{w.title}</span>
-                        {(w.stage || w.amount) && (
-                          <span className="emap-tags">
-                            {w.stage && <span className="emap-tag">{w.stage}</span>}
-                            {w.amount && (
-                              <span className="emap-tag emap-tag-sum" title={labels.amountLabel}>
-                                {w.amount}
-                              </span>
-                            )}
-                          </span>
-                        )}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {/* And the ones with no write-up yet, by name. Without this a
-                card said "2 proceedings in the library" and then that they are
-                tied to none of the six places — a number and a negative, which
-                left the reader asking what Stockholm was doing on the map at
-                all. Named, it answers itself: two Naftogaz–Gazprom
-                arbitrations. Not links: there is nothing to open yet. */}
-            {selectedCourt.caseload.listed.length > 0 && (
-              <div className="emap-reads emap-listed">
-                <div className="emap-reads-h">{labels.inLibrary}</div>
-                <ul>
-                  {/* Four, not all of them. The Hague seats the ICJ, the ICC,
-                      the PCA and the Dutch courts, and printing its whole
-                      unwritten tail gave a 300px card 3011px of scroll against
-                      a 753px window — forty-word arbitration styles in English
-                      inside a Ukrainian page, and one paragraph of Rome
-                      Statute articles repeated for each of six warrants. Four
-                      shows what kind of thing they are; the link below hands
-                      the reader a table built to hold them. */}
-                  {selectedCourt.caseload.listed.slice(0, LISTED_MAX).map((c) => (
-                    <li key={c.id}>
-                      {/* The Ukrainian line leads and the citation follows it.
-                          The other way round put a forty-word English
-                          arbitration style at the top of every row in a card
-                          whose every other word was Ukrainian, and left the
-                          reader to work out what they were looking at from the
-                          docket number underneath. The citation is what the
-                          case is filed as and does not change language; it is
-                          still here, in full, one line down. */}
-                      {c.nameUk ? (
-                        <>
-                          <span className="emap-read-t">{c.nameUk}</span>
-                          <span className="emap-read-cite" lang="en">
-                            {c.name}
-                          </span>
-                        </>
-                      ) : (
-                        <span className="emap-read-t">{c.name}</span>
-                      )}
-                      {c.note && <span className="emap-read-f">{c.note}</span>}
-                      {(c.stage || c.amount) && (
-                        <span className="emap-tags">
-                          {c.stage && <span className="emap-tag">{c.stage}</span>}
-                          {c.amount && (
-                            <span className="emap-tag emap-tag-sum" title={labels.amountLabel}>
-                              {c.amount}
-                            </span>
-                          )}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {/* And the whole caseload, in the one place on this site that can
-                sort and filter it. `/registry` opens on `?court=`, and takes
-                every institution this seat holds — the number in this link and
-                the number in the line above it are the same number. */}
-            {registryHref && (
-              <Link className="emap-more" href={registryHref}>
-                {/* No number in it. It carried the seat's own count and read
-                    «Усі 1 у реєстрі» on five of the nine courts — and the
-                    count is already stated two lines above, in a sentence
-                    that agrees with itself. */}
-                {labels.allInRegistry}
-              </Link>
-            )}
-          {/* A heading is a promise that something follows it. Stockholm hears
-              the two Naftogaz/Gazprom gas arbitrations, Vilnius Lithuania's
-              universal-jurisdiction proceedings and Brussels is not a court at
-              all — none of the six places on this map is about any of them, so
-              `courtSites` is empty and «РОЗГЛЯДАЄ СПРАВИ» stood over nothing.
-              An empty list is not an absence of cases: the caseload line above
-              has already said how many the registry holds. It is an absence of
-              a link to *this drawing*, which is a different fact and is worth
-              one sentence. */}
-          {courtSites.length > 0 ? (
-            <div className="emap-reads">
-              <div className="emap-reads-h">{labels.courtHears}</div>
-              <ul>
-                {courtSites.map((e) => (
-                  <li key={e.key}>
-                    <button
-                      type="button"
-                      className="emap-court-site"
-                      onClick={() => toggleSite(e.key)}
-                    >
-                      <span className="emap-read-t">{e.title}</span>
-                      <span className="emap-read-f">{e.count}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p className="emap-pending">{selectedCourt.caseload.total === 1 ? labels.courtNoSites.one : labels.courtNoSites.many}</p>
-          )}
         </div>
       )}
       </div>

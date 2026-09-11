@@ -32,8 +32,10 @@ import { contentIndex, CONTENT_INDEX_PATH } from "@/content/search-index";
  * `public/` is gzipped. A CDN in front of the deployment compresses it and the
  * question does not arise; a self-hosted `next start` with nothing in front of
  * it would hand a reader three times the bytes. If this ever moves off a CDN,
- * put the index in `public/` — which is how `europe-far.json`, the map's other
- * fetched asset, avoids the question entirely.
+ * put the index in `public/`, which is served gzipped and sidesteps the
+ * question entirely. (The map used to have a second fetched asset there,
+ * `europe-far.json`, for exactly that reason; it went when the Atlantic
+ * framing did.)
  */
 export const dynamic = "force-static";
 

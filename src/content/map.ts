@@ -170,7 +170,20 @@ export interface MapCourt {
    * halves come from the record; this only picks the one the reader is
    * reading in.
    */
-  seats: { abbr?: string | Localized; name: Localized }[];
+  /**
+   * The courts that sit in this city.
+   *
+   * `institutionId` is the registry institution this seat *is*, where it is
+   * one — that is what makes the name a link into the registry. It is declared
+   * per seat rather than inferred from the order of `institutionIds`, because
+   * the two lists are not always the same list: Paris holds the ICC's Court of
+   * Arbitration, which is a registry institution, and the PCA, which is not —
+   * the PCA sits in The Hague, and the Paris entry records that the Oschadbank
+   * arbitration was *seated* there. Pairing by position would have linked the
+   * words "Permanent Court of Arbitration" to the ICC's caseload, and nobody
+   * reading the card could have caught it.
+   */
+  seats: { abbr?: string | Localized; institutionId?: string; name: Localized }[];
 }
 
 /**
@@ -235,10 +248,23 @@ export const MAP_COURTS: MapCourt[] = [
     institutionIds: ["icj", "icc", "pca", "nl"],
     city: { uk: "Гаага", en: "The Hague" },
     seats: [
-      { abbr: "ICJ", name: { uk: "Міжнародний суд ООН", en: "International Court of Justice" } },
-      { abbr: "ICC", name: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" } },
-      { abbr: "PCA", name: { uk: "Постійна палата третейського суду", en: "Permanent Court of Arbitration" } },
       {
+        institutionId: "icj",
+        abbr: "ICJ",
+        name: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
+      },
+      {
+        institutionId: "icc",
+        abbr: "ICC",
+        name: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },
+      },
+      {
+        institutionId: "pca",
+        abbr: "PCA",
+        name: { uk: "Постійна палата третейського суду", en: "Permanent Court of Arbitration" },
+      },
+      {
+        institutionId: "nl",
         // Six proceedings — the MH17 verdict and four Hoge Raad cassations —
         // and the map named none of them. The Supreme Court of the Netherlands
         // sits in The Hague (Korte Voorhout 8), as does the District Court
@@ -258,6 +284,7 @@ export const MAP_COURTS: MapCourt[] = [
     city: { uk: "Страсбург", en: "Strasbourg" },
     seats: [
       {
+        institutionId: "ecthr",
         abbr: { uk: "ЄСПЛ", en: "ECtHR" },
         name: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
       },
@@ -268,7 +295,14 @@ export const MAP_COURTS: MapCourt[] = [
     institutionIds: ["itlos"],
     city: { uk: "Гамбург", en: "Hamburg" },
     seats: [
-      { abbr: "ITLOS", name: { uk: "Міжнародний трибунал з морського права", en: "International Tribunal for the Law of the Sea" } },
+      {
+        institutionId: "itlos",
+        abbr: "ITLOS",
+        name: {
+          uk: "Міжнародний трибунал з морського права",
+          en: "International Tribunal for the Law of the Sea",
+        },
+      },
     ],
   },
   {
@@ -277,6 +311,12 @@ export const MAP_COURTS: MapCourt[] = [
     city: { uk: "Париж", en: "Paris" },
     seats: [
       {
+        /* No institutionId, deliberately. The PCA is a registry institution
+           and it is seated in The Hague, where this list already carries it.
+           What this entry records is that the Oschadbank arbitration *sat* in
+           Paris — a fact about a venue, not a second seat of the court. So it
+           is named on the card and not linked: a link here would take a reader
+           who clicked "Permanent Court of Arbitration" to the ICC's caseload. */
         abbr: "PCA",
         name: {
           uk: "Постійна палата третейського суду — місце арбітражу у справі Ощадбанку",
@@ -284,6 +324,7 @@ export const MAP_COURTS: MapCourt[] = [
         },
       },
       {
+        institutionId: "icc-arb",
         abbr: "ICC",
         name: {
           uk: "Міжнародний арбітражний суд Міжнародної торгової палати",
@@ -298,6 +339,7 @@ export const MAP_COURTS: MapCourt[] = [
     city: { uk: "Вільнюс", en: "Vilnius" },
     seats: [
       {
+        institutionId: "lt",
         name: {
           uk: "Суди Литви — універсальна юрисдикція",
           en: "The courts of Lithuania — universal jurisdiction",
@@ -316,6 +358,7 @@ export const MAP_COURTS: MapCourt[] = [
     city: { uk: "Брюссель", en: "Brussels" },
     seats: [
       {
+        institutionId: "eu",
         name: {
           uk: "ЄС і Бельгія — знерухомлення активів (Euroclear), не судовий орган",
           en: "The EU and Belgium — asset immobilisation (Euroclear), not a court",
@@ -345,6 +388,7 @@ export const MAP_COURTS: MapCourt[] = [
     city: { uk: "Гельсінкі", en: "Helsinki" },
     seats: [
       {
+        institutionId: "fi",
         name: {
           uk: "Окружний суд Гельсінкі — універсальна юрисдикція",
           en: "Helsinki District Court — universal jurisdiction",
@@ -357,7 +401,14 @@ export const MAP_COURTS: MapCourt[] = [
     institutionIds: ["scc"],
     city: { uk: "Стокгольм", en: "Stockholm" },
     seats: [
-      { abbr: "SCC", name: { uk: "Арбітражний інститут Торгової палати", en: "Arbitration Institute of the Stockholm Chamber of Commerce" } },
+      {
+        institutionId: "scc",
+        abbr: "SCC",
+        name: {
+          uk: "Арбітражний інститут Торгової палати",
+          en: "Arbitration Institute of the Stockholm Chamber of Commerce",
+        },
+      },
     ],
   },
 ];
@@ -435,13 +486,10 @@ export const MAP_EVENTS: MapEvent[] = [
       uk: "ЄСПЛ, суд Нідерландів та апеляція на рішення Ради ICAO до Міжнародного суду ООН.",
       en: "The ECtHR, a Dutch court, and an appeal from the ICAO Council to the ICJ.",
     },
-    // Montreal was missing, and the count already knew it: three decisions,
-    // two of them summarised here, the third the ICAO Council's own — the
-    // registry's icao-16, "Australia and the Netherlands v. Russian
-    // Federation … under Article 84 of the Chicago Convention". The note below
-    // has always named it. The map drew no line to it because the Council sits
-    // off the frame; it is docked at the western edge now, so the chain the
-    // note describes — Council, then appeal to the ICJ — can be seen.
+    // Two courts, not three. The note below names the chain in full — the
+    // ICAO Council, then the appeal from it to the ICJ — but the Council
+    // itself is no longer a seat on this map, so there is nothing here to
+    // draw a line to. The proceeding is the registry's icao-16.
     courts: ["strasbourg", "hague"],
     forums: {
       uk: "ЄСПЛ (Страсбург) · ICJ і суд Нідерландів (Гаага)",
@@ -584,6 +632,32 @@ export function seatsLine(c: MapCourt, locale: Locale): string {
 }
 
 /**
+ * The seats of one marker, one by one, each with the institution it is.
+ *
+ * `seatsLine` above joins them into a sentence — "ICJ — Міжнародний суд ООН ·
+ * ICC — …" — which is what the card used to print. The owner's note on it is
+ * specific: build the courts as a list, give every one an active link to the
+ * registry, and drop the wide dashes. A run-on line cannot carry four links,
+ * and an em-dash between an abbreviation and the name it abbreviates was
+ * punctuation standing in for a relation the layout can simply show.
+ *
+ * `abbr` and `name` come back apart rather than joined, so the card decides
+ * how they sit next to each other and no dash is needed to hold them together.
+ *
+ * The pairing is positional: `seats[i]` is `institutionIds[i]`. That is a
+ * quiet assumption to build a link on — get it wrong and a court name points
+ * at another court's caseload, which no reader could detect — so the guard at
+ * the foot of this file checks the two lists are the same length.
+ */
+export function seatsList(c: MapCourt, locale: Locale) {
+  return c.seats.map((s) => ({
+    id: s.institutionId,
+    abbr: abbrOf(s.abbr, locale),
+    name: pick(s.name, locale),
+  }));
+}
+
+/**
  * Everything the drawing needs about a court that its card does not.
  *
  * Returned as one object so a render site adds a single spread rather than a
@@ -609,6 +683,24 @@ export function courtMarks(c: MapCourt, locale: Locale) {
   const keys = new Set(MAP_COURTS.map((c) => c.key));
   const wrong: string[] = [];
   for (const c of MAP_COURTS) {
+    /* Every institution this marker claims must be claimed back by one of its
+       seats, and no seat may name an institution the marker does not hold.
+       This is what makes a court name in a card a link the reader can trust:
+       without it a seat could point at another court's caseload and the page
+       would look entirely correct. The first version of this check compared
+       lengths and paired by position, which was wrong on Paris — see the note
+       on `seats` above. */
+    const claimed = c.seats.map((s) => s.institutionId).filter(Boolean) as string[];
+    for (const id of c.institutionIds) {
+      if (!claimed.includes(id)) {
+        wrong.push(`court "${c.key}" holds institution "${id}", but no seat of it says so`);
+      }
+    }
+    for (const id of claimed) {
+      if (!c.institutionIds.includes(id)) {
+        wrong.push(`court "${c.key}" has a seat naming institution "${id}", which the marker does not hold`);
+      }
+    }
     if (c.offMap) {
       if (!c.offAt) wrong.push(`court "${c.key}" is offMap and has no offAt to dock it by`);
     } else if (!(c.key in markers)) {

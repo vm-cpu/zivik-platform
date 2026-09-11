@@ -6,6 +6,7 @@ import {
   courtMarks,
   MAP_COURT_NO_SITES,
   seatsLine,
+  seatsList,
 } from "@/content/map";
 import { courtCaseloadFor } from "@/content/map-links";
 import Link from "next/link";
@@ -124,6 +125,7 @@ const stageWord = (k: string | undefined) =>
               };
             })(),
             seats: seatsLine(c, locale),
+            seatList: seatsList(c, locale),
             ...courtMarks(c, locale),
           }))}
           labels={{

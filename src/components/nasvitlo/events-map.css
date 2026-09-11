@@ -139,8 +139,22 @@
    different jobs here, so a legible blue does not take anything from the
    gold. */
 .emap-forum-state {
-  fill: color-mix(in srgb, var(--brand-forum-lit) 55%, transparent);
-  stroke: color-mix(in srgb, var(--brand-forum-lit) 55%, transparent);
+  /* Light falling on the ground, not paint covering it.
+
+     The fill is deliberately thin — 30% — so the land, its border and the
+     coastline stay visible underneath: a country that is lit is still the same
+     country. Presence comes from the glow instead, the same drop-shadow idiom
+     the site dots and a selected court already use, and for the reason given
+     there: a url() pointing at a filter that may not be in the document is a
+     rendering hazard, and this needs no defs block. Two shadows, one tight and
+     one wide, so the edge reads as a source rather than a cut-out.
+
+     The stroke is the brighter of the two: it is the edge of the light, and it
+     is what keeps six soft shapes from dissolving back into the grey. */
+  fill: color-mix(in srgb, var(--brand-gold-lit) 30%, transparent);
+  stroke: color-mix(in srgb, var(--brand-gold-lit) 62%, transparent);
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--brand-gold-lit) 45%, transparent))
+    drop-shadow(0 0 9px color-mix(in srgb, var(--brand-gold-lit) 30%, transparent));
   /* Non-scaling and 0.8, matching .emap-ctx exactly — these are context
      countries that happen to be lit, and a heavier border would make them read
      as a separate layer of the drawing. See the note there for why a stroke
@@ -1246,6 +1260,47 @@
 /* Quieter than the court above it. It was gold, uppercase, mono and 11px —
    the loudest line on the card, over the name of the institution it is a
    footnote to. A count is a footnote. */
+/* The seats of a marker, as a list of links into the registry.
+
+   It was one run-on line with em-dashes inside it and interpuncts between —
+   four courts in a paragraph, none of them reachable. Each is a row now, and
+   each row is the way into that court's own caseload. No dash between the
+   abbreviation and the name: the abbreviation is set apart in mono, which is
+   the relation the dash was standing in for. */
+.emap-seats {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+.emap-seats li + li {
+  margin-top: var(--space-1);
+}
+.emap-seats a,
+/* Not a link: coloured like the prose round it, not like the ways out. */
+.emap-seat-plain {
+  color: var(--brand-muted-dark);
+  display: flex;
+  gap: var(--space-1);
+  align-items: baseline;
+  color: var(--brand-gold-pale);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.emap-seats a:hover,
+.emap-seats a:focus-visible {
+  border-bottom-color: currentColor;
+}
+.emap-seat-abbr {
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--brand-gold-mark);
+  flex: none;
+}
+.emap-seat-name {
+  font-size: var(--t-sm);
+  line-height: 1.4;
+}
+
 .emap-caseload {
   margin: var(--space-2) 0 0;
   font: 500 var(--t-micro) var(--brand-font-mono);
@@ -1555,8 +1610,8 @@
    strengths the drawing uses (.emap-forum-state), so the key is the thing it
    stands for rather than an approximation of it. */
 .k-forum {
-  fill: color-mix(in srgb, var(--brand-forum-lit) 55%, transparent);
-  stroke: color-mix(in srgb, var(--brand-forum-lit) 55%, transparent);
+  fill: color-mix(in srgb, var(--brand-gold-lit) 30%, transparent);
+  stroke: color-mix(in srgb, var(--brand-gold-lit) 62%, transparent);
   stroke-width: 1.1;
 }
 
