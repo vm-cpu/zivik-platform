@@ -1,6 +1,7 @@
 import { SUMMARIES } from "@/content/summaries";
 import type { DecisionSummary } from "@/content/summaries/types";
 import type { Localized } from "@/content/types";
+import { glossaryEnabled } from "@/lib/flags";
 
 /**
  * A search index over what the write-ups *say*, built at build time.
@@ -280,8 +281,15 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
   // ── handbook: the who's-who ──
   out.handbook.push(s.whoIsWho.map((w) => all(w.name, w.role)).join(" "));
 
-  // ── glossary: the terms this decision defines, in their own band ──
-  out.glossary.push(s.glossary.map((g) => all(g.term, g.def)).join(" "));
+  /* ── glossary: the terms this decision defines, in their own band ──
+     Indexed only when that band is built (`glossaryEnabled`). The index is
+     what sends a reader from the library's search box to `#glossary` on a
+     decision page, so on a deployment without the dictionary these entries
+     would land them on a section that is not there — a search result that
+     scrolls to nothing, for a word the page no longer shows. */
+  if (glossaryEnabled) {
+    out.glossary.push(s.glossary.map((g) => all(g.term, g.def)).join(" "));
+  }
 
   // ── questions: the FAQ, and the pointers to neighbouring cases ──
   out.questions.push(

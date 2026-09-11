@@ -26,6 +26,7 @@ import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
 import { SUMMARIES } from "@/content/summaries";
 import { sortKey, idOf } from "@/content/glossary";
+import { glossaryEnabled } from "@/lib/flags";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -672,12 +673,17 @@ export default async function CasePage({
   /* The terms this decision defines, pointed at their entry in the dictionary.
      The definition travels with the mark, so a reader never has to leave the
      sentence to find out what a word means. */
-  const termRefs: TermRef[] = glossary.map((g) => ({
-    id: idOf(g.term.uk),
-    term: pick(g.term, locale),
-    def: pick(g.def, locale),
-    href: `/${locale}/glossary#${idOf(g.term.uk)}`,
-  }));
+  /* Empty on a build without the dictionary, which `markTerms` already treats
+     as "leave the prose alone" — the alternative is a verbatim summary shot
+     through with links to a 404. */
+  const termRefs: TermRef[] = glossaryEnabled
+    ? glossary.map((g) => ({
+        id: idOf(g.term.uk),
+        term: pick(g.term, locale),
+        def: pick(g.def, locale),
+        href: `/${locale}/glossary#${idOf(g.term.uk)}`,
+      }))
+    : [];
 
   /* Where a verdict's track is also a moment in the chronology.
 
@@ -815,7 +821,7 @@ export default async function CasePage({
     ["machinery", hasMachinery],
     ["chron", true],
     ["aids", true],
-    ["terms", true],
+    ["terms", glossaryEnabled],
     ["readzone", true],
     ["qa", faq.length > 0],
     ["neighbours", related.length > 0],
@@ -863,7 +869,9 @@ export default async function CasePage({
         ]
       : []),
     { id: "handbook", label: pick(T.navHandbook, locale) },
-    { id: "glossary", label: pick(T.navGlossary, locale) },
+    ...(glossaryEnabled
+      ? [{ id: "glossary", label: pick(T.navGlossary, locale) }]
+      : []),
     { id: "fulltext", label: pick(T.navFulltext, locale) },
     ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
     ...(faq.length > 0 ? [{ id: "questions", label: pick(T.faqH, locale) }] : []),
@@ -1554,26 +1562,28 @@ export default async function CasePage({
           open. They have a page of their own now, and the link below is this
           band's own contents on it — same terms, plus the other decisions'
           readings of the four words that two courts define differently. */}
-      <section className="terms" data-ground={ground["terms"]} id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
-        <div className="rail">
-          <h2 className="lbl lbl-onpaper">{pick(T.glossaryH, locale)}</h2>
-          <TermSearch
-            terms={glossary.map((g) => ({
-              term: pick(g.term, locale),
-              def: pick(g.def, locale),
-            }))}
-            placeholder={pick(T.termsSearch, locale)}
-            label={pick(T.termsSearchLabel, locale)}
-            clear={pick(T.termsClear, locale)}
-            empty={pick(T.termsEmpty, locale)}
-          />
-          <p className="terms-more">
-            <Link href={`/${locale}/glossary?case=${slug}`}>
-              {pick(T.glossaryAll, locale)} →
-            </Link>
-          </p>
-        </div>
-      </section>
+      {glossaryEnabled && (
+        <section className="terms" data-ground={ground["terms"]} id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
+          <div className="rail">
+            <h2 className="lbl lbl-onpaper">{pick(T.glossaryH, locale)}</h2>
+            <TermSearch
+              terms={glossary.map((g) => ({
+                term: pick(g.term, locale),
+                def: pick(g.def, locale),
+              }))}
+              placeholder={pick(T.termsSearch, locale)}
+              label={pick(T.termsSearchLabel, locale)}
+              clear={pick(T.termsClear, locale)}
+              empty={pick(T.termsEmpty, locale)}
+            />
+            <p className="terms-more">
+              <Link href={`/${locale}/glossary?case=${slug}`}>
+                {pick(T.glossaryAll, locale)} →
+              </Link>
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* 4 — Verbatim summary. The page bar is the only navigation. */}
       <section className="readzone" data-ground={ground["readzone"]} id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>

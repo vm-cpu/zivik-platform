@@ -22,6 +22,7 @@ import {
   pathAlternates,
   siteUrl,
 } from "@/lib/seo";
+import { glossaryEnabled } from "@/lib/flags";
 import GlossaryList, {
   type GlossaryRow,
 } from "@/components/nasvitlo/GlossaryList";
@@ -88,6 +89,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
+  /* No canonical, no hreflang, no Open Graph for a page that 404s. Metadata is
+     emitted before the component runs, so without this the hidden build still
+     advertised the glossary to anything reading <head>. */
+  if (!glossaryEnabled) return {};
   const dict = await getDictionary(locale);
   const path = `/${locale}/glossary`;
   const title = pick(T.title, locale);
@@ -126,6 +131,11 @@ export default async function GlossaryPage({
 }) {
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
+  /* Hidden rather than deleted. The entries need a verbatim definition and a
+     source before they can stand in production — see `glossaryEnabled` — and
+     the work happens on staging, against this page, not against a branch that
+     has to be merged back. */
+  if (!glossaryEnabled) notFound();
   const locale: Locale = raw;
 
   const entries = glossaryFor(locale);

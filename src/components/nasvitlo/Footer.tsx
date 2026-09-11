@@ -2,6 +2,7 @@ import Link from "next/link";
 import "./footer.css";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import { glossaryEnabled } from "@/lib/flags";
 
 const colHead: React.CSSProperties = {
   font: "700 var(--t-micro) var(--brand-font-body)",
@@ -159,7 +160,12 @@ export default function Footer({
         {column(f.colArchive, [
           { label: f.linkRegistry, href: `/${locale}/registry` },
           { label: f.linkMap, href: `/${locale}/map` },
-          { label: f.linkGlossary, href: `/${locale}/glossary` },
+          /* Dropped, not disabled, on a build without the glossary — see
+             `glossaryEnabled`. A footer link to a 404 is the kind of thing
+             nobody notices until a reader reports it. */
+          ...(glossaryEnabled
+            ? [{ label: f.linkGlossary, href: `/${locale}/glossary` }]
+            : []),
           { label: f.linkCourts },
           { label: f.linkDocs },
         ])}

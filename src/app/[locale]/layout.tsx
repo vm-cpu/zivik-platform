@@ -9,6 +9,7 @@ import {
 import { IBM_Plex_Mono, Charis_SIL, Fira_Sans } from "next/font/google";
 import { getDictionary } from "@/i18n/dictionaries";
 import { homeMetadata } from "@/lib/seo";
+import { glossaryEnabled } from "@/lib/flags";
 import Header from "@/components/nasvitlo/Header";
 import Footer from "@/components/nasvitlo/Footer";
 // Only cross-surface primitives load for every page. home.css is the home
@@ -174,7 +175,7 @@ export default async function LocaleLayout({
             different header grounds and a decision-page skip link that pointed
             somewhere different from every other page. */}
         <div className="nsv-root">
-          <Header locale={safe} dict={dict} />
+          <Header locale={safe} dict={dict} showGlossary={glossaryEnabled} />
           {children}
           <Footer dict={dict} locale={safe} />
         </div>

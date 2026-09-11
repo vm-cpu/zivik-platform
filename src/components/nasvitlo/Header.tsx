@@ -24,10 +24,15 @@ export default function Header({
   /** Where "skip to content" lands. Each surface names the first thing a
    *  reader actually came for — the decision page skips to its overview. */
   skipTo = "#content",
+  /** Whether this deployment carries a glossary — `glossaryEnabled` in
+   *  `lib/flags.ts`, handed down rather than read here because this is a
+   *  client component and the flag is server-only. */
+  showGlossary,
 }: {
   locale: Locale;
   dict: HeaderDict;
   skipTo?: string;
+  showGlossary: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -69,12 +74,19 @@ export default function Header({
     },
     /* Next to the library, because that is what it is drawn from: the fifty
        headwords are gathered out of the decisions, and a reader who wants a
-       term rather than a case should not have to find a case first. */
-    {
-      label: dict.nav.glossary,
-      href: `${home}/glossary`,
-      active: pathname === `${home}/glossary`,
-    },
+       term rather than a case should not have to find a case first.
+
+       Absent entirely on a build without the glossary, rather than disabled or
+       greyed: a menu item that leads to a 404 is worse than no menu item. */
+    ...(showGlossary
+      ? [
+          {
+            label: dict.nav.glossary,
+            href: `${home}/glossary`,
+            active: pathname === `${home}/glossary`,
+          },
+        ]
+      : []),
     // The map has its own page now — full screen, zoom and pan — so the menu
     // points at it rather than at the band on the home page.
     { label: dict.nav.map, href: `${home}/map`, active: pathname === `${home}/map` },
