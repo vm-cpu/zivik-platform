@@ -541,13 +541,29 @@ function LegendH({
 }
 
 export default function EventsMap({
-  events,
+  events = [],
   courts,
   labels,
   locale,
   variant = "full",
 }: {
-  events: MapEventR[];
+  /**
+   * The six event markers inside Ukraine, and the dashed lines from each to
+   * the courts hearing it.
+   *
+   * Optional, and nothing passes it any more. The map used to answer "what
+   * happened, and who is judging it", which made the drawing a claim about
+   * particular events; the owner's decision is that it answers "which states
+   * hear these cases" instead, and a claim about states is not made out of
+   * pins stuck in the country the cases are about.
+   *
+   * The prop stays rather than being torn out, because everything it drives is
+   * written to render from the data it is given: pass none and the markers,
+   * the reach lines, the six site cards, the «Місця подій» group and the
+   * dashed-line key all stop rendering on their own. That is also what makes
+   * the decision reversible by one line at the call site instead of a revert.
+   */
+  events?: MapEventR[];
   courts: MapCourtR[];
   labels: {
     alt: string;
@@ -599,6 +615,8 @@ export default function EventsMap({
     legendHow: string;
     /** What the dashed line means. */
     legendLine: string;
+    /** What a state filled in the institutional blue means. */
+    legendForum: string;
     /**
      * And what a marker docked against the frame's edge means. Only rendered
      * where a seat is actually off the projection's window — today Montreal,
@@ -1101,7 +1119,23 @@ export default function EventsMap({
    * in the HTML and again in the RSC payload. The map page is unchanged; the
    * near ring is byte-identical, so Crimea and the oblast mesh have not moved.
    */
-  const hasWide = SPAN.w > BASE.w + 1 || SPAN.h > BASE.h + 1;
+  /**
+   * Is there a third framing at all?
+   *
+   * It exists for one thing: a seat the projection's window cannot hold. That
+   * was Montreal, and with the ICAO Council off the map there is none — so the
+   * button goes with it, rather than staying on to offer a view of the same
+   * Europe with more sea round it.
+   *
+   * The span test alone was not enough to notice. `SPAN` leaves 150 units of
+   * air round every marker, and Helsinki and Stockholm sit near the top of a
+   * 460-unit frame, so the span still overflowed vertically and the framing
+   * survived the removal — reframing to something a reader could not tell from
+   * the one they were already looking at. The geometry says whether a wider
+   * view is *possible*; `offAt` says whether it is *for* anything.
+   */
+  const hasWide =
+    courts.some((c) => c.offAt) && (SPAN.w > BASE.w + 1 || SPAN.h > BASE.h + 1);
   /**
    * How far the reader may get, by any means — the smallest rect of the
    * element's own shape that holds both named framings. Grown from their
@@ -2928,6 +2962,12 @@ export default function EventsMap({
             was written down nowhere before this: a reader had to find it by
             pressing something they had no reason to think was a control. */}
         <p className="emap-leg-how">{labels.legendPick}</p>
+        {/* The whole group, not just its keys. Two of the three were already
+            drawn from the data and self-hid when the sites went; the first was
+            not, so the key kept a colour, a heading and a filter standing for
+            marks that are no longer on the drawing — and pressing it would
+            have dimmed the map to show nothing. */}
+        {events.length > 0 && (
         <div className="emap-leg-group">
           <LegendH variant={variant}>{labels.legendWhat}</LegendH>
           <ul>
@@ -2987,6 +3027,7 @@ export default function EventsMap({
             )}
           </ul>
         </div>
+        )}
 
         {/* On the home band this group renders too, but only its first key:
             without it the reader sees the site marks and no key to the rings
@@ -3015,7 +3056,17 @@ export default function EventsMap({
                 the drawing rather than name a set of marks you could ask to
                 see on their own. A button that filtered to "the dashed lines"
                 would be a button that did nothing. */}
-            {variant === "full" && (
+            {/* The lit states. First after the court mark, because between
+                them they are the whole drawing now: a ring where a court sits,
+                and the colour over the country it sits in. */}
+            <li className="emap-key">
+              <svg viewBox="0 0 22 22" aria-hidden="true">
+                <path className="k-forum" d="M2,7 L9,3 L17,5 L20,11 L15,18 L6,17 L3,12 Z" />
+              </svg>
+              {labels.legendForum}
+            </li>
+            {/* Only where there is still a line to explain. */}
+            {variant === "full" && events.length > 0 && (
               <li className="emap-key">
                 <svg viewBox="0 0 22 22" aria-hidden="true">
                   <line className="k-line" x1="1" y1="11" x2="21" y2="11" />

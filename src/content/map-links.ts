@@ -26,19 +26,35 @@ import type { CaseStageKey } from "./types";
 }
 
 /**
- * Every registry institution must be seated in exactly one city on the map.
+ * Every registry institution must be seated on the map, or be named here as
+ * deliberately absent from it.
  *
- * The map draws six places where harm happened; the archive holds 39
- * proceedings, and before this the ten heard by the Dutch courts, the ICAO
- * Council, the ICC arbitration court, Lithuania and the EU appeared nowhere.
- * Now a court answers for its own caseload — which is only true while every
- * institution has a seat, so the build checks it.
+ * The archive holds 39 proceedings, and before this the ten heard by the Dutch
+ * courts, the ICAO Council, the ICC arbitration court, Lithuania and the EU
+ * appeared nowhere. A court answers for its own caseload now, which is only
+ * true while every institution has a seat — so the build checks it.
+ *
+ * The list below is the escape hatch, and it is a list rather than a softened
+ * check for a reason: the guard exists to catch the institution somebody
+ * forgot, and a check that simply tolerates absence catches nothing. An
+ * institution off the map has to be put here by hand, with the reason.
  */
+const OFF_MAP_INSTITUTIONS: Record<string, string> = {
+  /* The ICAO Council sits in Montreal, which is on another continent: the
+     projection would have to shrink Europe to nothing to reach it, and the
+     dock-at-the-edge treatment it used to get was what the Atlantic framing
+     existed to undo. The owner's decision is that the map stays European. The
+     proceeding is in the registry, where a reader looking for it will be, and
+     the appeal against the Council's decision went to the ICJ — which is on
+     the map. */
+  icao: "Montreal is off the European frame; the proceeding stays in the registry",
+};
+
 {
   const seated = MAP_COURTS.flatMap((c) => c.institutionIds);
   const dupes = seated.filter((id, i) => seated.indexOf(id) !== i);
   const orphans = [...new Set(registryCases.map((c) => c.institutionId))].filter(
-    (id) => !seated.includes(id),
+    (id) => !seated.includes(id) && !(id in OFF_MAP_INSTITUTIONS),
   );
   if (orphans.length || dupes.length) {
     throw new Error(

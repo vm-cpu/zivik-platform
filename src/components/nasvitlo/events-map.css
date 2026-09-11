@@ -1551,7 +1551,16 @@
     opacity: 0;
   }
 }
-.emap-key .k-area {
+.emap-key /* The swatch for a lit state, drawn from the same two tokens at the same two
+   strengths the drawing uses (.emap-forum-state), so the key is the thing it
+   stands for rather than an approximation of it. */
+.k-forum {
+  fill: color-mix(in srgb, var(--brand-forum-lit) 55%, transparent);
+  stroke: color-mix(in srgb, var(--brand-forum-lit) 55%, transparent);
+  stroke-width: 1.1;
+}
+
+.k-area {
   fill: color-mix(in srgb, var(--brand-gold-lamp) 30%, transparent);
   stroke: var(--brand-gold-lamp);
   stroke-width: 1.1;

@@ -2,14 +2,12 @@ import { pick } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import {
-  MAP_EVENTS,
   MAP_COURTS,
   courtMarks,
-  markerSize,
   MAP_COURT_NO_SITES,
   seatsLine,
 } from "@/content/map";
-import { caseLinksFor, courtCaseloadFor } from "@/content/map-links";
+import { courtCaseloadFor } from "@/content/map-links";
 import Link from "next/link";
 import EventsMap from "./EventsMap";
 
@@ -112,23 +110,6 @@ const stageWord = (k: string | undefined) =>
              asks for the first time a reader asks for the Atlantic framing.
              Everything below is what the server does know and the component
              cannot: the reader's language. */
-          events={MAP_EVENTS.map((e) => ({
-            key: e.key,
-            size: markerSize(e.weight),
-            total: e.weight,
-            when: pick(e.when, locale),
-            title: pick(e.title, locale),
-            note: pick(e.note, locale),
-            area: e.area,
-            courts: e.courts,
-            forums: pick(e.forums, locale),
-            count: pick(e.count, locale),
-            linksOutsideCount: e.linksOutsideCount,
-            cases: caseLinksFor(e.key, locale).map((c) => ({
-              ...c,
-              stage: stageWord(c.stage),
-            })),
-          }))}
           courts={MAP_COURTS.map((c) => ({
             key: c.key,
             city: pick(c.city, locale),
@@ -164,6 +145,7 @@ const stageWord = (k: string | undefined) =>
             legendWhat: dict.mapSection.legendWhat,
             legendHow: dict.mapSection.legendHow,
             legendLine: dict.mapSection.legendLine,
+            legendForum: dict.mapSection.legendForum,
             legendOffMap: dict.mapSection.legendOffMap,
             legendRegions: dict.mapSection.legendRegions,
             legendArea: dict.mapSection.legendArea,

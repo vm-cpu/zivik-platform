@@ -323,40 +323,22 @@ export const MAP_COURTS: MapCourt[] = [
       },
     ],
   },
-  {
-    key: "montreal",
-    institutionIds: ["icao"],
-    // Montreal projects to (-936.9, 407.1) on a frame that runs 0…1200 × 0…460:
-    // it is on another continent, and widening the *projection* to reach it
-    // would shrink Europe to nothing. So it is docked against the frame's
-    // western edge, on that bearing, with a tail running off the picture —
-    // the same mechanism any other off-map seat would get. The appeal against
-    // its decision went to the ICJ, which is on the map.
-    //
-    // Widening the *view* is a different thing, and the map now offers it: the
-    // Atlantic framing puts this point inside the picture, where it draws as
-    // an ordinary court marker with an ordinary connector. The dock is what
-    // the other framings do, not what this seat is.
-    offMap: true,
-    offAt: { x: -936.9, y: 407.1 },
-    city: { uk: "Монреаль", en: "Montreal" },
-    seats: [
-      {
-        abbr: "ICAO",
-        // The name, and nothing after it. It used to end «— поза кадром мапи» /
-        // "outside the map's frame", which was true of the only framing that
-        // existed when it was written and is false in the one added since:
-        // «Атлантика» puts Montreal inside the picture, drawn like any other
-        // seat. The drawing already says where a city is — docked at the edge
-        // with a bearing, or in place — and it says it per framing, which a
-        // fixed string cannot.
-        name: {
-          uk: "Рада Міжнародної організації цивільної авіації",
-          en: "Council of the International Civil Aviation Organization",
-        },
-      },
-    ],
-  },
+  /* Montreal — the ICAO Council — is deliberately not here.
+   *
+   * It was the one seat outside the projection's window, docked against the
+   * western edge with a bearing and a tail running off the picture, and the
+   * Atlantic framing existed to put it back inside. The owner's decision is
+   * that the map stays European: the Council's proceeding is reachable through
+   * the registry, which is where a reader looking for it will be.
+   *
+   * Three things went with it, and none of them had to be deleted by hand —
+   * every one is drawn from this list. `hasWide` in EventsMap derives the
+   * widest framing from the span of the markers, so with no seat outside the
+   * frame the Atlantic button stops rendering; the off-map legend key renders
+   * only where `courts.some(c => c.offMap)`; and the dock itself only ever
+   * drew for a seat that declared `offAt`. Putting the entry back restores all
+   * three.
+   */
   {
     key: "helsinki",
     institutionIds: ["fi"],
@@ -460,10 +442,10 @@ export const MAP_EVENTS: MapEvent[] = [
     // has always named it. The map drew no line to it because the Council sits
     // off the frame; it is docked at the western edge now, so the chain the
     // note describes — Council, then appeal to the ICJ — can be seen.
-    courts: ["strasbourg", "hague", "montreal"],
+    courts: ["strasbourg", "hague"],
     forums: {
-      uk: "ЄСПЛ (Страсбург) · ICJ і суд Нідерландів (Гаага) · Рада ICAO (Монреаль)",
-      en: "ECtHR (Strasbourg) · ICJ and the Dutch courts (The Hague) · the ICAO Council (Montreal)",
+      uk: "ЄСПЛ (Страсбург) · ICJ і суд Нідерландів (Гаага)",
+      en: "ECtHR (Strasbourg) · ICJ and the Dutch courts (The Hague)",
     },
     count: { uk: "3 рішення", en: "3 decisions" },
   },

@@ -131,14 +131,13 @@ const uk = {
     close: "Закрити картку",
     moveCard: "Перетягнути картку",
     label: "Мапа",
-    heading: "Факти порушень та суди, які здійснюють їх правову оцінку",
+    heading: "Держави, чиї суди розглядають ці справи",
     /* The three nouns used to be set off by dashes — «обстріли, депортації та
        захоплення» — which reads as the list of what Russia is accused of. It
        is not: it was a sample of what six markers happen to show, on a map
        whose own registry carries thirty-nine proceedings. The sentence states
        the mechanic and names nothing it cannot finish. Owner's correction. */
-    description:
-      "Заявлені порушення зʼєднані пунктиром із судом, де здійснюється їх правова оцінка.",
+    description: "Шість держав, окрім України: у них засідають міжнародні суди й арбітражі або національні суди, що судять за принципом універсальної юрисдикції.",
     /* What the drawing does and does not carry, said above it rather than
        discovered from it. The map used to answer this with a legend key —
        «Ще досліджуємо» — which stood for exactly one event and so implied the
@@ -151,7 +150,7 @@ const uk = {
        sentence about where the full list lives would cost three lines of
        panel, and both the band's own «Повна мапа →» and the library in the
        navigation already answer it. */
-    scope: "На мапі — лише ті справи, які ми вже опрацювали.",
+    scope: "Кількість проваджень біля кожного суду — з реєстру.",
     fullMap: "Повна мапа →",
     legendCourt: "Суд",
     legendLit: "Є огляд",
@@ -208,8 +207,9 @@ const uk = {
        column of things the reader already knows, where the map could be. */
     legendTitle: "Легенда",
     placesTitle: "Місця подій",
-    legendHow: "Суди й звʼязки",
+    legendHow: "Що на мапі",
     legendLine: "Звʼязок суду з подією",
+    legendForum: "Держава, чиї суди розглядають ці справи",
     /* The chevron and the tail on a seat the frame cannot hold. Rendered only
        where some seat is actually off the projection's window — today
        Montreal, and by data rather than by name. It was planned when the
@@ -224,9 +224,9 @@ const uk = {
     legendArea: "Подія — про всю підсвічену територію",
     /* The map's whole mechanic, and it was nowhere in the legend: a reader
        had to guess that the marks answer at all. */
-    legendPick: "Натисніть на подію або суд — засвітиться шлях між ними.",
-    pageTitle: "Мапа порушень і судів",
-    pageLede: "Порушення сталися в Україні, а судять їх за тисячі кілометрів звідти. Мапа тримає обидва кінці разом: місце події — і суд, який його розглядає.",
+    legendPick: "Натисніть на суд — побачите справи, які він розглядає.",
+    pageTitle: "Мапа судів",
+    pageLede: "Порушення сталися в Україні, а судять їх за тисячі кілометрів звідти. Мапа показує, куди саме сягнула відповідь: держави, чиї суди ведуть ці провадження.",
     backHome: "На головну",
   },
   registry: {
