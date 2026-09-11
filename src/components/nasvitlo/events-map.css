@@ -109,6 +109,46 @@
   vector-effect: non-scaling-stroke;
   stroke-width: 0.8;
 }
+/* The six states whose courts hear these proceedings, lit out of the grey.
+
+   Drawn over .emap-ctx and under .emap-ua, so a forum state is the same land
+   as its neighbours with a light on it — not a shape pasted over the map. The
+   colour is --brand-forum-lit, which is already the archive's institutional
+   blue on night grounds: it names the courts on the registry and on every
+   decision page, so a reader arrives here having seen it mean exactly this.
+
+   Why a fill and not a marker. The old map put a dot on each seat and ran a
+   dashed line from it to whichever event it was hearing, which made the
+   drawing a claim about particular events — and the reviewers' objection is on
+   the record: the map is meant to show how far the response reaches, not to
+   tie itself to six incidents. "Which states" is a question about states, so
+   it is answered in the shape of a state.
+
+   55%, and the number is measured rather than judged by eye. This fill is a
+   graphical object carrying meaning, so the floor is WCAG 1.4.11's 3:1 against
+   what sits next to it — the grey land at --brand-map-land. The first attempt
+   here was 26%, held down on the theory that lit countries would compete with
+   Ukraine's gold. Sampled against the rendered map that came to 1.67:1: a
+   reader looking straight at the Netherlands could not tell it from Belgium,
+   which is the whole fact the map exists to carry. 55% measures 3.03:1.
+
+   The theory it was held down for was wrong, and worth writing down so it is
+   not reinvented. Ukraine's fill is 1.26:1 against the same land — it is not
+   the fill that makes Ukraine read as the subject, it is the 1.4px gold
+   stroke, the oblast mesh and the gold markers. Fill and stroke are doing
+   different jobs here, so a legible blue does not take anything from the
+   gold. */
+.emap-forum-state {
+  fill: color-mix(in srgb, var(--brand-forum-lit) 55%, transparent);
+  stroke: color-mix(in srgb, var(--brand-forum-lit) 55%, transparent);
+  /* Non-scaling and 0.8, matching .emap-ctx exactly — these are context
+     countries that happen to be lit, and a heavier border would make them read
+     as a separate layer of the drawing. See the note there for why a stroke
+     measured in projection units disappears at the wide framing. */
+  vector-effect: non-scaling-stroke;
+  stroke-width: 0.8;
+}
+
 .emap-ua {
   fill: var(--brand-map-ua);
   /* The same gold the markers and the oblast mesh are drawn in, mixed rather

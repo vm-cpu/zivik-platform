@@ -280,6 +280,85 @@ const context = nearRing.map((f) => path(f)).filter(Boolean);
 const contextFar = farRing.map((f) => path(f)).filter(Boolean);
 
 /**
+ * The states that host a forum, as named shapes rather than anonymous context.
+ *
+ * The map's subject changed. It used to mark six events inside Ukraine and
+ * draw dashed lines from each to the courts hearing it, which made the drawing
+ * a claim about where things happened — and the reviewers' objection to that
+ * is in the record: the arrows tie the map to specific events when what it is
+ * for is showing how far the response reaches. What it shows now is the set of
+ * states whose courts hear these proceedings, or whose courts have convicted
+ * under universal jurisdiction.
+ *
+ * A state is the unit, so a state has to be a shape. `context` is 41 paths in
+ * no particular order with no names attached — fine as grey background, no use
+ * at all when six of those countries have to be told apart and filled. These
+ * are the same projected outlines, keyed by name.
+ *
+ * Six, and the list is not ours to pick: it is every seat in
+ * `content/institutions.ts` that falls inside this frame, which is the same
+ * source the registry counts from. Montreal — the ICAO Council — is the one
+ * seat outside it and is deliberately not here: the owner's decision is that
+ * the map stays European and the Council is reachable through the registry
+ * instead. A seventh entry would mean a seventh institution, not a redesign.
+ *
+ * Ukraine is not among them. It is already drawn as its own layer, and it is
+ * the subject of these proceedings rather than a forum for them — filling it
+ * the same colour as The Hague would say the opposite of what the map means.
+ */
+const FORUM_STATES = [
+  "Netherlands",
+  "France",
+  "Germany",
+  "Sweden",
+  "Finland",
+  "Lithuania",
+];
+
+/**
+ * European territory only.
+ *
+ * The atlas files a state's overseas territory under the same feature as its
+ * mainland, and France is the case that matters: its outline carries French
+ * Guiana, which projects to x = -629 on a 0…1200 frame. Filling the whole
+ * feature lit up a piece of South America in the colour that means "a court
+ * here hears these cases" — invisible at the European framing, and plainly
+ * wrong at the Atlantic one. The Netherlands has the same shape of problem in
+ * the Caribbean.
+ *
+ * So each state is reduced to the polygons that fall inside the drawing. The
+ * grey context layer keeps the whole feature — Guiana is land, and drawing it
+ * as land is correct; it is only the *lighting* that would be a false claim.
+ */
+const inFrame = (coords, type) => {
+  const probe = { type: "Feature", properties: {}, geometry: { type, coordinates: coords } };
+  return within(probe, NEAR);
+};
+
+const forums = {};
+for (const name of FORUM_STATES) {
+  const f = nearRing.find((x) => x.properties?.name === name);
+  /* Loud, not silent. A missing state would simply not be filled, and a map
+     that quietly drops the Netherlands — three of the nine seats — is worse
+     than a build that stops. */
+  if (!f) throw new Error(`forum state "${name}" is not in the near ring — check the atlas property name`);
+
+  const g = f.geometry;
+  let geometry;
+  if (g.type === "MultiPolygon") {
+    const kept = g.coordinates.filter((poly) => inFrame(poly, "Polygon"));
+    if (!kept.length) throw new Error(`forum state "${name}" has no polygon inside the frame`);
+    geometry = { type: "MultiPolygon", coordinates: kept };
+  } else {
+    geometry = g;
+  }
+
+  const d = path({ type: "Feature", properties: {}, geometry });
+  if (!d) throw new Error(`forum state "${name}" did not project`);
+  forums[name] = d;
+}
+
+/**
  * The Atlantic framing exists to show one thing, and it must not ship without
  * it — the same guard, and the same reasoning, as Crimea below.
  */
@@ -555,6 +634,7 @@ writeFileSync(
       _generated: "scripts/europe-map.mjs — do not edit by hand",
       viewBox: `0 0 ${W} ${H}`,
       context,
+      forums,
       ukraine,
       regions,
       areas,
@@ -569,6 +649,7 @@ writeFileSync(OUT_FAR, JSON.stringify({ contextFar }) + "\n");
 
 console.log(
   `wrote ${OUT} and ${OUT_FAR}\n  ${context.length} + ${contextFar.length} country paths` +
+    `\n  ${Object.keys(forums).length} forum states: ${Object.keys(forums).join(", ")}` +
     ` (${nearRing.length} inside the frame, ${farRing.length} for the Atlantic framing),` +
     ` ${Object.keys(markers).length} markers` +
     `\n  Ukraine outline includes Crimea and Sevastopol` +

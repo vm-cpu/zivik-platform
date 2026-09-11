@@ -121,6 +121,16 @@ export interface MapGeometry {
    * on the same coast.
    */
   areas?: Record<string, string>;
+  /**
+   * The states that host a forum, keyed by the atlas's own name for each — the
+   * six in `FORUM_STATES` in scripts/europe-map.mjs.
+   *
+   * They are also in `context`, as two of its 41 anonymous background paths;
+   * these are the same outlines named, because a shape you have to fill is a
+   * shape you have to be able to find. Ukraine is deliberately not among them:
+   * it is the subject of these proceedings, not a forum for them.
+   */
+  forums: Record<string, string>;
   markers: Record<string, number[]>;
 }
 
@@ -2209,6 +2219,19 @@ export default function EventsMap({
           ))}
           {(far ?? []).map((d, i) => (
             <path key={`f${i}`} className="emap-ctx" d={d} />
+          ))}
+          {/* The states that host a forum, lit out of the grey.
+
+              This is what the map is for. A reader who takes nothing else from
+              it should still leave knowing that the response to this war is
+              being heard in six countries besides Ukraine — and that is a fact
+              about states, so it is drawn on states rather than inferred from
+              a scatter of city dots the eye has to gather up itself.
+
+              Under Ukraine and under the markers: the subject of these
+              proceedings and the seats themselves both stay on top. */}
+          {Object.entries(geo.forums).map(([name, d]) => (
+            <path key={name} className="emap-forum-state" d={d} />
           ))}
           <path className="emap-ua" d={geo.ukraine} />
           {/* The 27 regions, as the lines between them. Six unlabelled dots
