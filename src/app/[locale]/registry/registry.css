@@ -568,21 +568,6 @@
   font-variant-numeric:tabular-nums;white-space:nowrap;
 }
 
-/* The sign-off band under the ledger.
-
-   Full-bleed ground, like the footer below it, but its words sit in exactly
-   the box `.reg-wrap` gives every case row — otherwise the paragraph starts
-   44px to the left of the ledger above it and the page loses its margin at
-   the last band. The grid takes the rail's own max-width and padding, border-
-   box like the rail, and the band's horizontal padding stands down so the two
-   do not add up. The band keeps its vertical padding. */
-.registrypage .nsv-newsletter{padding-inline:0}
-.registrypage .nsv-newsletter .nsv-news-grid{
-  box-sizing:border-box;
-  max-width:1120px;margin-inline:auto;
-  padding-inline:clamp(20px,5vw,44px);
-}
-
 /* ---- empty state ---- */
 .reg-empty{
   margin-top:var(--space-4);padding:var(--space-14) var(--space-6);text-align:center;

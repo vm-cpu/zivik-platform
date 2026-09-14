@@ -25,7 +25,6 @@ import {
   pathAlternates,
   siteUrl,
 } from "@/lib/seo";
-import Newsletter from "@/components/nasvitlo/Newsletter";
 import RegistryTable, {
   type RegRow,
 } from "@/components/nasvitlo/RegistryTable";
@@ -550,22 +549,13 @@ export default async function RegistryPage({
         />
       </main>
 
-      {/* The sign-off band, which until now only the home page carried.
+      {/* No sign-off band here either.
 
-          This is where a reader ends up having found what they came for —
-          they have narrowed thirty-nine proceedings to the one they needed
-          and opened it, or they have read to the bottom of the ledger. It was
-          also the one page on the site that asked them for nothing at all:
-          the support ask sat on the home page, which a reader arriving from
-          the map's «Дивитися в бібліотеці →» or from a shared filtered link
-          never sees.
-
-          The component as it stands, not a new ask. The monthly-letter column
-          came off it at the owner's request because there is no sign-up list
-          behind it — see the note in Newsletter.tsx — and inventing a second
-          call to action here would put back, on a different page, exactly
-          what was deliberately removed. */}
-      <Newsletter dict={dict} locale={locale} />
+          It was the home page's support ask, brought over so that a reader who
+          arrives from a shared filtered link is asked something too. The ask is
+          in the top bar on every page now — which is that same reasoning
+          carried further — and the band's heading and paragraph are the text
+          the owner asked to remove. One ask, one place, one appearance. */}
     </div>
   );
 }

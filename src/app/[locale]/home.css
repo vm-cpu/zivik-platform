@@ -274,6 +274,27 @@
   .lmp .dchain i{position:absolute;left:10px;top:0;width:1.5px;height:54px;background:linear-gradient(180deg,rgba(198,181,147,.5),#C6B593);transition:height .2s cubic-bezier(.33,1,.68,1)}
   .lmp .dchain i::after{content:"";position:absolute;left:-4.5px;bottom:-16px;width:10px;height:17px;border-radius:5px 5px 6px 6px/6px 6px 9px 9px;background:linear-gradient(160deg,#F0E6D2,#C6B593 46%,#8E7C5E);box-shadow:0 2px 5px rgba(0,0,0,.45)}
   .lmp .dchain:hover i{height:62px}
+  /* The focus ring, shaped to the thing it is marking.
+
+     The global rule draws 2px with a 3px offset around whatever takes focus,
+     which is right everywhere else and wrong here: `.dchain` is a 22x96 button
+     wrapping a 1.5px cord, so the ring came out as a tall rectangle hanging
+     beside the shade — read, correctly, as a stray box rather than as focus.
+
+     Removing it was not an option. This stylesheet's own note says keyboard
+     users had no visible focus anywhere on the site before that rule, and the
+     pull-chain is a real control: it is what turns the lamp off. So the ring
+     moves to the pull itself — the knob at the end of the cord, which is the
+     part a reader aims at — and takes the cord's own glow with it, so the
+     indicator is the object lighting up rather than a box around it. */
+  .lmp .dchain:focus-visible{outline:none}
+  .lmp .dchain:focus-visible i{height:62px}
+  .lmp .dchain:focus-visible i::after{
+    outline:2px solid var(--brand-gold-lit);
+    outline-offset:3px;
+    border-radius:5px 5px 6px 6px/6px 6px 9px 9px;
+  }
+
   .lmp[data-on="no"] .dchain i{height:44px}
   .lmp .chint{position:absolute;left:494px;top:242px;font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--brand-faint-dark);white-space:nowrap;z-index:5}
   .lmp[data-on="yes"] .chint{opacity:0;transition:opacity .4s ease}
@@ -355,8 +376,6 @@
 .nsv-slogan .rule{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rule))}
 .nsv-slogan .rule.r2{background:linear-gradient(90deg,var(--rule),transparent)}
 .nsv-slogan .motto{font-family:var(--brand-font-display),Georgia,serif;font-size:clamp(var(--t-sm),2.3vw,var(--t-lead));letter-spacing:.16em;text-transform:uppercase;color:var(--red);text-align:center}
-
-/* newsletter — quieter editorial sign-off */
 
 /* The map band carries no side padding of its own any more, so the negative
    margins that used to punch through it now overshoot the viewport by exactly

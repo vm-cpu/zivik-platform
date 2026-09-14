@@ -25,6 +25,7 @@ export default function Header({
    *  reader actually came for — the decision page skips to its overview. */
   skipTo = "#content",
   supportHref,
+  supportLabel,
   /** Whether this deployment carries a glossary — `glossaryEnabled` in
    *  `lib/flags.ts`, handed down rather than read here because this is a
    *  client component and the flag is server-only. */
@@ -34,10 +35,14 @@ export default function Header({
   dict: HeaderDict;
   skipTo?: string;
   showGlossary: boolean;
-  /** Where the support ask goes. Built in the layout from `footer.email` so
-   *  this component does not have to carry the footer's whole dictionary
-   *  across the client boundary for one address. */
+  /** Where the support ask goes, and what it says. Both come from the
+   *  footer's dictionary, handed down rather than picked up here: the footer
+   *  and the bar must show one control with one label, and the way to
+   *  guarantee that is for there to be one string. Passed as props so this
+   *  client component does not carry the footer's whole dictionary across the
+   *  boundary for two values. */
   supportHref: string;
+  supportLabel: string;
 }) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -313,7 +318,7 @@ export default function Header({
               pill. This is an archive of court decisions, and the loudest
               thing on its first screen should not be an ask for money. */}
           <a className="nsv-support" href={supportHref}>
-            {dict.nav.support}
+            {supportLabel}
           </a>
           {langSwitch()}
           <button
@@ -354,7 +359,7 @@ export default function Header({
           href={supportHref}
           onClick={() => setOpen(false)}
         >
-          {dict.nav.support}
+          {supportLabel}
         </a>
         {/* The same switch, for the widths where the bar cannot hold it. Below
             420px it is the only one displayed — header.css shows one and hides

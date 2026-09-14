@@ -36,7 +36,6 @@ const en: Dictionary = {
     map: "Map",
     team: "Team",
     partners: "Partners",
-    support: "Support",
     blog: "Blog",
   },
   brand: {

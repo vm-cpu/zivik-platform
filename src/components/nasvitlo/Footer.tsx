@@ -194,15 +194,14 @@ export default function Footer({
           <a href={`mailto:${f.email}`} style={footMail}>
             {f.email}
           </a>
-          {/* The support ask, in the contacts column where the owner asked for
-              it. It used to be a band of its own on the home page — a heading,
-              a paragraph and this button — and the band came off; the ask did
-              not. Styled as the mail link above rather than as a pill: this is
-              a column of links, and a button in it would be the loudest thing
-              in the footer. */}
+          {/* The support ask — the same control the top bar carries, because
+              one ask shown two ways is two asks as far as a reader is
+              concerned. It was an underlined link here and a chip up there,
+              with two different labels besides; it is `.nsv-support` in both
+              places now, on one string. */}
           <a
+            className="nsv-support nsv-support-foot"
             href={`mailto:${f.email}?subject=${encodeURIComponent(f.support)}`}
-            style={footMail}
           >
             {f.support}
           </a>

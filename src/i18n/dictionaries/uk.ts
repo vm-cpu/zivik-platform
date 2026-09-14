@@ -75,7 +75,6 @@ const uk = {
     map: "Мапа",
     team: "Команда",
     partners: "Партнери",
-    support: "Підтримати",
     blog: "Блог",
   },
   brand: {

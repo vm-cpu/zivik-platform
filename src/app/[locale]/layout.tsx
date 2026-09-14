@@ -180,6 +180,7 @@ export default async function LocaleLayout({
             dict={dict}
             showGlossary={glossaryEnabled}
             supportHref={`mailto:${dict.footer.email}?subject=${encodeURIComponent(dict.footer.support)}`}
+            supportLabel={dict.footer.support}
           />
           {children}
           <Footer dict={dict} locale={safe} />
