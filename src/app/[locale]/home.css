@@ -175,6 +175,10 @@
      display type sitting on them. Warm, because everything the lamp touches on
      this site is warm — same --brand-gold-lit the archive's own map lights its
      forum states with, at a fraction of the strength. */
+  /* The continent under the lit six. Outline only and very faint: this is
+     what makes the drawing legible as a map, and it must not read as content
+     — the section's subject is the wordmark, and after that the six. */
+  .lmp .hmap-ctx{fill:none;stroke:color-mix(in srgb,var(--brand-gold-lamp) 11%,transparent);stroke-width:.7;vector-effect:non-scaling-stroke}
   .lmp .hmap-state{fill:color-mix(in srgb,var(--brand-gold-lit) 13%,transparent);stroke:color-mix(in srgb,var(--brand-gold-lit) 26%,transparent);stroke-width:.8;vector-effect:non-scaling-stroke}
   /* Ukraine is the subject, so it is the outline rather than the fill — the
      same division of labour the archive's map makes. */

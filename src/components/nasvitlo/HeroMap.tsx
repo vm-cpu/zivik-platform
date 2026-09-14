@@ -27,26 +27,62 @@ import geometry from "@/content/europe-map.json";
  */
 interface HeroGeometry {
   viewBox: string;
+  /** Every country in the frame, as the outlines that make this read as a map. */
+  context: string[];
   ukraine: string;
   forums: Record<string, string>;
 }
 
 const geo = geometry as HeroGeometry;
 
+/**
+ * The drawing's frame, with room above and below it.
+ *
+ * The generator's frame is 1200x460 — a 2.6:1 strip, cut to hold Europe and
+ * nothing else. The hero is not that shape: it is 1440x700 on a desktop and
+ * near square on a narrow window, and a background has to fill whichever it
+ * is. Covering a 1.05 box with a 2.6 frame leaves 40 per cent of the map's
+ * width — measured on the rendered page, and it is why the first version read
+ * as shapes rather than countries.
+ *
+ * Padding the frame vertically is what fixes it, because then the crop eats
+ * empty sea instead of the continent. At 800 tall the same square section
+ * keeps 70 per cent of the width, and a desktop section becomes width-bound
+ * and shows the whole of Europe with the padding cropped away instead.
+ *
+ * Derived from the committed viewBox rather than written out, so a
+ * regenerated frame carries its padding with it.
+ */
+const [vx, vy, vw, vh] = geo.viewBox.split(" ").map(Number);
+const PAD = (800 - vh) / 2;
+const framed = `${vx} ${vy - PAD} ${vw} ${vh + PAD * 2}`;
+
 export default function HeroMap() {
   return (
     <span className="hmap" aria-hidden="true">
       <svg
-        viewBox={geo.viewBox}
-        /* Contain, not cover. Cover was the instinct — it is a background —
-           and it was wrong: the frame is 1200x460 and the hero is nearer
-           square, so covering cropped away everything but Scandinavia and
-           Ukraine's edge, and six countries you cannot place are not a map.
-           There are no letterbox bands to avoid, either: what sits behind is
-           the lamp's own gradient, which is what the rest of the section is. */
-        preserveAspectRatio="xMidYMid meet"
+        viewBox={framed}
+        /* Cover. The map is the section's ground, so it fills it.
+
+           This went the other way first — `meet`, so the whole frame fitted —
+           because with only the six lit shapes on it, cropping left countries
+           a reader could not place. The continent is drawn now, so there is
+           always geography under the crop and the drawing reads as a map at
+           any size the section takes. */
+        preserveAspectRatio="xMidYMid slice"
         focusable="false"
       >
+        {/* The continent, so the lit six are countries rather than shapes.
+
+            The first version left this out — the note was "only the lit
+            countries" — and it was right about the ink and wrong about the
+            reading: six glowing forms with nothing around them are a
+            constellation, not a map, and the owner said so on seeing it. The
+            outlines carry no fill and almost no weight; they are there to be
+            recognised, not looked at. */}
+        {geo.context.map((d, i) => (
+          <path key={`c${i}`} className="hmap-ctx" d={d} />
+        ))}
         {Object.entries(geo.forums).map(([name, d]) => (
           <path key={name} className="hmap-state" d={d} />
         ))}
