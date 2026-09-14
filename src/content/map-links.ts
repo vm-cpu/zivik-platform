@@ -1,4 +1,4 @@
-import { MAP_EVENTS, MAP_COURTS } from "./map";
+import { MAP_EVENTS, MAP_COURTS, MAP_COUNTRIES, seatsList } from "./map";
 import { moneyCompact } from "@/content/money";
 import { registryCases } from "./cases";
 import { SUMMARIES } from "./summaries";
@@ -180,4 +180,38 @@ export function courtCaseloadFor(courtKey: string, locale: Locale) {
         amount: c.amountUsd != null ? money(c.amountUsd, locale) : undefined,
       })),
   };
+}
+
+/**
+ * What the panel says when a reader presses a lit country.
+ *
+ * The same answer pressing a city gives — the courts that sit there, as a
+ * list, and how much of the archive they hold — gathered for the country
+ * instead of the dot. France is why this exists as a merge rather than a
+ * lookup: the ECtHR in Strasbourg and the ICC's Court of Arbitration in Paris
+ * are two markers in one shape, and a reader who presses France is asking
+ * about both.
+ *
+ * Resolved on the server, like everything else `EventsMap` is handed: it is a
+ * client component, so a `Localized` pair crossing into it would ship both
+ * languages to every reader.
+ */
+export function countryPanelsFor(locale: Locale) {
+  return MAP_COUNTRIES.map((co) => {
+    const seated = co.courts.map((key) => {
+      const court = MAP_COURTS.find((c) => c.key === key);
+      /* Unreachable — the guard in map.ts fails the build on an unknown court
+         — and thrown rather than filtered, because a country that quietly
+         dropped one of its two courts would show a panel that is simply short
+         by a court, which is the kind of wrong that looks right. */
+      if (!court) throw new Error(`country "${co.key}" names court "${key}", which is not on the map`);
+      return court;
+    });
+    return {
+      key: co.key,
+      label: pick(co.name, locale),
+      seatList: seated.flatMap((c) => seatsList(c, locale)),
+      total: seated.reduce((n, c) => n + courtCaseloadFor(c.key, locale).total, 0),
+    };
+  });
 }

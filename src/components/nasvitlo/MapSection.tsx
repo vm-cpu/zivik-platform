@@ -8,7 +8,7 @@ import {
   seatsLine,
   seatsList,
 } from "@/content/map";
-import { courtCaseloadFor } from "@/content/map-links";
+import { countryPanelsFor, courtCaseloadFor } from "@/content/map-links";
 import Link from "next/link";
 import EventsMap from "./EventsMap";
 
@@ -111,6 +111,7 @@ const stageWord = (k: string | undefined) =>
              asks for the first time a reader asks for the Atlantic framing.
              Everything below is what the server does know and the component
              cannot: the reader's language. */
+          countries={countryPanelsFor(locale)}
           courts={MAP_COURTS.map((c) => ({
             key: c.key,
             city: pick(c.city, locale),

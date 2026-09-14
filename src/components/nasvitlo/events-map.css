@@ -162,6 +162,23 @@
   vector-effect: non-scaling-stroke;
   stroke-width: 0.8;
 }
+/* A lit country answers when pressed, so it says so: a pointer, a focus ring
+   the keyboard can find, and a brighter edge while it is the selected one.
+   Only where there is something to press — a shape with no country entry
+   behind it keeps the plain rule above and stays scenery. */
+.emap-forum-state[role="button"] {
+  cursor: pointer;
+}
+.emap-forum-state[role="button"]:hover,
+.emap-forum-state[data-on="yes"] {
+  fill: color-mix(in srgb, var(--brand-gold-lit) 42%, transparent);
+  stroke: color-mix(in srgb, var(--brand-gold-lit) 85%, transparent);
+}
+.emap-forum-state[role="button"]:focus-visible {
+  outline: none;
+  stroke: var(--brand-gold-pale);
+  stroke-width: 2;
+}
 
 .emap-ua {
   fill: var(--brand-map-ua);

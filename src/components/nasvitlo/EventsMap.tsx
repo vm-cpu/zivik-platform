@@ -59,6 +59,17 @@ export interface MapEventR {
   /** Decisions this site leads to. Empty means nothing is summarised yet. */
   cases: { slug: string; title: string; forum: string; stage?: string; amount?: string }[];
 }
+export interface MapCountryR {
+  /** The atlas's own name for the shape — a key of `forums` in the geometry. */
+  key: string;
+  /** The country, in the reader's language. */
+  label: string;
+  /** Every seat in the country, merged across its markers. */
+  seatList: { id?: string; abbr?: string; name: string }[];
+  /** How much of the archive those seats hold, summed. */
+  total: number;
+}
+
 export interface MapCourtR {
   key: string;
   city: string;
@@ -533,6 +544,7 @@ function LegendH({
 
 export default function EventsMap({
   events = [],
+  countries = [],
   courts,
   labels,
   locale,
@@ -555,6 +567,17 @@ export default function EventsMap({
    * the decision reversible by one line at the call site instead of a revert.
    */
   events?: MapEventR[];
+  /**
+   * The lit countries, and what pressing one should say.
+   *
+   * The drawing gained lit states before it gained a way to press one: a
+   * reader could see that six countries hear these cases and could only ask
+   * about them by finding the city dot inside. Pressing a country now does
+   * what pressing a city does — its courts, as a list, each linking to its own
+   * caseload. France carries two, which is why each entry brings its own
+   * merged seat list rather than a court key.
+   */
+  countries?: MapCountryR[];
   courts: MapCourtR[];
   labels: {
     alt: string;
@@ -721,7 +744,7 @@ export default function EventsMap({
    * quietened behind one relation they had not chosen. A default selection is
    * the map answering a question nobody put to it.
    */
-  const [sel, setSel] = useState<{ kind: "site" | "court"; key: string } | null>(null);
+  const [sel, setSel] = useState<{ kind: "site" | "court" | "country"; key: string } | null>(null);
 
   /**
    * The whole screen, on a device that cannot use the drawing any other way.
@@ -799,10 +822,14 @@ export default function EventsMap({
    * not a page, and six clicks around the drawing should not cost a reader six
    * presses of Back to leave.
    */
-  const syncUrl = useCallback((next: { kind: "site" | "court"; key: string } | null) => {
+  const syncUrl = useCallback((next: { kind: "site" | "court" | "country"; key: string } | null) => {
     const q = new URLSearchParams(window.location.search);
     q.delete("site");
     q.delete("court");
+    /* A lit country is linkable like any other selection — `?country=France`,
+       keyed by the atlas name the geometry uses, so the parameter and the
+       shape it opens cannot drift apart. */
+    q.delete("country");
     if (next) q.set(next.kind, next.key);
     const qs = q.toString();
     const url = `${window.location.pathname}${qs ? `?${qs}` : ""}${window.location.hash}`;
@@ -819,12 +846,13 @@ export default function EventsMap({
    * the component. Only ever set by an act of the reader's — the card the map
    * opens with does not move the view.
    */
-  const [focusReq, setFocusReq] = useState<{ kind: "site" | "court"; key: string } | null>(null);
+  const [focusReq, setFocusReq] = useState<{ kind: "site" | "court" | "country"; key: string } | null>(null);
 
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const site = q.get("site");
     const court = q.get("court");
+    const country = q.get("country");
     // Same trade as CaseTimeline: one extra render buys a selection that
     // survives a reload and can be shared as a link. The query string is only
     // legible in the browser — useSearchParams would pull this prerendered
@@ -834,7 +862,9 @@ export default function EventsMap({
         ? ({ kind: "site", key: site } as const)
         : court && courts.some((c) => c.key === court)
           ? ({ kind: "court", key: court } as const)
-          : null;
+          : country && countries.some((c) => c.key === country)
+            ? ({ kind: "country", key: country } as const)
+            : null;
     /* eslint-disable react-hooks/set-state-in-effect */
     if (from) {
       setSel(from);
@@ -873,7 +903,7 @@ export default function EventsMap({
   const exitRef = useRef<HTMLButtonElement>(null);
 
   const select = useCallback(
-    (next: { kind: "site" | "court"; key: string } | null) => {
+    (next: { kind: "site" | "court" | "country"; key: string } | null) => {
       if (next) {
         openerRef.current = document.activeElement as HTMLElement | null;
       } else {
@@ -921,6 +951,8 @@ export default function EventsMap({
     select(sel?.kind === "site" && sel.key === key ? null : { kind: "site", key });
   const toggleCourt = (key: string) =>
     select(sel?.kind === "court" && sel.key === key ? null : { kind: "court", key });
+  const toggleCountry = (key: string) =>
+    select(sel?.kind === "country" && sel.key === key ? null : { kind: "country", key });
 
 
   /**
@@ -1744,12 +1776,39 @@ export default function EventsMap({
   const selected = sel?.kind === "site" ? events.find((e) => e.key === sel.key) ?? null : null;
   const selectedCourt =
     sel?.kind === "court" ? courts.find((c) => c.key === sel.key) ?? null : null;
+  const selectedCountry =
+    sel?.kind === "country" ? countries.find((c) => c.key === sel.key) ?? null : null;
 
-  /** Sites heard at the selected court — what a court selection is *for*. */
-  const courtSites = useMemo(
-    () => (selectedCourt ? events.filter((e) => e.courts.includes(selectedCourt.key)) : []),
-    [selectedCourt, events],
-  );
+  /**
+   * What the panel shows, whichever of the two was pressed.
+   *
+   * A city and a country ask the same question of this map — which courts sit
+   * here, and how much of the archive do they hold — so they get one card
+   * rather than two that would drift apart. The card's own machinery, the grip
+   * and the close button and the drag, is written once and does not care which
+   * kind opened it.
+   */
+  const panel = selectedCourt
+    ? {
+        title: selectedCourt.city,
+        seatList: selectedCourt.seatList,
+        total: selectedCourt.caseload.total,
+      }
+    : selectedCountry
+      ? {
+          title: selectedCountry.label,
+          seatList: selectedCountry.seatList,
+          total: selectedCountry.total,
+        }
+      : null;
+
+  /** Sites heard at the selected court — what a court selection used to be
+   *  *for*, back when the drawing had sites. A plain expression rather than a
+   *  `useMemo`: with no events passed it filters an empty array, and the memo
+   *  was costing the React Compiler a bail-out on this whole component. */
+  const courtSites = selectedCourt
+    ? events.filter((e) => e.courts.includes(selectedCourt.key))
+    : [];
 
   /**
    * The two ends of one relation.
@@ -2162,9 +2221,38 @@ export default function EventsMap({
 
               Under Ukraine and under the markers: the subject of these
               proceedings and the seats themselves both stay on top. */}
-          {Object.entries(geo.forums).map(([name, d]) => (
-            <path key={name} className="emap-forum-state" d={d} />
-          ))}
+          {Object.entries(geo.forums).map(([name, d]) => {
+            /* A shape with a country entry behind it answers when pressed; one
+               without is scenery. Today every lit shape has an entry — the
+               build fails otherwise — but the drawing asks rather than
+               assumes, so a shape lit before its entry exists is inert rather
+               than a control that does nothing. */
+            const country = countries.find((c) => c.key === name);
+            if (!country) return <path key={name} className="emap-forum-state" d={d} />;
+            const on = sel?.kind === "country" && sel.key === name;
+            return (
+              <path
+                key={name}
+                className="emap-forum-state"
+                data-on={on ? "yes" : "no"}
+                d={d}
+                role="button"
+                tabIndex={0}
+                aria-pressed={on}
+                aria-label={country.label}
+                onClick={(ev) => {
+                  ev.stopPropagation();
+                  toggleCountry(name);
+                }}
+                onKeyDown={(ev) => {
+                  if (ev.key === "Enter" || ev.key === " ") {
+                    ev.preventDefault();
+                    toggleCountry(name);
+                  }
+                }}
+              />
+            );
+          })}
           <path className="emap-ua" d={geo.ukraine} />
           {/* The 27 regions, as the lines between them. Six unlabelled dots
               inside a blank country said nothing about where anything was;
@@ -2571,7 +2659,7 @@ export default function EventsMap({
 
       {/* A court selection answers the reverse question: not "who is hearing
           this?" but "what is this court hearing?" */}
-      {selectedCourt && (
+      {panel && (
         <div
           className="emap-card emap-card-court"
           style={{ transform: `translate(${cardAt.x}px, ${cardAt.y}px)` }}
@@ -2647,7 +2735,7 @@ export default function EventsMap({
                 card where the date tag sits above and the event is the heading.
                 This opened with the legend's own wording ("the courts sit in")
                 and put the city where the name belongs. */}
-            <div className="emap-when">{selectedCourt.city}</div>
+            <div className="emap-when">{panel.title}</div>
             {/* The seats as a list, one link each.
 
                 This was a single run-on line — "ICJ — Міжнародний суд ООН ·
@@ -2663,7 +2751,7 @@ export default function EventsMap({
                 to list is one click away, in the one place that can sort and
                 filter it. */}
             <ul className="emap-seats">
-              {selectedCourt.seatList.map((seat) => (
+              {panel.seatList.map((seat) => (
                 <li key={seat.id ?? seat.name}>
                   {/* A seat with no institution of its own is a fact about
                       where something sat, not a way into a caseload — so it is
@@ -2683,7 +2771,7 @@ export default function EventsMap({
                 </li>
               ))}
             </ul>
-            <p className="emap-caseload">{caseload(selectedCourt.caseload.total)}</p>
+            <p className="emap-caseload">{caseload(panel.total)}</p>
         </div>
       )}
       </div>

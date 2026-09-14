@@ -632,6 +632,41 @@ export function seatsLine(c: MapCourt, locale: Locale): string {
 }
 
 /**
+ * The states the map lights, and the courts that sit in each.
+ *
+ * The drawing gained lit countries before it gained a way to press one: a
+ * reader could see that six states hear these cases and could only ask about
+ * them by finding the city dot inside. The owner's note is that pressing a
+ * country should do what pressing a city does — put that country's courts in
+ * the panel, as a list, each linking to its own caseload in the registry.
+ *
+ * `key` is the atlas's own name for the shape, so it matches a key of `forums`
+ * in europe-map.json rather than being a second spelling of the same country.
+ * The guard at the foot of this file checks that it does, and that every court
+ * named here exists — a country whose shape is lit but whose press does
+ * nothing, or which claims a court that is not on the map, is exactly the kind
+ * of silent gap the rest of these checks exist for.
+ *
+ * France holds two: the ECtHR in Strasbourg and the ICC's Court of
+ * Arbitration in Paris. That is why this is a list of courts per country and
+ * not a court with a country attached.
+ *
+ * Belgium is deliberately absent. Brussels is on the map — Euroclear, where
+ * the Russian central-bank assets are immobilised — but it is not a court, so
+ * Belgium is not one of the states whose courts hear these cases and its shape
+ * is not lit. Pressing the Brussels marker still works; there is simply no
+ * country under it to press.
+ */
+export const MAP_COUNTRIES: { key: string; name: Localized; courts: string[] }[] = [
+  { key: "Netherlands", name: { uk: "Нідерланди", en: "The Netherlands" }, courts: ["hague"] },
+  { key: "France", name: { uk: "Франція", en: "France" }, courts: ["strasbourg", "paris"] },
+  { key: "Germany", name: { uk: "Німеччина", en: "Germany" }, courts: ["hamburg"] },
+  { key: "Sweden", name: { uk: "Швеція", en: "Sweden" }, courts: ["stockholm"] },
+  { key: "Finland", name: { uk: "Фінляндія", en: "Finland" }, courts: ["helsinki"] },
+  { key: "Lithuania", name: { uk: "Литва", en: "Lithuania" }, courts: ["vilnius"] },
+];
+
+/**
  * The seats of one marker, one by one, each with the institution it is.
  *
  * `seatsLine` above joins them into a sentence — "ICJ — Міжнародний суд ООН ·
@@ -707,6 +742,24 @@ export function courtMarks(c: MapCourt, locale: Locale) {
       wrong.push(`court "${c.key}" has no point in europe-map.json and is not offMap`);
     }
   }
+  /* A lit country the reader can press must have a shape to press and courts
+     to show. Both halves are checked: a name that is not in `forums` lights
+     nothing, and a court key that is not on the map opens an empty panel. */
+  const shapes = (geo as { forums?: Record<string, string> }).forums ?? {};
+  for (const c of MAP_COUNTRIES) {
+    if (!(c.key in shapes)) {
+      wrong.push(`country "${c.key}" is not among the lit shapes in europe-map.json`);
+    }
+    for (const k of c.courts) {
+      if (!keys.has(k)) wrong.push(`country "${c.key}" names court "${k}", which is not on the map`);
+    }
+  }
+  for (const name of Object.keys(shapes)) {
+    if (!MAP_COUNTRIES.some((c) => c.key === name)) {
+      wrong.push(`shape "${name}" is lit but no country entry says what pressing it should show`);
+    }
+  }
+
   const areas = (geo as { areas?: Record<string, string> }).areas ?? {};
   for (const e of MAP_EVENTS) {
     if (!(e.key in markers)) wrong.push(`event "${e.key}" has no point in europe-map.json`);
