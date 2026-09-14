@@ -90,7 +90,14 @@ const uk = {
     credit: "Проєкт",
     creditCentre: "Дослідницького центру імені Луї Б. Зона",
     creditFaculty: "Факультету права УКУ",
-    lead: "Бібліотека відповідальності та правосуддя для України — освітлюємо правовий шлях, яким Україна крокує до справедливості.",
+    /* No full stop. Owner's edit: «вкінці висловлювань на головній сторінці не
+       треба ставити крапок». This is the one statement under the lamp — a
+       line of display type on an image, not a sentence in a paragraph — and a
+       full stop on it reads as punctuation left behind from prose. The slogan
+       three sections down never had one; this is now consistent with it. The
+       running prose keeps its stops, and so does the Court's quotation, which
+       is someone else's sentence. */
+    lead: "Бібліотека відповідальності та правосуддя для України — освітлюємо правовий шлях, яким Україна крокує до справедливості",
     ctaRegistry: "Бібліотека рішень",
     chainHint: "потягніть за ланцюжок",
     lampLabel: "Увімкнути або вимкнути лампу",

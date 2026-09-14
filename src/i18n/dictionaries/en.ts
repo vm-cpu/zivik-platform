@@ -48,7 +48,7 @@ const en: Dictionary = {
     credit: "A project of",
     creditCentre: "the Louis B. Sohn Research Centre",
     creditFaculty: "UCU Faculty of Law",
-    lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice.",
+    lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice",
     ctaRegistry: "Library of decisions",
     chainHint: "pull the cord",
     lampLabel: "Turn the lamp on or off",
