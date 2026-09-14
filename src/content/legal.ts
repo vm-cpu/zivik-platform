@@ -33,10 +33,16 @@ import { SUMMARIES } from "./summaries";
  * Contact address for the pages. Mirrors `footer.email` in the dictionaries
  * (`src/i18n/dictionaries/uk.ts` → `footer.email`) so the address a reader is
  * given in the footer is the address the legal pages name; keep the two in
- * sync. It is not read from the dictionary at runtime because the dictionaries
- * carry UI chrome, and these strings are content.
+ * sync — and `data-check.mjs` now checks that they are, because they drifted:
+ * the footer moved to the research centre's address and this one stayed on the
+ * old project mailbox, so the legal pages named an address the site no longer
+ * gave anywhere else. A comment asking a human to keep two constants equal is
+ * a comment that will be wrong eventually.
+ *
+ * It is not read from the dictionary at runtime because the dictionaries carry
+ * UI chrome, and these strings are content.
  */
-export const legalEmail = "nasvitlo@ucu.edu.ua";
+export const legalEmail = "louis.sohn.center@ucu.edu.ua";
 
 /**
  * How much of the library is written, counted rather than typed.

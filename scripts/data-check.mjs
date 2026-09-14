@@ -345,6 +345,30 @@ for (const [slug, src] of summarySrc) {
   }
 }
 
+/* ── the contact address, in the two places that state it ──────────────────
+   `content/legal.ts` mirrors `footer.email` by hand and says so in a comment.
+   They drifted anyway: the footer moved to the research centre's address and
+   the legal pages kept the old project mailbox, so the privacy policy named an
+   address the site no longer gave. A constant that must equal another constant
+   is a check, not a comment. */
+{
+  const legal = readFileSync("src/content/legal.ts", "utf8");
+  const said = /legalEmail = "([^"]+)"/.exec(legal)?.[1];
+  for (const loc of ["uk", "en"]) {
+    const dict = readFileSync(`src/i18n/dictionaries/${loc}.ts`, "utf8");
+    const footer = /\n\s{4}email: "([^"]+)"/.exec(dict)?.[1];
+    if (!footer) {
+      flag(loc, "contact-address", "no footer.email found in the dictionary");
+    } else if (footer !== said) {
+      flag(
+        loc,
+        "contact-address",
+        `footer.email is "${footer}" but legalEmail is "${said}"`,
+      );
+    }
+  }
+}
+
 console.log(
   `checked ${ids.size} records, ${summarySrc.size} write-ups, ` +
     `${slugs.size} links between them\n`,
