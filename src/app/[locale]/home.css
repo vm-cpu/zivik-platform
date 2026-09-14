@@ -386,21 +386,33 @@
 /* The map band carries no side padding of its own any more, so the negative
    margins that used to punch through it now overshoot the viewport by exactly
    the gutter they were cancelling. */
-/* The About column, centred rather than left-aligned inside the band.
+/* The About prose, in two columns where there is room for two.
 
-   The band's content area is --measure-page wide and already centred, so at
-   1900 it runs 360..1540. The prose is capped at 720 — about ninety characters
-   at the body size, which is already past the 65–75 a reader is comfortable
-   with, so widening it is not the answer — and left-aligned inside that area
-   it left 460px of unused ground on the right and none on the left. Measured,
-   and the owner's word for the result was a white patch.
+   This went through three states and the first two were both wrong, in
+   opposite directions. Left-aligned at 720 inside a content area of 1180, it
+   left 460px of unused ground on one side and none on the other — an
+   asymmetry the owner called a white patch. Centred, the asymmetry went and a
+   worse thing arrived: a 720 ribbon down the middle of a 1900 band, thinner
+   than before.
 
-   So the column is centred and the label and the button are centred with it:
-   three elements on one axis rather than a column of prose adrift inside a
-   wider box. The text itself stays left-aligned; it is the column that moves. */
-.nsv-about-main{max-width:720px;margin-inline:auto;display:flex;flex-direction:column;gap:var(--space-4)}
-#about > .lbl,
-.nsv-about-more{max-width:720px;margin-inline:auto;width:100%}
+   Neither could be fixed by moving the column, because the column was the
+   problem: 720 is about ninety characters at the body size, already past the
+   65–75 a reader is comfortable with, so it could not be widened either.
+
+   Two columns answer both at once. Each comes out near 68 characters, which is
+   inside the comfortable range rather than past it, and together they fill the
+   measure, so the band reads as a band. The prose is two paragraphs, which is
+   what makes this a layout rather than a trick — one per column, no reflow
+   across a gutter for the eye to chase.
+
+   Below 1000px there is not room for two, and it stacks back to one. */
+.nsv-about-main{display:flex;flex-direction:column;gap:var(--space-4)}
+@media (min-width:1000px){
+  .nsv-about-main{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:var(--space-7);align-items:start;
+  }
+}
 
 /* Both paragraphs in the About band are body prose of one rank, so they carry
    one colour. The opening one used to be painted --ink (#1a1917, 17.57:1 on

@@ -251,23 +251,18 @@ export default async function AboutPage({
 
   const dict = await getDictionary(locale);
   const repo = getContentRepository();
-  const [about, cases, institutions, partners] = await Promise.all([
+  /* Only what the page still draws. It used to count three figures off the
+     cases and the institutions for «Стан бібліотеки»; that section moved to
+     the registry, which counts the same figures from the same source, and the
+     counting moved with it. */
+  const [about, partners] = await Promise.all([
     repo.getAbout(),
-    repo.getCases(),
-    repo.getInstitutions(),
     repo.getPartners(),
   ]);
 
   const L = <V,>(x: Record<Locale, V>) => pick(x, locale);
   /* The citation table travels with the prose — see content/about.ts. */
   const aboutLinks = about.links ? L(about.links) : [];
-
-  /* Counted, never written down. The library page counts the same three
-     figures the same way — instances are the institutions that actually have
-     a case, not every court in the file. */
-  const withCases = new Set(cases.map((c) => c.institutionId));
-  const courtCount = institutions.filter((i) => withCases.has(i.id)).length;
-  const analysed = cases.filter((c) => c.lit).length;
 
   return (
     <div className="page aboutpage">
@@ -306,29 +301,16 @@ export default async function AboutPage({
             see the note on «Як рішення потрапляє в бібліотеку» above, which
             came off for the same reason. */}
 
-        <section className="abt-sec">
-          <h2>{L(T.stateH)}</h2>
-          <div className="abt-meta">
-            <div className="m gilt">
-              <span className="mv">{cases.length}</span>
-              <span className="ml">{L(T.mProceedings)}</span>
-            </div>
-            <div className="m">
-              <span className="mv">{courtCount}</span>
-              <span className="ml">{L(T.mInstitutions)}</span>
-            </div>
-            <div className="m">
-              <span className="mv">{analysed}</span>
-              <span className="ml">{L(T.mAnalysed)}</span>
-            </div>
-          </div>
-          <div className="abt-prose">
-            <p>{L(T.state)}</p>
-          </div>
-          <p className="abt-more">
-            <Link href={`/${locale}/registry`}>{L(T.stateLink)} →</Link>
-          </p>
-        </section>
+        {/* ── «Стан бібліотеки» — moved, owner's decision ───────────────────
+            Three figures and a line about how much of the archive is written
+            up. It belongs where the archive is, not in the page about the
+            project: the registry already opens with the same count and the
+            same "written up" figure, from the same source, so this was the
+            second place a reader could be told — and the review's note is that
+            a reader who has not read this page should still meet the fact.
+
+            Removed rather than duplicated. The numbers live on /registry,
+            which is where «Бібліотека рішень» goes from every surface. */}
 
         <section className="abt-sec">
           <h2>{L(T.whoH)}</h2>

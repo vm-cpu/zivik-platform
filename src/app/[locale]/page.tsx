@@ -74,7 +74,6 @@ export default async function HomePage({
             margin pulls it back under the band's own 50px foot so the link
             sits a normal 24px below the last paragraph. */}
         <div
-          className="nsv-about-more"
           style={{
             position: "relative",
             zIndex: 3,
