@@ -94,7 +94,18 @@ export default async function HomePage({
             the same drawing asked twice. It keeps its own page, which is where
             a reader who wants to work with it goes, and the top bar still
             points at it. */}
-        <Quote dict={dict} locale={locale} />
+        {/* Partners before the quotation, which is a swap of the two.
+
+            Owner's decision, and the page reads better for it: the quotation
+            band is the site's one dark surface below the lamp, and it used to
+            sit between two grounds of pale paper, so the page went light,
+            dark, light and ended on a partner row that had nothing after it
+            but the footer. Now the light half of the page runs unbroken — the
+            summary, the slogan, the partners — and the dark begins at the
+            quotation and does not stop: the Court's words run straight into
+            the footer's dark, with the gold rule between them, and the page
+            closes in the same colour the lamp lit at the top. */}
+        <Partners locale={locale} dict={dict} partners={partners} />
         {/* The library is not a band here any more.
 
             It was the home page's front door — the five courts, their
@@ -112,7 +123,7 @@ export default async function HomePage({
             which is still open: the lamp carries exactly one button now, and
             putting a second one back there would undo the change that put it
             there. */}
-        <Partners locale={locale} dict={dict} partners={partners} />
+        <Quote dict={dict} locale={locale} />
         </LampShell>
       </main>
     </div>
