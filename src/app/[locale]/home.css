@@ -192,7 +192,38 @@
     -webkit-mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%);
     mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%);
   }
-  .lmp .hmap svg{width:100%;height:100%;display:block}
+  /* The map lies on a table, and the lamp hangs over it.
+
+     The tilt is the whole idea: until now the drawing stood upright behind the
+     wordmark like a poster, which is not what a hanging lamp lights. Laid back
+     it becomes a surface — the reader is standing at the table looking down at
+     a map, and the light falls across it.
+
+     Perspective on the frame and the rotation on the drawing inside it, not
+     both on one element: the mask stays in the frame's own flat space that
+     way, so the pool of light keeps its shape and its place under the bulb
+     while the map turns underneath it. That is also the physics — the lamp
+     does not tilt with the table.
+
+     `scale` pays for the rotation. rotateX(34deg) foreshortens the vertical to
+     about cos(34°) = 0.83 before perspective takes more off the far edge, so
+     without it the section would show ground above and below the drawing.
+     1.42 covers the deepest case, measured at the squarest viewport the hero
+     takes. The origin sits above centre because the far edge is the one that
+     recedes, and the near edge has to stay past the bottom of the section.
+
+     The translate is the margin, and it is not symmetric because the rotation
+     is not: measured after the tilt, the drawing cleared the section by 12px
+     at the top and 223px at the bottom, because perspective takes most from
+     the receding edge. Twelve pixels is a gap waiting for a different window
+     shape. Moving it up spends the bottom's surplus on the top, where the
+     risk actually is. */
+  .lmp .hmap{perspective:1000px;perspective-origin:50% 26%}
+  .lmp .hmap svg{
+    width:100%;height:100%;display:block;
+    transform:rotateX(34deg) scale(1.42) translateY(-5%);
+    transform-origin:50% 38%;
+  }
   /* Faint on purpose. This is the ground under a wordmark, not a chart: the
      six shapes have to be readable as countries and must not compete with the
      display type sitting on them. Warm, because everything the lamp touches on
