@@ -1,4 +1,5 @@
 import type { Dictionary } from "@/i18n/dictionaries";
+import HeroMap from "./HeroMap";
 
 /**
  * Hero with the industrial lamp lighting the wordmark. The lamp fixtures and
@@ -27,6 +28,9 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         background: "none",
       }}
     >
+      {/* Under the fixtures and under the text: the lamp hangs in front of the
+          map, and the map is what its light falls on. */}
+      <HeroMap />
       <span className="dcord" />
       <span className="dcollar" />
       <span className="bcone" />
