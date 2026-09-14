@@ -1,3 +1,5 @@
+"use client";
+
 import geometry from "@/content/europe-map.json";
 
 /**
@@ -21,9 +23,18 @@ import geometry from "@/content/europe-map.json";
  * `[data-on="no"]`, same z-index 1 under the text at 3. Nothing here is a new
  * behaviour; it is one more surface the existing switch already governs.
  *
- * A server component with no JavaScript of its own. The paths are in the
- * first HTML the reader gets, so the light has something to fall on before
- * hydration — a background that pops in late is worse than no background.
+ * Marked "use client" despite having no interactivity, and the reason is
+ * weight rather than behaviour. As a server component its 68 outlines
+ * travelled twice in every home page — once as the markup that draws them and
+ * again inside the flight payload, because that payload carries a server
+ * component's rendered output. Measured: 136 occurrences of `hmap-ctx` in a
+ * document that draws 68, and 60.2 kB gzipped for a page that had been 26.6.
+ *
+ * A client component is serialized as a reference and its props, not its
+ * output, so the paths are in the HTML once and the geometry rides in a JS
+ * chunk the browser caches and shares with the map's own page. It still
+ * server-renders, so the light has something to fall on in the first frame —
+ * a background that pops in after hydration is worse than no background.
  */
 interface HeroGeometry {
   viewBox: string;

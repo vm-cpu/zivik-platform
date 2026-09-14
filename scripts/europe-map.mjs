@@ -200,17 +200,35 @@ const projection = geoMercator().fitExtent(
 const path = geoPath(projection).digits(1);
 
 /**
- * The window the context layer is generated for: the 1200 x 460 drawing
- * itself, plus a 20-unit skirt.
+ * The window the context layer is generated for.
  *
- * There used to be a second, far wider one. The Atlantic framing let a reader
- * put Montreal beside Europe, so the generator emitted a second ring of 60
- * paths — North America and the Atlantic rim — into public/europe-far.json,
- * fetched the first time anyone asked for that framing. The ICAO Council is
- * off the map now, so the framing is gone and so is the only thing that ever
- * requested the file.
+ * Wider and much taller than the drawing, and the height is the point. The
+ * projection's frame is 1200 x 460 — fitted to hold northern and central
+ * Europe and Ukraine — and for as long as the context ring was generated for
+ * that box plus a 20-unit skirt, everything below it was simply not in the
+ * file. Lisbon projects to y=555, Madrid to 519, Rome to 488: the whole
+ * southern tier was missing, and nothing showed it because no surface drew
+ * past y=480.
+ *
+ * The hero background does. It pads the frame on both axes so the continent
+ * sits at a usable size inside a section that is 2.2:1 on a desktop and near
+ * square on a phone, and that padded frame reaches y=730 — where Iberia and
+ * Italy should have been and there was a hole instead. The owner spotted it as
+ * "I don't see Portugal", which is exactly what it was.
+ *
+ * So the ring is generated for the padded frame: -300…1500 across, -270…730
+ * down, plus a skirt. Nothing else changes — `ukraine`, `regions`, `markers`,
+ * `areas`, `forums` and the projection itself are untouched, and the archive's
+ * own map still declares the 1200 x 460 viewBox, so the extra outlines sit
+ * outside what it draws and cost it nothing but bytes.
+ *
+ * There used to be a second, far wider window. The Atlantic framing let a
+ * reader put Montreal beside Europe, so the generator emitted a second ring of
+ * 60 paths into public/europe-far.json, fetched the first time anyone asked
+ * for that framing. The ICAO Council is off the map now, so the framing is
+ * gone and so is the only thing that ever requested the file.
  */
-const NEAR = { x0: -20, y0: -20, x1: W + 20, y1: H + 20 };
+const NEAR = { x0: -320, y0: -290, x1: W + 320, y1: 750 };
 
 /** Does this shape land anywhere inside the given window at all? */
 const within = (f, b) => {
