@@ -19,7 +19,10 @@
  *
  * ── What counts as a violation ─────────────────────────────────────────────
  * A font size, a spacing value or a colour written as a literal, in a place
- * where a token exists for it. Three things are explicitly NOT violations,
+ * where a token exists for it — and a width written in fixed pixels, which is
+ * a size the viewport cannot argue with. Everything on this site is
+ * responsive; the `fluid` rule is what makes that a check rather than a
+ * habit. Three things are explicitly NOT violations,
  * because DESIGN.md says so and because pretending otherwise would train
  * people to add ignore comments:
  *
@@ -207,6 +210,60 @@ for (const file of files(join(ROOT, "src"), [".css"])) {
 
     const inPrint = printDepth > 0;
     const skip = inPrint || ILLUSTRATION.test(selector);
+
+    /* Responsiveness is checked on the drawings too.
+
+       This rule deliberately does not take the ILLUSTRATION exemption the
+       other three take. That exemption says a drawing may use colours and
+       lengths the type and spacing scales do not name, which is true and has
+       nothing to do with whether it fits on a screen. Written inside the
+       exemption, this rule was silent on `.page .pj{width:900px}` — the exact
+       declaration it exists to catch, skipped because `.pj` is the lamp's
+       stage. A check that cannot see the bug that motivated it is worse than
+       no check: it reports clean.
+
+       The lamp's own light shapes are a real exception and they say so on the
+       line above themselves, with the reason. That is the difference between
+       an exemption and an argument.
+
+       Owner's rule: everything on this site is responsive. The most expensive
+       counter-example the site has had was that hero stage — authored as a
+       fixed 900px box because the lamp's fixtures were placed at fixed
+       coordinates. The fixtures were later re-anchored to `calc(50% ± n)` and
+       the width stayed, so on a 2000px monitor the first screen was a 900px
+       box with 550px of dead ground down each side, and the map inside it —
+       `inset: 0` of that element — could not reach the screen however far its
+       geometry ran. Four attempts were made at the map's outlines before
+       anyone measured the box.
+
+       320px is the threshold because it is the narrowest viewport this site
+       supports: a fixed width above it cannot fit the smallest screen, so it
+       either overflows or boxes the layout. Below it a fixed width is usually
+       a control or an icon and is nobody's layout.
+
+       `max-width` is not caught, and that is the point — it is the responsive
+       way to say the same thing. Neither is a width built out of `%`, `vw`,
+       `min()`, `max()`, `clamp()` or `calc()`: those answer to the viewport.
+       Height is not measured; a fixed height has its own failure mode, but it
+       does not decide how wide the page is. */
+    if (!inPrint && !/^\s*@/.test(line)) {
+      for (const decl of splitDeclarations(line)) {
+        if (decl.prop !== "width" && decl.prop !== "min-width") continue;
+        if (ignored.has("fluid")) continue;
+        if (/%|vw|vh|min\(|max\(|clamp\(|calc\(/.test(decl.value)) continue;
+        for (const m of decl.value.matchAll(/(\d+(?:\.\d+)?)px/g)) {
+          const v = Number(m[1]);
+          if (v < 320) continue;
+          add(
+            file,
+            no,
+            "fluid",
+            `${decl.prop}: ${v}px is fixed (${selector || "?"})`,
+            "the site is responsive everywhere — use max-width, a %, or a clamp()/min() the viewport can win",
+          );
+        }
+      }
+    }
 
     if (!skip) {
       /* Read declarations, not lines.
@@ -408,6 +465,20 @@ for (const file of files(join(ROOT, "src"), [".tsx"])) {
         'inline styles beat every stylesheet — use a class, or fontSize: "var(--t-*)"',
       );
     }
+    /* The same responsiveness rule, inside a style object. `maxWidth` is not
+       matched and `<Image width={900}>` is not either — that is an intrinsic
+       pixel size for the image loader, not a layout width. The leading
+       boundary is what keeps `sizes="(max-width: 560px)"` out of it. */
+    for (const w of line.matchAll(/(?:^|[{,\s])(width|minWidth):\s*(\d+)\b/g)) {
+      if (Number(w[2]) < 320) continue;
+      add(
+        file,
+        i + 1,
+        "inline-fluid",
+        `${w[1]}: ${w[2]} set on the element`,
+        "the site is responsive everywhere — maxWidth, a percentage, or a class that can hold a media query",
+      );
+    }
   });
 }
 
@@ -425,6 +496,8 @@ function nearest(v, steps, prefix) {
 const RULES = {
   type: "font sizes off the --t-* scale",
   space: "spacing off the 4px grid",
+  fluid: "fixed pixel widths the viewport cannot override",
+  "inline-fluid": "fixed pixel widths set inline in JSX",
   colour: "colour literals outside globals.css",
   "inline-type": "font sizes set inline in JSX",
   "undefined-token": "var() naming a custom property nothing declares",
@@ -435,7 +508,8 @@ if (errors.length === 0) {
   console.log(
     `design-lint: clean.\n` +
       `  ${TYPE_STEPS.size} type steps, ${SPACE_STEPS.size} spacing steps, ` +
-      `${BRAND_COLOURS.size} colour tokens, all honoured.`,
+      `${BRAND_COLOURS.size} colour tokens, all honoured.\n` +
+      `  No fixed width over 320px outside the lamp's own light.`,
   );
   process.exit(0);
 }

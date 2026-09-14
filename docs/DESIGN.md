@@ -266,6 +266,28 @@ are forbidden: they read as neither sharp nor round.
   the decision page's overview band.
 - Instruments are **full width in one column**. Two dense columns of unrelated
   content read as clutter.
+- **Everything is responsive. No element carries a fixed width.** Owner's rule,
+  and it is checked: `design-lint` fails on any `width` or `min-width` over
+  320px written as bare pixels, in a stylesheet or in a JSX style object.
+  320px is the narrowest viewport the site supports, so a fixed width above it
+  cannot fit the smallest screen — it either overflows or boxes the layout.
+  `max-width`, `%`, `vw`, `clamp()`, `min()` and `calc()` are all fine: they
+  are widths the viewport can win.
+
+  What this is for. The first screen was authored as `width: 900px` because
+  the lamp's fixtures were placed at fixed coordinates. The fixtures were
+  later re-anchored to `calc(50% ± n)` and the width stayed behind, so on a
+  2000px monitor the hero was a 900px box centred in dead ground, and the map
+  — `inset: 0` of that element — could not reach the screen however far its
+  geometry ran. Four goes were had at the map's outlines before the box was
+  measured. The rule does **not** take the illustration exemption below, for
+  exactly this reason: a drawing may use lengths the scales do not name, and
+  that has nothing to do with whether it fits on a screen.
+
+  The lamp's cone and pool are the one exception in the repository and they
+  carry it on the line above themselves, with the reason: a lamp's throw is a
+  physical size, not a share of the window, so a wide monitor gets more dark
+  map rather than more light.
 
 ---
 
@@ -327,7 +349,8 @@ from both. Two definitions of one class name is always a bug in waiting.
 `scripts/design-lint.mjs` reads the scale out of `globals.css` — it cannot
 drift from the system it enforces — and fails the run on a font size off the
 `--t-*` steps, a padding/margin/gap off the 4px grid, a colour literal outside
-`globals.css`, or a `fontSize` set inline in JSX.
+`globals.css`, a `fontSize` set inline in JSX, or a fixed pixel width over
+320px anywhere at all.
 
 This exists because everything above was already written down and largely
 ignored. An audit on 26 August 2026 measured 94 hard-coded font sizes producing
@@ -339,12 +362,16 @@ of that was visible to anyone reading the code file by file.
 Three things are not violations, and the linter knows it: authored
 illustrations (the lamp, the projector, the map) keep their own register;
 `@media print` wants real black on real white; and lengths under 8px are
-hairlines and optical nudges rather than rhythm. Anything else that genuinely
+hairlines and optical nudges rather than rhythm. The illustration exemption
+covers type, spacing and colour only — responsiveness is checked on the
+drawings too, because that exemption once hid the fixed width of the first
+screen from the rule written to find it. Anything else that genuinely
 has no token wants a token in `globals.css` — not an exception. The escape
 hatch, `/* design-lint-ignore <rule>: <reason> */`, needs a reason to parse at
-all, and there are exactly two in the repository: the lamp's clearance above
-the wordmark, and a padding measured against the width of the map's zoom
-control.
+all, and there are exactly four in the repository: the lamp's clearance above
+the wordmark, a padding measured against the width of the map's zoom control,
+and the lamp's cone and pool, whose fixed sizes are a lamp's throw rather than
+a share of the window.
 
 ---
 
