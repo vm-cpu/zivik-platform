@@ -182,14 +182,20 @@
        An ellipse rather than a circle, and centred near the top, because that
        is where the bulb is and where `.bcone` and `.bpool` are already aimed.
 
-       Two layers, intersected. The pool is the lamp; the second is a plain
-       fade at the left and right edges, and it is there because no amount of
-       geometry can guarantee content in every corner. West of Portugal is
-       ocean, the graticule stops somewhere, and the tilt throws the near
-       corners far out into both — so the drawing was ending inside the
-       section with a visible straight edge. Fading the frame means it no
-       longer matters where the content runs out: what the reader sees is the
-       map going dark, not the map stopping.
+       One layer, not two. There used to be a second — a plain fade over the
+       left and right thirteen per cent — added as insurance against the
+       drawing running out of content before it ran out of section. It was
+       insuring against something that is no longer true, and it cost the
+       thing it was protecting: the map ended a seventh of the way in from
+       each side, which is the "cut edges" the owner kept seeing.
+
+       Measured rather than assumed. The frame the hero draws is -300…1500
+       across and -270…730 down; the graticule's own bounds are -960…1950 and
+       -1229…1316, the context outlines -2658…3162 and -1443…1816. Both run
+       past every edge of the frame in every direction, so there is meridian
+       and coastline in all four corners and the crop can only ever land on
+       drawing. Ocean included — a grid over open water is still the map, and
+       the owner's instruction is explicit that it should be drawn.
 
        It has a floor, and the floor is the point. The first version faded to
        nothing before the edges, which lit the map beautifully and made it look
@@ -198,10 +204,8 @@
        read as half-drawn rather than half-lit. It never reaches zero now —
        38% at the furthest corner — so every country is whole everywhere and
        the lamp adds brightness instead of subtracting map. */
-    -webkit-mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%),linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%);
-    mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%),linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%);
-    -webkit-mask-composite:source-in;
-    mask-composite:intersect;
+    -webkit-mask-image:radial-gradient(ellipse 88% 82% at 50% 32%,#000 0%,rgba(0,0,0,.8) 42%,rgba(0,0,0,.58) 72%,rgba(0,0,0,.44) 100%);
+    mask-image:radial-gradient(ellipse 88% 82% at 50% 32%,#000 0%,rgba(0,0,0,.8) 42%,rgba(0,0,0,.58) 72%,rgba(0,0,0,.44) 100%);
   }
   /* The map lies on a table, and the lamp hangs over it.
 
