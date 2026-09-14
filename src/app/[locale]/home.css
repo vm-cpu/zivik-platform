@@ -218,10 +218,10 @@
      the receding edge. Twelve pixels is a gap waiting for a different window
      shape. Moving it up spends the bottom's surplus on the top, where the
      risk actually is. */
-  .lmp .hmap{perspective:1000px;perspective-origin:50% 26%}
+  .lmp .hmap{perspective:760px;perspective-origin:50% 22%}
   .lmp .hmap svg{
     width:100%;height:100%;display:block;
-    transform:rotateX(34deg) scale(1.42) translateY(-5%);
+    transform:rotateX(44deg) scale(1.55) translateY(-10%);
     transform-origin:50% 38%;
   }
   /* Faint on purpose. This is the ground under a wordmark, not a chart: the
@@ -229,6 +229,17 @@
      display type sitting on them. Warm, because everything the lamp touches on
      this site is warm — same --brand-gold-lit the archive's own map lights its
      forum states with, at a fraction of the strength. */
+  /* The graticule — the lines the tilt is read from.
+
+     1px and non-scaling, not the 0.55 it started at. `vector-effect` draws a
+     stroke in real pixels, so 0.55 asks the screen for half a pixel and gets a
+     line nobody can see — the same trap `.emap-ctx` documents next door, where
+     a third of a pixel "is not a thin line, it is a line the screen cannot
+     resolve". At 14% on top of that it was invisible twice over.
+
+     Still quieter than the coastlines it lies under: this is a cue about the
+     plane, not information about the world. */
+  .lmp .hmap-grid{fill:none;stroke:color-mix(in srgb,var(--brand-gold-lamp) 30%,transparent);stroke-width:1;vector-effect:non-scaling-stroke}
   /* The continent under the lit six. Outline only and very faint: this is
      what makes the drawing legible as a map, and it must not read as content
      — the section's subject is the wordmark, and after that the six. */

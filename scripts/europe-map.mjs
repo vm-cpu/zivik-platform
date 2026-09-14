@@ -24,7 +24,7 @@
  * The output is committed, like scripts/og-cards.py's cards: the build stays
  * offline and deterministic.
  */
-import { geoMercator, geoPath } from "d3-geo";
+import { geoGraticule, geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -245,6 +245,27 @@ const isUkraine = (f) => f.properties?.name === "Ukraine";
 const rest = countries.features.filter((f) => !isUkraine(f));
 const nearRing = rest.filter((f) => within(f, NEAR));
 const context = nearRing.map((f) => path(f)).filter(Boolean);
+
+/**
+ * Meridians and parallels, every ten degrees.
+ *
+ * Not decoration, and not cartographic pedantry either: it is what makes a
+ * tilted map legible as a tilted map. The hero lays the drawing back so it
+ * reads as a surface on a table under the lamp, and the rotation was applied
+ * and measured and still invisible — because perspective is read from
+ * parallel lines converging, and a map has none. Country outlines are
+ * irregular, so foreshortening them just yields a slightly squashed map.
+ *
+ * A graticule is exactly the missing cue. Ten degrees is coarse enough to stay
+ * quiet under the wordmark and fine enough that several lines are in frame at
+ * once, which is what convergence needs to be seen at all.
+ *
+ * Generated for the padded window the hero frames, not the projection's own
+ * strip, so the lines run to the edges of the section rather than stopping
+ * where Europe does.
+ */
+const graticule = geoGraticule().step([10, 10]).extent([[-30, 20], [60, 75]]);
+const grid = path(graticule());
 
 /**
  * The states that host a forum, as named shapes rather than anonymous context.
@@ -591,6 +612,7 @@ writeFileSync(
       _generated: "scripts/europe-map.mjs — do not edit by hand",
       viewBox: `0 0 ${W} ${H}`,
       context,
+      grid,
       forums,
       ukraine,
       regions,
@@ -607,6 +629,7 @@ console.log(
   `wrote ${OUT}
   ${context.length} country paths` +
     `\n  ${Object.keys(forums).length} forum states: ${Object.keys(forums).join(", ")}` +
+    `\n  graticule: ${(grid.length / 1024).toFixed(1)} kB of path` +
     ` (all inside the frame),` +
     ` ${Object.keys(markers).length} markers` +
     `\n  Ukraine outline includes Crimea and Sevastopol` +

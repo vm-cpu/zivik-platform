@@ -40,6 +40,8 @@ interface HeroGeometry {
   viewBox: string;
   /** Every country in the frame, as the outlines that make this read as a map. */
   context: string[];
+  /** Meridians and parallels — the lines a tilted plane is read from. */
+  grid: string;
   ukraine: string;
   forums: Record<string, string>;
 }
@@ -82,6 +84,15 @@ export default function HeroMap() {
         preserveAspectRatio="xMidYMid slice"
         focusable="false"
       >
+        {/* Meridians and parallels, under everything.
+
+            They are the reason the tilt is visible. The rotation was applied,
+            measured and still invisible, because perspective is read from
+            parallel lines converging and a map has none — irregular coastlines
+            just come out slightly squashed. The graticule gives the eye the
+            straight lines it needs, and it is the honest thing to draw on a
+            map lying on a table. */}
+        <path className="hmap-grid" d={geo.grid} />
         {/* The continent, so the lit six are countries rather than shapes.
 
             The first version left this out — the note was "only the lit
