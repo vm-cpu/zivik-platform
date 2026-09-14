@@ -375,8 +375,27 @@
   /* the lamp gradient is the header's ground on this page, so the bar itself
      stays transparent — everywhere else it supplies its own dark */
   .page .lmp{border:0}
-  /* lamp geometry is authored against a 900px stage — centre that stage in the wider page */
-  .page .pj{width:900px;margin:0 auto}
+  /* The stage is the screen.
+
+     It was `width:900px; margin:0 auto` — a fixed stage centred in the page —
+     because the lamp's fixtures were authored at fixed pixel coordinates for
+     a 900-wide box. That has not been true since they were re-anchored to
+     `calc(50% ± n)` further down this file: every fixture is centred on the
+     stage now, whatever the stage is, and their vertical positions are
+     measured from its top and do not care about its width at all.
+
+     What the fixed width did care about was the map. `.hmap` is `inset:0` of
+     this element, so the drawing could never be wider than 900px however far
+     the geometry ran — measured at a 2000px window, the hero sat from 550 to
+     1450 with 550 pixels of flat ground down each side. That is the cut edge
+     the owner kept reporting, and no amount of graticule was ever going to
+     reach past it.
+
+     The light does not spread to fill the wider stage, and should not: the
+     cone and the pool stay the size a lamp's throw is, so on a wide screen
+     the map runs to both edges and the lit part of it is still the part under
+     the shade. */
+  .page .pj{width:100%}
 
 /* partner marks — restrained row, no empty placeholder boxes */
 /* Each partner is a mark with its name under it, not a mark alone: a reader
@@ -457,8 +476,6 @@
 
 @media (max-width:880px){
   .page{box-shadow:none;max-width:100%}
-  /* the lamp "stage" is authored at a fixed 900px; let it go fluid on small screens */
-  .page .pj{width:100% !important}
 }
 
 @media (max-width:760px){
