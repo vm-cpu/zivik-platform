@@ -83,7 +83,6 @@ const en: Dictionary = {
     label: "Map",
     heading: "The states whose courts hear these cases",
     description: "Six states besides Ukraine: the seats of the international courts and arbitrations, and the national courts trying these crimes under universal jurisdiction.",
-    scope: "The count beside each court is the registry's.",
     fullMap: "Full map →",
     legendCourt: "Court",
     legendLit: "Written up",

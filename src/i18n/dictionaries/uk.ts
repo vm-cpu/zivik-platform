@@ -149,7 +149,6 @@ const uk = {
        sentence about where the full list lives would cost three lines of
        panel, and both the band's own «Повна мапа →» and the library in the
        navigation already answer it. */
-    scope: "Кількість проваджень біля кожного суду — з реєстру.",
     fullMap: "Повна мапа →",
     legendCourt: "Суд",
     legendLit: "Є огляд",
