@@ -347,25 +347,21 @@ export const MAP_COURTS: MapCourt[] = [
       },
     ],
   },
-  {
-    key: "brussels",
-    institutionIds: ["eu"],
-    // Not a court. Euroclear is where the Russian central-bank assets are
-    // immobilised, and the archive tracks it as an enforcement measure rather
-    // than a proceeding. It is on the map because the money is the point of
-    // several of these cases, and it is labelled for what it is.
-    labelDy: 13,
-    city: { uk: "Брюссель", en: "Brussels" },
-    seats: [
-      {
-        institutionId: "eu",
-        name: {
-          uk: "ЄС і Бельгія — знерухомлення активів (Euroclear), не судовий орган",
-          en: "The EU and Belgium — asset immobilisation (Euroclear), not a court",
-        },
-      },
-    ],
-  },
+  /* Brussels — the EU and Belgium — is deliberately not here either.
+   *
+   * Euroclear is where the Russian central-bank assets are immobilised, and
+   * the archive tracks it. But it is not a court, and this map says one thing:
+   * the states whose courts hear these proceedings, or whose courts have
+   * convicted under universal jurisdiction. A marker that is not a seat left
+   * the drawing half-consistent — a lit dot over an unlit country, because
+   * Belgium is not one of the six and could not be, on that sentence.
+   *
+   * So it goes the way Montreal went, and for the same reason: the map is
+   * about courts, and the proceeding is in the registry, which is where a
+   * reader looking for it will be. Its institution is named in
+   * OFF_MAP_INSTITUTIONS in map-links.ts, because the guard there requires
+   * every registry institution to be seated or explicitly excused.
+   */
   /* Montreal — the ICAO Council — is deliberately not here.
    *
    * It was the one seat outside the projection's window, docked against the
