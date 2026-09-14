@@ -12,7 +12,6 @@ import LampShell from "@/components/nasvitlo/LampShell";
 import Hero from "@/components/nasvitlo/Hero";
 import About from "@/components/nasvitlo/About";
 import Slogan from "@/components/nasvitlo/Slogan";
-import MapSection from "@/components/nasvitlo/MapSection";
 import Quote from "@/components/nasvitlo/Quote";
 import Registry from "@/components/nasvitlo/Registry";
 import Newsletter from "@/components/nasvitlo/Newsletter";
@@ -93,7 +92,13 @@ export default async function HomePage({
           </Link>
         </div>
         <Slogan dict={dict} />
-        <MapSection locale={locale} dict={dict} />
+        {/* No map band here any more.
+
+            The map is the background of the first screen now — the thing the
+            lamp lights — and a second, fuller copy of it a screen later was
+            the same drawing asked twice. It keeps its own page, which is where
+            a reader who wants to work with it goes, and the top bar still
+            points at it. */}
         <Quote dict={dict} locale={locale} />
         <Registry
           locale={locale}

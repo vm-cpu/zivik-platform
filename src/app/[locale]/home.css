@@ -272,7 +272,6 @@
 /* The map band carries no side padding of its own any more, so the negative
    margins that used to punch through it now overshoot the viewport by exactly
    the gutter they were cancelling. */
-.nsv-map{margin:var(--space-5) 0 0;background:var(--brand-night);border-top:1px solid var(--brand-night-rule);border-bottom:1px solid var(--brand-night-rule)}
 .nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:var(--space-4)}
 
 /* Both paragraphs in the About band are body prose of one rank, so they carry
@@ -365,7 +364,7 @@
      silently skipped every band that is not one — the quote band is a
      <figure> and sat 100px left of its neighbours for as long as it had been
      one, with nothing to show that a rule had simply missed it. */
-  .page .lmp > :not(.pj):not(.acc):not(.nsv-mapband){
+  .page .lmp > :not(.pj):not(.acc){
     /* The gutter grows to whatever it takes to keep the content within
        --measure. Capping the band itself (max-width + margin:auto) looked
        identical on the paper sections and broke every band that carries its
@@ -428,95 +427,4 @@
   color:var(--brand-muted-dark);
 }
 
-/* The map band runs edge to edge; only its heading and its link keep the
-   gutter the other bands get from the measure cap. */
-/* Below 900px the heading stays in flow above the drawing: a floating panel
-   on a 390px screen would cover most of the map it is introducing. */
-.page .nsv-mapband > .nsv-sechead{
-  flex-direction:column;align-items:flex-start;gap:var(--space-2);
-  padding:var(--space-5) var(--page-gutter) var(--space-4);
-}
-
-/* At wide widths it becomes the same panel the map's own page uses — dark,
-   ruled, blurred, sitting over the drawing rather than stacked above it.
-
-   1150px, not 900. The panel is a constant 229px tall, and the band is only
-   417px tall at 1000px and 375px at 901px — so below about 1100 it stops
-   floating over open sea and starts covering markers: Hamburg at 1000px, and
-   The Hague, Hamburg, Vilnius, Helsinki and Stockholm at 901px. Measured, with
-   every one of the 15 markers reachable again once the heading returns to the
-   flow.
-
-   1100 was where that was set and it was fifty pixels short. Re-measured
-   across 1100, 1120, 1150, 1180, 1200, 1240 and 1280: the panel still covers
-   Hamburg and Stockholm at 1100 and at 1120, and clears every marker from
-   1150 up. Reserving the strip instead — the mechanism the card and the map
-   page's own masthead use — is not available here: 247px off a 458px band
-   makes the fit height-bound at 0.459 CSS pixels per unit, which puts a site
-   target at 14.7px and turns the whole drawing inert at exactly the width the
-   panel was meant to be free at. */
-@media (min-width:1150px){
-  .page .nsv-mapband{position:relative}
-  .page .nsv-mapband > .nsv-sechead{
-    position:absolute;z-index:4;top:18px;
-    left:var(--page-gutter);
-    width:min(440px, calc(100% - 36px));
-    padding:var(--space-4) var(--space-5) var(--space-4);
-    background:color-mix(in srgb, var(--brand-night) 88%, transparent);
-    border:1px solid var(--brand-night-rule);
-    backdrop-filter:blur(6px);
-    /* Once it floats it is standing on the drawing, and the drawing has to be
-       reachable through the parts of it that carry no ink — the same rule the
-       map page's masthead takes. Without it a press anywhere in the panel's
-       gutters, which is most of its 440x229, could not drag the map. The
-       children take the pointer back, so the heading is still selectable and
-       the link still a link. */
-    pointer-events:none;
-  }
-  .page .nsv-mapband > .nsv-sechead > *,
-  .page .nsv-mapband > .nsv-sechead a{pointer-events:auto}
-  /* On wide screens this heading stops being a band title and becomes a
-     panel floating over the drawing — the same object `.mp-mast h1` is on the
-     map page, and now the same step. It overrides `.nsv-sechead h2` in
-     shared.css; until this pass it was overriding nothing, because all three
-     band headings carried inline sizes that no stylesheet could reach. */
-  .page .nsv-mapband > .nsv-sechead h2{font-size:var(--t-h3)}
-  .page .nsv-mapband > .nsv-sechead p{max-width:none}
-  /* The drawing runs to the band's top edge, under the panel. */
-  .page .nsv-mapband .nsv-map{margin-top:0;border-top:0}
-}
-
-/* The map band carries its own dark ground, so its heading cannot keep the
-   colours the paper bands use: measured on --brand-night the h2 came out at
-   1.06:1, the description at 2.40 and both the label and the full-map link at
-   1.81 — the heading was, in the user's words, simply not visible. These are
-   the same values the footer uses on its dark ground: cream 17.68:1, muted
-   9.06:1, gold 7.22 and 13.9. The wordmark's lamp glow goes on the heading so
-   it belongs to the map rather than sitting on top of it. */
-.page .nsv-mapband > .nsv-sechead h2{
-  color:var(--brand-cream-warm);
-  /* Two literals here, rgb(255,238,196) and rgb(240,221,168), and only the
-     second was a token exactly (--brand-gold-pale). The first sat between
-     --brand-cream-warm and --brand-gold-pale, near-equidistant (ΔRGB 57 and
-     58), so the pair now runs on one token at two strengths rather than
-     inventing a twenty-eighth colour for an 18px blur nobody can name. */
-  text-shadow:0 0 18px color-mix(in srgb,var(--brand-cream-warm) 40%,transparent),0 0 44px color-mix(in srgb,var(--brand-gold-pale) 20%,transparent);
-}
-.page .nsv-mapband > .nsv-sechead p{color:var(--brand-muted-dark)}
-.page .nsv-mapband > .nsv-sechead .lbl span{color:var(--brand-gold-mark)}
-.page .nsv-mapband > .nsv-sechead .lbl::before{background:var(--brand-gold-mark)}
-.page .nsv-mapband a.nsv-map-full{color:var(--brand-gold-pale)}
-.page .nsv-mapband a.nsv-map-full:hover{color:var(--brand-cream-warm)}
-/* The band's one link out, and it measured 96.5 x 11 against the 24px floor
-   every button on the drawing below it clears. The padding is what makes the
-   box; the negative block margin gives the layout back what the padding adds,
-   so nothing moves. */
-.page a.nsv-map-full{
-  align-self:flex-end;flex:none;
-  padding-block:7px;margin-block:-7px;
-  font:700 var(--t-micro)/1 var(--brand-font-body);
-  letter-spacing:.09em;text-transform:uppercase;
-  color:var(--red);white-space:nowrap;
-}
-.page a.nsv-map-full:hover{color:var(--redd)}
 

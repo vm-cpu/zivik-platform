@@ -136,7 +136,6 @@ const uk = {
        is not: it was a sample of what six markers happen to show, on a map
        whose own registry carries thirty-nine proceedings. The sentence states
        the mechanic and names nothing it cannot finish. Owner's correction. */
-    description: "Шість держав, окрім України: у них засідають міжнародні суди й арбітражі або національні суди, що судять за принципом універсальної юрисдикції.",
     /* What the drawing does and does not carry, said above it rather than
        discovered from it. The map used to answer this with a legend key —
        «Ще досліджуємо» — which stood for exactly one event and so implied the
@@ -149,7 +148,6 @@ const uk = {
        sentence about where the full list lives would cost three lines of
        panel, and both the band's own «Повна мапа →» and the library in the
        navigation already answer it. */
-    fullMap: "Повна мапа →",
     legendCourt: "Суд",
     legendLit: "Є огляд",
     legendUnlit: "Ще досліджуємо",
