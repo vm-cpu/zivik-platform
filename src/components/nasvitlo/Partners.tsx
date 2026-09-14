@@ -12,6 +12,22 @@ import { pick, type Partner } from "@/content/types";
  * and this band carries a button to it — the same pattern the About band on
  * the home page already uses. The band used to be the only place partners were
  * shown, which is why the header item pointed at a fragment of /about.
+ *
+ * ── One partner is a different band ────────────────────────────────────────
+ *
+ * The layout above is built for a row of marks under a heading, with a link to
+ * the rest off on the right. With a single partner it came apart: measured at
+ * 1900, the heading ended at 628 and «Усі партнери» began at 1395 — 768 pixels
+ * of nothing between them — and under that sat one 218-pixel logo in a band
+ * sized for a grid. It read as unfinished, which the owner said in as many
+ * words. The button was worse than empty: it led to a page holding the same
+ * one partner, which is the duplication the review had already flagged.
+ *
+ * So below two partners the mark takes the button's place in the head row.
+ * Nothing new is introduced — the same heading, the same mark, the same
+ * space-between — and the gap closes because something true now fills it.
+ * Driven by the count, so the grid and the link come back on their own the day
+ * a second partner is added.
  */
 export default function Partners({
   locale,
@@ -23,6 +39,42 @@ export default function Partners({
   partners: Partner[];
 }) {
   if (partners.length === 0) return null;
+  /* Below two, the band is a line rather than a grid — see the note above. */
+  const compact = partners.length < 2;
+
+  /** One partner's mark: the logo and the name under it, or the name alone. */
+  const mark = (partner: Partner) => {
+    const name = pick(partner.name, locale);
+    const inner = partner.logo ? (
+      <>
+        <Image
+          src={partner.logo}
+          alt=""
+          width={260}
+          height={74}
+          style={{ maxWidth: "100%", height: "clamp(44px, 5vw, 62px)", width: "auto" }}
+        />
+        <span className="pmark-name">{name}</span>
+      </>
+    ) : (
+      <span className="pmark-name">{name}</span>
+    );
+    return partner.url ? (
+      <a
+        key={partner.id}
+        className="pmark"
+        href={partner.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {inner}
+      </a>
+    ) : (
+      <span key={partner.id} className="pmark">
+        {inner}
+      </span>
+    );
+  };
 
   return (
     <div
@@ -61,58 +113,25 @@ export default function Partners({
             {dict.partners.heading}
           </h2>
         </div>
-        <Link className="nsv-cta nsv-cta-quiet" href={`/${locale}/partners`}>
-          {dict.partners.all}
-          <span className="nsv-cta-arrow" aria-hidden="true">
-            →
-          </span>
-        </Link>
+        {/* The mark stands where the link stands, when the link would only
+            lead to itself. */}
+        {compact ? (
+          <div className="nsv-partnerrow nsv-partnerrow-inline">
+            {partners.map(mark)}
+          </div>
+        ) : (
+          <Link className="nsv-cta nsv-cta-quiet" href={`/${locale}/partners`}>
+            {dict.partners.all}
+            <span className="nsv-cta-arrow" aria-hidden="true">
+              →
+            </span>
+          </Link>
+        )}
       </div>
 
-      <div className="nsv-partnerrow">
-        {partners.map((partner) => {
-          const name = pick(partner.name, locale);
-          /* The mark and the name, not one or the other. A logo alone asks
-             the reader to recognise it; «З ким ми працюємо» followed by an
-             unlabelled wordmark answers nothing for anyone who does not
-             already know ifa. The name is the answer and the mark is the
-             evidence, so the alt goes empty — it would otherwise be read
-             twice. */
-          const inner = partner.logo ? (
-            <>
-              <Image
-                src={partner.logo}
-                alt=""
-                width={260}
-                height={74}
-                style={{
-                  maxWidth: "100%",
-                  height: "clamp(44px, 5vw, 62px)",
-                  width: "auto",
-                }}
-              />
-              <span className="pmark-name">{name}</span>
-            </>
-          ) : (
-            <span className="pmark-name">{name}</span>
-          );
-          return partner.url ? (
-            <a
-              key={partner.id}
-              className="pmark"
-              href={partner.url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {inner}
-            </a>
-          ) : (
-            <span key={partner.id} className="pmark">
-              {inner}
-            </span>
-          );
-        })}
-      </div>
+      {!compact && (
+        <div className="nsv-partnerrow">{partners.map(mark)}</div>
+      )}
     </div>
   );
 }
