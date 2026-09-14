@@ -175,7 +175,12 @@ export default async function LocaleLayout({
             different header grounds and a decision-page skip link that pointed
             somewhere different from every other page. */}
         <div className="nsv-root">
-          <Header locale={safe} dict={dict} showGlossary={glossaryEnabled} />
+          <Header
+            locale={safe}
+            dict={dict}
+            showGlossary={glossaryEnabled}
+            supportHref={`mailto:${dict.footer.email}?subject=${encodeURIComponent(dict.footer.support)}`}
+          />
           {children}
           <Footer dict={dict} locale={safe} />
         </div>

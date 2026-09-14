@@ -24,6 +24,7 @@ export default function Header({
   /** Where "skip to content" lands. Each surface names the first thing a
    *  reader actually came for — the decision page skips to its overview. */
   skipTo = "#content",
+  supportHref,
   /** Whether this deployment carries a glossary — `glossaryEnabled` in
    *  `lib/flags.ts`, handed down rather than read here because this is a
    *  client component and the flag is server-only. */
@@ -33,6 +34,10 @@ export default function Header({
   dict: HeaderDict;
   skipTo?: string;
   showGlossary: boolean;
+  /** Where the support ask goes. Built in the layout from `footer.email` so
+   *  this component does not have to carry the footer's whole dictionary
+   *  across the client boundary for one address. */
+  supportHref: string;
 }) {
   const [open, setOpen] = useState(false);
   const burgerRef = useRef<HTMLButtonElement>(null);
@@ -295,6 +300,21 @@ export default function Header({
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          {/* The support ask, in the bar rather than in a band of its own.
+
+              It used to be a heading, a paragraph and a button a screen down
+              the home page. The owner's note is to take the text off, lift the
+              button and build it into the design — so it sits in the chrome
+              that is already here, on every page rather than on one, next to
+              the language switch where a reader's eye goes for the bar's
+              actions.
+
+              Quiet on purpose: an outline in the bar's own gold, not a filled
+              pill. This is an archive of court decisions, and the loudest
+              thing on its first screen should not be an ask for money. */}
+          <a className="nsv-support" href={supportHref}>
+            {dict.nav.support}
+          </a>
           {langSwitch()}
           <button
             type="button"
@@ -327,6 +347,15 @@ export default function Header({
             {item.label}
           </Link>
         ))}
+        {/* And the ask, which the bar hides on narrow widths along with the
+            nav. Without this a phone reader has it only in the footer. */}
+        <a
+          className="nsv-support nsv-support-drawer"
+          href={supportHref}
+          onClick={() => setOpen(false)}
+        >
+          {dict.nav.support}
+        </a>
         {/* The same switch, for the widths where the bar cannot hold it. Below
             420px it is the only one displayed — header.css shows one and hides
             the other, so a screen reader is never offered two. */}

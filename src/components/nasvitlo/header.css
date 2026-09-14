@@ -44,6 +44,59 @@
   min-height: 24px;
 }
 
+/* The support ask, in the bar.
+
+   An outline rather than a filled pill, and the bar's own gold rather than the
+   red the site uses for its loudest buttons. This is an archive of court
+   decisions: the ask belongs where a reader can find it and not where it is
+   the first thing they see. It sits beside the language switch because that is
+   where this bar keeps its actions, as opposed to its destinations.
+
+   24px of target height, like `.nsv-langsw a` above and for the same reason —
+   it is the smallest control in the bar and has to stay hittable. */
+.nsv-support {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--brand-gold-pale) 42%, transparent);
+  border-radius: 999px;
+  font: 600 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-gold-pale);
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.nsv-support:hover,
+.nsv-support:focus-visible {
+  border-color: var(--brand-gold-pale);
+  color: var(--brand-cream-warm);
+}
+/* The bar drops it with the nav on narrow widths; the drawer picks it up. */
+@media (max-width: 880px) {
+  .nsv-support:not(.nsv-support-drawer) {
+    display: none;
+  }
+}
+/* Inside the drawer it has to out-specify `.nsv-mobnav a`, which gives every
+   link there a rule under it and the cream the menu rows take — both of which
+   turned this back into a menu row with a stray hairline across its bottom.
+   It is a control, not a destination, so it keeps the chip. */
+.nsv-mobnav a.nsv-support-drawer {
+  align-self: flex-start;
+  margin-top: var(--space-2);
+  padding: 4px var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--brand-gold-pale) 42%, transparent);
+  font: 600 var(--t-micro) var(--brand-font-body);
+  color: var(--brand-gold-pale);
+}
+@media (min-width: 881px) {
+  .nsv-support-drawer {
+    display: none;
+  }
+}
+
 /* The drawer is the bar continued, so it takes the bar's ground rather than a
    near-black of its own. It was #1a0f0d — a literal, and a fourth dark that no
    token names, on a site whose contract says the header has one ground on
