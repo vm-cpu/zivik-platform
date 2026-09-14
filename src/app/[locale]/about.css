@@ -48,12 +48,33 @@
   color: var(--redd);
 }
 
-/* One column, one left edge. The horizontal padding bottoms out at 28px on
-   purpose — that is exactly the inline padding <Partners/> carries, so the
-   negative margin below lets the partner band bleed wide while its content
-   stays on the same left edge as the prose at every width. */
+/* One column, one left edge, one right edge.
+
+   The frame used to be 900px wide while the prose inside it was capped at
+   68ch — 812px of page holding a 531px paragraph. Every other thing on this
+   page took the full 812: the masthead, every h2, the mission panel, the
+   partner band. So each paragraph ended 280px short of the heading standing
+   directly above it, and the page read as a narrow ribbon dropped into a wide
+   frame rather than as a column. That is the complaint, and the fix is not to
+   nudge the cap — it is to stop having two widths.
+
+   Now there is one. `--col` is the measure, and it is the frame: the wrapper
+   is the measure plus its own gutters, so the paragraph, the heading, the
+   quoted mission and the partner rule all end on the same pixel. Nothing
+   inside carries a width of its own any more.
+
+   The horizontal padding bottoms out at 28px on purpose — that is exactly the
+   inline padding <Partners/> carries, so the negative margin below lets the
+   partner band bleed wide while its content stays on the same left edge as
+   the prose at every width. */
 .abt-wrap {
-  max-width: 900px;
+  /* 672px against the 16px prose face: about 83 characters to the line.
+     Wider than the 66 it was set at, which is the textbook optimum and which
+     the owner found cramped in practice — this page's prose is leaded at 1.65,
+     and generous leading is what buys a long line back. Change this one
+     number to change the page. */
+  --col: 672px;
+  max-width: calc(var(--col) + 2 * clamp(28px, 5vw, 44px));
   margin: 0 auto;
   padding: 0 clamp(28px, 5vw, 44px) var(--space-16);
 }
@@ -103,12 +124,11 @@
   margin: 0 0 var(--space-2);
 }
 
-/* Reading measure: 16px body face, 60-70 characters. */
+/* No measure of its own — the column is the measure. See `.abt-wrap`. */
 .abt-prose {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
-  max-width: 68ch;
 }
 .abt-prose p {
   margin: 0;
@@ -132,7 +152,6 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  max-width: 68ch;
 }
 .abt-plain li {
   padding: var(--space-4) 0;
@@ -174,6 +193,37 @@
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* The roster — the team, named and no more than named.
+
+   Two columns because seven one-line entries stacked make a list long enough
+   to read as the page's subject, which it is not; at 672px the column splits
+   cleanly at about 300px and drops to one below that. No rules between the
+   entries: a hairline per person turned a roster into a table of seven rows.
+   The portraits are on /team, linked underneath. */
+.abt-roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4) var(--space-6);
+}
+.abt-roster li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.abt-roster b {
+  font-weight: 600;
+  font-size: var(--t-sm);
+  color: var(--ink);
+}
+.abt-roster span {
+  font: 400 var(--t-cap) var(--brand-font-mono), ui-monospace, monospace;
+  letter-spacing: 0.02em;
   color: var(--faint);
 }
 

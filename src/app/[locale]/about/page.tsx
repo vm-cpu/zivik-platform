@@ -10,6 +10,7 @@ import {
 } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContentRepository } from "@/content/repository";
+import { team } from "@/content/team";
 import { pick } from "@/content/types";
 import { linkAboutProse } from "@/content/about-prose";
 import {
@@ -34,7 +35,13 @@ import "../about.css";
  */
 const T = {
   back: { uk: "На головну", en: "Home" },
-  title: { uk: "Про нас", en: "About us" },
+  /* «Про проєкт», not «Про нас».
+     Owner's edit: the tab and the page are renamed, because what the page is
+     about is the project — the people are one section of it now rather than
+     the whole subject. `about.title` in the content layer carries the same
+     words for the home page's band, which is why the first section below
+     lost its own <h2>: the H1 had become a repeat of it. */
+  title: { uk: "Про проєкт", en: "About the project" },
   /* No standfirst under the H1. There used to be one, and it said the library
      holds decisions «міжнародних судів і трибуналів, що постали з українських
      ініціатив» — two claims the owner corrected in the same breath: the
@@ -54,8 +61,13 @@ const T = {
   },
 
   metaDesc: {
-    uk: "Хто веде бібліотеку «НаСвітло», як готуємо огляди рішень і в якому стані бібліотека.",
-    en: "Who runs the NaSvitlo library, how a decision summary is prepared, and how far the library has got.",
+    /* It used to promise the editorial method and the state of the library.
+       Both sections have since come off this page — the method for being a
+       procedure the project has not settled, the figures for living on the
+       library page — so the description advertised two things a visitor
+       arriving from a search result would not find. */
+    uk: "Хто веде бібліотеку «НаСвітло», що це за проєкт і хто над ним працює.",
+    en: "Who runs the NaSvitlo library, what the project is, and who works on it.",
   },
 
   notH: { uk: "Чого тут немає", en: "What you will not find here" },
@@ -76,11 +88,24 @@ const T = {
   },
 
   whoH: { uk: "Хто веде проєкт", en: "Who runs the project" },
+  /* Split around the Centre's name so that name can be the link.
+
+     Owner's edit: wherever the Research Centre is named, link out to the
+     faculty's site. This sentence is the site's own, unlike `centre` and
+     `centre2` below, which are the Centre's description of itself quoted from
+     that same site — so the anchor goes here, where a rewrite of the quoted
+     description cannot carry it off with it.
+
+     One link, not two. The faculty and the university are named in the same
+     breath and both would resolve to the same host; two anchors in one
+     sentence would read as two destinations. */
   who: {
-    uk: "Проєкт веде Дослідницький центр імені Луї Б. Зона Факультету права Українського католицького університету, Львів.",
-    en: "The project is run by the Louis B. Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, Lviv.",
+    uk: ["Проєкт веде ", "Дослідницький центр імені Луї Б. Зона", " Факультету права Українського католицького університету, Львів."],
+    en: ["The project is run by the ", "Louis B. Sohn Research Centre", " at the Faculty of Law of the Ukrainian Catholic University, Lviv."],
   },
-  whoLink: { uk: "Хто працює над бібліотекою", en: "Who works on the library" },
+
+  teamH: { uk: "Хто над цим працює", en: "Who works on this" },
+  teamLink: { uk: "Сторінка команди", en: "The team page" },
 
   /* The Centre in its own words. Taken from its page on the faculty site
      (lawmigration.ucu.org.ua/doslidnyczkyj-czentr-luyi-zona), condensed but
@@ -193,6 +218,20 @@ const T = {
      Ukrainian one and `pick` would stop type-checking. */
 };
 
+/**
+ * The Centre's page on the Faculty of Law's own site.
+ *
+ * `lawmigration.ucu.org.ua` is the faculty site — its <title> is «Факультет
+ * права УКУ» — and the Centre has a page on it, so one address satisfies both
+ * halves of the edit: the link is to the faculty's site, and it lands on the
+ * Centre rather than on a home page the reader then has to search.
+ *
+ * Not `law.ucu.edu.ua`: that host answers 403 to anything that is not a
+ * browser, which is not proof it is dead but is enough reason not to make it
+ * the one address on this page that leaves the site.
+ */
+const FACULTY_URL = "https://lawmigration.ucu.org.ua/doslidnyczkyj-czentr-luyi-zona";
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
@@ -276,8 +315,11 @@ export default async function AboutPage({
 
         {/* The library's own description, from the content layer, so the
             home page section and this page cannot drift apart. */}
+        {/* No <h2> over the opening prose. It used to carry `about.title` —
+            «Про проєкт» — which is now the page's own H1, so the two stood one
+            above the other saying the same words. The content layer keeps the
+            heading because the home page's band still needs it. */}
         <section className="abt-sec">
-          <h2>{L(about.title)}</h2>
           <div className="abt-prose">
             <p>{L(T.scope)}</p>
             {L(about.paragraphs).map((text, i) => (
@@ -315,7 +357,13 @@ export default async function AboutPage({
         <section className="abt-sec">
           <h2>{L(T.whoH)}</h2>
           <div className="abt-prose">
-            <p>{L(T.who)}</p>
+            <p>
+              {L(T.who)[0]}
+              <a href={FACULTY_URL} target="_blank" rel="noopener noreferrer">
+                {L(T.who)[1]}
+              </a>
+              {L(T.who)[2]}
+            </p>
             <p>{L(T.centre)}</p>
             <p>{L(T.centre2)}</p>
           </div>
@@ -344,8 +392,30 @@ export default async function AboutPage({
               quotation about the Centre's mission it read as though the
               speaker were being served with something. Owner's decision.
               content/legal.ts still holds it, and so does the footer. */}
+        </section>
+
+        {/* The team, on this page as well as on its own.
+
+            Owner's edit: «Команду продублювати у розділ ПРО НАС». A reader who
+            has just been told which institution runs the archive asks who that
+            is in practice, and the answer was a link away. It is a roster and
+            not a copy of /team: that page gives everyone a portrait and the
+            room a portrait needs, and seven of those in the middle of a column
+            of prose would bury the two sections after it. Names and roles from
+            `content/team.ts`, so the two lists cannot drift apart, and the
+            link under them goes to the faces. */}
+        <section className="abt-sec">
+          <h2>{L(T.teamH)}</h2>
+          <ul className="abt-roster">
+            {team.map((m) => (
+              <li key={m.name.en}>
+                <b>{L(m.name)}</b>
+                <span>{L(m.role)}</span>
+              </li>
+            ))}
+          </ul>
           <p className="abt-more">
-            <Link href={`/${locale}/team`}>{L(T.whoLink)} →</Link>
+            <Link href={`/${locale}/team`}>{L(T.teamLink)} →</Link>
           </p>
         </section>
 
