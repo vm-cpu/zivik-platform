@@ -1,4 +1,6 @@
 import type { Dictionary } from "@/i18n/dictionaries";
+import Link from "next/link";
+import type { Locale } from "@/i18n/config";
 import HeroMap from "./HeroMap";
 
 /**
@@ -10,7 +12,7 @@ import HeroMap from "./HeroMap";
  * entirely: the footer already names the centre and the faculty, so carrying
  * it here too was three more lines on a first screen that was already dense.
  */
-export default function Hero({ dict }: { dict: Dictionary }) {
+export default function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   return (
     <div
       id="content"
@@ -104,9 +106,17 @@ export default function Hero({ dict }: { dict: Dictionary }) {
             justifyContent: "center",
           }}
         >
-          <a href="#registry" className="btn btn-lit">
+          {/* The library's own page, not a band on this one.
+
+              It was `#registry`, an anchor into a section further down the
+              home page — which was a reasonable link while that section was
+              the library's front door, and became a link to nothing the moment
+              the owner asked for the section to come off. A reader who presses
+              the one button under the lamp is asking for the archive, and the
+              archive is a page. */}
+          <Link href={`/${locale}/registry`} className="btn btn-lit">
             {dict.hero.ctaRegistry}
-          </a>
+          </Link>
         </div>
 
         {/* A colophon, not a sentence. Run on one line the two names read as

@@ -52,11 +52,11 @@ export default function GlobalError({
 
         <p style={{ margin: 0, color: "#c9afa8", maxWidth: "54ch" }}>
           Сторінку не вдалося показати. Спробуйте ще раз — якщо не допоможе,
-          напишіть нам на nasvitlo@ucu.edu.ua.
+          напишіть нам на louis.sohn.center@ucu.edu.ua.
           <br />
           <span style={{ color: "#8e736c" }}>
             The page could not be rendered. Try again, and write to us at
-            nasvitlo@ucu.edu.ua if it keeps failing.
+            louis.sohn.center@ucu.edu.ua if it keeps failing.
           </span>
         </p>
 

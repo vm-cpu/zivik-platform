@@ -2,10 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
-import {
-  getCasesByInstitution,
-  getContentRepository,
-} from "@/content/repository";
+import { getContentRepository } from "@/content/repository";
 import { jsonLdHtml, siteUrl } from "@/lib/seo";
 import "./home.css";
 import LampShell from "@/components/nasvitlo/LampShell";
@@ -13,8 +10,6 @@ import Hero from "@/components/nasvitlo/Hero";
 import About from "@/components/nasvitlo/About";
 import Slogan from "@/components/nasvitlo/Slogan";
 import Quote from "@/components/nasvitlo/Quote";
-import Registry from "@/components/nasvitlo/Registry";
-import Newsletter from "@/components/nasvitlo/Newsletter";
 import Partners from "@/components/nasvitlo/Partners";
 
 export default async function HomePage({
@@ -27,17 +22,17 @@ export default async function HomePage({
 
   const dict = await getDictionary(locale);
   const repo = getContentRepository();
-  const [institutions, partners, cases, casesByInstitution, about] =
-    await Promise.all([
-      repo.getInstitutions(),
-      repo.getPartners(),
-      repo.getCases(),
-      getCasesByInstitution(repo),
-      repo.getAbout(),
-    ]);
-  const phase1 = institutions.filter((i) => i.phase1);
+  /* Only what the page still draws. The library band used to need the five
+     phase-1 courts, their cases grouped by institution and the analysed count;
+     it is gone, and so is all of that. `institutions` and `cases` stay because
+     the About summary counts them. */
+  const [institutions, partners, cases, about] = await Promise.all([
+    repo.getInstitutions(),
+    repo.getPartners(),
+    repo.getCases(),
+    repo.getAbout(),
+  ]);
   const totalCases = cases.length;
-  const analysedCases = cases.filter((c) => c.lit).length;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -63,7 +58,7 @@ export default async function HomePage({
           for a screen reader to jump to. */}
       <main>
         <LampShell>
-        <Hero dict={dict} />
+        <Hero dict={dict} locale={locale} />
         <About
           locale={locale}
           dict={dict}
@@ -100,15 +95,23 @@ export default async function HomePage({
             a reader who wants to work with it goes, and the top bar still
             points at it. */}
         <Quote dict={dict} locale={locale} />
-        <Registry
-          locale={locale}
-          dict={dict}
-          institutions={phase1}
-          casesByInstitution={casesByInstitution}
-          totalCases={totalCases}
-          analysedCases={analysedCases}
-        />
-        <Newsletter dict={dict} locale={locale} />
+        {/* The library is not a band here any more.
+
+            It was the home page's front door — the five courts, their
+            caseloads, a row of cases apiece — and the owner's note is to take
+            it off. The button under the lamp now goes to /registry, which is
+            the page that can sort, filter and search the same thirty-nine
+            proceedings. A summary of the archive on the way to the archive was
+            a stop the reader did not need. */}
+        {/* The support band is gone from here.
+
+            It was a heading, a paragraph and a «Підтримати бібліотеку» button
+            in a band of their own. The owner's note is to take the text off
+            and move the ask — into the footer's contacts, where it now sits
+            beside the address, and to somewhere near the top of the page,
+            which is still open: the lamp carries exactly one button now, and
+            putting a second one back there would undo the change that put it
+            there. */}
         <Partners locale={locale} dict={dict} partners={partners} />
         </LampShell>
       </main>

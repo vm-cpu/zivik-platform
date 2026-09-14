@@ -73,7 +73,7 @@ const en: Dictionary = {
     toMap: "The map",
   },
   quote: {
-    text: "The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine.",
+    text: "The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine",
     source: "International Court of Justice · Provisional Measures · 16 March 2022",
     read: "Read the decision",
   },
@@ -182,13 +182,11 @@ const en: Dictionary = {
     linkRegistry: "Library of decisions",
     linkMap: "Events map",
     linkGlossary: "Glossary",
-    linkCourts: "Courts and institutions",
-    linkDocs: "Documents",
     linkAbout: "About us",
     linkTeam: "Team",
     linkPartners: "Partners",
-    linkBlog: "Blog",
-    email: "nasvitlo@ucu.edu.ua",
+    email: "louis.sohn.center@ucu.edu.ua",
+    support: "Support the library",
     /* "Svientsitskoho" is the transliteration content/legal.ts already
        uses; the two must not spell the same street two ways. */
     address: "17 Svientsitskoho St., Lviv, 79011",

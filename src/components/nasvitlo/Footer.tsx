@@ -157,6 +157,13 @@ export default function Footer({
           </div>
         </div>
 
+        {/* The two columns say what the top bar says, and nothing else.
+
+            «Суди та інстанції» and «Документи» carried no href — they were
+            labels for pages that do not exist, and a reader who pressed them
+            got nothing at all. «Блог» was the third of them, and the owner has
+            since decided there will be no blog. A footer is a map of the site;
+            three entries that lead nowhere make it a map of a different one. */}
         {column(f.colArchive, [
           { label: f.linkRegistry, href: `/${locale}/registry` },
           { label: f.linkMap, href: `/${locale}/map` },
@@ -166,14 +173,11 @@ export default function Footer({
           ...(glossaryEnabled
             ? [{ label: f.linkGlossary, href: `/${locale}/glossary` }]
             : []),
-          { label: f.linkCourts },
-          { label: f.linkDocs },
         ])}
         {column(f.colCenter, [
           { label: f.linkAbout, href: `/${locale}/about` },
           { label: f.linkTeam, href: `/${locale}/team` },
           { label: f.linkPartners, href: `/${locale}/partners` },
-          { label: f.linkBlog },
         ])}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
@@ -189,6 +193,18 @@ export default function Footer({
               links. */}
           <a href={`mailto:${f.email}`} style={footMail}>
             {f.email}
+          </a>
+          {/* The support ask, in the contacts column where the owner asked for
+              it. It used to be a band of its own on the home page — a heading,
+              a paragraph and this button — and the band came off; the ask did
+              not. Styled as the mail link above rather than as a pill: this is
+              a column of links, and a button in it would be the loudest thing
+              in the footer. */}
+          <a
+            href={`mailto:${f.email}?subject=${encodeURIComponent(f.support)}`}
+            style={footMail}
+          >
+            {f.support}
           </a>
           <span style={footLink}>{f.address}</span>
           {/* Social boxes return when there are real accounts to point at.
