@@ -227,16 +227,25 @@
   flex-direction: column;
   gap: var(--space-1);
 }
-/* The same name and the same role treatment /team gives them — display face
-   for the person, 11px uppercase for the title. They were the body sans at 600
-   over a mono role, which is the pairing this site uses for machinery: a
-   docket number, a date, a court's own reference. On seven people it read as a
-   table of records. A duplicate of the team should look like the team. */
+/* The text face, not the display one.
+
+   Three goes at this. It started as the body sans over a mono role — and mono
+   on this site means machinery, a docket or a date, so seven people set that
+   way read as a table of records. Then it took /team's own pairing, display
+   serif for the name, which was worse in this position: /team sets those names
+   under portraits in a gallery, where an antiqua name is a caption, but here
+   they sit inside a column of sans-serif prose and seven serif names in a row
+   read as seven small headings. The owner asked what had happened to the
+   fonts, which is the right question.
+
+   So: the page's own text face for the person, the site's 11px uppercase for
+   the title. The antiqua stays where it belongs on this page — the masthead
+   and the section headings — and the roster reads as part of the text it sits
+   in. */
 .abt-roster b {
-  font-family: var(--brand-font-display), Georgia, serif;
-  font-weight: 400;
-  font-size: var(--t-lead);
-  line-height: 1.25;
+  font-weight: 600;
+  font-size: var(--t-body);
+  line-height: 1.35;
   color: var(--ink);
 }
 .abt-roster span {
@@ -383,80 +392,20 @@
   border-left: 2px solid var(--gold);
 }
 
-/* ---- the quotation in the right margin -----------------------------------
-   The one thing on this page allowed out of the column, and the page's own
-   shape is the argument for it: a 672px column centred in a 1600px window
-   leaves 420px of paper down each side doing nothing, and the section that
-   introduces the Centre has two set-apart blocks stacked under its prose —
-   the mission panel and its head's words — which made that stretch a column
-   of boxes. Beside each other they are what they actually are: what the
-   Centre says it does, and the person saying it.
+/* The quotation stays in the column.
 
-   It is the quotation that moves and not the mission, because a quotation is
-   a second voice. Everything in the column is the site talking; Olha
-   Denkovych is not, and standing outside the measure is the oldest way a page
-   has of saying so.
+   It was moved into the right margin above 1400px — 280px of narrow serif
+   hanging in the white space beside the prose — and it was wrong. The owner's
+   word for it was "жахливо", and the reason is visible the moment it renders:
+   a 370-character quotation set to 34 characters a line is a ribbon, not a
+   block, and out there on its own it had nothing to align to, so it read as
+   something that had fallen off the page rather than as a voice set apart.
+   The idea was the owner's own and worth trying; the execution answered it
+   badly. In the column, at full measure, the gold rule is enough to say a
+   different person is speaking.
 
-   Only where the paper is actually there. The aside plus its gap is 316px, so
-   the window has to be wide enough to hold the column, the aside and a margin
-   that does not touch the edge: 672 + 316 + gutters clears at about 1390.
-   Below that the quotation is back in the column, full width, with its gold
-   rule — no layout that depends on a breakpoint may leave anything stranded
-   on the other side of it. */
-@media (min-width: 1400px) {
-  .aboutpage .abt-who {
-    --aside: 280px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) var(--aside);
-    column-gap: var(--space-10);
-    /* The section, and only this section, reaches into the right margin. The
-       column keeps its width — `minmax(0, 1fr)` resolves to the same 672 —
-       because the negative margin pays for the second track rather than
-       taking it out of the first. */
-    margin-right: calc(-1 * (var(--aside) + var(--space-10)));
-  }
-  .aboutpage .abt-who > * {
-    grid-column: 1;
-  }
-  .aboutpage .abt-who .abt-voice {
-    grid-column: 2;
-    /* Rows two and three: alongside the prose and the mission panel, starting
-       at the first line of the prose rather than floating at the section's
-       top, where it would sit against the heading. */
-    grid-row: 2 / span 2;
-    align-self: start;
-    margin: 0;
-    padding: var(--space-5) 0 0;
-    /* The gold rule moves from the left edge to the top. On the left it was
-       the mark that said "someone else is speaking" inside a column of the
-       site's own prose; out here the position says that already, and a
-       vertical rule beside a narrow block of text would read as a second
-       column edge fighting the first. */
-    border-left: 0;
-    border-top: 2px solid var(--gold);
-  }
-  .aboutpage .abt-who .abt-voice blockquote {
-    /* Down a step from --t-lead. 20px display serif in 280px sets at about 22
-       characters to the line — a column so narrow the eye returns more often
-       than it reads. 16px gives 34, which is short but is a measure. */
-    font-size: var(--t-body);
-    line-height: 1.6;
-  }
-  .aboutpage .abt-who .abt-voice figcaption {
-    /* Stacked, not side by side: the name and the role together are wider
-       than 280px, so on one line the role wrapped under the name anyway and
-       took the baseline alignment with it. */
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-}
-.aboutpage .abt-voice blockquote {
-  margin: 0;
-  font-family: var(--brand-font-display), Georgia, serif;
-  font-size: var(--t-lead);
-  line-height: 1.5;
-  color: var(--ink);
-}
+   Do not try this again without a shorter quotation to try it with. */
+
 /* The attribution, in the mono face.
    It used to be the body sans at 600 — the same face and nearly the same size
    as the running prose three lines above it, so the line that says who is

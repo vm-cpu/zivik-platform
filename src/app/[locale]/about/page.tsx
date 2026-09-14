@@ -354,11 +354,7 @@ export default async function AboutPage({
             Removed rather than duplicated. The numbers live on /registry,
             which is where «Бібліотека рішень» goes from every surface. */}
 
-        {/* `abt-who` as well as `abt-sec`: this is the one section that lays
-            out in two columns on a wide screen, with Olha Denkovych's words in
-            the right margin beside the mission. Everything else on the page is
-            the single column. */}
-        <section className="abt-sec abt-who">
+        <section className="abt-sec">
           <h2>{L(T.whoH)}</h2>
           <div className="abt-prose">
             <p>
