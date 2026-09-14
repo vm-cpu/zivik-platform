@@ -170,42 +170,22 @@
      the [data-on="no"] rule below darkens it with them. */
   .lmp .hmap{
     position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;
-    /* The lamp lights the map, so the map is only where the light is.
+    /* No mask. The map is simply there, to every edge.
 
-       Without this the drawing was lit evenly from edge to edge, which put a
-       continent of equal weight behind the wordmark and had nothing to do with
-       the lamp hanging over it — the owner's word for the result was "bad",
-       and the diagnosis is that the two objects were not related. Masked to
-       the pool, the map is what the light finds: brightest under the shade,
-       gone by the edges of the section.
+       It was masked to the lamp's pool, and the owner's verdict on that was
+       the accurate one: «ти просто стираєш — неправдоподібно, не так як би
+       розливалося світло». A mask subtracts. It removed the drawing wherever
+       the light was not, so outlines were cut mid-stroke and the far corners
+       held nothing at all — and a lamp does not delete the table it fails to
+       reach. What is dark in a room is still there.
 
-       An ellipse rather than a circle, and centred near the top, because that
-       is where the bulb is and where `.bcone` and `.bpool` are already aimed.
-
-       One layer, not two. There used to be a second — a plain fade over the
-       left and right thirteen per cent — added as insurance against the
-       drawing running out of content before it ran out of section. It was
-       insuring against something that is no longer true, and it cost the
-       thing it was protecting: the map ended a seventh of the way in from
-       each side, which is the "cut edges" the owner kept seeing.
-
-       Measured rather than assumed. The frame the hero draws is -300…1500
-       across and -270…730 down; the graticule's own bounds are -960…1950 and
-       -1229…1316, the context outlines -2658…3162 and -1443…1816. Both run
-       past every edge of the frame in every direction, so there is meridian
-       and coastline in all four corners and the crop can only ever land on
-       drawing. Ocean included — a grid over open water is still the map, and
-       the owner's instruction is explicit that it should be drawn.
-
-       It has a floor, and the floor is the point. The first version faded to
-       nothing before the edges, which lit the map beautifully and made it look
-       unfinished: a radial mask over line art cuts outlines mid-stroke, so
-       Spain arrived at the top and dissolved at the bottom, and the drawing
-       read as half-drawn rather than half-lit. It never reaches zero now —
-       38% at the furthest corner — so every country is whole everywhere and
-       the lamp adds brightness instead of subtracting map. */
-    -webkit-mask-image:radial-gradient(ellipse 88% 82% at 50% 32%,#000 0%,rgba(0,0,0,.8) 42%,rgba(0,0,0,.58) 72%,rgba(0,0,0,.44) 100%);
-    mask-image:radial-gradient(ellipse 88% 82% at 50% 32%,#000 0%,rgba(0,0,0,.8) 42%,rgba(0,0,0,.58) 72%,rgba(0,0,0,.44) 100%);
+       So the map is drawn once, whole, at the level a room gives a thing the
+       lamp is not pointed at, and the lighting is done by the lamp: `.bcone`
+       and `.bpool` are painted over it in screen blending below, which adds
+       their light to whatever is under them instead of laying a haze on top.
+       Under the shade the coastlines brighten because light is falling on
+       them; at the edges they stay dim because it is not reaching that far.
+       Nothing anywhere is removed. */
   }
   /* The map lies on a table, and the lamp hangs over it.
 
@@ -238,6 +218,12 @@
     width:100%;height:100%;display:block;
     transform:rotateX(44deg) scale(1.55) translateY(-10%);
     transform-origin:50% 38%;
+    /* The unlit level. The strokes were tuned against a mask that reached
+       full strength under the bulb, so at full opacity everywhere the map
+       would now read as evenly lit — the fault the mask was introduced to fix
+       in the first place. This is the map in the dark; the lamp supplies the
+       difference. */
+    opacity:.62;
   }
   /* Faint on purpose. This is the ground under a wordmark, not a chart: the
      six shapes have to be readable as countries and must not compete with the
@@ -283,8 +269,24 @@
     stroke:color-mix(in srgb,var(--brand-gold-lamp) 75%,transparent);
     stroke-width:1.7;vector-effect:non-scaling-stroke;
   }
-  .lmp .bcone{position:absolute;left:190px;top:134px;width:520px;height:300px;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(255,236,192,.3),rgba(255,228,170,.09) 48%,rgba(255,228,170,0) 88%);-webkit-mask-image:conic-gradient(from 152deg at 50% -22px,transparent 0deg,rgba(0,0,0,.3) 6deg,#000 18deg,#000 38deg,rgba(0,0,0,.3) 50deg,transparent 56deg);mask-image:conic-gradient(from 152deg at 50% -22px,transparent 0deg,rgba(0,0,0,.3) 6deg,#000 18deg,#000 38deg,rgba(0,0,0,.3) 50deg,transparent 56deg);filter:blur(7px)}
-  .lmp .bpool{position:absolute;left:220px;top:190px;width:460px;height:190px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,240,204,.2) 0%,rgba(255,232,180,.08) 44%,rgba(255,228,170,0) 74%);pointer-events:none;z-index:1;filter:blur(9px)}
+  /* The light, added rather than laid on.
+
+     Both of these are painted after the map and over it, and until now they
+     were composited normally — a warm translucent haze that sat on the map
+     and lightened its dark ground about as much as it lightened its lines.
+     `screen` is the compositing the physics asks for: light adds to what is
+     already there, so the gold of a coastline under the shade gains and the
+     dark between the lines gains almost nothing, which is what a lit map
+     looks like as against a fogged one.
+
+     They also keep their shapes, and the shapes are the other half of the
+     owner's note. `.bcone` is masked to a conic wedge opening downward from
+     a point just above the shade, so the light spreads as it falls instead of
+     radiating evenly in a circle; `.bpool` is the ellipse it makes where it
+     lands. Together they are a lamp's throw — narrow at the source, wide on
+     the table — and not a vignette centred on nothing. */
+  .lmp .bcone{position:absolute;left:190px;top:134px;width:520px;height:300px;pointer-events:none;z-index:1;background:linear-gradient(180deg,rgba(255,236,192,.4),rgba(255,228,170,.15) 48%,rgba(255,228,170,0) 88%);-webkit-mask-image:conic-gradient(from 152deg at 50% -22px,transparent 0deg,rgba(0,0,0,.3) 6deg,#000 18deg,#000 38deg,rgba(0,0,0,.3) 50deg,transparent 56deg);mask-image:conic-gradient(from 152deg at 50% -22px,transparent 0deg,rgba(0,0,0,.3) 6deg,#000 18deg,#000 38deg,rgba(0,0,0,.3) 50deg,transparent 56deg);filter:blur(7px);mix-blend-mode:screen}
+  .lmp .bpool{position:absolute;left:220px;top:190px;width:460px;height:190px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(255,240,204,.28) 0%,rgba(255,232,180,.12) 44%,rgba(255,228,170,0) 74%);pointer-events:none;z-index:1;filter:blur(9px);mix-blend-mode:screen}
   .lmp .dchain{position:absolute;left:508px;top:120px;width:22px;height:96px;padding:0;border:0;background:none;cursor:pointer;z-index:6}
   .lmp .dchain i{position:absolute;left:10px;top:0;width:1.5px;height:54px;background:linear-gradient(180deg,rgba(198,181,147,.5),#C6B593);transition:height .2s cubic-bezier(.33,1,.68,1)}
   .lmp .dchain i::after{content:"";position:absolute;left:-4.5px;bottom:-16px;width:10px;height:17px;border-radius:5px 5px 6px 6px/6px 6px 9px 9px;background:linear-gradient(160deg,#F0E6D2,#C6B593 46%,#8E7C5E);box-shadow:0 2px 5px rgba(0,0,0,.45)}
