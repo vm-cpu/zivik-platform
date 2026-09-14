@@ -36,26 +36,25 @@ interface HeroGeometry {
 const geo = geometry as HeroGeometry;
 
 /**
- * The drawing's frame, with room above and below it.
+ * The drawing's frame, with room on every side of it.
  *
- * The generator's frame is 1200x460 — a 2.6:1 strip, cut to hold Europe and
- * nothing else. The hero is not that shape: it is 1440x700 on a desktop and
- * near square on a narrow window, and a background has to fill whichever it
- * is. Covering a 1.05 box with a 2.6 frame leaves 40 per cent of the map's
- * width — measured on the rendered page, and it is why the first version read
- * as shapes rather than countries.
+ * The generator's frame is 1200x460 — a strip cut to hold Europe and nothing
+ * else. A background cannot use it as-is: the hero is 2.2:1 on a desktop and
+ * near square on a narrow window, and fitting either one means the continent
+ * is drawn at whatever size is left over. Covering a square section with the
+ * bare strip left 40% of the map's width; padding it only vertically fixed
+ * that and left the desktop case drawing Europe edge to edge, at a scale where
+ * the countries read as slabs rather than as a map.
  *
- * Padding the frame vertically is what fixes it, because then the crop eats
- * empty sea instead of the continent. At 800 tall the same square section
- * keeps 70 per cent of the width, and a desktop section becomes width-bound
- * and shows the whole of Europe with the padding cropped away instead.
- *
- * Derived from the committed viewBox rather than written out, so a
- * regenerated frame carries its padding with it.
+ * So the frame is padded on both axes — half again as wide, twice as tall —
+ * and Europe sits inside it at about two thirds of the width, with room around
+ * it for the crop to eat. Derived from the committed viewBox rather than
+ * written out, so a regenerated frame brings its padding with it.
  */
 const [vx, vy, vw, vh] = geo.viewBox.split(" ").map(Number);
-const PAD = (800 - vh) / 2;
-const framed = `${vx} ${vy - PAD} ${vw} ${vh + PAD * 2}`;
+const PAD_X = vw * 0.25;
+const PAD_Y = (vw * 1.5) / 1.8 / 2 - vh / 2;
+const framed = `${vx - PAD_X} ${vy - PAD_Y} ${vw + PAD_X * 2} ${vh + PAD_Y * 2}`;
 
 export default function HeroMap() {
   return (

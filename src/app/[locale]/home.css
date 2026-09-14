@@ -168,7 +168,23 @@
      falls ON the map rather than beside it. Opacity is the same `--lit` the
      wordmark and the cone use, so scrolling dims all of them together, and
      the [data-on="no"] rule below darkens it with them. */
-  .lmp .hmap{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+  .lmp .hmap{
+    position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;
+    /* The lamp lights the map, so the map is only where the light is.
+
+       Without this the drawing was lit evenly from edge to edge, which put a
+       continent of equal weight behind the wordmark and had nothing to do with
+       the lamp hanging over it — the owner's word for the result was "bad",
+       and the diagnosis is that the two objects were not related. Masked to
+       the pool, the map is what the light finds: brightest under the shade,
+       gone by the edges of the section.
+
+       An ellipse rather than a circle, and centred at 32% rather than 50%,
+       because that is where the bulb is and where `.bcone` and `.bpool` are
+       already aimed. */
+    -webkit-mask-image:radial-gradient(ellipse 68% 62% at 50% 30%,#000 0%,rgba(0,0,0,.72) 38%,rgba(0,0,0,.22) 66%,transparent 85%);
+    mask-image:radial-gradient(ellipse 68% 62% at 50% 30%,#000 0%,rgba(0,0,0,.72) 38%,rgba(0,0,0,.22) 66%,transparent 85%);
+  }
   .lmp .hmap svg{width:100%;height:100%;display:block}
   /* Faint on purpose. This is the ground under a wordmark, not a chart: the
      six shapes have to be readable as countries and must not compete with the
@@ -178,8 +194,14 @@
   /* The continent under the lit six. Outline only and very faint: this is
      what makes the drawing legible as a map, and it must not read as content
      — the section's subject is the wordmark, and after that the six. */
-  .lmp .hmap-ctx{fill:none;stroke:color-mix(in srgb,var(--brand-gold-lamp) 11%,transparent);stroke-width:.7;vector-effect:non-scaling-stroke}
-  .lmp .hmap-state{fill:color-mix(in srgb,var(--brand-gold-lit) 13%,transparent);stroke:color-mix(in srgb,var(--brand-gold-lit) 26%,transparent);stroke-width:.8;vector-effect:non-scaling-stroke}
+  .lmp .hmap-ctx{fill:none;stroke:color-mix(in srgb,var(--brand-gold-lamp) 22%,transparent);stroke-width:.6;vector-effect:non-scaling-stroke}
+  /* 38%, measured. At 20% a lit country was 1.54:1 against the ground the lamp
+     throws, which is not "lit" — it is a smudge, and that is what it looked
+     like. 2.44:1 reads as light falling on land while staying well under the
+     wordmark, which is the section's subject and must keep the eye. The mask
+     takes it down again toward the edges, so this is the value at the middle
+     of the pool and nowhere else. */
+  .lmp .hmap-state{fill:color-mix(in srgb,var(--brand-gold-lit) 38%,transparent);stroke:color-mix(in srgb,var(--brand-gold-lit) 62%,transparent);stroke-width:.8;vector-effect:non-scaling-stroke}
   /* Ukraine is the subject, so it is the outline rather than the fill — the
      same division of labour the archive's map makes. */
   .lmp .hmap-ua{fill:none;stroke:color-mix(in srgb,var(--brand-gold-lamp) 34%,transparent);stroke-width:1.2;vector-effect:non-scaling-stroke}
