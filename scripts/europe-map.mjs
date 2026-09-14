@@ -200,6 +200,20 @@ const projection = geoMercator().fitExtent(
 const path = geoPath(projection).digits(1);
 
 /**
+ * The same projection at whole units, for the grey ring and the graticule.
+ *
+ * Those two are background: 138 outlines and a lattice, drawn at a third of
+ * the frame's scale behind a wordmark, and nobody will ever see a tenth of a
+ * unit in them. Ukraine, its oblasts and the lit states keep `path` and its
+ * decimal, because they are the drawing's subject and they are also what the
+ * archive's own map renders at full size.
+ *
+ * Measured on the widened ring: 128 kB of JSON at one decimal, 90 at zero,
+ * which is 23 kB off the home page gzipped for a difference no screen shows.
+ */
+const coarse = geoPath(projection).digits(0);
+
+/**
  * The window the context layer is generated for.
  *
  * Wider and much taller than the drawing, and the height is the point. The
@@ -216,8 +230,10 @@ const path = geoPath(projection).digits(1);
  * Italy should have been and there was a hole instead. The owner spotted it as
  * "I don't see Portugal", which is exactly what it was.
  *
- * So the ring is generated for the padded frame: -300…1500 across, -270…730
- * down, plus a skirt. Nothing else changes — `ukraine`, `regions`, `markers`,
+ * So the ring is generated well past the padded frame: -1150…2350 across,
+ * -620…1180 down. Wider than the hero's own box on purpose — the tilt widens
+ * the near edge, and the owner's note is that the map should run out of
+ * section before it runs out of land. Nothing else changes — `ukraine`, `regions`, `markers`,
  * `areas`, `forums` and the projection itself are untouched, and the archive's
  * own map still declares the 1200 x 460 viewBox, so the extra outlines sit
  * outside what it draws and cost it nothing but bytes.
@@ -228,7 +244,21 @@ const path = geoPath(projection).digits(1);
  * for that framing. The ICAO Council is off the map now, so the framing is
  * gone and so is the only thing that ever requested the file.
  */
-const NEAR = { x0: -320, y0: -290, x1: W + 320, y1: 750 };
+const NEAR = { x0: -1150, y0: -620, x1: W + 1150, y1: 1180 };
+
+/**
+ * The window a *lit* state is clipped to, which is not the window the grey
+ * ring is generated for.
+ *
+ * They were the same thing until the ring was widened for the hero's tilt, and
+ * that quietly undid an earlier fix: the atlas files overseas territory under
+ * the mainland's feature, so widening the test let French Guiana back into
+ * France and lit a piece of South America in the colour that means "a court
+ * here hears these cases". The grey ring is allowed to run as wide as it
+ * likes — it is land, and drawing land is correct. The lighting is a claim,
+ * and it stays in Europe.
+ */
+const LIT = { x0: -320, y0: -290, x1: W + 320, y1: 750 };
 
 /** Does this shape land anywhere inside the given window at all? */
 const within = (f, b) => {
@@ -244,7 +274,7 @@ const isUkraine = (f) => f.properties?.name === "Ukraine";
 // the committed output grows at the end rather than being reshuffled.
 const rest = countries.features.filter((f) => !isUkraine(f));
 const nearRing = rest.filter((f) => within(f, NEAR));
-const context = nearRing.map((f) => path(f)).filter(Boolean);
+const context = nearRing.map((f) => coarse(f)).filter(Boolean);
 
 /**
  * Meridians and parallels, every ten degrees.
@@ -260,12 +290,15 @@ const context = nearRing.map((f) => path(f)).filter(Boolean);
  * quiet under the wordmark and fine enough that several lines are in frame at
  * once, which is what convergence needs to be seen at all.
  *
- * Generated for the padded window the hero frames, not the projection's own
- * strip, so the lines run to the edges of the section rather than stopping
- * where Europe does.
+ * The extent is far wider than Europe, and that is the point. The hero lays
+ * the drawing back in perspective, which widens the near edge well past the
+ * frame the geometry was cut for — so a grid that stopped at Europe's own
+ * bounds showed a hard diagonal edge down each side of the section, with
+ * nothing beyond it. Lines are cheap; the crop should run out of section
+ * before it runs out of map.
  */
-const graticule = geoGraticule().step([10, 10]).extent([[-30, 20], [60, 75]]);
-const grid = path(graticule());
+const graticule = geoGraticule().step([10, 10]).extent([[-75, -5], [105, 82]]);
+const grid = coarse(graticule());
 
 /**
  * The states that host a forum, as named shapes rather than anonymous context.
@@ -320,7 +353,7 @@ const FORUM_STATES = [
  */
 const inFrame = (coords, type) => {
   const probe = { type: "Feature", properties: {}, geometry: { type, coordinates: coords } };
-  return within(probe, NEAR);
+  return within(probe, LIT);
 };
 
 const forums = {};

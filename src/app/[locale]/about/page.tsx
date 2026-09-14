@@ -291,14 +291,20 @@ export default async function AboutPage({
           </div>
         </section>
 
-        <section className="abt-sec">
-          <h2>{L(T.notH)}</h2>
-          <ul className="abt-plain">
-            {L(T.not).map((text, i) => (
-              <li key={i}>{text}</li>
-            ))}
-          </ul>
-        </section>
+        {/* ── «Чого тут немає» — removed, owner's decision ──────────────────
+            Four statements about what the archive does not do, and three of
+            them drew a separate objection in the review: that the summary
+            never stands in for the decision (it does, where no text has been
+            published and the record is a court's own account of it); that
+            nothing is added beyond the ruling; and that every figure is
+            sourced to a paragraph, when what the pages link is the decision
+            and not its paragraphs. A section that states four disciplines and
+            gets three of them wrong is worse than no section.
+
+            Removed rather than corrected because the corrections belong in
+            the methodology the archive has yet to write in its own words —
+            see the note on «Як рішення потрапляє в бібліотеку» above, which
+            came off for the same reason. */}
 
         <section className="abt-sec">
           <h2>{L(T.stateH)}</h2>
