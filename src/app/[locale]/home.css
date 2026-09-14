@@ -179,11 +179,18 @@
        the pool, the map is what the light finds: brightest under the shade,
        gone by the edges of the section.
 
-       An ellipse rather than a circle, and centred at 32% rather than 50%,
-       because that is where the bulb is and where `.bcone` and `.bpool` are
-       already aimed. */
-    -webkit-mask-image:radial-gradient(ellipse 68% 62% at 50% 30%,#000 0%,rgba(0,0,0,.72) 38%,rgba(0,0,0,.22) 66%,transparent 85%);
-    mask-image:radial-gradient(ellipse 68% 62% at 50% 30%,#000 0%,rgba(0,0,0,.72) 38%,rgba(0,0,0,.22) 66%,transparent 85%);
+       An ellipse rather than a circle, and centred near the top, because that
+       is where the bulb is and where `.bcone` and `.bpool` are already aimed.
+
+       It has a floor, and the floor is the point. The first version faded to
+       nothing before the edges, which lit the map beautifully and made it look
+       unfinished: a radial mask over line art cuts outlines mid-stroke, so
+       Spain arrived at the top and dissolved at the bottom, and the drawing
+       read as half-drawn rather than half-lit. It never reaches zero now —
+       38% at the furthest corner — so every country is whole everywhere and
+       the lamp adds brightness instead of subtracting map. */
+    -webkit-mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%);
+    mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%);
   }
   .lmp .hmap svg{width:100%;height:100%;display:block}
   /* Faint on purpose. This is the ground under a wordmark, not a chart: the
