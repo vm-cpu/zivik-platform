@@ -23,11 +23,12 @@ import { pick, type Partner } from "@/content/types";
  * words. The button was worse than empty: it led to a page holding the same
  * one partner, which is the duplication the review had already flagged.
  *
- * So below two partners the mark takes the button's place in the head row.
- * Nothing new is introduced — the same heading, the same mark, the same
- * space-between — and the gap closes because something true now fills it.
- * Driven by the count, so the grid and the link come back on their own the day
- * a second partner is added.
+ * Moving the mark up into the head row was tried and made it worse: it put a
+ * logo opposite a heading, competing with it, instead of belonging to the
+ * section under it. The mark stays where it was. What does go, below two
+ * partners, is the link — it led to a page holding that same partner, which is
+ * the duplication the review flagged. Driven by the count, so it returns on
+ * its own the day a second partner is added.
  */
 export default function Partners({
   locale,
@@ -113,13 +114,10 @@ export default function Partners({
             {dict.partners.heading}
           </h2>
         </div>
-        {/* The mark stands where the link stands, when the link would only
-            lead to itself. */}
-        {compact ? (
-          <div className="nsv-partnerrow nsv-partnerrow-inline">
-            {partners.map(mark)}
-          </div>
-        ) : (
+        {/* The link out, where there is something on the other side of it.
+            With one partner it led to a page holding that same partner, which
+            is the duplication the review flagged. */}
+        {!compact && (
           <Link className="nsv-cta nsv-cta-quiet" href={`/${locale}/partners`}>
             {dict.partners.all}
             <span className="nsv-cta-arrow" aria-hidden="true">
@@ -129,9 +127,7 @@ export default function Partners({
         )}
       </div>
 
-      {!compact && (
-        <div className="nsv-partnerrow">{partners.map(mark)}</div>
-      )}
+      <div className="nsv-partnerrow">{partners.map(mark)}</div>
     </div>
   );
 }

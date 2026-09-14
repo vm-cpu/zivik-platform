@@ -182,6 +182,15 @@
        An ellipse rather than a circle, and centred near the top, because that
        is where the bulb is and where `.bcone` and `.bpool` are already aimed.
 
+       Two layers, intersected. The pool is the lamp; the second is a plain
+       fade at the left and right edges, and it is there because no amount of
+       geometry can guarantee content in every corner. West of Portugal is
+       ocean, the graticule stops somewhere, and the tilt throws the near
+       corners far out into both — so the drawing was ending inside the
+       section with a visible straight edge. Fading the frame means it no
+       longer matters where the content runs out: what the reader sees is the
+       map going dark, not the map stopping.
+
        It has a floor, and the floor is the point. The first version faded to
        nothing before the edges, which lit the map beautifully and made it look
        unfinished: a radial mask over line art cuts outlines mid-stroke, so
@@ -189,8 +198,10 @@
        read as half-drawn rather than half-lit. It never reaches zero now —
        38% at the furthest corner — so every country is whole everywhere and
        the lamp adds brightness instead of subtracting map. */
-    -webkit-mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%);
-    mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%);
+    -webkit-mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%),linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%);
+    mask-image:radial-gradient(ellipse 82% 78% at 50% 32%,#000 0%,rgba(0,0,0,.78) 42%,rgba(0,0,0,.5) 72%,rgba(0,0,0,.38) 100%),linear-gradient(90deg,transparent 0,#000 13%,#000 87%,transparent 100%);
+    -webkit-mask-composite:source-in;
+    mask-composite:intersect;
   }
   /* The map lies on a table, and the lamp hangs over it.
 
@@ -368,12 +379,6 @@
 .nsv-partnerrow{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-4) 0}
 .nsv-partnerrow .pmark{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-2);padding:0 var(--space-6);border-left:1px solid var(--rule);text-decoration:none}
 .nsv-partnerrow .pmark:first-child{padding-left:0;border-left:0}
-/* The inline variant: the mark sitting in the head row where the link to the
-   partners page would be, on the single-partner band. It aligns to the end of
-   the row so it reads as the row's right-hand element — the slot it inherited
-   — and the name sits under the logo the same way it does in the grid. */
-.nsv-partnerrow-inline{flex:none;gap:0}
-.nsv-partnerrow-inline .pmark{align-items:flex-end;padding:0;border-left:0;text-align:right}
 .nsv-partnerrow .pmark-name{font:700 var(--t-cap) var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);transition:color var(--dur) var(--ease)}
 .nsv-partnerrow a.pmark:hover .pmark-name{color:var(--red)}
 
@@ -386,33 +391,27 @@
 /* The map band carries no side padding of its own any more, so the negative
    margins that used to punch through it now overshoot the viewport by exactly
    the gutter they were cancelling. */
-/* The About prose, in two columns where there is room for two.
+/* The About prose: one column, at the band's own left edge.
 
-   This went through three states and the first two were both wrong, in
-   opposite directions. Left-aligned at 720 inside a content area of 1180, it
-   left 460px of unused ground on one side and none on the other — an
-   asymmetry the owner called a white patch. Centred, the asymmetry went and a
-   worse thing arrived: a 720 ribbon down the middle of a 1900 band, thinner
-   than before.
+   This was rebuilt three times and came back to where it started, which is
+   worth writing down so it is not rebuilt a fourth.
 
-   Neither could be fixed by moving the column, because the column was the
-   problem: 720 is about ninety characters at the body size, already past the
-   65–75 a reader is comfortable with, so it could not be widened either.
+   Centred: the 460px of unused ground on one side became 230 on each, and a
+   720 column down the middle of a 1900 band read thinner than it had before.
+   Two columns of prose: the paragraphs are not the same length, so the right
+   one ended a line and a half above the left and the hole moved to the middle
+   of the band — unequal columns of running text always do that, and it is
+   only invisible when there is enough text to even out. The label set beside
+   the prose does hold, and was the owner's call to decline: it would make this
+   band the one section on the site whose label sits in a column of its own,
+   and a layout that has to be adopted everywhere to look deliberate is not a
+   fix for one band.
 
-   Two columns answer both at once. Each comes out near 68 characters, which is
-   inside the comfortable range rather than past it, and together they fill the
-   measure, so the band reads as a band. The prose is two paragraphs, which is
-   what makes this a layout rather than a trick — one per column, no reflow
-   across a gutter for the eye to chase.
-
-   Below 1000px there is not room for two, and it stacks back to one. */
-.nsv-about-main{display:flex;flex-direction:column;gap:var(--space-4)}
-@media (min-width:1000px){
-  .nsv-about-main{
-    display:grid;grid-template-columns:1fr 1fr;
-    gap:var(--space-7);align-items:start;
-  }
-}
+   So: one column at 720, where the band's other content starts. The space to
+   its right is margin. That is what an editorial column on a wide page looks
+   like, and it is honest about there being two paragraphs here rather than
+   dressing them up as a spread. */
+.nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:var(--space-4)}
 
 /* Both paragraphs in the About band are body prose of one rank, so they carry
    one colour. The opening one used to be painted --ink (#1a1917, 17.57:1 on
