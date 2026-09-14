@@ -83,6 +83,15 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         >
           {dict.hero.lead}
         </p>
+        {/* One way in, not two.
+
+            The lamp used to offer «Бібліотека рішень» and «Мапа» side by side.
+            The owner's note is to take the map out of here, and the reason it
+            is right is that the two were never equals: the archive is the
+            library, and the map is a second way of looking at the same
+            proceedings. Offering both at the top asked the reader to choose
+            between a thing and a view of that thing before they had seen
+            either. The map keeps its place in the top bar and its own page. */}
         <div
           style={{
             display: "flex",
@@ -93,9 +102,6 @@ export default function Hero({ dict }: { dict: Dictionary }) {
         >
           <a href="#registry" className="btn btn-lit">
             {dict.hero.ctaRegistry}
-          </a>
-          <a href="#map" className="btn btn-ghost">
-            {dict.hero.ctaMap}
           </a>
         </div>
 

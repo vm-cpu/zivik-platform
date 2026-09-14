@@ -50,7 +50,6 @@ const en: Dictionary = {
     creditFaculty: "UCU Faculty of Law",
     lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice.",
     ctaRegistry: "Library of decisions",
-    ctaMap: "Map",
     chainHint: "pull the cord",
     lampLabel: "Turn the lamp on or off",
   },
