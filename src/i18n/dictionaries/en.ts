@@ -35,7 +35,6 @@ const en: Dictionary = {
     glossary: "Glossary",
     map: "Map",
     team: "Team",
-    partners: "Partners",
     blog: "Blog",
   },
   brand: {
@@ -168,8 +167,6 @@ const en: Dictionary = {
   partners: {
     label: "Partners",
     heading: "Who we work with",
-    all: "All partners",
-    note: "The list is short, and it will grow.",
   },
   footer: {
     tagline:
@@ -184,7 +181,6 @@ const en: Dictionary = {
     linkGlossary: "Glossary",
     linkAbout: "About the project",
     linkTeam: "Team",
-    linkPartners: "Partners",
     email: "louis.sohn.center@ucu.edu.ua",
     support: "Support the library",
     /* "Svientsitskoho" is the transliteration content/legal.ts already

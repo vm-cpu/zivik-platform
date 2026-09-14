@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { pick, type Partner } from "@/content/types";
@@ -7,28 +6,16 @@ import { pick, type Partner } from "@/content/types";
 /**
  * Restrained partner band (real marks only, hairline-separated).
  *
- * A lead-in, not the whole account: partners have their own page at
- * `/{locale}/partners`, which is where the header nav and the footer point,
- * and this band carries a button to it — the same pattern the About band on
- * the home page already uses. The band used to be the only place partners were
- * shown, which is why the header item pointed at a fragment of /about.
+ * The whole account, not a lead-in. Partners had a page of their own at
+ * `/{locale}/partners` and a tab in the header pointing at it; both are gone,
+ * on the owner's instruction that the partner row belongs on the home page
+ * and nowhere else. It was the duplication the review flagged and it was
+ * threefold — this band, the same marks again on /about, and a page holding
+ * the same marks a third time.
  *
- * ── One partner is a different band ────────────────────────────────────────
- *
- * The layout above is built for a row of marks under a heading, with a link to
- * the rest off on the right. With a single partner it came apart: measured at
- * 1900, the heading ended at 628 and «Усі партнери» began at 1395 — 768 pixels
- * of nothing between them — and under that sat one 218-pixel logo in a band
- * sized for a grid. It read as unfinished, which the owner said in as many
- * words. The button was worse than empty: it led to a page holding the same
- * one partner, which is the duplication the review had already flagged.
- *
- * Moving the mark up into the head row was tried and made it worse: it put a
- * logo opposite a heading, competing with it, instead of belonging to the
- * section under it. The mark stays where it was. What does go, below two
- * partners, is the link — it led to a page holding that same partner, which is
- * the duplication the review flagged. Driven by the count, so it returns on
- * its own the day a second partner is added.
+ * So there is no link out of here any more, and nothing conditional on how
+ * many partners there are: whatever `content/partners.ts` holds is what this
+ * band shows, wherever it is rendered, which is the home page.
  */
 export default function Partners({
   locale,
@@ -40,8 +27,6 @@ export default function Partners({
   partners: Partner[];
 }) {
   if (partners.length === 0) return null;
-  /* Below two, the band is a line rather than a grid — see the note above. */
-  const compact = partners.length < 2;
 
   /** One partner's mark: the logo and the name under it, or the name alone. */
   const mark = (partner: Partner) => {
@@ -114,17 +99,9 @@ export default function Partners({
             {dict.partners.heading}
           </h2>
         </div>
-        {/* The link out, where there is something on the other side of it.
-            With one partner it led to a page holding that same partner, which
-            is the duplication the review flagged. */}
-        {!compact && (
-          <Link className="nsv-cta nsv-cta-quiet" href={`/${locale}/partners`}>
-            {dict.partners.all}
-            <span className="nsv-cta-arrow" aria-hidden="true">
-              →
-            </span>
-          </Link>
-        )}
+        {/* No link out. There is nowhere to go: the partner row lives on the
+            home page and only there — owner's decision — and the page this
+            used to open held the same marks this band already shows. */}
       </div>
 
       <div className="nsv-partnerrow">{partners.map(mark)}</div>

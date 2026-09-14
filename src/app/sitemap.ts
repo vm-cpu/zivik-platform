@@ -125,15 +125,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: aboutLanguages },
   }));
 
-  /* Partners is its own route now rather than a fragment of /about, so it
-     needs its own entry. */
-  const partnersLanguages = languagesFor((l) => `/${l}/partners`);
-  const partners: MetadataRoute.Sitemap = locales.map((locale) => ({
-    url: `${siteUrl}/${locale}/partners`,
-    changeFrequency: "yearly",
-    priority: 0.4,
-    alternates: { languages: partnersLanguages },
-  }));
+  /* No /partners entry. The route is gone — owner's decision that the
+     partner row belongs on the home page and nowhere else — and a sitemap
+     that still advertised it would be handing crawlers a 404. */
 
   /* Privacy and terms are linked from every page's footer. They rarely
      change, and a crawler that cannot find them reads the footer links as
@@ -155,7 +149,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...map,
     ...about,
     ...team,
-    ...partners,
     ...cases,
     ...legal,
   ];

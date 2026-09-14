@@ -101,11 +101,10 @@ export default function Header({
     // points at it rather than at the band on the home page.
     { label: dict.nav.map, href: `${home}/map`, active: pathname === `${home}/map` },
     { label: dict.nav.team, href: `${home}/team`, active: pathname === `${home}/team` },
-    {
-      label: dict.nav.partners,
-      href: `${home}/partners`,
-      active: pathname === `${home}/partners`,
-    },
+    /* No «Партнери» tab. The partner row is on the home page and only there —
+       owner's decision — so the page it pointed at no longer exists. A top-
+       level tab for one mark that is already on the first screen was the
+       duplication the review flagged in the first place. */
   ];
 
   /* Same page, other language. Switching used to drop the reader on the home

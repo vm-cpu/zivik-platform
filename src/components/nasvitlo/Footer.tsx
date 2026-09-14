@@ -177,7 +177,6 @@ export default function Footer({
         {column(f.colCenter, [
           { label: f.linkAbout, href: `/${locale}/about` },
           { label: f.linkTeam, href: `/${locale}/team` },
-          { label: f.linkPartners, href: `/${locale}/partners` },
         ])}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

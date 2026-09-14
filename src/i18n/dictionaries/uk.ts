@@ -74,7 +74,6 @@ const uk = {
     glossary: "Словник",
     map: "Мапа",
     team: "Команда",
-    partners: "Партнери",
     blog: "Блог",
   },
   brand: {
@@ -302,18 +301,16 @@ const uk = {
     support: "Підтримати бібліотеку",
     assurance: "Тільки огляди. Відписатися можна з будь-якого листа.",
   },
+  /* Two keys, because there is one partner row and it is on the home page.
+
+     `all` («Усі партнери») and `note` («Список короткий і поповнюватиметься»)
+     are gone with the page they belonged to. The note was the sentence the
+     review asked to be deleted — deleted rather than reworded this time,
+     owner's instruction — and `all` was the link into a page that held the
+     same single mark the band above it already showed. */
   partners: {
     label: "Партнери",
     heading: "З ким ми працюємо",
-    /* The arrow used to live inside this string. It is a `.nsv-cta-arrow`
-       span now, hidden from assistive technology and animated on hover — a
-       screen reader was reading the glyph out as part of the label. */
-    all: "Усі партнери",
-    /* Shown on the partners page when the list is short, which it is: one
-       external partner. It used to read «Місця для логотипів — надішліть
-       файли» — a note to ourselves, addressed to the reader, on a band that
-       has carried a real mark since ifa's arrived. */
-    note: "Список короткий і поповнюватиметься.",
   },
   footer: {
     tagline:
@@ -328,7 +325,6 @@ const uk = {
     linkGlossary: "Словник",
     linkAbout: "Про проєкт",
     linkTeam: "Команда",
-    linkPartners: "Партнери",
     email: "louis.sohn.center@ucu.edu.ua",
     support: "Підтримати бібліотеку",
     /* Must not contradict the controller's address in content/legal.ts,

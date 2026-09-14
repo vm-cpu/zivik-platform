@@ -19,7 +19,6 @@ import {
   ogImage,
   defaultOgImage,
 } from "@/lib/seo";
-import Partners from "@/components/nasvitlo/Partners";
 import "../about.css";
 
 /**
@@ -290,14 +289,12 @@ export default async function AboutPage({
 
   const dict = await getDictionary(locale);
   const repo = getContentRepository();
-  /* Only what the page still draws. It used to count three figures off the
-     cases and the institutions for «Стан бібліотеки»; that section moved to
-     the registry, which counts the same figures from the same source, and the
-     counting moved with it. */
-  const [about, partners] = await Promise.all([
-    repo.getAbout(),
-    repo.getPartners(),
-  ]);
+  /* One fetch, which is all the page still draws from. It used to count three
+     figures off the cases and the institutions for «Стан бібліотеки» — that
+     section moved to the library page, which counts the same figures from the
+     same source — and it used to read the partner list, which is now on the
+     home page and only there. */
+  const about = await repo.getAbout();
 
   const L = <V,>(x: Record<Locale, V>) => pick(x, locale);
   /* The citation table travels with the prose — see content/about.ts. */
@@ -419,11 +416,12 @@ export default async function AboutPage({
           </p>
         </section>
 
-        {/* The partner row is the shared component, so whatever the content
-            layer holds shows up here without this page listing anything. */}
-        <div className="abt-partners">
-          <Partners locale={locale} dict={dict} partners={partners} />
-        </div>
+        {/* ── The partner row — removed, owner's decision ──────────────────
+            «Партнерів залиш лише на головній». The same marks stood on the
+            home page, here, and on a page of their own: three places for one
+            partner, which is the duplication the review flagged. The home
+            page's band is the one that stays; this page and the /partners
+            route are where it came off. */}
 
         <section className="abt-sec">
           <h2>{L(T.contactH)}</h2>

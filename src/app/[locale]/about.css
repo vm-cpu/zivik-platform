@@ -270,72 +270,13 @@
   text-transform: uppercase;
 }
 
-/* Partner band ------------------------------------------------------------
-   <Partners/> supplies its own 28px inline padding and its own ground. Pulling
-   the wrapper 28px out on each side puts the marks on the reading column's
-   left edge while the band's rule runs wider than the column. */
-.abt-partners {
-  /* `calc(-1 * …)`, not `-var(…)`.
-
-     `-var(--space-7)` is not a value: a minus sign in front of a var()
-     function does not negate it, the declaration is dropped, and the band
-     rendered with no negative margin at all — so <Partners/>'s own 28px inline
-     padding pushed its label, its heading and its mark 28px to the right of
-     everything else on the page. Visible as a step in the left edge at the
-     bottom of the page, which is exactly the fault this page had just spent a
-     commit removing. */
-  margin: var(--space-12) calc(-1 * var(--space-7)) 0;
-}
-/* Section label and partner row: defined in home.css, which this page does not
-   load. Scoped to .aboutpage so nothing leaks back to the surfaces that do. */
-.aboutpage .lbl {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-3);
-}
-.aboutpage .lbl::before {
-  content: "";
-  width: 34px;
-  height: 3px;
-  background: var(--red);
-  flex: none;
-}
-.aboutpage .lbl span {
-  font: 700 var(--t-micro) var(--brand-font-body), sans-serif;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--red);
-}
-/* Mark above name, matching the home band — see the note in home.css. */
-.aboutpage .nsv-partnerrow {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  gap: var(--space-5) 0;
-}
-.aboutpage .nsv-partnerrow .pmark {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: 0 var(--space-6);
-  border-left: 1px solid var(--rule);
-  text-decoration: none;
-}
-.aboutpage .nsv-partnerrow .pmark:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-.aboutpage .nsv-partnerrow .pmark-name {
-  font: 700 var(--t-cap) var(--brand-font-body);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink2);
-}
-.aboutpage .nsv-partnerrow a.pmark:hover .pmark-name {
-  color: var(--red);
-}
+/* ── The partner band's rules — removed with the band ──────────────────────
+   <Partners/> no longer renders on this page: the partner row is on the home
+   page and only there, on the owner's instruction. What stood here was the
+   negative-margin wrapper plus restatements of `.lbl`, `.nsv-partnerrow`,
+   `.pmark` and `.pmark-name`, which this page carried because it does not
+   load home.css. With nothing to style they are gone rather than left as a
+   set of selectors matching nothing. */
 
 @media (max-width: 560px) {
   .abt-meta {
