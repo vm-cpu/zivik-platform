@@ -148,6 +148,45 @@
 
 /* ---- masthead ----------------------------------------------------------- */
 
+/* The page's own lit object: the light that falls on its title.
+
+   Everything before this tried to give the page gold by colouring things it
+   already had — a rule over the H1, the quotation's marks — and both came off
+   because neither was a source. A colour is not light. Light is a thing with
+   a position, a falloff and a far side that stays dark, and once there is one
+   the gold on the page stops being decoration and starts being what the lamp
+   reached.
+
+   The site already owns this object: the decision pages light their masthead
+   with an ember radial from above, over the page's dark ground. Same device,
+   aimed at this page's own subject — it sits over the title rather than at
+   the centre, because on a page whose every left edge is the rail, the light
+   falls where the reading starts.
+
+   Why the ground had to change with it. The band was a flat field of
+   --brand-ember, which is the colour light makes and not the light: a wine
+   rectangle, evenly bright corner to corner, with nothing to say where it
+   came from. The ember is now the top of a fall to --brand-ink-black, so the
+   band is brightest over «Про проєкт» and darkest in the far corners — and
+   the seam at its foot reads as the last of that light rather than as a line
+   somebody drew.
+
+   Measured on the darkest part of the band, the bottom corners, which is
+   where every colour on it is worst off:
+     cream        17.4:1   the title
+     muted-dark   10.2:1   the standfirst and the back link
+   Against a floor of 4.5:1. On the lit part they are 14.1:1 and 8.2:1, both
+   already checked when the ground was flat ember. */
+.abt-mast {
+  background:
+    radial-gradient(
+      120% 130% at 22% -15%,
+      var(--brand-ember) 0%,
+      color-mix(in srgb, var(--brand-ember) 42%, var(--brand-ink-black)) 46%,
+      var(--brand-ink-black) 100%
+    );
+}
+
 /* The masthead is lit too.
 
    Both dark bands on this page are the same ground, and only one of them was
@@ -239,18 +278,23 @@
    stood as far from its first line as two body paragraphs stand from each
    other — and with the heading's tight 1.2 leading adding no half-leading of
    its own it read as glued to the text. */
-/* Every section heading carries the site's mark.
+/* No mark over the h2 either.
 
-   Owner's question on seeing the page: why are the colours black and not red.
-   They were black because this page had no accent at all — every other surface
-   on the site announces a section with `.lbl`, a 34x3 red rule with an
-   uppercase label beside it, and /about had plain display headings on plain
-   paper from top to bottom. It read as a page from somewhere else.
+   Each carried a bare 34x3 red rule, added to answer the page having no
+   accent, and the owner's word for the result is that they looked like tags
+   with the writing taken off. They did, and it is the same rule that took the
+   one over the H1 away: on this site a mark is a rule *and* a word — «ПРО
+   ПРОЄКТ» on the home page, «МАПА» on the map — and the word is what it is
+   for. The rule alone is the tag's holder.
 
-   The rule and not the label: a word over each of «Хто веде проєкт», «Місія
-   Центру», «Хто над цим працює» and «Написати нам» would be four more words
-   saying what the heading under them already says. The mark alone is the part
-   that belongs to this site. */
+   There are no words to give them. «ЦЕНТР» over «Хто веде проєкт», «МІСІЯ»
+   over «Місія Центру» — each would repeat the heading beneath it, and a label
+   that repeats its heading is worse than none.
+
+   The page does not need them. Every section here is a band: its own ground,
+   its own seam, its own edge across the full width of the window. That is a
+   stronger statement of "a new section begins" than a 34-pixel stub, and it
+   is the one this page was rebuilt around. */
 .abt-band h2 {
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
@@ -273,14 +317,6 @@
      count of red objects the home page carries. */
   color: var(--ink);
   margin: 0 0 var(--space-6);
-}
-.abt-band h2::before {
-  content: "";
-  display: block;
-  width: 34px;
-  height: 3px;
-  margin-bottom: var(--space-4);
-  background: var(--red);
 }
 .abt-prose {
   display: flex;
