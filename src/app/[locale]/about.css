@@ -192,7 +192,19 @@
   font-weight: 400;
   font-size: var(--t-h2);
   line-height: 1.2;
-  color: var(--ink);
+  /* Cherry, not ink. Owner's decision, and the mark above each heading was
+     already carrying it alone — a red rule over a black heading read as an
+     ornament attached to something that did not belong to it. --brand-red is
+     the UCU cherry the whole site accents with, and it is not a contrast
+     compromise: measured on --brand-paper it is 9.96:1 and on the recessed
+     --brand-paper-2 9.4:1, against the 4.5:1 that even body text asks for and
+     the 3:1 that large type does.
+
+     Only on the light bands, which is every band that has an h2 — the two
+     dark ones carry the H1 and the quotation. Cherry on --brand-night is
+     3.53:1, which clears large text and nothing else, and the masthead title
+     has no reason to spend that when cream gives it 15:1. */
+  color: var(--red);
   margin: 0 0 var(--space-6);
 }
 .abt-band h2::before {
