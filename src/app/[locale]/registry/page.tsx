@@ -230,10 +230,21 @@ const T = {
      The sentence itself came off /about in the same review — it was «Стан
      бібліотеки» there — and this is where it was supposed to land. The claim
      it makes is the one content/legal.ts already makes, so the two cannot
-     disagree. */
+     disagree.
+
+     One clause came off it on the way. It read «у бібліотеці та на мапі вони
+     позначені як такі», which was true when it was written and had not been
+     for some time: the map carried a marker per case then, and it was
+     re-conceived as the states whose courts hear these proceedings — no case
+     markers, and a legend that names only a court and a forum State. The
+     sentence outlived the thing it described, which is what a claim about
+     another surface does unless something checks it. Checked here rather than
+     assumed: 40 rows in the library, 8 of them marked as written up, a filter
+     for them and the words «Огляд у підготовці»; on the map, zero markers.
+     So it points at the list under it, which is the surface it is on. */
   state: {
-    uk: "Бібліотека наповнюється. Провадження вносимо до неї раніше, ніж встигаємо їх опрацювати, тому частина справ поки що стоїть без огляду — у бібліотеці та на мапі вони позначені як такі. Відсутність провадження тут не означає, що його не існує.",
-    en: "The library is still being filled. Proceedings enter it faster than they can be written up, so some cases stand without a summary for now — they are marked as such in the library and on the map. A proceeding's absence here does not mean it does not exist.",
+    uk: "Бібліотека наповнюється. Провадження вносимо до неї раніше, ніж встигаємо їх опрацювати, тому частина справ поки що стоїть без огляду — у списку нижче вони позначені як такі. Відсутність провадження тут не означає, що його не існує.",
+    en: "The library is still being filled. Proceedings enter it faster than they can be written up, so some cases stand without a summary for now — the list below marks them as such. A proceeding's absence here does not mean it does not exist.",
   },
 } as const;
 
