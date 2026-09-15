@@ -59,6 +59,21 @@ export default async function HomePage({
       <main>
         <LampShell>
         <Hero dict={dict} locale={locale} />
+        {/* On paper, not on --brand-surface.
+
+        This band and the strip under it were `var(--surface)` — #ffffff, which
+        globals.css documents as "cards / rows — float above the page". Used as a
+        full-bleed ground it made the home page's largest light surface a card, and
+        gave the page three light grounds where the system has two: white here,
+        --brand-paper-2 under the slogan, --brand-paper under the partners. /about,
+        rebuilt on the same two grounds, has no white on it at all.
+
+        The change is invisible — #ffffff against #fbfbfa is 1.01:1 — and that is
+        the point: nothing on screen was relying on it, and the palette now says
+        the same thing on both pages.
+
+        design-lint could not have caught this. It reads only `fontSize` out of
+        JSX, so a ground set in an inline style is outside everything it checks. */}
         <About
           locale={locale}
           dict={dict}
@@ -79,7 +94,7 @@ export default async function HomePage({
             zIndex: 3,
             marginTop: -26,
             padding: "0 28px 50px",
-            background: "var(--surface)",
+            background: "var(--paper)",
           }}
         >
           <Link className="btn btn-o" href={`/${locale}/about`}>

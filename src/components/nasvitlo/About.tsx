@@ -27,7 +27,8 @@ export default function About({
         position: "relative",
         zIndex: 3,
         padding: "50px 28px",
-        background: "var(--surface)",
+        // See the note above the same change in [locale]/page.tsx.
+        background: "var(--paper)",
         borderTop: "1px solid var(--rule)",
         scrollMarginTop: 16,
       }}
