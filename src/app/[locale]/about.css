@@ -210,19 +210,22 @@
   font-weight: 400;
   font-size: var(--t-h2);
   line-height: 1.2;
-  /* Cherry, not ink. Owner's decision, and the mark above each heading was
-     already carrying it alone — a red rule over a black heading read as an
-     ornament attached to something that did not belong to it. --brand-red is
-     the UCU cherry the whole site accents with, and it is not a contrast
-     compromise: measured on --brand-paper it is 9.96:1 and on the recessed
-     --brand-paper-2 9.4:1, against the 4.5:1 that even body text asks for and
-     the 3:1 that large type does.
+  /* Ink, with the cherry in the mark above it.
 
-     Only on the light bands, which is every band that has an h2 — the two
-     dark ones carry the H1 and the quotation. Cherry on --brand-night is
-     3.53:1, which clears large text and nothing else, and the masthead title
-     has no reason to spend that when cream gives it 15:1. */
-  color: var(--red);
+     This is the home page's balance, which the owner compared the two pages
+     and preferred: there the accent is a small red rule with an uppercase word
+     beside it and the heading under it is ink, so the colour sits in the
+     signal rather than in the sentence. Measured on the two pages before the
+     change, counting painted text colours: the home page ran gold x4 against
+     cherry x4 — gold-led, which is right, its subject is the lamp — and
+     /about ran cherry x6 with no gold in the text at all. Four cherry display
+     headings made the light half of this page the loudest thing on the site.
+
+     It went the other way one commit ago at the owner's request, and this
+     reverses that on the owner's decision after seeing both. The cherry is
+     not gone: it is in the four marks and the two links, which is the same
+     count of red objects the home page carries. */
+  color: var(--ink);
   margin: 0 0 var(--space-6);
 }
 .abt-band h2::before {
@@ -347,10 +350,14 @@
   padding-top: clamp(52px, 5vw, 76px);
   padding-bottom: clamp(48px, 4.6vw, 68px);
 }
-/* No `max-width: none` here any more. It was needed when the quotation was
-   centred and set its own width with `margin: 0 auto`; with the block on the
-   left edge it simply beat the measure — (0,2,0) against the blockquote's
-   (0,1,1) — and the quote ran the full 1180 of the rail. */
+/* No `max-width: none` for this band's children.
+
+   It was here to let the centred quotation set its own width, and it did the
+   opposite: at (0,2,0) it outweighs `.abt-quote blockquote` at (0,1,1), so
+   the 40rem measure was dropped and the quotation ran the full width of the
+   rail — 990px at an 1100px window, centred and useless. The blockquote and
+   the figcaption already outweigh `.abt-in > *` on their own; nothing has to
+   be unset for them. */
 /* A hairline, not a border: it fades to nothing at both ends so it reads as
    light falling across the join rather than as a frame around the band. */
 .abt-seam {
@@ -385,22 +392,26 @@
   );
   pointer-events: none;
 }
-/* Left, at the measure, like everything else on this page.
+/* Centred, with the quotation marks a quotation has.
 
-   It was centred, because it was built from the home page's quotation band
-   and that one is centred. On a page whose whole identity is one left edge —
-   masthead, prose, mission, roster and contact all start on the same pixel —
-   a centred block was the single thing that did not, and it read as a slab
-   dropped in rather than as a section of this page. The dark ground and the
-   lit seam are what set a quotation apart here; the alignment does not have
-   to do it a second time.
+   It was moved onto the page's left edge — the page's whole identity is one
+   left edge, and a centred block was the only object that did not hold it.
+   The owner compared the two and kept the centred one: on a dark band of its
+   own, between two pages of left-aligned prose, the symmetry is what says
+   "this is someone speaking" before a word of it is read. Left alignment made
+   it one more section. Owner's decision, and it is not to be quietly
+   re-litigated the next time this file is touched.
 
-   38rem at --t-h3 is about 58 characters, a pull-quote measure rather than a
-   paragraph one. This quotation is four sentences, which is long for the
-   form, so the measure is what keeps it from becoming a wall. */
+   What it was missing is the marks. A quotation set apart by ground and face
+   but not punctuated still reads as the site's own sentence in a different
+   suit; the guillemets are what make it somebody's words. Generated rather
+   than written into `T.voice`, so the string stays the quotation and the
+   typography stays typography — and so the English page gets its own pair:
+   «…» in Ukrainian, “…” in English, keyed off the `lang` the layout sets. */
 .abt-quote blockquote {
-  max-width: 38rem;
-  margin: 0;
+  max-width: 40rem;
+  margin: 0 auto;
+  text-align: center;
   font-family: var(--brand-font-display), Georgia, serif;
   /* Both ends on steps. A pull-quote has to outrank 16px body text and must
      not out-shout --t-h2 beside it. */
@@ -408,11 +419,24 @@
   line-height: 1.5;
   letter-spacing: -0.008em;
   color: var(--brand-cream);
+  text-wrap: balance;
+  quotes: "«" "»" "„" "“";
+}
+.abt-quote blockquote:lang(en) {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+.abt-quote blockquote::before {
+  content: open-quote;
+}
+.abt-quote blockquote::after {
+  content: close-quote;
 }
 .abt-quote figcaption {
   position: relative;
-  margin: var(--space-6) 0 0;
-  padding: var(--space-5) 0 0;
+  max-width: 40rem;
+  margin: clamp(20px, 2.2vw, 28px) auto 0;
+  padding: clamp(16px, 1.8vw, 22px) 0 0;
+  text-align: center;
   /* The attribution in the mono face — the face this site already gives to a
      source line, where `.nsvq-meta` sets the court, the stage and the date of
      the quoted ICJ order. The speaker's name keeps the weight, the role drops
@@ -423,14 +447,15 @@
   letter-spacing: 0.02em;
   color: var(--brand-muted-dark);
 }
-/* A short lit rule over the attribution, on the left edge with it. Full width
-   it would read as the top of a new section; centred it would be the one
-   centred object left on the page. */
+/* A short lit rule, centred: an attribution rule under a centred quotation,
+   not a border across the band. A full-width line here reads as the top of a
+   new section. */
 .abt-quote figcaption::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 64px;
   height: 1px;
   background: color-mix(in srgb, var(--brand-gold-lit) 55%, transparent);
@@ -438,24 +463,14 @@
 /* `<b>` defaults to `bolder`, which against a 600 caption resolves to 900 — a
    weight the mono is not loaded at, so both locales drew a synthesised bold. */
 .abt-quote figcaption b {
+  display: block;
   font-weight: 600;
   color: var(--brand-cream);
 }
-.abt-quote figcaption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0;
-}
 .abt-quote figcaption span {
+  display: block;
+  margin-top: var(--space-1);
   font-weight: 400;
-}
-/* Name and role on one line at the measure, stacked when there is not room —
-   they are a citation, and a citation runs on until it has to break. */
-.abt-quote figcaption b::after {
-  content: "·";
-  margin: 0 var(--space-2);
-  color: var(--brand-faint-dark);
 }
 
 /* ---- the roster --------------------------------------------------------- */
