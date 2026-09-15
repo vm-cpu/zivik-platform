@@ -63,7 +63,16 @@ const T = {
 
 /** The registry row behind a `/cases/{id}` URL that has no summary. */
 export function pendingCase(slug: string): RegistryCase | undefined {
-  return registryCases.find((c) => c.id === slug && !c.summarySlug);
+  /* `partOf` excluded, and the exclusion has to be here rather than only in
+     `generateStaticParams`. Dropping the six ICC warrants from the params list
+     stopped them being prerendered and did not stop them being served: the
+     route's segment is dynamic, so Next rendered them on demand at request
+     time, and staging answered 200 on /uk/cases/icc-9 with a page nothing
+     links to. An act is not a proceeding; it has no page, and the lookup that
+     decides that is this one. */
+  return registryCases.find(
+    (c) => c.id === slug && !c.summarySlug && !c.partOf,
+  );
 }
 
 /** Amount at stake, whole. See `content/money.ts` for why it is unsigned. */

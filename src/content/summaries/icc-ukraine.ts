@@ -1002,6 +1002,16 @@ export const iccUkraine: DecisionSummary = {
   ],
 
   sources: [
+    /* Three entries are gone from this list — the Office of the Prosecutor's
+       statement concluding the preliminary examination (11 December 2020) and
+       the two statements around the opening of the investigation (28 February
+       and 2 March 2022). Owner's instruction: «забрати це з джерел — 3, 4, 5
+       забрати». Identified by title rather than by position: the ratification
+       law was added to this list in the same review pass and had shifted the
+       three of them down to 4, 5 and 6.
+
+       The chronology still carries all three moments; what it no longer
+       carries is a citation for them. */
     // — Official ICC record (the in-text links of the source summary) —
     {
       url: "https://www.icc-cpi.int/itemsDocuments/997/declarationRecognitionJuristiction09-04-2014.pdf",
@@ -1030,30 +1040,6 @@ export const iccUkraine: DecisionSummary = {
       publication: "Верховна Рада України",
       date: "21 August 2024",
       type: "official/treaty",
-    },
-    {
-      url: "https://www.icc-cpi.int/Pages/item.aspx?name=201211-otp-statement-ukraine",
-      title: "OTP statement concluding the preliminary examination of the situation in Ukraine",
-      authors: "",
-      publication: "International Criminal Court",
-      date: "11 December 2020",
-      type: "official/ICC",
-    },
-    {
-      url: "https://www.icc-cpi.int/Pages/item.aspx?name=20220228-prosecutor-statement-ukraine",
-      title: "Prosecutor's statement on seeking authorisation to open an investigation",
-      authors: "Karim A.A. Khan KC",
-      publication: "International Criminal Court",
-      date: "28 February 2022",
-      type: "official/ICC",
-    },
-    {
-      url: "https://www.icc-cpi.int/Pages/item.aspx?name=2022-prosecutor-statement-referrals-ukraine",
-      title: "Prosecutor's statement on the referrals and the opening of the investigation",
-      authors: "Karim A.A. Khan KC",
-      publication: "International Criminal Court",
-      date: "2 March 2022",
-      type: "official/ICC",
     },
     {
       url: "https://www.icc-cpi.int/Pages/item.aspx?name=20220311-prosecutor-statement-ukraine",
