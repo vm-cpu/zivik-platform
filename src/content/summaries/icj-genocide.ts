@@ -58,9 +58,18 @@ export const icjGenocide: DecisionSummary = {
   }),
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
+  /* Review's edit: «поміняти назву рішення — забрати про 32 держави-інтервенти
+     і залишити про геноцид». The intervening States are a fact about the
+     proceeding, not its subject, and they were the only thing the page's own
+     title said. The library's row for this case has read «звинувачення у
+     геноциді» all along, so the two now agree.
+
+     The Court's own case name keeps the interveners — it is a citation, and
+     `cases.ts` quotes it in full under `name`. This is the page's heading,
+     not the citation. */
   title: {
-    uk: "Україна проти Російської Федерації: 32 держави-інтервенти",
-    en: "Ukraine v. Russian Federation: 32 States intervening",
+    uk: "Україна проти Російської Федерації: звинувачення у геноциді",
+    en: "Ukraine v. Russian Federation: allegations of genocide",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is

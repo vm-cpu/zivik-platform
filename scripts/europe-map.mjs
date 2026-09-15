@@ -98,6 +98,13 @@ const POINTS = {
    */
   donetsk: [37.8, 48.0],
   luhansk: [39.31, 48.57],
+  /* Kherson and Zaporizhzhia, for the ICC's children theatre.
+     Review's edit: «по дітях додати Херсон і Запоріжжя на мапу». The warrants
+     for the deportation of children name those two oblasts alongside Crimea,
+     Donetsk and Luhansk, and the map drew three of the five. Oblast centres,
+     to two decimals — the same precision as their neighbours here. */
+  kherson: [32.62, 46.64],
+  zaporizhzhia: [35.14, 47.84],
   simferopol: [34.1, 44.95],
 };
 

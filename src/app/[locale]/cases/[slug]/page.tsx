@@ -50,7 +50,13 @@ import "../case/70-chrome.css";
 
 /** Localized chrome labels (the summary body stays in its source language). */
 const T = {
-  overview: { uk: "Огляд", en: "Overview" },
+  /* The row of counters used to be headed «Огляд» / "Overview", and the chip
+     that led here said the same. Review: «Розділ "ОГЛЯД" я б назвала "ЯКЩО
+     КОРОТКО"» — so `inShort` is the chip now, and it points at the paragraph
+     a reader would call the overview. What is left over the counters is a row
+     of figures, and says so; naming it «Якщо коротко» too would have printed
+     the same heading twice in one screen. */
+  figuresH: { uk: "У цифрах", en: "In figures" },
   /* Heading for `DecisionSummary.glance` — the docket facts. Distinct from
      `inShort` ("Якщо коротко"), which heads the plain-language tldr: one is a
      ledger of identifiers, the other is a paragraph. */
@@ -103,7 +109,6 @@ const T = {
   whoKindActor: { uk: "Учасник", en: "Actor" },
   faqH: { uk: "Часті запитання", en: "Common questions" },
   relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
-  fullSummary: { uk: "Повне самері", en: "Full summary" },
 
   /* The theatre map's text alternative. It was the literal string "Map of
      Europe" — English on a Ukrainian page, so a Ukrainian voice spoke it
@@ -209,7 +214,10 @@ const T = {
     uk: "Ці терміни у словнику бібліотеки",
     en: "These terms in the library's glossary",
   },
-  navFulltext: { uk: "Самері", en: "Summary" },
+  /* «Самері» was a transliteration of "summary" standing as a section name
+     on a Ukrainian page. Review: «розділ "САМЕРІ" … замінила б на "ПОВНИЙ
+     ОГЛЯД"». */
+  navFulltext: { uk: "Повний огляд", en: "Full summary" },
   navSources: { uk: "Джерела", en: "Sources" },
   officialH: { uk: "Офіційні документи Суду", en: "Official court documents" },
   commentaryH: { uk: "Дослідження та коментарі", en: "Research and commentary" },
@@ -231,7 +239,13 @@ const WHO_KIND: Record<"party" | "court" | "actor", Localized> = {
 
 /** The order the groups are read in: the sides, then the forum, then the rest.
  *  Fixed, so the band has the same shape on every case. */
-const WHO_ORDER = ["party", "court", "actor"] as const;
+/* Two groups, not three. Review: «Забрати учасників». The «Учасники» group
+   listed the people and entities a case is about rather than the ones before
+   the forum — on icj-cerd-icsft, «Кримські татари» and «"ДНР" / "ЛНР"» — which
+   reads as a cast list beside two states and a court. The `actor` entries stay
+   in the summaries: they are true, they are cited, and the band can take them
+   back if it ever earns a shape for them. */
+const WHO_ORDER = ["party", "court"] as const;
 
 /** Plural headings for the groups. The singular chips above still name one
  *  entry — these name a set, which is a different word in both languages. */
@@ -816,14 +830,14 @@ export default async function CasePage({
    * matters is that the paper bands either side of it keep alternating past
    * it. */
   const bands: Array<[string, boolean]> = [
+    ["readzone", true],
     ["refs", true],
     ["pmeas", provisionalMeasures.length > 0],
     ["machinery", hasMachinery],
     ["chron", true],
     ["aids", true],
     ["terms", glossaryEnabled],
-    ["readzone", true],
-    ["qa", faq.length > 0],
+    ["srcs", sources.length > 0],
     ["neighbours", related.length > 0],
   ];
   const ground: Record<string, "p" | "p2"> = {};
@@ -839,7 +853,11 @@ export default async function CasePage({
   }
 
   const pageSections = [
-    { id: "overview", label: pick(T.overview, locale) },
+    { id: "overview", label: pick(T.inShort, locale) },
+    /* The summary leads now — review: «самері я б можливо перенесла на
+       початок і дала відразу після розділу ЯКЩО КОРОТКО. А потім би вже йшли
+       вкладки про тлумачення, тимчасові заходи тощо». */
+    { id: "fulltext", label: pick(T.navFulltext, locale) },
     /* This list is the page's order, and the sticky bar is drawn from it — so
        it moves when the bands move. Rulings and measures now follow the
        dispositif directly; the chronology and the map fall in behind the
@@ -872,9 +890,7 @@ export default async function CasePage({
     ...(glossaryEnabled
       ? [{ id: "glossary", label: pick(T.navGlossary, locale) }]
       : []),
-    { id: "fulltext", label: pick(T.navFulltext, locale) },
     ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
-    ...(faq.length > 0 ? [{ id: "questions", label: pick(T.faqH, locale) }] : []),
     ...(related.length > 0 ? [{ id: "related", label: pick(T.relatedH, locale) }] : []),
   ];
 
@@ -1085,7 +1101,7 @@ export default async function CasePage({
       />
 
       {/* 1b — Plain-language lede */}
-      <section className="lede">
+      <section className="lede" id="overview" data-navsec aria-label={pick(T.inShort, locale)}>
         <div className="rail lede-grid">
           <div className="tldr">
             <div className="lbl-light">{pick(T.inShort, locale)}</div>
@@ -1099,7 +1115,7 @@ export default async function CasePage({
       </section>
 
       {/* 2 — Dashboard: one column of full-width instruments */}
-      <section className="dash" id="overview" data-navsec aria-label={pick(T.overview, locale)}>
+      <section className="dash">
         <div className="rail dash-stack">
           {/* The docket facts, then the figures. `glance` is authored on all
               eight summaries — 57 facts — and rendered nowhere until now. */}
@@ -1119,7 +1135,7 @@ export default async function CasePage({
           )}
 
           <div>
-            <h2 className="lbl lbl-onpaper">{pick(T.overview, locale)}</h2>
+            <h2 className="lbl lbl-onpaper">{pick(T.figuresH, locale)}</h2>
             <div className="kpis">
               {stats.map((s, i) => (
                 <div
@@ -1260,6 +1276,47 @@ export default async function CasePage({
             </div>
           )}
 
+        </div>
+      </section>
+
+      {/* 4 — Verbatim summary. The page bar is the only navigation. */}
+      <section className="readzone" data-ground={ground["readzone"]} id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
+        <div className="rail">
+          <article className="read">
+            {/* The band's own heading. It had none while the chip above said
+                «Самері» and the band opened on «1. ФАКТИЧНІ ОБСТАВИНИ» — a
+                reader who pressed the chip landed on a numbered heading from
+                inside the document with nothing saying what they had reached.
+                Now that the chip says «Повний огляд», the band says it too. */}
+            <h2 className="lbl lbl-onpaper read-band-h">{pick(T.navFulltext, locale)}</h2>
+            {/* The «Терміни в цьому тексті» chip row is gone. It listed the
+                decision's headwords above the verbatim and linked each to the
+                glossary band below — which made sense while the terms were
+                only defined at the foot of the page. They are marked in the
+                prose itself now, each carrying its definition where the reader
+                meets the word, so the row was a table of contents for
+                something the text already does. */}
+        {(() => {
+          let h2i = 0;
+          /* One set for the whole article, filled as the blocks are walked in
+             reading order, so "first occurrence" means first on the page and
+             not first in each paragraph. The map callback runs eagerly, here,
+             rather than inside each Block — leaving the mutation to React's
+             render order would make the result depend on when React chose to
+             call the component. */
+          const used = new Set<string>();
+          const mark = (t: string) => markTerms(t, termRefs, used);
+          return body.map((b, i) =>
+            b.kind === "h2" ? (
+              <h2 id={`sec-${h2i++}`} key={i}>
+                {b.text}
+              </h2>
+            ) : (
+              <Block key={i} block={b} mark={mark} />
+            ),
+          );
+        })()}
+          </article>
         </div>
       </section>
 
@@ -1597,150 +1654,116 @@ export default async function CasePage({
         </section>
       )}
 
-      {/* 4 — Verbatim summary. The page bar is the only navigation. */}
-      <section className="readzone" data-ground={ground["readzone"]} id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
-        <div className="rail">
-          <article className="read">
-            {/* The «Терміни в цьому тексті» chip row is gone. It listed the
-                decision's headwords above the verbatim and linked each to the
-                glossary band below — which made sense while the terms were
-                only defined at the foot of the page. They are marked in the
-                prose itself now, each carrying its definition where the reader
-                meets the word, so the row was a table of contents for
-                something the text already does. */}
-        {(() => {
-          let h2i = 0;
-          /* One set for the whole article, filled as the blocks are walked in
-             reading order, so "first occurrence" means first on the page and
-             not first in each paragraph. The map callback runs eagerly, here,
-             rather than inside each Block — leaving the mutation to React's
-             render order would make the result depend on when React chose to
-             call the component. */
-          const used = new Set<string>();
-          const mark = (t: string) => markTerms(t, termRefs, used);
-          return body.map((b, i) =>
-            b.kind === "h2" ? (
-              <h2 id={`sec-${h2i++}`} key={i}>
-                {b.text}
-              </h2>
-            ) : (
-              <Block key={i} block={b} mark={mark} />
-            ),
-          );
-        })()}
 
-        {sources.length > 0 && (
-          <>
-            <h2 id="sec-sources" className="srcs-h2">{pick(T.sources, locale)}</h2>
-            {(() => {
-              // A 45-item wall is unusable: split the court's own record from
-              // the commentary, numbering the two lists continuously.
-              const official = sources.filter((s) => s.type.startsWith("official"));
-              const commentary = sources.filter((s) => !s.type.startsWith("official"));
-              const renderList = (items: typeof sources, start: number) => (
-                <ol className="sources" start={start} style={{ counterReset: `cite ${start - 1}` }}>
-                  {items.map((s, i) => {
-                    // Who, where and when make one quiet line; what kind of
-                    // source it is gets its own mark. In an archive meant to be
-                    // cited, the gap between the court's own record and a blog
-                    // post is the first thing a reader needs, and it used to be
-                    // the last word of a four-part grey string.
-                    const meta = [s.authors, s.publication, s.date].filter(Boolean);
-                    const kind = pick(
-                      TYPE_LABEL[s.type] ?? { uk: s.type, en: s.type },
-                      locale,
-                    );
-                    return (
-                      <li key={i}>
-                        <div className="cite-body">
-                          <a
-                            href={s.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            lang={foreignLang(s.title, locale)}
-                          >
-                            {s.title}
-                          </a>
-                          {meta.length > 0 && (
-                            /* Author, publisher and date, and on most rows all
-                               three are English \u2014 "International Criminal
-                               Court \u00b7 9 April 2014". The title above already
-                               reads in its own language because it is a link
-                               to it; this line was the one left for a
-                               Ukrainian voice to guess at. */
-                            <span
-                              className="cite-meta"
-                              lang={foreignLang(meta.join(" "), locale)}
-                            >
-                              {meta.join(" \u00b7 ")}
-                            </span>
-                          )}
-                        </div>
-                        <span
-                          className="cite-kind"
-                          data-official={s.type.startsWith("official") ? "yes" : "no"}
-                        >
-                          {kind}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ol>
-              );
-              if (official.length === 0 || commentary.length === 0)
-                return renderList(sources, 1);
-              return (
-                <>
-                  <h3 className="sources-h">{pick(T.officialH, locale)}</h3>
-                  {renderList(official, 1)}
-                  <h3 className="sources-h">{pick(T.commentaryH, locale)}</h3>
-                  {renderList(commentary, official.length + 1)}
-                </>
-              );
-            })()}
-          </>
-        )}
+      {/* «Забрати Часті запитання» (review). The band was an accordion of
+          four questions — «То Україна виграла?», «Що буде далі?» — written
+          for the page rather than drawn from the decision, in a register
+          the archive does not use anywhere else. The `faq` field stays on
+          the summaries and still feeds the FAQPage graph for search; what
+          is gone is the band. */}
 
-            {/* The citation, at the foot of the sources rather than under the
-                masthead. It opened the page for a while, which put an
-                apparatus block between the title and the first sentence for
-                every reader, most of whom did not come to cite. A reader who
-                did arrives here — through the text, past the sources — and
-                this is the last thing on the page they need. */}
-            <CiteBlock
-              lines={citeLines}
-              locale={locale}
-              citation={citation}
-              label={pick(T.citeH, locale)}
-              copy={pick(T.citeCopy, locale)}
-              copied={pick(T.citeCopied, locale)}
-              failed={pick(T.citeFailed, locale)}
-            />
-          </article>
-        </div>
-      </section>
+      {/* The apparatus, at the foot of the page.
 
-      {/*
-        Two separate things, so two sections. Questions are read — an accordion
-        at reading width. Neighbouring decisions are navigation — cards you
-        click. They were one grid, which made the second look like more prose.
-      */}
-      {faq.length > 0 && (
-        <section className="qa" data-ground={ground["qa"]} id="questions" data-navsec aria-label={pick(T.faqH, locale)}>
+          It used to be the tail of the verbatim band — one `.readzone`
+          holding the summary, the sources and the citation. Moving the
+          summary up to follow the lede (review: «самері я б перенесла на
+          початок») would have dragged the sources into the middle of the
+          page with it, and the review is explicit that the sources stay
+          («ЗАЛИШАТИ ХРОНОЛОГІЮ, МІСЦЕ РОЗГЛЯДУ, ОГЛЯД ТА ДЖЕРЕЛА»). So the
+          band is split in two: same shell, same `.read` measure, its own
+          place in the alternation. */}
+      {sources.length > 0 && (
+        <section className="readzone" data-ground={ground["srcs"]} aria-label={pick(T.sources, locale)}>
           <div className="rail">
-            <h2 className="lbl lbl-onpaper">{pick(T.faqH, locale)}</h2>
-            {/* Closed on arrival. The band reads as an index of the questions
-                the decision raises, and a reader opens the one they came for.
-                See the note on `.qa-list` in 70-chrome.css for the argument
-                this replaces — owner's decision. */}
-            <div className="qa-list">
-              {faq.map((f, i) => (
-                <details key={i}>
-                  <summary>{pick(f.q, locale)}</summary>
-                  <p>{pick(f.a, locale)}</p>
-                </details>
-              ))}
-            </div>
+            <article className="read">
+          {sources.length > 0 && (
+            <>
+              <h2 id="sec-sources" className="srcs-h2">{pick(T.sources, locale)}</h2>
+              {(() => {
+                // A 45-item wall is unusable: split the court's own record from
+                // the commentary, numbering the two lists continuously.
+                const official = sources.filter((s) => s.type.startsWith("official"));
+                const commentary = sources.filter((s) => !s.type.startsWith("official"));
+                const renderList = (items: typeof sources, start: number) => (
+                  <ol className="sources" start={start} style={{ counterReset: `cite ${start - 1}` }}>
+                    {items.map((s, i) => {
+                      // Who, where and when make one quiet line; what kind of
+                      // source it is gets its own mark. In an archive meant to be
+                      // cited, the gap between the court's own record and a blog
+                      // post is the first thing a reader needs, and it used to be
+                      // the last word of a four-part grey string.
+                      const meta = [s.authors, s.publication, s.date].filter(Boolean);
+                      const kind = pick(
+                        TYPE_LABEL[s.type] ?? { uk: s.type, en: s.type },
+                        locale,
+                      );
+                      return (
+                        <li key={i}>
+                          <div className="cite-body">
+                            <a
+                              href={s.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              lang={foreignLang(s.title, locale)}
+                            >
+                              {s.title}
+                            </a>
+                            {meta.length > 0 && (
+                              /* Author, publisher and date, and on most rows all
+                                 three are English \u2014 "International Criminal
+                                 Court \u00b7 9 April 2014". The title above already
+                                 reads in its own language because it is a link
+                                 to it; this line was the one left for a
+                                 Ukrainian voice to guess at. */
+                              <span
+                                className="cite-meta"
+                                lang={foreignLang(meta.join(" "), locale)}
+                              >
+                                {meta.join(" \u00b7 ")}
+                              </span>
+                            )}
+                          </div>
+                          <span
+                            className="cite-kind"
+                            data-official={s.type.startsWith("official") ? "yes" : "no"}
+                          >
+                            {kind}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                );
+                if (official.length === 0 || commentary.length === 0)
+                  return renderList(sources, 1);
+                return (
+                  <>
+                    <h3 className="sources-h">{pick(T.officialH, locale)}</h3>
+                    {renderList(official, 1)}
+                    <h3 className="sources-h">{pick(T.commentaryH, locale)}</h3>
+                    {renderList(commentary, official.length + 1)}
+                  </>
+                );
+              })()}
+            </>
+          )}
+
+              {/* The citation, at the foot of the sources rather than under the
+                  masthead. It opened the page for a while, which put an
+                  apparatus block between the title and the first sentence for
+                  every reader, most of whom did not come to cite. A reader who
+                  did arrives here — through the text, past the sources — and
+                  this is the last thing on the page they need. */}
+              <CiteBlock
+                lines={citeLines}
+                locale={locale}
+                citation={citation}
+                label={pick(T.citeH, locale)}
+                copy={pick(T.citeCopy, locale)}
+                copied={pick(T.citeCopied, locale)}
+                failed={pick(T.citeFailed, locale)}
+              />
+            </article>
           </div>
         </section>
       )}

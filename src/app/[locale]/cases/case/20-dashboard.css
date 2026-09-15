@@ -255,11 +255,21 @@
   stroke-width: 1.4;
   stroke-linejoin: round;
 }
+/* Review: «не йде стрілка до сходу України». The geometry was right — the
+   line ends on the first marker of the first theatre, measured at (863.5,
+   348.1) on icj-cerd-icsft, which is Donetsk. What failed was the contrast.
+   At 0.28 the lamp gold sits at 1.66:1 against --brand-map-ua, the lit fill
+   inside the border, and at 1.73:1 against the land outside it: the line was
+   never legible anywhere, and it simply disappeared sooner over the brighter
+   ground, so it read as stopping at the frontier. 0.65 measures 3.12:1 over
+   Ukraine and 3.60:1 over the land — 1.4.11's floor for a graphical object,
+   which is what this is. The selected state stays apart from it on width
+   (1 → 1.6) as much as on opacity. */
 .casepage .map .reach {
   stroke: var(--brand-gold-lamp);
   stroke-width: 1;
   stroke-dasharray: 4 5;
-  opacity: 0.28;
+  opacity: 0.65;
 }
 /* The seat is a court, and a court is a ring. */
 .casepage .map .mk-court {

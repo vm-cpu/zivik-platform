@@ -346,72 +346,10 @@
 
 /* comfortable tap targets for the term chips */
 
-/* ---- questions: read, so set at reading width ------------------------- */
-.casepage .qa {
-  border-top: 1px solid var(--seam);
-  padding: var(--space-14) 0 var(--space-16);
-}
-/* The list ran at 68ch — 607px measured at 1440 — so the band stopped at the
-   middle of the screen with a half-page of nothing beside it. A question is a
-   short line and a ruled row is not prose: the rows take the whole rail, and
-   the measure that actually matters, the answer's, is capped on the answer
-   itself. Two columns were the alternative and were wrong: a reader works
-   down a list of questions, not across one.
-   Every answer used to be open on arrival, on the argument that a reference
-   page should not hide its substance behind eight disclosures. The owner has
-   decided the other way, and the reasoning is sound: closed, the band is an
-   index of the questions the decision raises, which is what a reader scanning
-   for one answer actually wants, and it stops eight long answers from pushing
-   «Пов'язані рішення» off the end of a page that is already long. Anyone
-   reading top to bottom opens as they go. */
-.casepage .qa-list {
-  margin-top: var(--space-6);
-  border-top: 1px solid var(--prule);
-}
-.casepage .qa-list details {
-  border-bottom: 1px solid var(--prule);
-}
-.casepage .qa-list summary {
-  list-style: none;
-  cursor: pointer;
-  padding: var(--space-5) var(--space-8) var(--space-5) 0;
-  position: relative;
-  font-family: var(--brand-font-display), Georgia, serif;
-  /* --t-body, not --t-lead. A question runs the full 1180px rail, and 20px of
-     display serif across that width reads as a section heading rather than as
-     one of six questions in a list. At 16px it is still the largest thing in
-     the band and no longer competes with the band's own title. */
-  font-size: var(--t-body);
-  line-height: 1.4;
-  color: var(--ink);
-}
-.casepage .qa-list summary::-webkit-details-marker {
-  display: none;
-}
-.casepage .qa-list summary::after {
-  content: "+";
-  position: absolute;
-  right: 0;
-  top: var(--space-5);
-  font: 400 var(--t-lead) var(--brand-font-body);
-  line-height: 1;
-  color: var(--pgold);
-}
-.casepage .qa-list details[open] summary::after {
-  content: "−";
-}
-/* The open question used to turn cherry. With one item open that read as a
-   marker; with every item open it is eight red headings, which is red as
-   section furniture — the one thing DESIGN.md reserves it against. The gold
-   +/− carries the state. */
-.casepage .qa-list p {
-  margin: 0;
-  padding: 0 var(--space-8) var(--space-6) 0;
-  max-width: 72ch;
-  font-size: var(--t-sm);
-  line-height: 1.7;
-  color: var(--ink2);
-}
+/* The `.qa` band's rules stood here — the accordion of common questions.
+   The band is gone (see the note in cases/[slug]/page.tsx), and with it
+   seventy lines of argument about how to set eight disclosures at reading
+   width. If the questions ever come back they come back as new work. */
 
 /* ---- neighbouring decisions: navigation, so cards you click ----------- */
 .casepage .neighbours {

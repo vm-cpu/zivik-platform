@@ -93,7 +93,7 @@ export const iccUkraine: DecisionSummary = {
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
     official:
-      "Ситуація в Україні, ICC-01/22 — розслідування та ордери на арешт, видані Палатою попереднього провадження II",
+      "Ситуація в Україні, ICC-01/22 — розслідування та ордери на арешт, видані Pre-Trial Chamber II",
     judgment: "Ордери від 17 березня 2023 · 5 березня 2024 · 24 червня 2024",
   },
 
@@ -115,8 +115,8 @@ export const iccUkraine: DecisionSummary = {
       en: "The International Criminal Court is investigating war crimes, crimes against humanity and genocide on the territory of Ukraine since 2013. Its judges have issued six arrest warrants: for Putin and Lvova-Belova over the deportation of Ukrainian children, and for four top military commanders over the missile campaign against the power grid. None of this is a verdict: a warrant means reasonable grounds to believe, and the ICC can only try a person it has in custody.",
     },
     whyMatters: {
-      uk: "Уперше під ордером МКС — глава держави, що є постійним членом Ради Безпеки ООН. 125 держав-учасниць Римського статуту юридично зобов'язані заарештувати підозрюваних на своїй території. Ордери вже звузили світ для фігурантів і стали правовою основою для повернення депортованих дітей.",
-      en: "For the first time, the head of state of a permanent member of the UN Security Council is under an ICC warrant. The 125 States Parties to the Rome Statute are legally bound to arrest the suspects on their territory. The warrants have already shrunk the suspects' world and anchor the legal case for returning the deported children.",
+      uk: "Уперше під ордером МКС — глава держави, що є постійним членом Ради Безпеки ООН. 125 держав-учасниць Римського статуту юридично зобов'язані заарештувати підозрюваних на своїй території.",
+      en: "For the first time, the head of state of a permanent member of the UN Security Council is under an ICC warrant. The 125 States Parties to the Rome Statute are legally bound to arrest the suspects on their territory.",
     },
   },
 
@@ -136,7 +136,17 @@ export const iccUkraine: DecisionSummary = {
       },
     },
     {
-      term: { uk: "Палата досудового провадження II", en: "Pre-Trial Chamber II" },
+      /* Not translated. Review's instruction: «не слід перекладати… але
+         залишити Pre-Trial Chamber II». The chamber's name is how it is cited,
+         including in Ukrainian legal writing, and the translations the page
+         carried are ones the Court does not use of itself. Applied at every
+         occurrence rather than only where it was marked — the page had been
+         running three names for one bench: «Палата досудового провадження II»
+         in the Ukrainian summary and the States-Parties answer, «Палатою
+         попереднього провадження II» in the masthead, and the English name
+         in the warrant wall. A bare «Палата» with no numeral is left alone:
+         that is "the Chamber", not the name. */
+      term: { uk: "Pre-Trial Chamber II", en: "Pre-Trial Chamber II" },
       def: {
         uk: "Колегія суддів МКС, яка на стадії розслідування вирішує, чи видавати ордери та чи достатньо доказів для суду.",
         en: "The ICC bench that, at the investigation stage, decides whether to issue warrants and whether the evidence suffices for trial.",
@@ -197,7 +207,7 @@ export const iccUkraine: DecisionSummary = {
       kind: "actor",
     },
     {
-      name: { uk: "Палата досудового провадження II", en: "Pre-Trial Chamber II" },
+      name: { uk: "Pre-Trial Chamber II", en: "Pre-Trial Chamber II" },
       role: {
         uk: "Видала всі шість ордерів і констатувала невиконання обов'язку арешту Монголією (2024) і Таджикистаном (2026).",
         /* Both findings, in both locales. The Ukrainian side named Mongolia and
@@ -248,7 +258,7 @@ export const iccUkraine: DecisionSummary = {
     {
       q: { uk: "Хто зобов'язаний його заарештувати?", en: "Who is obliged to arrest him?" },
       a: {
-        uk: "Усі 125 держав-учасниць Римського статуту, щойно підозрюваний опиниться на їхній території. Практика поки інша, і двічі Суд це зафіксував: у вересні 2024 року Монголія прийняла Путіна без арешту, у жовтні 2025-го — Таджикистан, і щодо обох Палата досудового провадження II ухвалила констатацію за статтею 87(7) з передачею Асамблеї держав-учасниць (ICC-01/22-90 від 24.10.2024 і ICC-01/22-143 від 19.03.2026). До Південної Африки на саміт БРІКС-2023 Путін натомість не поїхав.",
+        uk: "Усі 125 держав-учасниць Римського статуту, щойно підозрюваний опиниться на їхній території. Практика поки інша, і двічі Суд це зафіксував: у вересні 2024 року Монголія прийняла Путіна без арешту, у жовтні 2025-го — Таджикистан, і щодо обох Pre-Trial Chamber II ухвалила констатацію за статтею 87(7) з передачею Асамблеї держав-учасниць (ICC-01/22-90 від 24.10.2024 і ICC-01/22-143 від 19.03.2026). До Південної Африки на саміт БРІКС-2023 Путін натомість не поїхав.",
         en: "All 125 States Parties to the Rome Statute, the moment a suspect enters their territory. Practice has lagged: in September 2024 Mongolia hosted Putin without arresting him — Pre-Trial Chamber II found a breach and referred it to the Assembly of States Parties; Tajikistan did the same in October 2025. Putin chose not to travel to South Africa for the 2023 BRICS summit.",
       },
     },
@@ -359,10 +369,6 @@ export const iccUkraine: DecisionSummary = {
 
   glance: [
     { label: { uk: "Ситуація", en: "Situation" }, value: { uk: "Україна", en: "Ukraine" } },
-    {
-      label: { uk: "Орган", en: "Chamber" },
-      value: { uk: "Палата досудового провадження II", en: "Pre-Trial Chamber II" },
-    },
     { label: { uk: "Місце", en: "Seat" }, value: { uk: "Гаага", en: "The Hague" } },
     { label: { uk: "Номер", en: "Number" }, value: { uk: "ICC-01/22", en: "ICC-01/22" } },
     {
@@ -527,6 +533,20 @@ export const iccUkraine: DecisionSummary = {
       },
     },
     {
+      date: { uk: "21 серп. 2024", en: "21 Aug 2024" },
+      iso: "2024-08-21",
+      track: "jurisdiction",
+      kind: "filing",
+      label: {
+        uk: "Верховна Рада ухвалює закон про ратифікацію Римського статуту",
+        en: "Ukraine's parliament passes the law ratifying the Rome Statute",
+      },
+      note: {
+        uk: "Закон України № 3909-IX «Про ратифікацію Римського статуту Міжнародного кримінального суду та поправок до нього»; Президент підписав його 24 серпня 2024 року.",
+        en: "Law of Ukraine No. 3909-IX, \"On ratifying the Rome Statute of the International Criminal Court and the amendments to it\"; the President signed it on 24 August 2024.",
+      },
+    },
+    {
       date: { uk: "1 січ. 2025", en: "1 Jan 2025" },
       iso: "2025-01-01",
       track: "jurisdiction",
@@ -541,31 +561,37 @@ export const iccUkraine: DecisionSummary = {
       },
     },
     {
-      date: { uk: "25 черв. 2025", en: "25 Jun 2025" },
-      iso: "2025-06-25",
+      date: { uk: "9 жовт. 2025", en: "9 Oct 2025" },
+      iso: "2025-10-09",
       track: "cooperation",
       kind: "context",
       label: {
-        uk: "Підписано угоду про Спецтрибунал щодо злочину агресії",
-        en: "The Special Tribunal for the Crime of Aggression is agreed",
+        uk: "Таджикистан приймає Путіна без арешту",
+        en: "Tajikistan receives Putin without arresting him",
       },
       note: {
-        uk: "Україна і Рада Європи закривають прогалину: щодо агресії юрисдикція МКС у цій ситуації обмежена, бо РФ не є учасницею Статуту.",
-        en: "Ukraine and the Council of Europe close the gap the ICC cannot: its aggression jurisdiction is blocked because Russia is not a party to the Statute.",
+        uk: "Путін прибув до Душанбе на саміт СНД; Таджикистан — держава-учасниця Статуту — його не заарештував, пославшись на зобов'язання в межах СНД щодо імунітету глав держав. Другий такий візит після монгольського.",
+        en: "Putin arrived in Dushanbe for a CIS summit; Tajikistan, a State Party, did not arrest him, citing CIS undertakings on head-of-State immunity. The second such visit after Mongolia's.",
       },
     },
     {
-      date: { uk: "жовт.–груд. 2025", en: "Oct–Dec 2025" },
+      /* Split out of the Tajikistan entry — review: «Про Таджикистан
+         розділити». One row had held both, under a date range of a quarter,
+         and they are different things: a State Party's failure to execute a
+         warrant, and Russia's prosecution of the Court's own officers. The
+         first is a step in this docket; the second is retaliation against the
+         institution. */
+      date: { uk: "груд. 2025", en: "Dec 2025" },
       iso: "2025-12-12",
       track: "cooperation",
       kind: "context",
       label: {
-        uk: "Таджикистан не виконує ордер; Росія заочно «засуджує» прокурора і суддів МКС",
-        en: "Tajikistan fails to arrest; Russia \"sentences\" the ICC's Prosecutor and judges in absentia",
+        uk: "Росія заочно «засуджує» прокурора і суддів МКС",
+        en: "Russia \"sentences\" the ICC's Prosecutor and judges in absentia",
       },
       note: {
-        uk: "Путін прибув до Душанбе 9 жовтня 2025 року на саміт СНД; Таджикистан — держава-учасниця Статуту — його не заарештував, пославшись на зобов'язання в межах СНД щодо імунітету глав держав. Того ж кварталу московський суд заочно призначив Каріму Хану та вісьмом суддям МКС від 3,5 до 15 років; спецдоповідачі ООН зажадали припинити репресії.",
-        en: "Putin arrived in Dushanbe on 9 October 2025 for a CIS summit; Tajikistan, a State Party, did not arrest him, citing CIS undertakings on head-of-State immunity. In the same quarter a Moscow court handed Karim Khan and eight ICC judges 3.5 to 15 years in absentia; UN Special Rapporteurs demanded the reprisals end.",
+        uk: "Московський суд заочно призначив Каріму Хану та вісьмом суддям МКС від 3,5 до 15 років; спецдоповідачі ООН зажадали припинити репресії.",
+        en: "A Moscow court handed Karim Khan and eight ICC judges 3.5 to 15 years in absentia; UN Special Rapporteurs demanded the reprisals end.",
       },
     },
     {
@@ -584,7 +610,7 @@ export const iccUkraine: DecisionSummary = {
         en: "The Chamber finds Tajikistan failed to arrest",
       },
       note: {
-        uk: "Палата досудового провадження II за статтею 87(7) Статуту констатувала, що Таджикистан не виконав запит про арешт і передачу Путіна, і передала питання Асамблеї держав-учасниць через Президію Суду (ICC-01/22-143). Друга така констатація в цій ситуації після монгольської.",
+        uk: "Pre-Trial Chamber II за статтею 87(7) Статуту констатувала, що Таджикистан не виконав запит про арешт і передачу Путіна, і передала питання Асамблеї держав-учасниць через Президію Суду (ICC-01/22-143). Друга така констатація в цій ситуації після монгольської.",
         en: "Pre-Trial Chamber II found under article 87(7) that Tajikistan failed to execute the request to arrest and surrender Mr Putin, and referred the matter to the Assembly of States Parties through the Presidency (ICC-01/22-143). The second such finding in this situation after Mongolia's.",
       },
     },
@@ -658,7 +684,13 @@ export const iccUkraine: DecisionSummary = {
     {
       place: { uk: "Окуповані території", en: "Occupied territories" },
       tag: { uk: "ДІТИ", en: "CHILDREN" },
-      markerKeys: ["crimea", "donetsk", "luhansk"],
+      /* Five, not three. Review's edit: «по дітях додати Херсон і Запоріжжя
+         на мапу». The warrants for the deportation of children name those two
+         oblasts beside Crimea, Donetsk and Luhansk, and the drawing showed
+         three of the five — so the theatre under-reported its own subject.
+         The two points were added to the atlas generator in the same commit;
+         a key with no point behind it draws at [0,0]. */
+      markerKeys: ["crimea", "donetsk", "luhansk", "kherson", "zaporizhzhia"],
       areas: ["crimea", "east"],
       // keep the caption clear of the three markers it points at
       summary: {
@@ -924,11 +956,6 @@ export const iccUkraine: DecisionSummary = {
         note: { uk: "≈ 9,5% від бази · станом на грудень 2025", en: "≈ 9.5% of the database · as of December 2025" },
       },
       {
-        label: { uk: "Людей без світла взимку 2022–23", en: "People without power, winter 2022–23" },
-        value: { uk: "≈ 12 млн", en: "≈ 12 million" },
-        note: { uk: "наслідок кампанії, за якою видано 4 ордери", en: "the campaign behind four of the warrants" },
-      },
-      {
         label: { uk: "Держав-учасниць, що не виконали ордер", en: "States Parties that failed to execute" },
         value: "2",
         note: { uk: "Монголія (2024), Таджикистан (2025)", en: "Mongolia (2024), Tajikistan (2025)" },
@@ -991,6 +1018,18 @@ export const iccUkraine: DecisionSummary = {
       publication: "International Criminal Court",
       date: "8 September 2015",
       type: "official/ICC",
+    },
+    {
+      /* The domestic act behind the deposit and the entry into force, added
+         with the chronology entry for it — review: «додати про закон про
+         ратифікацію». */
+      url: "https://zakon.rada.gov.ua/go/3909-20",
+      title:
+        "Закон України «Про ратифікацію Римського статуту Міжнародного кримінального суду та поправок до нього» № 3909-IX",
+      authors: "",
+      publication: "Верховна Рада України",
+      date: "21 August 2024",
+      type: "official/treaty",
     },
     {
       url: "https://www.icc-cpi.int/Pages/item.aspx?name=201211-otp-statement-ukraine",

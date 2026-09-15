@@ -870,3 +870,21 @@ The measure has been argued four times, so here is the method that settles
     border-bottom: 0;
   }
 }
+
+/* The verbatim band's own heading. `.read h2` is the document's own numbered
+   heading — display serif, large, the space a chapter opening takes — and it
+   wins on specificity over `.lbl`, so the band title has to say it again at
+   (0,3,1) or it renders as a second «1. ФАКТИЧНІ ОБСТАВИНИ» stacked on the
+   first. What it repeats is `.lbl` + `.lbl-onpaper` in 00-base.css; the rule
+   below is that pair and nothing else, so the band reads like every other
+   band's label on the page. */
+.casepage .read h2.read-band-h {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pgold);
+  margin: 0 0 var(--space-6);
+}

@@ -272,26 +272,16 @@ export default function CasePending({
                 they read as what they are. */}
             <dd>{pick(entry.status, locale)}</dd>
           </div>
-          <div>
-            <dt>{t.kind}</dt>
-            <dd>{pick(entry.type, locale)}</dd>
-          </div>
+          {/* «Забрати рядки Галузь, Місце розгляду та реєстраційний номер»
+              (review). Three rows out of eight said less than they cost:
+              «Галузь» reads «Міжнародне публічне» on thirty of the thirty-nine
+              records, the seat repeats the forum named directly above it, and
+              the docket number is already in the eyebrow. What is left is what
+              differs between one pending case and the next. */}
           {entry.amountUsd != null && (
             <div>
               <dt>{pick(T.amount, locale)}</dt>
               <dd className="pend-mono">{money(entry.amountUsd, locale)}</dd>
-            </div>
-          )}
-          {inst?.seat && (
-            <div>
-              <dt>{pick(T.seat, locale)}</dt>
-              <dd>{pick(inst.seat, locale)}</dd>
-            </div>
-          )}
-          {entry.note && (
-            <div>
-              <dt>{t.docket}</dt>
-              <dd className="pend-mono">{pick(entry.note, locale)}</dd>
             </div>
           )}
           {/* The caption in full, and only where the heading is not already

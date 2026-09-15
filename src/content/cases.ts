@@ -86,7 +86,11 @@ export const registryCases: RegistryCase[] = [
     id: "ecthr-4",
     institutionId: "ecthr",
     name: "Ukraine v Russia (re Crimea) [GC]",
-    nameUk: "Україна проти Росії (щодо Криму) — Велика палата",
+    /* No «— Велика палата». Review's edit names the Ukraine-and-Netherlands
+       case; the same reasoning applies to its twin above, so both are changed
+       and this note says so. The formation that heard a case is not part of
+       its name — it is a fact about the hearing, and the summary carries it. */
+    nameUk: "Україна проти Росії (щодо Криму)",
     type: { uk: "Права людини", en: "Human rights" },
     stage: "concluded",
     outcome: "judgment",
@@ -102,7 +106,7 @@ export const registryCases: RegistryCase[] = [
     id: "ecthr-5",
     institutionId: "ecthr",
     name: "Ukraine and Netherlands v Russia [GC]",
-    nameUk: "Україна і Нідерланди проти Росії — Велика палата",
+    nameUk: "Україна і Нідерланди проти Росії",
     type: { uk: "Права людини", en: "Human rights" },
     stage: "satisfaction",
     outcome: "judgment",

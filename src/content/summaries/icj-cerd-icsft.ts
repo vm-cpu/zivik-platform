@@ -26,9 +26,15 @@ export const icjCerdIcsft: DecisionSummary = {
   }),
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
+  /* «Стандартизована назва з одним розміром шрифту» (review). The h1 read
+     «Україна проти Російської Федерації» and nothing more — which is also the
+     h1 of icj-genocide, so the archive's two ICJ cases carried one headline
+     between them and neither said which it was. The form is the one the
+     review settled on the genocide page in the same pass: the parties, a
+     colon, and what the case is about. */
   title: {
-    uk: "Україна проти Російської Федерації",
-    en: "Ukraine v. Russian Federation",
+    uk: "Україна проти Російської Федерації: фінансування тероризму і расова дискримінація",
+    en: "Ukraine v. Russian Federation: terrorism financing and racial discrimination",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
@@ -63,8 +69,16 @@ export const icjCerdIcsft: DecisionSummary = {
 
   plain: {
     tldr: {
-      uk: "Україна судилася з Росією у Міжнародному суді ООН за двома договорами — про фінансування тероризму (події на сході) і про расову дискримінацію (Крим). Суд визнав лише два порушення: Росія не розслідувала ймовірне фінансування тероризму й згорнула шкільну освіту українською мовою в Криму. Більшість вимог України відхилено.",
-      en: "Ukraine took Russia to the International Court of Justice under two treaties — on terrorism financing (events in the east) and on racial discrimination (Crimea). The Court upheld only two breaches: Russia failed to investigate alleged terrorism financing, and it curtailed Ukrainian-language schooling in Crimea. Most of Ukraine's claims were dismissed.",
+    /* The judgment's own opening paragraph, not a retelling of it. The one
+       that stood here was written for the page and showed it — and it also
+       carried «лише два порушення» while the dashboard beside it counted
+       four. Review: «Цей абзац я б теж переписала, бо дуже видно, що це ШІ
+       склав. На наступний текст (він взятий з колонки САМЕРІ, тому звідти
+       треба забрати)». So the paragraph moved rather than being copied: the
+       `lead` block is gone from both summary files, and the closing sentence
+       about the dismissal of most claims is the review's own addition. */
+      uk: "31 січня 2024 року Міжнародний суд ООН («Суд») виніс рішення по суті у справі, порушеній Україною проти Російської Федерації у 2017 році («Рішення»). Україна стверджувала про численні порушення Росією двох договорів: Міжнародної конвенції про боротьбу з фінансуванням тероризму 1999 року («ICSFT») та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації 1965 року («CERD»). Більшість вимог України було відхилено.",
+      en: "On January 31, 2024, the International Court of Justice (“the Court”) issued a judgment on the merits of the case brought by Ukraine against the Russian Federation in 2017 (“the Judgment”). Ukraine alleged numerous violations by Russia of two treaties: the 1999 International Convention for the Suppression of the Financing of Terrorism (“ICSFT”), and the 1965 International Convention on the Elimination of All Forms of Racial Discrimination (“CERD”). Most of Ukraine's claims were dismissed.",
     },
     whyMatters: {
       uk: "Рішення Міжнародного суду ООН остаточне й оскарженню не підлягає, але не має механізму примусового виконання. Його головна вага — фактологічна та правова: воно офіційно фіксує порушення й дає опору для майбутніх позовів, статей та аргументів.",
@@ -258,9 +272,16 @@ export const icjCerdIcsft: DecisionSummary = {
     /* The accented tile of this dashboard. The template used to give it the
        accent by matching the English label string; the flag the model already
        has for it carries the same fact and survives a rewording. */
-    { value: "4", label: { uk: "порушення", en: "violations found" }, em: true },
+    {
+      value: "4",
+      label: { uk: "порушення", en: "violations found" },
+      note: {
+        uk: "2 за конвенціями · 2 за наказом 2017 року",
+        en: "2 under the conventions · 2 under the 2017 Order",
+      },
+      em: true,
+    },
     { value: "7", label: { uk: "років розгляду", en: "years to judgment" } },
-    { value: "139", label: { uk: "сторінок", en: "pages" } },
   ],
 
   glance: [
@@ -281,18 +302,23 @@ export const icjCerdIcsft: DecisionSummary = {
     },
   ],
 
-  /* Two of these four carry a sort key and two cannot.
+  /* All four carry a sort key now.
 
-     «19 квітня 2017» and «31 січня 2024» are single days and were simply
-     missing one — which is why this page was the only one of the eight with
-     no year rail and no anchors on its events, so nothing could link to a
-     moment in it. «Поч. 2014» and «2017» are a season and a year: widening
-     either into 1 January would invent a date and corrupt every sort built on
-     it, which is the rule `CaseDate` in content/types.ts already states. They
-     keep their authored position and sort last, as the timeline provides. */
+     They did not, and the review found the result: «Хронологія подана не в
+     хронологічному порядку». Events without `iso` sort last, so «поч. 2014»
+     and «2017» — the two oldest — printed under the 2024 judgment.
+
+     The reasoning that left them keyless was that widening a season or a year
+     into 1 January invents a day. It does, but `iso` is not the printed date:
+     the visible label still reads «поч. 2014», and `TimelineEvent.iso` is
+     documented as a sort key whose date «may be a range or a month». The
+     timeline already reads a four-character key at year precision — see the
+     rail in CaseTimeline.tsx, which places `"2014"` as `2014-01-01`. So the
+     key is given at the precision the label claims and no finer. */
   timeline: [
     {
       date: { uk: "поч. 2014", en: "Early 2014" },
+      iso: "2014",
       label: {
         uk: "РФ встановлює контроль над Кримським півостровом",
         en: "Russian Federation takes control of the Crimean peninsula",
@@ -301,6 +327,7 @@ export const icjCerdIcsft: DecisionSummary = {
     },
     {
       date: { uk: "2017", en: "2017" },
+      iso: "2017",
       label: {
         uk: "Україна подає позов до Суду",
         en: "Ukraine institutes proceedings before the Court",
@@ -527,7 +554,10 @@ export const icjCerdIcsft: DecisionSummary = {
 
   theatres: [
     {
-      place: { uk: "Східна Україна", en: "Eastern Ukraine" },
+      /* «Схід України», not «Східна Україна» — review's correction. The
+         adjective names a region as though it were a fixed entity; the
+         genitive names a part of the country, which is what the theatre is. */
+      place: { uk: "Схід України", en: "Eastern Ukraine" },
       tag: "ICSFT",
       markerKeys: ["donetsk", "luhansk"],
       areas: ["east"],
