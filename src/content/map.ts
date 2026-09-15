@@ -221,25 +221,20 @@ export function markerSize(weight: number): number {
  * lives with the map's data rather than in the dictionaries because it is only
  * true of this drawing and its six places: reword the sites and it changes.
  */
-/**
- * Why a court on this map has no dashed line to anywhere.
- *
- * Singular and plural, because a card that read «1 провадження у бібліотеці»
- * and then «Ці провадження не привʼязані…» disagreed with itself in front of
- * the reader. The sentence also says *why* now: the six marks on this drawing
- * are places where harm happened, and a gas-contract arbitration, an asset
- * immobilisation and an extradition are not about a place.
- */
-export const MAP_COURT_NO_SITES: { one: Localized; many: Localized } = {
-  one: {
-    uk: "Це провадження не про жодне з шести місць на мапі — мапа показує, де сталося, а тут спір іншого роду.",
-    en: "This proceeding is not about any of the six places on the map — the map marks where harm happened, and this is a dispute of another kind.",
-  },
-  many: {
-    uk: "Ці провадження не про жодне з шести місць на мапі — мапа показує, де сталося, а тут спори іншого роду.",
-    en: "These proceedings are not about any of the six places on the map — the map marks where harm happened, and these are disputes of another kind.",
-  },
-};
+/* ── MAP_COURT_NO_SITES — removed ──────────────────────────────────────────
+   It read «Це провадження не про жодне з шести місць на мапі — мапа показує,
+   де сталося, а тут спір іншого роду», and it was both dead and false. Dead:
+   map/page.tsx passed it to EventsMap and EventsMap declared it in its label
+   type, and nothing ever rendered it. False: there are no six places. The map
+   stopped marking where harm happened when it was re-conceived as the States
+   whose courts hear these proceedings, and a sentence explaining why a
+   proceeding is not about any of them explains nothing about the map that
+   exists.
+
+   Dead and false is worse than either alone: nothing on screen could reveal
+   it, and the day someone re-enabled the branch it would have shipped a claim
+   about six marks that are not there. */
+
 
 
 export const MAP_COURTS: MapCourt[] = [

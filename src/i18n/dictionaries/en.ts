@@ -97,7 +97,7 @@ const en: Dictionary = {
     zoomIn: "Zoom in",
     zoomOut: "Zoom out",
     wheelHint: "Ctrl or ⌘ + scroll to zoom",
-    overview: "Overview map. Pick a place below — or open it full screen.",
+    overview: "An overview map. Pick a court from the list below, or open it full screen.",
     openFull: "Full screen",
     closeFull: "Leave full screen",
     reads: "Decisions written up",
@@ -120,16 +120,15 @@ const en: Dictionary = {
     pageLede: "The violations happened in Ukraine; they are judged thousands of kilometres away. The map shows how far the answer reached: the states whose courts are hearing these proceedings.",
     backHome: "Home",
   },
+  /* Eight keys lighter. `label`, `heading`, `description`, `fullRegistry`,
+     `allCases`, `caseWord`, `legendLit` and `legendQueued` belonged to the
+     library band on the home page — the five courts, their caseloads, a row
+     of cases apiece — which the review took off. The component went with it;
+     these were the only place its words lived, and every one of them made a
+     claim about a surface that no longer exists. What stays is what the
+     library page and the map still read: the stage and outcome vocabularies
+     and the words around them. */
   registry: {
-    label: "Library of decisions",
-    heading: "Proceedings against Russia, in one library",
-    description:
-      "Here the light is already on. Every proceeding carries its year, its forum, where it stands, and a link to the source.",
-    fullRegistry: "The whole library",
-    allCases: "All {count} {court} {cases} →",
-    caseWord: { one: "case", few: "cases", many: "cases" },
-    legendLit: "Ready to read: summary, timeline, documents",
-    legendQueued: "Only the case record so far — the summary is being written",
     stageName: "Stage",
     outcomeName: "Decision type",
     stage: {

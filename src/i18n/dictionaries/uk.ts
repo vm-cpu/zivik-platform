@@ -177,7 +177,13 @@ const uk = {
     /* What the drawing says on a phone, where the marks are too small to aim
        at and the list below is the interface. It was silent: a map-shaped
        picture with a grab cursor and a zoom stepper that answered nothing. */
-    overview: "Оглядова мапа. Оберіть подію нижче — або відкрийте на весь екран.",
+    /* It said «Оберіть подію нижче». There is no event below and no event
+       anywhere: this is the coarse-pointer line, shown on a touch screen
+       where the marks are not targets, and what is below it now is the list
+       of seats. It is the one string of this family that can still reach a
+       reader — the rest self-hide on empty data — so it is corrected rather
+       than removed. */
+    overview: "Оглядова мапа. Натисніть на суд у списку нижче — або відкрийте на весь екран.",
     openFull: "На весь екран",
     closeFull: "Вийти з повного екрана",
     reads: "Опрацьовані рішення",
@@ -231,28 +237,27 @@ const uk = {
     pageLede: "Порушення сталися в Україні, а судять їх за тисячі кілометрів звідти. Мапа показує, куди саме сягнула відповідь: держави, чиї суди ведуть ці провадження.",
     backHome: "На головну",
   },
+  /* Eight keys lighter. `label`, `heading`, `description`, `fullRegistry`,
+     `allCases`, `caseWord`, `legendLit` and `legendQueued` belonged to the
+     library band on the home page — the five courts, their caseloads, a row
+     of cases apiece — which the review took off. The component went with it;
+     these were the only place its words lived, and every one of them made a
+     claim about a surface that no longer exists. What stays is what the
+     library page and the map still read: the stage and outcome vocabularies
+     and the words around them. */
   registry: {
     /* The band on the home page previews the collection, so it is labelled
        with the collection's one name — the same name the page, the nav item
        and the footer link carry. The key stays `registry.*`; the words the
        reader sees do not. See the note at the top of this file. */
-    label: "Бібліотека рішень",
     /* It read «Кожне провадження проти Росії — в одній бібліотеці». That is a
        claim of completeness, and the library is still being filled: one
        proceeding we have not reached yet makes the heading false. The band
        says where the proceedings are gathered, not that they are all here.
        Owner's correction. */
-    heading: "Провадження проти Росії — в одній бібліотеці",
-    description:
-      "Тут уже світло. Кожне провадження — з роком, судом, станом розгляду і посиланням на першоджерело.",
-    fullRegistry: "Уся бібліотека",
-    allCases: "Усі {count} {cases} {court} →",
     /* Ukrainian counts in three forms: 1 справа, 2–4 справи, 5+ справ. The
        string used to hardcode the third, so ITLOS and Finland read "Усі 1
        справ" on the home page. */
-    caseWord: { one: "справа", few: "справи", many: "справ" },
-    legendLit: "Можна прочитати: переказ, хронологія, документи",
-    legendQueued: "Поки тільки картка справи — огляд пишемо",
     /* One chip used to carry «У розгляді», «Ордер» and «Рішення» side by side,
        which mixes two questions: where the proceedings stand, and what the
        forum issued. They are two tag dimensions now. Every label below is the

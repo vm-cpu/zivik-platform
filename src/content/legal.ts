@@ -450,10 +450,19 @@ export const terms: LegalDocument = {
       heading: { uk: "Призначення Сайту", en: "What the Site is for" },
       blocks: [
         {
+          /* «Мапа судів», not «мапа подій».
+
+             The Terms say what the Site holds, so a component of it that has
+             been re-conceived cannot go on being described by its old name:
+             the map carried a marker per event when this was written and now
+             shows the States whose courts hear these proceedings. Of every
+             place on the site where that name survived, this was the worst —
+             a legal document is the text a reader is entitled to rely on. The
+             name used here is the map page's own title. */
           kind: "p",
           text: {
-            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, огляди рішень, хронології, мапа подій і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
-            en: "The Site is an open library of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a list of cases, decision summaries, chronologies, an events map and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
+            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, огляди рішень, хронології, мапа судів і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
+            en: "The Site is an open library of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a list of cases, decision summaries, chronologies, a map of the courts and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
           },
         },
         {

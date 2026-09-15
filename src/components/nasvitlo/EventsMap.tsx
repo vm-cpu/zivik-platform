@@ -660,15 +660,10 @@ export default function EventsMap({
     legendPick: string;
     /** Heading over the sites a selected court hears. */
     courtHears: string;
-    /**
-     * And what stands in its place where the court hears none of them.
-     *
-     * Three of the nine do — Stockholm, Vilnius and Brussels — and the card
-     * used to print the heading over nothing at all. Comes from
-     * `MAP_COURT_NO_SITES` in src/content/map.ts, because it is a statement
-     * about this map's six places rather than a piece of chrome.
-     */
-    courtNoSites: { one: string; many: string };
+    /* `courtNoSites` was declared here and never read. It named a sentence
+       in content/map.ts about "the six places on the map"; the map has not
+       marked places since it became a map of the States whose courts hear
+       these proceedings, and the sentence is gone with the field. */
     /**
      * "{n} {w} in the library" — the court's own caseload, with the noun left
      * to `caseloadWord` because it agrees with the number. The template used

@@ -2,48 +2,13 @@
 .nsv-root *,.nsv-root *::before,.nsv-root *::after{box-sizing:border-box}
   a{color:inherit}
 
-  /* ---- turn 14: court accordion on home ---- */
-  .acc{border-top:1px solid var(--rule)}
-  .acc details{border-bottom:1px solid var(--rule);background:var(--surface);transition:background-color var(--dur) var(--ease)}
-  /* Five children: abbr, name, count, dots, chevron. This template used to
-     live behind `.regprog~` and the base was four columns — so removing the
-     progress strip dropped the chevron onto a row of its own. */
-  .acc summary{list-style:none;display:grid;grid-template-columns:104px 1fr auto auto 20px;align-items:center;gap:var(--space-5);padding:var(--space-4) var(--space-7);cursor:pointer}
-  .acc summary::-webkit-details-marker{display:none}
-  .acc summary:hover,.acc details[open] summary{background:var(--paper2)}
-  .acc .ab{font:700 var(--t-cap) var(--brand-font-body);letter-spacing:.05em;color:var(--red)}
-  .acc .fn{font-size:var(--t-sm);color:var(--ink)}
-  .acc .fn i{color:var(--faint);font-style:normal}
-  .acc .cn{font-family:var(--brand-font-display),serif;font-size:var(--t-h3);line-height:1;color:var(--ink)}
-  .acc .cv{width:8px;height:8px;border-right:2px solid var(--faint);border-bottom:2px solid var(--faint);transform:rotate(45deg) translateY(-2px);transition:transform .25s ease;justify-self:end}
-  .acc details[open] .cv{transform:rotate(-135deg) translateY(-2px)}
-  .acc .body{padding:0 var(--space-7) var(--space-5);display:flex;flex-direction:column}
-  .acc .arow{display:grid;grid-template-columns:1fr 118px 88px;align-items:center;gap:var(--space-4);padding:var(--space-3) var(--space-3);margin:0 -var(--space-3);border-radius:var(--r-sm);border-top:1px solid var(--rule);text-decoration:none;transition:background-color var(--dur) var(--ease)}
-  .acc .arow:hover{background:var(--paper2);border-top-color:transparent}
-  .acc .arow:hover .at{color:var(--red)}
-  .acc .arow>span:has(.at){display:flex;flex-direction:column}
-  .acc .at{font-family:var(--brand-font-display),serif;font-size:var(--t-body);line-height:1.25;color:var(--ink)}
-  .acc .an{font-size:var(--t-cap);color:var(--ink2);margin-top:3px}
-  /* .chip and .st-* live in shared.css — used by the registry table too */
-  .acc .arow .chip{justify-self:start}
-  .acc .ad{font:500 var(--t-cap) var(--brand-font-body);color:var(--faint);text-align:right}
-  .acc .more{align-self:start;margin-top:var(--space-3);font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--red);text-decoration:none}
-  /* ---- turn 15: readiness — lit (analysed) vs queued ---- */
-  .acc .prog{display:flex;align-items:center;gap:5px;justify-self:end}
-  .acc .prog i{width:7px;height:7px;border-radius:50%;background:var(--rule)}
-  .acc .prog i.on{background:var(--brand-gold-mark);box-shadow:0 0 6px color-mix(in srgb,var(--brand-gold-mark) 65%,transparent)}
-  .acc .arow .mk{width:9px;height:9px;border-radius:50%;flex:none;margin-top:6px}
-  .acc .arow.lit .mk{background:var(--brand-gold-mark);box-shadow:0 0 8px 1px color-mix(in srgb,var(--brand-gold-mark) 50%,transparent)}
-  .acc .arow.dim .mk{border:1.5px solid var(--rule);background:transparent}
-  .acc .arow{grid-template-columns:9px 1fr 118px 88px;align-items:start}
-  .acc .arow.dim .at{color:var(--muted)}
-  .acc .arow.dim:hover .at{color:var(--ink)}
-  /* inert rows (no on-site page yet) don't feign clickability */
-  .acc .arow.dim .an{color:var(--muted)}
-  /* ---- mobile adaptation of the home page blocks ---- */
-  .legend{display:flex;flex-wrap:wrap;gap:var(--space-5);padding:var(--space-4) var(--space-7) 0;border-top:1px solid var(--rule);margin:0 var(--space-7)}
-  .legend span{display:flex;align-items:center;gap:var(--space-2);font-size:var(--t-cap);color:var(--ink2)}
-  .legend i{width:9px;height:9px;border-radius:50%;flex:none}
+  /* ── The court accordion and its legend — removed with the component ───
+     Forty-nine rules for the library band on the home page: five courts as
+     open/close panels, a row per case inside each, a progress strip of dots
+     and a three-colour legend under it. The review took the band off the
+     home page and `Registry.tsx` went with it, so these styled nothing —
+     and `npm run ghosts` named all fourteen of their classes the moment
+     the component was deleted, which is the check working as intended. */
   .lbl{display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)}
   .lbl::before{content:"";width:34px;height:3px;background:var(--red);flex:none}
   .lbl span{font:700 var(--t-micro) var(--brand-font-body),sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
@@ -448,19 +413,7 @@
   .pj{min-height:auto !important;padding-bottom:var(--space-10) !important}
   /* keep the lamp; only drop the hover hint on small screens */
   .lmp .chint{display:none !important}
-  .acc details{position:relative}
-  .acc summary{grid-template-columns:1fr auto !important;gap:4px var(--space-3) !important;padding:var(--space-3) var(--space-4) !important}
-  .acc .ab{grid-column:1;grid-row:1}
-  .acc .cn{grid-column:2;grid-row:1;justify-self:end}
-  .acc .fn{grid-column:1 / 3;grid-row:2}
-  .acc .prog{grid-column:1 / 3;grid-row:3;justify-self:start;margin-top:5px}
-  .acc .cv{position:absolute;right:16px;top:22px}
-  .acc .body{padding:0 var(--space-4) var(--space-4)}
-  .acc .arow{grid-template-columns:9px 1fr auto !important;gap:4px var(--space-2) !important}
-  .acc .arow > span:has(.at){grid-column:2 / 4}
-.acc .arow .chip{grid-column:2}
-  .acc .arow .ad{grid-column:3;justify-self:end;text-align:right}
-  .legend{flex-direction:column;gap:var(--space-2)}
+  /* The accordion's phone layout went with the accordion — see above. */
   .nsv-slogan{gap:var(--space-3);padding:var(--space-6) var(--space-4)}
   .nsv-slogan .rule{display:none}
 }
@@ -486,7 +439,10 @@
      silently skipped every band that is not one — the quote band is a
      <figure> and sat 100px left of its neighbours for as long as it had been
      one, with nothing to show that a rule had simply missed it. */
-  .page .lmp > :not(.pj):not(.acc){
+  /* `:not(.acc)` went with the accordion: the band it excluded is gone, and
+     an exclusion for an element nobody renders is a rule reading heavier than
+     it is. */
+  .page .lmp > :not(.pj){
     /* The gutter grows to whatever it takes to keep the content within
        --measure. Capping the band itself (max-width + margin:auto) looked
        identical on the paper sections and broke every band that carries its
@@ -496,13 +452,7 @@
     padding-left:max(clamp(28px, 5vw, 96px), calc((100% - var(--measure)) / 2)) !important;
     padding-right:max(clamp(28px, 5vw, 96px), calc((100% - var(--measure)) / 2)) !important;
   }
-  /* inset the accordion content (rows span full width, content aligns to the
-     same fluid margin as the other sections) */
-  .acc summary,
-  .acc .body{
-    padding-left:max(clamp(28px, 5vw, 96px), calc((100% - var(--measure)) / 2)) !important;
-    padding-right:max(clamp(28px, 5vw, 96px), calc((100% - var(--measure)) / 2)) !important;
-  }
+  /* The accordion's own copy of this gutter went with the component. */
 }
 
 /* ---- hero credit: who stands behind the archive ------------------------ */

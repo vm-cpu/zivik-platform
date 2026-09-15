@@ -14,7 +14,6 @@ import { pick } from "@/content/types";
 import {
   MAP_COURTS,
   courtMarks,
-  MAP_COURT_NO_SITES,
   seatsLine,
   seatsList,
 } from "@/content/map";
@@ -165,10 +164,6 @@ const stageWord = (k: string | undefined) =>
             legendPick: dict.mapSection.legendPick,
             courtHears: dict.mapSection.courtHears,
             inLibrary: dict.mapSection.inLibrary,
-            courtNoSites: {
-              one: pick(MAP_COURT_NO_SITES.one, locale),
-              many: pick(MAP_COURT_NO_SITES.many, locale),
-            },
             caseload: dict.mapSection.caseload,
             caseloadWord: dict.mapSection.caseloadWord,
             zoomLabel: dict.mapSection.zoomLabel,
