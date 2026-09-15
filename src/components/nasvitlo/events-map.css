@@ -724,32 +724,9 @@
 /* Several institutions can share one city, so this heading is a list rather
    than a name; it takes a smaller size and a tighter leading than an event
    title, which is always one thing. */
-.emap-court-name {
-  font-size: var(--t-sm);
-  line-height: 1.35;
-}
 /* Same row as a decision link, but it moves the selection rather than
    navigating — so it is a button, and says so by not being underlined. */
-.emap-court-site {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: 100%;
-  padding: var(--space-2) var(--space-2);
-  background: var(--brand-night);
-  border: 0;
-  border-left: 2px solid var(--c);
-  text-align: left;
-  cursor: pointer;
-  transition: background var(--dur) var(--ease);
-}
 .emap-court-site:hover,
-.emap-court-site:focus-visible {
-  background: var(--brand-night-2);
-}
-.emap-court-site .emap-read-t {
-  color: var(--brand-cream);
-}
 
 /* The cards' wrapper must not become a layout box of its own — they are
    absolutely placed against .emap-figure. It is no longer the live region:
@@ -1254,12 +1231,6 @@
 /* The docked seat, drawn at the legend's scale from the same two marks the
    drawing uses — .emap-court-tail and .emap-court-bearing — so the reader
    matches the glyph to the map by sight rather than by reading about it. */
-.emap-key .k-tail {
-  stroke: var(--brand-gold-lamp);
-  stroke-width: 1.2;
-  stroke-dasharray: 3 4;
-  opacity: 0.55;
-}
 .emap-key .k-bearing {
   fill: none;
   stroke: var(--brand-gold-lamp);
@@ -1400,12 +1371,6 @@
 /* Cases a court hears that have no write-up yet: named, but not links, because
    there is nothing to open. Quieter than the read list beside it so the two do
    not look like the same offer. */
-.emap-listed li {
-  border-left-color: var(--brand-night-rule);
-}
-.emap-listed .emap-read-t {
-  color: var(--brand-muted-dark);
-}
 
 
 /* ============================================================================
@@ -1545,36 +1510,7 @@
    twenty-two, but a forty-word arbitration style is still forty words, and
    what a card owes the reader is enough to recognise the thing — not the whole
    citation, which is what the registry is for. */
-.emap-listed .emap-read-t {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  overflow: hidden;
-}
-.emap-listed .emap-read-f {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-}
 /* And the way to all of it. */
-.emap-card a.emap-more {
-  display: inline-block;
-  margin-top: var(--space-3);
-  padding: 7px 0;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--brand-gold-pale);
-  text-decoration: none;
-}
-.emap-card a.emap-more:hover {
-  color: var(--brand-cream);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
 
 /* "Written up: 3 of 11" — the gap between what a place accounts for and what a
    reader can open. Quieter than the links under it: it is a fact about the
@@ -1829,24 +1765,11 @@ a.emap-seat-count:focus-visible {
 }
 /* The listed rows are not links, so their tags need the indent the link's own
    padding gives the others. */
-.emap-listed .emap-tags {
-  padding-left: var(--space-2);
-  margin-bottom: 4px;
-}
 
 /* The official citation, under the Ukrainian line that says what the case is.
    Quieter and smaller than the name above it: it is the thing to quote, not
    the thing to read. Clamped like the name was, because a PCA style runs to
    forty words. */
-.emap-read-cite {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  overflow: hidden;
-  font: 400 var(--t-micro)/1.4 var(--brand-font-mono);
-  color: var(--brand-faint-dark);
-}
 
 /* ---- folding the key away ---- */
 /* A legend is read once and then remembered. After that it is a column of
@@ -2131,34 +2054,14 @@ a.emap-seat-count:focus-visible {
    thing you quote, so it is mono and quiet. The note is metadata about the
    citation, so it is smaller than the citation and quieter again — a step
    down, not a repeat. */
-.emap-listed .emap-read-t {
-  color: var(--brand-cream);
-}
 /* The step between the citation and its docket note is size, not opacity.
    Opacity was the first try and it is the wrong tool for a step this small:
    --brand-faint-dark measures 4.89:1 on this ground and holds AA, and the
    same colour at 85% measures 3.89:1 and does not. A dimmer grey would have
    the same problem. Both lines keep the colour; the note is a point smaller
    and a line below. */
-.emap-read-cite {
-  margin-top: 1px;
-  font-size: var(--t-micro);
-  color: var(--brand-faint-dark);
-}
-.emap-listed .emap-read-f {
-  margin-top: 2px;
-  font-size: var(--t-micro);
-  color: var(--brand-faint-dark);
-}
 /* Air between one case and the next. They were 1px apart with three lines
    each, so nine lines read as one paragraph. */
-.emap-listed li {
-  padding: 7px 0 var(--space-2) var(--space-2);
-  border-left: 2px solid var(--brand-night-rule);
-}
-.emap-listed li + li {
-  margin-top: 5px;
-}
 
 /* The way out of the list. It was the same gold as the decision links above it
    and sat in the same column, so it read as one more case rather than as the
@@ -2169,21 +2072,7 @@ a.emap-seat-count:focus-visible {
    `<surface> a` rule. Measured before this: --brand-red on --brand-night-2,
    1.69:1, which is a link you cannot read. The sibling `.emap-reads a` was
    never affected because it already carries a descendant `a`. */
-.emap-card a.emap-more {
-  display: block;
-  margin-top: var(--space-3);
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--brand-night-rule);
-  font: 500 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--brand-muted-dark);
-}
 .emap-card a.emap-more:hover,
-.emap-card a.emap-more:focus-visible {
-  color: var(--brand-gold-pale);
-  text-decoration: none;
-}
 
 
 /* ---- moving the card ---- */

@@ -654,16 +654,6 @@ The measure has been argued four times, so here is the method that settles
    first thing read in the entry: it runs on --ink2 (7.78:1) and the court is
    marked by --ink (17.57:1) rather than by hue, with the chip's border in
    --brand-gold-ink to carry the one distinction that is not a word. */
-.casepage .who-kind {
-  justify-self: start;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink2);
-  border: 1px solid var(--seam);
-  border-radius: var(--r-pill);
-  padding: 3px var(--space-2);
-}
 /* The court's gold edge. It was on the chip; the chip is gone with grouping,
    and this was the one thing it said that the group heading does not — so it
    moves to the card itself rather than being lost. */
@@ -721,36 +711,6 @@ The measure has been argued four times, so here is the method that settles
 /* The six `.casepage .faq …` rules that were here are gone. The FAQ renders
    `.qa-list` (page.tsx, the `#questions` band); `.faq` appears in no component
    in the repository, so none of them had matched anything for some time. */
-.casepage .related {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-3);
-}
-.casepage .related a {
-  display: grid;
-  gap: var(--space-1);
-  padding: var(--space-4) var(--space-5);
-  background: var(--card);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
-  text-decoration: none;
-  transition: box-shadow var(--dur) var(--ease),
-              transform var(--dur) var(--ease);
-}
-.casepage .related a:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-.casepage .related b {
-  font: 700 var(--t-sm) var(--brand-font-body);
-  color: var(--ink);
-}
-.casepage .related span {
-  font-size: var(--t-cap);
-  color: var(--ink3);
-}
 
 /* ============================================================================
    Instruments an award earns.
@@ -776,16 +736,6 @@ The measure has been argued four times, so here is the method that settles
 }
 
 /* provenance notice at the head of the summary text: quiet, but on record */
-.casepage .provenance {
-  margin: 0 0 var(--space-6);
-  padding: var(--space-3) var(--space-5);
-  border-left: 3px solid var(--pgold);
-  background: var(--paper2);
-  border-radius: var(--r-sm);
-  font-size: var(--t-cap);
-  line-height: 1.55;
-  color: var(--ink2);
-}
 
 /* ---- glossary terms, marked in the running text -------------------------
    The definitions used to live in one band at the foot of the page, so a

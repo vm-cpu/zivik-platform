@@ -345,9 +345,6 @@
 
 
 /* comfortable tap targets for the term chips */
-.casepage .termchips a {
-  padding: var(--space-2) var(--space-4);
-}
 
 /* ---- questions: read, so set at reading width ------------------------- */
 .casepage .qa {

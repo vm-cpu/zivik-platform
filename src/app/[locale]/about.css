@@ -148,6 +148,38 @@
 
 /* ---- masthead ----------------------------------------------------------- */
 
+/* The masthead is lit too.
+
+   Both dark bands on this page are the same ground, and only one of them was
+   showing any light: the quotation carries a lit seam across the join at its
+   top and this one carried nothing, so the page opened on a dark band that
+   read as merely dark rather than as a surface under a lamp. The same
+   hairline, at the foot — where this band meets paper — so each dark band
+   marks its own edge against the light half of the page.
+
+   `position: relative` on the band and the rule on a pseudo-element rather
+   than a border, because a border would be a flat line across a full-width
+   band; this one fades out at both ends, which is light falling on an edge
+   rather than a frame around a box. */
+.abt-mast {
+  position: relative;
+}
+.abt-mast::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--brand-gold-lit) 30%, transparent) 12%,
+    var(--brand-gold-lit) 50%,
+    color-mix(in srgb, var(--brand-gold-lit) 30%, transparent) 88%,
+    transparent 100%
+  );
+}
 .abt-mast .abt-in {
   padding-top: clamp(44px, 5vw, 76px);
   padding-bottom: clamp(44px, 5vw, 76px);
@@ -435,6 +467,23 @@
 }
 .abt-quote blockquote:lang(en) {
   quotes: "\201C" "\201D" "\2018" "\2019";
+}
+/* The marks in gold, not in cream.
+
+   Gold on this site is the lamp's light, and it lives on the dark grounds —
+   measured across the home page it is the lit wordmark, the button under the
+   lamp, the case name in the Court's quotation and the seam above it. On
+   /about it had shrunk to four hairlines over the mission and one across the
+   top of this band: no gold text anywhere, which is what the owner saw.
+
+   The guillemets are the right place to give it back. They are the one
+   ornament on the page, they mark someone else speaking, and gold-lit is
+   already the colour this site gives a source — the same value carries the
+   seam a few pixels above them. Cream stays on the words themselves, so the
+   quotation reads and the marks frame it. 9.03:1 on --brand-ember. */
+.abt-quote blockquote::before,
+.abt-quote blockquote::after {
+  color: var(--brand-gold-lit);
 }
 .abt-quote blockquote::before {
   content: open-quote;

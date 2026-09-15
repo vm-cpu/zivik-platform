@@ -381,8 +381,17 @@ drift from the system it enforces — and fails the run on a font size off the
 anywhere at all, or the loss of the site's widow guard.
 
 `npm run verify` is the other half, and it reads what the build emitted rather
-than what the source says: `scripts/flag-check.mjs` for the feature flag and
-`scripts/build-css-check.mjs` for declarations the design depends on. Source
+than what the source says: `scripts/flag-check.mjs` for the feature flag,
+`scripts/build-css-check.mjs` for declarations the design depends on, and
+`scripts/ghost-check.mjs` for rules that style nothing — a selector whose class
+appears in no class attribute and on no built page cannot match anything, and
+is read, weighed and shipped by everyone who touches the file afterwards. It
+lives in `verify` rather than `check` because it needs both sources: the
+markup, for a class a script adds on a click, and the build, for one written
+through a variable. The first sweep found 55 of them and removed 111 rules —
+a scales-of-justice illustration, a film roll, a projector, an older lamp
+switch and a language flag, all of whose markup had gone years before their
+CSS. Run it alone with `npm run ghosts`. Source
 being right is not proof a rule shipped — the widow guard spent an afternoon
 looking as though the pipeline were stripping it when a dev server was serving
 a stale chunk, and reading the output is the only way to tell those apart.

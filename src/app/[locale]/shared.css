@@ -247,16 +247,6 @@
 /* Quiet tone — navigation, not contact. Same pill, the outlined idiom the
    home page's `.btn .btn-o` already uses, so a "see everything" link does not
    compete with the one control that asks the reader to do something. */
-.page a.nsv-cta.nsv-cta.nsv-cta-quiet {
-  background: transparent;
-  border-color: var(--brand-red);
-  color: var(--brand-red);
-}
-.page a.nsv-cta.nsv-cta.nsv-cta-quiet:hover {
-  background: transparent;
-  border-color: var(--brand-red-dark);
-  color: var(--brand-red-dark);
-}
 
 /* Touch targets ------------------------------------------------------------
    WCAG 2.5.8 asks for 24×24 CSS pixels on anything a finger has to hit, and

@@ -81,13 +81,6 @@
   color: var(--ink);
   margin: 0 0 var(--space-3);
 }
-.team-lede {
-  max-width: 60ch;
-  font-size: var(--t-sm);
-  line-height: 1.6;
-  color: var(--ink2);
-  margin: 0;
-}
 
 /* One row per person: the name carries the weight, the role sits opposite it
    on the same baseline. A card grid would imply photographs we do not have. */

@@ -719,52 +719,6 @@
 }
 
 /* timeline */
-.casepage .timeline {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-}
-.casepage .timeline::before {
-  content: "";
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  right: 6px;
-  height: 1px;
-  background: var(--prule);
-}
-.casepage .tl {
-  position: relative;
-  padding: var(--space-8) var(--space-5) 0 0;
-}
-.casepage .tl::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  background: var(--paper2);
-  border: 2px solid var(--pgold);
-}
-.casepage .tl[data-kind="judgment"]::before {
-  background: var(--pred);
-  border-color: var(--pred);
-}
-.casepage .tl-date {
-  font: 500 var(--t-cap) var(--brand-font-mono);
-  letter-spacing: 0.01em;
-  color: var(--pgold);
-  font-variant-numeric: tabular-nums;
-}
-.casepage .tl-label {
-  margin: var(--space-2) 0 0;
-  font-size: var(--t-sm);
-  line-height: 1.45;
-  color: var(--ink2);
-  max-width: 26ch;
-}
 
 
 
