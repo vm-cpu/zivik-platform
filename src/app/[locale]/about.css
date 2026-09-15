@@ -312,13 +312,10 @@
    --ink2 for all of it, which is what every other reading surface on the site
    sets: the decision pages' prose and the legal documents are both --ink2. */
 
-.abt-addr {
-  margin: var(--space-3) 0 0;
-  font-family: var(--brand-font-mono), monospace;
-  font-size: var(--t-cap);
-  letter-spacing: 0.01em;
-  color: var(--faint);
-}
+/* `.abt-addr` is gone with the line it styled — the address under the contact
+   pill, which repeated what the pill already links and what the footer of this
+   page already prints. `npm run ghosts` would have caught the rule left
+   behind; it is quicker to take it out now. */
 .abt-more {
   margin: var(--space-8) 0 0;
 }
@@ -588,32 +585,54 @@
 
 /* ---- the roster --------------------------------------------------------- */
 
-/* Seven people across the rail rather than inside the measure: in two columns
-   it is a long list, in four it is a masthead.
+/* The roster as a list of rows, not a field of labels.
 
-   The text face for the name, not the display one. Three goes at this. It
+   It was a four-column grid of name-over-role with nothing bounding each
+   entry, and two things were wrong with it. Seven people in four columns
+   leave a hole where the eighth would be, so the block ended on a ragged
+   half-row that read as unfinished. And with no edges, the names and roles
+   floated: at 1180px the eye had to work out for itself which role belonged
+   to which name, because the only thing joining them was proximity.
+
+   Rows fix both. Each person is one bounded line with a hairline over it —
+   the same device the mission band uses one section above, at a quarter of
+   the weight, so the two grids on this page rhyme rather than compete: a 2px
+   gold rule over quoted material, a 1px --rule hairline over a list. The
+   ragged end disappears because the last row is a row like the others rather
+   than a gap in a grid.
+
+   Name left, role right, on one baseline. That is the shape of a masthead in
+   a journal, which is what this section is, and it is the rhythm the library
+   page already sets with its own rows.
+
+   Two columns, not four: 420px tracks resolve to two across the 1180 rail.
+   Four put a 16px name and an 11px role in 270px, which is where they started
+   colliding on the longer titles — «АСИСТЕНТКА ДОСЛІДНИКА» beside «Ірина
+   Пантелеймонюк» needs the room. */
+.abt-roster {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  column-gap: var(--space-10);
+}
+.abt-roster li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-5);
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--rule);
+}
+/* The text face for the person, not the display one. Three goes at this. It
    started as the body sans over a mono role — and mono on this site means
    machinery, a docket or a date, so seven people set that way read as a table
    of records. Then it took /team's own pairing, display serif for the name,
    which is right under a portrait in a gallery and wrong inside a column of
    sans-serif prose, where seven antiqua names in a row read as seven small
    headings. The owner's question — «що зі шрифтами?» — was the correct one. */
-.abt-roster {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  /* 250px, which resolves to four tracks across the 1180 rail and not five.
-     At 210 the seven names split 5 + 2 and the second row read as a remainder;
-     at four they split 4 + 3, which reads as two rows of a list. */
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: var(--space-7) var(--space-6);
-}
-.abt-roster li {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
 .abt-roster b {
   font-weight: 600;
   font-size: var(--t-body);

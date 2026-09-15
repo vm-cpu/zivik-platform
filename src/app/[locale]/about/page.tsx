@@ -425,11 +425,15 @@ export default async function AboutPage({
             <div className="abt-prose">
               <p>{L(T.contact)}</p>
             </div>
-            {/* The address itself used to be the control — an 11px uppercase
-                arrow link, which made an invitation to write look like
-                navigation. The shared CTA pill carries the act; the address
-                stays underneath as a fact, for a reader who wants to copy it
-                rather than open a mail client. */}
+            {/* The pill and nothing under it.
+
+                The address used to sit below it in the mono face, as a fact
+                for a reader who would rather copy it than open a mail client.
+                Owner's decision to take it off, and the page agrees: the
+                heading says «Написати нам», the pill says it again and links
+                the address, and the address itself said it a third time — and
+                the footer of this very page carries the same line under
+                «Контакти». Three copies of one address on one screen. */}
             <p className="abt-action">
               <a className="nsv-cta" href={`mailto:${dict.footer.email}`}>
                 {L(T.contactH)}
@@ -438,7 +442,6 @@ export default async function AboutPage({
                 </span>
               </a>
             </p>
-            <p className="abt-addr">{dict.footer.email}</p>
           </div>
         </section>
       </main>
