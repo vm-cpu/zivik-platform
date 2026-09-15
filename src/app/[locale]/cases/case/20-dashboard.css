@@ -108,6 +108,29 @@
   font: 500 var(--t-sm) var(--brand-font-body);
   color: var(--ink2);
 }
+/* A figure's qualification: the asterisk on the number, the words under the
+   label. Smaller and quieter than the label, because it is a footnote to the
+   tile and not a second label — and not italic despite the `<i>`, which is
+   here for the semantics of a set-apart aside rather than for a slant this
+   size would only blur.
+
+   `--brand-faint` and not `--faint`. On this page `--faint` is aliased to
+   --brand-faint-dark, which is the faint for the night scenes — on the white
+   KPI card it measures 3.57:1, under AA for 12.5px text. The paper faint is
+   5.45:1 on the same ground. The alias is right for most of the page and
+   wrong for the one tile that is white, which is exactly the kind of slip a
+   shared name makes easy. */
+.casepage .kpi .kpi-star {
+  font-size: 0.5em;
+  vertical-align: super;
+  line-height: 0;
+}
+.casepage .kpi .kpi-note {
+  font: 400 var(--t-cap) var(--brand-font-body);
+  font-style: normal;
+  line-height: 1.4;
+  color: var(--brand-faint);
+}
 
 /* ---- map band -------------------------------------------------------------
    Wide-format section, built the way the home page builds .nsv-mapband: the

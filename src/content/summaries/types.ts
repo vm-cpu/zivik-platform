@@ -54,6 +54,19 @@ export interface Stat {
   label: Localized;
   /** Give this tile the accent treatment — one per dashboard. */
   em?: boolean;
+  /**
+   * A qualification on the figure, set under it with an asterisk on the
+   * number.
+   *
+   * For the case where a count is exact but not complete, and saying the bare
+   * number would overstate what is known. The review asked for one on the
+   * ICC's arrest warrants — «додати вказівку з зірочкою, що це 6, про які
+   * публічно відомо» — and the distinction it draws is the important one: the
+   * note says what *we* know, not what the Court does. A claim about the
+   * Court's own practice would need a source; this needs only honesty about
+   * the figure's edge.
+   */
+  note?: Localized;
 }
 
 /**

@@ -1133,8 +1133,20 @@ export default async function CasePage({
                      in the data (icj-cerd-icsft, stats[1]). */
                   data-em={s.em ? "1" : undefined}
                 >
-                  <b>{typeof s.value === "string" ? s.value : pick(s.value, locale)}</b>
+                  <b>
+                    {typeof s.value === "string" ? s.value : pick(s.value, locale)}
+                    {/* The asterisk is the mark, the note under the label is
+                        what it means. Hidden from assistive technology: a
+                        screen reader that reads "six star" learns nothing,
+                        and the note itself follows two lines later. */}
+                    {s.note && (
+                      <sup className="kpi-star" aria-hidden="true">
+                        *
+                      </sup>
+                    )}
+                  </b>
                   <span>{pick(s.label, locale)}</span>
+                  {s.note && <i className="kpi-note">{pick(s.note, locale)}</i>}
                 </div>
               ))}
             </div>

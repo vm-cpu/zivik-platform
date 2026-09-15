@@ -334,7 +334,20 @@ export const iccUkraine: DecisionSummary = {
   ],
 
   stats: [
-    { value: "6", label: { uk: "ордерів на арешт", en: "arrest warrants" } },
+    {
+      value: "6",
+      label: { uk: "ордерів на арешт", en: "arrest warrants" },
+      /* Review's edit: «забрати 7 і написати 6; при цьому додати вказівку з
+         зірочкою, що це 6, про які публічно відомо». The figure was corrected
+         to six some time ago and the qualification was not, which left the
+         page stating a count as though it were the whole of what exists.
+
+         What the note says is the limit of our knowledge, and nothing about
+         the Court. The review also asks for the ICC's policy on which
+         warrants are published to be looked up — that is a claim about the
+         Court's practice, it needs a source, and it is not made here. */
+      note: { uk: "про які відомо публічно", en: "publicly known" },
+    },
     { value: "43", label: { uk: "держави передали ситуацію Суду", en: "States referred the situation" } },
     { value: "125", label: { uk: "держав зобов'язані виконати ордери", en: "States bound to execute the warrants" } },
     {
