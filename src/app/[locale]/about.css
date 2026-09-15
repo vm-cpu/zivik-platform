@@ -409,13 +409,18 @@
    typography stays typography — and so the English page gets its own pair:
    «…» in Ukrainian, “…” in English, keyed off the `lang` the layout sets. */
 .abt-quote blockquote {
-  /* 46rem, up from 40. Owner's decision to widen it a little: at 40 the four
-     sentences broke over six short lines and the block read as narrower than
-     the mission's columns directly above it, which is the wrong order — the
-     quotation is the band's whole content. 736px at --t-h3 is about 67
-     characters, which is the top of a pull-quote's range rather than past it,
-     and still well inside the 1180 rail. */
-  max-width: 46rem;
+  /* 56rem. Two widenings, both the owner's: 40 to 46, then 46 to here.
+
+     The reason the first was not enough is visible in the band: at 736px the
+     four sentences still broke over six short lines inside a band running the
+     full width of the window, and the quotation read as narrower than the
+     mission's four columns directly above it — the wrong order of weight,
+     since the quotation is the whole content of its band and the mission is a
+     list inside one. 896px at --t-h3 is about 80 characters. That is past a
+     pull-quote's usual range and it is a deliberate trade: this is centred
+     display type read slowly, not a column of prose, and the band's own width
+     is what it is being measured against. */
+  max-width: 56rem;
   margin: 0 auto;
   text-align: center;
   font-family: var(--brand-font-display), Georgia, serif;
@@ -439,7 +444,7 @@
 }
 .abt-quote figcaption {
   position: relative;
-  max-width: 46rem;
+  max-width: 56rem;
   margin: clamp(20px, 2.2vw, 28px) auto 0;
   padding: clamp(16px, 1.8vw, 22px) 0 0;
   text-align: center;
