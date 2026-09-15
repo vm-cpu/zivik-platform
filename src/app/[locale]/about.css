@@ -175,6 +175,18 @@
    stood as far from its first line as two body paragraphs stand from each
    other — and with the heading's tight 1.2 leading adding no half-leading of
    its own it read as glued to the text. */
+/* Every section heading carries the site's mark.
+
+   Owner's question on seeing the page: why are the colours black and not red.
+   They were black because this page had no accent at all — every other surface
+   on the site announces a section with `.lbl`, a 34x3 red rule with an
+   uppercase label beside it, and /about had plain display headings on plain
+   paper from top to bottom. It read as a page from somewhere else.
+
+   The rule and not the label: a word over each of «Хто веде проєкт», «Місія
+   Центру», «Хто над цим працює» and «Написати нам» would be four more words
+   saying what the heading under them already says. The mark alone is the part
+   that belongs to this site. */
 .abt-band h2 {
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
@@ -182,6 +194,14 @@
   line-height: 1.2;
   color: var(--ink);
   margin: 0 0 var(--space-6);
+}
+.abt-band h2::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 3px;
+  margin-bottom: var(--space-4);
+  background: var(--red);
 }
 .abt-prose {
   display: flex;
@@ -239,6 +259,16 @@
    A rule over each point rather than a disc in front of it. At four across,
    the discs lined up as a row of dots with nothing holding each item together;
    the rule is the top edge of a column, which is what each of these now is. */
+/* The heading needs to be clear of the columns.
+
+   With the band's standard 24px under it, the four gold rules landed directly
+   beneath «Місія Центру» and the leftmost one read as the heading's own
+   underline — so the heading looked like the label of the first column rather
+   than of all four, and the four peers looked like three peers and a title.
+   40px is enough for the rules to read as the tops of four columns. */
+.aboutpage .abt-mission h2 {
+  margin-bottom: var(--space-10);
+}
 .aboutpage .abt-mission ul {
   margin: 0;
   padding: 0;
