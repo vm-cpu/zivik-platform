@@ -68,11 +68,11 @@
    that styles it lives in globals.css because the same paragraph renders on
    the home page too — at (0,2,1) it exactly ties this selector and loses on
    source order, so the exclusion has to be here rather than in the weight. */
-.aboutpage .abt-band:not(.abt-dark) a:not(.abt-cite-link) {
+.aboutpage .abt-band:not(.abt-dark) a:not(.abt-cite-link, .nsv-cta) {
   color: var(--red);
   text-decoration: none;
 }
-.aboutpage .abt-band:not(.abt-dark) a:not(.abt-cite-link):hover {
+.aboutpage .abt-band:not(.abt-dark) a:not(.abt-cite-link, .nsv-cta):hover {
   color: var(--redd);
 }
 
@@ -194,9 +194,20 @@
   line-height: 1.65;
   color: var(--ink2);
 }
-.abt-prose p:first-child {
-  color: var(--ink);
-}
+/* ── `.abt-prose p:first-child { color: var(--ink) }` — removed ────────────
+   It set the first paragraph of every block in full ink and left the rest in
+   --ink2. Same face, same size, same weight — rgb(26,25,23) against
+   rgb(85,82,77) — but at 16px a tone that different reads as a different
+   weight, and the owner's question on seeing two paragraphs side by side was
+   why the fonts were different. They were not; only the colour was.
+
+   It made sense while the first paragraph of the opening block was the lede.
+   That sentence is the masthead's standfirst now, so the rule was darkening
+   whatever happened to come first — a paragraph with no claim to emphasis.
+
+   --ink2 for all of it, which is what every other reading surface on the site
+   sets: the decision pages' prose and the legal documents are both --ink2. */
+
 .abt-addr {
   margin: var(--space-3) 0 0;
   font-family: var(--brand-font-mono), monospace;
@@ -242,6 +253,17 @@
   font-size: var(--t-body);
   line-height: 1.5;
   color: var(--ink);
+}
+/* Two by two in the middle of the range.
+
+   `auto-fit` fits as many 230px tracks as the rail allows, which is four on a
+   desktop and one on a phone — both correct — and three in between, where four
+   items fall 3 + 1 and the last point sits alone under three others as though
+   it had been added later. Four peers should break evenly or not at all. */
+@media (min-width: 680px) and (max-width: 1120px) {
+  .aboutpage .abt-mission ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ---- the quotation ------------------------------------------------------ */
@@ -400,16 +422,25 @@
 
 /* ---- the contact pill --------------------------------------------------- */
 
-/* `.nsv-cta` sets its ground and its border but takes its text colour from
-   whatever it stands in, and this section's colour is the page's red — so the
-   label sat on the pill at 1:1 and the button rendered as an empty red
-   lozenge. --brand-cream-warm is the token this system keeps for text on solid
-   red: 12.4:1.
+/* The pill is excluded from the link rule rather than outweighing it.
 
-   `a.nsv-cta`, not `.nsv-cta`: the rule above paints every anchor in a light
-   band, and that is three classes and an element, which outweighs three
-   classes alone. Written without the `a` this correction loses the cascade and
-   the button goes on rendering its label in the red of its own ground. */
+   `.nsv-cta` (shared.css) sets its own red ground and its border but takes its
+   text colour from whatever it stands in — so on a page that paints every
+   anchor red, the label lands on the pill at 1:1 and the button renders as an
+   empty red lozenge. That has now happened twice.
+
+   The first fix was `a.nsv-cta` — an element plus three classes, against the
+   link rule's three classes — which won on weight. It stopped winning the
+   moment the link rule gained `:not(.abt-dark)` to keep red ink off this
+   page's dark bands: an argument inside `:not()` counts towards specificity,
+   so the link rule went to four classes and the correction, still at three,
+   silently lost. Nothing about the button changed; a selector elsewhere got
+   heavier.
+
+   Weight is the wrong tool for "this one is not that kind of link". The pill
+   joins `.abt-cite-link` in the exclusion above, where it cannot be outrun,
+   and this rule only has to name the colour: --brand-cream-warm is the token
+   this system keeps for text on solid red, 12.4:1 on it. */
 .aboutpage .abt-band a.nsv-cta {
   color: var(--brand-cream-warm);
 }
