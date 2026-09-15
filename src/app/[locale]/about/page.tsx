@@ -69,22 +69,16 @@ const T = {
     en: "Who runs the NaSvitlo library, what the project is, and who works on it.",
   },
 
-  notH: { uk: "Чого тут немає", en: "What you will not find here" },
-  not: {
-    uk: [
-      "Огляд не заміняє рішення. Першоджерелом лишається текст суду, і посилання на нього стоїть на сторінці кожної справи, де документ у відкритому доступі.",
-      "Ми не додаємо оцінок, яких немає в самому рішенні. Хронологія, таблиця висновків і цифри на сторінці справи переказують те, що вже сказано в огляді; якщо якесь значення взяте поза ним — із протоколу чи повідомлення суду, — це зафіксовано в джерелі сторінки.",
-      /* «Це довідкова бібліотека, а не юридична консультація» stood here as a
-         third bullet. Owner's decision to drop it: the disclaimer belongs in
-         content/legal.ts, which carries it, and on a page about editorial
-         method it read as a lawyer's footer rather than as one of the two
-         genuine limits above it. */
-    ],
-    en: [
-      "A summary does not replace the decision. The court's own text remains the source, and every case page carries a link to it where the document is public.",
-      "We add no assessment that is not in the decision itself. The timeline, the table of findings and the figures on a case page restate what the summary already says; where a value comes from outside it — from the court's record or its press release — that is recorded in the page's source.",
-    ],
-  },
+  /* ── «Чого тут немає» — removed with its strings ──────────────────────────
+     Four statements about what the archive does not do, three of which drew a
+     separate objection in the review: that a summary never stands in for the
+     decision (it does, where no text has been published and the record is the
+     court's own account); that nothing is added beyond the ruling; and that
+     every figure is sourced to a paragraph, when what the pages link is the
+     decision and not its paragraphs. A section that states four disciplines
+     and gets three of them wrong is worse than no section. The strings went
+     with the markup rather than sitting here as text nothing renders and a
+     translator would keep up to date. */
 
   whoH: { uk: "Хто веде проєкт", en: "Who runs the project" },
   /* Split around the Centre's name so that name can be the link.
@@ -169,43 +163,14 @@ const T = {
      library page itself, in one sentence each, without committing the project
      to a procedure it may change. */
 
-  stateH: { uk: "Стан бібліотеки", en: "Where the library stands" },
-  state: {
-    /*
-     * This used to read «Реєстр повний, огляди — ні» / "The registry is
-     * complete; the summaries are not", and it was the only place on the site
-     * that said so. Three others say the opposite, one of them on this very
-     * page:
-     *   • src/content/legal.ts — «Бібліотека наповнюється… Відсутність справи,
-     *     документа чи огляду не означає, що провадження не існує» /
-     *     "The library is still being filled… The absence of a case, a
-     *     document or a summary does not mean that the proceeding does not
-     *     exist";
-     *   • the dictionaries, registry.description — «Бібліотека поповнюється
-     *     поступово» / "The library grows step by step";
-     *   • `contact`, eight lines below — «знаєте про провадження, якого тут
-     *     немає — напишіть» / "know of a proceeding that is missing, write to
-     *     us", which only makes sense if the collection can still grow.
-     * Three against one, and the one is the claim a reader is most likely to
-     * rely on. So this paragraph moves to the other three.
-     *
-     * The word «реєстр» is gone from it as well (user decision — see the note
-     * at the top of `i18n/dictionaries/uk.ts`). It cannot simply become
-     * «бібліотека» twice over, because "neither the library nor the summaries
-     * are finished" is a tautology once the library *is* the summaries: the
-     * two incomplete things are the list of proceedings and the write-ups.
-     */
-    uk: "Бібліотека наповнюється. Провадження вносимо до неї раніше, ніж встигаємо їх опрацювати, тому частина справ поки що стоїть без огляду — у бібліотеці та на мапі вони позначені як такі. Відсутність провадження тут не означає, що його не існує.",
-    en: "The library is still being filled. Proceedings enter it faster than they can be written up, so some cases stand without a summary for now — they are marked as such in the library and on the map. A proceeding's absence here does not mean it does not exist.",
-  },
-  mProceedings: { uk: "проваджень", en: "proceedings" },
-  /* «Інстанцій» / "institutions", not "courts": this counts the same figure
-     the library page counts, and one of the twelve bodies — EU / Belgium
-     enforcement measures, filed as `executive` — is not a court. The two
-     pages printed the same number under two different nouns. */
-  mInstitutions: { uk: "інстанцій", en: "institutions" },
-  mAnalysed: { uk: "з оглядом", en: "written up" },
-  stateLink: { uk: "Уся бібліотека", en: "The whole library" },
+  /* ── «Стан бібліотеки» — removed with its strings ────────────────────────
+     Three figures and a line about how much of the archive is written up. It
+     belongs where the archive is: the library page opens with the same count
+     and the same "written up" figure, from the same source, so this was the
+     second place a reader could be told — and the review's note is that a
+     reader who has not read this page should still meet the fact. Removed
+     rather than duplicated; the numbers live on /registry, which is where
+     «Бібліотека рішень» goes from every surface. */
 
   contactH: { uk: "Написати нам", en: "Write to us" },
   contact: {
@@ -301,27 +266,53 @@ export default async function AboutPage({
   const aboutLinks = about.links ? L(about.links) : [];
 
   return (
+    /* ── The page as a sequence of bands ──────────────────────────────────
+       It was one column on white from the masthead to the footer: 672px of
+       text down the left of a 1800px window, and nothing at all to the right
+       of it. The owner's word for that was a white canvas with a white patch
+       beside it, which is exactly what a single column on a single ground
+       looks like once the window is wider than the measure.
+
+       So the page is bands now, the way the home page and the decision pages
+       already are. Each one runs the full width of the window and carries its
+       own ground; what sits inside it is still on the site's one rail, still
+       at the measure. The width is used by the bands, not by the paragraphs —
+       stretching prose to 1800px would answer the empty space and ruin the
+       reading.
+
+       Grounds alternate, and the two dark ones are islands, per DESIGN.md:
+       masthead dark, prose on paper, the Centre on paper, the mission
+       recessed, the quotation dark, the roster on paper, the contact
+       recessed. No two dark bands touch. */
     <div className="page aboutpage">
-      <main id="content" tabIndex={-1} className="abt-wrap">
-        <header className="abt-mast">
-          <Link href={`/${locale}`} className="abt-back">
-            ← {L(T.back)}
-          </Link>
-          <h1>{L(T.title)}</h1>
+      <main id="content" tabIndex={-1}>
+        {/* The masthead is a dark band, not a line of black type on white.
+
+            The same register the court mastheads and the lamp stage use — the
+            grounds DESIGN.md lists as dark — and it is what stops the page
+            opening on an empty white field. The scope sentence comes up here
+            with it, as the standfirst it always was: it says which courts this
+            library covers, which is the first thing a reader of this page
+            wants and was previously the fourth paragraph they met. */}
+        <header className="abt-band abt-dark abt-mast">
+          <div className="abt-in">
+            <Link href={`/${locale}`} className="abt-back">
+              ← {L(T.back)}
+            </Link>
+            <h1>{L(T.title)}</h1>
+            <p className="abt-lede">{L(T.scope)}</p>
+          </div>
         </header>
 
         {/* The library's own description, from the content layer, so the
             home page section and this page cannot drift apart. */}
-        {/* No <h2> over the opening prose. It used to carry `about.title` —
-            «Про проєкт» — which is now the page's own H1, so the two stood one
-            above the other saying the same words. The content layer keeps the
-            heading because the home page's band still needs it. */}
-        <section className="abt-sec">
-          <div className="abt-prose">
-            <p>{L(T.scope)}</p>
-            {L(about.paragraphs).map((text, i) => (
-              <p key={i}>{linkAboutProse(text, aboutLinks)}</p>
-            ))}
+        <section className="abt-band">
+          <div className="abt-in">
+            <div className="abt-prose">
+              {L(about.paragraphs).map((text, i) => (
+                <p key={i}>{linkAboutProse(text, aboutLinks)}</p>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -333,116 +324,122 @@ export default async function AboutPage({
             nothing is added beyond the ruling; and that every figure is
             sourced to a paragraph, when what the pages link is the decision
             and not its paragraphs. A section that states four disciplines and
-            gets three of them wrong is worse than no section.
-
-            Removed rather than corrected because the corrections belong in
-            the methodology the archive has yet to write in its own words —
-            see the note on «Як рішення потрапляє в бібліотеку» above, which
-            came off for the same reason. */}
+            gets three of them wrong is worse than no section. */}
 
         {/* ── «Стан бібліотеки» — moved, owner's decision ───────────────────
             Three figures and a line about how much of the archive is written
-            up. It belongs where the archive is, not in the page about the
-            project: the registry already opens with the same count and the
-            same "written up" figure, from the same source, so this was the
-            second place a reader could be told — and the review's note is that
-            a reader who has not read this page should still meet the fact.
+            up. It belongs where the archive is: the library page opens with
+            the same count from the same source. */}
 
-            Removed rather than duplicated. The numbers live on /registry,
-            which is where «Бібліотека рішень» goes from every surface. */}
-
-        <section className="abt-sec">
-          <h2>{L(T.whoH)}</h2>
-          <div className="abt-prose">
-            <p>
-              {L(T.who)[0]}
-              <a href={FACULTY_URL} target="_blank" rel="noopener noreferrer">
-                {L(T.who)[1]}
-              </a>
-              {L(T.who)[2]}
-            </p>
-            <p>{L(T.centre)}</p>
-            <p>{L(T.centre2)}</p>
+        <section className="abt-band">
+          <div className="abt-in">
+            <h2>{L(T.whoH)}</h2>
+            <div className="abt-prose">
+              <p>
+                {L(T.who)[0]}
+                <a href={FACULTY_URL} target="_blank" rel="noopener noreferrer">
+                  {L(T.who)[1]}
+                </a>
+                {L(T.who)[2]}
+              </p>
+              <p>{L(T.centre)}</p>
+              <p>{L(T.centre2)}</p>
+            </div>
           </div>
+        </section>
 
-          {/* The Centre's mission, in the four points it states itself. */}
-          <div className="abt-mission">
-            <h3>{L(T.missionH)}</h3>
+        {/* The mission, across the width.
+
+            Four points that had been a panel inside the reading column — four
+            stacked lines in a box 672px wide, with the rest of the window
+            empty beside them. They are four peers, so they are four columns:
+            the band is one of the two places on this page where the width is
+            actually used for something, and a row of four reads as a set
+            where a stack reads as a list that happens to have ended. */}
+        <section className="abt-band abt-recess abt-mission">
+          <div className="abt-in abt-wide">
+            <h2>{L(T.missionH)}</h2>
             <ul>
               {T.mission[locale].map((m) => (
                 <li key={m}>{m}</li>
               ))}
             </ul>
           </div>
+        </section>
 
-          <figure className="abt-voice">
+        {/* The head of the Centre, in her own words, given a band.
+
+            Owner's request: set the quotation apart. It was a paragraph with a
+            gold rule down its left side inside the reading column, which is
+            how this site marks a citation inside prose — correct for a
+            sentence quoted mid-argument, and too quiet for the one place on
+            the page where a person speaks. This is the treatment the home
+            page gives the Court's words: a dark band, the display face, the
+            lit seam across the join, the attribution set apart underneath.
+
+            An island, per DESIGN.md — the recessed mission above it and the
+            roster on paper below, so no two dark grounds meet. */}
+        <figure className="abt-band abt-dark abt-quote">
+          <span className="abt-seam" aria-hidden="true" />
+          <div className="abt-in">
             <blockquote>{L(T.voice)}</blockquote>
             <figcaption>
               <b>{L(T.voiceBy)}</b>
               <span>{L(T.voiceRole)}</span>
             </figcaption>
-          </figure>
-
-          {/* The street address used to sit here, directly under Olha
-              Denkovych's name. It is the data controller's address and it
-              belongs to the privacy notice, which carries it; under a
-              quotation about the Centre's mission it read as though the
-              speaker were being served with something. Owner's decision.
-              content/legal.ts still holds it, and so does the footer. */}
-        </section>
+          </div>
+        </figure>
 
         {/* The team, on this page as well as on its own.
 
-            Owner's edit: «Команду продублювати у розділ ПРО НАС». A reader who
-            has just been told which institution runs the archive asks who that
-            is in practice, and the answer was a link away. It is a roster and
-            not a copy of /team: that page gives everyone a portrait and the
-            room a portrait needs, and seven of those in the middle of a column
-            of prose would bury the two sections after it. Names and roles from
-            `content/team.ts`, so the two lists cannot drift apart, and the
-            link under them goes to the faces. */}
-        <section className="abt-sec">
-          <h2>{L(T.teamH)}</h2>
-          <ul className="abt-roster">
-            {team.map((m) => (
-              <li key={m.name.en}>
-                <b>{L(m.name)}</b>
-                <span>{L(m.role)}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="abt-more">
-            <Link href={`/${locale}/team`}>{L(T.teamLink)} →</Link>
-          </p>
+            Owner's edit: «Команду продублювати у розділ ПРО НАС». A roster of
+            names and roles read off `content/team.ts`, so the two lists cannot
+            drift, with the link to the portraits under it. Not a copy of
+            /team: that page gives everyone a portrait and the room a portrait
+            needs. Across the rail rather than inside the measure — seven
+            people in two columns is a long list, and in four it is a masthead. */}
+        <section className="abt-band abt-team">
+          <div className="abt-in abt-wide">
+            <h2>{L(T.teamH)}</h2>
+            <ul className="abt-roster">
+              {team.map((m) => (
+                <li key={m.name.en}>
+                  <b>{L(m.name)}</b>
+                  <span>{L(m.role)}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="abt-more">
+              <Link href={`/${locale}/team`}>{L(T.teamLink)} →</Link>
+            </p>
+          </div>
         </section>
 
         {/* ── The partner row — removed, owner's decision ──────────────────
             «Партнерів залиш лише на головній». The same marks stood on the
-            home page, here, and on a page of their own: three places for one
-            partner, which is the duplication the review flagged. The home
-            page's band is the one that stays; this page and the /partners
-            route are where it came off. */}
+            home page, here, and on a page of their own. */}
 
-        <section className="abt-sec">
-          <h2>{L(T.contactH)}</h2>
-          <div className="abt-prose">
-            <p>{L(T.contact)}</p>
+        <section className="abt-band abt-recess">
+          <div className="abt-in">
+            <h2>{L(T.contactH)}</h2>
+            <div className="abt-prose">
+              <p>{L(T.contact)}</p>
+            </div>
+            {/* The address itself used to be the control — an 11px uppercase
+                arrow link, which made an invitation to write look like
+                navigation. The shared CTA pill carries the act; the address
+                stays underneath as a fact, for a reader who wants to copy it
+                rather than open a mail client. */}
+            <p className="abt-action">
+              <a className="nsv-cta" href={`mailto:${dict.footer.email}`}>
+                {L(T.contactH)}
+                <span className="nsv-cta-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </p>
+            <p className="abt-addr">{dict.footer.email}</p>
           </div>
-          {/* The address itself used to be the control — an 11px uppercase
-              arrow link, the same treatment as «Повний реєстр» two sections
-              above, which made an invitation to write look like navigation.
-              The shared CTA pill carries the act; the address stays underneath
-              as a fact, for a reader who wants to copy it rather than open a
-              mail client. */}
-          <p className="abt-action">
-            <a className="nsv-cta" href={`mailto:${dict.footer.email}`}>
-              {L(T.contactH)}
-              <span className="nsv-cta-arrow" aria-hidden="true">
-                →
-              </span>
-            </a>
-          </p>
-          <p className="abt-addr">{dict.footer.email}</p>
         </section>
       </main>
     </div>
