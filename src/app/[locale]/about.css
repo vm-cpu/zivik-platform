@@ -484,6 +484,40 @@
   font-weight: 400;
 }
 
+/* The quotation stops being centred on a phone.
+
+   Centring is what says "someone is speaking" when a block is wide enough to
+   be a block. At 375px it is not: measured there, the quotation sets 32
+   characters to the line over thirteen lines of 20px antiqua — half the
+   readable minimum of a line, and a ragged pyramid the eye cannot track from
+   one line to the next. Nothing about the measure can be fixed at that width;
+   319px is all there is, and a smaller face would only trade one fault for
+   another.
+
+   So the alignment gives way instead. Left-aligned, the same thirteen lines
+   are an ordinary ragged-right block with one edge to return to, and the dark
+   ground, the lit seam, the antiqua and the marks still carry everything the
+   centring was carrying. The attribution and its rule go left with it — a
+   centred rule under left-aligned text is the join showing.
+
+   `balance` goes too. It is for a short block that should look even and
+   browsers stop applying it a few lines in, so at thirteen it was doing
+   nothing; `pretty` from globals.css takes over and keeps the last line from
+   ending on one word. */
+@media (max-width: 640px) {
+  .abt-quote blockquote {
+    text-align: left;
+    text-wrap: var(--wrap-pretty);
+  }
+  .abt-quote figcaption {
+    text-align: left;
+  }
+  .abt-quote figcaption::before {
+    left: 0;
+    transform: none;
+  }
+}
+
 /* ---- the roster --------------------------------------------------------- */
 
 /* Seven people across the rail rather than inside the measure: in two columns
