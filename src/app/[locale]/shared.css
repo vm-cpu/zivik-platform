@@ -237,45 +237,12 @@
 }
 /* The arrow belongs to the control, not to the label: it moves on hover and is
    hidden from assistive technology by the markup. */
-/* The pill that carries an address instead of a verb.
-
-   «Написати нам» stood as the heading of the contact section and again on the
-   button under it, word for word, on /about and on /team both — the heading
-   naming the section and the button repeating it instead of naming what it
-   acts on. The address is what it acts on, so the address is what it says.
-   One object now carries the fact and the act, and the line that used to sit
-   under the pill printing the same address is gone from /about with it.
-
-   Three departures from the pill above, and each answers the same thing: an
-   email is not a label. It is not uppercased, because an address is written
-   as it is typed; it takes the mono face, which is what this site already
-   sets every address and docket in; and it drops to --t-cap, because at the
-   pill's 11px a 26-character address runs wider than the sentence above it.
-
-   `.nsv-cta.nsv-cta.nsv-cta-addr` — four classes and an element, against the
-   base pill's three and an element. Written with one `.nsv-cta` it would tie
-   and win on source order alone, which is the accident this file has already
-   been bitten by once. */
-.page a.nsv-cta.nsv-cta.nsv-cta-addr {
-  font-family: var(--brand-font-mono), ui-monospace, monospace;
-  font-size: var(--t-cap);
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  text-transform: none;
-  /* The address is 28 characters and cannot be shortened, so the pill has to
-     give way instead of the text. Measured at 320px — the narrowest viewport
-     this site supports — it came to 282px against a 264px column and hung 18
-     over the right edge. The page did not scroll, which is exactly why this
-     kind of fault survives: nothing announces it but the shape. */
-  max-width: 100%;
-}
-@media (max-width: 380px) {
-  .page a.nsv-cta.nsv-cta.nsv-cta-addr {
-    padding-inline: var(--space-2);
-    letter-spacing: 0;
-  }
-}
-
+/* `.nsv-cta-addr` is gone. It set the contact pill in the mono face, at
+   --t-cap and without the uppercase, so the button could carry the address
+   itself instead of repeating its heading. Owner's decision that the button
+   should say what pressing it does; with no label to set, the variant had
+   nothing to style, and `npm run ghosts` would have named it on the next
+   run. */
 .page a.nsv-cta.nsv-cta .nsv-cta-arrow {
   transition: transform var(--dur) var(--ease);
 }

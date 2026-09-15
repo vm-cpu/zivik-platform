@@ -434,19 +434,20 @@ export default async function AboutPage({
                 the address, and the address itself said it a third time — and
                 the footer of this very page carries the same line under
                 «Контакти». Three copies of one address on one screen. */}
-            {/* The button says the address, not «Написати нам» again.
+            {/* The button says «Написати нам».
 
-                The heading two lines up already says that, and a control that
-                repeats its heading names nothing: it tells a reader what
-                section they are in, which they can see, instead of what it
-                will act on. The address does both — and it is why the line
-                that used to print it under the pill could go. */}
+                It carried the address itself for a while, on the reasoning
+                that a control repeating its own heading names nothing. The
+                owner's decision is that the button is a button and should say
+                what pressing it does; the address belongs in the footer,
+                where it is, and not on the control. The heading above stays
+                as the section's name.
+
+                What does not come back is the third copy: the address used to
+                sit under this pill as a line of its own as well. */}
             <p className="abt-action">
-              <a
-                className="nsv-cta nsv-cta-addr"
-                href={`mailto:${dict.footer.email}`}
-              >
-                {dict.footer.email}
+              <a className="nsv-cta" href={`mailto:${dict.footer.email}`}>
+                {L(T.contactH)}
                 <span className="nsv-cta-arrow" aria-hidden="true">
                   →
                 </span>

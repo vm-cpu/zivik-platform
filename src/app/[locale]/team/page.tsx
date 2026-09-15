@@ -29,9 +29,7 @@ const T = {
     uk: "Дослідники, редактори й технічна команда бібліотеки рішень «насвітло».",
     en: "The researchers, editors and technical team behind the nasvitlo library of decisions.",
   },
-  /* `contact` — the button's label — is gone. It said «Написати нам», which
-     is what `contactH` above says as the heading, so the control repeated the
-     section it sat in; the button carries the address itself now. */
+  contact: { uk: "Написати нам", en: "Write to us" },
   contactH: { uk: "Написати нам", en: "Write to us" },
   /* Says what writing is *for*. The same invitation /about already makes, in
      the same words, so the two pages do not offer a reader two different
@@ -154,15 +152,10 @@ export default async function TeamPage({
         <section className="team-contact">
           <h2>{L(T.contactH)}</h2>
           <p>{L(T.contactText)}</p>
-          {/* The address, not «Написати нам» a second time — see the note on
-              `.nsv-cta-addr` in [locale]/shared.css. /about makes the same
-              change in the same commit so the two contact blocks stay one
-              thing. */}
-          <a
-            className="nsv-cta nsv-cta-addr"
-            href={`mailto:${dict.footer.email}`}
-          >
-            {dict.footer.email}
+          {/* «Написати нам», the same label /about's pill carries — owner's
+              decision, reverting the address-as-label both pages tried. */}
+          <a className="nsv-cta" href={`mailto:${dict.footer.email}`}>
+            {L(T.contact)}
             <span className="nsv-cta-arrow" aria-hidden="true">
               →
             </span>
