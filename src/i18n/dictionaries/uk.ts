@@ -321,7 +321,13 @@ const uk = {
     colCenter: "Центр",
     colContacts: "Контакти",
     linkRegistry: "Бібліотека рішень",
-    linkMap: "Мапа подій",
+    /* «Мапа», not «Мапа подій». The footer was the last place still calling
+       it that. The map stopped being about events when it was re-conceived as
+       the states whose courts hear these proceedings — the page's own heading
+       is «Держави, чиї суди розглядають ці справи» and the top bar says
+       «Мапа» — so the footer was sending a reader to a page that no longer
+       existed under that name. */
+    linkMap: "Мапа",
     linkGlossary: "Словник",
     linkAbout: "Про проєкт",
     linkTeam: "Команда",

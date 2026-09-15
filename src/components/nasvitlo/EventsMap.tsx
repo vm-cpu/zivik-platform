@@ -3008,7 +3008,14 @@ export default function EventsMap({
         </div>
       </div>
 
-      {variant === "full" && (
+      {/* `events.length > 0`, not just `variant === "full"`.
+
+          The legend's own «Місця подій» key already self-hid when the sites
+          came off the map; this header did not, so the map page rendered a
+          fold control reading «МІСЦЯ ПОДІЙ 0» over an empty list. A count of
+          zero is not information — it is a section admitting it has nothing
+          in it — and it was the first thing under the drawing on a phone. */}
+      {variant === "full" && events.length > 0 && (
         <button
           type="button"
           className="emap-fold-h"

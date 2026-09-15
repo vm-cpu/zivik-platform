@@ -177,7 +177,7 @@ const en: Dictionary = {
     colCenter: "Centre",
     colContacts: "Contacts",
     linkRegistry: "Library of decisions",
-    linkMap: "Events map",
+    linkMap: "Map",
     linkGlossary: "Glossary",
     linkAbout: "About the project",
     linkTeam: "Team",

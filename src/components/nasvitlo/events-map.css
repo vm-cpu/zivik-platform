@@ -538,6 +538,24 @@
   .emap-svg {
     aspect-ratio: 1200 / 645;
   }
+  /* The map's own page gets a map, not a letterbox.
+
+     1200/645 was measured for the home band, where the drawing was a picture
+     among a dozen sections and the list under it was the interface. The band
+     is gone and the ratio stayed, so on a 375px phone the page whose entire
+     subject is the map gave it 202 pixels of height — a quarter of the screen,
+     with Europe in a strip across the middle and the zoom controls sitting on
+     top of it.
+
+     1200/1050 puts it at 328 instead. The component recomputes the viewBox
+     from the box it is given rather than letterboxing inside a fixed one, so
+     a taller box is more map rather than more sea: measured at 375, Sweden,
+     Finland, Germany, France and Ukraine are all legible shapes where before
+     they were slivers. Scoped to the full variant so the band, if it ever
+     comes back, keeps the ratio that was measured for it. */
+  .emap[data-variant="full"] .emap-svg {
+    aspect-ratio: 1200 / 1050;
+  }
   .emap-card {
     /* `relative`, not `static`: the close button inside is absolutely placed,
        so a static card hands it to the nearest positioned ancestor — the
