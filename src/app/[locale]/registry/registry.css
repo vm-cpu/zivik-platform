@@ -94,9 +94,22 @@
 
 /* The state of the collection, under the figures that raise the question.
    Marked off with the gold rule the site uses wherever it speaks about itself
-   rather than about a court — the same left rule as the pull-quote on /about —
-   so it does not read as a second standfirst. */
-.reg-note{
+   rather than about a court, so it does not read as a second standfirst.
+
+   ── It was called `.reg-note`, and that was a live bug ─────────────────────
+   RegistryTable gives every row's docket reference the same class name. Two
+   rules, same name, same specificity: the row's rule wins on source order for
+   what it sets — display, margin, size, colour, leading — and sets none of
+   the three properties that matter here, so all 39 rows inherited them.
+   Measured on the built page: every docket reference in the library was drawn
+   with a 2px gold left border, 16px of padding and a 680px cap, none of which
+   anyone asked for.
+
+   The collision was invisible in both files. Each rule reads correctly on its
+   own; only the name they share does the damage, and the element this one was
+   written for had never been built, so there was nothing on screen to compare
+   against. `.reg-state` is its own name now. */
+.reg-state{
   max-width:680px;
   margin:var(--space-6) 0 0;
   padding-left:var(--space-4);

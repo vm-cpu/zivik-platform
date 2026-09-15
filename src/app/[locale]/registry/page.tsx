@@ -42,9 +42,17 @@ const T = {
      It used to double as the meta description, which put 279 characters into a
      field that is truncated at about 160. They are two strings now, the way
      /about already splits them. */
+  /* Not «Усі провадження». The review's question is the right one — «чи
+     правильно буде писати про КОЖНЕ провадження. А якщо ми щось пропустимо?
+     Похибка можлива» — and it is the same correction the home band's heading
+     already took, where «Кожне провадження проти Росії» became «Провадження
+     проти Росії». One proceeding nobody has reached yet makes a claim of
+     completeness false, and this page is the one a reader would cite it from.
+     What the sentence can say without risk is what the library holds and what
+     each row carries. */
   lede: {
-    uk: "Усі провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип рішення.",
-    en: "Every proceeding against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
+    uk: "Провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип рішення.",
+    en: "Proceedings against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
   },
   /* The meta description: 133 / 147 characters, both inside the ~160 a search
      result shows. Says what the page holds and what can be done with it. */
@@ -210,6 +218,23 @@ const T = {
      is the noun `content/institutions.ts` and `content/stats.ts` already use. */
   mInstitutions: { uk: "інстанцій", en: "institutions" },
   mAnalysed: { uk: "опрацьовано", en: "analysed" },
+  /* The state of the collection, said in words under the figures.
+
+     Review's instruction: «на сторінці бібліотека додати вказівку конкретну
+     про те, що не всі рішення є проаналізовані — бо це зразу не зрозуміло,
+     якщо попередньо людина не прочитала розділ про нас». It was not: the page
+     printed «8 опрацьовано» beside «39 проваджень» and left the reader to
+     draw the conclusion from two numbers. A figure is not a statement, and
+     the reader who most needs this one is the reader who arrived here first.
+
+     The sentence itself came off /about in the same review — it was «Стан
+     бібліотеки» there — and this is where it was supposed to land. The claim
+     it makes is the one content/legal.ts already makes, so the two cannot
+     disagree. */
+  state: {
+    uk: "Бібліотека наповнюється. Провадження вносимо до неї раніше, ніж встигаємо їх опрацювати, тому частина справ поки що стоїть без огляду — у бібліотеці та на мапі вони позначені як такі. Відсутність провадження тут не означає, що його не існує.",
+    en: "The library is still being filled. Proceedings enter it faster than they can be written up, so some cases stand without a summary for now — they are marked as such in the library and on the map. A proceeding's absence here does not mean it does not exist.",
+  },
 } as const;
 
 /**
@@ -465,6 +490,10 @@ export default async function RegistryPage({
               <span className="ml">{pick(T.mAnalysed, locale)}</span>
             </div>
           </div>
+          {/* Under the figures, because it is the figures that raise the
+              question: 8 of 39 is a fact a reader has to interpret, and this
+              is the interpretation. */}
+          <p className="reg-state">{pick(T.state, locale)}</p>
         </header>
 
         {/* No Suspense boundary, and that is the point.
