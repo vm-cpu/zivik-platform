@@ -198,6 +198,17 @@
 .abt-back:hover {
   color: var(--brand-gold-pale);
 }
+/* The masthead gets the mark too, and on dark the mark is gold.
+
+   That is the site's rule, not a new one: the home page puts a 34x3 red rule
+   beside its section labels on paper, and the map page — whose masthead is
+   dark — carries the same object in --brand-gold-mark. Every h2 on this page
+   already has the red one. The H1, on the one dark band that opens the page, had
+   nothing, which is most of why the owner could not find any gold here: what
+   was left of it was two quotation marks and a hairline.
+
+   The rule alone, no word. A label over «Про проєкт» would have to say
+   something the H1 does not already say, and there is nothing. */
 .abt-mast h1 {
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
@@ -205,6 +216,14 @@
   line-height: 1.08;
   color: var(--brand-cream);
   margin: 0;
+}
+.abt-mast h1::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 3px;
+  margin-bottom: var(--space-4);
+  background: var(--brand-gold-mark);
 }
 /* The scope sentence, as the standfirst it always was. It names the courts
    this library covers, which is the first thing a reader of this page wants
