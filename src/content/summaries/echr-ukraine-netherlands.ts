@@ -220,7 +220,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
     },
     {
       label: {
-        uk: "МКБФТ і МКЛРД (Україна проти РФ)",
+        uk: "ICSFT і CERD (Україна проти РФ)",
         en: "ICSFT and CERD (Ukraine v. Russian Federation)",
       },
       note: { uk: "МС ООН · схід і Крим, 2014–2022", en: "ICJ · the east and Crimea, 2014–2022" },
@@ -306,6 +306,18 @@ export const echrUkraineNetherlands: DecisionSummary = {
        of this tile's own label hears. */
     {
       value: "12",
+      /* The matrix under this tile has eleven rows, not twelve: «Art. 9–10» is
+         one row for two articles, «P1-1, P1-2» is one row for two more, and the
+         «Діти» row restates articles 3, 5 and 8 rather than adding any. A reader
+         who counts the rows gets eleven while the tile says twelve — the same
+         trap the «4 порушення» tile on icj-cerd-icsft carried, where the page
+         answered the same question two ways. The long note above argues why
+         twelve is right; this says why the drawing beneath it does not look
+         like twelve. */
+      note: {
+        uk: "у матриці нижче 11 рядків: ст. 9–10 і ст. 1–2 Протоколу № 1 згруповано попарно",
+        en: "the matrix below has 11 rows: arts. 9–10 and arts. 1–2 of Protocol No. 1 are paired",
+      },
       label: { uk: "статей Конвенції і протоколів порушено", en: "Convention and Protocol articles breached" },
     },
     {

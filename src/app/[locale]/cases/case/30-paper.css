@@ -1,126 +1,4 @@
-/* ---- 4. Reference band (paper): rulings + provisional measures ------------- */
-.casepage .refs {
-  border-bottom: 1px solid var(--seam);
-  padding-block: clamp(34px, 4.5vw, 60px);
-}
-/* ---- the holdings: a ledger, not cards -------------------------------------
-   Two things were wrong here, and the layout was the smaller of them.
 
-   The cards flowed through `columns: 2` with `break-inside: avoid`. Multicol
-   balances by height, so entries of 105 and 388 characters landed with ragged
-   bottoms and the second column ended in a hole as deep as an entry; and the
-   reading order ran down column one before column two, which is not how a set
-   of holdings is read.
-
-   The card was the deeper problem. A white box with a serif headline over
-   grey prose is the shape of an article teaser, and these are not teasers —
-   they are propositions: what the Court held the law to *mean*, the half of a
-   decision that goes into a filing. A ledger says that. The doctrine's name
-   sits in a rail, the proposition reads as prose beside it, a hairline
-   separates entries: the same apparatus-and-prose idiom as the glance ledger
-   and the verdict matrix, which is the language the rest of the page already
-   speaks. One column, so three entries and six read alike and there is no
-   second column left to empty.
-
-   The name takes the prose's own size and is set apart by face, weight and
-   colour instead — the rule the standfirst follows, for the same reason. It
-   was --t-h3 over 14px card prose (1.6x, a headline), then --t-lead over 14px
-   (1.43x); beside 16px prose, in a column of its own, it needs no ratio at
-   all. The prose moves 14px → 16px because it is no longer card furniture: it
-   is the longest continuous reading in the band and takes the reading size and
-   the reading measure. */
-.casepage .rulings {
-  margin: var(--space-6) 0 0;
-}
-.casepage .ruling {
-  display: grid;
-  /* 14rem takes the longest term on the eight pages — «Персональна юрисдикція
-     через летальну силу», 42 characters — in two lines, and leaves the prose
-     its full 660px inside the 1180 rail. */
-  grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
-  align-items: baseline;
-  gap: var(--space-2) var(--space-8);
-  padding-block: var(--space-5);
-  border-top: 1px solid var(--prule);
-}
-.casepage .ruling dt {
-  margin: 0;
-  font-family: var(--brand-font-display), serif;
-  font-weight: 700;
-  font-size: var(--t-body);
-  line-height: 1.35;
-  color: var(--ink);
-  text-wrap: balance;
-}
-.casepage .ruling dd {
-  margin: 0;
-  font-size: var(--t-body);
-  line-height: 1.62;
-  color: var(--ink2);
-  max-width: var(--prose);
-  text-wrap: pretty;
-}
-/* At 801px the rail and the gutters leave the proposition 465px — 56
-   characters, measured, and the narrowest any prose on this page is allowed to
-   run. Below that the name goes back above it and the hairlines keep the
-   entries apart on their own. */
-@media (max-width: 800px) {
-  .casepage .ruling {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
-  }
-}
-.casepage .pmeasures {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.casepage .pmeasures li {
-  position: relative;
-  background: var(--card);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-5) var(--space-6) var(--space-5) var(--space-6);
-  margin-bottom: var(--space-3);
-  overflow: hidden;
-}
-.casepage .pmeasures li::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: 3px;
-  background: var(--prule);
-}
-.casepage .pmeasures li[data-order="violated"]::before {
-  background: var(--pred);
-}
-.casepage .pm-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-}
-.casepage .pm-measure {
-  font: 700 var(--t-ui) var(--brand-font-body);
-  color: var(--ink);
-}
-.casepage .pm-flag {
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink3);
-  white-space: nowrap;
-}
-.casepage .pmeasures li[data-order="violated"] .pm-flag {
-  color: var(--pred);
-}
-.casepage .pm-note {
-  margin: var(--space-2) 0 0;
-  font-size: var(--t-sm);
-  line-height: 1.55;
-  color: var(--ink2);
-}
 
 /* ---- 5. Reading column + sticky side nav ---------------------------------- */
 /* The long read keeps the brightest ground on the page — 5654px of prose at
@@ -397,30 +275,12 @@ The measure has been argued four times, so here is the method that settles
     justify-self: start;
   }
 }
-
-/* ---- 6. Reader's guide: the roster, then the dictionary --------------------
-   Two bands, not two columns of one. Measured at 1440 they were 336px and
-   788px side by side under identical 11px gold uppercase headings, and the
-   roster's own role label carried that same 11px gold-weight uppercase
-   treatment — three headings for two lists, and nothing telling a reader that
-   one is a cast of parties and the other a set of definitions.
-   The roster is now a grid of cards led by a kind chip; the glossary is a
-   ruled two-column dictionary. They alternate grounds and each carries the
-   band seam, so they read as two sections, which is what they are.
-   ------------------------------------------------------------------------- */
-.casepage .terms {
-  border-top: 1px solid var(--seam);
-  padding-block: clamp(38px, 5vw, 64px);
-}
 /* labels sitting on paper rather than the dark ground */
 .casepage .lbl-onpaper {
   color: var(--pgold);
 }
 .casepage .lbl-onpaper::after {
   background: var(--prule);
-}
-.casepage .lbl-onpaper .lbl-sub {
-  color: var(--ink3);
 }
 
 /* ---- the citation, at the foot of the sources -----------------------------
@@ -582,20 +442,6 @@ The measure has been argued four times, so here is the method that settles
   color: var(--faint);
 }
 
-/* `.terms-caveat` stood here and is gone with the sentence it styled: the
-   band explained that its explanations were editorial, which is what a
-   glossary is. The terms are the band. */
-
-/* The way out of the band and into the whole dictionary. Set like the other
-   arrow links on this page rather than as a button: it is a continuation of
-   the list above it, not a call to action. */
-.casepage .terms-more {
-  /* space-6 before the caveat existed; space-4 now, because the caveat above
-     it already opens the gap and two full steps read as a break in the band. */
-  margin: var(--space-4) 0 0;
-  font: 600 var(--t-cap) var(--brand-font-body);
-}
-
 /* Who's who — a cast list, and now it looks like one: a card per actor across
    the whole rail rather than a 336px column beside a wider block. The name is
    in the display serif, the same register as the case title, because these
@@ -642,32 +488,6 @@ The measure has been argued four times, so here is the method that settles
   .casepage .glossary {
     columns: 1;
   }
-}
-/* The six `.casepage .faq …` rules that were here are gone. The FAQ renders
-   `.qa-list` (page.tsx, the `#questions` band); `.faq` appears in no component
-   in the repository, so none of them had matched anything for some time. */
-
-/* ============================================================================
-   Instruments an award earns.
-
-   A judgment between States needs a map and an interim order; an investment
-   award needs money, attribution and a set-aside history. These blocks render
-   only when the summary fills them, and they keep the page's two grounds: the
-   measured instruments sit on the dark dashboard, the argument sits on paper.
-
-   Red still means a breach. The money bars run on a gold ramp, so a figure is
-   never mistaken for a finding.
-   ========================================================================== */
-
-/* The note under a takings grid or a set of money bars, and so a line that
-   only ever renders inside .dash. That band is --brand-night, where --ink2 is
-   2.40:1; --muted is 9.06:1. */
-.casepage .dash-note {
-  margin: var(--space-4) 0 0;
-  max-width: 62ch;
-  font-size: var(--t-sm);
-  line-height: 1.6;
-  color: var(--muted);
 }
 
 /* provenance notice at the head of the summary text: quiet, but on record */

@@ -289,7 +289,7 @@ export const oschadbank: DecisionSummary = {
     },
     {
       label: {
-        uk: "МКБФТ і МКЛРД (Україна проти РФ)",
+        uk: "ICSFT і CERD (Україна проти РФ)",
         en: "ICSFT and CERD (Ukraine v. Russian Federation)",
       },
       note: { uk: "Міжнародний суд ООН · Крим і Донбас", en: "ICJ · Crimea and Donbas" },

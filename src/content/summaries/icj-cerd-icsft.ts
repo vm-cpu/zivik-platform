@@ -26,23 +26,41 @@ export const icjCerdIcsft: DecisionSummary = {
   }),
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
-  /* «Стандартизована назва з одним розміром шрифту» (review). The h1 read
-     «Україна проти Російської Федерації» and nothing more — which is also the
-     h1 of icj-genocide, so the archive's two ICJ cases carried one headline
-     between them and neither said which it was. The form is the one the
-     review settled on the genocide page in the same pass: the parties, a
-     colon, and what the case is about. */
+  /* «Стандартизована назва з одним розміром шрифту. Замінюємо назву на таку»
+     — the owner's own wording, and it is the ICJ's full case name. What stood
+     here was «Україна проти Російської Федерації», which is also the h1 of
+     icj-genocide: the archive's two ICJ cases carried one headline between
+     them and neither said which it was.
+
+     One word-group differs from the owner's text. She wrote «про запобігання
+     фінансуванню тероризму»; the convention's official Ukrainian name, fixed
+     by the ratification law (Закон України № 149-IV of 12 September 2002,
+     zakon.rada.gov.ua/go/995_518), is «про боротьбу з фінансуванням
+     тероризму», and that is what the caption on this page and every other
+     mention in the archive already use. On a page about that convention the
+     h1 cannot be the one place that names it differently, so the official
+     wording stands here — flagged to the owner, hers to overrule.
+
+     Set in sentence case, not the capitals of the review document: the caps
+     there are that document's heading style, and 130 characters of display
+     serif in capitals is six lines of shouting. */
   title: {
-    uk: "Україна проти Російської Федерації: фінансування тероризму і расова дискримінація",
-    en: "Ukraine v. Russian Federation: terrorism financing and racial discrimination",
-  },
-  /* The masthead in Ukrainian — the caption under the title and the line
+    uk: "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти Російської Федерації)",
+    en: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
+  },  /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
+    /* The same sentence as `title`, deliberately. The caption used to stop
+       before «(Україна проти Російської Федерації)», so with the full case
+       name in the h1 it rendered as a shortened copy of the headline directly
+       under it — one name at two sizes, which is what the review asked to end.
+       Identical, the masthead prints it once; see the guard on `.fullname` in
+       cases/[slug]/page.tsx. The English `masthead.official` is untouched and
+       is what the citation block reproduces. */
     official:
-      "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації",
+      "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти Російської Федерації)",
     judgment: "Рішення від 31 січня 2024",
   },
 

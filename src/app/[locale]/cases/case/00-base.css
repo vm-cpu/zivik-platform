@@ -120,19 +120,4 @@
   height: 1px;
   background: var(--rule);
 }
-.casepage .lbl-sub {
-  font: 500 var(--t-cap) var(--brand-font-body);
-  font-style: normal;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  color: var(--faint);
-}
-/* light-ground label */
-.casepage .lbl-light {
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--pgold);
-  margin-bottom: var(--space-4);
-}
 
