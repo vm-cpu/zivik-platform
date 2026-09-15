@@ -198,17 +198,20 @@
 .abt-back:hover {
   color: var(--brand-gold-pale);
 }
-/* The masthead gets the mark too, and on dark the mark is gold.
+/* No mark over the H1.
 
-   That is the site's rule, not a new one: the home page puts a 34x3 red rule
-   beside its section labels on paper, and the map page — whose masthead is
-   dark — carries the same object in --brand-gold-mark. Every h2 on this page
-   already has the red one. The H1, on the one dark band that opens the page, had
-   nothing, which is most of why the owner could not find any gold here: what
-   was left of it was two quotation marks and a hairline.
+   One was added here — the 34x3 gold rule the map page puts on its own dark
+   masthead — to answer the gold having gone thin on this page. It came off on
+   the owner's word that it looked superfluous, and it did: a mark announces a
+   section inside a page, and the H1 is not a section, it is the page. The
+   four h2 below it each carry one because each opens something; over the
+   title there is nothing to open. The map page's version earns its place by
+   carrying a word — «МАПА» — where the heading beneath it is a sentence; a
+   bare rule over «Про проєкт» said nothing the band's own edge did not.
 
-   The rule alone, no word. A label over «Про проєкт» would have to say
-   something the H1 does not already say, and there is nothing. */
+   The gold on this page is the lit seam under this band, the two quotation
+   marks and the seam above them, the rule under the attribution, and the four
+   over the mission. */
 .abt-mast h1 {
   font-family: var(--brand-font-display), Georgia, serif;
   font-weight: 400;
@@ -216,14 +219,6 @@
   line-height: 1.08;
   color: var(--brand-cream);
   margin: 0;
-}
-.abt-mast h1::before {
-  content: "";
-  display: block;
-  width: 34px;
-  height: 3px;
-  margin-bottom: var(--space-4);
-  background: var(--brand-gold-mark);
 }
 /* The scope sentence, as the standfirst it always was. It names the courts
    this library covers, which is the first thing a reader of this page wants
@@ -484,23 +479,21 @@
 .abt-quote blockquote:lang(en) {
   quotes: "\201C" "\201D" "\2018" "\2019";
 }
-/* The marks in gold, not in cream.
+/* The marks take the cream of the words they enclose.
 
-   Gold on this site is the lamp's light, and it lives on the dark grounds —
-   measured across the home page it is the lit wordmark, the button under the
-   lamp, the case name in the Court's quotation and the seam above it. On
-   /about it had shrunk to four hairlines over the mission and one across the
-   top of this band: no gold text anywhere, which is what the owner saw.
+   They were gold for a while — the site's "a source speaks" colour, the same
+   value as the seam above them — and the owner's word for the result was that
+   it looked odd. It did, and the reason is that punctuation is not an
+   ornament: a coloured mark inside a run of cream type reads as a setting
+   error rather than as a flourish, and the closing one, sitting alone at the
+   end of the last line, pulled the eye into a corner.
 
-   The guillemets are the right place to give it back. They are the one
-   ornament on the page, they mark someone else speaking, and gold-lit is
-   already the colour this site gives a source — the same value carries the
-   seam a few pixels above them. Cream stays on the words themselves, so the
-   quotation reads and the marks frame it. 9.03:1 on --brand-ember. */
-.abt-quote blockquote::before,
-.abt-quote blockquote::after {
-  color: var(--brand-gold-lit);
-}
+   So they inherit. The gold on this page is its hairlines — the seam under
+   the masthead, the seam over this band, the rule under the attribution, the
+   four over the mission — and that is the right amount for a page with no
+   lamp on it. The home page's gold comes from an object: the lamp, its light,
+   the button under it. This page has no such object, and painting punctuation
+   was an attempt to invent one. */
 .abt-quote blockquote::before {
   content: open-quote;
 }
