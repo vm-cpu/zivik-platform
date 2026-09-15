@@ -813,6 +813,18 @@ The measure has been argued four times, so here is the method that settles
    first. What it repeats is `.lbl` + `.lbl-onpaper` in 00-base.css; the rule
    below is that pair and nothing else, so the band reads like every other
    band's label on the page. */
+/* The document's first heading, directly under the band label.
+   `.read h2` carries `margin-top: var(--space-14)` and a rule on top, both
+   sized to separate one chapter of the summary from the next. Under the band
+   label neither is doing that job: the label already separates, and it draws
+   its own rule. What the two produced together was 56px of empty paper with a
+   second full-width rule across it — the strip the owner pointed at. The
+   heading keeps its setting everywhere else; here it simply follows. */
+.casepage .read h2.read-band-h + h2 {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
 .casepage .read h2.read-band-h {
   display: flex;
   align-items: baseline;
