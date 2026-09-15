@@ -507,7 +507,7 @@
 @media (max-width: 640px) {
   .abt-quote blockquote {
     text-align: left;
-    text-wrap: var(--wrap-pretty);
+    text-wrap: pretty;
   }
   .abt-quote figcaption {
     text-align: left;

@@ -11,7 +11,7 @@
     "check": "node scripts/design-lint.mjs && node scripts/data-check.mjs && node scripts/text-check.mjs && tsc --noEmit && eslint",
     "data": "node scripts/data-check.mjs",
     "text": "node scripts/text-check.mjs",
-    "verify": "node scripts/flag-check.mjs"
+    "verify": "node scripts/flag-check.mjs && node scripts/build-css-check.mjs"
   },
   "dependencies": {
     "next": "16.3.2",

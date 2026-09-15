@@ -344,7 +344,59 @@ for (const file of files(join(ROOT, "src"), [".css"])) {
   });
 }
 
-/* ── rule 4: a var() that names nothing ─────────────────────────────────────
+/* ── rule 4: the widow guard ────────────────────────────────────────────────
+   Owner's rule: no paragraph on this site ends on a single word.
+
+   A linter cannot see a widow — where a line breaks is decided by the
+   browser, at a width nobody knows at build time. What it can do is check
+   that the one declaration which prevents them is still there and still
+   covers the elements that carry prose. That is the whole failure mode: the
+   rule is one line in one file, it is invisible when it works, and anything
+   that deletes it or narrows its selector list takes the guard off every
+   surface at once with nothing on screen to say so.
+
+   The second half of the guard is in `npm run verify`, which reads the CSS
+   the build actually emitted. It is there because the source being right is
+   not enough to know the rule shipped: this one spent an afternoon looking as
+   though the build were stripping it, when a dev server was serving a stale
+   chunk, and the only way to tell those two apart is to read the output. */
+
+const PROSE_ELEMENTS = ["p", "li", "blockquote", "figcaption"];
+{
+  const decommented = decomment(globals);
+  /* The selector list and the declaration, as one rule. Matched loosely on
+     whitespace so reformatting the file does not fail the check. */
+  const rule = decommented.match(
+    /([a-z,\s]+)\{[^}]*text-wrap:\s*pretty[^}]*\}/,
+  );
+  if (!rule) {
+    add(
+      join(ROOT, "src/app/globals.css"),
+      0,
+      "widows",
+      "no text-wrap rule in globals.css",
+      "every paragraph on the site relies on one declaration to avoid ending on a single word — restore `p,li,blockquote,figcaption,dd{text-wrap:pretty}`",
+    );
+  } else {
+    const selectors = rule[1]
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean);
+    for (const el of PROSE_ELEMENTS) {
+      if (!selectors.includes(el)) {
+        add(
+          join(ROOT, "src/app/globals.css"),
+          0,
+          "widows",
+          `<${el}> is not covered by the text-wrap rule`,
+          "it carries prose, so it can end on a one-word line — add it to the selector list",
+        );
+      }
+    }
+  }
+}
+
+/* ── rule 5: a var() that names nothing ─────────────────────────────────────
    The most expensive class of bug this file can catch, because it is silent.
    CSS drops the whole declaration when a var() resolves to nothing — not just
    the colour, the entire property — so one wrong character takes a background
@@ -450,7 +502,7 @@ for (const file of files(join(ROOT, "src"), [".css"])) {
     });
 }
 
-/* ── rule 5: inline styles in components ────────────────────────────────── */
+/* ── rule 6: inline styles in components ────────────────────────────────── */
 
 for (const file of files(join(ROOT, "src"), [".tsx"])) {
   const lines = readFileSync(file, "utf8").split("\n");
@@ -496,6 +548,7 @@ function nearest(v, steps, prefix) {
 const RULES = {
   type: "font sizes off the --t-* scale",
   space: "spacing off the 4px grid",
+  widows: "the guard against one-word last lines",
   fluid: "fixed pixel widths the viewport cannot override",
   "inline-fluid": "fixed pixel widths set inline in JSX",
   colour: "colour literals outside globals.css",
@@ -509,7 +562,8 @@ if (errors.length === 0) {
     `design-lint: clean.\n` +
       `  ${TYPE_STEPS.size} type steps, ${SPACE_STEPS.size} spacing steps, ` +
       `${BRAND_COLOURS.size} colour tokens, all honoured.\n` +
-      `  No fixed width over 320px outside the lamp's own light.`,
+      `  No fixed width over 320px outside the lamp's own light.\n` +
+      `  Widow guard in place over ${PROSE_ELEMENTS.join(", ")}.`,
   );
   process.exit(0);
 }

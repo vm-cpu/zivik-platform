@@ -338,48 +338,41 @@ body {
 
    Measured on /uk/about at a 1400px window: two of the six paragraphs
    ended on a single word — «України.» and «статусу.» alone on the last
-   line — which the owner's word for is untidy, and which is exactly what
-   it is: a line that carries one word reads as a mistake in the line
-   above it rather than as the end of a sentence.
+   line — which the owner's word for is untidy, and which is what it is: a
+   line carrying one word reads as a fault in the line above it rather
+   than as the end of a sentence.
 
    `text-wrap: pretty` is the property for this. The browser looks ahead
    over the last few lines and moves a word back so the paragraph does not
-   end short; unlike `balance` it does not touch the whole block, so it is
+   end short; unlike `balance` it does not re-lay the whole block, so it is
    safe on prose of any length. Where a paragraph already sets `balance` —
-   the hero's statement, the quotation — that rule is more specific and
-   keeps it: balance is for a short block that should look even, pretty is
-   for a long one that should not end badly.
+   the hero's statement, the quotation on a wide screen — that rule is more
+   specific and keeps it: balance is for a short block that should look
+   even, pretty for a long one that should not end badly.
 
    Progressive enhancement. A browser without it lays the text out exactly
-   as it does today; nothing depends on the property being honoured.
+   as it does today, so nothing depends on the property being honoured.
 
-   ── Why the value goes through a variable ──────────────────────────
-   Written plainly — `text-wrap: pretty` — this declaration never reached
-   the browser. Tailwind 4 runs the stylesheet through Lightning CSS,
-   which drops declarations its target browsers do not support, and its
-   default baseline is older than `pretty` (Chrome 117, Safari 17.5).
-   Verified rather than assumed: the emitted chunk contained Tailwind's
-   own `.text-wrap{text-wrap:wrap}` utility and no `pretty` anywhere, no
-   loaded stylesheet had a rule matching `p` with the property on it, and
-   injecting `p{text-wrap:pretty}` into the live page made the computed
-   value change — so the browser supports it and the build was removing
-   it.
-
-   Lightning CSS cannot evaluate a `var()`, so it cannot decide the value
-   is unsupported and leaves the declaration alone. A browser that does
-   not know `pretty` treats it as invalid at computed-value time and
-   falls back to the initial value, `auto` — which is the behaviour this
-   is enhancing anyway. The variable exists for that reason and no other.
+   ── One false trail, recorded so it is not walked again ────────────
+   This looked at first as though the build were removing it: the dev
+   server's globals chunk had no `pretty` in it, no loaded stylesheet had
+   a rule matching `p` with the property, and injecting the same rule into
+   the live page changed the computed value — so the browser could do it
+   and something upstream appeared to be stripping it. The suspect was
+   Lightning CSS, which Tailwind 4 runs stylesheets through and which does
+   drop declarations its target browsers do not support. It was not that.
+   The dev server was serving a stale chunk and went on serving it across
+   a restart. A clean production build emits this rule exactly as written
+   — `p,li,blockquote,figcaption,dd{text-wrap:pretty}` — in the chunk
+   /uk/about loads. `npm run verify` checks that on every build, which is
+   the honest way to hold a conclusion like this.
    ───────────────────────────────────────────────────────────── */
-:root {
-  --wrap-pretty: pretty;
-}
 p,
 li,
 blockquote,
 figcaption,
 dd {
-  text-wrap: var(--wrap-pretty);
+  text-wrap: pretty;
 }
 
 /* ─────────────────────────────────────────────────────────────

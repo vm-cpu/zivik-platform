@@ -353,6 +353,22 @@ from both. Two definitions of one class name is always a bug in waiting.
 
 ---
 
+- **No paragraph ends on a single word.** One declaration in `globals.css`
+  does it for the whole site — `p,li,blockquote,figcaption,dd{text-wrap:
+  pretty}` — and both halves of the toolchain check it stays: design-lint
+  fails if the rule is gone from the source or an element has fallen out of
+  its selector list, and `npm run verify` fails if it is not in the CSS the
+  build actually emitted. `text-wrap: balance` is the other tool and a
+  different job: it evens out a short block that should look deliberate — the
+  statement under the lamp, a centred quotation — and browsers stop applying
+  it a few lines in, so it is never a substitute for `pretty` on running
+  prose.
+
+  Measured before it existed, on /uk/about at 1400px: two of six paragraphs
+  ended on one word.
+
+---
+
 ## 4. Enforcement
 
     npm run design    # this document, checked
@@ -361,8 +377,15 @@ from both. Two definitions of one class name is always a bug in waiting.
 `scripts/design-lint.mjs` reads the scale out of `globals.css` — it cannot
 drift from the system it enforces — and fails the run on a font size off the
 `--t-*` steps, a padding/margin/gap off the 4px grid, a colour literal outside
-`globals.css`, a `fontSize` set inline in JSX, or a fixed pixel width over
-320px anywhere at all.
+`globals.css`, a `fontSize` set inline in JSX, a fixed pixel width over 320px
+anywhere at all, or the loss of the site's widow guard.
+
+`npm run verify` is the other half, and it reads what the build emitted rather
+than what the source says: `scripts/flag-check.mjs` for the feature flag and
+`scripts/build-css-check.mjs` for declarations the design depends on. Source
+being right is not proof a rule shipped — the widow guard spent an afternoon
+looking as though the pipeline were stripping it when a dev server was serving
+a stale chunk, and reading the output is the only way to tell those apart.
 
 This exists because everything above was already written down and largely
 ignored. An audit on 26 August 2026 measured 94 hard-coded font sizes producing
