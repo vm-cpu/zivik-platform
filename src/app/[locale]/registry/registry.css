@@ -50,11 +50,22 @@
    tied on specificity with `.nsv-mobnav a` in header.css and won on source
    order, repainting the mobile menu red on its dark ground — 1.82:1 in
    light theme, and invisible on the one layout that uses that menu. */
-.registrypage .reg-wrap a {
+/* `.reg-back` is excluded, not outweighed.
+
+   The back link sets `color: var(--faint)` at one class and this rule paints
+   every anchor in the page body at two classes and an element, so the link
+   rendered red at rest — while `.reg-back:hover{color:var(--red)}` two rules
+   below says plainly what was intended: faint at rest, red on hover. A hover
+   colour identical to the rest colour is the tell.
+
+   Not a regression from today; it predates this file's last four commits.
+   Fixed the way /about's identical fault was fixed — the exception belongs in
+   the rule that overreaches, not in a heavier selector on the thing it hits. */
+.registrypage .reg-wrap a:not(.reg-back) {
   color: var(--red);
   text-decoration: none;
 }
-.registrypage .reg-wrap a:hover {
+.registrypage .reg-wrap a:not(.reg-back):hover {
   color: var(--redd);
 }
 
@@ -77,6 +88,11 @@
 
 /* ---- page heading ---- */
 .reg-mast{padding:var(--space-10) 0 var(--space-6);border-bottom:1px solid var(--rule)}
+.reg-back{
+  display:inline-block;margin-bottom:var(--space-5);
+  font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.06em;text-transform:uppercase;
+  color:var(--faint);text-decoration:none;
+}
 /* The note goes to the margin; the figures stay under the prose.
 
    Two goes at the 500px of nothing beside a 680px reading measure. The first
