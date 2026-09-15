@@ -77,67 +77,17 @@
 
 /* ---- page heading ---- */
 .reg-mast{padding:var(--space-10) 0 var(--space-6);border-bottom:1px solid var(--rule)}
-/* The figures move to the right of the prose.
+/* ── The two-column masthead — reverted ───────────────────────────────────
+   The three figures were moved to the right of the prose, to fill the 500px
+   of nothing beside a 680px reading measure. The owner's verdict was that it
+   came out worse, and it did: stacked vertically at the far edge they read as
+   a detached sidebar, and the gap between the note and them was still there —
+   the hole had moved rather than closed.
 
-   The masthead had two widths in it: the lede and the state note are capped
-   at a reading measure of 680, the table under them runs the full 1180 rail,
-   and the three figures sat under the lede — so the top of the page was a
-   column of text with 500px of nothing beside it, above a table that used
-   every pixel. The owner's words, twice on two different pages: «знову
-   створили пустий простір праворуч».
-
-   The answer is not to stretch the prose — 1180px at 14px is 140 characters
-   to the line. It is to put something in the space that belongs there, and
-   the figures are exactly that: they are what the sentences are about, they
-   are short, and a key-figures block at the outer edge of a masthead is the
-   shape this kind of page has anyway.
-
-   Explicit rows rather than auto-placement: the five children are the back
-   link, the title, the lede, the figures and the note, in that source order,
-   and the figures have to cross two of the rows the prose occupies. Left to
-   place themselves they would take a row of their own and reopen the hole.
-
-   Only where there is room for both: 680 for the prose, 48 of gap and the
-   figures' own width need about 1100px before the second column is anything
-   but a squeeze. Below that they stay where they were, under the lede. */
-@media (min-width: 1100px) {
-  .registrypage .reg-mast {
-    display: grid;
-    grid-template-columns: minmax(0, 680px) max-content;
-    justify-content: space-between;
-    column-gap: var(--space-12);
-    align-items: start;
-  }
-  .registrypage .reg-back {
-    grid-column: 1 / -1;
-    grid-row: 1;
-  }
-  .registrypage .reg-mast h1 {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
-  .registrypage .reg-lede {
-    grid-column: 1;
-    grid-row: 3;
-  }
-  .registrypage .reg-state {
-    grid-column: 1;
-    grid-row: 4;
-  }
-  .registrypage .reg-meta {
-    grid-column: 2;
-    grid-row: 3 / span 2;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-6);
-    margin-top: 0;
-  }
-}
-.reg-back{
-  display:inline-block;margin-bottom:var(--space-5);
-  font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.06em;text-transform:uppercase;
-  color:var(--faint);text-decoration:none;
-}
+   The lesson is the one the quotation on /about already taught: space beside
+   a reading column is not automatically a fault, and filling it with whatever
+   is nearest makes a worse page than leaving it. The figures belong under the
+   sentences they summarise. */
 .reg-back:hover{color:var(--red)}
 .reg-mast h1{
   font-family:var(--brand-font-display),Georgia,serif;font-weight:400;
