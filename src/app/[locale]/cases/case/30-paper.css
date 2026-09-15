@@ -408,10 +408,6 @@ The measure has been argued four times, so here is the method that settles
    ruled two-column dictionary. They alternate grounds and each carries the
    band seam, so they read as two sections, which is what they are.
    ------------------------------------------------------------------------- */
-.casepage .aids {
-  border-top: 1px solid var(--seam);
-  padding-block: clamp(38px, 5vw, 64px);
-}
 .casepage .terms {
   border-top: 1px solid var(--seam);
   padding-block: clamp(38px, 5vw, 64px);
@@ -604,73 +600,12 @@ The measure has been argued four times, so here is the method that settles
    the whole rail rather than a 336px column beside a wider block. The name is
    in the display serif, the same register as the case title, because these
    are proper names of parties and forums. */
-/* One group per role.
-
-   `auto-fit`, so the cards in a group divide the rail between them instead of
-   huddling at its left edge: with `auto-fill` the empty tracks stayed, and a
-   group of two took a third of the width with two thirds of nothing beside it.
-
-   The one case where filling the rail is wrong is a group of one — the court,
-   on five of the eight — which would become a 1180px banner. That group is
-   capped instead, and the component hands the count down as `data-count` so
-   the rule can see it. */
-.casepage .who-group + .who-group {
-  margin-top: var(--space-8);
-}
-.casepage .who-groupname {
-  margin: 0;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink2);
-}
-.casepage .who {
-  list-style: none;
-  margin: var(--space-4) 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: var(--space-4);
-}
-.casepage .who-group[data-count="1"] .who {
-  grid-template-columns: minmax(0, 560px);
-}
-.casepage .who li {
-  display: grid;
-  align-content: start;
-  gap: var(--space-2);
-  padding: var(--space-5) var(--space-6);
-  border-radius: var(--r-md);
-  background: var(--card);
-  box-shadow: var(--shadow-sm);
-}
-/* What the actor IS — a chip, not another heading. It used to be 11px Fira
-   700 uppercase at 0.14em tracking, which is the section-label recipe letter
-   for letter, so every entry opened with something that read as a heading.
-   As a bordered chip it reads as a tag at a glance and cannot be confused
-   with the label above the list.
-   The card ground is --brand-surface. --brand-faint is 5.45:1 on it and
-   --brand-gold-ink 5.62:1, both AA, but the chip is 11px and the kind is the
-   first thing read in the entry: it runs on --ink2 (7.78:1) and the court is
-   marked by --ink (17.57:1) rather than by hue, with the chip's border in
-   --brand-gold-ink to carry the one distinction that is not a word. */
-/* The court's gold edge. It was on the chip; the chip is gone with grouping,
-   and this was the one thing it said that the group heading does not — so it
-   moves to the card itself rather than being lost. */
-.casepage .who li[data-kind="court"] {
-  box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--pgold);
-}
-.casepage .who b {
-  font: 700 var(--t-lead) var(--brand-font-display), serif;
-  line-height: 1.2;
-  color: var(--ink);
-  text-wrap: pretty;
-}
-.casepage .who-role {
-  font-size: var(--t-sm);
-  line-height: 1.55;
-  color: var(--ink2);
-}
+/* «Хто є хто» — the roster of parties, court and other actors — stood here:
+   a grid of cards, a gold inset edge on the court, and the reasoning for why
+   a group of one is capped rather than stretched. The band came off the
+   decision page (review: «Цей підрозділ забрати»), because with the actors
+   removed it restated the first three rows of «Картка справи». If a cast list
+   ever earns a place again it earns a shape of its own. */
 
 /* Glossary — a dictionary, in ruled term/definition rows poured into two
    columns so it uses the rail instead of stopping at the middle of the page.

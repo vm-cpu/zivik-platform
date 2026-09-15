@@ -215,12 +215,6 @@ const T = {
     machinery: { uk: "Розбір рішення", en: "Anatomy" },
     rulings: { uk: "Тлумачення", en: "Key rulings" },
     measures: { uk: "Тимчасові заходи", en: "Provisional measures" },
-    /* The band at `#handbook` is headed «Хто є хто» / "Who's who" on the
-       decision page — it was retitled there when the chip that led to it was
-       found promising a primer and delivering a cast list. This copy kept the
-       old wording, so a search hit still offered "What to know" and landed on
-       "Who's who". */
-    handbook: { uk: "Хто є хто", en: "Who's who" },
     /* Its own band since the glossary was split out of the who's-who, and its
        own section here since the index was still filing terms under the one
        above — a term search landed on the cast list. */

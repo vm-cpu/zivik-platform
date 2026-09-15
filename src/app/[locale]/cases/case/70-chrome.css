@@ -246,8 +246,7 @@
   .casepage .score,
   .casepage .lede,
   .casepage .refs,
-  .casepage .machinery,
-  .casepage .aids {
+  .casepage .machinery {
     background: #fff !important;
     color: #000 !important;
   }

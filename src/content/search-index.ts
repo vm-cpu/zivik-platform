@@ -104,7 +104,6 @@ export const SECTIONS = [
   "machinery",
   "rulings",
   "measures",
-  "handbook",
   /* The glossary got a band of its own (#glossary) when it was split out of
      the who's-who. The index went on filing its fifty headwords under
      `handbook`, so a reader who searched a decision page for a term was landed
@@ -178,7 +177,6 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
     machinery: [],
     rulings: [],
     measures: [],
-    handbook: [],
     glossary: [],
     related: [],
     fulltext: [],
@@ -281,8 +279,10 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
       .join(" "),
   );
 
-  // ── handbook: the who's-who ──
-  out.handbook.push(s.whoIsWho.map((w) => all(w.name, w.role)).join(" "));
+  /* The «Хто є хто» section stood here, indexing the cast list against
+     #handbook. The band is gone from the decision page — it had come down to a
+     restatement of «Картка справи» — so the anchor is gone with it, and text
+     that is no longer on the page must not be searchable into it. */
 
   /* ── glossary: the terms this decision defines, in their own band ──
      Indexed only when that band is built (`glossaryEnabled`). The index is
@@ -405,7 +405,6 @@ export const contentIndex: ContentIndex = build();
     "machinery",
     "rulings",
     "measures",
-    "handbook",
     "glossary",
     "fulltext",
     "related",

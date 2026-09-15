@@ -101,12 +101,6 @@ const T = {
   progress: { uk: "Прогрес читання", en: "Reading progress" },
   minRead: { uk: "{n} хв читання", en: "{n} min read" },
   glossaryH: { uk: "Словник", en: "Glossary" },
-  whoH: { uk: "Хто є хто", en: "Who's who" },
-  /* What each actor IS. It used to be carried only by a gold left border on
-     the court, which is not a label a reader can read. */
-  whoKindParty: { uk: "Сторона", en: "Party" },
-  whoKindCourt: { uk: "Суд", en: "Court" },
-  whoKindActor: { uk: "Учасник", en: "Actor" },
   relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
 
   /* The theatre map's text alternative. It was the literal string "Map of
@@ -194,7 +188,6 @@ const T = {
      reader clicking for a primer got a cast list. The band's own heading is
      the label now; the glossary underneath it, which was silently annexed to
      this destination, gets its own entry below. */
-  navHandbook: { uk: "Хто є хто", en: "Who's who" },
   navGlossary: { uk: "Словник", en: "Glossary" },
   citeH: { uk: "Як цитувати", en: "How to cite" },
   citeCopy: { uk: "Копіювати", en: "Copy" },
@@ -229,30 +222,10 @@ const T = {
  * plural and reads the same three keys. Same shape as the registry's helper —
  * copied rather than imported, because the two surfaces do not share a module.
  */
-/** What each entry in the cast list is. */
-const WHO_KIND: Record<"party" | "court" | "actor", Localized> = {
-  party: T.whoKindParty,
-  court: T.whoKindCourt,
-  actor: T.whoKindActor,
-};
 
 /** The order the groups are read in: the sides, then the forum, then the rest.
  *  Fixed, so the band has the same shape on every case. */
-/* Two groups, not three. Review: «Забрати учасників». The «Учасники» group
-   listed the people and entities a case is about rather than the ones before
-   the forum — on icj-cerd-icsft, «Кримські татари» and «"ДНР" / "ЛНР"» — which
-   reads as a cast list beside two states and a court. The `actor` entries stay
-   in the summaries: they are true, they are cited, and the band can take them
-   back if it ever earns a shape for them. */
-const WHO_ORDER = ["party", "court"] as const;
 
-/** Plural headings for the groups. The singular chips above still name one
- *  entry — these name a set, which is a different word in both languages. */
-const WHO_GROUP: Record<"party" | "court" | "actor", Localized> = {
-  party: { uk: "Сторони", en: "Parties" },
-  court: { uk: "Суд", en: "The court" },
-  actor: { uk: "Учасники", en: "Others involved" },
-};
 
 /** Chrome label for each way a claim can be disposed of. */
 const OUTCOME_LABEL: Record<Outcome, Localized> = {
@@ -674,7 +647,7 @@ export default async function CasePage({
   if (!summary) return <CasePending slug={slug} locale={locale} dict={dict} />;
 
   const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
-  const { interpretations, plain, whoIsWho, related } = summary;
+  const { interpretations, plain, related } = summary;
   /* Alphabetical, in the reader's own collation, and sorted here rather than
      in the band: the term chips at the head of the verbatim text link to
      `#term-N`, and the band renders the same array, so both have to number
@@ -841,7 +814,6 @@ export default async function CasePage({
     ["pmeas", provisionalMeasures.length > 0],
     ["machinery", hasMachinery],
     ["chron", true],
-    ["aids", true],
     ["terms", glossaryEnabled],
     ["srcs", sources.length > 0],
     ["neighbours", related.length > 0],
@@ -892,7 +864,6 @@ export default async function CasePage({
           },
         ]
       : []),
-    { id: "handbook", label: pick(T.navHandbook, locale) },
     ...(glossaryEnabled
       ? [{ id: "glossary", label: pick(T.navGlossary, locale) }]
       : []),
@@ -1573,54 +1544,16 @@ export default async function CasePage({
           and they now have different shapes: the roster is a grid of cards
           across the full rail, each led by a kind chip; the glossary is a
           ruled dictionary poured into two columns. Different grounds, too. */}
-      {/* Grouped by role, in the order a case has them: who is fighting, who
-          decides, everyone else.
+      {/* «Хто є хто» stood here and is gone.
 
-          It was one flat grid in whatever order the entries were authored,
-          and in six of the eight write-ups the roles interleave — this page
-          runs party, party, court, actor, actor, court; MH17 runs party,
-          actor, actor, actor, actor, court. A reader met the same three kinds
-          shuffled differently on every case and had to read the chip on each
-          card to reconstruct the shape.
-
-          Grouped, not filtered: there are four to six cards here. A filter
-          over six things is a control that costs more than the reading it
-          saves. The group heading also does the chip's old job, so the chip
-          comes off — repeating «СТОРОНА» on each card under a heading that
-          already says «Сторони» is the same word twice. The court keeps its
-          gold edge, which was the one distinction the chip carried that is
-          not a word; it moves to the card. */}
-      <section className="aids" data-ground={ground["aids"]} id="handbook" data-navsec aria-label={pick(T.whoH, locale)}>
-        <div className="rail">
-          <h2 className="lbl lbl-onpaper">{pick(T.whoH, locale)}</h2>
-          {WHO_ORDER.map((kind) => {
-            const group = whoIsWho.filter((w) => w.kind === kind);
-            if (group.length === 0) return null;
-            return (
-              <div
-                className="who-group"
-                key={kind}
-                data-kind={kind}
-                /* The stylesheet needs the count: a group of one is the only
-                   case where filling the rail would be wrong. */
-                data-count={group.length}
-              >
-                <h3 className="who-groupname">
-                  {pick(WHO_GROUP[kind], locale)}
-                </h3>
-                <ul className="who">
-                  {group.map((w, i) => (
-                    <li key={i} data-kind={w.kind}>
-                      <b>{pick(w.name, locale)}</b>
-                      <span className="who-role">{pick(w.role, locale)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+          Review: «Забрати учасників» and, on a screenshot of the whole band,
+          «Цей підрозділ забрати». Taking the «Учасники» group out left two
+          groups — the parties and the court — and those are the first three
+          rows of «Картка справи» a screen above: «Заявник — Україна»,
+          «Відповідач — Російська Федерація», «Суд — Міжнародний суд ООН».
+          A band whose whole content is a restatement of the table over it is
+          not a band. `summary.whoIsWho` stays in the data, unread, the way
+          `faq` does. */}
 
       {/* Its own id and its own nav entry. It had neither, so it was reached
           only by scrolling past «Хто є хто» — and the chip that was supposed
