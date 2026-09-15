@@ -241,10 +241,18 @@ const T = {
      another surface does unless something checks it. Checked here rather than
      assumed: 40 rows in the library, 8 of them marked as written up, a filter
      for them and the words «Огляд у підготовці»; on the map, zero markers.
-     So it points at the list under it, which is the surface it is on. */
+     So it points at the list under it, which is the surface it is on.
+
+     Shorter than it was, too. The first version ran three ideas through one
+     sentence and reached the reader as «дуже дивне формулювання»: it opened
+     on the library rather than on the reader's question, and «провадження
+     вносимо до неї раніше, ніж встигаємо їх опрацювати» is a process
+     described where an outcome was wanted. Two sentences now, each with one
+     job — what the marks in the list mean, and what an absence does not
+     mean. */
   state: {
-    uk: "Бібліотека наповнюється. Провадження вносимо до неї раніше, ніж встигаємо їх опрацювати, тому частина справ поки що стоїть без огляду — у списку нижче вони позначені як такі. Відсутність провадження тут не означає, що його не існує.",
-    en: "The library is still being filled. Proceedings enter it faster than they can be written up, so some cases stand without a summary for now — the list below marks them as such. A proceeding's absence here does not mean it does not exist.",
+    uk: "Не всі провадження вже опрацьовані — ті, що чекають на огляд, позначені в списку окремо. Бібліотека поповнюється, тож відсутність провадження тут не означає, що його немає.",
+    en: "Not every proceeding has been written up yet — those still waiting for a summary are marked in the list. The library is still growing, so a proceeding's absence here does not mean it does not exist.",
   },
 } as const;
 
