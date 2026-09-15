@@ -239,10 +239,44 @@
   .casepage .backlink,
   .casepage .actions {
     display: none !important;
-  }.casepage,
-.casepage .mast {
+  }
+  .casepage,
+  .casepage .mast,
+  .casepage .dash,
+  .casepage .score,
+  .casepage .lede,
+  .casepage .refs,
+  .casepage .machinery {
     background: #fff !important;
     color: #000 !important;
+  }
+  /* Forcing a band white does nothing for the type inside it: every colour in
+     the dashboard is set on the element that wears it, and the whole band is
+     on the night token set, so a printed page would have carried a lit gold
+     figure and a cream ledger onto white paper. Rather than name thirty
+     children, the band re-points its own aliases at their paper twins for the
+     length of the print sheet — the declarations underneath are unchanged and
+     resolve to ink. --bg and --panel go with them, which is what turns the
+     dispositif's frame back into a box on white. The KPI cards left with the
+     band split and are on paper tokens already. */
+  .casepage .score {
+    --bg: #fff;
+    --panel: #fff;
+    --cream: #000;
+    --muted: #000;
+    --faint: #333;
+    --gold: var(--brand-gold-ink);
+    --gold-dim: var(--brand-ink-2);
+    --red: var(--brand-red);
+    --forum: var(--brand-forum);
+    --rule: #999;
+    --rule-soft: #ccc;
+  }
+  /* The dispositif is a hairline frame on screen; on paper it is the block a
+     reader is most likely to be printing the page for, so its edge is the one
+     that goes to black. */
+  .casepage .vpanel {
+    border-color: #000 !important;
   }
   /* The ledger reads --brand-* directly rather than the band's aliases, so it
      is named here. */
@@ -252,9 +286,15 @@
   }
   .casepage .glance-item {
     border-top-color: #999 !important;
-  }.casepage .official,
-.casepage .ctl-label,
-.casepage .v-claim {
+  }
+  .casepage .kpi {
+    box-shadow: none !important;
+  }
+  .casepage .official,
+  .casepage .kpi b,
+  .casepage .ctl-label,
+  .casepage .score-head h2,
+  .casepage .v-claim {
     color: #000 !important;
   }
   .casepage a {
@@ -300,6 +340,99 @@
 }
 .casepage .v-out[data-o="acquitted"]::before {
   border: 1.5px solid var(--muted);
+}
+
+
+/* comfortable tap targets for the term chips */
+
+/* The `.qa` band's rules stood here — the accordion of common questions.
+   The band is gone (see the note in cases/[slug]/page.tsx), and with it
+   seventy lines of argument about how to set eight disclosures at reading
+   width. If the questions ever come back they come back as new work. */
+
+/* ---- neighbouring decisions: navigation, so cards you click ----------- */
+.casepage .neighbours {
+  border-top: 1px solid var(--seam);
+  padding: var(--space-14) 0 var(--space-24);
+}
+.casepage .nb-grid {
+  list-style: none;
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  display: grid;
+  /* auto-fill, not auto-fit. They agree for two cards or more; they differ
+     for one, and one is a case that happens here — auto-fit collapses the
+     empty tracks and lets the single card stretch across the whole 1180px
+     rail, which measured 150 characters to the line. auto-fill keeps the
+     tracks, so a lone card stays card-width. */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-4);
+}
+.casepage .nb-grid a {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  height: 100%;
+  padding: var(--space-6);
+  background: var(--card);
+  border: 1px solid var(--prule);
+  text-decoration: none;
+  position: relative;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+/* The forum leads: with a set of neighbours the first question is which court. */
+.casepage .nb-forum {
+  font: 600 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+/* A rule that draws itself on hover, rather than a card that lifts off. */
+.casepage .nb-grid a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 0;
+  background: var(--pred);
+  transition: width var(--dur) var(--ease);
+}
+.casepage .nb-grid a:hover::after {
+  width: 100%;
+}
+.casepage .nb-grid a:hover {
+  background: var(--paper2);
+}
+/* A card in this grid is a way out of the page, not a headline. At --t-h3 in
+   the display face a three-line case name filled the card and the row of them
+   read as three more titles under the one the reader came for; at --t-body
+   with the weight up, the same name is a link you can scan. */
+.casepage .nb-grid b {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 700;
+  font-size: var(--t-body);
+  line-height: 1.35;
+  color: var(--ink);
+}
+.casepage .nb-grid .nb-note {
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  color: var(--ink2);
+}
+
+/* ---- provisional measures: its own section, its own ground ------------- */
+/* Alternates against .refs above it. Optional — most decisions carry no
+   interim order — which is exactly why every paper band also carries a
+   --brand-seam edge: the alternation loses its parity whenever an optional
+   band is absent, and two --brand-paper-2 sections meeting at 1.06:1 have
+   nothing between them at all. */
+.casepage .pmeas {
+  /* --paper2: the bands moved, so the alternation moved with them. The run is
+     dash(p2), rulings(p), measures(p2), machinery(p), chronology(p2), the map
+     as a dark island, then who's who on paper. */
+  border-top: 1px solid var(--seam);
+  padding: var(--space-14) 0 var(--space-16);
 }
 /* The interpretations used to flow as a two-column multicol here. They are a
    ledger now and live with the rest of the reference band in 30-paper.css —

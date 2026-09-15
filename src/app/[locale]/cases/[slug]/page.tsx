@@ -3,13 +3,23 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { decisionMetadata, jsonLdHtml, siteUrl } from "@/lib/seo";
 import { foreignLang, isLocale, type Locale } from "@/i18n/config";
+import { plural } from "@/i18n/plural";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import CiteBlock from "@/components/cases/CiteBlock";
+import TermSearch from "@/components/cases/TermSearch";
 import PageNav from "@/components/cases/PageNav";
 import { markTerms, type TermRef } from "@/content/mark-terms";
 import TermTooltips from "@/components/cases/TermTooltips";
 import CaseTimeline from "@/components/cases/CaseTimeline";
+import MoneyBars from "@/components/cases/MoneyBars";
+import AttributionTree from "@/components/cases/AttributionTree";
+import ObjectionCards from "@/components/cases/ObjectionCards";
+import TakingsGrid from "@/components/cases/TakingsGrid";
+import VerdictMatrix from "@/components/cases/VerdictMatrix";
+import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
+import WarrantWall from "@/components/cases/WarrantWall";
+import GlanceFacts from "@/components/cases/GlanceFacts";
 import CaseMap from "@/components/cases/CaseMap";
 import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
@@ -20,6 +30,7 @@ import { glossaryEnabled } from "@/lib/flags";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
+  Outcome,
   SummaryBlock,
   Theatre,
 } from "@/content/summaries/types";
@@ -37,17 +48,7 @@ import "../case/60-warrants.css";
 import "../case/70-chrome.css";
 
 
-/** Localized chrome labels (the summary body stays in its source language).
- *
- * Fifty-one of these keys have no surface at the moment. They are the labels
- * of the bands the review took off the page — the docket card, the counters,
- * the dispositif matrix, the rulings, the provisional measures, the warrant
- * wall and the machinery, the per-case glossary, the neighbouring decisions.
- * They are parked here rather than deleted, alongside `summary.whoIsWho` and
- * `summary.faq` in the data: a band that comes back should come back with the
- * wording it had, in both languages, and not be re-translated from scratch.
- * Nothing enforces this — ghost-check reads CSS, not labels — so it is said
- * here instead. */
+/** Localized chrome labels (the summary body stays in its source language). */
 const T = {
   /* The row of counters used to be headed «Огляд» / "Overview", and the chip
      that led here said the same. Review: «Розділ "ОГЛЯД" я б назвала "ЯКЩО
@@ -224,6 +225,16 @@ const T = {
  *  Fixed, so the band has the same shape on every case. */
 
 
+/** Chrome label for each way a claim can be disposed of. */
+const OUTCOME_LABEL: Record<Outcome, Localized> = {
+  violation: T.violation,
+  "no-violation": T.noViolation,
+  granted: T.granted,
+  rejected: T.rejected,
+  "not-decided": T.notDecided,
+  convicted: T.convicted,
+  acquitted: T.acquitted,
+};
 
 const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
   "blog post": { uk: "допис у блозі", en: "blog post" },
@@ -633,8 +644,8 @@ export default async function CasePage({
   // Registry ids without a summary render the pending page; anything else 404s.
   if (!summary) return <CasePending slug={slug} locale={locale} dict={dict} />;
 
-  const { masthead, judgment, instruments, timeline, sources } = summary;
-  const { plain } = summary;
+  const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
+  const { interpretations, plain, related } = summary;
   /* Alphabetical, in the reader's own collation, and sorted here rather than
      in the band: the term chips at the head of the verbatim text link to
      `#term-N`, and the band renders the same array, so both have to number
@@ -665,7 +676,26 @@ export default async function CasePage({
       }))
     : [];
 
-  const { theatres = [], timelineTracks = [] } = summary;
+  /* Where a verdict's track is also a moment in the chronology.
+
+     Two of the eight decisions key their tracks to something else on the page.
+     The ICC's tracks are the dates its warrants issued — "17.03.2023" — and
+     every one of those dates is an entry in the chronology below. Nothing is
+     inferred here: the two are joined only when the same day appears on both
+     sides, so a page whose tracks are articles or defendants simply gets no
+     link rather than a guessed one. */
+  const chronoIsos = new Set(
+    (summary.timeline ?? []).map((e) => e.iso).filter((x): x is string => !!x),
+  );
+  const chronoAnchor = (track: string): string | undefined => {
+    const m = track.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+    if (!m) return undefined;
+    const iso = `${m[3]}-${m[2]}-${m[1]}`;
+    return chronoIsos.has(iso) ? `#ev-${iso}` : undefined;
+  };
+
+  const { theatres = [], provisionalMeasures = [], timelineTracks = [], glance = [] } = summary;
+  const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
   const parties = summary.title
     ? pick(summary.title, locale)
     : masthead.parties.replace(/^\(|\)$/g, "");
@@ -716,15 +746,51 @@ export default async function CasePage({
   const isSourcesHeading = (b: SummaryBlock) =>
     b.kind === "h2" && /^\s*(Researches|Дослідження)/.test(b.text);
   const body = rawBlocks.filter((b) => b.kind !== "link" && !isSourcesHeading(b));
-  /* The scorecard's three counters stood here — violations, claims granted,
-     convictions — with the argument for why a criminal judgment needed its own
-     branch. They counted for «Що вирішила Палата», and that band is gone. */
+  const violations = verdicts.filter((v) => v.outcome === "violation").length;
+
+  /** Official-text URL for a verdict track, when one exists. Only acronym
+   *  (string) abbrs double as verdict track keys. */
+  const trackUrl = (track: string): string | undefined =>
+    instruments.find((i) => typeof i.abbr === "string" && i.abbr === track)?.url;
+  /* `pagesLabel` stood here — «PDF, 139 с.» under «Читати рішення». The
+     review took the page count off the dashboard and then off the button:
+     «Забрати цифру про те, що рішення має 139 сторінок». `judgment.pages`
+     stays in the data and still feeds the pending page's «Обсяг рішення». */
+  /*
+   * The scorecard counts what the dispositif is mostly made of. An inter-State
+   * judgment turns on breaches, so it counts violations. An arbitral award
+   * turns on what was granted — counting its single expropriation finding as
+   * "1 of 9" would badly understate an award the claimant won outright.
+   *
+   * A criminal judgment turns on convictions, and that branch did not exist:
+   * the Outcome union gained convicted/acquitted, OUTCOME_LABEL and the chip
+   * colours were updated, this counter was not. So it fell through to the
+   * inter-State branch and printed Petrovsky's life sentence as "0 порушення
+   * з 3", and MH17's three convictions in absentia as "0 порушення з 4" — a
+   * legal archive stating, in red, that nothing was found. The noun agrees
+   * with the number as well; "0 порушення" was not Ukrainian either.
+   */
+  const granted = verdicts.filter((v) => v.outcome === "granted").length;
+  const convictions = verdicts.filter((v) => v.outcome === "convicted").length;
+  /* The third element is which colour the figure may wear. Red on this site
+     means a finding of breach, and a conviction is one; relief granted is not,
+     however large. The count was painted --pred on all three branches, which
+     on paper is a dark cherry nobody read as a semantic and on the panel's
+     dark ground is --brand-breach, which everybody would. */
+  const [decided, decidedForms, decidedKind] =
+    convictions > 0
+      ? ([convictions, T.convictionWord, "breach"] as const)
+      : granted > 0
+        ? ([granted, T.grantedWord, "relief"] as const)
+        : ([violations, T.violationWord, "breach"] as const);
+  const decidedLabel = `${plural(decided, decidedForms[locale], locale)} ${pick(T.ofTotal, locale)}`;
 
   /** Resolve a Localized pair for this render's locale (client-prop hygiene:
    *  client components receive plain strings, never both languages). */
   const L = (x: { uk: string; en: string }) => pick(x, locale);
 
   // Bands of the page, in reading order — the sticky nav names each one.
+  const hasMachinery = Boolean(summary.warrants || attribution || objections || afterlife);
   /* Which ground each band stands on, computed rather than fixed.
    *
    * The alternation used to be written into each band's own rule, which is
@@ -737,16 +803,31 @@ export default async function CasePage({
    * The map is skipped rather than counted: it is a dark island, and what
    * matters is that the paper bands either side of it keep alternating past
    * it. */
+  /* Which bands this decision shows. `summary.bands === "four"` is one
+     page's own setting — see the note on `bands` in summaries/types.ts — and
+     everything below reads it: the chip row, the ground alternation and each
+     removable section. Nothing here is a template rule; the template still
+     knows how to draw all of them. */
+  const FOUR = new Set(["fulltext", "chronology", "theatres", "sec-sources"]);
+  const shows = (id: string) => summary.bands !== "four" || FOUR.has(id);
+  const showBand = (name: string) =>
+    summary.bands !== "four" ||
+    ["readzone", "chron", "srcs"].includes(name);
+
   const bands: Array<[string, boolean]> = [
     ["readzone", true],
+    ["refs", true],
+    ["pmeas", provisionalMeasures.length > 0],
+    ["machinery", hasMachinery],
     ["chron", true],
+    ["terms", glossaryEnabled],
     ["srcs", sources.length > 0],
+    ["neighbours", related.length > 0],
   ];
-
   const ground: Record<string, "p" | "p2"> = {};
   let alt = 0;
   for (const [name, shown] of bands) {
-    if (!shown) continue;
+    if (!shown || !showBand(name)) continue;
     /* The dashboard above these is --brand-night now, so there is no parity to
      * carry on from — the run simply starts on paper, which is also what makes
      * the dashboard an island: whichever of the conditional bands render,
@@ -755,11 +836,32 @@ export default async function CasePage({
     alt++;
   }
 
-  /* The page's four bands, in its order. Everything else that used to have a
-     chip went out with its section — see the note above the bands. */
   const pageSections = [
+    { id: "overview", label: pick(T.inShort, locale) },
+    /* The summary leads now — review: «самері я б можливо перенесла на
+       початок і дала відразу після розділу ЯКЩО КОРОТКО. А потім би вже йшли
+       вкладки про тлумачення, тимчасові заходи тощо». */
     { id: "fulltext", label: pick(T.navFulltext, locale) },
+    /* This list is the page's order, and the sticky bar is drawn from it — so
+       it moves when the bands move. Rulings and measures now follow the
+       dispositif directly; the chronology and the map fall in behind the
+       machinery. */
+    { id: "rulings", label: pick(T.navRulings, locale) },
+    ...(provisionalMeasures.length > 0
+      ? [{ id: "measures", label: pick(T.provMeasures, locale) }]
+      : []),
+    ...(hasMachinery
+      ? [
+          {
+            id: "machinery",
+            label: pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale),
+          },
+        ]
+      : []),
     { id: "chronology", label: pick(T.timeline, locale) },
+    /* The map band. It renders on every case that names a theatre and had no
+       entry here at all — see the note on the section itself. Guarded the same
+       way the band is, so the chip never points at nothing. */
     ...(theatres.length > 0
       ? [
           {
@@ -768,9 +870,14 @@ export default async function CasePage({
           },
         ]
       : []),
+    ...(glossaryEnabled
+      ? [{ id: "glossary", label: pick(T.navGlossary, locale) }]
+      : []),
     ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
+    ...(related.length > 0 ? [{ id: "related", label: pick(T.relatedH, locale) }] : []),
   ];
-
+  /* The chip row shows the bands this decision actually renders. */
+  const sections = pageSections.filter((x) => shows(x.id));
 
   /**
    * Structured data. This archive exists to be cited — by journalists, in
@@ -900,7 +1007,7 @@ export default async function CasePage({
           <span lang={foreignLang(judgmentLine, locale)}>{judgmentLine}</span>
           {/* «Забрати кількість хвилин для читання» (review). It was an
               estimate the page made about its own reader — words ÷ 180 — on a
-              masthead whose other three parts are facts of the docket. */}
+              masthead whose other parts are facts of the docket. */}
           {summary.asOf && (
             <>
               <span className="dot" aria-hidden="true">
@@ -943,13 +1050,9 @@ export default async function CasePage({
             run of Latin type on a Ukrainian page — eight lines of capitals
             under a Ukrainian headline — and a screen reader gave it Ukrainian
             phonetics, which `lang` fixed and nothing else did. */}
-        {/* Not when it is the title again.
-
-            «Стандартизована назва з одним розміром шрифту» (review): the h1 on
-            icj-cerd-icsft is now the Court's full case name, and this caption
-            was that same sentence a second time, two sizes smaller, directly
-            under it. One name, one size — so the caption renders only where it
-            says something the headline does not. */}
+        {/* Not when it is the title again. On the two ICJ pages the h1 is
+            now the Court's full case name, and this caption was that same
+            sentence a second time, two sizes smaller, directly under it. */}
         {officialLine !== parties && (
           <p className="fullname" lang={foreignLang(officialLine, locale)}>
             {officialLine}
@@ -982,27 +1085,195 @@ export default async function CasePage({
       {termRefs.length > 0 && <TermTooltips />}
 
       <PageNav
-        sections={pageSections}
+        sections={sections}
         ariaLabel={pick(T.navAria, locale)}
         topLabel={pick(T.toTop, locale)}
       />
 
-      {/* Four bands, and no others.
+      {/* 1b — Plain-language lede */}
+      {shows("overview") && (
+        <section className="lede" id="overview" data-navsec aria-label={pick(T.inShort, locale)}>
+          <div className="rail lede-grid">
+            <div className="tldr">
+              <div className="lbl-light">{pick(T.inShort, locale)}</div>
+              <p>{pick(plain.tldr, locale)}</p>
+            </div>
+            <aside className="why">
+              <div className="lbl-light">{pick(T.whyMatters, locale)}</div>
+              <p>{pick(plain.whyMatters, locale)}</p>
+            </aside>
+          </div>
+        </section>
+      )}
 
-          Owner's instruction, given twice and then «застосуй до всіх
-          рішень»: «Розділ "САМЕРІ" змінити на "ПОВНИЙ ОГЛЯД". Потім
-          перенести на початок і дати відразу першим розділом. А потім би вже
-          йшли вкладки про хронологію, місце події та джерела. Тобто
-          залишаємо лише ці 4 блоки.»
+      {/* 2 — Dashboard: one column of full-width instruments */}
+      {shows("dash") && (
+        <section className="dash">
+          <div className="rail dash-stack">
+            {/* The docket facts, then the figures. `glance` is authored on all
+                eight summaries — 57 facts — and rendered nowhere until now. */}
+            {glance.length > 0 && (
+              <div>
+                {/* `lbl-onpaper` again: the docket card stayed on paper when
+                    the band split, and the plain `.lbl` is the dark-ground
+                    label. */}
+                <h2 className="lbl lbl-onpaper">{pick(T.glanceH, locale)}</h2>
+                <GlanceFacts
+                  facts={glance.map((g) => ({
+                    label: pick(g.label, locale),
+                    value: pick(g.value, locale),
+                  }))}
+                />
+              </div>
+            )}
 
-          What stood between the masthead and the summary is gone with it:
-          the plain-language lede and «Чому це важливо», the docket card and
-          the counters, the dispositif matrix and the sums, «Ключові
-          тлумачення», the provisional measures, the warrant wall and the rest
-          of the machinery, the per-case glossary, and «Пов'язані рішення».
-          The data behind every one of them is untouched in content/summaries;
-          only the rendering is gone, so any of them can come back as a band
-          without being rebuilt. */}
+            <div>
+              <h2 className="lbl lbl-onpaper">{pick(T.figuresH, locale)}</h2>
+              <div className="kpis">
+                {stats.map((s, i) => (
+                  <div
+                    key={i}
+                    className="kpi"
+                    /* `em` and nothing else. This used to also test
+                       `s.label.en === "violations found"`, which gave the one
+                       tile its accent from the English wording of its label:
+                       reword the label in either locale and the emphasis
+                       disappears with it. The tile that needed it now says so
+                       in the data (icj-cerd-icsft, stats[1]). */
+                    data-em={s.em ? "1" : undefined}
+                  >
+                    <b>
+                      {typeof s.value === "string" ? s.value : pick(s.value, locale)}
+                      {/* The asterisk is the mark, the note under the label is
+                          what it means. Hidden from assistive technology: a
+                          screen reader that reads "six star" learns nothing,
+                          and the note itself follows two lines later. */}
+                      {s.note && (
+                        <sup className="kpi-star" aria-hidden="true">
+                          *
+                        </sup>
+                      )}
+                    </b>
+                    <span>{pick(s.label, locale)}</span>
+                    {s.note && <i className="kpi-note">{pick(s.note, locale)}</i>}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </section>
+      )}
+
+      {/* 2b — The holding and the sums, on the night ground.
+
+          One band was tried first: the docket facts, the figures, the
+          dispositif and the money all on --brand-night together. It put a
+          280px light band between a 569px masthead and 2,566px of dark, which
+          is 1.1% of the page — not a band separating two scenes but a slot cut
+          in a dark field, and no amount of softening the light answered it.
+
+          Split here instead. The card and the counters stay on paper, where
+          they were; what goes dark is the part that earns it — what the forum
+          held, and what it cost. The dark scene now has paper above it and
+          paper below, which is the rule, and the summary above is no longer
+          squeezed between two dark expanses. */}
+      {shows("score") && (
+        <section className="score" aria-label={pick(T.found, locale)}>
+          <div className="rail dash-stack">
+            <div className="vpanel">
+              <div className="score-head">
+                <h2>{pick(summary.verdictsHeading ?? T.found, locale)}</h2>
+                <span className="score-count" data-of={decidedKind}>
+                  <b>{decided}</b> {decidedLabel} {verdicts.length}
+                </span>
+              </div>
+              <VerdictMatrix
+                rows={verdicts.map((v, i) => {
+                  const url = trackUrl(v.track);
+                  const inHref = chronoAnchor(v.track);
+                  return {
+                    /* The track key doubles as an instrument abbr where one
+                       exists, and that is the form the official-text link is
+                       labelled with; everywhere else the display form wins. */
+                    track: url
+                      ? v.track
+                      : v.trackLabel
+                        ? pick(v.trackLabel, locale)
+                        : v.track,
+                    href: url,
+                    inHref: url ? undefined : inHref,
+                    inLabel: pick(T.toChronology, locale),
+                    opensTrack: i === 0 || verdicts[i - 1].track !== v.track,
+                    outcome: v.outcome,
+                    outcomeLabel: pick(OUTCOME_LABEL[v.outcome], locale),
+                    claim: pick(v.claim, locale),
+                  };
+                })}
+              />
+            </div>
+
+            {takings && (
+              <div>
+                <h2 className="lbl">{pick(takings.heading, locale)}</h2>
+                <TakingsGrid
+                  metrics={takings.metrics.map((m) => ({
+                    label: L(m.label),
+                    value: typeof m.value === "string" ? m.value : L(m.value),
+                    percent: m.percent,
+                    restLabel: m.restLabel && L(m.restLabel),
+                    count: m.count,
+                    note: m.note && L(m.note),
+                  }))}
+                  locale={locale}
+                  labels={{ andMore: pick(T.dotCap, locale) }}
+                />
+                {takings.note && (
+                  <p className="dash-note">
+                    {pick(takings.note, locale)}
+                    {summary.asOf && (
+                      <span className="asof">
+                        {" "}
+                        · {pick(T.asOf, locale)}{" "}
+                        {new Date(summary.asOf + "T00:00:00Z").toLocaleDateString(
+                          locale === "uk" ? "uk-UA" : "en-GB",
+                          { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
+                        )}
+                      </span>
+                    )}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {amounts && (
+              <div>
+                <h2 className="lbl">{pick(T.amountsH, locale)}</h2>
+                <MoneyBars
+                  figures={amounts.figures.map((f) => ({
+                    label: L(f.label),
+                    display: typeof f.display === "string" ? f.display : L(f.display),
+                    amount: f.amount,
+                    currency: f.currency,
+                    estimated: f.estimated,
+                    note: f.note && L(f.note),
+                    parts: f.parts?.map((pt) => ({
+                      label: L(pt.label),
+                      display: typeof pt.display === "string" ? pt.display : L(pt.display),
+                      amount: pt.amount,
+                    })),
+                  }))}
+                  shareLabel={pick(T.shareOf, locale)}
+                  ofLargestLabel={pick(T.ofLargest, locale)}
+                  locale={locale}
+                />
+                {amounts.note && <p className="dash-note">{pick(amounts.note, locale)}</p>}
+              </div>
+            )}
+
+          </div>
+        </section>
+      )}
 
       {/* 4 — Verbatim summary. The page bar is the only navigation. */}
       <section className="readzone" data-ground={ground["readzone"]} id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
@@ -1044,6 +1315,194 @@ export default async function CasePage({
           </article>
         </div>
       </section>
+
+      {/* The two halves of the holding, together.
+
+          The dispositif is band three — it says how each claim was disposed
+          of. `interpretations` says what the Court held the law to *mean*,
+          which is the half that goes into a filing, and it used to sit four
+          bands below with a dark map, a timeline and the machinery between
+          them. A reader scrolling from the dispositif for the ratio hit
+          scenery. The context that explains the holding now follows it
+          instead of interrupting it: rulings, measures, machinery, then the
+          chronology, then the map.
+
+          The grounds re-alternate with it — `.refs` takes --paper and
+          `.pmeas` --paper2 — so the run reads dark, p, p2, p, p2, dark, p:
+          the dashboard and the map are each a dark island with paper on both
+          sides, which is what DESIGN.md requires of them. */
+      }
+      {/* 2b — Reference: doctrine and the interim order, on paper */}
+      {shows("rulings") && (
+        <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
+          <div className="rail">
+            <h2 className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</h2>
+            {/* A definition list, because that is what these are: a doctrine
+                and what the Court held it to mean. They were cards — a white
+                box with a serif headline over grey prose, which is the shape of
+                an article teaser and not of a holding.
+
+                Deliberately unnumbered. On most of these pages the entries do
+                follow the order the reasoning runs in — jurisdiction before
+                merits — but nothing in the data says so, `interpretations` is
+                authored as a set, and a numeral would assert a sequence the
+                content does not have. */}
+            <dl className="rulings">
+              {interpretations.map((it, i) => (
+                <div key={i} className="ruling">
+                  <dt>{pick(it.term, locale)}</dt>
+                  <dd>{pick(it.ruling, locale)}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+      )}
+
+      {/* How the Court read the law and whether its interim orders were obeyed
+          are different subjects; they were sharing one section and one nav
+          entry, so the second was invisible. */}
+      {shows("measures") && provisionalMeasures.length > 0 && (
+        <section className="pmeas" data-ground={ground["pmeas"]} id="measures" data-navsec aria-label={pick(T.provMeasures, locale)}>
+          <div className="rail">
+            <h2 className="lbl lbl-onpaper">
+              {pick(T.provMeasures, locale)}
+              {summary.provisionalMeasuresOrder && (
+                <em className="lbl-sub">{pick(summary.provisionalMeasuresOrder, locale)}</em>
+              )}
+            </h2>
+            <ul className="pmeasures">
+              {provisionalMeasures.map((m, i) => (
+                <li key={i} data-order={m.order}>
+                  <div className="pm-head">
+                    <span className="pm-measure">{pick(m.measure, locale)}</span>
+                    <span className="pm-flag">
+                      {m.order === "violated"
+                        ? pick(T.orderBreached, locale)
+                        : pick(T.orderComplied, locale)}
+                    </span>
+                  </div>
+                  {m.note && <p className="pm-note">{pick(m.note, locale)}</p>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {/* 2w — The warrants, wave by wave (ICC situation pages) */}
+      {shows("machinery") && warrants && (
+        <section className="machinery" data-ground={ground["machinery"]} id="machinery" data-navsec
+          aria-label={pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale)}>
+          <div className="rail machinery-stack">
+            <div>
+              <h2 className="lbl lbl-onpaper">{pick(warrants.heading, locale)}</h2>
+              <p className="mach-note">{pick(warrants.note, locale)}</p>
+              <WarrantWall
+                waves={warrants.waves.map((w) => ({
+                  date: L(w.date),
+                  iso: w.iso,
+                  theme: L(w.theme),
+                  summary: L(w.summary),
+                  url: w.url,
+                  persons: w.persons.map((per) => ({
+                    name: L(per.name),
+                    role: L(per.role),
+                    born: per.born,
+                    rung: per.rung,
+                    charges: per.charges.map((c) => ({
+                      art: c.art,
+                      label: L(c.label),
+                      kind: c.kind,
+                    })),
+                    modes: per.modes.map((m) => ({ art: m.art, label: L(m.label) })),
+                  })),
+                }))}
+                rungs={warrants.rungs?.map(L)}
+                labels={{
+                  charges: pick(T.chargesLbl, locale),
+                  modes: pick(T.modesLbl, locale),
+                  announcement: pick(T.announcementLbl, locale),
+                  warCrime: pick(T.warCrimeLbl, locale),
+                  cah: pick(T.cahLbl, locale),
+                  art: locale === "uk" ? "ст." : "art.",
+                }}
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 2c — Machinery of the award: attribution, objections, what followed */}
+      {shows("machinery") && (attribution || objections || afterlife) && (
+        <section className="machinery" data-ground={ground["machinery"]} id={warrants ? undefined : "machinery"} data-navsec
+          aria-label={pick(T.navAnatomy, locale)}>
+          <div className="rail machinery-stack">
+            {attribution && (
+              <div>
+                <h2 className="lbl lbl-onpaper">{pick(T.attributionH, locale)}</h2>
+                <p className="mach-note">{pick(attribution.note, locale)}</p>
+                <AttributionTree
+                  respondent={pick(attribution.respondent, locale)}
+                  nodes={attribution.nodes.map((n) => ({
+                    actor: L(n.actor),
+                    basis: n.basis,
+                    basisNote: L(n.basisNote),
+                    did: L(n.did),
+                  }))}
+                  routes={(attribution.routes ?? []).map((r) => ({
+                    basis: r.basis,
+                    label: L(r.label),
+                  }))}
+                />
+              </div>
+            )}
+
+            {objections && (
+              <div>
+                <h2 className="lbl lbl-onpaper">{pick(objections.heading, locale)}</h2>
+                <p className="mach-note">{pick(objections.note, locale)}</p>
+                <ObjectionCards
+                  items={objections.items.map((o) => ({
+                    ground: L(o.ground),
+                    latin: o.latin,
+                    objection: L(o.objection),
+                    outcome: o.outcome,
+                    reasoning: L(o.reasoning),
+                    votes: o.votes?.map((v) => ({
+                      for: v.for,
+                      against: v.against,
+                      scope: v.scope && L(v.scope),
+                    })),
+                  }))}
+                  benchSize={objections.benchSize}
+                  labels={{
+                    objection: pick(T.objectionLbl, locale),
+                    ruling: pick(T.rulingLbl, locale),
+                    rejected: pick(T.objRejected, locale),
+                    upheld: pick(T.objUpheld, locale),
+                  }}
+                />
+              </div>
+            )}
+
+            {afterlife && (
+              <div>
+                <h2 className="lbl lbl-onpaper">{pick(afterlife.heading, locale)}</h2>
+                <p className="mach-note">{pick(afterlife.note, locale)}</p>
+                <AfterlifeStrip
+                  stages={afterlife.stages}
+                  locale={locale}
+                  labels={{
+                    standing: pick(T.standing, locale),
+                    notStanding: pick(T.notStanding, locale),
+                  }}
+                />
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* 2t — Chronology. Its own band, its own heading: it used to be the
           tail of the dashboard, below the money bars, under a <div> label. */}
@@ -1099,6 +1558,70 @@ export default async function CasePage({
           />
         </section>
       )}
+
+      {/* 3 — Reader's guide.
+
+          Two sections, not two columns. They were side by side inside one
+          band, 336px and 788px wide, under byte-identical 11px gold uppercase
+          headings, and the roster's own role label was set in exactly that
+          same style — so the band offered a reader three headings and no way
+          to tell a cast list from a dictionary. They are different objects
+          and they now have different shapes: the roster is a grid of cards
+          across the full rail, each led by a kind chip; the glossary is a
+          ruled dictionary poured into two columns. Different grounds, too. */}
+      {/* «Хто є хто» stood here and is gone.
+
+          Review: «Забрати учасників» and, on a screenshot of the whole band,
+          «Цей підрозділ забрати». Taking the «Учасники» group out left two
+          groups — the parties and the court — and those are the first three
+          rows of «Картка справи» a screen above: «Заявник — Україна»,
+          «Відповідач — Російська Федерація», «Суд — Міжнародний суд ООН».
+          A band whose whole content is a restatement of the table over it is
+          not a band. `summary.whoIsWho` stays in the data, unread, the way
+          `faq` does. */}
+
+      {/* Its own id and its own nav entry. It had neither, so it was reached
+          only by scrolling past «Хто є хто» — and the chip that was supposed
+          to lead here was pointing at that band instead. */}
+      {/* This band is the library's glossary, filtered to one decision.
+
+          The fifty headwords in the archive were only ever reachable through
+          whichever decision happened to define them, so a reader who wanted to
+          know what «hors de combat» means had to already know which case to
+          open. They have a page of their own now, and the link below is this
+          band's own contents on it — same terms, plus the other decisions'
+          readings of the four words that two courts define differently. */}
+      {shows("glossary") && glossaryEnabled && (
+        <section className="terms" data-ground={ground["terms"]} id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
+          <div className="rail">
+            <h2 className="lbl lbl-onpaper">{pick(T.glossaryH, locale)}</h2>
+            <TermSearch
+              terms={glossary.map((g) => ({
+                term: pick(g.term, locale),
+                def: pick(g.def, locale),
+              }))}
+              placeholder={pick(T.termsSearch, locale)}
+              label={pick(T.termsSearchLabel, locale)}
+              clear={pick(T.termsClear, locale)}
+              empty={pick(T.termsEmpty, locale)}
+            />
+            <p className="terms-more">
+              <Link href={`/${locale}/glossary?case=${slug}`}>
+                {pick(T.glossaryAll, locale)} →
+              </Link>
+            </p>
+          </div>
+        </section>
+      )}
+
+
+      {/* «Забрати Часті запитання» (review). The band was an accordion of
+          four questions — «То Україна виграла?», «Що буде далі?» — written
+          for the page rather than drawn from the decision, in a register
+          the archive does not use anywhere else. `summary.faq` stays in the
+          data, unread by any surface — the band is gone, and so are the
+          FAQPage graph and the search index's «Часті запитання» section,
+          because both described text that is no longer on the page. */}
 
       {/* The apparatus, at the foot of the page.
 
@@ -1206,6 +1729,46 @@ export default async function CasePage({
         </section>
       )}
 
+      {shows("related") && related.length > 0 && (
+        <section className="neighbours" data-ground={ground["neighbours"]} id="related" data-navsec aria-label={pick(T.relatedH, locale)}>
+          <div className="rail">
+            <h2 className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</h2>
+            <ul className="nb-grid">
+              {related.map((r, i) => {
+                /* The note is "court · detail"; the court leads the card so
+                   the set can be scanned by forum. I tried the generated share
+                   cards here first — at 240px their headline is illegible and
+                   repeats the title underneath, for 130kB each.
+
+                   Nine of the twenty-three notes carry no separator, and the
+                   split treated the whole sentence as the forum: `.nb-forum`
+                   is 11px uppercase gold with 0.1em tracking, so
+                   icj-genocide's «Рішення по суті від 31 січня 2024 — за день
+                   до цього…» rendered as ninety-one characters of gold
+                   micro-caps with an empty detail line under it. Without a
+                   separator there is no forum to lead with, so the note is
+                   just the note. */
+                const note = pick(r.note, locale);
+                const hasForum = note.includes("·");
+                const [forum, ...rest] = hasForum
+                  ? note.split("·").map((x) => x.trim())
+                  : ["", note];
+                return (
+                  <li key={i}>
+                    <a href={`/${locale}${r.href}`}>
+                      {forum && <span className="nb-forum">{forum}</span>}
+                      <b>{pick(r.label, locale)}</b>
+                      {rest.length > 0 && (
+                        <span className="nb-note">{rest.join(" · ")}</span>
+                      )}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+      )}
       </main>
     </div>
   );

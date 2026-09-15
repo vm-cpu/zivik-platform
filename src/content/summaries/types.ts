@@ -502,6 +502,21 @@ export interface DecisionSummary extends VerbatimSummary {
 
   /** Institution and seat; defaults to the ICJ in The Hague when absent. */
   forum?: Forum;
+  /**
+   * Which bands the page renders. Absent → all of them.
+   *
+   * `"four"` leaves the full summary, the chronology, the map and the
+   * sources, and nothing else. It exists because the owner asked for exactly
+   * that on one decision — «Тобто залишаємо лише ці 4 блоки» — and then, once
+   * it had been applied to all eight, asked for the rest to be put back:
+   * «поверни назад блоки в рішення де не просять прибрати секції». So it is
+   * a per-decision choice, made in the data, not a rule of the template.
+   *
+   * The edits that were asked for site-wide are NOT here: «Хто є хто» and
+   * «Часті запитання» are gone from the template for every decision, as are
+   * the reading-time estimate and the PDF page count.
+   */
+  bands?: "four";
   /** Heading for the verdict matrix, when "what the Court found" is wrong. */
   verdictsHeading?: Localized;
   /** Heading for the map, when neither "two theatres" nor the seat fits. */

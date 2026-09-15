@@ -53,16 +53,16 @@
 /* A long official name is a different object from a short one.
 
    `max-width: 18ch` and --t-h1 are set for «Справа MH17: вирок у Гаазі» — four
-   words that should land like a headline. The review replaced icj-cerd-icsft's
-   h1 with the Court's full case name: 182 characters, which at that measure
-   and that size rendered as twelve lines of 37px display serif, 451px tall,
-   before the reader reached a single sentence.
+   words that should land like a headline. The two ICJ pages now carry the
+   Court's full case name: 182 characters, which at that measure and that size
+   rendered as twelve lines of 37px display serif, 451px tall, before the
+   reader reached a single sentence.
 
    So the masthead reads its own title and steps. The break is at 90
-   characters — longer than any of the eight short titles and shorter than the
-   two official names — and it buys the heading both a wider measure and one
-   step down the type scale. Still one name at one size, which is what was
-   asked; the size is just the one a name of that length can be set at. */
+   characters — longer than any short title, shorter than either official name
+   — and it buys the heading a wider measure and one step down the scale.
+   Still one name at one size; the size is the one a name of that length can
+   be set at. */
 .casepage .official[data-len="long"] {
   max-width: 30ch;
   font-size: var(--t-h2);
@@ -153,5 +153,52 @@
 .casepage .btn-ghost:hover {
   border-color: var(--gold);
   color: var(--gold);
+}
+
+/* ---- 2. Plain-language lede (paper) --------------------------------------- */
+/* The one white band on the page, and the paper the dark dashboard below it
+   stands on — it is what makes that band an island rather than a second storey
+   of the masthead, so it renders on every decision and is never conditional.
+
+   It used to draw a --brand-seam hairline underneath itself, because
+   --brand-surface against --brand-paper-2 is 1.06:1 and an edge that faint has
+   to be drawn rather than implied. The ground below is --brand-night now,
+   18.69:1, and the seam over it was a 1.75:1 grey line lying on a black band —
+   the grounds carry this edge on their own. */
+/* White, and it keeps its seam.
+
+   The seam under this band was dropped while the overview below it was dark —
+   a 1.75:1 grey hairline lying on a black band is a stray line. The band below
+   is paper again, where --brand-surface against --brand-paper-2 is 1.06:1 and
+   the edge has to be drawn or it is not there. */
+.casepage .lede {
+  background: var(--card);
+  border-bottom: 1px solid var(--seam);
+  padding-block: clamp(32px, 4vw, 56px);
+}
+.casepage .lede-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+.casepage .tldr p {
+  margin: 0;
+  /* The tl;dr is prose, so it takes the prose face and size. */
+  font-family: var(--brand-font-body), sans-serif;
+  font-size: var(--t-body);
+  line-height: 1.5;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+.casepage .why {
+  border-left: 2px solid var(--pgold);
+  padding-left: var(--space-6);
+}
+.casepage .why p {
+  margin: 0;
+  font-size: var(--t-ui);
+  line-height: 1.65;
+  color: var(--ink2);
 }
 
