@@ -434,9 +434,19 @@ export default async function AboutPage({
                 the address, and the address itself said it a third time — and
                 the footer of this very page carries the same line under
                 «Контакти». Three copies of one address on one screen. */}
+            {/* The button says the address, not «Написати нам» again.
+
+                The heading two lines up already says that, and a control that
+                repeats its heading names nothing: it tells a reader what
+                section they are in, which they can see, instead of what it
+                will act on. The address does both — and it is why the line
+                that used to print it under the pill could go. */}
             <p className="abt-action">
-              <a className="nsv-cta" href={`mailto:${dict.footer.email}`}>
-                {L(T.contactH)}
+              <a
+                className="nsv-cta nsv-cta-addr"
+                href={`mailto:${dict.footer.email}`}
+              >
+                {dict.footer.email}
                 <span className="nsv-cta-arrow" aria-hidden="true">
                   →
                 </span>
