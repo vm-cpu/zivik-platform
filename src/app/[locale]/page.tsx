@@ -131,7 +131,7 @@ export default async function HomePage({
             It was the home page's front door — the five courts, their
             caseloads, a row of cases apiece — and the owner's note is to take
             it off. The button under the lamp now goes to /registry, which is
-            the page that can sort, filter and search the same thirty-nine
+            the page that can sort, filter and search the same thirty-three
             proceedings. A summary of the archive on the way to the archive was
             a stop the reader did not need. */}
         {/* The support band is gone from here.

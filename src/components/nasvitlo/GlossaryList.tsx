@@ -10,7 +10,7 @@ import { norm } from "@/components/nasvitlo/RegistryTable";
  *
  *   - No `useSearchParams`. It bails a statically rendered route out to
  *     client-side rendering, which on the library page emptied the built HTML
- *     of all thirty-nine rows. Fifty headwords and their definitions are the
+ *     of all thirty-three rows. Fifty headwords and their definitions are the
  *     whole point of this page existing, so they render on the server and the
  *     URL is read from `window.location` after hydration.
  *   - The reader's state goes back into the URL with `replaceState`, so a

@@ -18,6 +18,9 @@ import {
   type Localized,
 } from "@/content/types";
 import { moneyCompact } from "@/content/money";
+import { actsOf } from "@/content/cases";
+import { plural } from "@/i18n/plural";
+import { registryTotal } from "@/content/legal";
 import { SUMMARIES } from "@/content/summaries";
 import {
   defaultOgImage,
@@ -54,11 +57,14 @@ const T = {
     uk: "Провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип рішення.",
     en: "Proceedings against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
   },
-  /* The meta description: 133 / 147 characters, both inside the ~160 a search
-     result shows. Says what the page holds and what can be done with it. */
+  /* The meta description: about 133 / 147 characters, both inside the ~160 a
+     search result shows. Says what the page holds and what can be done with
+     it. The figure is `{n}` rather than a literal — it was typed as 39 and
+     went stale the moment the six ICC warrants stopped being rows, which is
+     the whole argument for `registryTotal` in content/legal.ts. */
   metaDesc: {
-    uk: "39 проваджень проти Росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
-    en: "39 proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
+    uk: "{n} проваджень проти Росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
+    en: "{n} proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
   },
   // The wordmark is «НаСвітло» / "NaSvitlo" everywhere — see i18n/dictionaries/uk.ts.
   // Team and map both say "Home"/"На головну" — so does this now.
@@ -98,7 +104,7 @@ const T = {
   doc: { uk: "Документ суду", en: "The court's document" },
   /* The label the map tag and the pending page already give this figure. It
      is visually hidden here: in the figures column the currency mark says
-     what the number is, and a caption on thirteen of thirty-nine rows would
+     what the number is, and a caption on thirteen of thirty-three rows would
      be louder than the years above it. */
   amountName: { uk: "Сума у спорі", en: "Amount in dispute" },
   sort: { uk: "Порядок", en: "Sort" },
@@ -133,6 +139,24 @@ const T = {
     en: { one: "case", few: "cases", many: "cases" },
   },
   ofTotal: { uk: "з {total}", en: "of {total}" },
+  /* The acts folded into a proceeding's row. Today that is the ICC's six
+     arrest warrants in ICC-01/22: the library counts them — the row says
+     «6 ордерів» — and shows them here rather than as six rows of their own.
+     Keyed by `outcome`, so the next kind of act that folds has to be named
+     before it can appear. */
+  actWord: {
+    warrant: {
+      uk: { one: "ордер", few: "ордери", many: "ордерів" },
+      en: { one: "warrant", few: "warrants", many: "warrants" },
+    },
+  },
+  /* Review: «додати вказівку з зірочкою, що це 6, про які публічно відомо».
+     The Court does not publish every warrant it issues — some stay under
+     seal — so the figure is what is on the public record, not a total. */
+  actsNote: {
+    uk: "про які відомо публічно",
+    en: "those on the public record",
+  },
   combine: {
     uk: "Кілька значень в одному фільтрі — будь-яке з них; різні фільтри діють разом.",
     en: "Several values in one filter mean any of them; different filters apply together.",
@@ -153,7 +177,7 @@ const T = {
 
      The index over the eight write-ups is a file now (`/search-index.json`),
      asked for the moment a reader reaches for the field. Until it lands, a
-     query runs against the thirty-nine rows and nothing else — which is what
+     query runs against the thirty-three rows and nothing else — which is what
      the library did before the index existed, and which finds «Ощадбанк» but
      not «депортація дітей». A search that answers short without saying so is
      the exact failure the index was built to end, so the count line says
@@ -183,7 +207,10 @@ const T = {
      shipping a per-case label table for a single band; it is noted rather than
      built, and it is the only place these two lists differ. */
   section: {
-    overview: { uk: "Огляд", en: "Overview" },
+    /* «Якщо коротко», not «Огляд»: the chip on the decision page was renamed
+       and now lands on the plain-language paragraph rather than on the row of
+       counters. */
+    overview: { uk: "Якщо коротко", en: "In short" },
     chronology: { uk: "Хронологія", en: "Timeline" },
     machinery: { uk: "Розбір рішення", en: "Anatomy" },
     rulings: { uk: "Тлумачення", en: "Key rulings" },
@@ -198,8 +225,11 @@ const T = {
        own section here since the index was still filing terms under the one
        above — a term search landed on the cast list. */
     glossary: { uk: "Словник", en: "Glossary" },
-    questions: { uk: "Часті запитання", en: "Common questions" },
-    fulltext: { uk: "Самері", en: "Summary" },
+    /* `questions` stood here. The band is gone from the decision page, and a
+       hit that pointed at #questions would land on nothing; the neighbouring
+       decisions it shared that section with now have their own. */
+    related: { uk: "Пов'язані рішення", en: "Related decisions" },
+    fulltext: { uk: "Повний огляд", en: "Full summary" },
   },
   group: {
     court: { uk: "суд", en: "court" },
@@ -325,7 +355,7 @@ export async function generateMetadata({
   const dict = await getDictionary(locale);
   const path = `/${locale}/registry`;
   const title = pick(T.title, locale);
-  const description = pick(T.metaDesc, locale);
+  const description = pick(T.metaDesc, locale).replace("{n}", String(registryTotal));
   /*
    * `openGraph` and `twitter` are replaced wholesale, not merged, by the
    * nearest generateMetadata that sets them. This block used to set og:title,
@@ -391,6 +421,16 @@ export default async function RegistryPage({
     const stageLabels = c.stage
       ? { uk: dictUk.registry.stage[c.stage], en: dictEn.registry.stage[c.stage] }
       : null;
+    /* Acts folded into this proceeding — see `partOf` in content/types.ts. */
+    const actRows = actsOf(c.id);
+    const acts = actRows.map((a) => ({
+      id: a.id,
+      name: a.actName ? pick(a.actName, locale) : (a.nameShort ?? a.name),
+      href: a.decisionUrl ?? null,
+    }));
+    const actText = actRows
+      .map((a) => `${a.name} ${a.nameUk ?? ""} ${both(a.actName)} ${both(a.note)}`)
+      .join(" ");
     const outcomeLabels = c.outcome
       ? {
           uk: dictUk.registry.outcome[c.outcome],
@@ -432,8 +472,17 @@ export default async function RegistryPage({
          searchable, not the title. The Ukrainian line goes into the search
          whatever locale is being read, so a Ukrainian query finds the case on
          the English page too. */
+      acts,
+      actsLabel: acts.length
+        ? `${acts.length} ${plural(acts.length, T.actWord.warrant[locale === "uk" ? "uk" : "en"], locale)}`
+        : null,
+      actsNote: acts.length ? pick(T.actsNote, locale) : null,
+      /* The acts' own text goes into the parent's haystack. Six warrant
+         records left the list; a reader typing «Шойгу» still has to land on
+         the proceeding that holds his warrant, and the charges paragraph is
+         the only place several of the Rome Statute articles are written. */
       find: {
-        visible: `${c.name} ${c.nameShort ?? ""} ${c.nameUk ?? ""} ${both(c.note)}`,
+        visible: `${c.name} ${c.nameShort ?? ""} ${c.nameUk ?? ""} ${both(c.note)} ${actText}`,
         court: `${both(inst?.abbr)} ${both(inst?.name)} ${both(inst?.seat)} ${c.institutionId}`,
         status: `${both(c.status)} ${both(stageLabels)} ${both(outcomeLabels)}`,
         type: both(c.type),
@@ -524,7 +573,7 @@ export default async function RegistryPage({
             production: `useSearchParams` bails a statically rendered route
             out to client-side rendering, and the built HTML for this page
             carried an 815-byte <main> — masthead, then a
-            BAILOUT_TO_CLIENT_SIDE_RENDERING marker where thirty-nine
+            BAILOUT_TO_CLIENT_SIDE_RENDERING marker where thirty-three
             proceedings should have been. Dev renders on demand, so the hole
             only existed in the artefact nobody was reading.
 

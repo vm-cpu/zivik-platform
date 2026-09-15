@@ -140,6 +140,20 @@ export interface RegRow {
   fieldLabel: string;
   /** Decision page, when a summary is published. Otherwise `/cases/{id}`. */
   href: string | null;
+  /**
+   * Acts folded into this proceeding, printed under its name.
+   *
+   * The ICC's six arrest warrants in ICC-01/22 are the case this exists for:
+   * they are six acts of one proceeding, they were six rows, and the library
+   * counted seven where the honest answer is one situation carrying six
+   * warrants. `href` on an act is the Court's own page for it, when there is
+   * one — these have no page here.
+   */
+  acts: { id: string; name: string; href: string | null }[];
+  /** «6 ордерів», already counted and pluralised. Null when there are none. */
+  actsLabel: string | null;
+  /** The asterisk's footnote — what the count is and is not. */
+  actsNote: string | null;
   /** Raw searchable text, grouped so a match can say where it came from. */
   find: {
     /** Case name and note — the two fields the row shows. */
@@ -1667,6 +1681,53 @@ export default function RegistryTable({
                     {r.note && (
                       <span className="reg-note" lang={foreignLang(r.note, locale)}>
                         {highlight(r.note, tokens)}
+                      </span>
+                    )}
+                    {/* The acts this proceeding carries, named on its row.
+
+                        They were rows themselves — six ICC warrants beside
+                        the situation they were issued in, so the library's
+                        ICC group counted seven proceedings where there is
+                        one. Printed here the count is the warrants' («6
+                        ордерів»), the row is the proceeding's, and both are
+                        things a reader can check by looking.
+
+                        Each name links to the Court's own page for that
+                        accused, so it sits above `.reg-name::after` — the
+                        overlay that makes the whole row one target — the
+                        same way `.reg-doc` does. */}
+                    {r.acts.length > 0 && (
+                      <span className="reg-acts">
+                        <b className="reg-acts-n">
+                          {r.actsLabel}
+                          {r.actsNote && (
+                            <sup className="reg-acts-star" aria-hidden="true">*</sup>
+                          )}
+                        </b>
+                        <span className="reg-acts-list">
+                          {r.acts.map((a, i) => (
+                            <span key={a.id}>
+                              {i > 0 && <span aria-hidden="true"> · </span>}
+                              {a.href ? (
+                                <a
+                                  href={a.href}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {highlight(a.name, tokens)}
+                                </a>
+                              ) : (
+                                highlight(a.name, tokens)
+                              )}
+                            </span>
+                          ))}
+                        </span>
+                        {r.actsNote && (
+                          <i className="reg-acts-note">
+                            <span aria-hidden="true">* </span>
+                            {r.actsNote}
+                          </i>
+                        )}
                       </span>
                     )}
                     {reasons.length > 0 && (

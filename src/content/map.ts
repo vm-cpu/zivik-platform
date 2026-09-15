@@ -119,7 +119,7 @@ export interface MapCourt {
   key: string;
   /**
    * Registry institutions seated in this city. The map draws six places where
-   * harm happened, but the archive holds 39 proceedings, and the ones not tied
+   * harm happened, but the archive holds 33 proceedings, and the ones not tied
    * to those six places had nowhere to appear. Naming the institutions here
    * lets a court answer for its own caseload — and the union of these lists is
    * checked against the registry at build time, so no proceeding can go

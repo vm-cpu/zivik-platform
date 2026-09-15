@@ -221,7 +221,7 @@ export const icjCerdIcsft: DecisionSummary = {
       /* The situation page, which is where the six warrants are. `#registry`
          was written when nothing here had a page and it resolves to the home
          page's preview band — a card that names a decision and lands the
-         reader on a list of thirty-nine. */
+         reader on a list of thirty-three. */
       href: "/cases/icc-ukraine",
     },
     {

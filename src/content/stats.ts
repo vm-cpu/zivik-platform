@@ -1,3 +1,4 @@
+import { registryProceedings } from "./cases";
 import type { Stat } from "./types";
 
 /**
@@ -9,6 +10,19 @@ import type { Stat } from "./types";
  * where they come from.
  */
 export const stats: Stat[] = [
-  { value: "39", label: { uk: "проваджень", en: "proceedings" }, gilt: true },
-  { value: "12", label: { uk: "інстанцій", en: "institutions" } },
+  /* Counted, not typed. Both figures were literals — "39" and "12" — and the
+     first was already wrong by six the moment the ICC warrants stopped being
+     rows of the library. A headline figure that a reader can check by
+     counting the list has to come from the list. */
+  {
+    value: String(registryProceedings.length),
+    label: { uk: "проваджень", en: "proceedings" },
+    gilt: true,
+  },
+  {
+    value: String(
+      new Set(registryProceedings.map((c) => c.institutionId)).size,
+    ),
+    label: { uk: "інстанцій", en: "institutions" },
+  },
 ];

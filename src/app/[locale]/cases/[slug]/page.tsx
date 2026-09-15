@@ -107,7 +107,6 @@ const T = {
   whoKindParty: { uk: "Сторона", en: "Party" },
   whoKindCourt: { uk: "Суд", en: "Court" },
   whoKindActor: { uk: "Учасник", en: "Actor" },
-  faqH: { uk: "Часті запитання", en: "Common questions" },
   relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
 
   /* The theatre map's text alternative. It was the literal string "Map of
@@ -623,7 +622,14 @@ function Block({
  */
 export function generateStaticParams() {
   const slugs = Object.keys(SUMMARIES);
-  const pending = registryCases.filter((c) => !c.summarySlug).map((c) => c.id);
+  /* `partOf` records are acts within another proceeding — the six ICC
+     warrants inside ICC-01/22 — so they get no page. Their substance is the
+     warrant wall on the parent's write-up, in fuller form than a pending
+     page could carry, and a second page per warrant would have been the same
+     facts at a dead end. */
+  const pending = registryCases
+    .filter((c) => !c.summarySlug && !c.partOf)
+    .map((c) => c.id);
   const clash = pending.filter((id) => slugs.includes(id));
   if (clash.length) {
     throw new Error(`registry id collides with a summary slug: ${clash.join(", ")}`);
@@ -668,7 +674,7 @@ export default async function CasePage({
   if (!summary) return <CasePending slug={slug} locale={locale} dict={dict} />;
 
   const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
-  const { interpretations, plain, whoIsWho, faq, related } = summary;
+  const { interpretations, plain, whoIsWho, related } = summary;
   /* Alphabetical, in the reader's own collation, and sorted here rather than
      in the band: the term chips at the head of the verbatim text link to
      `#term-N`, and the band renders the same array, so both have to number
@@ -955,15 +961,11 @@ export default async function CasePage({
           url: i.url,
         })),
       },
-      {
-        "@type": "FAQPage",
-        "@id": `${pageUrl}#faq`,
-        mainEntity: faq.map((f) => ({
-          "@type": "Question",
-          name: pick(f.q, locale),
-          acceptedAnswer: { "@type": "Answer", text: pick(f.a, locale) },
-        })),
-      },
+      /* The FAQPage graph stood here and went out with the band it described.
+         Structured data states what a page shows; the questions are no longer
+         on it, and a graph promising answers a reader cannot find is the kind
+         of claim this archive exists not to make. `summary.faq` is still in
+         the data — see the note on the band. */
       {
         "@type": "BreadcrumbList",
         "@id": `${pageUrl}#breadcrumbs`,
@@ -1658,9 +1660,10 @@ export default async function CasePage({
       {/* «Забрати Часті запитання» (review). The band was an accordion of
           four questions — «То Україна виграла?», «Що буде далі?» — written
           for the page rather than drawn from the decision, in a register
-          the archive does not use anywhere else. The `faq` field stays on
-          the summaries and still feeds the FAQPage graph for search; what
-          is gone is the band. */}
+          the archive does not use anywhere else. `summary.faq` stays in the
+          data, unread by any surface — the band is gone, and so are the
+          FAQPage graph and the search index's «Часті запитання» section,
+          because both described text that is no longer on the page. */}
 
       {/* The apparatus, at the foot of the page.
 

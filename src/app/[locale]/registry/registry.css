@@ -620,6 +620,68 @@
    are two ways out of the same row, not two paragraphs. */
 .reg-doc + .reg-inwrite{margin-top:5px}
 
+/* ---- the acts a proceeding carries -----------------------------------------
+   The ICC's six warrants, printed on the situation's row instead of standing
+   as six rows of their own. Three parts, in one block: the count, the names,
+   and the footnote the asterisk points at.
+
+   The names are links to the Court's own pages, so like `.reg-doc` above they
+   have to lift above `.reg-name::after`, the overlay that makes the whole row
+   a single target. Without `position:relative;z-index:1` they sit under it
+   and cannot be clicked at all. */
+.reg-acts{
+  display:block;
+  margin-top:var(--space-2);
+  padding-left:var(--space-3);
+  border-left:1px solid var(--rule);
+  font:400 var(--t-cap) var(--brand-font-body);
+  color:var(--ink2);
+}
+.reg-acts-n{
+  font-weight:700;
+  color:var(--ink);
+}
+.reg-acts-star{
+  font-size:0.8em;
+  line-height:0;
+  color:var(--gold);
+}
+/* The names read as one run, not as a list: they are the six people one
+   proceeding names, and six bulleted rows here would rebuild the thing this
+   block replaced. */
+.reg-acts-list{
+  display:inline;
+}
+.reg-acts-n + .reg-acts-list::before{
+  content:" — ";
+  color:var(--ink3);
+}
+/* A name does not break across lines. At 375px «Марія Львова-Бєлова» was
+   splitting at its hyphen — «Марія Львова-» / «Бєлова» — which reads as two
+   people. Breaks fall between names instead, where the separator already is;
+   the longest of the six measures 127px against a 237px column at 375, so nothing
+   here can overflow the rail. */
+.registrypage .reg-wrap .reg-acts-list a{
+  position:relative;z-index:1;
+  white-space:nowrap;
+  color:var(--ink2);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:2px;
+  text-decoration-color:color-mix(in srgb,var(--ink2) 30%,transparent);
+}
+.registrypage .reg-wrap .reg-acts-list a:hover{
+  color:var(--red);
+  text-decoration-color:currentColor;
+}
+.reg-acts-note{
+  display:block;
+  margin-top:2px;
+  font-style:normal;
+  font-size:var(--t-micro);
+  color:var(--ink3);
+}
+
 .reg-main mark{
   background:color-mix(in srgb,var(--gold) 26%,var(--surface));
   color:var(--ink);border-radius:2px;padding:0 1px;
@@ -755,7 +817,7 @@
    controls, and on paper they are a picture of controls.
 
    The active filters DO print. A reader who filtered to the ICJ and pressed
-   print is holding three rows out of thirty-nine, and the sheet has to say so
+   print is holding three rows out of thirty-three, and the sheet has to say so
    or it reads as the whole archive. */
 @media print {
   .reg-toolbar,

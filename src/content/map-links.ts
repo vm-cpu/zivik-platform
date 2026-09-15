@@ -1,6 +1,6 @@
 import { MAP_EVENTS, MAP_COURTS, MAP_COUNTRIES, seatsList } from "./map";
 import { moneyCompact } from "@/content/money";
-import { registryCases } from "./cases";
+import { registryCases, registryProceedings } from "./cases";
 import { SUMMARIES } from "./summaries";
 import { pick } from "./types";
 import type { Locale } from "@/i18n/config";
@@ -29,7 +29,7 @@ import type { CaseStageKey } from "./types";
  * Every registry institution must be seated on the map, or be named here as
  * deliberately absent from it.
  *
- * The archive holds 39 proceedings, and before this the ten heard by the Dutch
+ * The archive holds 33 proceedings, and before this the ten heard by the Dutch
  * courts, the ICAO Council, the ICC arbitration court, Lithuania and the EU
  * appeared nowhere. A court answers for its own caseload now, which is only
  * true while every institution has a seat — so the build checks it.
@@ -59,7 +59,7 @@ const OFF_MAP_INSTITUTIONS: Record<string, string> = {
 {
   const seated = MAP_COURTS.flatMap((c) => c.institutionIds);
   const dupes = seated.filter((id, i) => seated.indexOf(id) !== i);
-  const orphans = [...new Set(registryCases.map((c) => c.institutionId))].filter(
+  const orphans = [...new Set(registryProceedings.map((c) => c.institutionId))].filter(
     (id) => !seated.includes(id) && !(id in OFF_MAP_INSTITUTIONS),
   );
   if (orphans.length || dupes.length) {
@@ -140,7 +140,7 @@ export function caseLinksFor(eventKey: string, locale: Locale): MapCaseLink[] {
 /** What a court hears, from the registry rather than from the six map sites. */
 export function courtCaseloadFor(courtKey: string, locale: Locale) {
   const court = MAP_COURTS.find((c) => c.key === courtKey);
-  const cases = registryCases.filter((c) =>
+  const cases = registryProceedings.filter((c) =>
     (court?.institutionIds ?? []).includes(c.institutionId),
   );
   return {

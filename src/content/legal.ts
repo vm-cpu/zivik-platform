@@ -1,6 +1,6 @@
 import type { Localized } from "./types";
 import { locales, type Locale } from "@/i18n/config";
-import { registryCases } from "./cases";
+import { registryProceedings, registryCases } from "./cases";
 import { SUMMARIES } from "./summaries";
 
 /**
@@ -53,7 +53,9 @@ export const legalEmail = "louis.sohn.center@ucu.edu.ua";
  * a legal page state a falsehood, silently. `content/cases.ts` is the same
  * source of truth the library page and the sitemap use.
  */
-export const registryTotal = registryCases.length;
+/* Proceedings, not records: the six ICC warrants are acts within ICC-01/22
+   and the library lists them on its row rather than as rows of their own. */
+export const registryTotal = registryProceedings.length;
 export const registrySummarised = registryCases.filter(
   (c) => c.summarySlug && c.summarySlug in SUMMARIES,
 ).length;

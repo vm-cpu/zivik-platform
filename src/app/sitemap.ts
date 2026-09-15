@@ -47,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   /*
-   * The registry is the archive's front door — the full 39 proceedings with
+   * The registry is the archive's front door — the full 33 proceedings with
    * filters — and it was missing from the sitemap entirely. It changes
    * whenever a case is added or a summary lands, so it tracks the homepage's
    * cadence rather than a decision page's.
@@ -103,7 +103,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     alternates: { languages: teamLanguages },
   }));
 
-  /* The map page is a second way into the same 39 proceedings — worth
+  /* The map page is a second way into the same 33 proceedings — worth
      indexing in its own right, and it changes whenever a site gains a
      summarised decision. */
   const mapLanguages = languagesFor((l) => `/${l}/map`);

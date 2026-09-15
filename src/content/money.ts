@@ -10,7 +10,7 @@
  * the sum in dispute — «Сума у спорі» / "Amount in dispute" — and leaves the
  * direction to the case page, which has room to say it.
  *
- * Nothing here may sum these values. Thirteen of the thirty-nine rows carry
+ * Nothing here may sum these values. Thirteen of the thirty-three rows carry
  * one, they mix claims still pending with awards already made and at least one
  * that ran the other way, and adding their magnitudes together would produce a
  * headline figure that no document supports.

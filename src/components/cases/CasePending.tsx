@@ -8,7 +8,7 @@ import { decisionMetadata } from "@/lib/seo";
 import { caseName, pick } from "@/content/types";
 import type { RegistryCase } from "@/content/types";
 import { institutions } from "@/content/institutions";
-import { registryCases } from "@/content/cases";
+import { registryCases, registryProceedings } from "@/content/cases";
 
 /**
  * Extra chrome labels this surface needs that the shared dictionary does not
@@ -147,7 +147,7 @@ export default function CasePending({
      Same forum first. It is a fact about a docket, not about the law, and it
      is stated as such — nothing here claims one proceeding is authority for
      another. */
-  const siblings = registryCases.filter(
+  const siblings = registryProceedings.filter(
     (c) => c.institutionId === entry.institutionId && c.id !== entry.id,
   );
   const SHOWN = 8;
@@ -158,7 +158,7 @@ export default function CasePending({
   const kindred =
     siblings.some((c) => c.lit)
       ? []
-      : registryCases.filter(
+      : registryProceedings.filter(
           (c) =>
             c.lit &&
             c.id !== entry.id &&

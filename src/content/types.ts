@@ -160,6 +160,32 @@ export interface RegistryCase {
   /** References `Institution.id`. */
   institutionId: string;
   /**
+   * The proceeding this record is an act *within*, by `id`.
+   *
+   * Six of these records are the ICC's arrest warrants in ICC-01/22. They are
+   * not six proceedings — they are six acts of one, and listing them as rows
+   * made the library's ICC group read seven where the answer a reader wants
+   * is six warrants in one situation. A record with `partOf` set is not a row
+   * of the library and has no page of its own: it is printed on its parent's
+   * row and reached through the parent's write-up. It stays a record because
+   * its text is the search haystack — a reader typing «Шойгу» has to land
+   * somewhere, and that somewhere is now the situation.
+   *
+   * Owner's decision: «ордери рахуємо як 6 але відображаємо в 1 вкладці».
+   */
+  partOf?: string;
+  /**
+   * How this act is named on its parent's row — required with `partOf`.
+   *
+   * Not `nameUk`, which is the full filing line («Ордер на арешт: Владімір
+   * Путін»): six of those under one row is a paragraph. Not `nameShort`
+   * either, which is one string for both locales and holds the English
+   * surname. This is the person, in the reader's language, and it is
+   * authored rather than sliced off another field so that nothing here
+   * depends on a prefix staying spelled the way it is today.
+   */
+  actName?: Localized;
+  /**
    * Official citation — identical in both locales, and as the forum files it.
    *
    * The whole caption: every party, the docket, the reporter where there is
@@ -229,7 +255,7 @@ export interface RegistryCase {
    *
    * That is what the field is labelled as everywhere it renders («Сума у
    * спорі» / "Amount in dispute"), and it is the only meaning that works
-   * across all thirty-nine rows: thirty-one of them have no award to state.
+   * across all thirty-three rows: twenty-five of them have no award to state.
    *
    * TWO ROWS DISAGREE WITH THAT AND NEED THE OWNER. `pca-28` (DTEK) holds
    * 207,800,000, which is exactly the sum awarded — its own write-up records
@@ -244,7 +270,7 @@ export interface RegistryCase {
   /** Short context / docket reference. */
   note: Localized;
   /**
-   * Page count of the decision, if known — four of the thirty-nine.
+   * Page count of the decision, if known — four of the thirty-three.
    *
    * It has a surface now: `components/cases/CasePending.tsx` prints it as
    * «Обсяг рішення» on the page of a proceeding that has no write-up yet,

@@ -8,7 +8,7 @@
  * async so file-backed and CMS-backed implementations are interchangeable.
  */
 import { about } from "./about";
-import { registryCases } from "./cases";
+import { registryProceedings } from "./cases";
 import { institutions } from "./institutions";
 import { partners } from "./partners";
 import { stats } from "./stats";
@@ -34,7 +34,9 @@ export const fileRepository: ContentRepository = {
     return [...institutions].sort((a, b) => a.order - b.order);
   },
   async getCases() {
-    return registryCases;
+    /* Proceedings, not every record. The acts folded into one — the six ICC
+       warrants — travel on their parent's row; see `partOf` in types.ts. */
+    return registryProceedings;
   },
   async getStats() {
     return stats;

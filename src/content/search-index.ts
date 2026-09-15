@@ -8,7 +8,7 @@ import { glossaryEnabled } from "@/lib/flags";
  *
  * ── The problem ─────────────────────────────────────────────────────────────
  * The library page searched five groups of row metadata — name, note, court,
- * status, subject field, date — and nothing else. Eight of the thirty-nine
+ * status, subject field, date — and nothing else. Eight of the thirty-three
  * proceedings have a full write-up: a plain-language summary, a chronology, a
  * table of the court's findings, provisional measures, a glossary, a who's-who
  * and an FAQ. None of it was reachable. A reader looking for «депортація
@@ -92,8 +92,11 @@ const INDEX_VERBATIM = false;
  * Sections of a decision page, in page order. The id is the element id the
  * page renders (`app/[locale]/cases/[slug]/page.tsx`), so a hit links to it.
  *
- * `#related` and `#sources` are deliberately absent: neither is a place a
- * reader is sent to, and `related` is indexed into `questions` with the FAQ.
+ * `#sources` is deliberately absent: it is apparatus, not a destination.
+ * `related` used to be indexed into `questions` alongside the FAQ; the FAQ
+ * band is gone from the decision page, so the section it shared is now the
+ * neighbouring-decisions band under its own anchor. A hit has to land on text
+ * the reader can see, and #questions no longer exists.
  */
 export const SECTIONS = [
   "overview",
@@ -108,7 +111,7 @@ export const SECTIONS = [
      one band too high, on the who's-who, and had to find the word themselves.
      The link resolved, which is why nothing caught it. */
   "glossary",
-  "questions",
+  "related",
   "fulltext",
 ] as const;
 
@@ -177,7 +180,7 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
     measures: [],
     handbook: [],
     glossary: [],
-    questions: [],
+    related: [],
     fulltext: [],
   };
 
@@ -291,11 +294,8 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
     out.glossary.push(s.glossary.map((g) => all(g.term, g.def)).join(" "));
   }
 
-  // ── questions: the FAQ, and the pointers to neighbouring cases ──
-  out.questions.push(
-    s.faq.map((f) => all(f.q, f.a)).join(" "),
-    s.related.map((r) => all(r.label, r.note)).join(" "),
-  );
+  // ── related: the pointers to neighbouring cases ──
+  out.related.push(s.related.map((r) => all(r.label, r.note)).join(" "));
 
   // ── fulltext: the verbatim body and its bibliography ──
   if (INDEX_VERBATIM) {
@@ -408,7 +408,7 @@ export const contentIndex: ContentIndex = build();
     "handbook",
     "glossary",
     "fulltext",
-    "questions",
+    "related",
   ]);
   const stray = SECTIONS.filter((s) => !rendered.has(s));
   if (stray.length) {

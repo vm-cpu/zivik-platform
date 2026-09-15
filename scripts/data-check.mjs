@@ -245,11 +245,21 @@ for (const [slug, src] of summarySrc) {
 
   /* 10. every dated event needs its sort key. Without `iso` the chronology
          falls back to authoring order, the year rail does not draw at all,
-         and the `#ev-<iso>` anchor the verdict matrix links to is absent. */
+         and the `#ev-<iso>` anchor the verdict matrix links to is absent.
+
+         A key may be a year or a month rather than a day. The rule used to
+         demand YYYY-MM-DD, which left two entries on icj-cerd-icsft keyless —
+         «поч. 2014» and «2017», a season and a year — and keyless entries sort
+         last, so the chronology printed its two oldest events under the 2024
+         judgment. `TimelineEvent.iso` is documented as a sort key whose
+         printed date «may be a range or a month», and CaseTimeline already
+         reads a four-character key at year precision. What the check is for is
+         that a key exists and agrees with the date above it; demanding a day
+         that the source does not have was the reason two were missing. */
   const events = itemsOf(listOf(src, "timeline"));
   const isos = new Set();
   for (const e of events) {
-    const iso = /^\s*iso: "(\d{4}-\d{2}-\d{2})"/m.exec(e)?.[1];
+    const iso = /^\s*iso: "(\d{4}(?:-\d{2}(?:-\d{2})?)?)"/m.exec(e)?.[1];
     const date = /date: \{ uk: "([^"]*)", en: "([^"]*)" \}/.exec(e);
     const label = date ? date[2] : (/^\s*iso: "([^"]*)"/m.exec(e)?.[1] ?? "?");
     if (!iso) {
@@ -366,6 +376,32 @@ for (const [slug, src] of summarySrc) {
         `footer.email is "${footer}" but legalEmail is "${said}"`,
       );
     }
+  }
+}
+
+/* `partOf`: a record that is an act within another proceeding.
+ *
+ * Three ways it can be wrong, and all three are silent at runtime. A parent id
+ * that does not exist drops the act off every surface — it is not a row, and
+ * nothing prints it either. A missing `actName` makes the parent's row fall
+ * back to an English surname on a Ukrainian page. And an act pointing at
+ * another act would build a chain the row renderer does not walk. */
+{
+  const src = readFileSync("src/content/cases.ts", "utf8");
+  const parents = new Map();
+  for (const m of src.matchAll(
+    /\n    id: "([^"]+)",\n    institutionId: "[^"]+",\n(    partOf: "([^"]+)",\n)?(    actName:)?/g,
+  )) {
+    parents.set(m[1], { partOf: m[3] ?? null, named: Boolean(m[4]) });
+  }
+  for (const [id, r] of parents) {
+    if (!r.partOf) continue;
+    if (!parents.has(r.partOf))
+      flag(id, "partof-unknown", `partOf "${r.partOf}" is not a record id`);
+    else if (parents.get(r.partOf).partOf)
+      flag(id, "partof-chained", `partOf "${r.partOf}" is itself an act`);
+    if (!r.named)
+      flag(id, "partof-unnamed", "partOf without actName — the parent's row would print the citation");
   }
 }
 

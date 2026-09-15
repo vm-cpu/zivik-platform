@@ -154,6 +154,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icc-9",
     institutionId: "icc",
+    partOf: "icc-situation",
+    actName: { uk: "Владімір Путін", en: "Vladimir Putin" },
     name: "Putin",
     /* «Владімір», transliterated, not «Володимир», domesticated. The owner
        settled this: the registry and the ICC write-up spelled the same accused
@@ -172,6 +174,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icc-10",
     institutionId: "icc",
+    partOf: "icc-situation",
+    actName: { uk: "Марія Львова-Бєлова", en: "Maria Lvova-Belova" },
     name: "Lvova-Belova",
     nameUk: "Ордер на арешт: Марія Львова-Бєлова",
     type: { uk: "Кримінальне", en: "Criminal" },
@@ -187,6 +191,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icc-11",
     institutionId: "icc",
+    partOf: "icc-situation",
+    actName: { uk: "Сергій Кобилаш", en: "Sergei Kobylash" },
     name: "Kobylash",
     nameUk: "Ордер на арешт: Сергій Кобилаш",
     type: { uk: "Кримінальне", en: "Criminal" },
@@ -202,6 +208,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icc-12",
     institutionId: "icc",
+    partOf: "icc-situation",
+    actName: { uk: "Віктор Соколов", en: "Viktor Sokolov" },
     name: "Sokolov",
     nameUk: "Ордер на арешт: Віктор Соколов",
     type: { uk: "Кримінальне", en: "Criminal" },
@@ -217,6 +225,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icc-13",
     institutionId: "icc",
+    partOf: "icc-situation",
+    actName: { uk: "Сергій Шойгу", en: "Sergei Shoigu" },
     name: "Shoigu",
     nameUk: "Ордер на арешт: Сергій Шойгу",
     type: { uk: "Кримінальне", en: "Criminal" },
@@ -232,6 +242,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icc-14",
     institutionId: "icc",
+    partOf: "icc-situation",
+    actName: { uk: "Валерій Герасимов", en: "Valery Gerasimov" },
     name: "Gerasimov",
     nameUk: "Ордер на арешт: Валерій Герасимов",
     type: { uk: "Кримінальне", en: "Criminal" },
@@ -762,3 +774,20 @@ export const registryCases: RegistryCase[] = [
     lit: false,
   },
 ];
+
+/**
+ * The library's rows: every record that is a proceeding in its own right.
+ *
+ * `registryCases` is every record, including the acts folded into another —
+ * the six ICC warrants, which are searchable and printed on the situation's
+ * row but are not rows themselves. Anything that lists, counts or routes to
+ * proceedings reads this; anything that resolves a record by id, or checks the
+ * data against itself, reads `registryCases`.
+ */
+export const registryProceedings: RegistryCase[] = registryCases.filter(
+  (c) => !c.partOf,
+);
+
+/** The acts folded into one proceeding, in the order they are recorded. */
+export const actsOf = (id: string): RegistryCase[] =>
+  registryCases.filter((c) => c.partOf === id);
