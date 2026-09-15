@@ -251,8 +251,8 @@ const T = {
      job — what the marks in the list mean, and what an absence does not
      mean. */
   state: {
-    uk: "Не всі провадження вже опрацьовані — ті, що чекають на огляд, позначені в списку окремо. Бібліотека поповнюється, тож відсутність провадження тут не означає, що його немає.",
-    en: "Not every proceeding has been written up yet — those still waiting for a summary are marked in the list. The library is still growing, so a proceeding's absence here does not mean it does not exist.",
+    uk: "У списку є провадження без огляду — вони позначені окремо. Бібліотека поповнюється: якщо провадження тут немає, це ще не означає, що його не існує.",
+    en: "Some proceedings in the list have no summary yet — they are marked as such. The library is still growing: if a proceeding is not here, that does not mean it does not exist.",
   },
 } as const;
 
