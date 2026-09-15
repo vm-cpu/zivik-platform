@@ -94,11 +94,29 @@
 .abt-recess {
   background: var(--paper2);
 }
-/* The dark bands supply their own edge — a ground this much darker than the
-   one above it is its own boundary, and a pale seam across it would read as a
+/* The dark bands are wine, not black.
+
+   They were --brand-night (#17110f), which is the site's darkest ground and
+   is neutral: on screen it reads as black, and the owner's note after the
+   headings went cherry was that the quotation's ground and the first section
+   had stayed that way. --brand-ember (#331311) is the warm dark this palette
+   already keeps — it is the glow over the decision page's masthead — and at
+   ΔRGB 34 from night it is a visibly different colour rather than a nudge.
+
+   Measured on it, because a warmer ground is a lighter ground and every
+   colour set on these two bands had been chosen against night:
+
+     cream         14.05:1   the title, the quoted words, the speaker's name
+     gold-lit       9.03:1   the lit seam and its spill
+     muted-dark     8.20:1   the standfirst, the back link, the role line
+
+   The floor for any of them is 4.5:1. Nothing on either band comes near it.
+
+   They still supply their own edge — a ground this much darker than the one
+   above is its own boundary, and a pale seam across it would read as a
    frame. */
 .abt-dark {
-  background: var(--brand-night);
+  background: var(--brand-ember);
   color: var(--brand-cream);
   border-top: 0;
 }
