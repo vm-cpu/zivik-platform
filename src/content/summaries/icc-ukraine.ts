@@ -614,6 +614,45 @@ export const iccUkraine: DecisionSummary = {
         en: "Pre-Trial Chamber II found under article 87(7) that Tajikistan failed to execute the request to arrest and surrender Mr Putin, and referred the matter to the Assembly of States Parties through the Presidency (ICC-01/22-143). The second such finding in this situation after Mongolia's.",
       },
     },
+    {
+      /* Review: «Був запит від якоїсь країни щодо того чи можна призупинити
+         ордер на арешт, якщо хтось хоче приїхати в іншу країну на мирні
+         переговори. Так, якщо ці переговори під егідою РБ. — є по цьому
+         рішення МКС». There is, and it is on this docket.
+
+         ── The one thing on this page that is not verified against the
+            Court's own text ──────────────────────────────────────────────
+         The decision is published only as a CourtRecords PDF, and that host
+         refuses automated fetches the way the rest of icc-cpi.int does (403);
+         the Internet Archive had no capture of it to fall back on. What is
+         written below rests on two independent legal commentaries that quote
+         the ruling and link the same PDF — Opinio Juris, 21 July 2026, and
+         EJIL:Talk! — and on nothing else. Both are in `sources`.
+
+         Neither carries the ICC filing number, so this entry gives none: the
+         page cites ICC-01/22-90 and ICC-01/22-143 because those numbers were
+         read off the documents, and inventing a third in the same format
+         would make an unread number look like a read one. Owner's decision:
+         «постав посилання на PDF без номера».
+
+         Note what the ruling does *not* say. The review's recollection — «так,
+         якщо ці переговори під егідою РБ» — is the half the press carried. The
+         Chamber created no exception: a conference formally convened by the
+         United Nations makes UN Charter obligations *relevant*, and it is the
+         Court, not the host State, that reconciles them. */
+      date: { uk: "9 черв. 2026", en: "9 Jun 2026" },
+      iso: "2026-06-09",
+      track: "cooperation",
+      kind: "order",
+      label: {
+        uk: "Палата: мирні переговори не скасовують обов'язку арешту",
+        en: "The Chamber: peace talks do not lift the duty to arrest",
+      },
+      note: {
+        uk: "Держава-учасниця, яку Суд не називає, звернулася за консультаціями за ст. 97 Статуту: чи може вона приймати мирні переговори за участю Путіна. Палата відповіла, що винятку з обов'язку арешту немає і держава не може призупинити виконання ордера сама; конференція, формально скликана ООН, робить зобов'язання за Статутом ООН релевантними, але зважує їх Суд.",
+        en: "A State Party the Court does not name sought consultations under article 97: whether it could host peace talks with Mr Putin present. The Chamber answered that no exception to the duty to arrest exists and that a State cannot suspend a warrant on its own initiative; a conference formally convened by the United Nations makes UN Charter obligations relevant, but it is the Court that weighs them.",
+      },
+    },
   ],
 
   verdictsHeading: { uk: "Що вирішила Палата", en: "What the Chamber decided" },
@@ -675,6 +714,20 @@ export const iccUkraine: DecisionSummary = {
         en: "Tajikistan failed to execute the request to arrest and surrender Putin; referred to the Assembly of States Parties",
       },
       outcome: "violation",
+    },
+    {
+      /* The claim is written as the State's contention, not as the Chamber's
+         holding, because the outcome key applies to the row's claim: «Держава:
+         переговори дозволяють не виконувати арешт» → «Відхилено» reads the way
+         the ruling went. Written as the holding it would have inverted.
+         Keyed to the day, which is the chronology entry it links down to. */
+      track: "09.06.2026",
+      trackLabel: { uk: "Співпраця · 9 червня 2026", en: "Cooperation · 9 June 2026" },
+      claim: {
+        uk: "Держава-учасниця: мирні переговори за участю особи під ордером дозволяють не виконувати арешт",
+        en: "A State Party: peace talks attended by a person under warrant permit non-execution of the arrest",
+      },
+      outcome: "rejected",
     },
   ],
 
@@ -1030,18 +1083,6 @@ export const iccUkraine: DecisionSummary = {
       type: "official/ICC",
     },
     {
-      /* The domestic act behind the deposit and the entry into force, added
-         with the chronology entry for it — review: «додати про закон про
-         ратифікацію». */
-      url: "https://zakon.rada.gov.ua/go/3909-20",
-      title:
-        "Закон України «Про ратифікацію Римського статуту Міжнародного кримінального суду та поправок до нього» № 3909-IX",
-      authors: "",
-      publication: "Верховна Рада України",
-      date: "21 August 2024",
-      type: "official/treaty",
-    },
-    {
       url: "https://www.icc-cpi.int/Pages/item.aspx?name=20220311-prosecutor-statement-ukraine",
       title: "Prosecutor's statement on referrals by Japan and North Macedonia",
       authors: "Karim A.A. Khan KC",
@@ -1146,6 +1187,30 @@ export const iccUkraine: DecisionSummary = {
       publication: "International Criminal Court",
       date: "7 May 2026",
       type: "official/ICC",
+    },
+    {
+      /* The article 97 decision of 9 June 2026. Linked as the PDF the Court
+         publishes, with no filing number: see the chronology entry, which
+         explains why this one citation could not be read at source. */
+      url: "https://www.icc-cpi.int/sites/default/files/CourtRecords/0902ebd180eafed0.pdf",
+      title:
+        "Decision on the consultations requested under article 97 of the Statute (Situation in Ukraine)",
+      authors: "Pre-Trial Chamber II",
+      publication: "International Criminal Court",
+      date: "9 June 2026",
+      type: "official/ICC",
+    },
+    {
+      /* The domestic act behind the deposit and the entry into force, added
+         with the chronology entry for it — review: «додати про закон про
+         ратифікацію». */
+      url: "https://zakon.rada.gov.ua/go/3909-20",
+      title:
+        "Закон України «Про ратифікацію Римського статуту Міжнародного кримінального суду та поправок до нього» № 3909-IX",
+      authors: "",
+      publication: "Верховна Рада України",
+      date: "21 August 2024",
+      type: "official/treaty",
     },
     {
       url: "https://www.icc-cpi.int/news/icc-welcomes-ukraine-new-state-party",
@@ -1379,6 +1444,23 @@ export const iccUkraine: DecisionSummary = {
       authors: "",
       publication: "Council of Europe",
       date: "25 June 2025",
+      type: "news/insight",
+    },
+    {
+      url: "https://opiniojuris.org/2026/07/21/can-peace-negotiations-justify-non-execution-of-icc-arrest-warrants-the-iccs-interpretation-of-article-97-of-the-rome-statute/",
+      title:
+        "Can Peace Negotiations Justify Non-Execution of ICC Arrest Warrants? The ICC's Interpretation of Article 97 of the Rome Statute",
+      authors: "",
+      publication: "Opinio Juris",
+      date: "2026",
+      type: "news/insight",
+    },
+    {
+      url: "https://www.ejiltalk.org/the-icc-arrest-warrants-and-peace-negotiations/",
+      title: "The ICC, Arrest Warrants, and Peace Negotiations",
+      authors: "",
+      publication: "EJIL: Talk!",
+      date: "2026",
       type: "news/insight",
     },
   ],
