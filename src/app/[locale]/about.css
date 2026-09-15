@@ -48,25 +48,19 @@
   color: var(--redd);
 }
 
-/* One column, one left edge, one right edge.
+/* ── On the rail ───────────────────────────────────────────────────────────
+   One left edge for the whole site. `--page-gutter` (globals.css) is the
+   inset the header and the footer already use: a flat gutter on a narrow
+   window, and above 1024px whatever keeps the content inside 1180px. A
+   surface that sets its own `max-width` and centres itself lands somewhere
+   else — measured at a 1800px window, the header's mark sat at 310 and this
+   page's text at 564, and a reader scrolling down from the bar watches the
+   column step sideways.
 
-   The frame used to be 900px wide while the prose inside it was capped at
-   68ch — 812px of page holding a 531px paragraph. Every other thing on this
-   page took the full 812: the masthead, every h2, the mission panel, the
-   partner band. So each paragraph ended 280px short of the heading standing
-   directly above it, and the page read as a narrow ribbon dropped into a wide
-   frame rather than as a column. That is the complaint, and the fix is not to
-   nudge the cap — it is to stop having two widths.
-
-   Now there is one. `--col` is the measure, and it is the frame: the wrapper
-   is the measure plus its own gutters, so the paragraph, the heading, the
-   quoted mission and the partner rule all end on the same pixel. Nothing
-   inside carries a width of its own any more.
-
-   The horizontal padding bottoms out at 28px on purpose — that is exactly the
-   inline padding <Partners/> carries, so the negative margin below lets the
-   partner band bleed wide while its content stays on the same left edge as
-   the prose at every width. */
+   So the wrapper is full width and takes the site's gutter, and the column
+   inside it keeps its own measure against the LEFT edge rather than the
+   middle. Left, not centred: DESIGN.md is explicit that the masthead, the
+   lede and the reading column share one left edge at every width. */
 .abt-wrap {
   /* 672px against the 16px prose face: about 83 characters to the line.
      Wider than the 66 it was set at, which is the textbook optimum and which
@@ -74,9 +68,17 @@
      and generous leading is what buys a long line back. Change this one
      number to change the page. */
   --col: 672px;
-  max-width: calc(var(--col) + 2 * clamp(28px, 5vw, 44px));
-  margin: 0 auto;
-  padding: 0 clamp(28px, 5vw, 44px) var(--space-16);
+  padding: 0 var(--page-gutter) var(--space-16);
+}
+/* One width inside the column, not two.
+
+   Everything on this page — the masthead, every heading, the prose, the
+   mission panel — is capped at the same measure and starts at the same left
+   edge. The frame used to be 900px wide with the prose capped at 68ch inside
+   it, so each paragraph ended 280px short of the heading standing over it and
+   the page read as a narrow ribbon dropped into a wide frame. */
+.abt-wrap > * {
+  max-width: var(--col);
 }
 
 .abt-mast {

@@ -47,10 +47,24 @@
   color: var(--redd);
 }
 
+/* ── On the rail ───────────────────────────────────────────────────────────
+   One left edge for the whole site. `--page-gutter` (globals.css) is the
+   inset the header and the footer already use: a flat gutter on a narrow
+   window, and above 1024px whatever keeps the content inside 1180px. A
+   surface that sets its own `max-width` and centres itself lands somewhere
+   else — measured at a 1800px window, the header's mark sat at 310 and this
+   page's text at 560, and a reader scrolling down from the bar watches the
+   column step sideways.
+
+   So the wrapper is full width and takes the site's gutter, and the column
+   inside it keeps its own measure against the LEFT edge rather than the
+   middle. Left, not centred: DESIGN.md is explicit that the masthead, the
+   lede and the reading column share one left edge at every width. */
 .legal-wrap {
-  max-width: calc(var(--measure) + var(--gutter) * 2);
-  margin-inline: auto;
-  padding: 0 var(--gutter) var(--space-24);
+  padding: 0 var(--page-gutter) var(--space-24);
+}
+.legal-wrap > * {
+  max-width: var(--measure);
 }
 
 /* ---- masthead ------------------------------------------------------------ */

@@ -35,10 +35,27 @@
   color: var(--redd);
 }
 
+/* ── On the rail ───────────────────────────────────────────────────────────
+   One left edge for the whole site. `--page-gutter` (globals.css) is the
+   inset the header and the footer already use: a flat gutter on a narrow
+   window, and above 1024px whatever keeps the content inside 1180px. A
+   surface that sets its own `max-width` and centres itself lands somewhere
+   else — measured at a 1800px window, the header's mark sat at 310 and this
+   page's text at 494, and a reader scrolling down from the bar watches the
+   column step sideways.
+
+   So the wrapper is full width and takes the site's gutter, and the column
+   inside it keeps its own measure against the LEFT edge rather than the
+   middle. Left, not centred: DESIGN.md is explicit that the masthead, the
+   lede and the reading column share one left edge at every width. */
 .team-wrap {
+  padding: 0 var(--page-gutter) var(--space-16);
+}
+/* The gallery is wider than a reading column and narrower than the rail: four
+   portraits across is what the grid was built for, and letting it run the
+   full 1180 would put six in a row and shrink each face. */
+.team-wrap > * {
   max-width: 900px;
-  margin: 0 auto;
-  padding: 0 clamp(20px, 5vw, 44px) var(--space-16);
 }
 
 .team-mast {

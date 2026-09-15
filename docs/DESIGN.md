@@ -232,11 +232,23 @@ are forbidden: they read as neither sharp nor round.
 
 ## 2. Layout
 
-- **One rail.** Every band uses `.rail`
-  (`max-width: 1180px; margin-inline: auto; padding-inline: clamp(24px,5vw,72px)`).
-  Masthead, lede, dashboard and reading column must share one left edge at every
-  width. Mixing an inset band with a centred one is the bug that made the page
-  look misaligned.
+- **One rail, and the text is on its left edge — not centred in the window.**
+  The inset is `--page-gutter` (globals.css): a flat `--space-7` on a narrow
+  window, and above 1024px `max(clamp(28px,5vw,96px), (100% - 1180px)/2)`, so
+  the content area is never wider than 1180px and the gutter grows to hold it
+  there. The header and the footer take it, and so must every page wrapper.
+  Masthead, lede, dashboard and reading column share one left edge at every
+  width; a column narrower than the rail is capped against that edge, never
+  centred inside it.
+
+  Mixing an inset band with a centred one is the bug that made the page look
+  misaligned, and it is easy to reintroduce, because a page that sets its own
+  `max-width` and `margin: 0 auto` looks perfectly reasonable in its own file.
+  Measured at an 1800px window on 15 September 2026: the header's mark and the
+  home page sat at 310, while /registry was at 384, /team at 494, /privacy at
+  560 and /about at 564 — so scrolling from the bar into any of those four,
+  the column stepped sideways. All four now take `--page-gutter` and cap their
+  own measure against the left edge.
 - Full-bleed bands alternate ground (`--brand-paper` ⇄ `--brand-paper-2`) to
   segment the page instead of drawing boxes — **and every band also carries a
   1px `--brand-seam` edge.** The alternation alone cannot be relied on:
