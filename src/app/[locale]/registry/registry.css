@@ -77,17 +77,59 @@
 
 /* ---- page heading ---- */
 .reg-mast{padding:var(--space-10) 0 var(--space-6);border-bottom:1px solid var(--rule)}
-/* ── The two-column masthead — reverted ───────────────────────────────────
-   The three figures were moved to the right of the prose, to fill the 500px
-   of nothing beside a 680px reading measure. The owner's verdict was that it
-   came out worse, and it did: stacked vertically at the far edge they read as
-   a detached sidebar, and the gap between the note and them was still there —
-   the hole had moved rather than closed.
+/* The note goes to the margin; the figures stay under the prose.
 
-   The lesson is the one the quotation on /about already taught: space beside
-   a reading column is not automatically a fault, and filling it with whatever
-   is nearest makes a worse page than leaving it. The figures belong under the
-   sentences they summarise. */
+   Two goes at the 500px of nothing beside a 680px reading measure. The first
+   moved the three figures there and made it worse — stacked at the far edge
+   they read as a detached sidebar, and the gap between them and the prose was
+   still there, so the hole had moved rather than closed.
+
+   The note is the thing that actually belongs out there. It is an aside: it
+   does not describe the library's contents, it qualifies them, and a reader
+   following the lede into the table does not need it in the way. Out of the
+   reading column it stops interrupting and starts doing what a marginal note
+   does — and the space it fills is filled by something whose place that is,
+   which is the whole difference from the first attempt.
+
+   The figures stay under the lede, in a row, because they are what the lede
+   is about.
+
+   Explicit rows: the five children are the back link, the title, the lede,
+   the figures and the note in source order, and the note has to sit beside
+   two of them. Left to place itself it would take a row of its own and
+   reopen the hole. Below 1100px there is no room for two columns and the
+   order goes back to the source order, note last. */
+@media (min-width: 1100px) {
+  .registrypage .reg-mast {
+    display: grid;
+    grid-template-columns: minmax(0, 680px) minmax(0, 1fr);
+    column-gap: var(--space-12);
+    align-items: start;
+  }
+  .registrypage .reg-back {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .registrypage .reg-mast h1 {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .registrypage .reg-lede {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .registrypage .reg-meta {
+    grid-column: 1;
+    grid-row: 4;
+  }
+  .registrypage .reg-state {
+    grid-column: 2;
+    grid-row: 3 / span 2;
+    /* Its own margin is the gap to the lede above it in one column; beside
+       the lede it has none to close. */
+    margin-top: 0;
+  }
+}
 .reg-back:hover{color:var(--red)}
 .reg-mast h1{
   font-family:var(--brand-font-display),Georgia,serif;font-weight:400;
