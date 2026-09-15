@@ -153,7 +153,21 @@
    If a third theme ever arrives, the lamp is repainted as a unit, not
    retinted variable by variable.
    --------------------------------------------------------------------------- */
-.lmp{--px:0px;position:relative;overflow:hidden;color:var(--brand-cream);background:radial-gradient(120% 95% at 50% -12%,#2A1412 0%,#180A09 44%,#0C0504 100%)}
+/* The lamp's room, in wine rather than in black.
+
+   The ramp was three hex literals — #2A1412, #180A09, #0C0504 — which passed
+   design-lint only because `.lmp` takes the illustration exemption, and which
+   drifted neutral as they got darker: the centre was warm and the two thirds
+   of the section a reader actually sees were not. Owner's note, after the
+   same change on /about: the hero stayed black.
+
+   Tokens now, and the same shape. --brand-ember is the warm dark this palette
+   keeps for the decision page's masthead glow and is now the ground of both
+   dark bands on /about and of the quotation band below; the falloff runs to
+   --brand-ink-black, the footer's ground, through a mix of the two. The
+   luminance ramp is within a point of what it was at every stop, so the lamp
+   still lights a dark room — what changed is the hue it is dark in. */
+.lmp{--px:0px;position:relative;overflow:hidden;color:var(--brand-cream);background:radial-gradient(120% 95% at 50% -12%,var(--brand-ember) 0%,color-mix(in srgb,var(--brand-ember) 55%,var(--brand-ink-black)) 44%,var(--brand-ink-black) 100%)}
   /* desk lamp lighting the wordmark */
   /* industrial articulated lamp: matte black, dome shade with an Edison bulb over the wordmark */
   .lmp .dcord{position:absolute;left:449px;top:0;width:2px;height:52px;background:linear-gradient(180deg,rgba(214,198,168,.15),#B7A585);z-index:4}

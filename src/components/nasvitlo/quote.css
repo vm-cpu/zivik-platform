@@ -43,14 +43,14 @@
       and it still does at 25px on a serif, sitting a step under --t-h2 (29px
       at this width) so a quotation does not out-shout the headings around it.
 
-   Colour comes only from --brand-* tokens (see docs/DESIGN.md). Measured on
-   the band's own ground, --brand-quote (#1e0c0b), and — for anything sitting
-   in the top 130px, where the seam's spill lightens the ground to rgb 54 32 21
-   — on that lit ground too. The floor is 4.5:1:
-     cream       15.69:1  (12.66:1 lit)   the quoted words
-     gold-lit    10.08:1  ( 8.13:1 lit)   the case name, the seam, the focus ring
-     gold-pale   14.03:1  (11.33:1 lit)   hover
-     muted-dark   9.15:1  ( 7.39:1 lit)   the court · stage · date line
+   Colour comes only from --brand-* tokens (see docs/DESIGN.md). The band's
+   ground was --brand-quote (#1e0c0b) and is --brand-ember (#331311) now —
+   owner's decision, see the note on `.nsvq` below — so every figure here was
+   taken again against the new ground. The floor is 4.5:1:
+     cream       14.05:1   the quoted words
+     gold-pale   12.57:1   hover
+     gold-lit     9.03:1   the case name, the seam, the focus ring
+     muted-dark   8.20:1   the court · stage · date line
    ============================================================ */
 
 .nsvq {
@@ -65,7 +65,20 @@
      caption gone, the old padding left the band reading as a held pause rather
      than a passage between two sections. */
   padding: clamp(44px, 4.4vw, 64px) var(--space-7) clamp(40px, 4vw, 58px);
-  background: var(--brand-quote);
+  /* Wine, not near-black. Owner's decision, following the same change on
+     /about: --brand-quote was #1e0c0b, warm in the numbers and black on the
+     screen. --brand-ember (#331311) is the warm dark this palette already
+     keeps for the decision page's masthead glow, and it is far enough from
+     the old ground — ΔRGB 34 — to be a different colour rather than a nudge.
+
+     Re-measured on it, because a warmer ground is a lighter one and every
+     colour in this file was chosen against the old:
+       cream       14.05:1   the quoted words
+       gold-pale   12.57:1   hover
+       gold-lit     9.03:1   the case name, the seam, the focus ring
+       muted-dark   8.20:1   the court · stage · date line
+     The floor is 4.5:1. */
+  background: var(--brand-ember);
   overflow: hidden;
 }
 

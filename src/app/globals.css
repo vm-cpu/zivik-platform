@@ -200,7 +200,12 @@
 
   --brand-cream-warm: #fff8ea; /* text on solid red buttons */
   --brand-ink-black: #0e0504;  /* darkest surface (footer) */
-  --brand-quote: #1e0c0b;    /* the pull-quote band, its own ground */
+  /* --brand-quote (#1e0c0b) was here: the pull-quote band's own ground. The
+     band is on --brand-ember now — owner's decision that the quotation and
+     the hero should be wine rather than black — and nothing else ever used
+     this, so it goes rather than sitting in the palette as a colour the site
+     no longer has. quote.css still names it in the notes that record what the
+     contrast figures were taken against before and after. */
   /* Brand faces are self-hosted via next/font (see app/layout.tsx); the
      literal names stay as fallbacks for anyone with them installed locally.
      Own namespace avoids Tailwind's @theme --font-display. */
