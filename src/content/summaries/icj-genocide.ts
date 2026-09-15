@@ -66,18 +66,29 @@ export const icjGenocide: DecisionSummary = {
 
      The Court's own case name keeps the interveners — it is a citation, and
      `cases.ts` quotes it in full under `name`. This is the page's heading,
-     not the citation. */
+     not the citation.
+
+     Then the form changed again. icj-cerd-icsft's h1 became the Court's full
+     case name — «Замінюємо назву на таку», the owner's own wording — and the
+     archive's two ICJ pages cannot carry two different shapes of headline
+     while the instruction is «стандартизована назва». So this is the same
+     shape: the Court's case name, with «: 32 States intervening» taken out of
+     the parenthesis exactly as the review asked and nothing else altered. */
   title: {
-    uk: "Україна проти Російської Федерації: звинувачення у геноциді",
-    en: "Ukraine v. Russian Federation: allegations of genocide",
+    uk: "Звинувачення у геноциді за Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації)",
+    en: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation)",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
+    /* Identical to `title` on purpose: the caption was that same sentence
+       stopping before «(Україна проти Російської Федерації)», so under the
+       full case name it read as a shortened copy of the headline. The masthead
+       prints it once — same guard as on icj-cerd-icsft. */
     official:
-      "Звинувачення у геноциді за Конвенцією про запобігання злочину геноциду та покарання за нього",
+      "Звинувачення у геноциді за Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації)",
     judgment: "Рішення від 2 лютого 2024",
   },
 
