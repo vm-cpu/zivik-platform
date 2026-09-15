@@ -361,7 +361,23 @@
   .page{--red:var(--brand-red);--redd:var(--brand-red-dark);--gold:var(--brand-gold);--paper:var(--brand-paper);--paper2:var(--brand-paper-2);--surface:var(--brand-surface);--ink:var(--brand-ink);--ink2:var(--brand-ink-2);--muted:var(--brand-ink-2);--faint:var(--brand-faint);--rule:var(--brand-rule);
     --measure:var(--measure-page);
     width:100%;max-width:none;margin:0 auto;background:var(--paper);color:var(--ink);font-family:var(--brand-font-body),sans-serif;font-size:var(--t-sm);line-height:1.55;box-shadow:none}
-  .page h1,.page h2,.page h3,.page h4{font-family:var(--brand-font-display),Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
+  /* ── `.homepage`, not `.page` ──────────────────────────────────────────
+     These three rules match on an element, not on a class, and that made them
+     the only rules in this file that could reach another surface.
+
+     Next keeps a route's stylesheet in the document after a client-side
+     navigation away from it. Open /uk and click «Про проєкт» and home.css is
+     still there: `.page a:not(…)` is (0,2,1) and beats `.abt-back` at (0,1,0),
+     so the back link on the About masthead turned red; `.page h1` is (0,1,1)
+     and ties `.abt-mast h1`, so whichever loads last wins the title's colour.
+     Opening /uk/about directly shows neither fault, which is why this took
+     three passes to find — it only appears on the path a reader actually
+     takes.
+
+     `.homepage` is on the home page's root div and nowhere else, so the rules
+     stop at the page they were written for. Every other rule in this file is
+     matched by class and was never able to leak. */
+  .homepage h1,.homepage h2,.homepage h3,.homepage h4{font-family:var(--brand-font-display),Georgia,serif;font-weight:400;margin:0;line-height:1.15;color:var(--ink)}
   /* Content links only. As a blanket `.page a` this reached into the header
      and footer too, and at (0,1,1) it outranked anything they set with a
      single class: it repainted the mobile menu, the skip link and the hero
@@ -384,10 +400,10 @@
      paragraph renders on /about too. Cherry is this site's colour for a
      finding of breach; a link to the document a sentence cites is not one, and
      `.page a.abt-cite-link` at (0,2,1) cannot outrank this rule's (0,2,2). */
-  .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link){
+  .homepage a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link){
     color:var(--red);text-decoration:none
   }
-  .page a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link):hover{color:var(--redd)}
+  .homepage a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link):hover{color:var(--redd)}
   /* the lamp gradient is the header's ground on this page, so the bar itself
      stays transparent — everywhere else it supplies its own dark */
   .page .lmp{border:0}

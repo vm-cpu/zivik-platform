@@ -49,7 +49,12 @@ export default async function HomePage({
   };
 
   return (
-    <div className="page">
+    /* `homepage` as well as `page`: home.css carries three rules that match on
+       an element rather than a class, and Next leaves a route's stylesheet in
+       the document after a client-side navigation away from it — so those
+       three were repainting headings and links on every other surface a
+       reader reached from here. They are scoped to this class now. */
+    <div className="page homepage">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={jsonLdHtml(jsonLd)}
