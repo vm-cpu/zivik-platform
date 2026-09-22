@@ -164,12 +164,4 @@
   text-transform: none;
   color: var(--faint);
 }
-/* light-ground label */
-.casepage .lbl-light {
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--pgold);
-  margin-bottom: var(--space-4);
-}
 

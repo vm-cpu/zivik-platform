@@ -170,52 +170,6 @@
   line-height: 1.6;
   color: var(--muted);
 }
-.casepage .actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  margin-top: var(--space-7);
-}
-.casepage .btn {
-  display: inline-flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  text-decoration: none;
-  font: 700 var(--t-sm) var(--brand-font-body);
-  padding: var(--space-4) var(--space-6);
-  border-radius: var(--r-pill);
-  transition: transform var(--dur) var(--ease),
-              box-shadow var(--dur) var(--ease),
-              border-color var(--dur) var(--ease),
-              color var(--dur) var(--ease);
-}
-.casepage .btn:hover {
-  transform: translateY(-1px);
-}
-.casepage .btn em {
-  font: 500 var(--t-micro) var(--brand-font-body);
-  font-style: normal;
-  letter-spacing: 0.03em;
-  opacity: 0.85;
-}
-.casepage .btn-primary {
-  background: var(--accent);
-  /* --brand-cream-warm is the token whose one stated job is "text on solid
-     red buttons", and this is one. The literal it replaces was #fbeee9,
-     9.09:1 on the cherry; the token is 9.76:1. */
-  color: var(--brand-cream-warm);
-  box-shadow: var(--shadow-md);
-}
-.casepage .btn-ghost {
-  align-self: stretch;
-  justify-content: center;
-  border: 1px solid var(--rule);
-  color: var(--cream);
-}
-.casepage .btn-ghost:hover {
-  border-color: var(--gold);
-  color: var(--gold);
-}
 
 /* ---- 2. Plain-language lede (paper) --------------------------------------- */
 /* The one white band on the page, and the paper the dark dashboard below it
@@ -243,15 +197,6 @@
   grid-template-columns: 1.6fr 1fr;
   gap: clamp(28px, 4vw, 56px);
   align-items: start;
-}
-.casepage .tldr p {
-  margin: 0;
-  /* The tl;dr is prose, so it takes the prose face and size. */
-  font-family: var(--brand-font-body), sans-serif;
-  font-size: var(--t-body);
-  line-height: 1.5;
-  color: var(--ink);
-  text-wrap: pretty;
 }
 .casepage .why {
   border-left: 2px solid var(--pgold);

@@ -79,12 +79,6 @@
 }
 
 
-/* on paper the label stands alone — the trailing rule read as a stray line */
-.casepage .lbl-onpaper::after {
-  display: none;
-}
-
-
 /* ---- vertical page rail (wide screens) ------------------------------------ */
 /* The rail lives in the left margin outside the content column. It carries its
    own night ground, so it stays legible over dark and paper bands alike. */
@@ -152,15 +146,6 @@
      that goes to black. */
   .casepage .vpanel {
     border-color: #000 !important;
-  }
-  /* The ledger reads --brand-* directly rather than the band's aliases, so it
-     is named here. */
-  .casepage .glance dt,
-  .casepage .glance dd {
-    color: #000 !important;
-  }
-  .casepage .glance-item {
-    border-top-color: #999 !important;
   }
   .casepage .official,
   .casepage .ctl-label,
