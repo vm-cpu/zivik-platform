@@ -399,9 +399,34 @@
 .casepage .pair {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 262px), 1fr));
-  gap: 1px;
-  background: var(--prule);
+  gap: 0;
+  /* Each half ends where its text ends.
+     `stretch` is the grid's default and it drew the hairline for free: the
+     container carried the rule colour, a 1px gap let it through, and both
+     grounds filled their cells to the taller one's height. It cost a third
+     of a box of blank ground wherever the two sides were of unequal length
+     — and they usually are, because the Court answers at more length than a
+     party argues. Under the Order on provisional measures the argument is
+     one paragraph and the answer is two quotations.
+     So the rule moves onto the halves, where it can stop with them. */
+  align-items: start;
+}
+/* -1px on every half but the first: two adjoining 1px borders meet at the
+   same line and would draw 2px. */
+.casepage .pair > * {
   border: 1px solid var(--prule);
+}
+.casepage .pair > * + * {
+  margin-left: -1px;
+}
+/* Stacked, the halves adjoin top to bottom instead. The figure this matches
+   is `minmax(min(100%, 262px), 1fr)` above: two columns need 524px, and the
+   reading column is under that from here down. */
+@media (max-width: 760px) {
+  .casepage .pair > * + * {
+    margin-left: 0;
+    margin-top: -1px;
+  }
 }
 /* The two halves are styled by what they are, not by where they sit: a
    holding set apart from an argument looks the same whether it stands beside
