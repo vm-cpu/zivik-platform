@@ -23,7 +23,15 @@ export default function AfterlifeStrip({
     <ol className="afterlife">
       {stages.map((s, i) => (
         <li key={i} data-standing={s.standing}>
-          <span className="af-year">{s.year}</span>
+          {/* The year is the seam to the chronology, where the page carries
+              the same step as a dated event. */}
+          {s.iso ? (
+            <a className="af-year af-year-link" href={`#ev-${s.iso}`}>
+              {s.year}
+            </a>
+          ) : (
+            <span className="af-year">{s.year}</span>
+          )}
           <span className="af-title">{pick(s.title, locale)}</span>
           <p className="af-note">{pick(s.note, locale)}</p>
           <span className="af-flag">

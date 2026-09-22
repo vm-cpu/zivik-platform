@@ -624,6 +624,10 @@ export const oschadbank: DecisionSummary = {
     {
       track: "Jurisdiction",
       trackLabel: { uk: "Юрисдикція", en: "Jurisdiction" },
+      /* Три заперечення і підстава кожного лежать картками в «Розборі
+         рішення» — за вісімнадцять тисяч пікселів звідси, і досі ніщо не
+         вело туди з цього рядка. */
+      inAnchor: "objections",
       claim: {
         uk: "Заперечення Росії щодо юрисдикції",
         en: "Russia's objections to jurisdiction",
@@ -997,6 +1001,7 @@ export const oschadbank: DecisionSummary = {
     },
     stages: [
       {
+        iso: "2018-11-26",
         year: "2018",
         title: { uk: "Рішення ухвалено", en: "Award rendered" },
         note: {
@@ -1006,6 +1011,7 @@ export const oschadbank: DecisionSummary = {
         standing: "yes",
       },
       {
+        iso: "2021-03-30",
         year: "2021",
         title: { uk: "Скасовано", en: "Set aside" },
         note: {
@@ -1015,6 +1021,7 @@ export const oschadbank: DecisionSummary = {
         standing: "no",
       },
       {
+        iso: "2022-12-07",
         year: "2022",
         title: { uk: "Анулювання скасовано", en: "Annulment reversed" },
         note: {
@@ -1024,6 +1031,7 @@ export const oschadbank: DecisionSummary = {
         standing: "yes",
       },
       {
+        iso: "2025-07-01",
         year: "2025",
         title: { uk: "Залишено в силі", en: "Award upheld" },
         note: {

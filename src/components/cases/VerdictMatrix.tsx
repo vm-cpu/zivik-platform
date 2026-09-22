@@ -20,12 +20,16 @@ export interface VerdictRow {
    * in the data it is offered; where it does not, nothing is invented.
    */
   inHref?: string;
+  /** An id further down the page where this claim is worked out. */
+  claimHref?: string;
   /** What the inward link is, for anyone who cannot see where it points. */
   inLabel?: string;
   /** First claim under this track — the only row that prints the track. */
   opensTrack: boolean;
   outcome: Outcome;
   outcomeLabel: string;
+  /** The label came from the row, not from the shared word for its outcome. */
+  ownLabel?: boolean;
   claim: string;
 }
 
@@ -74,6 +78,7 @@ export default function VerdictMatrix({
   rows,
   fold,
   head,
+  trackless,
 }: {
   rows: VerdictRow[];
   /**
@@ -89,6 +94,16 @@ export default function VerdictMatrix({
    * nothing to fold.
    */
   fold?: { show: string; hide: string };
+  /**
+   * Drop the ground column — see `verdictsTrackless` in summaries/types.ts.
+   *
+   * The rows keep their `track`: it is still what `opensTrack` is computed
+   * from and what the sort runs on. What goes is the cell that prints it and
+   * the head that sorts by it, because a column whose every value is the same
+   * string is not a column a reader can sort — and the 140px it costs is the
+   * width the claims beside it were wrapping for want of.
+   */
+  trackless?: boolean;
   /**
    * The column heads, which are also the sort controls.
    *
@@ -147,7 +162,20 @@ export default function VerdictMatrix({
   };
   const kept = (r: VerdictRow) =>
     r.outcome === "violation" || r.outcome === "convicted" || r.outcome === "granted";
-  const folding = Boolean(fold) && rows.some(kept) && !rows.every(kept);
+  /* A fold has to save more than it costs. The control is itself a row of the
+     table, so hiding one or two claims behind it saves nothing and puts part
+     of the record one press away for no gain — and on a three-row dispositif
+     it hid two of the three, which on icj-genocide meant a section headed
+     «Аргументи України» opened showing one of Ukraine's three submissions.
+
+     Measured over the archive: of the eight decisions only icj-cerd-icsft has
+     a table long enough to want this, with twelve of its sixteen claims not
+     upheld. The rest would fold one or two. Five is the line between them and
+     is deliberately nowhere near either, so a claim added or removed on any
+     decision does not flip its table's shape. */
+  const FOLD_FROM = 5;
+  const folding =
+    Boolean(fold) && rows.filter((r) => !kept(r)).length >= FOLD_FROM && rows.some(kept);
   /* The track cell prints on the row that opens a run, and folding changes
      which row that is — with the rest hidden, «CERD» would sit on a row in
      the middle of the table and the first CERD row would have an empty
@@ -238,16 +266,18 @@ export default function VerdictMatrix({
            there, and `aria-sort` outside a table announces nothing at all.
            The heads are controls over a list, so they say so in their own
            names: what they sort by, and which way it is sorted now. */
-        <div className="ix-head">
-          <button
-            type="button"
-            className="ix-sort"
-            aria-label={`${head.sortedBy}: ${head.track}${state("track")}`}
-            onClick={() => press("track")}
-          >
-            <span aria-hidden="true">{head.track}</span>
-            <i aria-hidden="true">{sort?.by === "track" ? (sort.dir === 1 ? "↑" : "↓") : "↕"}</i>
-          </button>
+        <div className={trackless ? "ix-head ix-head-2" : "ix-head"}>
+          {!trackless && (
+            <button
+              type="button"
+              className="ix-sort"
+              aria-label={`${head.sortedBy}: ${head.track}${state("track")}`}
+              onClick={() => press("track")}
+            >
+              <span aria-hidden="true">{head.track}</span>
+              <i aria-hidden="true">{sort?.by === "track" ? (sort.dir === 1 ? "↑" : "↓") : "↕"}</i>
+            </button>
+          )}
           <span>{head.claim}</span>
           <button
             type="button"
@@ -260,7 +290,11 @@ export default function VerdictMatrix({
           </button>
         </div>
       )}
-    <ul className="verdicts" ref={list} data-shown={shown ? "yes" : "no"}>
+    <ul
+      className={trackless ? "verdicts verdicts-2" : "verdicts"}
+      ref={list}
+      data-shown={shown ? "yes" : "no"}
+    >
       {drawn.map((r, i) => (
         <li
           key={i}
@@ -295,6 +329,7 @@ export default function VerdictMatrix({
               siblings they were two grid items in a three-column row, so
               the grid opened a second row for the chip and every row grew
               44px to hold it. */}
+          {!trackless && (
           <span className="v-ground">
             {r.stage && <span className="v-stage">{r.stage}</span>}
             {r.opensTrack ? (
@@ -322,14 +357,32 @@ export default function VerdictMatrix({
               <span className="v-track v-track-cont">{r.track}</span>
             )}
           </span>
+          )}
           {/* Article, claim, result — the order the design reads them in and
               the order a dispositif is written in. It was outcome first,
               because the row used to run the full 1180px rail and the two
               ends of a sentence sat a screen apart. The row is a table now:
               three tracks, the result in a fixed column at the right, and
               nothing between them to cross. */}
-          <span className="v-claim">{r.claim}</span>
-          <span className="v-out" data-o={r.outcome}>
+          {/* Where the detail of this claim lives further down the page, the
+              claim itself is the way there. Not the ground cell: the matrix
+              draws that once per group, and the row that needed the seam —
+              «Заперечення Росії щодо юрисдикції» — is the fourth of its
+              group, so its ground cell is not drawn at all. */}
+          {r.claimHref ? (
+            <a className="v-claim v-claim-link" href={r.claimHref}>
+              {r.claim}
+            </a>
+          ) : (
+            <span className="v-claim">{r.claim}</span>
+          )}
+          {/* `data-own` says the record wrote this word itself rather than
+              taking the shared one for its outcome. It is always a sentence
+              where the shared label is a status word — «Суд не знайшов
+              юрисдикції, аби розглядати аргумент» — and a sentence set in
+              tracked capitals is a wall, so the stylesheet lets it be prose.
+              See `outcomeLabel` in summaries/types.ts. */}
+          <span className="v-out" data-o={r.outcome} data-own={r.ownLabel ? "yes" : undefined}>
             {r.outcomeLabel}
           </span>
         </li>
@@ -341,7 +394,7 @@ export default function VerdictMatrix({
            the next line down, not a second object. */
         <button
           type="button"
-          className="v-fold"
+          className={trackless ? "v-fold v-fold-2" : "v-fold"}
           ref={foldRef}
           aria-expanded={all}
           onClick={() => {

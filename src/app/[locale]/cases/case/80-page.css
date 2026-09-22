@@ -286,6 +286,25 @@
 .casepage .verdicts .v-track-cont {
   color: var(--ink3);
 }
+
+/* ── Two columns, where the ground column would say one thing three times ──
+   See `verdictsTrackless` in summaries/types.ts. The claim takes the width
+   the ground gave up, and the result column takes the rest of it, because a
+   row that writes its own result writes a sentence and not a status word.
+
+   The three grids — head, rows, fold — take the same track here as they do
+   at three columns, or the table stops being a table. */
+/* A result the record wrote itself: prose, so it is set as prose. The shared
+   labels are one or two words and tracked capitals suit them; «Суд не знайшов
+   юрисдикції, аби розглядати аргумент» in the same treatment is four lines of
+   shouting in the corner of the table. Same size, same colour, same column —
+   only the case and the tracking give way. */
+.casepage .verdicts .v-out[data-own] {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  line-height: 1.4;
+}
 @media (max-width: 700px) {
   .casepage .verdicts li {
     grid-template-columns: minmax(0, 1fr);
@@ -1613,6 +1632,55 @@
      winning, silently.) */
   grid-template-columns: 140px minmax(0, 1fr) 132px;
 }
+/* ── The same table at two columns ───────────────────────────────────────
+   Where the ground column is dropped (`verdictsTrackless`), and it has to be
+   said at each of the widths the three-column table is said at, in this file
+   and after the rule above: these selectors weigh exactly what the ones they
+   override weigh, so it is source order that decides, and a single unscoped
+   declaration would win on a phone too — which left a 29px claim column
+   beside a 132px result and 140px of empty ground where the track used to be.
+
+   The breakpoints are the block's own, not new ones: 900px is where the
+   claim can no longer sit beside a full-width result, 560px where it can no
+   longer sit beside one at all. */
+.casepage .verdicts-2 li,
+.casepage .ix-head-2,
+.casepage .v-fold-2 {
+  grid-template-columns: minmax(0, 1fr) 232px;
+}
+.casepage .verdicts-2 .v-claim {
+  grid-column: 1;
+}
+.casepage .verdicts-2 .v-out {
+  grid-column: 2;
+}
+/* Tablet: the result goes over the claim, the way it does with a track. */
+@media (max-width: 900px) {
+  .casepage .verdicts-2 li,
+  .casepage .ix-head-2,
+  .casepage .v-fold-2 {
+    grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
+  }
+  .casepage .verdicts-2 .v-out {
+    grid-column: 1;
+  }
+  .casepage .verdicts-2 .v-claim {
+    grid-column: 2;
+  }
+}
+/* Phone: one column. «Суд не знайшов юрисдикції, аби розглядати аргумент» in
+   a 10rem column is six lines. */
+@media (max-width: 560px) {
+  .casepage .verdicts-2 li,
+  .casepage .ix-head-2,
+  .casepage .v-fold-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .casepage .verdicts-2 .v-out,
+  .casepage .verdicts-2 .v-claim {
+    grid-column: 1;
+  }
+}
 
 /* The stage over the ground: a category, so it reads as a tag and not as
    the first half of the date under it. */
@@ -1960,4 +2028,17 @@
 }
 .casepage .takings > .takings-group:first-child {
   margin-top: 0;
+}
+
+/* Вимога, розібрана нижче на сторінці, веде туди сама. Підкреслення лише
+   під курсором: матриця з шістнадцяти рядків, де один підкреслений, і так
+   покаже, що він інший. */
+.casepage .v-claim-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--prule);
+}
+.casepage .v-claim-link:hover,
+.casepage .v-claim-link:focus-visible {
+  border-bottom-color: var(--pgold);
 }

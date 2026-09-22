@@ -1164,3 +1164,16 @@
 .casepage .af-sums {
   margin-top: var(--space-10);
 }
+
+/* Рік як шов до хронології — та сама тиха позначка, що й була, лише
+   натискається. Підкреслення з'являється під курсором, щоб рядок карток не
+   рябів чотирма лінками. */
+.casepage .af-year-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.casepage .af-year-link:hover,
+.casepage .af-year-link:focus-visible {
+  border-bottom-color: var(--pgold);
+}

@@ -269,6 +269,17 @@ export type Outcome =
 /** One row of the verdict matrix — how the court or tribunal disposed of a claim. */
 export interface Verdict {
   /**
+   * An id on this page the row's ground links to, where the detail lives
+   * somewhere below.
+   *
+   * «Заперечення Росії щодо юрисдикції — відхилено» is one row of the index;
+   * eighteen thousand pixels down, a panel of cards says which three
+   * objections and on what ground each fell. Nothing joined them. Where the
+   * ground is a date the row already links into the chronology; this is the
+   * same seam for a ground that is not a date.
+   */
+  inAnchor?: string;
+  /**
    * Grouping key, e.g. a treaty ("CERD") or a stage ("Jurisdiction"). Where it
    * matches an `Instrument.abbr` the heading links to the official text.
    */
@@ -492,6 +503,17 @@ export interface WarrantWave {
 
 /** One step in the life of a decision after it was rendered. */
 export interface Stage {
+  /**
+   * The chronology entry this step is, where the page carries one.
+   *
+   * The French rounds are told twice on Oschadbank — as four dated events in
+   * the chronology and as four cards here — and the two tellings are not
+   * redundant: the chronology says when, these say whether the award was
+   * standing after it. What was missing was the seam between them. With an
+   * iso the year becomes a link into the chronology, the way the verdict
+   * index already links to it. Owner: «роби всі три».
+   */
+  iso?: string;
   year: string;
   title: Localized;
   note: Localized;
