@@ -679,3 +679,26 @@
     margin-top: var(--space-2);
   }
 }
+
+/* ── The measure belongs to the text, not to the box ─────────────────────
+   `.read` capped itself at --prose (660px, the 80-character measure argued
+   out in 30-paper.css). That is right for a paragraph and wrong for
+   everything in the article that is not one: a claim and the Court's answer
+   set beside each other came out two columns of 328px — six words to the
+   line — while a thousand pixels of paper sat unused to the right of them.
+
+   So the cap moves off the container and onto the things that are prose. A
+   comparison, a section head and their rules take the column; a sentence
+   keeps its measure. */
+.casepage .read {
+  max-width: none;
+}
+.casepage .read > * {
+  max-width: var(--prose);
+}
+/* What is not a line of prose and should not be measured like one. */
+.casepage .read > .sec-h,
+.casepage .read > .findings,
+.casepage .read > .pair {
+  max-width: none;
+}

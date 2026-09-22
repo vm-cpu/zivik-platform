@@ -84,7 +84,19 @@
      pushed left. The content column came out 910 rather than 778 with it.
      Measure is the content, the gutter is outside it: 1048 + 2 × 56 = 1160. */
   --gutter: clamp(18px, 4vw, 56px);
-  --measure: 1048px;
+  /* The design's 1048 is a floor, not a ceiling.
+
+     Fixed at 1048 the box is exactly the mock at the width the mock was drawn
+     for — and on a 1920 screen it left 380px of paper doing nothing on each
+     side while a claim and the Court's answer beside it ran six words to the
+     line. `clamp` keeps the mock's own figure wherever the viewport is around
+     1540 or under, then lets the box grow with the screen and stops at 1320,
+     which is where the reading column passes the measure prose stops being
+     comfortable at.
+
+     68vw is what makes the two meet: 68% of 1541 is 1048, so the ramp starts
+     exactly where the floor ends and nothing jumps. */
+  --measure: clamp(1048px, 68vw, 1320px);
   /* The reading measure — 80 characters of Fira Sans at 16px, argued out four
      times and finally measured; the working is in 30-paper.css above `.read`.
      It is named here because the holdings ledger now takes the same measure,
