@@ -50,19 +50,19 @@
   text-align: left;
   background: var(--card);
   border: 0;
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-5) var(--space-6);
+  /* Те саме, що й `.wr-node`: запис на папері, не картка з тінню. */
+  border-left: 2px solid var(--pgold);
+  padding: var(--space-4) var(--space-6);
   cursor: pointer;
   font-family: inherit;
-  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 .casepage .suspect:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  background: var(--paper2);
 }
 .casepage .wave-people li[data-on="yes"] .suspect {
-  box-shadow: var(--shadow-md);
+  background: var(--paper2);
+  border-left-width: 4px;
 }
 .casepage .suspect-name {
   font-family: var(--brand-font-display), serif;
@@ -223,34 +223,46 @@
      — a name, a role, a date, and then a hand's width of nothing under them. */
   align-items: start;
 }
+/* ── Ордер як запис, а не як картка ───────────────────────────────────────
+   Власниця: «ця діаграма використовує якийсь власний стиль — ми ніде таких
+   заокруглених штук не використовували».
+
+   Так і було: скруглення і тіні по всьому сайту рахуються одиницями, і
+   більшість із них жила саме в цій смузі — заокруглена картка з тінню, що
+   підлітає на два пікселі під курсором, і трипіксельний кант згори. Жоден
+   інший запис на сторінці так не виглядає.
+
+   Тепер ордер виглядає як усе інше на папері: без радіуса, без тіні, з
+   лівим кантом у кольорі своєї лінії звинувачення — тим самим приладом,
+   яким позначені позиція Суду (`.rule`) і панель подробиць нижче. Наведення
+   міняє тло, а не висоту: аркуш не підлітає.
+
+   Колір лишився там, де й був, і значить те саме: червоний — депортація
+   дітей, золотий — кампанія проти енергосистеми. */
 .casepage .wr-node {
   display: grid;
   gap: 2px;
   text-align: left;
   background: var(--card);
   border: 0;
-  border-top: 3px solid var(--pgold);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-4) var(--space-5);
+  border-left: 2px solid var(--pgold);
+  padding: var(--space-3) var(--space-5);
   cursor: pointer;
   font-family: inherit;
-  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 .casepage .wr-node[data-wave="0"] {
-  border-top-color: var(--pred);
+  border-left-color: var(--pred);
 }
 .casepage .wr-node:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  background: var(--paper2);
 }
+/* Вибраний — товщий кант і світліше тло. Обведення навколо всієї картки
+   малювало другий прямокутник поверх першого; кант уже на місці, йому
+   досить подвоїтися. */
 .casepage .wr-node[data-on="yes"] {
-  box-shadow: var(--shadow-md);
-  outline: 2px solid var(--pgold);
-  outline-offset: 1px;
-}
-.casepage .wr-node[data-on="yes"][data-wave="0"] {
-  outline-color: var(--pred);
+  background: var(--paper2);
+  border-left-width: 4px;
 }
 .casepage .wr-node-name {
   font-family: var(--brand-font-display), serif;
@@ -283,9 +295,9 @@
   gap: var(--space-3);
   animation: wr-open var(--dur-slow) var(--ease) both;
   background: var(--card);
-  border-left: 3px solid var(--pgold);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
+  /* Той самий лівий кант, що й у картки над нею, лише товщий: панель — це
+     розгорнутий запис, а не окремий предмет. Без радіуса і без тіні. */
+  border-left: 4px solid var(--pgold);
   padding: var(--space-6);
 }
 .casepage .wr-detail[data-wave="0"] {
