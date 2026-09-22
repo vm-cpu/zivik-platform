@@ -488,11 +488,6 @@
 /* Runs are separated by rhythm, not by a stronger hairline: --rule is 1.28:1
    on this ground and --rule-soft 1.18:1, and one tenth of a contrast step
    cannot carry a grouping. A rule plus 20px of air can. */
-.casepage .verdicts li[data-run="start"] {
-  margin-top: var(--space-5);
-  padding-top: var(--space-5);
-  border-top: 1px solid var(--rule);
-}
 .casepage .verdicts li:first-child {
   margin-top: 0;
   padding-top: 0;

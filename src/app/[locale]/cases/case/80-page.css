@@ -315,3 +315,10 @@
 .casepage .verdicts li:has(.v-out[data-o="granted"]) {
   background: var(--paper2);
 }
+
+/* No dot before the result. The index has one column for the result and the
+   word fills it; a coloured bead in front of «Порушення» was a second
+   encoding of what the word and its colour already say. */
+.casepage .verdicts .v-out::before {
+  content: none;
+}

@@ -378,7 +378,10 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       track: "ICSFT",
       claim: { uk: "Інші вимоги", en: "All other submissions" },
-      outcome: "no-violation",
+      /* «Відхиляє», not «немає»: the dispositif rejects these submissions,
+         it does not find no violation in them. The row read «НЕМАЄ», which
+         is a different holding — and the one word the Court did not use. */
+      outcome: "rejected",
     },
     {
       track: "CERD",
@@ -391,7 +394,10 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       track: "CERD",
       claim: { uk: "Інші вимоги", en: "All other submissions" },
-      outcome: "no-violation",
+      /* «Відхиляє», not «немає»: the dispositif rejects these submissions,
+         it does not find no violation in them. The row read «НЕМАЄ», which
+         is a different holding — and the one word the Court did not use. */
+      outcome: "rejected",
     },
     {
       track: "Provisional measures",
@@ -411,7 +417,10 @@ export const icjCerdIcsft: DecisionSummary = {
       track: "Provisional measures",
       trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
       claim: { uk: "Інші вимоги", en: "All other submissions" },
-      outcome: "no-violation",
+      /* «Відхиляє», not «немає»: the dispositif rejects these submissions,
+         it does not find no violation in them. The row read «НЕМАЄ», which
+         is a different holding — and the one word the Court did not use. */
+      outcome: "rejected",
     },
   ],
 
