@@ -772,3 +772,52 @@
 .casepage .read > .sec-h:first-child {
   margin-top: 0;
 }
+
+/* ── A quotation from the judgment, and the paragraph it comes from ───────
+   The write-ups quote the Court's own words at the turns that matter, and
+   those paragraphs were set exactly like the prose around them: a reader
+   could not see where the write-up stopped speaking and the Court started,
+   except by noticing the quotation marks. The design sets a quotation
+   behind a rule, in the reading face, italic — and hangs the judgment's
+   paragraph number under it, because a quotation a reader may cite onward
+   is worth nothing without the number it came from.
+
+   The number is the author's: it stood in the sentence above as «… (§ 391):»
+   and moves here, where it points. */
+.casepage .read > .qt-group {
+  max-width: var(--prose);
+  margin: var(--space-5) 0;
+}
+.casepage .qt-group > .qt-lbl {
+  margin-bottom: var(--space-2);
+}
+.casepage .qt {
+  margin: var(--space-3) 0 0;
+  border-left: 3px solid var(--prule);
+  padding: var(--space-1) 0 var(--space-1) clamp(14px, 2vw, 18px);
+}
+.casepage .qt-group > .qt:first-child {
+  margin-top: 0;
+}
+.casepage .qt p {
+  font-family: var(--brand-font-display), serif;
+  font-style: italic;
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink2);
+  margin: 0 0 var(--space-3);
+  text-wrap: pretty;
+}
+.casepage .qt p:last-of-type {
+  margin-bottom: 0;
+}
+/* Not italic, and not the reading face: the number is machinery, like every
+   other docket reference on this site. */
+.casepage .qt-cite {
+  display: block;
+  margin-top: var(--space-2);
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  font-style: normal;
+  letter-spacing: 0.04em;
+  color: var(--ink3);
+}

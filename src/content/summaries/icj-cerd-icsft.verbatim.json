@@ -29,7 +29,8 @@
     },
     {
       "kind": "h3",
-      "text": "Subject-Matter of the Dispute"
+      "text": "Subject-Matter of the Dispute",
+      "nav": false
     },
     {
       "kind": "p",
@@ -37,7 +38,8 @@
     },
     {
       "kind": "h3",
-      "text": "Ukraine’s Claims under the ICSFT"
+      "text": "Ukraine’s Claims under the ICSFT",
+      "nav": false
     },
     {
       "kind": "claim",
@@ -45,7 +47,8 @@
     },
     {
       "kind": "h3",
-      "text": "Ukraine’s Claims under the CERD"
+      "text": "Ukraine’s Claims under the CERD",
+      "nav": false
     },
     {
       "kind": "claim",
@@ -53,7 +56,8 @@
     },
     {
       "kind": "h3",
-      "text": "Standard of Proof"
+      "text": "Standard of Proof",
+      "nav": false
     },
     {
       "kind": "p",
@@ -73,7 +77,8 @@
     },
     {
       "kind": "h3",
-      "text": "Preliminary Determinations"
+      "text": "Preliminary Determinations",
+      "nav": false
     },
     {
       "kind": "p",
@@ -109,7 +114,8 @@
     },
     {
       "kind": "h3",
-      "text": "Order on Provisional Measures of 19 April 2017"
+      "text": "Order on Provisional Measures of 19 April 2017",
+      "nav": "Order on provisional measures"
     },
     {
       "kind": "p",

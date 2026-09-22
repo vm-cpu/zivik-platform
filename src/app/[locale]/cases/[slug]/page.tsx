@@ -608,6 +608,19 @@ function PartHead({ text, id }: { text: string; id?: string }) {
   );
 }
 
+/* ── A quotation and the paragraph of the judgment it comes from ──────────
+   Measured before it was written, over all 400 paragraphs in the archive:
+   20 paragraphs open with a quotation mark and close with one, and all 20
+   are verbatim quotations — a quoted paragraph is a quoted paragraph, which
+   is punctuation rather than meaning. 12 of them are introduced by a
+   paragraph ending «… (§ 391):», and in all 12 the citation belongs to the
+   quotation below rather than to the sentence it sits in.
+
+   That is the opposite result to the topic-phrase rule this page rejected
+   (18 hits, 4 of them right), and it is why this one ships. */
+const QUOTED = /^[«"“][\s\S]*[»"”][.,;]?$/;
+const TRAILING_CITE = /\s*\(\s*§+[^)]*\)\s*(:?)\s*$/;
+
 /** Render one verbatim block in reading order. */
 function Block({
   block,
@@ -1030,8 +1043,14 @@ export default async function CasePage({
             children: [],
           });
         } else if (b.kind === "h3") {
+          /* Counted whether or not it is listed: the article stamps sub-N on
+             every h3 as it renders, so skipping one here would slide every
+             id after it onto the wrong heading. */
           const id = `sub-${h3n++}`;
-          if (parts.length > 0) parts[parts.length - 1].children!.push({ id, label: b.text });
+          const label = b.nav === undefined ? b.text : b.nav;
+          if (label !== false && parts.length > 0) {
+            parts[parts.length - 1].children!.push({ id, label });
+          }
         }
       }
       return parts.map((p) => ({
@@ -1589,6 +1608,61 @@ export default async function CasePage({
                 </div>,
               );
               continue;
+            }
+            if (b.kind === "p" || b.kind === "lead") {
+              /* A run of quoted paragraphs, with whatever introduced it.
+                 Consecutive quotations under one lead-in are one quotation
+                 in two paragraphs — §§ 397-398 is quoted that way — so they
+                 share a block and a citation rather than each getting a rule
+                 of their own. */
+              const cited = TRAILING_CITE.exec(b.text);
+              const quotesAt = cited && QUOTED.test(body[i + 1]?.text ?? "") ? i + 1 : QUOTED.test(b.text) ? i : -1;
+              if (quotesAt !== -1) {
+                const at = i;
+                const nodes: React.ReactNode[] = [];
+                if (quotesAt > i) {
+                  /* The citation comes off the lead-in: it was pointing at
+                     the quotation, not arguing in the sentence. What is left
+                     keeps every word and its own colon. */
+                  const lead = b.text.replace(TRAILING_CITE, cited![1] ? ":" : "").trim();
+                  nodes.push(
+                    /^\S+:$/.test(lead) ? (
+                      /* A lead-in that is one word — «Висновок:» — is a
+                         caption on the quotation, not a paragraph of its
+                         own standing alone above it. */
+                      <div className="lbl-c qt-lbl" key={`ql-${at}`}>
+                        {lead.replace(/:$/, "")}
+                      </div>
+                    ) : (
+                      <p className="body" key={`ql-${at}`}>
+                        {mark(lead)}
+                      </p>
+                    ),
+                  );
+                  i += 1;
+                }
+                const run: string[] = [];
+                while (QUOTED.test(body[i]?.text ?? "") && (body[i]?.kind === "p" || body[i]?.kind === "lead")) {
+                  run.push(body[i].text);
+                  i += 1;
+                }
+                i -= 1;
+                const cite = cited?.[0].replace(/[():\s]+$/, "").replace(/^[\s(]+/, "").trim();
+                nodes.push(
+                  <blockquote className="qt" key={`qt-${at}`}>
+                    {run.map((t, k) => (
+                      <p key={k}>{t}</p>
+                    ))}
+                    {cite && <cite className="qt-cite">{cite}</cite>}
+                  </blockquote>,
+                );
+                out.push(
+                  <div className="qt-group" key={`qg-${at}`}>
+                    {nodes}
+                  </div>,
+                );
+                continue;
+              }
             }
             if (b.kind === "position") {
               /* A holding that runs to more than one paragraph is one

@@ -48,6 +48,24 @@ export type SummaryBlockKind =
 export interface SummaryBlock {
   kind: SummaryBlockKind;
   text: string;
+  /**
+   * What the contents rail does with this heading. `h3` only.
+   *
+   * Absent, an h3 is listed under its part with its own words. `false` keeps
+   * it out, and a string lists it under that label instead.
+   *
+   * The rail is not a list of every heading in the prose — it is a list of
+   * places a reader jumps to. «Висновки за CERD» heads a band of eight
+   * findings and is one; «Предмет спору» titles a single paragraph read in
+   * order and is not. Nothing in a heading says which it is, so it is
+   * recorded rather than guessed — and the default is to list it, so a
+   * write-up nobody has been through keeps the navigation it had.
+   *
+   * A string also lets the rail be shorter than the text: «Наказ про
+   * тимчасові заходи від 19 квітня 2017 року» is the heading the Court's
+   * text gives, and a 46-character line in a 250px rail wraps to three.
+   */
+  nav?: string | false;
 }
 
 /** Raw verbatim payload as ingested from the .docx (shape of the JSON file). */
