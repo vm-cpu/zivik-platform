@@ -185,8 +185,13 @@
    it; the theatre rows keep their two-line grid from theatre-legend.css. */
 .casepage .map-legend button.lg-seat {
   display: flex;
-  align-items: center;
+  /* Крапка сідає на перший рядок тексту — тим самим відступом, що й у
+     театрів поруч, — а не по центру всього запису. */
+  align-items: start;
   gap: var(--space-2);
+}
+.casepage .map-legend button.lg-seat > i {
+  margin-top: 0.32em;
 }
 
 /* That the marks answer at all — one line, and only where there is more than

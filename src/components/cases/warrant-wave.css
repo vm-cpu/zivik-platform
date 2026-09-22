@@ -50,7 +50,7 @@
 
 .casepage .wr-key .wr-key-sum {
   grid-column: 2;
-  margin-top: var(--space-2);
+  margin-top: var(--space-1);
   font: 400 var(--t-sm) var(--brand-font-body);
   line-height: 1.55;
   letter-spacing: 0;
