@@ -17,6 +17,19 @@ export type SummaryBlockKind =
   | "p" // body paragraph
   | "dispositif" // an operative finding in the Court's disposition
   | "findings" // a multi-part findings table (newline-separated blocks)
+  /**
+   * What the forum held on the point above, set apart from the argument that
+   * led to it — the page gives it its own ground and a gold edge.
+   *
+   * A kind rather than a guess. The write-ups do mark these: the paragraph
+   * opens «Суд доходить висновку, що…», "The Court concludes that…". But a
+   * rule that promoted a leading phrase or a leading verb was measured over
+   * all 390 paragraphs in the archive and fired on 18, of which 4 were the
+   * thing wanted; the rest were ordinary sentences, and one of them cut
+   * «On 23 June 2016, the PCA received from H.E» at the initials. Guessing
+   * at legal prose damages it, so the seam is recorded instead.
+   */
+  | "position"
   | "link"; // a source / further-reading URL
 
 export interface SummaryBlock {

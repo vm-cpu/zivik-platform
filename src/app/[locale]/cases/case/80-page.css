@@ -702,3 +702,20 @@
 .casepage .read > .pair {
   max-width: none;
 }
+
+/* A holding on its own, outside a pair: the same ground and the same gold
+   edge, taking the column rather than half of it. */
+.casepage .read > .rule {
+  max-width: none;
+  margin: var(--space-4) 0;
+}
+.casepage .read > h4 {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: clamp(14px, 1.7vw, 16px);
+  line-height: 1.35;
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+  margin: var(--space-6) 0 var(--space-3);
+}

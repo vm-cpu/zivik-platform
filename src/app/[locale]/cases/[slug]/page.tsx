@@ -631,6 +631,16 @@ function Block({
       return <h3>{block.text}</h3>;
     case "h4":
       return <h4>{block.text}</h4>;
+    case "position":
+      /* What the forum held, on its own ground behind a gold edge — the same
+         treatment the right-hand half of a finding gets, because it is the
+         same thing said outside a pair. */
+      return (
+        <div className="rule">
+          <div className="lbl-c">{positionLabel}</div>
+          <p>{mark(block.text)}</p>
+        </div>
+      );
     case "findings":
       return (
         <Findings
