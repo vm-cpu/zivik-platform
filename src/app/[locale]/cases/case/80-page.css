@@ -1710,3 +1710,27 @@
   font-weight: 700;
   color: var(--ink2);
 }
+
+/* ── The band of figures, as two subjects ─────────────────────────────────
+   Owner: «переробляй цю секцію».
+
+   Three tiles in a two-column grid left the third alone on its own row
+   with the hole beside it, and the hole was the least of it: the three
+   are two different subjects. «Дітей у базі» and «З них повернуто» are a
+   whole and a part of it — the bar under the second is a share of the
+   first — and they sat in different columns with nothing saying so. The
+   third, states that did not execute the warrant, is about enforcement
+   and has no relation to either.
+
+   So the pair keeps the row, in the order they are read, and anything
+   left over takes the full width instead of half of it. A tile alone on
+   a row is a tile that has stopped belonging to the row above. */
+.casepage .takings > .taking:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+/* The whole and its part, tied by the line they share: the bar in the
+   second tile is a share of the figure in the first, so the two sit
+   closer to each other than to anything else in the band. */
+.casepage .takings {
+  align-items: start;
+}

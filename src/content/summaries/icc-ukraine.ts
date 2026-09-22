@@ -1033,16 +1033,19 @@ export const iccUkraine: DecisionSummary = {
         },
       },
       {
-        label: { uk: "Повернуто дітей", en: "Children returned" },
+        label: { uk: "З них повернуто", en: "Of those, returned" },
         value: { uk: "1 859", en: "1,859" },
         percent: 9.5,
         restLabel: { uk: "решта — досі ні", en: "the rest — still not" },
-        note: { uk: "≈ 9,5% від бази · станом на грудень 2025", en: "≈ 9.5% of the database · as of December 2025" },
+        note: { uk: "станом на грудень 2025", en: "as of December 2025" },
       },
       {
         label: { uk: "Держав-учасниць, що не виконали ордер", en: "States Parties that failed to execute" },
         value: "2",
-        note: { uk: "Монголія (2024), Таджикистан (2025)", en: "Mongolia (2024), Tajikistan (2025)" },
+        note: {
+          uk: "Монголія — візит 2024, Таджикистан — візит 2025",
+          en: "Mongolia — 2024 visit, Tajikistan — 2025 visit",
+        },
       },
     ],
   },
@@ -1076,13 +1079,7 @@ export const iccUkraine: DecisionSummary = {
         en: "The Prosecution has built two lines: the deportation of children (the political leadership, wave 1) and the campaign against the grid (the military chain, from operational commanders up to the Defence Minister and General Staff, waves 2–3).",
       },
     },
-    {
-      term: { uk: "Межа юрисдикції: агресія", en: "The jurisdictional limit: aggression" },
-      ruling: {
-        uk: "Щодо злочину агресії юрисдикція МКС у цій ситуації обмежена, бо РФ не є учасницею Статуту. Саме тому 25 червня 2025 року Україна і Рада Європи підписали угоду про Спеціальний трибунал щодо злочину агресії.",
-        en: "The ICC cannot reach the crime of aggression here, because Russia is not a party to the Statute. That is why Ukraine and the Council of Europe signed the Special Tribunal agreement on 25 June 2025.",
-      },
-    },
+
   ],
 
   sources: [
