@@ -474,6 +474,32 @@ export interface Theatre {
   /** Map marker key in `ukraine-map.json` this theatre highlights. */
   markerKeys: string[];
   /**
+   * What each of those marks is called, index-parallel to `markerKeys`.
+   *
+   * The marks were unnamed circles: a reader saw five dots in the east and
+   * had no way to learn that one of them is Kherson. The theatre's own name
+   * sits over the group and answers a different question — what the case is
+   * about there, not where there is. Owner: «жодна точка не підписана —
+   * Київ, Херсон, Запоріжжя, Донбас, Крим лишаються безіменними кружечками;
+   * підпиши».
+   *
+   * `dx`/`dy` nudge a name off its mark in projection units, for the two or
+   * three places where five names in one oblast-width would otherwise sit on
+   * each other. Absent, the name sits above its mark.
+   */
+  markerNames?: { label: Localized; dx?: number; dy?: number }[];
+  /**
+   * Whether this theatre's ground is those points or the whole of an area.
+   *
+   * «Два театри, але другий театр — це ж не одна точка»: the missile campaign
+   * against the grid is not a place at all — the summary itself says «по всій
+   * країні» — and it was drawn as a single dot beside Kyiv, sitting in a row
+   * with five occupied oblasts as though it were a sixth. With "area" the
+   * dots are not drawn: the ground carries the theatre, the beam ends in it,
+   * and the name stands over the country rather than over a point in it.
+   */
+  ground?: "points" | "area";
+  /**
    * The ground this theatre is about, where a dot is not the whole truth.
    *
    * The map drew every theatre as a point with a halo, and most of them are

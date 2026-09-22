@@ -271,6 +271,38 @@
   /* Wraps rather than running off the picture. */
   max-width: min(240px, 40%);
 }
+/* The name of a single mark, under it — the theatre's own name is above the
+   group, so the two never meet. A step quieter than that name in weight and
+   colour, because it answers the smaller question: the theatre says what the
+   case is about there, this says where there is.
+
+   The halo under it is the band's own ground, twice, so a name that lands on
+   an oblast boundary is still readable without a box around it. */
+.casepage .ml-pt {
+  display: none;
+  align-items: center;
+  transform: translate(-50%, 13px);
+  text-align: center;
+  white-space: nowrap;
+  font: 500 var(--t-micro) / 1.25 var(--brand-font-body);
+  color: var(--muted);
+  text-shadow: 0 0 3px var(--bg), 0 0 3px var(--bg);
+}
+
+/* Місце для назв вимірюється, а не вгадується. На 687 і 778 пікселях смуги
+   п'ять назв областей стоять без жодного перетину (перевірено обрахунком
+   прямокутників); на телефоні смуга має 339 і вони перетинаються всі з усіма.
+   Тож ширше 900 малюються назви місць, а назва театру ховається — її несе
+   ключ під картою; вужче навпаки. */
+@media (min-width: 701px) {
+  .casepage .ml-pt {
+    display: flex;
+  }
+  .casepage .ml-zone[data-named="yes"] {
+    display: none;
+  }
+}
+
 /* The names on the drawing, at the size the events map writes on its own:
    measured there, its place labels come out 11px and its court labels 11.7.
    These were 16 and 14 with their tags at 12.5 — a register up from the map

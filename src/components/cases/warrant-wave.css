@@ -44,7 +44,7 @@
   font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.04em;
   text-transform: none;
-  color: var(--brand-ink-3);
+  color: var(--brand-faint);
   font-variant-numeric: tabular-nums;
 }
 

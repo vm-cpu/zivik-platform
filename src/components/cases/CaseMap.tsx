@@ -35,6 +35,10 @@ export interface CaseMapTheatre {
   summary?: string;
   /** Marker positions in the frame's own units. */
   pts: [number, number][];
+  /** What each of those marks is called, index-parallel to `pts`. */
+  ptNames?: { label: string; dx?: number; dy?: number }[];
+  /** "area" draws no dots: the ground itself is the theatre. */
+  ground?: "points" | "area";
   /** The ground this theatre is about, already resolved to path strings. */
   areas?: string[];
   labelDx?: number;
@@ -200,9 +204,12 @@ export default function CaseMap({
             {/* The forum's reach: seat → the ground in dispute. It lights
                 whichever end the reader picked, because it is the one relation
                 this drawing has. */}
-            {(reaches && reaches.length > 0 ? reaches : [{ id: "t0", at: reach }]).map((r) => (
+            {(reaches && reaches.length > 0 ? reaches : [{ id: "t0", at: reach }]).map((r, ri) => (
               <line
-                key={r.id}
+                /* Keyed by position, not by id: a theatre drawn as a set of
+                   places now sends one beam to each of them, so several lines
+                   share the id whose selection they answer to. */
+                key={`${r.id}-${ri}`}
                 className="reach"
                 /* Quiet when another theatre is picked: with one beam the
                    line had nothing to step back from, and with two the
@@ -255,12 +262,17 @@ export default function CaseMap({
 
             {theatres.map((t) => (
               <g key={t.id} className="mk-zone" data-state={state(t.id)}>
-                {t.pts.map((p, i) => (
-                  <g key={i}>
-                    <circle className="zone-halo" cx={p[0]} cy={p[1]} r={R_ZONE_HALO} />
-                    <circle className="zone" cx={p[0]} cy={p[1]} r={R_ZONE} />
-                  </g>
-                ))}
+                {/* A theatre whose ground is an area draws no dots. The dot
+                    was the whole error: a nationwide missile campaign stood
+                    as one circle beside Kyiv, in a row with five occupied
+                    oblasts, as though it were a sixth place. */}
+                {t.ground !== "area" &&
+                  t.pts.map((p, i) => (
+                    <g key={i}>
+                      <circle className="zone-halo" cx={p[0]} cy={p[1]} r={R_ZONE_HALO} />
+                      <circle className="zone" cx={p[0]} cy={p[1]} r={R_ZONE} />
+                    </g>
+                  ))}
                 {/* One target per theatre, on its first mark: two dots eight
                     units apart cannot each carry a 24px circle without one
                     swallowing the other's centre, and they are one thing. */}
@@ -292,6 +304,17 @@ export default function CaseMap({
             <i>{seat.caption}</i>
           </span>
           {theatres.map((t) => {
+            /* A theatre whose places are named one by one does not also write
+               its own name over them where both would fit: that label is two
+               lines and the widest thing on the drawing, and it sat in the
+               middle of the cluster it describes, so five oblast names had to
+               find room around it. The key under the map names the theatre.
+
+               Marked rather than dropped, because on a phone the drawing is
+               339px wide and the five names cannot fit at all — there the
+               stylesheet hides them and shows this one instead. Which of the
+               two is drawn is a question of width, and width is CSS's. */
+            const named = t.ptNames?.some((n) => n?.label) ? "yes" : undefined;
             const cx = t.pts.reduce((s, p) => s + p[0], 0) / t.pts.length;
             const cy = t.pts.reduce((s, p) => s + p[1], 0) / t.pts.length;
             const p = at(cx + (t.labelDx ?? 0), cy + (t.labelDy ?? 0));
@@ -309,6 +332,7 @@ export default function CaseMap({
               <span
                 key={t.id}
                 className="ml-zone"
+                data-named={named}
                 data-state={state(t.id)}
                 style={{ ...p, left: `${left}%`, top: `${top}%` }}
               >
@@ -317,6 +341,27 @@ export default function CaseMap({
               </span>
             );
           })}
+          {/* And the name of each mark. The theatre's name says what the case
+              is about there; this says where there is. Not drawn for an area
+              theatre, which has no marks to name. */}
+          {theatres.flatMap((t) =>
+            t.ground === "area"
+              ? []
+              : (t.ptNames ?? []).map((n, i) => {
+                  const pt = t.pts[i];
+                  if (!pt || !n?.label) return null;
+                  return (
+                    <span
+                      key={`${t.id}-p${i}`}
+                      className="ml-pt"
+                      data-state={state(t.id)}
+                      style={at(pt[0] + (n.dx ?? 0), pt[1] + (n.dy ?? 0))}
+                    >
+                      {n.label}
+                    </span>
+                  );
+                }),
+          )}
         </div>
       </div>
 

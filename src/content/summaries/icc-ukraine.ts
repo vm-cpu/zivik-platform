@@ -769,6 +769,22 @@ export const iccUkraine: DecisionSummary = {
          The two points were added to the atlas generator in the same commit;
          a key with no point behind it draws at [0,0]. */
       markerKeys: ["crimea", "donetsk", "luhansk", "kherson", "zaporizhzhia"],
+      /* П'ять кружечків без жодного підпису: читач бачив їх і не мав як
+         дізнатися, що один із них — Херсонщина. Власниця: «підпиши».
+         Луганщина відсунута вгору-праворуч — вона за двадцять чотири одиниці
+         від Донеччини, і два підписи під крапками лягли б один на одного. */
+      /* Зсуви виміряні, не вгадані: п'ять назв на ширину двох областей не
+         вміщаються під своїми крапками поспіль, тож вони йдуть сходинками —
+         Донеччина над своєю крапкою, далі Луганщина праворуч, Запоріжжя,
+         Херсонщина і Крим щораз нижче. Перевірено обрахунком перетинів
+         прямокутників на ширині смуги 778 px: жодного. */
+      markerNames: [
+        { label: { uk: "Крим", en: "Crimea" }, dy: 12 },
+        { label: { uk: "Донеччина", en: "Donetsk region" }, dy: -46 },
+        { label: { uk: "Луганщина", en: "Luhansk region" }, dx: 34 },
+        { label: { uk: "Херсонщина", en: "Kherson region" }, dy: 16 },
+        { label: { uk: "Запоріжжя", en: "Zaporizhzhia region" }, dy: 16 },
+      ],
       areas: ["crimea", "east"],
       // keep the caption clear of the three markers it points at
       summary: {
@@ -779,7 +795,13 @@ export const iccUkraine: DecisionSummary = {
     {
       place: { uk: "Енергосистема України", en: "Ukraine's power grid" },
       tag: { uk: "ЕНЕРГОСИСТЕМА", en: "POWER GRID" },
+      /* Ключ лишається як якір для променя і назви — але крапки не буде.
+         «Два театри, але другий театр — це ж не одна точка»: ракетна кампанія
+         проти енергосистеми — не місце, і власне речення театру каже «по всій
+         країні». Намальована крапкою біля Києва, вона ставала шостою поруч із
+         п'ятьма окупованими областями. Тепер театр несе земля. */
       markerKeys: ["kyiv"],
+      ground: "area",
       areas: ["country"],
       // lift the label clear of the Kyiv marker and its city caption
       summary: {

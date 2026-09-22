@@ -519,12 +519,23 @@ function TheatreMap({
          eastern Ukraine under the ICSFT and Crimea under CERD, and the
          drawing was connecting the Court to one of them. */
       reaches={theatres
-        .map((t, i) => {
-          const key = t.markerKeys.find((k) => MK[k]);
-          const at = key ? MK[key] : undefined;
-          return at ? { id: `t${i}`, at: [at[0], at[1]] as [number, number] } : null;
-        })
-        .filter((x): x is { id: string; at: [number, number] } => x !== null)}
+        .flatMap((t, i) => {
+          /* One beam per place, not per theatre. Five oblasts carry the
+             warrants for the deportation of children and the drawing
+             connected the Court to the first of them, so four of the five
+             places the case is about had no line to The Hague at all.
+             Owner: «не вистачає пунктирів з усіх точок».
+
+             A theatre whose ground is an area keeps its single beam: it has
+             one ground, and five lines into the same country would draw a
+             fan at nothing. */
+          const keys =
+            t.ground === "area" ? t.markerKeys.slice(0, 1) : t.markerKeys;
+          return keys
+            .map((k) => MK[k])
+            .filter(Boolean)
+            .map((at) => ({ id: `t${i}`, at: [at[0], at[1]] as [number, number] }));
+        })}
       theatres={theatres.map((t, i) => ({
         id: `t${i}`,
         place: pick(t.place, locale),
@@ -534,6 +545,14 @@ function TheatreMap({
           .map((k) => MK[k])
           .filter(Boolean)
           .map((p) => [p[0], p[1]] as [number, number]),
+        /* Resolved here with everything else: the component is a client one
+           and a {uk, en} pair would ship both languages of every name. */
+        ptNames: t.markerNames?.map((n) => ({
+          label: pick(n.label, locale),
+          dx: n.dx,
+          dy: n.dy,
+        })),
+        ground: t.ground,
         areas: (t.areas ?? [])
           .map((k) => (k === "country" ? atlas.ukraine : MAP_AREAS[k]))
           .filter(Boolean),
