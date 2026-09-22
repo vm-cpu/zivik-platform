@@ -1025,13 +1025,11 @@ export default async function CasePage({
         </div>
         {/* Latin-script case names on a Ukrainian page need their own lang,
             or a Ukrainian voice reads them phonetically. See foreignLang(). */}
-        <h1
-          className="official"
-          /* Long official names take a smaller step and a wider measure — see
-             the note on `.official[data-len="long"]` in 10-bands.css. */
-          data-len={parties.length > 90 ? "long" : undefined}
-          lang={foreignLang(parties, locale)}
-        >
+        {/* One size for every title, however long: the heading takes the
+            rail's full width now, so a long official name needs neither a
+            smaller step nor an attribute saying it is long. See
+            `.casepage .official` in 10-bands.css. */}
+        <h1 className="official" lang={foreignLang(parties, locale)}>
           {parties}
         </h1>
         <p className="parties">

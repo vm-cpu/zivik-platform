@@ -270,10 +270,10 @@ const uk = {
        wording the source `status` text uses — a case whose record fixes only
        one of the two carries only one tag. */
     /* The library names these two dimensions the way the columns and the
-       filters over them do: «стан розгляду» and «тип рішення». They used to
-       read «Етап» and «Що ухвалено», which agreed with nothing on the page. */
+       filters over them do: «стан розгляду» and «тип». They used to read
+       «Етап» and «Що ухвалено», which agreed with nothing on the page. */
     stageName: "Стан розгляду",
-    outcomeName: "Тип рішення",
+    outcomeName: "Тип",
     stage: {
       preliminary: "Попередній етап",
       investigation: "Розслідування",

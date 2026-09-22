@@ -491,7 +491,7 @@
 .reg-list{display:block;margin:6px 0 0}
 .reg-row{
   display:grid;
-  /* Five columns: the tag column became «Стан розгляду» and «Тип рішення»,
+  /* Five columns: the tag column became «Стан розгляду» and «Тип»,
      each with its own heading and its own aria-sort. Measured in Ukrainian,
      which is the longer language: the case name keeps 368px at 1000px and
      268px at 900, which is where the ledger stops and the stacked layout

@@ -54,7 +54,7 @@ const T = {
      What the sentence can say without risk is what the library holds and what
      each row carries. */
   lede: {
-    uk: "Провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип рішення.",
+    uk: "Провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип.",
     en: "Proceedings against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
   },
   /* The meta description: about 133 / 147 characters, both inside the ~160 a
@@ -78,12 +78,15 @@ const T = {
   courtsAll: { uk: "Усі суди", en: "All courts" },
   /* The filter over a column is named for the column. «Етап» and «Ухвалено»
      named neither the data nor the heading above it; the library calls these
-     two dimensions «стан розгляду» and «тип рішення» everywhere now — the
-     column heading, the filter, the sort axis and the tag's assistive-
-     technology prefix all say the same words. */
+     two dimensions «стан розгляду» and «тип» everywhere now — the column
+     heading, the filter, the sort axis and the tag's assistive-technology
+     prefix all say the same words. It was «тип рішення» until the owner cut
+     it: the column stands beside «Стан розгляду» in a table of decisions,
+     so «рішення» was the one word on the row that told the reader nothing
+     they had not been told by the page they were on. */
   stages: { uk: "Стан розгляду", en: "Stage" },
   stagesAll: { uk: "Будь-який стан", en: "Any stage" },
-  outcomes: { uk: "Тип рішення", en: "Decision type" },
+  outcomes: { uk: "Тип", en: "Decision type" },
   outcomesAll: { uk: "Будь-який тип", en: "Any decision type" },
   /* «Галузь» is the word the pending case page and the search's own group
      label already use for `type`; the filter takes it rather than inventing a
@@ -126,7 +129,7 @@ const T = {
   /* «Теги» named the widget, not the facts. Two columns now, each named for
      what it holds, and each sortable on its own axis. */
   colStage: { uk: "Стан розгляду", en: "Stage" },
-  colOutcome: { uk: "Тип рішення", en: "Decision type" },
+  colOutcome: { uk: "Тип", en: "Decision type" },
   colDate: { uk: "Рік", en: "Year" },
   sortAsc: { uk: "за зростанням", en: "sorted ascending" },
   sortDesc: { uk: "за спаданням", en: "sorted descending" },
