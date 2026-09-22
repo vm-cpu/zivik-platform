@@ -1409,3 +1409,42 @@
     justify-content: flex-start;
   }
 }
+
+/* The two column heads that sort. They look like the third one until a
+   reader goes near them: a head that shouts «sortable» in a table of
+   sixteen rows is chrome competing with the rows. The arrow says which way
+   and, at rest, that there is a way at all. */
+.casepage .ix-sort {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+.casepage .ix-sort-e {
+  justify-content: flex-end;
+}
+.casepage .ix-sort i {
+  font-style: normal;
+  color: var(--prule);
+}
+.casepage .ix-sort:hover,
+.casepage .ix-sort[aria-sort="ascending"],
+.casepage .ix-sort[aria-sort="descending"] {
+  color: var(--ink);
+}
+.casepage .ix-sort:hover i,
+.casepage .ix-sort[aria-sort="ascending"] i,
+.casepage .ix-sort[aria-sort="descending"] i {
+  color: var(--pgold);
+}
+.casepage .ix-sort:focus-visible {
+  outline: 2px solid var(--pgold);
+  outline-offset: 2px;
+}

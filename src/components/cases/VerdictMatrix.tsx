@@ -71,6 +71,7 @@ export interface VerdictRow {
 export default function VerdictMatrix({
   rows,
   fold,
+  head,
 }: {
   rows: VerdictRow[];
   /**
@@ -86,10 +87,35 @@ export default function VerdictMatrix({
    * nothing to fold.
    */
   fold?: { show: string; hide: string };
+  /**
+   * The column heads, which are also the sort controls.
+   *
+   * Sixteen claims is enough that a reader arrives with a question the
+   * record's own order does not answer — «what did it reject under CERD»,
+   * «show me the breaches together». Two of the three columns can answer
+   * it: the ground a claim was brought under, and how it went. The claim
+   * itself sorts by nothing anyone would ask for.
+   *
+   * Three states, and the third is the record's own order — a table that
+   * cannot be put back is a table a reader has to reload to trust.
+   */
+  head?: { track: string; claim: string; outcome: string; sortedBy: string };
 }) {
   const list = useRef<HTMLUListElement>(null);
   const [shown, setShown] = useState(false);
   const [all, setAll] = useState(false);
+  const [sort, setSort] = useState<{ by: "track" | "outcome"; dir: 1 | -1 } | null>(null);
+  /* Breaches first when sorted by result: the question is always which
+     ones, never which ones were not. */
+  const RANK: Record<string, number> = {
+    violation: 0,
+    convicted: 0,
+    granted: 0,
+    rejected: 1,
+    "no-violation": 1,
+    acquitted: 1,
+    "not-decided": 2,
+  };
   const kept = (r: VerdictRow) =>
     r.outcome === "violation" || r.outcome === "convicted" || r.outcome === "granted";
   const folding = Boolean(fold) && rows.some(kept) && !rows.every(kept);
@@ -97,10 +123,29 @@ export default function VerdictMatrix({
      which row that is — with the rest hidden, «CERD» would sit on a row in
      the middle of the table and the first CERD row would have an empty
      first cell. Recomputed over what is actually drawn. */
-  const drawn = (folding && !all ? rows.filter(kept) : rows).map((r, i, a) => ({
+  const shownRows = folding && !all ? rows.filter(kept) : rows;
+  const ordered = sort
+    ? [...shownRows].sort((a, b) => {
+        const v =
+          sort.by === "track"
+            ? a.track.localeCompare(b.track)
+            : (RANK[a.outcome] ?? 3) - (RANK[b.outcome] ?? 3) ||
+              a.outcomeLabel.localeCompare(b.outcomeLabel);
+        return v * sort.dir;
+      })
+    : shownRows;
+  /* The track cell prints on the row that opens a run, and both folding and
+     sorting change which row that is — left alone, «CERD» would sit on a
+     row in the middle of the table and the first CERD row would open with
+     an empty first cell. Recomputed over what is actually drawn. */
+  const drawn = ordered.map((r, i, a) => ({
     ...r,
     opensTrack: i === 0 || a[i - 1].track !== r.track,
   }));
+  const press = (by: "track" | "outcome") =>
+    setSort((s) => (s?.by !== by ? { by, dir: 1 } : s.dir === 1 ? { by, dir: -1 } : null));
+  const aria = (by: "track" | "outcome") =>
+    sort?.by === by ? (sort.dir === 1 ? ("ascending" as const) : ("descending" as const)) : ("none" as const);
 
   useEffect(() => {
     const el = list.current;
@@ -144,6 +189,31 @@ export default function VerdictMatrix({
 
   return (
     <>
+      {head && (
+        <div className="ix-head" role="row">
+          <button
+            type="button"
+            className="ix-sort"
+            role="columnheader"
+            aria-sort={aria("track")}
+            onClick={() => press("track")}
+          >
+            {head.track}
+            <i aria-hidden="true">{sort?.by === "track" ? (sort.dir === 1 ? "↑" : "↓") : "↕"}</i>
+          </button>
+          <span role="columnheader">{head.claim}</span>
+          <button
+            type="button"
+            className="ix-sort ix-sort-e"
+            role="columnheader"
+            aria-sort={aria("outcome")}
+            onClick={() => press("outcome")}
+          >
+            {head.outcome}
+            <i aria-hidden="true">{sort?.by === "outcome" ? (sort.dir === 1 ? "↑" : "↓") : "↕"}</i>
+          </button>
+        </div>
+      )}
     <ul className="verdicts" ref={list} data-shown={shown ? "yes" : "no"}>
       {drawn.map((r, i) => (
         <li

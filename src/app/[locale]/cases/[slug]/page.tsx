@@ -84,6 +84,7 @@ const T = {
      a reader sees what is behind it before deciding to open it. */
   showRejected: { uk: "Показати решту вимог", en: "Show the other claims" },
   hideRejected: { uk: "Згорнути", en: "Collapse" },
+  sortedBy: { uk: "Сортувати", en: "Sort" },
   violationWord: {
     uk: { one: "порушення", few: "порушення", many: "порушень" },
     en: { one: "violation", few: "violations", many: "violations" },
@@ -1726,11 +1727,9 @@ export default async function CasePage({
                   first row has to teach the reader what each one is. Hidden
                   where the columns are, below 700px, because there they are
                   heads of nothing. */}
-              <div className="ix-head" aria-hidden="true">
-                <span>{pick(T.ixArticle, locale)}</span>
-                <span>{pick(T.ixClaim, locale)}</span>
-                <span>{pick(T.ixResult, locale)}</span>
-              </div>
+              {/* The column heads moved into the matrix: two of them are
+                  its sort controls now, and a control cannot live outside
+                  the thing it controls. */}
               <VerdictMatrix
                 rows={findings.map((v, i) => {
                   const url = trackUrl(v.track);
@@ -1758,6 +1757,12 @@ export default async function CasePage({
                 })}
                 /* Offered only where there is something to fold: a table of
                    nothing but breaches has no second half. */
+                head={{
+                  track: pick(T.ixArticle, locale),
+                  claim: pick(T.ixClaim, locale),
+                  outcome: pick(T.ixResult, locale),
+                  sortedBy: pick(T.sortedBy, locale),
+                }}
                 fold={
                   rejectedShown > 0
                     ? {
