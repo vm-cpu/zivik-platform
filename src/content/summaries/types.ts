@@ -30,6 +30,19 @@ export type SummaryBlockKind =
    * at legal prose damages it, so the seam is recorded instead.
    */
   | "position"
+  /**
+   * One party's argument on the point the heading above it names.
+   *
+   * A run of these — each with its own h3 — is set as one row of boxes on a
+   * hairline grid rather than as a stack of headings and paragraphs. Two
+   * claims side by side are compared; stacked, they are only read in turn,
+   * which is the wrong shape for «Вимоги України за ICSFT» and «…за CERD».
+   *
+   * A kind rather than a guess, for the same reason `position` is one: the
+   * write-ups do not mark which of their paragraphs are a party's case in a
+   * way any rule could find without damaging the prose.
+   */
+  | "claim"
   | "link"; // a source / further-reading URL
 
 export interface SummaryBlock {

@@ -733,6 +733,12 @@
   max-width: var(--prose);
   margin: var(--space-4) 0;
 }
+/* A row of claims standing in the reading column, not inside a finding: it
+   needs the air a paragraph does not, because it is a figure among
+   paragraphs rather than one of them. */
+.casepage .read > .pair {
+  margin: var(--space-5) 0;
+}
 .casepage .read > h4 {
   font-family: var(--brand-font-display), serif;
   font-weight: 700;

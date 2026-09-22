@@ -641,6 +641,17 @@ function Block({
           <p>{mark(block.text)}</p>
         </div>
       );
+    case "claim":
+      /* A claim that no heading names — grouped claims never reach here, the
+         walk below pairs them with the h3 above each one. */
+      return (
+        <div className="pair">
+          <div className="claim">
+            <div className="lbl-c">{claimLabel}</div>
+            <p>{mark(block.text)}</p>
+          </div>
+        </div>
+      );
     case "findings":
       return (
         <Findings
@@ -1536,26 +1547,93 @@ export default async function CasePage({
              call the component. */
           const used = new Set<string>();
           const mark = (t: string) => markTerms(t, termRefs, used);
-          return body.map((b, i) =>
-            b.kind === "h2" ? (
-              <PartHead key={i} id={`sec-${h2i++}`} text={b.text} />
-            ) : b.kind === "h3" ? (
+          /* Walked rather than mapped, because one shape spans more than one
+             block: a run of [h3, claim] units is a single row of boxes on a
+             hairline grid. «Вимоги України за ICSFT» and «…за CERD» are the
+             same question asked of two instruments, and the answer to that
+             is read across, not down — stacked as heading-and-paragraph they
+             are only read in turn.
+
+             The h3 keeps its `sub-N` anchor inside the box: the contents
+             still lists it, and the counter still advances in reading order,
+             so the ids match the walk that builds the contents above. */
+          const out: React.ReactNode[] = [];
+          for (let i = 0; i < body.length; i++) {
+            const b = body[i];
+            if (b.kind === "h2") {
+              out.push(<PartHead key={i} id={`sec-${h2i++}`} text={b.text} />);
+              continue;
+            }
+            if (b.kind === "h3" && body[i + 1]?.kind === "claim") {
+              const units: { head: string; id: string; text: string; at: number }[] = [];
+              while (body[i]?.kind === "h3" && body[i + 1]?.kind === "claim") {
+                units.push({
+                  head: body[i].text,
+                  id: `sub-${h3i++}`,
+                  text: body[i + 1].text,
+                  at: i,
+                });
+                i += 2;
+              }
+              i -= 1;
+              out.push(
+                <div className="pair" key={`pair-${units[0].at}`}>
+                  {units.map((u) => (
+                    <div className="claim" key={u.at}>
+                      <div className="lbl-c" id={u.id}>
+                        {u.head}
+                      </div>
+                      <p>{mark(u.text)}</p>
+                    </div>
+                  ))}
+                </div>,
+              );
+              continue;
+            }
+            if (b.kind === "position") {
+              /* A holding that runs to more than one paragraph is one
+                 holding. Rendered block by block each paragraph got its own
+                 box and its own «Позиція Суду», so the Court appeared to
+                 answer the same point twice. */
+              const run: string[] = [];
+              const at = i;
+              while (body[i]?.kind === "position") {
+                run.push(body[i].text);
+                i += 1;
+              }
+              i -= 1;
+              out.push(
+                <div className="rule" key={`pos-${at}`}>
+                  <div className="lbl-c">{pick(T.courtPosition, locale)}</div>
+                  {run.map((t, k) => (
+                    <p key={k}>{mark(t)}</p>
+                  ))}
+                </div>,
+              );
+              continue;
+            }
+            if (b.kind === "h3") {
               /* Anchored like the parts, because the contents lists them:
                  the design nests a write-up's own sub-headings under the
                  part they belong to. */
-              <h3 key={i} id={`sub-${h3i++}`}>
-                {b.text}
-              </h3>
-            ) : (
+              out.push(
+                <h3 key={i} id={`sub-${h3i++}`}>
+                  {b.text}
+                </h3>,
+              );
+              continue;
+            }
+            out.push(
               <Block
                 key={i}
                 block={b}
                 mark={mark}
                 claimLabel={pick(T.claimed, locale)}
                 positionLabel={pick(T.courtPosition, locale)}
-              />
-            ),
-          );
+              />,
+            );
+          }
+          return out;
         })()}
           </article>
         </div>
