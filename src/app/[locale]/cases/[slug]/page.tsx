@@ -85,6 +85,10 @@ const T = {
   showRejected: { uk: "Показати решту вимог", en: "Show the other claims" },
   hideRejected: { uk: "Згорнути", en: "Collapse" },
   sortedBy: { uk: "Сортувати", en: "Sort" },
+  /* Spoken, not drawn: the arrow is hidden from a screen reader, so the
+     direction has to be in the control's name. */
+  sortAsc: { uk: "зараз за зростанням", en: "currently ascending" },
+  sortDesc: { uk: "зараз за спаданням", en: "currently descending" },
   violationWord: {
     uk: { one: "порушення", few: "порушення", many: "порушень" },
     en: { one: "violation", few: "violations", many: "violations" },
@@ -1762,6 +1766,8 @@ export default async function CasePage({
                   claim: pick(T.ixClaim, locale),
                   outcome: pick(T.ixResult, locale),
                   sortedBy: pick(T.sortedBy, locale),
+                  asc: pick(T.sortAsc, locale),
+                  desc: pick(T.sortDesc, locale),
                 }}
                 fold={
                   rejectedShown > 0

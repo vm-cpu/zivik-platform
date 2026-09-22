@@ -99,7 +99,14 @@ export default function VerdictMatrix({
    * Three states, and the third is the record's own order — a table that
    * cannot be put back is a table a reader has to reload to trust.
    */
-  head?: { track: string; claim: string; outcome: string; sortedBy: string };
+  head?: {
+    track: string;
+    claim: string;
+    outcome: string;
+    sortedBy: string;
+    asc: string;
+    desc: string;
+  };
 }) {
   const list = useRef<HTMLUListElement>(null);
   const [shown, setShown] = useState(false);
@@ -175,8 +182,10 @@ export default function VerdictMatrix({
   }));
   const press = (by: "track" | "outcome") =>
     setSort((s) => (s?.by !== by ? { by, dir: 1 } : s.dir === 1 ? { by, dir: -1 } : null));
-  const aria = (by: "track" | "outcome") =>
-    sort?.by === by ? (sort.dir === 1 ? ("ascending" as const) : ("descending" as const)) : ("none" as const);
+  /* Said in the button's own name, because there is no table to carry
+     `aria-sort`. Empty when this column is not the one in use. */
+  const state = (by: "track" | "outcome") =>
+    sort?.by === by ? ` — ${sort.dir === 1 ? head?.asc : head?.desc}` : "";
 
   useEffect(() => {
     const el = list.current;
@@ -221,26 +230,30 @@ export default function VerdictMatrix({
   return (
     <>
       {head && (
-        <div className="ix-head" role="row">
+        /* No table roles. `role="row"` and `role="columnheader"` are only
+           meaningful inside a table or a grid, and the rows under this are
+           a list — the markup would have claimed a structure that is not
+           there, and `aria-sort` outside a table announces nothing at all.
+           The heads are controls over a list, so they say so in their own
+           names: what they sort by, and which way it is sorted now. */
+        <div className="ix-head">
           <button
             type="button"
             className="ix-sort"
-            role="columnheader"
-            aria-sort={aria("track")}
+            aria-label={`${head.sortedBy}: ${head.track}${state("track")}`}
             onClick={() => press("track")}
           >
-            {head.track}
+            <span aria-hidden="true">{head.track}</span>
             <i aria-hidden="true">{sort?.by === "track" ? (sort.dir === 1 ? "↑" : "↓") : "↕"}</i>
           </button>
-          <span role="columnheader">{head.claim}</span>
+          <span>{head.claim}</span>
           <button
             type="button"
             className="ix-sort ix-sort-e"
-            role="columnheader"
-            aria-sort={aria("outcome")}
+            aria-label={`${head.sortedBy}: ${head.outcome}${state("outcome")}`}
             onClick={() => press("outcome")}
           >
-            {head.outcome}
+            <span aria-hidden="true">{head.outcome}</span>
             <i aria-hidden="true">{sort?.by === "outcome" ? (sort.dir === 1 ? "↑" : "↓") : "↕"}</i>
           </button>
         </div>
