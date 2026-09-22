@@ -337,7 +337,7 @@ const uk = {
     linkAbout: "Про проєкт",
     linkTeam: "Команда",
     email: "louis.sohn.center@ucu.edu.ua",
-    support: "Підтримати бібліотеку",
+    support: "Підтримати нас",
     /* Must not contradict the controller's address in content/legal.ts,
        which reads «вул. Іларіона Свєнціцького, 17, м. Львів, 79011,
        Україна». Same address, footer-length: no country line. */

@@ -181,7 +181,7 @@ const en: Dictionary = {
     linkAbout: "About the project",
     linkTeam: "Team",
     email: "louis.sohn.center@ucu.edu.ua",
-    support: "Support the library",
+    support: "Support us",
     /* "Svientsitskoho" is the transliteration content/legal.ts already
        uses; the two must not spell the same street two ways. */
     address: "17 Svientsitskoho St., Lviv, 79011",
