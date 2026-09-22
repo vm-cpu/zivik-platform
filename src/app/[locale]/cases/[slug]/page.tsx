@@ -1836,7 +1836,9 @@ export default async function CasePage({
             <article className="read">
           {sources.length > 0 && (
             <>
-              <h2 id="sec-sources" className="srcs-h2">{pick(T.sources, locale)}</h2>
+              <div className="sec-h">
+                <h2 id="sec-sources" className="srcs-h2">{pick(T.sources, locale)}</h2>
+              </div>
               {(() => {
                 // A 45-item wall is unusable: split the court's own record from
                 // the commentary, numbering the two lists continuously.

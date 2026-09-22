@@ -598,3 +598,66 @@
   line-height: 1.55;
   color: var(--ink2);
 }
+
+/* ── Sources ─────────────────────────────────────────────────────────────
+   Three tracks: the number, the source, what kind of source it is. The
+   design fixes the first at 22px so every title starts on one edge down the
+   whole list — the number column was `auto` and stepped right at the tenth
+   entry — and sets the kind as a pill at the far end rather than a word
+   trailing the line. */
+.casepage .sources li {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: clamp(10px, 2vw, 18px);
+  align-items: start;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--brand-rule-warm-soft);
+}
+.casepage .sources li::before {
+  text-align: left;
+  color: var(--ink3);
+}
+.casepage .sources li > .cite-body > a {
+  display: block;
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.5;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.casepage .sources li > .cite-body > a:hover,
+.casepage .sources li > .cite-body > a:focus-visible {
+  border-bottom-color: var(--pred);
+  color: var(--pred);
+}
+.casepage .cite-meta {
+  color: var(--ink3);
+}
+/* What kind of source, as a pill: the one thing a reader of an archive meant
+   to be cited needs before they click — the court's own record, or a blog. */
+.casepage .cite-kind {
+  font: 700 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  border: 1px solid var(--prule);
+  border-radius: var(--r-md);
+  padding: 5px var(--space-3);
+  white-space: nowrap;
+  background: none;
+}
+/* The court's own text is the one kind that is not commentary. */
+.casepage .cite-kind[data-official="yes"] {
+  color: var(--pgold);
+  border-color: color-mix(in srgb, var(--pgold) 45%, transparent);
+}
+@media (max-width: 700px) {
+  .casepage .sources li {
+    grid-template-columns: 22px minmax(0, 1fr);
+  }
+  .casepage .cite-kind {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: var(--space-2);
+  }
+}
