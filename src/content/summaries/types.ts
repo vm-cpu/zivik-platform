@@ -506,11 +506,19 @@ export interface DecisionSummary extends VerbatimSummary {
    * Which bands the page renders. Absent → all of them.
    *
    * `"four"` leaves the full summary, the chronology, the map and the
-   * sources, and nothing else. It exists because the owner asked for exactly
-   * that on one decision — «Тобто залишаємо лише ці 4 блоки» — and then, once
-   * it had been applied to all eight, asked for the rest to be put back:
-   * «поверни назад блоки в рішення де не просять прибрати секції». So it is
-   * a per-decision choice, made in the data, not a rule of the template.
+   * sources, and nothing else. It exists because the corrections document
+   * asks for exactly that on one decision — «ЗАЛИШАТИ ХРОНОЛОГІЮ, МІСЦЕ
+   * РОЗГЛЯДУ, ОГЛЯД ТА ДЖЕРЕЛА» — and then, once it had been applied to all
+   * eight, the owner asked for the rest to be put back: «поверни назад блоки
+   * в рішення де не просять прибрати секції». So it is a per-decision
+   * choice, made in the data, not a rule of the template.
+   *
+   * The one decision is `icj-genocide`, which is where that line stands in
+   * the document. It sat on `icj-cerd-icsft` for a while, and that was a
+   * misreading of which block of the document the line belonged to — the
+   * same document asks the opposite for that page, «а потім би вже йшли
+   * вкладки про тлумачення, тимчасові заходи тощо». Check the decision the
+   * instruction is under, not the decision nearest the cursor.
    *
    * The edits that were asked for site-wide are NOT here: «Хто є хто» and
    * «Часті запитання» are gone from the template for every decision, as are

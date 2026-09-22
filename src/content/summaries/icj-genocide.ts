@@ -112,6 +112,23 @@ export const icjGenocide: DecisionSummary = {
 
   /* Search-result description. `plain.tldr` used to serve as this and runs
      three to four sentences, so the snippet was cut off mid-word. */
+  /* Four bands on this page and no others: «ЗАЛИШАТИ ХРОНОЛОГІЮ, МІСЦЕ
+     РОЗГЛЯДУ, ОГЛЯД ТА ДЖЕРЕЛА», which in both versions of the corrections
+     document stands directly under this decision — version 2 carries the
+     link, `/uk/cases/icj-genocide`, in the line above it.
+
+     It had been sitting on icj-cerd-icsft, which is the one page the same
+     document asks for the opposite of: «А потім би вже йшли вкладки про
+     тлумачення, тимчасові заходи тощо». So both pages were wrong, in
+     opposite directions, and nothing on either could reveal it — the hidden
+     bands are written and complete in the data, they simply did not render.
+
+     «ОГЛЯД» in that line is the one ambiguous word: the same document renames
+     ОГЛЯД → «Якщо коротко» and САМЕРІ → «Повний огляд», so the line could
+     mean either. Owner's decision: the full one. See `bands` in
+     summaries/types.ts. */
+  bands: "four",
+
   metaDesc: {
     uk: "Рішення МС ООН від 2 лютого 2024 щодо попередніх заперечень: п'ять із шести заперечень Росії відхилено; вимоги (c) і (d) — поза Конвенцією.",
     en: "ICJ judgment on preliminary objections, 2 February 2024: five of Russia's six objections rejected; submissions (c) and (d) fall outside the Convention.",

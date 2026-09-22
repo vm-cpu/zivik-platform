@@ -78,13 +78,6 @@ export const icjCerdIcsft: DecisionSummary = {
     seat: { uk: "Гаага", en: "The Hague" },
   },
 
-  /* Four bands on this page and no others — the owner's instruction for this
-     decision: «Розділ "САМЕРІ" змінити на "ПОВНИЙ ОГЛЯД". Потім перенести на
-     початок … Тобто залишаємо лише ці 4 блоки.» It went out to all eight for
-     a while; the other seven have their bands back. See `bands` in
-     summaries/types.ts. */
-  bands: "four",
-
   /* Search-result description. `plain.tldr` used to serve as this and runs
      three to four sentences, so the snippet was cut off mid-word. */
   metaDesc: {
