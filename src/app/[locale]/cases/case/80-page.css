@@ -711,9 +711,16 @@
 }
 
 /* A holding on its own, outside a pair: the same ground and the same gold
-   edge, taking the column rather than half of it. */
+   edge — and the same measure as the paragraphs around it.
+
+   It was exempted from the measure along with the pairs, and that was wrong.
+   In a pair each half is about half the column and so lands under the measure
+   anyway; standing alone it took the whole column, which put a thousand
+   pixels of line inside a box sitting over 660px paragraphs. Two widths, one
+   kind of text. It is set apart by its ground and its edge, not by its width,
+   so the box now ends where the prose ends. */
 .casepage .read > .rule {
-  max-width: none;
+  max-width: var(--prose);
   margin: var(--space-4) 0;
 }
 .casepage .read > h4 {
