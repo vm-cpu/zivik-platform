@@ -352,3 +352,55 @@
 .casepage .verdicts .v-out::before {
   content: none;
 }
+
+/* ── A finding: what was argued, and what the forum held ──────────────────
+   Two columns on a hairline grid, the forum's answer on its own lighter
+   ground behind a gold rule. It was a run of paragraphs with the position
+   marked only by the words it opened with — «Позиція Суду:» — which put the
+   argument and the answer in one undifferentiated column and left the
+   reader to find the turn in the prose.
+
+   `auto-fit` with a 262px floor: two columns where there is room, one where
+   there is not, and the same 1px hairline between them either way. */
+.casepage .findings .f-head {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: clamp(16px, 1.9vw, 20px);
+  line-height: 1.3;
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+  margin: var(--space-6) 0 var(--space-3);
+}
+.casepage .pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 262px), 1fr));
+  gap: 1px;
+  background: var(--prule);
+  border: 1px solid var(--prule);
+}
+.casepage .pair .claim,
+.casepage .pair .rule {
+  padding: var(--space-4) clamp(15px, 2.4vw, 20px);
+}
+.casepage .pair .claim {
+  background: var(--paper);
+}
+/* The holding, lit: a warmer ground and the gold edge the design gives it. */
+.casepage .pair .rule {
+  background: var(--brand-paper-warm-3);
+  border-left: 2px solid var(--brand-gold-mark);
+}
+.casepage .pair .lbl-c {
+  margin-bottom: var(--space-2);
+}
+.casepage .pair p {
+  font-size: var(--t-sm);
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0 0 var(--space-3);
+  text-wrap: pretty;
+}
+.casepage .pair p:last-child {
+  margin-bottom: 0;
+}

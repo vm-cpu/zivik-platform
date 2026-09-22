@@ -97,6 +97,10 @@ const T = {
   inShort: { uk: "Якщо коротко", en: "In short" },
   whyMatters: { uk: "Чому це важливо", en: "Why it matters" },
   onThisPage: { uk: "На цій сторінці", en: "On this page" },
+  /* The two sides of a finding, as column captions. «Твердила» and not
+     «стверджує»: the argument was made, the Court has since answered it. */
+  claimed: { uk: "Сторона твердила", en: "The party argued" },
+  courtPosition: { uk: "Позиція Суду", en: "The Court's position" },
   /* The index's column heads. Named for what each column holds: the provision
      the claim was made under, the claim, and what the forum did with it. */
   ixArticle: { uk: "Стаття", en: "Article" },
@@ -519,34 +523,55 @@ function TheatreMap({
 function Findings({
   text,
   mark,
+  claimLabel,
+  positionLabel,
 }: {
   text: string;
+  /** «Україна твердила» / «Позиція Суду» — the two columns' captions. */
+  claimLabel: string;
+  positionLabel: string;
   /** Wraps the first appearance of each glossary term. Identity, when the
       page has no glossary to mark against. */
   mark: (s: string) => React.ReactNode;
 }) {
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  /* The design reads a finding as three things: what it is about, what the
+     applicant argued, and what the forum held — the last set apart, on its
+     own ground, behind a gold rule. Our blocks already carry exactly those
+     three: a lead line naming the track and the article, then the argument,
+     then a paragraph opening «Позиція Суду:».
+
+     So the block is split rather than restyled paragraph by paragraph. The
+     track prefix comes off the head — the section it sits in has already
+     said ICSFT or CERD — and the position's own opening words come off its
+     paragraph, because the column is labelled with them. */
+  const head = lines.find((l) => /^(ICSFT|CERD)\s*[-–—]/.test(l));
+  const rest = lines.filter((l) => l !== head);
+  const posAt = rest.findIndex((l) => /^(The Court['’]s position:|Позиція Суду:)/.test(l));
+  const claim = posAt === -1 ? rest : rest.slice(0, posAt);
+  const position = posAt === -1 ? [] : rest.slice(posAt);
+  const strip = (l: string) => l.replace(/^(The Court['’]s position:|Позиція Суду:)\s*/, "");
   return (
     <div className="findings">
-      {lines.map((line, i) => {
-        if (/^(ICSFT|CERD)\s*[-–—]/.test(line)) {
-          return (
-            <p key={i} className="sub">
-              {line}
-            </p>
-          );
-        }
-        const m = line.match(/^(The Court['’]s position:|Позиція Суду:)(.*)$/);
-        if (m) {
-          return (
-            <p key={i}>
-              <span className="pos">{m[1]}</span>
-              {mark(m[2])}
-            </p>
-          );
-        }
-        return <p key={i}>{mark(line)}</p>;
-      })}
+      {head && <h3 className="f-head">{head.replace(/^(ICSFT|CERD)\s*[-–—]\s*/, "")}</h3>}
+      <div className="pair">
+        {claim.length > 0 && (
+          <div className="claim">
+            <div className="lbl-c">{claimLabel}</div>
+            {claim.map((l, i) => (
+              <p key={i}>{mark(l)}</p>
+            ))}
+          </div>
+        )}
+        {position.length > 0 && (
+          <div className="rule">
+            <div className="lbl-c">{positionLabel}</div>
+            {position.map((l, i) => (
+              <p key={i}>{mark(strip(l))}</p>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -584,9 +609,15 @@ function PartHead({ text, id }: { text: string; id?: string }) {
 function Block({
   block,
   mark,
+  claimLabel,
+  positionLabel,
 }: {
   block: SummaryBlock;
   mark: (s: string) => React.ReactNode;
+  /* The two captions a finding's columns carry. Passed down rather than
+     read here: this renderer has no locale of its own. */
+  claimLabel: string;
+  positionLabel: string;
 }) {
   switch (block.kind) {
     case "lead":
@@ -598,7 +629,14 @@ function Block({
     case "h4":
       return <h4>{block.text}</h4>;
     case "findings":
-      return <Findings text={block.text} mark={mark} />;
+      return (
+        <Findings
+          text={block.text}
+          mark={mark}
+          claimLabel={claimLabel}
+          positionLabel={positionLabel}
+        />
+      );
     case "link":
       return null;
     case "dispositif":
@@ -1387,7 +1425,13 @@ export default async function CasePage({
             b.kind === "h2" ? (
               <PartHead key={i} id={`sec-${h2i++}`} text={b.text} />
             ) : (
-              <Block key={i} block={b} mark={mark} />
+              <Block
+                key={i}
+                block={b}
+                mark={mark}
+                claimLabel={pick(T.claimed, locale)}
+                positionLabel={pick(T.courtPosition, locale)}
+              />
             ),
           );
         })()}
