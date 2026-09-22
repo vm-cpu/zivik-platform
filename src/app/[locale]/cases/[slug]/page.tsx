@@ -1846,6 +1846,7 @@ export default async function CasePage({
                     restLabel: m.restLabel && L(m.restLabel),
                     count: m.count,
                     note: m.note && L(m.note),
+                    alt: m.alt && { label: L(m.alt.label), value: L(m.alt.value) },
                   }))}
                   locale={locale}
                   labels={{ andMore: pick(T.dotCap, locale) }}

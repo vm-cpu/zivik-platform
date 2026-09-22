@@ -1017,14 +1017,20 @@ export const iccUkraine: DecisionSummary = {
   takings: {
     heading: { uk: "Масштаб — у цифрах поза Судом", en: "The scale, in figures from outside the Court" },
     note: {
-      uk: "Ордери кількість не називають. Ці цифри — з офіційної бази «Діти війни», звітів Human Rights Watch і повідомлень уряду; джерела внизу сторінки. Оцінки омбудсменів щодо дітей сягають 150–300 тисяч.",
-      en: "The warrants state no numbers. These figures come from the official \"Children of War\" database, Human Rights Watch and government reporting; sources at the foot of the page. Ombudspersons' estimates for children run to 150,000–300,000.",
+      uk: "Ордери кількість не називають. Ці цифри — з офіційної бази «Діти війни», звітів Human Rights Watch і повідомлень уряду; джерела внизу сторінки.",
+      en: "The warrants state no numbers. These figures come from the official \"Children of War\" database, Human Rights Watch and government reporting; sources at the foot of the page.",
     },
     metrics: [
       {
         label: { uk: "Дітей у базі «Діти війни»", en: "Children in the \"Children of War\" database" },
         value: { uk: "19 546+", en: "19,546+" },
         note: { uk: "депортовані або примусово переміщені", en: "deported or forcibly transferred" },
+        /* The official database against what the ombudspersons put it at —
+           two measures of one thing, an order of magnitude apart. */
+        alt: {
+          label: { uk: "оцінки омбудсменів", en: "ombudspersons' estimates" },
+          value: { uk: "150–300 тис.", en: "150,000–300,000" },
+        },
       },
       {
         label: { uk: "Повернуто дітей", en: "Children returned" },

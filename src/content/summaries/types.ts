@@ -328,6 +328,17 @@ export interface Metric {
   /** Countable units — draws one mark per unit (capped in the component). */
   count?: number;
   note?: Localized;
+  /**
+   * Another measure of the same quantity, where the sources disagree.
+   *
+   * «19 546+» is what the official database holds; ombudspersons put the
+   * number of children at 150,000–300,000. That is not a footnote about
+   * the figure, it is a second figure — an order of magnitude larger — and
+   * it was buried in a note under a caveat about where the numbers come
+   * from, where a reader met it after they had already taken 19,546 as the
+   * answer. It belongs to the metric it disagrees with.
+   */
+  alt?: { label: Localized; value: Localized };
 }
 
 /** A sum of money the decision turns on, optionally split into parts. */

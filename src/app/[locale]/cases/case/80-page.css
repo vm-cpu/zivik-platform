@@ -1679,3 +1679,34 @@
     }
   }
 }
+
+/* ── Two measures of one quantity ─────────────────────────────────────────
+   Owner: «тут треба попрацювати з даними — відображенням і
+   структуруванням».
+
+   «19 546+» is what the official database holds; the ombudspersons put
+   the number of children at 150–300 thousand. That was the last sentence
+   of a footnote about where the figures come from, so a reader met the
+   larger number after they had already taken the smaller one as the
+   answer — and met it as prose, not as a figure. It sits under the figure
+   it disagrees with now, in the same shape, a step quieter: the same
+   thing measured twice, an order of magnitude apart, and the page says so
+   instead of mentioning it. */
+.casepage .taking-alt {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--prule);
+}
+.casepage .taking-alt .taking-label,
+.casepage .taking-alt .taking-value {
+  font-size: var(--t-cap);
+  color: var(--ink3);
+}
+.casepage .taking-alt .taking-value {
+  font-weight: 700;
+  color: var(--ink2);
+}

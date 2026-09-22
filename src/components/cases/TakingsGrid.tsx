@@ -39,6 +39,8 @@ export interface MetricR {
   restLabel?: string;
   count?: number;
   note?: string;
+  /** A second measure of the same quantity, where the sources disagree. */
+  alt?: { label: string; value: string };
 }
 
 export default function TakingsGrid({
@@ -185,7 +187,20 @@ export default function TakingsGrid({
             </>
           )}
 
+          {/* The note belongs to the figure above it, so it comes first;
+              the other measure closes the tile. Rendered the other way
+              round, «депортовані або примусово переміщені» read as a
+              caption on the ombudspersons' estimate. */}
           {m.note && <p className="taking-note">{m.note}</p>}
+          {/* The other measure, under the first and in the same shape, so
+              the disagreement is visible as a disagreement rather than as
+              a sentence about one of them. */}
+          {m.alt && (
+            <div className="taking-alt">
+              <span className="taking-label">{m.alt.label}</span>
+              <b className="taking-value">{m.alt.value}</b>
+            </div>
+          )}
         </div>
       ))}
     </div>
