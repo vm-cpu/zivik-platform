@@ -1318,7 +1318,13 @@ export default async function CasePage({
       <section
         className="mapband"
         id="theatres"
-        data-lit={summary.mapInline ? "" : undefined}
+        /* Always lit. The light palette and the inline position travelled
+           together for one release because they arrived together, and they
+           are two different things: the drawing is light because a night
+           palette on a light page is not a map, and it sits inside the
+           write-up only where part 1 is what it shows. Owner: «карти треба
+           поробити світлими». */
+        data-lit=""
         data-navsec
         aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}
       >

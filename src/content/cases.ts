@@ -13,7 +13,14 @@ export const registryCases: RegistryCase[] = [
     institutionId: "icj",
     name: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation), Judgment, I.C.J. Reports 2024, 31 January 2024",
     nameShort: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
-    nameUk: "Україна проти РФ — фінансування тероризму і расова дискримінація",
+    /* The official name, the same one the decision page carries as its h1.
+       It was a descriptive shorthand — «Україна проти РФ — фінансування
+       тероризму і расова дискримінація» — so the library called this case
+       one thing and its own page called it another, and a reader arriving
+       from the library met a title they had not clicked on. Owner's words.
+       The English side already carried the official name via `nameShort`. */
+    nameUk:
+      "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     stage: "concluded",
     outcome: "judgment",

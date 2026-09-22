@@ -534,7 +534,6 @@
    are their own tokens, measured against the night map's ratios in
    globals.css. The marks take the paper gold, the seat's ring the ink. */
 .casepage .mapband[data-lit] {
-  background: none;
   color: var(--ink);
   --brand-map-land: var(--brand-map-land-lit);
   --brand-map-land-edge: var(--brand-map-land-edge-lit);
@@ -711,4 +710,23 @@
 .casepage .mapband[data-lit] .map-legend p {
   font-size: var(--t-map);
   line-height: 1.6;
+}
+
+/* ── The lit map standing as its own band ─────────────────────────────────
+   Inside the write-up the drawing needs no ground of its own: it is a
+   figure in a column of text. Standing alone between two paper bands it
+   does — light on light with no edge and the three of them read as one
+   field, which is the fault the night ground used to prevent by being
+   dark. So a band that is not inline takes the recessed paper and a seam
+   at each end. */
+.casepage .mapband[data-lit] {
+  background: var(--paper2);
+  border-block: 1px solid var(--seam);
+}
+/* Inside the write-up it is a figure in a column of text and takes the
+   column's own ground. Source order, not `:not()` with a descendant inside
+   it — that needs Selectors Level 4 and buys nothing here. */
+.casepage .read .mapband[data-lit] {
+  background: none;
+  border-block: 0;
 }
