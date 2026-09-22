@@ -163,9 +163,13 @@ export default function WarrantWall({
         {waves.map((w, wi) => (
           <span key={wi} className="wr-key wr-key-note" data-wave={wi}>
             <i aria-hidden="true" />
-            <span className="wr-key-head">
-              {w.theme} · {w.date}
-            </span>
+            {/* The date leaves the bold head and takes the line under it, in
+                the same mono register every other date on this page uses.
+                Glued on with a middot it made a run of bold that wrapped to
+                three lines in a narrow column, and buried the date inside
+                it. Owner: «допрацюй дизайн цього блоку». */}
+            <span className="wr-key-head">{w.theme}</span>
+            <span className="wr-key-date">{w.date}</span>
             <span className="wr-key-sum">{w.summary}</span>
           </span>
         ))}

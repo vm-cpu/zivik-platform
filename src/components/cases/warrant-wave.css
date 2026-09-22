@@ -19,7 +19,7 @@
   display: grid;
   grid-template-columns: 10px 1fr;
   column-gap: var(--space-2);
-  row-gap: var(--space-1);
+  row-gap: 3px;
   align-items: start;
   /* Ширину тепер роздає сітка в 60-warrants.css рівними частками, тож власної
      гнучкої основи ключ не має: саме вона давала трьом ключам три різні
@@ -39,8 +39,18 @@
   color: var(--brand-ink-2);
 }
 
+.casepage .wr-key .wr-key-date {
+  grid-column: 2;
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--brand-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
 .casepage .wr-key .wr-key-sum {
   grid-column: 2;
+  margin-top: var(--space-2);
   font: 400 var(--t-sm) var(--brand-font-body);
   line-height: 1.55;
   letter-spacing: 0;
