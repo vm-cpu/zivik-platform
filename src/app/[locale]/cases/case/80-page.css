@@ -1079,3 +1079,16 @@
     }
   }
 }
+
+/* A holding given in the write-up's words rather than quoted, inside the
+   answering half of a pair — same size as everything else in that box. */
+.casepage .rule > .rule-p {
+  font-size: var(--t-sm);
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0 0 var(--space-3);
+  text-wrap: pretty;
+}
+.casepage .rule > .rule-p:last-child {
+  margin-bottom: 0;
+}

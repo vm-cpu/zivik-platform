@@ -1796,7 +1796,20 @@ export default async function CasePage({
             if (b.kind === "claim") {
               const right: React.ReactNode[] = [];
               let j = i + 1;
+              /* The answer is whatever the write-up records next: the
+                 Court's own words quoted, or its holding in the write-up's
+                 words, or both. «Доктрина «чистих рук»» is the second kind
+                 and read as two loose boxes until this took it too. */
               for (;;) {
+                if (body[j]?.kind === "position") {
+                  right.push(
+                    <p key={`p-${j}`} className="rule-p">
+                      {mark(body[j].text)}
+                    </p>,
+                  );
+                  j += 1;
+                  continue;
+                }
                 const q = takeQuotation(body, j, mark);
                 if (!q) break;
                 right.push(...q.nodes);
