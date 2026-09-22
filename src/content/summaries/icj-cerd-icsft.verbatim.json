@@ -33,8 +33,8 @@
       "nav": false
     },
     {
-      "kind": "p",
-      "text": "In so far as its first aspect is concerned, the subject-matter of the dispute is whether the Russian Federation had the obligation, under the ICSFT, to take measures and to co-operate in the prevention and suppression of the alleged financing of terrorism in the context of events in eastern Ukraine and, if so, whether the Russian Federation breached such an obligation. The subject-matter of the dispute, in so far as its second aspect is concerned, is whether the Russian Federation breached its obligations under CERD through discriminatory measures allegedly taken against the Crimean Tatar and Ukrainian communities in Crimea.”"
+      "kind": "subject",
+      "text": "In so far as its first aspect is concerned, the subject-matter of the dispute is whether the Russian Federation had the obligation, under the ICSFT, to take measures and to co-operate in the prevention and suppression of the alleged financing of terrorism in the context of events in eastern Ukraine and, if so, whether the Russian Federation breached such an obligation."
     },
     {
       "kind": "h3",
@@ -44,6 +44,10 @@
     {
       "kind": "claim",
       "text": "Ukraine further alleges violations of Article 8 (failure to freeze or seize funds used for terrorism financing), Articles 9 and 10 (failure to investigate, extradite or prosecute alleged offenders), and Article 12 (failure to provide the greatest measure of assistance in connection with criminal investigations)."
+    },
+    {
+      "kind": "subject",
+      "text": "The subject-matter of the dispute, in so far as its second aspect is concerned, is whether the Russian Federation breached its obligations under CERD through discriminatory measures allegedly taken against the Crimean Tatar and Ukrainian communities in Crimea.”"
     },
     {
       "kind": "h3",

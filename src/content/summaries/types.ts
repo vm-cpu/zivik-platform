@@ -53,6 +53,19 @@ export type SummaryBlockKind =
    * tell whose distinction it was. Marked, it is set apart as ours.
    */
   | "note"
+  /**
+   * What is in dispute under the instrument the claim beside it is brought
+   * under — the half of «Предмет спору» that belongs to this column.
+   *
+   * The write-up states both aspects of the subject-matter in one paragraph
+   * and then states Ukraine's claims under each instrument separately, so
+   * the same division — ICSFT, then CERD — is drawn twice, ten lines apart,
+   * and a reader has to hold the first half in their head to read the
+   * second. Split at the author's own sentence boundary and seated with the
+   * claims it is about, each column says what was in dispute and what was
+   * asked. Not a word changes.
+   */
+  | "subject"
   | "link"; // a source / further-reading URL
 
 export interface SummaryBlock {

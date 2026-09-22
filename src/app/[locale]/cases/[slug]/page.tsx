@@ -765,6 +765,8 @@ function Block({
       return <h3>{block.text}</h3>;
     case "h4":
       return <h4>{block.text}</h4>;
+    case "subject":
+      return <p className="body">{mark(block.text)}</p>;
     case "note":
       return (
         <aside className="nb">
@@ -1712,22 +1714,36 @@ export default async function CasePage({
               out.push(<PartHead key={i} id={`sec-${h2i++}`} text={b.text} />);
               continue;
             }
-            if (b.kind === "h3" && body[i + 1]?.kind === "claim") {
-              const units: { head: string; id: string; text: string; at: number }[] = [];
-              while (body[i]?.kind === "h3" && body[i + 1]?.kind === "claim") {
+            if (
+              (b.kind === "h3" && body[i + 1]?.kind === "claim") ||
+              (b.kind === "subject" && body[i + 1]?.kind === "h3" && body[i + 2]?.kind === "claim")
+            ) {
+              const units: {
+                head: string;
+                id: string;
+                text: string;
+                subject?: string;
+                at: number;
+              }[] = [];
+              for (;;) {
+                const sub = body[i]?.kind === "subject" ? body[i].text : undefined;
+                const h = sub ? i + 1 : i;
+                if (!(body[h]?.kind === "h3" && body[h + 1]?.kind === "claim")) break;
                 units.push({
-                  head: body[i].text,
+                  subject: sub,
+                  head: body[h].text,
                   id: `sub-${h3i++}`,
-                  text: body[i + 1].text,
+                  text: body[h + 1].text,
                   at: i,
                 });
-                i += 2;
+                i = h + 2;
               }
               i -= 1;
               out.push(
                 <div className="pair" key={`pair-${units[0].at}`}>
                   {units.map((u) => (
                     <div className="claim" key={u.at}>
+                      {u.subject && <p className="c-sub">{mark(u.subject)}</p>}
                       <div className="lbl-c" id={u.id}>
                         {u.head}
                       </div>
