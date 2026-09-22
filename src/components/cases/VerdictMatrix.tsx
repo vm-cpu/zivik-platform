@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Outcome } from "@/content/summaries/types";
 
 /** One line of the dispositif, already resolved to the reader's language. */
@@ -105,6 +105,26 @@ export default function VerdictMatrix({
   const [shown, setShown] = useState(false);
   const [all, setAll] = useState(false);
   const [sort, setSort] = useState<{ by: "track" | "outcome"; dir: 1 | -1 } | null>(null);
+  /* The control does not move when it is pressed.
+   *
+   * It is the table's last row, so opening twelve rows above it pushed it
+   * twelve rows down — out from under the cursor mid-press, and far enough
+   * that closing it again meant scrolling to find it. The page is scrolled
+   * by however far the button travelled, so it stays exactly where it was
+   * and the way back is under the finger that opened it.
+   *
+   * Owner: «при натисканні на розгорнути — відбувається скачок і він
+   * опускається вниз. І щоб згорнути треба прогортати вниз».
+   */
+  const foldRef = useRef<HTMLButtonElement>(null);
+  const anchor = useRef<number | null>(null);
+  useLayoutEffect(() => {
+    const was = anchor.current;
+    anchor.current = null;
+    if (was === null || !foldRef.current) return;
+    const now = foldRef.current.getBoundingClientRect().top;
+    if (now !== was) window.scrollBy(0, now - was);
+  }, [all]);
   /* Breaches first when sorted by result: the question is always which
      ones, never which ones were not. */
   const RANK: Record<string, number> = {
@@ -280,7 +300,16 @@ export default function VerdictMatrix({
         /* The last row of the table rather than a button under it: the
            index already has a shape, and the way into the rest of it is
            the next line down, not a second object. */
-        <button type="button" className="v-fold" aria-expanded={all} onClick={() => setAll(!all)}>
+        <button
+          type="button"
+          className="v-fold"
+          ref={foldRef}
+          aria-expanded={all}
+          onClick={() => {
+            anchor.current = foldRef.current?.getBoundingClientRect().top ?? null;
+            setAll(!all);
+          }}
+        >
           <span className="v-fold-t">{all ? fold!.hide : fold!.show}</span>
           <span className="v-fold-n">
             {all ? "" : rows.filter((r) => !kept(r)).length}
