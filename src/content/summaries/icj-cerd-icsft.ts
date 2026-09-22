@@ -369,7 +369,29 @@ export const icjCerdIcsft: DecisionSummary = {
     },
   ],
 
+  /* Every claim Ukraine brought, and what the Court did with it.
+   *
+   * This was the dispositif and nothing else: four violations and three
+   * catch-all clauses. The catch-alls are in the judgment's own words —
+   * «Відхиляє всі інші вимоги, заявлені Україною щодо…» — and as an index
+   * they told a reader that something had been rejected without saying
+   * what, which is the one question this table exists to answer. Owner:
+   * «не вистачає можливості переглянути які саме вимоги відхилено».
+   *
+   * The twelve rows below are the findings the write-up sets out, one per
+   * heading in «Висновки за ICSFT» and «Висновки за CERD» and one for the
+   * limb of the Order the Court held was not breached. Each outcome is the
+   * one recorded on that finding — see `outcomes` in the write-up's blocks
+   * and the note on it in summaries/types.ts. The catch-alls stay in the
+   * record, flagged residual, because they are clauses of the judgment;
+   * they stay out of the index because the index now says what they meant.
+   */
   verdicts: [
+    {
+      track: "ICSFT",
+      claim: { uk: "Ст. 8 — незаморожені кошти", en: "Art. 8 — funds not frozen" },
+      outcome: "no-violation",
+    },
     {
       track: "ICSFT",
       claim: { uk: "Ст. 9(1) — нерозслідування", en: "Art. 9(1) — failure to investigate" },
@@ -377,10 +399,22 @@ export const icjCerdIcsft: DecisionSummary = {
     },
     {
       track: "ICSFT",
+      claim: { uk: "Ст. 10 — непереслідування", en: "Art. 10 — failure to prosecute" },
+      outcome: "no-violation",
+    },
+    {
+      track: "ICSFT",
+      claim: { uk: "Ст. 12 — правова допомога", en: "Art. 12 — mutual legal assistance" },
+      outcome: "no-violation",
+    },
+    {
+      track: "ICSFT",
+      claim: { uk: "Ст. 18 — співпраця у запобіганні", en: "Art. 18 — co-operation in prevention" },
+      outcome: "no-violation",
+    },
+    {
+      track: "ICSFT",
       claim: { uk: "Інші вимоги", en: "All other submissions" },
-      /* «Відхиляє», not «немає»: the dispositif rejects these submissions,
-         it does not find no violation in them. The row read «НЕМАЄ», which
-         is a different holding — and the one word the Court did not use. */
       outcome: "rejected",
       residual: true,
     },
@@ -394,10 +428,45 @@ export const icjCerdIcsft: DecisionSummary = {
     },
     {
       track: "CERD",
+      claim: {
+        uk: "Зникнення, вбивства, викрадення, катування",
+        en: "Disappearances, murders, abductions, torture",
+      },
+      outcome: "no-violation",
+    },
+    {
+      track: "CERD",
+      claim: { uk: "Правоохоронні заходи", en: "Law-enforcement measures" },
+      outcome: "no-violation",
+    },
+    {
+      track: "CERD",
+      claim: { uk: "Заборона Меджлісу", en: "Ban on the Mejlis" },
+      outcome: "no-violation",
+    },
+    {
+      track: "CERD",
+      claim: { uk: "Громадянство", en: "Citizenship" },
+      outcome: "no-violation",
+    },
+    {
+      track: "CERD",
+      claim: { uk: "Культурно значущі зібрання", en: "Culturally significant gatherings" },
+      outcome: "no-violation",
+    },
+    {
+      track: "CERD",
+      claim: { uk: "Засоби масової інформації", en: "Media outlets" },
+      outcome: "no-violation",
+    },
+    {
+      track: "CERD",
+      claim: { uk: "Культурна спадщина та інституції", en: "Cultural heritage and institutions" },
+      outcome: "no-violation",
+    },
+    {
+      track: "CERD",
       claim: { uk: "Інші вимоги", en: "All other submissions" },
-      /* «Відхиляє», not «немає»: the dispositif rejects these submissions,
-         it does not find no violation in them. The row read «НЕМАЄ», which
-         is a different holding — and the one word the Court did not use. */
       outcome: "rejected",
       residual: true,
     },
@@ -418,10 +487,13 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       track: "Provisional measures",
       trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
+      claim: { uk: "Доступність освіти українською", en: "Keeping Ukrainian-language education available" },
+      outcome: "no-violation",
+    },
+    {
+      track: "Provisional measures",
+      trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
       claim: { uk: "Інші вимоги", en: "All other submissions" },
-      /* «Відхиляє», not «немає»: the dispositif rejects these submissions,
-         it does not find no violation in them. The row read «НЕМАЄ», which
-         is a different holding — and the one word the Court did not use. */
       outcome: "rejected",
       residual: true,
     },

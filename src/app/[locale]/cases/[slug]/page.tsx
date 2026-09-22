@@ -75,6 +75,11 @@ const T = {
   /* The catch-all clauses, said once under the heading instead of three times
      in the table. */
   restRejected: { uk: "решту вимог відхилено", en: "all other submissions rejected" },
+  /* Used where the index lists the rejected claims itself, so the line can
+     count them instead of gesturing at them. No noun after the figure: the
+     genitive it would need changes with the number in Ukrainian («з 2
+     вимог», «з 21 вимоги») and the column head already says what a row is. */
+  restCounted: { uk: "відхилено", en: "rejected" },
   violationWord: {
     uk: { one: "порушення", few: "порушення", many: "порушень" },
     en: { one: "violation", few: "violations", many: "violations" },
@@ -1091,6 +1096,11 @@ export default async function CasePage({
      is said under the heading instead. */
   const findings = verdicts.filter((v) => !v.residual);
   const hasResidual = verdicts.length !== findings.length;
+  /* How many of the rows the index draws are claims the forum did not
+     uphold — the figure the summary line counts. */
+  const rejectedShown = findings.filter(
+    (v) => v.outcome !== "violation" && v.outcome !== "convicted" && v.outcome !== "granted",
+  ).length;
   const [decided, decidedForms, decidedKind] =
     convictions > 0
       ? ([convictions, T.convictionWord, "breach"] as const)
@@ -1599,7 +1609,17 @@ export default async function CasePage({
                   <b>
                     {decided} {decidedLabel}
                   </b>
-                  {hasResidual && <> · {pick(T.restRejected, locale)}</>}
+                  {/* The index used to say «решту вимог відхилено» because
+                      it listed nothing but the breaches. Where it lists the
+                      rejected claims too, it counts them. */}
+                  {rejectedShown > 0 ? (
+                    <>
+                      {" "}
+                      · {rejectedShown} {pick(T.restCounted, locale)}
+                    </>
+                  ) : (
+                    hasResidual && <> · {pick(T.restRejected, locale)}</>
+                  )}
                 </span>
               </div>
               {/* Column heads. Three tracks of very different content — a
