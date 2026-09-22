@@ -393,29 +393,36 @@
   background: var(--prule);
   border: 1px solid var(--prule);
 }
-.casepage .pair .claim,
-.casepage .pair .rule {
+/* The two halves are styled by what they are, not by where they sit: a
+   holding set apart from an argument looks the same whether it stands beside
+   one in a pair or alone under a heading. Scoped to `.pair` they got nothing
+   outside it — a gold caption over bare text with no ground and no edge. */
+.casepage .claim,
+.casepage .rule {
   padding: var(--space-4) clamp(15px, 2.4vw, 20px);
 }
-.casepage .pair .claim {
+.casepage .claim {
   background: var(--paper);
 }
 /* The holding, lit: a warmer ground and the gold edge the design gives it. */
-.casepage .pair .rule {
+.casepage .rule {
   background: var(--brand-paper-warm-3);
   border-left: 2px solid var(--brand-gold-mark);
 }
-.casepage .pair .lbl-c {
+.casepage .claim .lbl-c,
+.casepage .rule .lbl-c {
   margin-bottom: var(--space-2);
 }
-.casepage .pair p {
+.casepage .claim p,
+.casepage .rule p {
   font-size: var(--t-sm);
   line-height: 1.65;
   color: var(--ink);
   margin: 0 0 var(--space-3);
   text-wrap: pretty;
 }
-.casepage .pair p:last-child {
+.casepage .claim p:last-child,
+.casepage .rule p:last-child {
   margin-bottom: 0;
 }
 
