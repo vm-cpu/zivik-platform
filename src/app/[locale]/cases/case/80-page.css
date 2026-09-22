@@ -1468,3 +1468,40 @@
     display: none;
   }
 }
+
+/* ── A findings block that enumerates ─────────────────────────────────────
+   Four decisions record their findings as a list the author already
+   numbered — ten violations at the ECtHR, two charges on MH17, five counts
+   in Finland, four grounds at DTEK — and all four rendered as a run of
+   lines with the enumerators sitting in the prose. They are a list, so
+   they are set as one, and the marker does the counting the words used to.
+
+   Same measure as the reading column, because these are what the forum
+   held and a reader reads them the way they read the rest. */
+.casepage .read > .f-list {
+  max-width: var(--prose);
+  margin: var(--space-5) 0;
+  padding: 0 0 0 var(--space-7);
+  border-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.casepage .f-list > li {
+  font-size: var(--t-body);
+  line-height: 1.7;
+  color: var(--ink);
+  padding-left: var(--space-2);
+  text-wrap: pretty;
+}
+.casepage ul.f-list {
+  list-style: disc;
+}
+.casepage ol.f-list {
+  list-style: decimal;
+}
+/* The marker in the machine face, like every other figure on this page. */
+.casepage .f-list > li::marker {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--ink3);
+}

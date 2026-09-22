@@ -592,6 +592,23 @@ function Findings({
      The track prefix comes off each head — the section it sits in has
      already said ICSFT or CERD — and the position's own opening words come
      off its paragraph, because the column is labelled with them. */
+  /* A block that enumerates rather than argues.
+   *
+   * Four of the eight decisions record their findings as a list the author
+   * already numbered — the ECtHR's ten violations «– порушення статті 2 —
+   * …», MH17's two charges «1. … 2. …», Finland's five counts, DTEK's four
+   * grounds — and every one of them rendered as an undifferentiated run of
+   * lines. Measured across the archive: of the twelve findings blocks that
+   * name no findings, eight carry an enumerator on every single line, and
+   * those eight are these four decisions in two languages.
+   *
+   * So nothing is marked and nothing is guessed: the list is set as the
+   * list the author wrote, and the enumerator comes off because the list
+   * does that job now — the same reason «по-перше» came off the elements of
+   * the CERD definition.
+   */
+  const ENUM = /^\s*(?:[–—-]\s+|(\d{1,2})[.)]\s+)/;
+
   const HEAD = /^(ICSFT|CERD)\s*[-–—]\s*/;
   const POS = /^(The Court['’]s position:|Позиція Суду:)\s*/;
   /* Every line in a block that draws voices carries one, and data-check
@@ -601,6 +618,27 @@ function Findings({
      and the marks it reads were not re-checked. Silence is no longer an
      answer the data can give. */
   const PARTY = /^(The party argued:|Сторона твердила:)\s*/;
+  if (!lines.some((l) => HEAD.test(l)) && lines.length > 1 && lines.every((l) => ENUM.test(l))) {
+    /* Numbered where the author numbered, bulleted where the author
+       dashed: the count is his, and on MH17 and Finland those numbers are
+       the charges' own. */
+    const numbered = /^\s*\d/.test(lines[0]);
+    const items = lines.map((l) => l.replace(ENUM, ""));
+    return numbered ? (
+      <ol className="findings f-list">
+        {items.map((t, i) => (
+          <li key={i}>{mark(t)}</li>
+        ))}
+      </ol>
+    ) : (
+      <ul className="findings f-list">
+        {items.map((t, i) => (
+          <li key={i}>{mark(t)}</li>
+        ))}
+      </ul>
+    );
+  }
+
   const parts: { head?: string; body: string[] }[] = [];
   for (const l of lines) {
     if (HEAD.test(l)) parts.push({ head: l.replace(HEAD, ""), body: [] });
