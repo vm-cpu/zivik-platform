@@ -1279,11 +1279,13 @@ export default async function CasePage({
     ["readzone", "chron", "srcs"].includes(name);
 
   const bands: Array<[string, boolean]> = [
+    /* In page order. The chronology moved above the write-up, so it takes
+       the first paper ground and everything below it steps down one. */
+    ["chron", true],
     ["readzone", true],
     ["refs", interpretations.length > 0],
     ["pmeas", provisionalMeasures.length > 0],
     ["machinery", hasMachinery],
-    ["chron", true],
     ["terms", glossaryEnabled],
     ["srcs", sources.length > 0],
     ["neighbours", related.length > 0],
@@ -1339,6 +1341,8 @@ export default async function CasePage({
     ...(shows("score") && verdicts.length > 0
       ? [{ id: "found", label: pick(summary.verdictsHeading ?? T.found, locale) }]
       : []),
+    /* Between the index and the write-up, where the band now is. */
+    { id: "chronology", label: pick(T.timeline, locale) },
     /* The summary leads now — review: «самері я б можливо перенесла на
        початок і дала відразу після розділу ЯКЩО КОРОТКО. А потім би вже йшли
        вкладки про тлумачення, тимчасові заходи тощо». */
@@ -1409,7 +1413,6 @@ export default async function CasePage({
           },
         ]
       : []),
-    { id: "chronology", label: pick(T.timeline, locale) },
     /* The map band, where it is not drawn inside the write-up. Guarded the
        same way the band is, so the chip never points at nothing. */
     ...(!summary.mapInline && theatres.length > 0
@@ -1886,6 +1889,40 @@ export default async function CasePage({
           </div>
         </section>
       )}
+
+      {/* The chronology stands here, between what the Court found and
+          why — not after the write-up, where a reader learned when the
+          case happened only once they had read why it came out as it
+          did. It is orientation, the same kind of thing as the docket
+          card above it: the answer, then the shape of the time it took,
+          then the reasoning. Owner: «чи не варто хронологію підняти
+          вище?» */}
+      {/* 2t — Chronology. Its own band, its own heading: it used to be the
+          tail of the dashboard, below the money bars, under a <div> label. */}
+      <section className="chron" data-ground={ground["chron"]} id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
+        <div className="rail">
+          <div className="sec-h">
+            <h2>{pick(T.timeline, locale)}</h2>
+          </div>
+          <CaseTimeline
+            events={timeline.map((e) => ({
+              date: L(e.date),
+              label: L(e.label),
+              note: e.note && L(e.note),
+              kind: e.kind,
+              track: e.track,
+              iso: e.iso,
+            }))}
+            tracks={timelineTracks.map((t) => ({ id: t.id, label: L(t.label) }))}
+            labels={{
+              all: pick(T.allEvents, locale),
+              trackFilter: pick(T.trackFilter, locale),
+              openDetail: pick(T.openDetail, locale),
+              railLabel: pick(T.railLabel, locale),
+            }}
+          />
+        </div>
+      </section>
 
       {/* 4 — Verbatim summary. The page bar is the only navigation. */}
       <section className="readzone" data-ground={ground["readzone"]} id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
@@ -2375,32 +2412,6 @@ export default async function CasePage({
         </section>
       )}
 
-      {/* 2t — Chronology. Its own band, its own heading: it used to be the
-          tail of the dashboard, below the money bars, under a <div> label. */}
-      <section className="chron" data-ground={ground["chron"]} id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
-        <div className="rail">
-          <div className="sec-h">
-            <h2>{pick(T.timeline, locale)}</h2>
-          </div>
-          <CaseTimeline
-            events={timeline.map((e) => ({
-              date: L(e.date),
-              label: L(e.label),
-              note: e.note && L(e.note),
-              kind: e.kind,
-              track: e.track,
-              iso: e.iso,
-            }))}
-            tracks={timelineTracks.map((t) => ({ id: t.id, label: L(t.label) }))}
-            labels={{
-              all: pick(T.allEvents, locale),
-              trackFilter: pick(T.trackFilter, locale),
-              openDetail: pick(T.openDetail, locale),
-              railLabel: pick(T.railLabel, locale),
-            }}
-          />
-        </div>
-      </section>
 
       {/* Its own band, below the chronology, for every decision that does
           not draw it inside the write-up — see `mapInline`. */}
