@@ -20,7 +20,6 @@ import TakingsGrid from "@/components/cases/TakingsGrid";
 import VerdictMatrix from "@/components/cases/VerdictMatrix";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
-import GlanceFacts from "@/components/cases/GlanceFacts";
 import CaseMap from "@/components/cases/CaseMap";
 import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
@@ -47,6 +46,7 @@ import "../case/40-instruments.css";
 import "../case/50-responsive.css";
 import "../case/60-warrants.css";
 import "../case/70-chrome.css";
+import "../case/80-page.css";
 
 
 /** Localized chrome labels (the summary body stays in its source language). */
@@ -1128,16 +1128,26 @@ export default async function CasePage({
 
       {/* 1b — Plain-language lede */}
       {shows("overview") && (
-        <section className="lede" id="overview" data-navsec aria-label={pick(T.inShort, locale)}>
-          <div className="rail lede-grid">
-            <div className="tldr">
-              <div className="lbl-light">{pick(T.inShort, locale)}</div>
-              <p>{pick(plain.tldr, locale)}</p>
+        <section className="lede" id="overview" data-navsec>
+          <div className="rail">
+            {/* The section says its own name in a heading now, over a rule,
+                the way every other section on the page does. It used to
+                carry the name as a small gold label above the text and no
+                heading at all — which left the page's first section outside
+                its own outline. */}
+            <div className="sec-h">
+              <h2>{pick(T.inShort, locale)}</h2>
             </div>
-            <aside className="why">
-              <div className="lbl-light">{pick(T.whyMatters, locale)}</div>
-              <p>{pick(plain.whyMatters, locale)}</p>
-            </aside>
+            <div className="lede-grid">
+              <p className="body">{pick(plain.tldr, locale)}</p>
+              {/* Not a heading of its own: this is an aside about the
+                  section beside it, and the gold rule down its left is what
+                  says so. */}
+              <aside className="why">
+                <div className="lbl-c">{pick(T.whyMatters, locale)}</div>
+                <p>{pick(plain.whyMatters, locale)}</p>
+              </aside>
+            </div>
           </div>
         </section>
       )}
@@ -1153,13 +1163,23 @@ export default async function CasePage({
                 {/* `lbl-onpaper` again: the docket card stayed on paper when
                     the band split, and the plain `.lbl` is the dark-ground
                     label. */}
-                <h2 className="lbl lbl-onpaper">{pick(T.glanceH, locale)}</h2>
-                <GlanceFacts
-                  facts={glance.map((g) => ({
-                    label: pick(g.label, locale),
-                    value: pick(g.value, locale),
-                  }))}
-                />
+                {/* The docket, as a list of pairs on hairlines.
+
+                    It was `GlanceFacts`, a bordered instrument with its own
+                    card grid; the design sets the same facts as rows in the
+                    reading column, which is what they are — a label and a
+                    value, read down. A gold caption rather than a heading:
+                    the card is apparatus for the section above it, not a
+                    part of the document in its own right. */}
+                <div className="lbl-c glance-h">{pick(T.glanceH, locale)}</div>
+                <div className="rows">
+                  {glance.map((g, i) => (
+                    <div className="row" key={i}>
+                      <span className="row-k">{pick(g.label, locale)}</span>
+                      <span className="row-v">{pick(g.value, locale)}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
@@ -1218,9 +1238,9 @@ export default async function CasePage({
         <section className="score" aria-label={pick(T.found, locale)}>
           <div className="rail dash-stack">
             <div className="vpanel">
-              <div className="score-head">
+              <div className="sec-h">
                 <h2>{pick(summary.verdictsHeading ?? T.found, locale)}</h2>
-                <span className="score-count" data-of={decidedKind}>
+                <span className="sec-sum" data-of={decidedKind}>
                   <b>{decided}</b> {decidedLabel} {verdicts.length}
                 </span>
               </div>

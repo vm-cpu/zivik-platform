@@ -1,0 +1,240 @@
+/* ═══ The decision page, as designed ═══════════════════════════════════════
+   One paper canvas with a column of contents beside it, and every section
+   introduced the same way: a heading over a hairline. It replaced a stack of
+   full-bleed bands that alternated paper, recessed paper and night — three
+   grounds for what is one document, and the reader met each new ground as a
+   new place rather than the next part of the same page.
+
+   The map keeps its night, because it is a drawing of a dark world and not a
+   band of prose. Everything else stands on the paper.
+
+   The sizes are the design's ramp snapped to this project's type steps: each
+   end of every clamp below is a declared `--t-*` value, so the page reads as
+   the mock without opening a second scale beside the one the site has. */
+
+/* ── Grounds: one canvas ─────────────────────────────────────────────────── */
+.casepage [data-ground="p"],
+.casepage [data-ground="p2"],
+.casepage .dash,
+.casepage .score {
+  background: transparent;
+  color: var(--ink);
+  border-bottom: 0;
+}
+.casepage .dash,
+.casepage .score,
+.casepage .lede,
+.casepage .readzone,
+.casepage .refs,
+.casepage .pmeas,
+.casepage .chron,
+.casepage .terms,
+.casepage .neighbours {
+  padding-block: 0;
+  margin-bottom: clamp(28px, 4vw, 42px);
+}
+
+/* ── The section head ────────────────────────────────────────────────────── */
+.casepage .sec-h {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--rule);
+}
+.casepage .sec-h h2 {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: clamp(20px, 2.1vw, 23px);
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0;
+}
+/* A numbered part of the write-up: the numeral is set large, light and gold,
+   beside the heading rather than inside it — it counts the parts, it is not
+   a word of the title. */
+.casepage .sec-h .sec-n {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 400;
+  font-size: clamp(20px, 2.4vw, 28px);
+  line-height: 1;
+  color: var(--brand-gold-mark);
+  margin-right: var(--space-3);
+}
+/* The one-line verdict a section can carry on its own head. */
+.casepage .sec-h .sec-sum {
+  font: 500 var(--t-cap) var(--brand-font-body), sans-serif;
+  color: var(--ink2);
+}
+.casepage .sec-h .sec-sum b {
+  font-weight: 700;
+  color: var(--red);
+}
+
+/* ── Reading type ────────────────────────────────────────────────────────── */
+.casepage .body {
+  font-size: var(--t-body);
+  line-height: 1.78;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: pretty;
+}
+.casepage .lbl-c {
+  font: 700 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-gold-ink);
+}
+
+/* ── A list of pairs: the case card, the chronology ──────────────────────── */
+.casepage .rows {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--rule);
+}
+.casepage .rows .row {
+  display: grid;
+  grid-template-columns: clamp(116px, 22vw, 190px) minmax(0, 1fr);
+  gap: clamp(12px, 2vw, 20px);
+  align-items: baseline;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.casepage .rows .row-k {
+  font: 700 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.casepage .rows .row-v {
+  font-size: clamp(14px, 1.6vw, 16px);
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .casepage .rows .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+}
+
+/* ── «Якщо коротко»: the text, and an aside about it ─────────────────────── */
+.casepage .lede-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: clamp(20px, 3vw, 36px);
+}
+.casepage .lede-grid .why {
+  border-left: 2px solid var(--brand-gold-mark);
+  padding-left: clamp(16px, 2.4vw, 22px);
+}
+.casepage .lede-grid .why .lbl-c {
+  margin-bottom: var(--space-3);
+}
+.casepage .lede-grid .why p {
+  font-size: clamp(14px, 1.5vw, 16px);
+  line-height: 1.72;
+  color: var(--ink2);
+  margin: 0;
+  text-wrap: pretty;
+}
+.casepage .glance-h {
+  margin-bottom: var(--space-3);
+}
+
+/* ── What the forum held, as an index ────────────────────────────────────
+   Three columns on hairlines: the article, the claim made under it, and
+   what the forum did with the claim. The rows were a dark panel with the
+   result at one edge of a 1180px rail and the claim at the other; at 820px
+   with a fixed result column the sentence holds together. */
+.casepage .vpanel {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  color: var(--ink);
+}
+.casepage .verdicts {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.casepage .verdicts li {
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) 132px;
+  gap: var(--space-4);
+  align-items: start;
+  padding: var(--space-3) clamp(14px, 2.4vw, 20px);
+  background: var(--surface);
+}
+.casepage .verdicts .v-track,
+.casepage .verdicts .v-track-link {
+  grid-column: 1;
+  font: 700 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0;
+  color: var(--brand-gold-ink);
+  text-decoration: none;
+  align-self: start;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.casepage .verdicts .v-track-link:hover {
+  color: var(--red);
+}
+.casepage .verdicts .v-claim {
+  grid-column: 2;
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink);
+}
+/* The result: a word, right-aligned, red where the forum found against the
+   respondent and muted where it did not. */
+.casepage .verdicts .v-out {
+  grid-column: 3;
+  justify-self: end;
+  text-align: right;
+  font: 600 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.casepage .verdicts .v-out[data-o="violation"],
+.casepage .verdicts .v-out[data-o="convicted"],
+.casepage .verdicts .v-out[data-o="granted"] {
+  color: var(--red);
+}
+/* A row that carries no article of its own still keeps the column, so the
+   claims stay on one edge down the whole index. */
+.casepage .verdicts li[data-run="cont"] .v-claim {
+  grid-column: 2;
+}
+@media (max-width: 700px) {
+  .casepage .verdicts li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+  .casepage .verdicts .v-track,
+  .casepage .verdicts .v-claim,
+  .casepage .verdicts .v-out {
+    grid-column: 1;
+  }
+  /* Where the columns are gone the result needs an edge of its own, or it
+     reads as another line of the claim. */
+  .casepage .verdicts .v-out {
+    justify-self: start;
+    text-align: left;
+    margin-top: var(--space-1);
+    border: 1px solid var(--rule);
+    padding: 3px var(--space-2);
+  }
+}

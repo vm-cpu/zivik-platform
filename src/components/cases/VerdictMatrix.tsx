@@ -148,15 +148,16 @@ export default function VerdictMatrix({ rows }: { rows: VerdictRow[] }) {
             ) : (
               <span className="v-track">{r.track}</span>
             ))}
-          {/* Outcome before claim, and the claim starts where its own outcome
-              ends. The two used to sit at opposite edges of a 1180px rail,
-              which put most of a screen of nothing between a sentence and the
-              word that answers it. The row reads as a sentence in this order
-              either way: «Порушення — право на життя». */}
+          {/* Article, claim, result — the order the design reads them in and
+              the order a dispositif is written in. It was outcome first,
+              because the row used to run the full 1180px rail and the two
+              ends of a sentence sat a screen apart. The row is a table now:
+              three tracks, the result in a fixed column at the right, and
+              nothing between them to cross. */}
+          <span className="v-claim">{r.claim}</span>
           <span className="v-out" data-o={r.outcome}>
             {r.outcomeLabel}
           </span>
-          <span className="v-claim">{r.claim}</span>
         </li>
       ))}
     </ul>
