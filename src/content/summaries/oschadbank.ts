@@ -866,6 +866,9 @@ export const oschadbank: DecisionSummary = {
         ],
       },
       {
+        /* Арбітраж вирішив ставку, а не цю суму: «за даними 2025 року» і
+           `estimated` кажуть це самі. */
+        after: true,
         label: {
           uk: "З нарахованими відсотками, за даними 2025 року",
           en: "Award value with accrued interest, as reported in 2025",
@@ -922,6 +925,8 @@ export const oschadbank: DecisionSummary = {
         display: { uk: "≈ €87 000 000", en: "≈ €87,000,000" },
         amount: 87000000,
         currency: "EUR",
+        /* Французькі суди, квітень 2025-го: виконання, а не рішення. */
+        after: true,
         /* The share that used to stand here does not reproduce and cannot:
            87 000 000 euros against 1 111 300 729 dollars is 7,8% before any
            exchange rate, ~5,8% of the accrued figure, and neither is "6%".

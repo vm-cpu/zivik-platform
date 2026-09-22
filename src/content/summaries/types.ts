@@ -389,6 +389,22 @@ export interface Metric {
 
 /** A sum of money the decision turns on, optionally split into parts. */
 export interface MoneyFigure {
+  /**
+   * This figure is not part of what the forum decided.
+   *
+   * «Суми» stood under «Що вирішив арбітраж» and held four figures, two of
+   * which the tribunal never decided: the award's value with interest accrued
+   * to 2025 — the tribunal set the rate, someone else did the arithmetic, and
+   * the row is marked `estimated` and labelled «за даними 2025 року» — and the
+   * €87 million attached in France in April 2025, which is a different forum,
+   * a different year and enforcement rather than a holding. Owner: «чи це
+   * дійсно те що вирішив суд?». It is not.
+   *
+   * Marked, they are drawn with what came after the award instead, and each
+   * scale then compares like with like: the seizure no longer reads as a
+   * fraction of a dollar award it is not denominated in.
+   */
+  after?: boolean;
   label: Localized;
   /** Display value, already formatted; localize when locales format it differently. */
   display: string | Localized;

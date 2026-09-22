@@ -1168,6 +1168,12 @@ export default async function CasePage({
 
   const { theatres = [], provisionalMeasures = [], timelineTracks = [], glance = [] } = summary;
   const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
+  /* What the forum decided, and what happened to it afterwards. Two runs,
+     two scales: drawn together, the €87 million attached in France read as a
+     fraction of a dollar award it is not denominated in, and the caption had
+     to say «у євро — поза шкалою» about the very bar it was drawing. */
+  const awarded = (amounts?.figures ?? []).filter((f) => !f.after);
+  const afterAward = (amounts?.figures ?? []).filter((f) => f.after);
   const parties = summary.title
     ? pick(summary.title, locale)
     : masthead.parties.replace(/^\(|\)$/g, "");
@@ -1188,9 +1194,18 @@ export default async function CasePage({
      apart. It sets whatever the record puts in that position apart from the
      subject, which is what the line is for on every page that has one, and a
      record with no bracket keeps its title whole. */
-  const partiesMatch = /^(.*?)\s*\(([^()]*)\)$/.exec(parties);
-  const titleMain = partiesMatch ? partiesMatch[1] : parties;
+  /* A phase may follow the parties: «…(Україна проти Російської Федерації).
+     Попередні заперечення». It belongs with them and not with the subject —
+     it says which of a docket's several judgments this page is, which is the
+     same kind of fact as who the parties are, and set in the heading it would
+     read as part of the Convention's name. So the split takes the LAST
+     parenthetical, and whatever trails it goes into the same small line.
+     `[^()]*$` keeps that tail bracket-free, so a title ending in its
+     parenthetical still matches with an empty tail and is unchanged. */
+  const partiesMatch = /^(.*)\s*\(([^()]*)\)([^()]*)$/.exec(parties);
+  const titleMain = partiesMatch ? partiesMatch[1].trimEnd() : parties;
   const titleSides = partiesMatch ? partiesMatch[2] : null;
+  const titleTail = partiesMatch ? partiesMatch[3].trimEnd() : "";
   const officialLine =
     (locale === "uk" ? summary.mastheadUk?.official : null) ?? masthead.official;
   const judgmentLine =
@@ -1295,10 +1310,31 @@ export default async function CasePage({
      removable section. Nothing here is a template rule; the template still
      knows how to draw all of them. */
   const FOUR = new Set(["fulltext", "chronology", "theatres", "sec-sources"]);
-  const shows = (id: string) => summary.bands !== "four" || FOUR.has(id);
+  /* `hideSections` names the bands this decision drops one by one, where
+     `bands` is all-or-four. Both gates run: a section shows when the
+     whitelist lets it through AND the blacklist does not name it. */
+  const hidden = new Set<string>(summary.hideSections ?? []);
+  const shows = (id: string) =>
+    (summary.bands !== "four" || FOUR.has(id)) && !hidden.has(id);
+  /* The alternation walks bands by their class name; `hideSections` names
+     them by their section id. This is the join, and it is the whole of it —
+     a band the blacklist removes has to leave the run, or the two paper
+     grounds either side of the gap come out the same and merge into one
+     slab. Bands with no listable section (`readzone`, `chron`, `srcs`) map
+     to ids the blacklist's type does not admit, so they can never be hit. */
+  const BAND_SECTION: Record<string, string> = {
+    chron: "chronology",
+    readzone: "fulltext",
+    refs: "rulings",
+    pmeas: "measures",
+    machinery: "machinery",
+    terms: "glossary",
+    srcs: "sec-sources",
+    neighbours: "related",
+  };
   const showBand = (name: string) =>
-    summary.bands !== "four" ||
-    ["readzone", "chron", "srcs"].includes(name);
+    (summary.bands !== "four" || ["readzone", "chron", "srcs"].includes(name)) &&
+    !hidden.has(BAND_SECTION[name]);
 
   const bands: Array<[string, boolean]> = [
     /* In page order. The chronology moved above the write-up, so it takes
@@ -1620,8 +1656,8 @@ export default async function CasePage({
         <h1 className="official" lang={foreignLang(titleMain, locale)}>
           {titleMain}
           {titleSides && (
-            <span className="sides" lang={foreignLang(titleSides, locale)}>
-              ({titleSides})
+            <span className="sides" lang={foreignLang(titleSides + titleTail, locale)}>
+              ({titleSides}){titleTail}
             </span>
           )}
         </h1>
@@ -1837,12 +1873,16 @@ export default async function CasePage({
                        opens a run is the first of that run among the findings. */
                     opensTrack: i === 0 || findings[i - 1].track !== v.track,
                     outcome: v.outcome,
-                    outcomeLabel: pick(OUTCOME_LABEL[v.outcome], locale),
+                    /* The row's own word where the record gives one — see
+                       `outcomeLabel` in summaries/types.ts. */
+                    outcomeLabel: pick(v.outcomeLabel ?? OUTCOME_LABEL[v.outcome], locale),
+                    ownLabel: v.outcomeLabel !== undefined,
                     claim: pick(v.claim, locale),
                   };
                 })}
                 /* Offered only where there is something to fold: a table of
                    nothing but breaches has no second half. */
+                trackless={summary.verdictsTrackless}
                 head={{
                   track: pick(summary.verdictsTrackHeading ?? T.ixArticle, locale),
                   claim: pick(T.ixClaim, locale),
@@ -1861,11 +1901,11 @@ export default async function CasePage({
                 }
               />
             </div>
-            {amounts && (
+            {amounts && awarded.length > 0 && (
               <div>
                 <h2 className="lbl">{pick(T.amountsH, locale)}</h2>
                 <MoneyBars
-                  figures={amounts.figures.map((f) => ({
+                  figures={awarded.map((f) => ({
                     label: L(f.label),
                     display: typeof f.display === "string" ? f.display : L(f.display),
                     amount: f.amount,
@@ -1882,7 +1922,10 @@ export default async function CasePage({
                   ofLargestLabel={pick(T.ofLargest, locale)}
                   locale={locale}
                 />
-                {amounts.note && <p className="dash-note">{pick(amounts.note, locale)}</p>}
+                {/* The note that stood here — «Росія не сплатила рішення
+                    добровільно, тому стягнення відбувається через арешт її
+                    державних активів за кордоном» — is about enforcement, so
+                    it went down with the two figures that are. */}
               </div>
             )}
 
@@ -2492,6 +2535,36 @@ export default async function CasePage({
                     notStanding: pick(T.notStanding, locale),
                   }}
                 />
+                {/* What the award is worth today and what has actually been
+                    taken — the two figures the tribunal did not decide. They
+                    stood under «Що вирішив арбітраж»; this is the band that
+                    tells their story. Owner: «чи це дійсно те що вирішив
+                    суд?» — no. */}
+                {amounts && afterAward.length > 0 && (
+                  <div className="af-sums">
+                    <MoneyBars
+                      figures={afterAward.map((f) => ({
+                        label: L(f.label),
+                        display: typeof f.display === "string" ? f.display : L(f.display),
+                        amount: f.amount,
+                        currency: f.currency,
+                        estimated: f.estimated,
+                        note: f.note && L(f.note),
+                        parts: f.parts?.map((pt) => ({
+                          label: L(pt.label),
+                          display: typeof pt.display === "string" ? pt.display : L(pt.display),
+                          amount: pt.amount,
+                        })),
+                      }))}
+                      shareLabel={pick(T.shareOf, locale)}
+                      ofLargestLabel={pick(T.ofLargest, locale)}
+                      locale={locale}
+                    />
+                    {amounts.note && (
+                      <p className="dash-note">{pick(amounts.note, locale)}</p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
