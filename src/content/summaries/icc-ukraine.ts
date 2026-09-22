@@ -393,6 +393,22 @@ export const iccUkraine: DecisionSummary = {
 
   timeline: [
     {
+      /* Where the Court's reach begins in fact, as against where it begins
+         in law. The declarations below set the jurisdictional window; this
+         is the Court's own position on when the armed conflict — the
+         precondition for a war crime — was already under way. Owner's
+         date and owner's proposition; no paragraph is cited here because
+         none was supplied, and this page does not invent one. */
+      date: { uk: "не пізніше 26 лют. 2014", en: "no later than 26 Feb 2014" },
+      iso: "2014-02-26",
+      track: "jurisdiction",
+      kind: "context",
+      label: {
+        uk: "За оцінкою МКС, збройний конфлікт уже триває",
+        en: "On the ICC's assessment, an armed conflict is already under way",
+      },
+    },
+    {
       date: { uk: "9 квіт. 2014", en: "9 Apr 2014" },
       iso: "2014-04-09",
       track: "jurisdiction",
@@ -656,11 +672,15 @@ export const iccUkraine: DecisionSummary = {
   ],
 
   verdictsHeading: { uk: "Що вирішила Палата", en: "What the Chamber decided" },
+  /* Not «Підстава»: this column holds a wave of warrants or an enforcement
+     ruling and the date it issued, which is a stage, not a ground. */
+  verdictsTrackHeading: { uk: "Етап", en: "Stage" },
 
   verdicts: [
     {
       track: "17.03.2023",
-      trackLabel: { uk: "Перша хвиля · 17 березня 2023", en: "First wave · 17 March 2023" },
+      trackStage: { uk: "Перша хвиля", en: "First wave" },
+      trackLabel: { uk: "17 березня 2023", en: "17 March 2023" },
       claim: {
         uk: "Путін і Львова-Бєлова: депортація та незаконне переміщення дітей",
         en: "Putin and Lvova-Belova: deportation and unlawful transfer of children",
@@ -669,7 +689,8 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       track: "05.03.2024",
-      trackLabel: { uk: "Друга хвиля · 5 березня 2024", en: "Second wave · 5 March 2024" },
+      trackStage: { uk: "Друга хвиля", en: "Second wave" },
+      trackLabel: { uk: "5 березня 2024", en: "5 March 2024" },
       claim: {
         uk: "Кобилаш і Соколов: напади на цивільні об'єкти, надмірна шкода, нелюдські діяння",
         en: "Kobylash and Sokolov: attacks on civilian objects, excessive harm, inhumane acts",
@@ -678,7 +699,8 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       track: "24.06.2024",
-      trackLabel: { uk: "Третя хвиля · 24 червня 2024", en: "Third wave · 24 June 2024" },
+      trackStage: { uk: "Третя хвиля", en: "Third wave" },
+      trackLabel: { uk: "24 червня 2024", en: "24 June 2024" },
       claim: {
         uk: "Шойгу і Герасимов: ті самі звинувачення на рівні міністра оборони та Генштабу",
         en: "Shoigu and Gerasimov: the same charges at Defence-Ministry and General-Staff level",
@@ -687,7 +709,8 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       track: "24.10.2024",
-      trackLabel: { uk: "Виконання · 24 жовтня 2024", en: "Enforcement · 24 October 2024" },
+      trackStage: { uk: "Виконання", en: "Enforcement" },
+      trackLabel: { uk: "24 жовтня 2024", en: "24 October 2024" },
       claim: {
         uk: "Монголія порушила обов'язок заарештувати Путіна; імунітет глави держави перед МКС не діє",
         en: "Mongolia breached its duty to arrest Putin; head-of-state immunity is not opposable before the ICC",
@@ -708,7 +731,8 @@ export const iccUkraine: DecisionSummary = {
        visit, which is the non-arrest and not the decision. */
     {
       track: "19.03.2026",
-      trackLabel: { uk: "Виконання · 19 березня 2026", en: "Enforcement · 19 March 2026" },
+      trackStage: { uk: "Виконання", en: "Enforcement" },
+      trackLabel: { uk: "19 березня 2026", en: "19 March 2026" },
       claim: {
         uk: "Таджикистан не виконав запит про арешт і передачу Путіна; питання передано Асамблеї держав-учасниць",
         en: "Tajikistan failed to execute the request to arrest and surrender Putin; referred to the Assembly of States Parties",
@@ -722,7 +746,8 @@ export const iccUkraine: DecisionSummary = {
          the ruling went. Written as the holding it would have inverted.
          Keyed to the day, which is the chronology entry it links down to. */
       track: "09.06.2026",
-      trackLabel: { uk: "Співпраця · 9 червня 2026", en: "Cooperation · 9 June 2026" },
+      trackStage: { uk: "Співпраця", en: "Co-operation" },
+      trackLabel: { uk: "9 червня 2026", en: "9 June 2026" },
       claim: {
         uk: "Держава-учасниця: мирні переговори за участю особи під ордером дозволяють не виконувати арешт",
         en: "A State Party: peace talks attended by a person under warrant permit non-execution of the arrest",

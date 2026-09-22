@@ -1801,6 +1801,7 @@ export default async function CasePage({
                       : v.trackLabel
                         ? pick(v.trackLabel, locale)
                         : v.track,
+                    stage: v.trackStage ? pick(v.trackStage, locale) : undefined,
                     href: url,
                     inHref: url ? undefined : inHref,
                     inLabel: pick(T.toChronology, locale),
@@ -1816,7 +1817,7 @@ export default async function CasePage({
                 /* Offered only where there is something to fold: a table of
                    nothing but breaches has no second half. */
                 head={{
-                  track: pick(T.ixArticle, locale),
+                  track: pick(summary.verdictsTrackHeading ?? T.ixArticle, locale),
                   claim: pick(T.ixClaim, locale),
                   outcome: pick(T.ixResult, locale),
                   sortedBy: pick(T.sortedBy, locale),

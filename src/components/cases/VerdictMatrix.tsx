@@ -7,6 +7,8 @@ import type { Outcome } from "@/content/summaries/types";
 export interface VerdictRow {
   /** Article, treaty, stage or defendant the claim was brought under. */
   track: string;
+  /** The stage that ground belongs to, set over it as a tag. */
+  stage?: string;
   /** Official text of the instrument, where the track names one. */
   href?: string;
   /**
@@ -284,7 +286,18 @@ export default function VerdictMatrix({
               would be three identical links to the same document.
 
               Owner: «а де стаття? чому там пусто?» */}
-          {r.opensTrack ? (
+          {/* The stage over the ground, where the record keeps one: a wave
+              of warrants, an enforcement ruling. It is a category, so it
+              takes a tag rather than a share of the ground's own line — the
+              two were one string and the column had to be three lines wide
+              to hold them. */}
+          {/* One cell, two things: the stage over the ground it names. As
+              siblings they were two grid items in a three-column row, so
+              the grid opened a second row for the chip and every row grew
+              44px to hold it. */}
+          <span className="v-ground">
+            {r.stage && <span className="v-stage">{r.stage}</span>}
+            {r.opensTrack ? (
             r.href ? (
               <a
                 className="v-track v-track-link"
@@ -305,9 +318,10 @@ export default function VerdictMatrix({
             ) : (
               <span className="v-track">{r.track}</span>
             )
-          ) : (
-            <span className="v-track v-track-cont">{r.track}</span>
-          )}
+            ) : (
+              <span className="v-track v-track-cont">{r.track}</span>
+            )}
+          </span>
           {/* Article, claim, result — the order the design reads them in and
               the order a dispositif is written in. It was outcome first,
               because the row used to run the full 1180px rail and the two

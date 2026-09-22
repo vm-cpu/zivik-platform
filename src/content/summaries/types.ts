@@ -275,6 +275,21 @@ export interface Verdict {
   track: string;
   /** Display form of the track, when the key is not a proper name. */
   trackLabel?: Localized;
+  /**
+   * The stage the ground belongs to, set apart from the ground itself.
+   *
+   * The ICC's grounds are «Перша хвиля · 17 березня 2023» — a stage and a
+   * date packed into one cell, so the column had to be three lines wide to
+   * hold two words of claim beside it, and the stage read as part of the
+   * date rather than as the category it is. Recorded separately, it is a
+   * tag over the date: a wave of warrants, an enforcement ruling, a ruling
+   * on co-operation.
+   *
+   * Only the ICC has stages; a decision without them is unchanged, which
+   * is why this is a tag and not a fourth column — a column would be empty
+   * on seven of the eight.
+   */
+  trackStage?: Localized;
   claim: Localized;
   outcome: Outcome;
   /**
@@ -662,6 +677,17 @@ export interface DecisionSummary extends VerbatimSummary {
   bands?: "four";
   /** Heading for the verdict matrix, when "what the Court found" is wrong. */
   verdictsHeading?: Localized;
+  /**
+   * Heading for the index's first column, when «Підстава» is wrong.
+   *
+   * That column holds whatever the claim was brought under, and what that
+   * is differs by forum: at the ICJ it is the convention — ICSFT, CERD —
+   * which is a ground. At the ICC it is a wave of warrants and the date
+   * they issued, which is a stage. Calling a stage a ground is the kind of
+   * small untruth a legal archive cannot afford, so the record names its
+   * own column. Owner: «хіба це підстава?»
+   */
+  verdictsTrackHeading?: Localized;
   /** Heading for the map, when neither "two theatres" nor the seat fits. */
   theatresHeading?: Localized;
   /**

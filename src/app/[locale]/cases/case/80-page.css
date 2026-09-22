@@ -1505,3 +1505,177 @@
   font: 500 var(--t-cap) var(--brand-font-mono);
   color: var(--ink3);
 }
+
+/* ── The aliases follow the page onto paper ───────────────────────────────
+   Owner: «ми втратили кольори».
+
+   `.casepage` declares two colour sets — a night one (--gold, --muted,
+   --red, --faint, --cream, --rule) and a paper one (--pgold, --ink2,
+   --pred, --ink3, --ink, --prule) — from when the page was alternating
+   dark and light bands. The bands were flattened onto one paper canvas in
+   this same file, and the aliases were left pointing at the night set. So
+   every rule written against them has been painting night colours on
+   white ever since:
+
+     the figures in «у цифрах поза судом»   1.81:1
+     their labels and notes                 2.00:1
+     «решта — досі ні»                      3.22:1
+
+   Text at 2:1 is not a weak colour, it is unreadable, and these are the
+   numbers the band exists to show.
+
+   Re-pointed rather than rewritten rule by rule: there are forty-odd
+   users of these four names across six stylesheets, and the fault is in
+   the name, not in any of them.
+
+   EXCEPT THE MASTHEAD, which is still the night ground and is the one
+   part of this page that never went to paper. Re-pointing it turned the
+   h1 into --brand-ink on --brand-night: 1.06:1, a title the reader cannot
+   see at all. It keeps the night set, declared again below.
+
+   The dark tokens stay declared and reachable as --brand-*: the night map
+   on /map and the home page's lamp still use them. */
+.casepage {
+  --gold: var(--brand-gold-ink);
+  --gold-dim: var(--brand-gold-mark);
+  --muted: var(--brand-ink-2);
+  --faint: var(--brand-faint);
+  --red: var(--brand-red);
+  --cream: var(--brand-ink);
+  --rule: var(--brand-rule);
+  --rule-soft: var(--brand-rule);
+  --panel: var(--brand-surface);
+}
+
+/* The masthead never left the night ground, so its names still mean what
+   they meant. Declared after the block above, on the band itself. */
+.casepage .mast {
+  --gold: var(--brand-gold-lit);
+  --gold-dim: var(--brand-gold-dim);
+  --muted: var(--brand-muted-dark);
+  --faint: var(--brand-faint-dark);
+  --red: var(--brand-breach);
+  --cream: var(--brand-cream);
+  --rule: var(--brand-night-rule);
+  --rule-soft: var(--brand-night-rule-soft);
+  --panel: var(--brand-night-2);
+  --ink: var(--brand-cream);
+  --ink2: var(--brand-muted-dark);
+  --ink3: var(--brand-faint-dark);
+}
+/* The map key's note sat at 3.45:1 on the lit map — --brand-faint-dark,
+   another night colour reading on paper. */
+.casepage .mapband[data-lit] .lg-note {
+  color: var(--ink2);
+}
+/* The sort affordance at 1.35:1 was a hint nobody could see. */
+.casepage .ix-sort i {
+  color: var(--ink3);
+}
+
+/* ── The ground column takes what the ground needs ────────────────────────
+   Owner: «треба розширити колонку підстави».
+
+   118px was measured against «ICSFT», «CERD», «Тимчасові заходи» — the
+   ICJ case, where a ground is an abbreviation. The ICC's are «Перша хвиля
+   · 17 березня 2023», which is three lines in that column, and the row
+   becomes three lines tall to hold two words of claim beside it.
+
+   `max-content` lets the widest label in the table set the width for all
+   of them, which is what a table column is; the 118px floor keeps the
+   short ones from collapsing, and the 38% ceiling keeps a long one from
+   eating the claim it is supposed to introduce. The three rows of the
+   table — head, claims, fold — take the same track so they stay a table. */
+.casepage .verdicts li,
+.casepage .ix-head,
+.casepage .v-fold {
+  /* One width for all three, because they are three grids and
+     `max-content` is measured per grid: sized to content the rows came out
+     127.5px and the head and the fold stayed at 118, so the table's own
+     columns no longer lined up.
+
+     140px is what the widest thing that goes here needs on one line — the
+     ICC's «19 березня 2026 ↓» at the mono 12.5px, and the ICJ's
+     «Тимчасові заходи», which was wrapping at 118 too. Fixed, so the
+     three rows of the table stay one table.
+
+     (The first attempt was `minmax(118px, min(max-content, 38%))`, which
+     is invalid — `min()` takes lengths and `max-content` is not one — so
+     the declaration dropped and the 118px it meant to replace went on
+     winning, silently.) */
+  grid-template-columns: 140px minmax(0, 1fr) 132px;
+}
+
+/* The stage over the ground: a category, so it reads as a tag and not as
+   the first half of the date under it. */
+/* ── The stage and the ground it names ───────────────────────────────────
+   Owner: «цей тег виглядає погано — попрацюй зі шрифтами в тій колонці».
+
+   A box was the wrong instrument. This page already tells a label from a
+   figure by register, everywhere: a label is tracked sans in capitals, a
+   date or a docket is the machine face. The two lines of this cell are
+   exactly that pair — «ПЕРША ХВИЛЯ» is a category, «17 березня 2023» is a
+   date — so they differ the way every other label and figure here differ,
+   and nothing is drawn around either.
+
+   The stage steps back in weight and colour as well as face: it names the
+   run, and the date is what the reader is looking for. */
+.casepage .v-ground {
+  /* So one long ground cannot eat the claim it introduces. */
+  max-width: 34ch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+/* The date does not wrap. The column asks `max-content` how wide the
+   ground needs to be, and a date allowed to break answers with the width
+   of its longest word — so the column stayed at its 118px floor and every
+   date wrapped to two lines inside it. */
+.casepage .v-ground .v-track {
+  white-space: nowrap;
+}
+.casepage .v-stage {
+  font: 600 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  white-space: nowrap;
+}
+
+/* ── The event a date brought you to ──────────────────────────────────────
+   Owner: «що натискання на дату робить? якщо воно переносить на конкретну
+   подію хронології — то треба додати якір і якусь підсвітку».
+
+   It does exactly that: each row of the chronology carries `#ev-<date>`
+   and the index's date cell links to it. What it did not do was say which
+   row — the reader arrived at a list and had to count back to the date
+   they had just pressed.
+
+   `:target` is the right tool because the state is the URL's, not a
+   script's: it survives a reload, it is what a shared link reproduces,
+   and it costs nothing when nobody has followed a link. The row takes the
+   warm ground and the gold edge this page already uses for «this is the
+   one», and a scroll margin so it does not arrive under the top of the
+   window. */
+.casepage .ctl li:target {
+  background: var(--brand-paper-warm-3);
+  box-shadow: inset 2px 0 0 var(--brand-gold-mark);
+  scroll-margin-top: var(--anchor-gap);
+}
+.casepage .ctl li:target .ctl-row {
+  padding-left: var(--space-4);
+}
+/* The mark fades in where a reader has motion on, so the row is seen
+   arriving rather than found already changed. */
+@media (prefers-reduced-motion: no-preference) {
+  .casepage .ctl li:target {
+    animation: ctl-land var(--dur-slow) var(--ease-out);
+  }
+  @keyframes ctl-land {
+    from {
+      background: transparent;
+      box-shadow: inset 2px 0 0 transparent;
+    }
+  }
+}

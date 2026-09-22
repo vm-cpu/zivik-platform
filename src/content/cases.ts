@@ -38,7 +38,12 @@ export const registryCases: RegistryCase[] = [
     institutionId: "icj",
     name: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening), Preliminary Objections, Judgment, I.C.J. Reports 2024, 2 February 2024",
     nameShort: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening)",
-    nameUk: "Україна проти РФ — звинувачення у геноциді",
+    /* The official name, as on the decision page — the same alignment the
+       ICSFT/CERD case got. The parties come off the end because the page
+       sets them apart from the subject, and the library's own row carries
+       them in its English line. */
+    nameUk:
+      "Звинувачення у геноциді за Конвенцією про запобігання злочину геноциду та покарання за нього",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     /* The ICJ issues no arrest warrants. What this row was pointing at is the
        Order on provisional measures of 16 March 2022 (judgment § 10), and in
