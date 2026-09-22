@@ -327,6 +327,22 @@ export interface Metric {
   restLabel?: Localized;
   /** Countable units — draws one mark per unit (capped in the component). */
   count?: number;
+  /**
+   * This figure is a part of the one declared before it.
+   *
+   * The two were separate tiles in a two-column grid, which put the whole and
+   * its share side by side with nothing saying so — and set the eye reading
+   * down the left column instead, where «19 546+ дітей» was followed by «2
+   * держави не виконали ордер», a different subject entirely. The band said
+   * three unrelated things in no order.
+   *
+   * Marked as a part, the figure is drawn inside the tile of the whole it
+   * divides, under it, and the pair takes the full width. The sequence then
+   * reads: скільки вивезено → скільки з них повернуто → і лише потім
+   * окремий предмет, виконання ордерів. Owner: «не зрозуміло що ми хочемо
+   * сказати. Послідовності інформації».
+   */
+  partOfAbove?: boolean;
   note?: Localized;
   /**
    * Another measure of the same quantity, where the sources disagree.

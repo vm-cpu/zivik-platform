@@ -1845,6 +1845,7 @@ export default async function CasePage({
                     percent: m.percent,
                     restLabel: m.restLabel && L(m.restLabel),
                     count: m.count,
+                    partOfAbove: m.partOfAbove,
                     note: m.note && L(m.note),
                     alt: m.alt && { label: L(m.alt.label), value: L(m.alt.value) },
                   }))}

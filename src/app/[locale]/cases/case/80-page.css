@@ -1729,6 +1729,41 @@
    So the pair keeps the row, in the order they are read, and anything
    left over takes the full width instead of half of it. A tile alone on
    a row is a tile that has stopped belonging to the row above. */
+/* ── Ціле та його частка: одна плитка на всю ширину ──────────────────────
+   Owner: «не зрозуміло що ми хочемо сказати. Послідовності інформації».
+
+   Дві колонки ставили ціле і його частку поруч, не сказавши, що це одне й те
+   саме: око читало вниз лівою колонкою і діставало «19 546+ дітей», а під ним
+   «2 держави не виконали ордер» — інший предмет. Смуга промовляла три речі
+   без порядку.
+
+   Пара бере рядок цілком і читається згори вниз: скільки вивезено → скільки
+   з них повернуто → і лише тоді, нижче, окремий предмет. Розмір веде: ціле
+   найбільше, частка на крок менша, чужа оцінка найтихіша.
+
+   Селектори навмисно глибші за потрібне (п'ять класів). `[data-shape="plain"]`
+   у 40-instruments.css має чотири і кладе голову плитки в колонку та зменшує
+   цифру — а частка всередині цієї ж плитки має лишитися рядком. */
+.casepage .takings .taking[data-pair="yes"] {
+  grid-column: 1 / -1;
+}
+.casepage .takings .taking[data-pair="yes"] > .taking-head .taking-value {
+  font-size: var(--t-h2);
+}
+.casepage .taking[data-pair="yes"] .taking-part {
+  margin-top: var(--space-6);
+}
+.casepage .taking[data-pair="yes"] .taking-part .taking-head {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--space-4);
+}
+/* Не --t-h3: на вузькому екрані --t-h2 сідає на свої 23px, і 22,5 проти 23
+   — це не сходинка, а збіг. 20 тримає різницю на будь-якій ширині. */
+.casepage .taking[data-pair="yes"] .taking-part .taking-value {
+  font-size: var(--t-lead);
+}
+
 /* The provenance note joins the grid instead of hanging under it, so the
    row the enforcement figure opens is a row and not a figure with an empty
    half beside it. Two subjects above, the caveat and its sources below. */
@@ -1741,4 +1776,23 @@
    closer to each other than to anything else in the band. */
 .casepage .takings {
   align-items: start;
+}
+
+/* ── Подвійні лінії під заголовком секції ────────────────────────────────
+   Owner: «перевір на наявність зайвих ліній».
+
+   `.sec-h` малює риску під заголовком секції, а перший рядок смуги під ним
+   малює власну верхню — дві паралельні лінії за двадцять пікселів одна від
+   одної, і жодна з них нічого не ділить, бо між ними нічого немає. Риска
+   заголовка вже відділила смугу; перший рядок починає рахунок від неї.
+
+   Три смуги, три селектори, а не одне широке правило: `.sec-h + * > *` зняло
+   б кант і там, де він щось означає — як золота риска `.why`, що позначає
+   картку, а не рядок. */
+.casepage .sec-h + .rulings > .ruling:first-child,
+/* Усі картки ряду, а не лише перша: зняти кант з однієї означає лінію на
+   дві третини ширини. Ряд тримає проміжок. */
+.casepage .sec-h + .nb-grid > li > a,
+.casepage .sec-h + .verdicts > li:first-child {
+  border-top: 0;
 }

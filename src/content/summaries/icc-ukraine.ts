@@ -1035,6 +1035,9 @@ export const iccUkraine: DecisionSummary = {
       {
         label: { uk: "З них повернуто", en: "Of those, returned" },
         value: { uk: "1 859", en: "1,859" },
+        /* Частка того, що стоїть просто над нею, — і малюється в тій самій
+           плитці, бо в двох колонках «з них» не мало до чого відсилати. */
+        partOfAbove: true,
         percent: 9.5,
         restLabel: { uk: "решта — досі ні", en: "the rest — still not" },
         note: { uk: "станом на грудень 2025", en: "as of December 2025" },

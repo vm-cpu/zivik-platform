@@ -39,6 +39,8 @@ export interface MetricR {
   percent?: number;
   restLabel?: string;
   count?: number;
+  /** A part of the figure declared before it — drawn inside its tile. */
+  partOfAbove?: boolean;
   note?: string;
   /** A second measure of the same quantity, where the sources disagree. */
   alt?: { label: string; value: string };
@@ -129,82 +131,90 @@ export default function TakingsGrid({
      directly above them. */
   const CAP = 400;
 
+  /* A whole and its part are one tile, not two — see `partOfAbove` on Metric.
+     Grouped here rather than in the markup below so the grid sees a single
+     child for the pair and can give it the full width. */
+  const tiles: { whole: MetricR; part?: MetricR }[] = [];
+  for (const m of metrics) {
+    if (m.partOfAbove && tiles.length > 0) tiles[tiles.length - 1].part = m;
+    else tiles.push({ whole: m });
+  }
+
+  /* `!== undefined` on both, not truthiness: a metric of nought is a finding,
+     and truthiness filed it under the wrong shape while the field rendered. */
+  const shapeOf = (m: MetricR) =>
+    m.count !== undefined ? "grid" : m.percent !== undefined ? "bar" : "plain";
+
+  const figure = (m: MetricR) => (
+    <>
+      <div className="taking-head">
+        <span className="taking-label">{m.label}</span>
+        <b className="taking-value">{m.value}</b>
+      </div>
+
+      {m.count !== undefined && (
+        <>
+          <div className="dotfield" aria-hidden="true">
+            {Array.from({ length: Math.min(m.count, CAP) }, (_, d) => (
+              <i key={d} style={{ transitionDelay: `${Math.min(d * 4, 900)}ms` }} />
+            ))}
+          </div>
+          {m.count > CAP && labels?.andMore && (
+            <p className="taking-capped">{labels.andMore.replace("{n}", String(CAP))}</p>
+          )}
+        </>
+      )}
+
+      {m.percent !== undefined && (
+        <>
+          <div
+            className="taking-bar"
+            /* Only a share whose remainder has been named is drawn against a
+               breach-coloured track — see the note in the stylesheet. The other
+               four shares on the site are shares of a whole, not of a loss. */
+            data-rest={m.restLabel ? "named" : "none"}
+            role="img"
+            aria-label={`${m.label}: ${pct(m.percent)}%`}
+          >
+            <i style={{ width: shown ? `${m.percent}%` : "0%" }} />
+          </div>
+          {m.restLabel && (
+            <p className="taking-split">
+              <span className="ts-share">{pct(m.percent)}%</span>
+              <span className="ts-rest">{m.restLabel}</span>
+            </p>
+          )}
+        </>
+      )}
+
+      {/* The note belongs to the figure above it, so it closes the figure. */}
+      {m.note && <p className="taking-note">{m.note}</p>}
+    </>
+  );
+
   return (
     <div className="takings" ref={root} data-shown={shown ? "yes" : "no"}>
-      {metrics.map((m, i) => (
+      {tiles.map(({ whole, part }, i) => (
         <div
           key={i}
           className="taking"
-          /* `!== undefined` on both, for the reason given at the dot field
-             below: a metric of nought is a finding, and truthiness filed it
-             under the wrong shape while the field itself rendered. */
-          data-shape={
-            m.count !== undefined
-              ? "grid"
-              : m.percent !== undefined
-                ? "bar"
-                : "plain"
-          }
+          data-shape={shapeOf(whole)}
+          data-pair={part ? "yes" : undefined}
         >
-          <div className="taking-head">
-            <span className="taking-label">{m.label}</span>
-            <b className="taking-value">{m.value}</b>
-          </div>
+          {figure(whole)}
 
-          {/* `!== undefined`, not truthiness — the sibling `percent` test two
-              blocks down already gets this right. A metric recorded as
-              `count: 0` (nought of something, which is a finding) rendered a
-              bare "0" into the tile instead of an empty dot field. */}
-          {m.count !== undefined && (
-            <>
-              <div className="dotfield" aria-hidden="true">
-                {Array.from({ length: Math.min(m.count, CAP) }, (_, d) => (
-                  <i key={d} style={{ transitionDelay: `${Math.min(d * 4, 900)}ms` }} />
-                ))}
-              </div>
-              {m.count > CAP && labels?.andMore && (
-                <p className="taking-capped">
-                  {labels.andMore.replace("{n}", String(CAP))}
-                </p>
-              )}
-            </>
-          )}
+          {/* The part, inside the tile of the whole it divides and directly
+              under it, so «з них повернуто» has its «них» in reach. */}
+          {part && <div className="taking-part">{figure(part)}</div>}
 
-          {m.percent !== undefined && (
-            <>
-              <div
-                className="taking-bar"
-                /* Only a share whose remainder has been named is drawn against
-                   a breach-coloured track — see the note in the stylesheet.
-                   The other four shares on the site are shares of a whole, not
-                   of a loss. */
-                data-rest={m.restLabel ? "named" : "none"}
-                role="img"
-                aria-label={`${m.label}: ${pct(m.percent)}%`}
-              >
-                <i style={{ width: shown ? `${m.percent}%` : "0%" }} />
-              </div>
-              {m.restLabel && (
-                <p className="taking-split">
-                  <span className="ts-share">{pct(m.percent)}%</span>
-                  <span className="ts-rest">{m.restLabel}</span>
-                </p>
-              )}
-            </>
-          )}
-
-          {/* The note belongs to the figure above it, so it comes first;
-              the other measure closes the tile. Rendered the other way
-              round, «депортовані або примусово переміщені» read as a
-              caption on the ombudspersons' estimate. */}
-          {m.note && <p className="taking-note">{m.note}</p>}
-          {/* The other measure, under the first and in the same shape, so
-              the disagreement is visible as a disagreement rather than as
-              a sentence about one of them. */}
-          {m.alt && (
+          {/* The other measure closes the tile, after the share rather than
+              before it: read last, an estimate an order of magnitude larger
+              lands on a reader who has just seen how little of it came back.
+              Read first, it would have stolen the «них» from the share. */}
+          {whole.alt && (
             <div className="taking-alt">
-              <span className="taking-label">{m.alt.label}</span>
-              <b className="taking-value">{m.alt.value}</b>
+              <span className="taking-label">{whole.alt.label}</span>
+              <b className="taking-value">{whole.alt.value}</b>
             </div>
           )}
         </div>
