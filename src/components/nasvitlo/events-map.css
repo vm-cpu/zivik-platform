@@ -161,11 +161,21 @@
      measured in projection units disappears at the wide framing. */
   vector-effect: non-scaling-stroke;
   stroke-width: 0.8;
+  /* Unconditionally, and for the reason given at .emap-court-hit: the browser
+     draws its own ring around the *bounding box* of an SVG path, so a focused
+     country came up as a blue rectangle with a white halo standing over the
+     map — a box around Germany, not Germany. Scoping the reset to
+     :focus-visible left that box showing for every other way the shape can be
+     focused, which is how it survived to the live site. Nothing here is a
+     styled control the ring could sit on correctly; the indicators below are
+     drawn along the country's own edge instead. */
+  outline: none;
 }
-/* A lit country answers when pressed, so it says so: a pointer, a focus ring
-   the keyboard can find, and a brighter edge while it is the selected one.
-   Only where there is something to press — a shape with no country entry
-   behind it keeps the plain rule above and stays scenery. */
+/* A lit country answers when pressed, so it says so: a pointer, a brighter
+   edge while it is the selected one, and — for the keyboard — light along the
+   contour rather than a ring around it. Only where there is something to
+   press: a shape with no country entry behind it keeps the plain rule above
+   and stays scenery. */
 .emap-forum-state[role="button"] {
   cursor: pointer;
 }
@@ -174,10 +184,21 @@
   fill: color-mix(in srgb, var(--brand-gold-lit) 42%, transparent);
   stroke: color-mix(in srgb, var(--brand-gold-lit) 85%, transparent);
 }
-.emap-forum-state[role="button"]:focus-visible {
-  outline: none;
+/* The keyboard's indicator: the same light the layer is already made of, wound
+   up. The edge goes to full pale gold at 2 non-scaling pixels — 2 real pixels
+   at every framing, like the court's ring, rather than 2 projection units that
+   thin as the map widens — and the glow doubles in reach, so the country reads
+   as lit from within instead of boxed in.
+
+   `:focus`, not `:focus-visible`. The browser focuses an SVG shape on
+   mousedown, so a country selected by mouse is the focused element either way;
+   under :focus-visible it would sit there focused and show nothing, and the
+   contour glow is quiet enough that showing it to the mouse costs nothing. */
+.emap-forum-state[role="button"]:focus {
   stroke: var(--brand-gold-pale);
   stroke-width: 2;
+  filter: drop-shadow(0 0 5px color-mix(in srgb, var(--brand-gold-lit) 70%, transparent))
+    drop-shadow(0 0 16px color-mix(in srgb, var(--brand-gold-lit) 45%, transparent));
 }
 
 .emap-ua {
