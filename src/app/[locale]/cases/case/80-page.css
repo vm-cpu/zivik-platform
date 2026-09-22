@@ -130,6 +130,19 @@
   border-left: 2px solid var(--brand-gold-mark);
   padding-left: clamp(16px, 2.4vw, 22px);
 }
+/* When the grid stops being a grid the rule moves from the left edge to the
+   top. Both states live here, in the file that is imported last: the same
+   pair split across two files gave the aside a gold bracket down its left
+   *and* across its top, because the later file won `border-left` while the
+   media query still added `border-top`. */
+@media (max-width: 860px) {
+  .casepage .lede-grid .why {
+    border-left: 0;
+    border-top: 2px solid var(--brand-gold-mark);
+    padding-left: 0;
+    padding-top: var(--space-5);
+  }
+}
 .casepage .lede-grid .why .lbl-c {
   margin-bottom: var(--space-3);
 }

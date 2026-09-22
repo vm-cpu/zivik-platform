@@ -18,41 +18,19 @@
    The rule still holds, and more easily than before: .score has .dash's paper
    above it and .refs's paper below, and .mapband is four bands further down.
    No two dark grounds touch. */
-.casepage .dash {
-  background: var(--paper2);
-  color: var(--ink);
-  border-bottom: 1px solid var(--seam);
-  padding-block: clamp(34px, 4.5vw, 60px);
-}
-/* The holding and the sums. No --seam edge: the seam exists because
-   --brand-surface against --brand-paper-2 is 1.06:1 and has to be drawn; here
-   the edge is the ground, and a grey hairline on it is a stray line — which
-   .mapband, dark between two paper bands, has always known. */
-.casepage .score {
-  background: var(--bg);
-  color: var(--cream);
-  padding-block: clamp(34px, 4.5vw, 60px);
-}
+/* The grounds and the band padding these two carried are gone: the page is
+   one paper canvas now and 80-page.css owns it. What is left here is what is
+   still theirs — the stack inside them. */
+
 .casepage .dash-stack {
   display: grid;
   gap: clamp(34px, 4vw, 54px);
 }
 
 /* KPI strip */
-.casepage .kpis {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-3);
-}
 @media (max-width: 1000px) {
-  .casepage .kpis {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 @media (max-width: 420px) {
-  .casepage .kpis {
-    grid-template-columns: 1fr;
-  }
 }
 /* A card on the night ground, and it takes three cues because on this ground
    no one of them is enough. --panel is 1.07:1 against the band — which is why
@@ -68,15 +46,6 @@
    ledgers in a row would read as one instrument. */
 /* Paper again: the counters stayed with the docket card when the band split,
    and --panel on --paper-2 is 1.06:1 — a card with no edge at all. */
-.casepage .kpi {
-  background: var(--card);
-  border-radius: var(--r-md);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-6) var(--space-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
 /* The figure was --t-fig, clamp(29px, 3.6vw, 44px) — 44px against a 14px
    caption from 1223px up, a headline sitting in a data strip. --t-h2 is the
    top of the shared ramp (23 → 29px) and the only step that keeps the pair
@@ -91,23 +60,8 @@
    Paper again since the band split: --gold, the lit one, is 1.87:1 on a white
    card, so the strip goes back to --pgold, which is what it wore before the
    band ever went dark. */
-.casepage .kpi b {
-  font-family: var(--brand-font-display), serif;
-  font-weight: 700;
-  font-size: var(--t-h2);
-  line-height: 1.05;
-  color: var(--pgold);
-  font-variant-numeric: tabular-nums;
-}
 /* The figure that counts violations, in the colour this page gives a breach —
    the paper red, since the card is white again. */
-.casepage .kpi[data-em="1"] b {
-  color: var(--pred);
-}
-.casepage .kpi span {
-  font: 500 var(--t-sm) var(--brand-font-body);
-  color: var(--ink2);
-}
 /* A figure's qualification: the asterisk on the number, the words under the
    label. Smaller and quieter than the label, because it is a footnote to the
    tile and not a second label — and not italic despite the `<i>`, which is
@@ -120,17 +74,6 @@
    5.45:1 on the same ground. The alias is right for most of the page and
    wrong for the one tile that is white, which is exactly the kind of slip a
    shared name makes easy. */
-.casepage .kpi .kpi-star {
-  font-size: 0.5em;
-  vertical-align: super;
-  line-height: 0;
-}
-.casepage .kpi .kpi-note {
-  font: 400 var(--t-cap) var(--brand-font-body);
-  font-style: normal;
-  line-height: 1.4;
-  color: var(--brand-faint);
-}
 
 /* ---- map band -------------------------------------------------------------
    Wide-format section, built the way the home page builds .nsv-mapband: the
@@ -470,52 +413,19 @@
    type that says so: it is the only block here with a display-serif heading
    and a count, where the ledger, the figures, the takings and the money each
    carry an 11px label. */
-.casepage .vpanel {
-  border: 1px solid var(--rule);
-  border-radius: var(--r-md);
-  padding: clamp(24px, 3vw, 40px);
-}
+/* .vpanel was the card the index sat in: a rounded border and 40px of
+   padding on the night ground. The index is a table on paper now and draws
+   its own edges, so the wrapper carries nothing — kept as a hook only
+   because the print sheet still names it. */
 
-.casepage .score-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  margin-bottom: var(--space-5);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--rule);
-}
-.casepage .score-head h2 {
-  margin: 0;
-  font-family: var(--brand-font-display), serif;
-  font-size: var(--t-h3);
-  font-weight: 700;
-  /* 15.53:1 on --brand-night. */
-  color: var(--cream);
-}
-.casepage .score-count {
-  font: 600 var(--t-sm) var(--brand-font-body);
-  /* 9.06:1. */
-  color: var(--muted);
-}
 /* Red is a finding of breach and nothing else, so the figure only wears it
    when that is what it counts. A conviction is a breach found against a
    person; relief granted is not, and an award the claimant won outright used
    to print "6 upheld" in the colour this system reserves for a violation. On
    paper that was --brand-red, dark enough to pass for emphasis. Here it would
    be --brand-breach, and it would read as exactly what it is not. */
-.casepage .score-count b {
-  font-weight: 700;
-}
 /* 5.61:1. */
-.casepage .score-count[data-of="breach"] b {
-  color: var(--red);
-}
 /* 9.98:1. */
-.casepage .score-count[data-of="relief"] b {
-  color: var(--gold);
-}
 
 /* the verdict matrix ---------------------------------------------------------
    One line per claim: the track it was brought under, how it was disposed of,

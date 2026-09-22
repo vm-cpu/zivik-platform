@@ -162,13 +162,9 @@
   .casepage .glance-item {
     border-top-color: #999 !important;
   }
-  .casepage .kpi {
-    box-shadow: none !important;
-  }
   .casepage .official,
-  .casepage .kpi b,
   .casepage .ctl-label,
-  .casepage .score-head h2,
+  .casepage .sec-h h2,
   .casepage .v-claim {
     color: #000 !important;
   }
