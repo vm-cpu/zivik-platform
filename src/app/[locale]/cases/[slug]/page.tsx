@@ -547,6 +547,35 @@ function Findings({
   );
 }
 
+/**
+ * A numbered part of the write-up, introduced the way every section is.
+ *
+ * The write-up numbers its own parts — «1. ФАКТИЧНІ ОБСТАВИНИ» — and the
+ * number is inside the heading string, because that is how the court's text
+ * numbers them. The design sets it beside the heading instead: large, light
+ * and gold. It counts the parts; it is not a word of the title, and a screen
+ * reader announcing "one dot фактичні обставини" was reading a layout
+ * decision aloud — so the numeral is hidden from it and the heading keeps
+ * its own words.
+ *
+ * Only a leading «N.» or «N)» comes off. A heading that opens with a year —
+ * and several across the archive do — keeps it, because there the number is
+ * the heading.
+ */
+function PartHead({ text, id }: { text: string; id?: string }) {
+  const m = /^(\d{1,2})[.)]\s+(.*)$/.exec(text);
+  return (
+    <div className="sec-h">
+      {m && (
+        <span className="sec-n" aria-hidden="true">
+          {m[1]}
+        </span>
+      )}
+      <h2 id={id}>{m ? m[2] : text}</h2>
+    </div>
+  );
+}
+
 /** Render one verbatim block in reading order. */
 function Block({
   block,
@@ -559,7 +588,7 @@ function Block({
     case "lead":
       return <p className="lead">{mark(block.text)}</p>;
     case "h2":
-      return <h2>{block.text}</h2>;
+      return <PartHead text={block.text} />;
     case "h3":
       return <h3>{block.text}</h3>;
     case "h4":
@@ -1360,9 +1389,7 @@ export default async function CasePage({
           const mark = (t: string) => markTerms(t, termRefs, used);
           return body.map((b, i) =>
             b.kind === "h2" ? (
-              <h2 id={`sec-${h2i++}`} key={i}>
-                {b.text}
-              </h2>
+              <PartHead key={i} id={`sec-${h2i++}`} text={b.text} />
             ) : (
               <Block key={i} block={b} mark={mark} />
             ),

@@ -238,3 +238,34 @@
     padding: 3px var(--space-2);
   }
 }
+
+/* ── The write-up's own parts ────────────────────────────────────────────
+   Its headings now stand in the same head as every other section's, so a
+   numbered part and a named section are introduced the same way. Sentence
+   case rather than capitals: the write-up sets its parts as titles, and a
+   title in full capitals at this size is a label. */
+.casepage .sec-h h2 {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.casepage .sec-h {
+  align-items: baseline;
+}
+.casepage .sec-h > h2 {
+  flex: 1 1 auto;
+}
+/* A heading inside the write-up steps up slightly: it opens a part, where a
+   section head opens a section. */
+.casepage .readzone .sec-h h2 {
+  font-size: clamp(20px, 2.3vw, 23px);
+}
+.casepage .readzone h3 {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: clamp(16px, 1.9vw, 20px);
+  line-height: 1.3;
+  color: var(--red);
+  text-transform: none;
+  letter-spacing: 0;
+  margin: var(--space-6) 0 var(--space-3);
+}
