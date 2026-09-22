@@ -1693,10 +1693,12 @@
    thing measured twice, an order of magnitude apart, and the page says so
    instead of mentioning it. */
 .casepage .taking-alt {
-  display: flex;
+  /* Сітка, а не flex: під міткою і числом тепер стоїть третій рядок — що з
+     цього випливає, — і він має лягти під обома, а не третім у ряд. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-1) var(--space-3);
   margin-top: var(--space-3);
   padding-top: var(--space-3);
   border-top: 1px solid var(--prule);
@@ -1768,8 +1770,21 @@
    row the enforcement figure opens is a row and not a figure with an empty
    half beside it. Two subjects above, the caveat and its sources below. */
 .casepage .takings > .takings-note {
+  /* Раніше вона займала комірку поруч із третьою плиткою. Плитки більше
+     немає, і половина рядка під приміткою була б дірою — примітка бере
+     рядок цілком, а міру їй і так тримає власний cap у `ch`. */
+  grid-column: 1 / -1;
   margin: 0;
-  align-self: start;
+}
+.casepage .taking-alt .alt-note {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+/* Остання плитка, що лишилася сама в непарному ряду, бере ряд цілком.
+   `:last-of-type` рахує серед div-ів, тож примітка (p) її не заступає —
+   а саме це й ламало старе правило `:last-child:nth-child(odd)`. */
+.casepage .takings > .taking:last-of-type:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 /* The whole and its part, tied by the line they share: the bar in the
    second tile is a share of the figure in the first, so the two sit
@@ -1789,10 +1804,44 @@
    Три смуги, три селектори, а не одне широке правило: `.sec-h + * > *` зняло
    б кант і там, де він щось означає — як золота риска `.why`, що позначає
    картку, а не рядок. */
-.casepage .sec-h + .rulings > .ruling:first-child,
+
 /* Усі картки ряду, а не лише перша: зняти кант з однієї означає лінію на
    дві третини ширини. Ряд тримає проміжок. */
 .casepage .sec-h + .nb-grid > li > a,
 .casepage .sec-h + .verdicts > li:first-child {
   border-top: 0;
+}
+
+/* ── Тлумачення в регістрі визначень ──────────────────────────────────────
+   Власниця: «застосуй дизайн до секції ключові тлумачення такий як ми
+   використовували для визначень в попередньому рішенні».
+
+   Те саме, що `.d-head` робить із визначеннями Суду в огляді: цифра, яка
+   рахує, назва і волосінь, що добирає решту ширини — коротка назва дістає
+   довгу лінію, довга не дістає жодної. Лінія позначає початок визначення,
+   а не є сталою оздобою.
+
+   Заразом зникають сім суцільних кантів через усю ширину, якими досі були
+   розділені записи: рахунок веде цифра, а повітря — проміжок. */
+.casepage .rulings .ruling {
+  display: block;
+  border-top: 0;
+  padding-block: 0;
+  margin-top: var(--space-8);
+}
+.casepage .rulings .ruling:first-child {
+  margin-top: var(--space-5);
+}
+.casepage .rulings .ruling dt {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.casepage .rulings .ruling dt::after {
+  content: "";
+  height: 1px;
+  background: var(--prule);
+  align-self: center;
 }

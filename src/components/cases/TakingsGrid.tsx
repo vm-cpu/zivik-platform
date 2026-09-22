@@ -43,7 +43,7 @@ export interface MetricR {
   partOfAbove?: boolean;
   note?: string;
   /** A second measure of the same quantity, where the sources disagree. */
-  alt?: { label: string; value: string };
+  alt?: { label: string; value: string; note?: string };
 }
 
 export default function TakingsGrid({
@@ -215,6 +215,9 @@ export default function TakingsGrid({
             <div className="taking-alt">
               <span className="taking-label">{whole.alt.label}</span>
               <b className="taking-value">{whole.alt.value}</b>
+              {/* What follows if this is the right measure — the arithmetic
+                  the band has been pointing at all along. */}
+              {whole.alt.note && <p className="taking-note alt-note">{whole.alt.note}</p>}
             </div>
           )}
         </div>

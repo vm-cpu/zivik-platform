@@ -1847,7 +1847,11 @@ export default async function CasePage({
                     count: m.count,
                     partOfAbove: m.partOfAbove,
                     note: m.note && L(m.note),
-                    alt: m.alt && { label: L(m.alt.label), value: L(m.alt.value) },
+                    alt: m.alt && {
+                      label: L(m.alt.label),
+                      value: L(m.alt.value),
+                      note: m.alt.note && L(m.alt.note),
+                    },
                   }))}
                   locale={locale}
                   labels={{ andMore: pick(T.dotCap, locale) }}
@@ -2259,7 +2263,19 @@ export default async function CasePage({
             <dl className="rulings">
               {interpretations.map((it, i) => (
                 <div key={i} className="ruling">
-                  <dt>{pick(it.term, locale)}</dt>
+                  {/* The same register the Court's own determinations take in
+                      the write-up: a numeral that counts, the name, and a
+                      hairline that takes whatever width is left. Owner:
+                      «застосуй дизайн… такий як ми використовували для
+                      визначень в попередньому рішенні». */}
+                  <dt>
+                    {/* Counts, does not name — hidden from a screen reader
+                        like every other numeral on this page. */}
+                    <span className="d-num" aria-hidden="true">
+                      {i + 1}
+                    </span>
+                    <span className="d-term">{pick(it.term, locale)}</span>
+                  </dt>
                   <dd>{pick(it.ruling, locale)}</dd>
                 </div>
               ))}
