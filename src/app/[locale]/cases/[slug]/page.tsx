@@ -760,10 +760,15 @@ function takeQuotation(
 
    Measured over all 652 paragraphs in the archive: four carry both
    markers, and all four are genuine two-element enumerations. Split at the
-   author's own words and nothing else — the markers stay on the items,
-   because they are how the Court wrote them. */
+   author's own words and nothing else.
+
+   The words that do the counting come off, because the list now counts:
+   «1. по-перше, …» says it twice. Nothing else is touched, and the items
+   keep their lower case — they are clauses of the sentence above them, and
+   two of the four open inside a quotation, where a capital would be the
+   Court's word altered. */
 const ELEMENTS =
-  /^([\s\S]*?:)\s*((?:по-перше|first(?:ly)?)[,\s][\s\S]+?)[;.]?\s*(?:і\s+|and\s+)?((?:по-друге|second(?:ly)?)[,\s][\s\S]+)$/i;
+  /^([\s\S]*?:)\s*(?:по-перше|first(?:ly)?)[,\s]\s*([\s\S]+?)[;.]?\s*(?:і\s+|and\s+)?(?:по-друге|second(?:ly)?)[,\s]\s*([\s\S]+)$/i;
 
 function HoldingText({ text, mark }: { text: string; mark: (s: string) => React.ReactNode }) {
   const m = ELEMENTS.exec(text);

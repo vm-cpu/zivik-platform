@@ -1186,16 +1186,19 @@
    «по-друге…». Numbered by the list, so the reader can count them without
    reading for the words that do the counting. */
 .casepage .rule .els {
-  margin: var(--space-3) 0 0;
+  /* Air on both sides. It had none below it, so the paragraph that follows
+     the elements ran straight onto the last one and the list read as part
+     of it. */
+  margin: var(--space-4) 0 var(--space-5);
   padding-left: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
   list-style: decimal;
 }
 .casepage .rule .els li {
   font-size: var(--t-sm);
-  line-height: 1.65;
+  line-height: 1.7;
   color: var(--ink);
   padding-left: var(--space-1);
   text-wrap: pretty;
