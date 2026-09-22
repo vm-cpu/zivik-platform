@@ -382,6 +382,7 @@ export const icjCerdIcsft: DecisionSummary = {
          it does not find no violation in them. The row read «НЕМАЄ», which
          is a different holding — and the one word the Court did not use. */
       outcome: "rejected",
+      residual: true,
     },
     {
       track: "CERD",
@@ -398,6 +399,7 @@ export const icjCerdIcsft: DecisionSummary = {
          it does not find no violation in them. The row read «НЕМАЄ», which
          is a different holding — and the one word the Court did not use. */
       outcome: "rejected",
+      residual: true,
     },
     {
       track: "Provisional measures",
@@ -421,6 +423,7 @@ export const icjCerdIcsft: DecisionSummary = {
          it does not find no violation in them. The row read «НЕМАЄ», which
          is a different holding — and the one word the Court did not use. */
       outcome: "rejected",
+      residual: true,
     },
   ],
 

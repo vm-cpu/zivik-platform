@@ -153,6 +153,17 @@ export interface Verdict {
   trackLabel?: Localized;
   claim: Localized;
   outcome: Outcome;
+  /**
+   * The dispositif's catch-all: «Відхиляє всі інші вимоги, заявлені Україною
+   * щодо…». It is a clause of the judgment, so the record keeps it — but it
+   * is not a claim, and as a row of the index it took the same weight as a
+   * finding while carrying nothing a reader could use. Flagged rather than
+   * matched on its wording, which would break the day one is reworded.
+   *
+   * The index leaves these out and says them once, in the line under its
+   * heading; see `.sec-sum` in cases/[slug]/page.tsx.
+   */
+  residual?: boolean;
 }
 
 /** One measured quantity in the "what was taken" instrument. */

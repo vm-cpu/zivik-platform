@@ -72,6 +72,9 @@ const T = {
      and the number depends on what kind of dispositif this is. Three
      Ukrainian forms; English reads the same three keys. */
   ofTotal: { uk: "з", en: "of" },
+  /* The catch-all clauses, said once under the heading instead of three times
+     in the table. */
+  restRejected: { uk: "решту вимог відхилено", en: "all other submissions rejected" },
   violationWord: {
     uk: { one: "порушення", few: "порушення", many: "порушень" },
     en: { one: "violation", few: "violations", many: "violations" },
@@ -105,7 +108,11 @@ const T = {
   courtPosition: { uk: "Позиція Суду", en: "The Court's position" },
   /* The index's column heads. Named for what each column holds: the provision
      the claim was made under, the claim, and what the forum did with it. */
-  ixArticle: { uk: "Стаття", en: "Article" },
+  /* «Підстава», not «Стаття»: the column holds the instrument or the order a
+     claim was made under — ICSFT, CERD, the Order on provisional measures —
+     and the article itself is in the claim beside it. It was «Стаття», which
+     promised one thing and held another. */
+  ixArticle: { uk: "Підстава", en: "Basis" },
   ixClaim: { uk: "Вимога", en: "Claim" },
   ixResult: { uk: "Результат", en: "Result" },
   progress: { uk: "Прогрес читання", en: "Reading progress" },
@@ -901,13 +908,19 @@ export default async function CasePage({
      however large. The count was painted --pred on all three branches, which
      on paper is a dark cherry nobody read as a semantic and on the panel's
      dark ground is --brand-breach, which everybody would. */
+  /* The dispositif's catch-all clauses come out of the index: «Інші вимоги ·
+     Відхилено» is not a claim and carried nothing a reader could act on,
+     while taking a row's worth of attention from the findings around it. It
+     is said under the heading instead. */
+  const findings = verdicts.filter((v) => !v.residual);
+  const hasResidual = verdicts.length !== findings.length;
   const [decided, decidedForms, decidedKind] =
     convictions > 0
       ? ([convictions, T.convictionWord, "breach"] as const)
       : granted > 0
         ? ([granted, T.grantedWord, "relief"] as const)
         : ([violations, T.violationWord, "breach"] as const);
-  const decidedLabel = `${plural(decided, decidedForms[locale], locale)} ${pick(T.ofTotal, locale)}`;
+  const decidedLabel = plural(decided, decidedForms[locale], locale);
 
   /** Resolve a Localized pair for this render's locale (client-prop hygiene:
    *  client components receive plain strings, never both languages). */
@@ -1362,8 +1375,16 @@ export default async function CasePage({
             <div className="vpanel">
               <div className="sec-h">
                 <h2>{pick(summary.verdictsHeading ?? T.found, locale)}</h2>
+                {/* «4 порушення · решту вимог відхилено». It read «4
+                    порушення з 7», and the seven were clauses of the
+                    dispositif, not claims: a reader took it for "of seven
+                    claims the Court upheld four", which is not what happened
+                    — Ukraine made many, and most were rejected. */}
                 <span className="sec-sum" data-of={decidedKind}>
-                  <b>{decided}</b> {decidedLabel} {verdicts.length}
+                  <b>
+                    {decided} {decidedLabel}
+                  </b>
+                  {hasResidual && <> · {pick(T.restRejected, locale)}</>}
                 </span>
               </div>
               {/* Column heads. Three tracks of very different content — a
@@ -1377,7 +1398,7 @@ export default async function CasePage({
                 <span>{pick(T.ixResult, locale)}</span>
               </div>
               <VerdictMatrix
-                rows={verdicts.map((v, i) => {
+                rows={findings.map((v, i) => {
                   const url = trackUrl(v.track);
                   const inHref = chronoAnchor(v.track);
                   return {
@@ -1392,7 +1413,10 @@ export default async function CasePage({
                     href: url,
                     inHref: url ? undefined : inHref,
                     inLabel: pick(T.toChronology, locale),
-                    opensTrack: i === 0 || verdicts[i - 1].track !== v.track,
+                    /* Against the list actually drawn, not the record behind
+                       it: with the catch-all clauses filtered out, the row that
+                       opens a run is the first of that run among the findings. */
+                    opensTrack: i === 0 || findings[i - 1].track !== v.track,
                     outcome: v.outcome,
                     outcomeLabel: pick(OUTCOME_LABEL[v.outcome], locale),
                     claim: pick(v.claim, locale),
