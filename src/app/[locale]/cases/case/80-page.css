@@ -12,6 +12,34 @@
    end of every clamp below is a declared `--t-*` value, so the page reads as
    the mock without opening a second scale beside the one the site has. */
 
+/* ── The palette this page is drawn on ───────────────────────────────────
+   The design is warm — cream paper, a sand hairline, a brown-black ink — and
+   the site's own ramp is near-neutral. Rather than choose, the page re-maps
+   its own aliases: everything below still reads --paper, --prule, --ink, and
+   on this page those point at the warm scale declared in globals.css.
+
+   Scoped to .casepage on purpose. The neutral ramp is the site's and a past
+   decision, and nothing outside these pages moves. */
+/* `.page.casepage`, not `.casepage`: the shared `.page` scope already
+   declares this alias set, and at equal specificity it would win on source
+   order for anything it also sets. Two classes puts the page's own palette
+   above it without an !important. */
+.page.casepage {
+  --paper: var(--brand-paper-warm);
+  --paper2: var(--brand-paper-warm-2);
+  --card: var(--brand-paper-warm);
+  --prule: var(--brand-rule-warm);
+  --seam: var(--brand-rule-warm);
+  --ink: var(--brand-ink-warm);
+  --ink2: var(--brand-ink-warm-2);
+  --ink3: var(--brand-faint-warm);
+  --pgold: var(--brand-gold-warm);
+}
+/* The page's own ground, which used to come from the site's paper. */
+.page.casepage {
+  background: var(--brand-paper-warm);
+}
+
 /* ── Grounds: one canvas ─────────────────────────────────────────────────── */
 .casepage [data-ground="p"],
 .casepage [data-ground="p2"],
@@ -101,7 +129,9 @@
   gap: clamp(12px, 2vw, 20px);
   align-items: baseline;
   padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--prule);
+  /* Between two rows of one list, not between two blocks: the softer of the
+     two warm hairlines. */
+  border-bottom: 1px solid var(--brand-rule-warm-soft);
 }
 .casepage .rows .row-k {
   font: 700 var(--t-micro) var(--brand-font-mono);
