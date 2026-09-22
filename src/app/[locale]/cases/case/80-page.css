@@ -1118,3 +1118,38 @@
   border-top: 0;
   padding-top: 0;
 }
+
+/* ── A determination, numbered ────────────────────────────────────────────
+   Three questions the Court settled before it could decide anything, and
+   they were three bold lines that could have been in any order. The numeral
+   counts them and a gold rule carries the eye into the heading — the same
+   device the section heads use for the parts of the write-up, a step down.
+
+   The rule takes the width that is left, so a short heading gets a long one
+   and a long heading gets none: what it marks is the start of a
+   determination, not a fixed ornament. */
+.casepage .read > .d-head {
+  max-width: var(--prose);
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: var(--space-8) 0 var(--space-3);
+}
+.casepage .d-head h4 {
+  margin: 0;
+}
+.casepage .d-num {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 400;
+  font-size: var(--t-lead);
+  line-height: 1;
+  color: var(--brand-gold-mark);
+  font-variant-numeric: lining-nums;
+}
+.casepage .d-head::after {
+  content: "";
+  height: 1px;
+  background: var(--prule);
+  align-self: center;
+}

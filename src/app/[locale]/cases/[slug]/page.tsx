@@ -1756,6 +1756,12 @@ export default async function CasePage({
         {(() => {
           let h2i = 0;
           let h3i = 0;
+          /* The determinations under a heading are a sequence — three
+             questions the Court settled before it could decide anything —
+             and they were three bold lines that could have been in any
+             order. Counted within their own heading, so the count restarts
+             wherever a new run begins. */
+          let d = 0;
           /* One set for the whole article, filled as the blocks are walked in
              reading order, so "first occurrence" means first on the page and
              not first in each paragraph. The map callback runs eagerly, here,
@@ -1932,6 +1938,20 @@ export default async function CasePage({
               );
               continue;
             }
+            if (b.kind === "h4" && !b.outcome) {
+              d += 1;
+              out.push(
+                <div className="d-head" key={i}>
+                  {/* Counts, does not name — hidden from a screen reader
+                      like every other numeral on this page. */}
+                  <span className="d-num" aria-hidden="true">
+                    {d}
+                  </span>
+                  <h4>{b.text}</h4>
+                </div>,
+              );
+              continue;
+            }
             if (b.kind === "h4" && b.outcome) {
               /* The heading carries the answer, in the word and the chip the
                  index at the top of the page already uses for it. */
@@ -1955,6 +1975,7 @@ export default async function CasePage({
               continue;
             }
             if (b.kind === "h3") {
+              d = 0;
               /* Anchored like the parts, because the contents lists them:
                  the design nests a write-up's own sub-headings under the
                  part they belong to. */
