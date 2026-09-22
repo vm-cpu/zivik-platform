@@ -1761,7 +1761,7 @@ export default async function CasePage({
                 fold={
                   rejectedShown > 0
                     ? {
-                        show: `${pick(T.showRejected, locale)} · ${rejectedShown}`,
+                        show: pick(T.showRejected, locale),
                         hide: pick(T.hideRejected, locale),
                       }
                     : undefined

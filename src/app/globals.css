@@ -308,7 +308,7 @@
      with the prose. Declared as a step so the lint can see it — which does
      mean the lint will now accept 9px anywhere, so: it belongs to
      `.map-legend`, and a second user of it is a question, not a licence. */
-  --t-map: 9px;
+  --t-map: 8px;
   --t-cap: 12.5px;    /* captions, citations, metadata */
   --t-sm: 14px;       /* secondary prose, list items, UI rows */
   /* --t-ui was 15.5px, a fourth step inside the 11–15.5 band. Four sizes

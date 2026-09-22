@@ -1326,28 +1326,68 @@
   margin-top: 0;
 }
 
-/* The control over the folded half of the index. Inside the panel, under
-   the rows it opens, in the quiet register every other control on this page
-   uses — it is a way further in, not a call to action. */
+/* ── The way into the rest of the table ───────────────────────────────────
+   Owner: «якийсь елегантніший колапс зроби».
+
+   It was a bordered block the width of the panel, in capitals — a second
+   object under the table, announcing itself. The index already has a
+   shape, and the way into the rest of it is the next line down: the same
+   three columns, the same hairline between rows, the label where a claim
+   goes and the count where its outcome would be. Nothing new on the page,
+   one more row that happens to open the others. */
 .casepage .v-fold {
-  display: block;
+  display: grid;
+  grid-template-columns: 118px minmax(0, 1fr) 132px;
+  gap: var(--space-4);
+  align-items: center;
   width: 100%;
-  margin-top: var(--space-4);
-  padding: var(--space-3);
-  background: none;
+  padding: var(--space-3) clamp(14px, 2.4vw, 20px);
+  background: var(--brand-paper-warm-3);
   border: 1px solid var(--prule);
-  border-radius: var(--r-xs);
-  font: 700 var(--t-micro) var(--brand-font-body), sans-serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink2);
+  border-top: 0;
+  border-radius: 0;
+  font: 500 var(--t-cap) var(--brand-font-body), sans-serif;
+  color: var(--ink3);
+  text-align: left;
   cursor: pointer;
 }
-.casepage .v-fold:hover {
-  border-color: var(--pgold);
+.casepage .v-fold-t {
+  grid-column: 2;
+}
+.casepage .v-fold-n {
+  grid-column: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  font: 700 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.06em;
+}
+.casepage .v-fold svg {
+  transition: transform var(--dur) var(--ease);
+}
+.casepage .v-fold[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+.casepage .v-fold:hover,
+.casepage .v-fold:focus-visible {
   color: var(--ink);
+  background: var(--card);
 }
 .casepage .v-fold:focus-visible {
   outline: 2px solid var(--pgold);
-  outline-offset: 2px;
+  outline-offset: -2px;
+}
+
+
+/* The hole under a band head. Killing the neighbour's margin was not
+   enough: `.findings` also carries 20px of its own top padding — from when
+   it opened with a hairline and needed clearance under it — and the first
+   finding's head row adds 24 more. Sixty pixels between «Висновки за CERD»
+   and the first thing it heads. Both give way to the heading's own 16. */
+.casepage .read > h3 + .findings {
+  padding-top: 0;
+}
+.casepage .findings > .finding:first-child > .f-row {
+  margin-top: 0;
 }

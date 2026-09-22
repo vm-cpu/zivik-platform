@@ -207,8 +207,24 @@ export default function VerdictMatrix({
       ))}
     </ul>
       {folding && (
+        /* The last row of the table rather than a button under it: the
+           index already has a shape, and the way into the rest of it is
+           the next line down, not a second object. */
         <button type="button" className="v-fold" aria-expanded={all} onClick={() => setAll(!all)}>
-          {all ? fold!.hide : fold!.show}
+          <span className="v-fold-t">{all ? fold!.hide : fold!.show}</span>
+          <span className="v-fold-n">
+            {all ? "" : rows.filter((r) => !kept(r)).length}
+            <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false">
+              <path
+                d="M6 9l6 6 6-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
         </button>
       )}
     </>
