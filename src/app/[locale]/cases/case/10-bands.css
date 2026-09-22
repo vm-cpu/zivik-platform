@@ -13,7 +13,7 @@
       ),
     var(--bg);
   color: var(--cream);
-  padding-block: clamp(24px, 4vw, 40px) clamp(26px, 4vw, 38px);
+  padding-block: clamp(32px, 4.5vw, 56px) clamp(30px, 4vw, 44px);
 }
 .casepage .backlink {
   display: inline-flex;
@@ -38,7 +38,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-6);
 }
 /* Was var(--rule) — a hairline colour used as text, 1.28:1 on the masthead
    ground. It is punctuation between two facts, so it needs to be seen, and
@@ -108,8 +108,8 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: var(--space-3) clamp(14px, 2vw, 22px);
-  margin-top: var(--space-4);
-  padding-top: var(--space-4);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
   border-top: 1px solid color-mix(in srgb, var(--brand-cream) 12%, transparent);
 }
 .casepage .hm-inst {

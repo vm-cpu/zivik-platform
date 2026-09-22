@@ -433,6 +433,10 @@
   margin-bottom: var(--space-3);
 }
 .casepage .listed ul {
+  /* The article resets `ul` to no marker, which is right for the lists it
+     builds itself and wrong for this one: without a bullet the items read as
+     short paragraphs at an odd indent. */
+  list-style: disc;
   margin: 0;
   padding-left: var(--space-5);
   display: flex;
