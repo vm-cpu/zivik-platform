@@ -316,6 +316,23 @@ const uk = {
   partners: {
     label: "Партнери",
     heading: "З ким ми працюємо",
+    /* The funding line, and the one string on this page that is not ours to
+       word. ifa's grants carry a prescribed acknowledgement — normally naming
+       the funder behind the programme, not only the institute — and until that
+       wording comes from them this says the plain, checkable thing and no
+       more. Replace it with theirs verbatim when it arrives; do not translate
+       or shorten it. */
+    funded: "Проєкт створено за підтримки",
+    openLabel: "Відкриті до партнерства",
+    openHeading: "Бібліотека росте разом з тими, хто її підтримує",
+    openText:
+      "Ми шукаємо інституції, готові працювати над доступністю міжнародного правосуддя для України.",
+    /* What a partnership could be, so the ask is not an abstraction. Four
+       plain nouns, not links: there is no page behind any of them, and a
+       control that goes nowhere teaches the reader to distrust the ones that
+       do. The one thing to press is the letter. */
+    openWays: ["Дослідження", "Переклади", "Освітні події", "Фінансова підтримка"],
+    openCta: "Написати нам",
   },
   footer: {
     tagline:

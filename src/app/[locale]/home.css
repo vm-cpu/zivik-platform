@@ -293,10 +293,10 @@
      paragraph renders on /about too. Cherry is this site's colour for a
      finding of breach; a link to the document a sentence cites is not one, and
      `.page a.abt-cite-link` at (0,2,1) cannot outrank this rule's (0,2,2). */
-  .homepage a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link){
+  .homepage a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link, .nsv-open-cta){
     color:var(--red);text-decoration:none
   }
-  .homepage a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link):hover{color:var(--redd)}
+  .homepage a:not(.nsv-topbar a, .nsv-mobnav a, .nsv-foot a, .nsv-skiplink, .btn, .emap a, .abt-cite-link, .nsv-open-cta):hover{color:var(--redd)}
   /* the lamp gradient is the header's ground on this page, so the bar itself
      stays transparent — everywhere else it supplies its own dark */
   .page .lmp{border:0}
@@ -326,11 +326,57 @@
 /* Each partner is a mark with its name under it, not a mark alone: a reader
    who does not recognise a wordmark learns nothing from a row of them. The
    hairline between entries stays, so several still read as one row. */
-.nsv-partnerrow{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--space-4) 0}
-.nsv-partnerrow .pmark{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-2);padding:0 var(--space-6);border-left:1px solid var(--rule);text-decoration:none}
-.nsv-partnerrow .pmark:first-child{padding-left:0;border-left:0}
-.nsv-partnerrow .pmark-name{font:700 var(--t-cap) var(--brand-font-body);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);transition:color var(--dur) var(--ease)}
+/* Partners — two halves: the support this archive has, and the door for the
+   support it does not have yet.
+
+   It was a hairline-separated row of marks set straight on the band, with the
+   band's own padding and ground written as inline React styles. Both are here
+   now, because the band has an interior to lay out: a column of paper and a
+   panel of night beside it, which no inline style on the wrapper could hold.
+
+   The grid collapses to one column at 900px — under that the panel's heading
+   breaks to four lines and the logo plate goes narrower than the mark it is
+   holding, which is where two columns stop being two columns. */
+.nsv-partners{position:relative;z-index:3;padding:var(--space-10) var(--space-7) var(--space-12);background:var(--paper);border-top:1px solid var(--rule);scroll-margin-top:var(--space-4)}
+.nsv-partners .nsv-sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-6);margin-bottom:var(--space-8)}
+.nsv-partners .nsv-sechead h2{font-family:var(--brand-font-display),serif;font-weight:400;color:var(--ink);margin:0}
+.nsv-partnergrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-10);align-items:start}
+@media (max-width:900px){.nsv-partnergrid{grid-template-columns:minmax(0,1fr)}}
+
+/* The funding line. --brand-gold-ink rather than --brand-gold: this is 11px,
+   and the brand gold measures 4.32:1 on the recessed paper, which is under AA
+   for text this size. The ink variant clears every paper ground. */
+.nsv-fundline{margin:0 0 var(--space-4);font:700 var(--t-micro) var(--brand-font-body),sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-gold-ink)}
+.nsv-partnerrow{display:flex;flex-direction:column;gap:var(--space-8)}
+.nsv-partnerrow .pmark{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-4);text-decoration:none}
+/* The mark keeps its own white, whatever the band stands on: a supplied logo
+   is fixed artwork drawn for paper, and tinting it to the band would be
+   redrawing someone else's mark. */
+.nsv-partnerrow .pmark-plate{display:flex;align-items:center;justify-content:center;width:100%;min-height:160px;padding:var(--space-10) var(--space-8);background:var(--surface);border:1px solid var(--rule)}
+.nsv-partnerrow .pmark-name{font-family:var(--brand-font-display),serif;font-size:var(--t-h3);line-height:1.25;color:var(--ink);transition:color var(--dur) var(--ease)}
+.nsv-partnerrow .pmark-blurb{font-size:var(--t-sm);line-height:1.55;color:var(--ink2);max-width:46ch}
 .nsv-partnerrow a.pmark:hover .pmark-name{color:var(--red)}
+
+/* The open half. The same night the footer is, so the page closes in one
+   colour, with the site's own figure for light at its top edge rather than a
+   second accent colour. */
+.nsv-open{position:relative;overflow:hidden;padding:var(--space-12) var(--space-10);background:var(--brand-ink-black);color:var(--brand-cream)}
+.nsv-open::before{content:"";position:absolute;inset:0 0 auto;height:var(--space-24);background:radial-gradient(60% 100% at 50% 0%,color-mix(in srgb,var(--brand-gold-lit) 16%,transparent),transparent 70%);pointer-events:none}
+.nsv-open > *{position:relative}
+.nsv-open-lbl{margin:0 0 var(--space-4);font:700 var(--t-micro) var(--brand-font-body),sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--brand-gold-lamp)}
+.nsv-open h3.nsv-open-h{margin:0 0 var(--space-5);font-family:var(--brand-font-display),serif;font-weight:400;font-size:var(--t-h2);line-height:1.2;color:var(--brand-cream)}
+.nsv-open-t{margin:0 0 var(--space-8);font-size:var(--t-body);line-height:1.55;color:var(--brand-muted-dark);max-width:48ch}
+/* Nouns, not controls: no hover, no pointer, nothing to press. What a
+   partnership could be — the one thing to press is the letter below. */
+.nsv-open-ways{display:flex;flex-wrap:wrap;gap:var(--space-3);margin:0 0 var(--space-8);padding:0;list-style:none}
+.nsv-open-ways li{padding:var(--space-3) var(--space-5);border:1px solid color-mix(in srgb,var(--brand-cream) 34%,transparent);font-size:var(--t-sm);line-height:1.2;color:var(--brand-cream)}
+/* --brand-cream-warm on --brand-cherry is 5.01:1; the button against the
+   panel is 3.81:1, over the 3:1 floor a control has to clear as a shape. The
+   paper red would be neither: it is 1.9:1 on this ground. */
+.nsv-open-cta{display:inline-flex;align-items:center;font:700 var(--t-micro) var(--brand-font-body),sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:var(--space-4) var(--space-7);background:var(--brand-cherry);color:var(--brand-cream-warm);text-decoration:none;transition:background-color var(--dur) var(--ease)}
+.nsv-open-cta:hover{background:var(--brand-red)}
+.nsv-open-cta:focus-visible{outline:2px solid var(--brand-gold-pale);outline-offset:3px}
+@media (max-width:600px){.nsv-open{padding:var(--space-10) var(--space-7)}}
 
 /* brand slogan divider — Charis SIL caps, wide tracking (UCU "гасла" style) */
 .nsv-slogan{display:flex;align-items:center;gap:var(--space-6);padding:var(--space-7) var(--space-7);background:var(--paper2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}

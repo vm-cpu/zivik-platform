@@ -325,6 +325,11 @@ export interface Stat {
 export interface Partner {
   id: string;
   name: Localized;
+  /** One or two sentences saying who they are and what the tie to this
+   *  archive is. The name above stays as the partner writes it — a mark that
+   *  spells "Institut für Auslandsbeziehungen" must not be captioned with a
+   *  translation of itself — so any gloss a reader needs belongs here. */
+  blurb?: Localized;
   logo?: string;
   url?: string;
 }

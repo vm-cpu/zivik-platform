@@ -166,6 +166,13 @@ const en: Dictionary = {
   partners: {
     label: "Partners",
     heading: "Who we work with",
+    funded: "The project was made with the support of",
+    openLabel: "Open to partnership",
+    openHeading: "The library grows with those who support it",
+    openText:
+      "We are looking for institutions ready to work on the accessibility of international justice for Ukraine.",
+    openWays: ["Research", "Translation", "Educational events", "Financial support"],
+    openCta: "Write to us",
   },
   footer: {
     tagline:
