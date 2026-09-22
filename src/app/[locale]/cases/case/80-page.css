@@ -400,16 +400,20 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 262px), 1fr));
   gap: 0;
-  /* Each half ends where its text ends.
-     `stretch` is the grid's default and it drew the hairline for free: the
-     container carried the rule colour, a 1px gap let it through, and both
-     grounds filled their cells to the taller one's height. It cost a third
-     of a box of blank ground wherever the two sides were of unequal length
-     — and they usually are, because the Court answers at more length than a
-     party argues. Under the Order on provisional measures the argument is
-     one paragraph and the answer is two quotations.
-     So the rule moves onto the halves, where it can stop with them. */
-  align-items: start;
+  /* Heights stay equal — `stretch`, the grid's default, left alone.
+
+     This was `start` for one release, to stop a box running two-thirds
+     empty beside a much longer one. That was the wrong cure: the boxes it
+     was fixing were an argument beside the answer to it, and those do not
+     belong side by side at all — they stack now (`.pair-turns`). What is
+     left in two columns is two things of the same kind, meant to be
+     compared, and two columns of a comparison that end at different heights
+     read as a broken table.
+
+     The hairline still comes from the halves' own borders rather than from
+     a 1px gap over a coloured container, which is what let the rule stop
+     with a short box. It costs nothing here and it is the simpler thing to
+     explain. */
 }
 /* -1px on every half but the first: two adjoining 1px borders meet at the
    same line and would draw 2px. */
