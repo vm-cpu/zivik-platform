@@ -616,3 +616,31 @@
 .casepage .mapband[data-lit] [data-state="off"] {
   opacity: 0.45;
 }
+
+/* ── The light on the outlines ────────────────────────────────────────────
+   Owner: «а на карту додай золота і світла, підсвічення обрисів».
+
+   Ukraine's border carries the light. The line itself is the paper gold —
+   4.55:1 over the lit country and 3.89:1 over the land, so the one outline
+   on this drawing that has to be seen is seen — and the glow around it is
+   the lamp's gold, which is what makes it read as lit rather than merely
+   drawn. Two shadows, tight then wide, the way a lamp falls off.
+
+   The theatres are outlined too, not only filled: an area with an edge is a
+   place, an area without one is a stain. */
+.casepage .mapband[data-lit] .map .ua-fill {
+  stroke: var(--brand-gold-ink);
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0 2px color-mix(in srgb, var(--brand-gold-lamp) 70%, transparent))
+    drop-shadow(0 0 7px color-mix(in srgb, var(--brand-gold-lamp) 45%, transparent));
+}
+.casepage .mapband[data-lit] .zone-area {
+  fill: color-mix(in srgb, var(--brand-gold-lamp) 22%, transparent);
+  stroke: var(--brand-gold-ink);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.casepage .mapband[data-lit] .zone-area[data-state="on"] {
+  fill: color-mix(in srgb, var(--brand-gold-lamp) 42%, transparent);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--brand-gold-lamp) 55%, transparent));
+}

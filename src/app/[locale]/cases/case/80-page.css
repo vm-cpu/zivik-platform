@@ -867,17 +867,29 @@
 .casepage .h4-row h4 {
   margin-bottom: 0;
 }
+/* A chip, not a word. Beside a heading the outcome was a run of small
+   capitals that read as part of the title — the design draws it as an
+   outlined tag, and it has to look like a label for a reader to find it by
+   scanning rather than by reading. */
 .casepage .h4-out {
-  font: 600 var(--t-micro) var(--brand-font-body), sans-serif;
-  letter-spacing: 0.06em;
+  font: 700 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink3);
   white-space: nowrap;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--prule);
+  border-radius: var(--r-xs);
+  background: var(--card);
 }
 .casepage .h4-out[data-o="violation"],
 .casepage .h4-out[data-o="convicted"],
 .casepage .h4-out[data-o="granted"] {
   color: var(--pred);
+  /* The red at a third, so the chip carries the finding's colour without
+     becoming a second heading beside the first. */
+  border-color: color-mix(in srgb, var(--pred) 35%, transparent);
+  background: color-mix(in srgb, var(--pred) 5%, var(--card));
 }
 
 /* ── The write-up in its own voice ────────────────────────────────────────
