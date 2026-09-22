@@ -43,6 +43,16 @@ export type SummaryBlockKind =
    * way any rule could find without damaging the prose.
    */
   | "claim"
+  /**
+   * The write-up speaking in its own voice, about what the Court just did.
+   *
+   * «Іншими словами, Суд розмежував два висновки: заборона Меджлісу не
+   * становить порушення CERD по суті — але вона становить порушення Наказу
+   * про тимчасові заходи.» That sentence is the most useful one on the page
+   * and it was set exactly like the Court's own, so a reader had no way to
+   * tell whose distinction it was. Marked, it is set apart as ours.
+   */
+  | "note"
   | "link"; // a source / further-reading URL
 
 export interface SummaryBlock {
@@ -66,6 +76,20 @@ export interface SummaryBlock {
    * text gives, and a 46-character line in a 250px rail wraps to three.
    */
   nav?: string | false;
+  /**
+   * How the forum disposed of the point this heading opens. `h4` only.
+   *
+   * The (a)/(b)/(c) limbs of the Order on provisional measures each got an
+   * answer — breached, not breached, breached — and the write-up gives each
+   * answer in a quotation several paragraphs down. The index at the top of
+   * the page already carries all three; here the heading carries its own, in
+   * the same word and the same chip the index uses.
+   *
+   * Recorded, not read out of the prose: the answer is in the Court's quoted
+   * words and a rule that went looking for it there would be guessing at
+   * legal meaning, which this page does not do.
+   */
+  outcome?: Outcome;
 }
 
 /** Raw verbatim payload as ingested from the .docx (shape of the JSON file). */

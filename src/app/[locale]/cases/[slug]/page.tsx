@@ -621,6 +621,73 @@ function PartHead({ text, id }: { text: string; id?: string }) {
 const QUOTED = /^[«"“][\s\S]*[»"”][.,;]?$/;
 const TRAILING_CITE = /\s*\(\s*§+[^)]*\)\s*(:?)\s*$/;
 
+/**
+ * Take the quotation that starts at `start`, with whatever introduced it.
+ *
+ * Returns the nodes and the index after them, or null if nothing here is a
+ * quotation. Used twice: in the reading column, and inside the half of a
+ * pair where the Court answers.
+ */
+function takeQuotation(
+  body: SummaryBlock[],
+  start: number,
+  mark: (s: string) => React.ReactNode,
+): { nodes: React.ReactNode[]; next: number } | null {
+  const b = body[start];
+  if (!b || (b.kind !== "p" && b.kind !== "lead")) return null;
+  const cited = TRAILING_CITE.exec(b.text);
+  const quotesAt =
+    cited && QUOTED.test(body[start + 1]?.text ?? "")
+      ? start + 1
+      : QUOTED.test(b.text)
+        ? start
+        : -1;
+  if (quotesAt === -1) return null;
+  const nodes: React.ReactNode[] = [];
+  let i = start;
+  if (quotesAt > start) {
+    /* The citation comes off the lead-in: it was pointing at the quotation,
+       not arguing in the sentence. What is left keeps every word and its own
+       colon. */
+    const lead = b.text.replace(TRAILING_CITE, cited![1] ? ":" : "").trim();
+    nodes.push(
+      /^\S+:$/.test(lead) ? (
+        /* A lead-in that is one word — «Висновок:» — is a caption on the
+           quotation, not a paragraph standing alone above it. */
+        <div className="lbl-c qt-lbl" key={`ql-${start}`}>
+          {lead.replace(/:$/, "")}
+        </div>
+      ) : (
+        <p className="body" key={`ql-${start}`}>
+          {mark(lead)}
+        </p>
+      ),
+    );
+    i = start + 1;
+  }
+  /* Consecutive quotations under one lead-in are one quotation in two
+     paragraphs — §§ 397-398 is quoted that way — so they share a block and a
+     citation rather than each getting a rule of its own. */
+  const run: string[] = [];
+  while ((body[i]?.kind === "p" || body[i]?.kind === "lead") && QUOTED.test(body[i]?.text ?? "")) {
+    run.push(body[i].text);
+    i += 1;
+  }
+  const cite = cited?.[0]
+    .replace(/[():\s]+$/, "")
+    .replace(/^[\s(]+/, "")
+    .trim();
+  nodes.push(
+    <blockquote className="qt" key={`qt-${start}`}>
+      {run.map((t, k) => (
+        <p key={k}>{t}</p>
+      ))}
+      {cite && <cite className="qt-cite">{cite}</cite>}
+    </blockquote>,
+  );
+  return { nodes, next: i };
+}
+
 /** Render one verbatim block in reading order. */
 function Block({
   block,
@@ -644,6 +711,12 @@ function Block({
       return <h3>{block.text}</h3>;
     case "h4":
       return <h4>{block.text}</h4>;
+    case "note":
+      return (
+        <aside className="nb">
+          <p>{mark(block.text)}</p>
+        </aside>
+      );
     case "position":
       /* What the forum held, on its own ground behind a gold edge — the same
          treatment the right-hand half of a finding gets, because it is the
@@ -1609,58 +1682,47 @@ export default async function CasePage({
               );
               continue;
             }
-            if (b.kind === "p" || b.kind === "lead") {
-              /* A run of quoted paragraphs, with whatever introduced it.
-                 Consecutive quotations under one lead-in are one quotation
-                 in two paragraphs — §§ 397-398 is quoted that way — so they
-                 share a block and a citation rather than each getting a rule
-                 of their own. */
-              const cited = TRAILING_CITE.exec(b.text);
-              const quotesAt = cited && QUOTED.test(body[i + 1]?.text ?? "") ? i + 1 : QUOTED.test(b.text) ? i : -1;
-              if (quotesAt !== -1) {
-                const at = i;
-                const nodes: React.ReactNode[] = [];
-                if (quotesAt > i) {
-                  /* The citation comes off the lead-in: it was pointing at
-                     the quotation, not arguing in the sentence. What is left
-                     keeps every word and its own colon. */
-                  const lead = b.text.replace(TRAILING_CITE, cited![1] ? ":" : "").trim();
-                  nodes.push(
-                    /^\S+:$/.test(lead) ? (
-                      /* A lead-in that is one word — «Висновок:» — is a
-                         caption on the quotation, not a paragraph of its
-                         own standing alone above it. */
-                      <div className="lbl-c qt-lbl" key={`ql-${at}`}>
-                        {lead.replace(/:$/, "")}
-                      </div>
-                    ) : (
-                      <p className="body" key={`ql-${at}`}>
-                        {mark(lead)}
-                      </p>
-                    ),
-                  );
-                  i += 1;
-                }
-                const run: string[] = [];
-                while (QUOTED.test(body[i]?.text ?? "") && (body[i]?.kind === "p" || body[i]?.kind === "lead")) {
-                  run.push(body[i].text);
-                  i += 1;
-                }
-                i -= 1;
-                const cite = cited?.[0].replace(/[():\s]+$/, "").replace(/^[\s(]+/, "").trim();
-                nodes.push(
-                  <blockquote className="qt" key={`qt-${at}`}>
-                    {run.map((t, k) => (
-                      <p key={k}>{t}</p>
-                    ))}
-                    {cite && <cite className="qt-cite">{cite}</cite>}
-                  </blockquote>,
-                );
+            /* An argument the Court then answers in its own quoted words.
+               A claim with a heading of its own was already paired above;
+               this is the other shape the write-up uses — the argument, then
+               the Court, running down the page. The design sets that as two
+               halves side by side, and the Court's half keeps the
+               quotations and their paragraph numbers. */
+            if (b.kind === "claim") {
+              const right: React.ReactNode[] = [];
+              let j = i + 1;
+              for (;;) {
+                const q = takeQuotation(body, j, mark);
+                if (!q) break;
+                right.push(...q.nodes);
+                j = q.next;
+              }
+              if (right.length > 0) {
                 out.push(
-                  <div className="qt-group" key={`qg-${at}`}>
-                    {nodes}
+                  <div className="pair" key={`cp-${i}`}>
+                    <div className="claim">
+                      <div className="lbl-c">{pick(T.claimed, locale)}</div>
+                      <p>{mark(b.text)}</p>
+                    </div>
+                    <div className="rule">
+                      <div className="lbl-c">{pick(T.courtPosition, locale)}</div>
+                      {right}
+                    </div>
                   </div>,
                 );
+                i = j - 1;
+                continue;
+              }
+            }
+            {
+              const q = takeQuotation(body, i, mark);
+              if (q) {
+                out.push(
+                  <div className="qt-group" key={`qg-${i}`}>
+                    {q.nodes}
+                  </div>,
+                );
+                i = q.next - 1;
                 continue;
               }
             }
@@ -1683,6 +1745,28 @@ export default async function CasePage({
                     <p key={k}>{mark(t)}</p>
                   ))}
                 </div>,
+              );
+              continue;
+            }
+            if (b.kind === "h4" && b.outcome) {
+              /* The heading carries the answer, in the word and the chip the
+                 index at the top of the page already uses for it. */
+              out.push(
+                <div className="h4-row" key={i}>
+                  <h4>{b.text}</h4>
+                  <span className="v-out h4-out" data-o={b.outcome}>
+                    {pick(OUTCOME_LABEL[b.outcome], locale)}
+                  </span>
+                </div>,
+              );
+              continue;
+            }
+            if (b.kind === "note") {
+              /* Ours, not the Court's. */
+              out.push(
+                <aside className="nb" key={i}>
+                  <p>{mark(b.text)}</p>
+                </aside>,
               );
               continue;
             }

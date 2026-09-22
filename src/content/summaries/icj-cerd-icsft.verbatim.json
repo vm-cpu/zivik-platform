@@ -127,10 +127,11 @@
     },
     {
       "kind": "h4",
-      "text": "(a) The Mejlis"
+      "text": "(a) The Mejlis",
+      "outcome": "violation"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "Ukraine argued that Russia had violated the order by failing to lift the ban on the Mejlis. The fact that the ban remained in place was not disputed between the parties. The key issue was whether the reference in the preamble to the measure to Russia’s obligations under CERD conferred discretionary powers regarding its implementation."
     },
     {
@@ -150,12 +151,13 @@
       "text": "“The Court therefore finds that the Russian Federation, by maintaining the ban on the Mejlis, has violated the Order indicating provisional measures. The Court notes that this finding is independent of the conclusion set out above that the ban on the Mejlis does not violate the Russian Federation’s obligations under CERD.”"
     },
     {
-      "kind": "p",
+      "kind": "note",
       "text": "In other words, the Court distinguished between two conclusions: the ban on the Mejlis does not constitute a violation of CERD in substance - but it does constitute a violation of the Order on provisional measures."
     },
     {
       "kind": "h4",
-      "text": "(b) Education in the Ukrainian language"
+      "text": "(b) Education in the Ukrainian language",
+      "outcome": "no-violation"
     },
     {
       "kind": "p",
@@ -175,7 +177,8 @@
     },
     {
       "kind": "h4",
-      "text": "(c) Failure to defuse the dispute"
+      "text": "(c) Failure to defuse the dispute",
+      "outcome": "violation"
     },
     {
       "kind": "p",

@@ -821,3 +821,79 @@
   letter-spacing: 0.04em;
   color: var(--ink3);
 }
+
+/* ── An (a)/(b)/(c) limb and how it went ──────────────────────────────────
+   The Order on provisional measures had three limbs and the Court answered
+   each of them — breached, not breached, breached. Those answers were
+   several paragraphs apart, inside quotations, and a reader scanning the
+   part could not see them at all. The heading carries its own now, in the
+   word and the chip the index at the top of the page already uses. */
+.casepage .read > .h4-row {
+  max-width: var(--prose);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.casepage .h4-row h4 {
+  margin-bottom: 0;
+}
+.casepage .h4-out {
+  font: 600 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  white-space: nowrap;
+}
+.casepage .h4-out[data-o="violation"],
+.casepage .h4-out[data-o="convicted"],
+.casepage .h4-out[data-o="granted"] {
+  color: var(--pred);
+}
+
+/* ── The write-up in its own voice ────────────────────────────────────────
+   Not a quotation, not a holding: ours. Set against the two, it takes the
+   reading face at the body's size with a gold mark at its head and no
+   ground — a remark in the margin that has been brought inline, because it
+   is the sentence that explains why two findings that look contradictory
+   are not. */
+.casepage .read > .nb {
+  max-width: var(--prose);
+  margin: var(--space-5) 0;
+  padding-left: clamp(14px, 2vw, 18px);
+  border-left: 2px solid var(--brand-gold-mark);
+}
+.casepage .nb p {
+  font-family: var(--brand-font-display), serif;
+  font-size: var(--t-body);
+  line-height: 1.7;
+  color: var(--ink);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* A quotation inside the half of a pair takes that box's size, not the
+   reading column's — the box is already a step down from the prose. */
+.casepage .rule > .qt,
+.casepage .claim > .qt {
+  margin: var(--space-2) 0 var(--space-3);
+  border-left-width: 2px;
+}
+.casepage .rule > .qt p,
+.casepage .claim > .qt p {
+  font-size: var(--t-sm);
+}
+.casepage .rule > p.body,
+.casepage .claim > p.body {
+  font-size: var(--t-sm);
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0 0 var(--space-2);
+}
+.casepage .rule > .qt-lbl {
+  margin: var(--space-3) 0 var(--space-1);
+}
+.casepage .rule > .qt:last-child,
+.casepage .claim > .qt:last-child {
+  margin-bottom: 0;
+}
