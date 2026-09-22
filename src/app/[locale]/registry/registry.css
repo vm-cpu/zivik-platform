@@ -795,12 +795,18 @@
   .reg-meta .ml{font-size:var(--t-micro);letter-spacing:.07em}
 }
 
-/* The Ukrainian line under a citation that is not. Quieter than the name it
-   sits under — the citation is what the row is filed as — and it is the line
-   a Ukrainian reader actually reads. See `nameUk` in content/types.ts. */
+/* The citation, under the name. Quieter than the line above it — the reader
+   finds the row by its name and quotes it by its citation, in that order —
+   and set in the mono face a thing you quote deserves.
+
+   The class is named for what it used to hold: the Ukrainian line, when the
+   citation led and this sat under it. The two changed places (see the note in
+   RegistryTable) and the name stayed, because renaming a class across a
+   stylesheet and its markup to describe a swap is churn for no reader. */
 .registrypage .reg-name-uk {
   display: block;
   margin-top: 2px;
+  font-family: var(--brand-font-mono);
   font-size: var(--t-cap);
   line-height: 1.35;
   /* `--ink2`, not `--ink-2`. The hyphenated spelling is the token name in

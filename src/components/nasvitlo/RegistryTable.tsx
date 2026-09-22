@@ -1657,26 +1657,39 @@ export default function RegistryTable({
                     {/* The link sits in the case cell and its ::after covers
                         the row, so the whole row stays clickable without a
                         link wrapping table rows. */}
-                    {/* `lang` where the row's own text is not the page's
-                        language — see foreignLang(). Thirty-five of thirty-
-                        nine names are Latin-script, and a Ukrainian voice
-                        reading them phonetically is unintelligible. */}
+                    {/* Ukrainian leads, because the page is in Ukrainian.
+
+                        This is what the commit that introduced `nameUk` said
+                        it was doing — "Ukrainian leads because Ukrainian is
+                        what the page is in… the caption is still there, in
+                        full, one line down" — and the markup did the
+                        opposite: the English citation was the link, set large,
+                        and the Ukrainian sat under it at 12.5px. The comment
+                        here was then written to describe the result rather
+                        than the decision, which is how the two stayed at odds
+                        for as long as they did.
+
+                        The citation has not gone anywhere: it is the line
+                        below, which is where a thing you quote belongs once
+                        the reader has found the row. `lang` on each, because
+                        neither is guaranteed to be the page's language — see
+                        foreignLang(); a Ukrainian voice reading a Latin-script
+                        caption phonetically is unintelligible.
+
+                        All 33 proceedings carry `nameUk`, so no row loses its
+                        link: where one did not, the citation would take the
+                        lead again, which is the right fallback. */}
                     <a
                       className="reg-name"
                       href={href}
-                      lang={foreignLang(r.name, locale)}
+                      lang={foreignLang(r.nameUk || r.name, locale)}
                     >
-                      {highlight(r.name, tokens)}
+                      {highlight(r.nameUk || r.name, tokens)}
                     </a>
-                    {/* The Ukrainian line, under the citation the row is filed
-                        as. The note two lines down has said for a long time
-                        that most names here are recorded only in English while
-                        the interface is Ukrainian, and that a reader had to
-                        reach an English-titled row through the institution's
-                        abbreviation rather than through the title. This is the
-                        title, in their language, searchable. */}
                     {r.nameUk && (
-                      <span className="reg-name-uk">{highlight(r.nameUk, tokens)}</span>
+                      <span className="reg-name-uk" lang={foreignLang(r.name, locale)}>
+                        {highlight(r.name, tokens)}
+                      </span>
                     )}
                     {r.note && (
                       <span className="reg-note" lang={foreignLang(r.note, locale)}>
