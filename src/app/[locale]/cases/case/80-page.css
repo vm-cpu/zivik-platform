@@ -1752,19 +1752,6 @@
 .casepage .takings .taking[data-pair="yes"] > .taking-head .taking-value {
   font-size: var(--t-h2);
 }
-.casepage .taking[data-pair="yes"] .taking-part {
-  margin-top: var(--space-6);
-}
-.casepage .taking[data-pair="yes"] .taking-part .taking-head {
-  flex-direction: row;
-  align-items: baseline;
-  gap: var(--space-4);
-}
-/* Не --t-h3: на вузькому екрані --t-h2 сідає на свої 23px, і 22,5 проти 23
-   — це не сходинка, а збіг. 20 тримає різницю на будь-якій ширині. */
-.casepage .taking[data-pair="yes"] .taking-part .taking-value {
-  font-size: var(--t-lead);
-}
 
 /* The provenance note joins the grid instead of hanging under it, so the
    row the enforcement figure opens is a row and not a figure with an empty
@@ -1887,7 +1874,37 @@
 }
 .casepage .mapband {
   padding-bottom: var(--space-16);
+  /* І шва теж немає. Він відділяв одне тло від іншого; тепер тла немає, і
+     від нього лишилася гола волосінь рівно над «Джерелами». Власниця:
+     «зайва лінія з'явилася». */
+  border-bottom: 0;
 }
 .casepage .mapband[data-lit] .map-legend {
   box-shadow: none;
+}
+
+/* Ціле і його частка обабіч смуги, яка їх пов'язує. Ліворуч — скільки
+   вивезли, праворуч — скільки з них повернулося, між ними доріжка тієї
+   довжини, що й перше число. Власниця: «ця цифра 19546 взагалі ніяк
+   візуально не дотична до лінії графіку». */
+.casepage .taking[data-pair="yes"] .taking-ends {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+.casepage .taking[data-pair="yes"] .taking-ends .taking-head {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding-bottom: 0;
+}
+.casepage .taking[data-pair="yes"] .taking-ends .taking-end-r {
+  align-items: flex-end;
+  text-align: right;
+}
+/* Праве число — частка, і воно на крок тихіше за ціле над лівим кінцем. */
+.casepage .taking[data-pair="yes"] .taking-ends .taking-end-r .taking-value {
+  font-size: var(--t-lead);
 }

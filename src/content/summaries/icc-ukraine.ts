@@ -812,7 +812,39 @@ export const iccUkraine: DecisionSummary = {
   ],
 
   warrants: {
-    heading: { uk: "Шість ордерів — одна вертикаль влади", en: "Six warrants, one vertical of power" },
+    /* «Одна вертикаль влади» — твердження, якого запис не робить, і смуга
+       його робила двічі: у заголовку й у підводці «від верховного
+       головнокомандувача до командувачів авіації та флоту». Ордери за дітей
+       називають главу держави та уповноважену з прав дитини; ордери за
+       енергосистему — міністра оборони, начальника Генштабу і двох
+       командувачів. Путіна в другій лінії немає взагалі. Це дві вертикалі по
+       дві сходинки, а не одна на чотири. Власниця: «переробляй на дві
+       вертикалі».
+
+       Правдиве твердження сильніше за колишнє: в обох лініях Суд піднявся
+       вище за виконавців. */
+    heading: {
+      uk: "Дві лінії звинувачення — і як високо дійшов Суд",
+      en: "Two lines of accusation, and how high the Court reached",
+    },
+    lines: [
+      {
+        key: "children",
+        label: { uk: "Депортація дітей", en: "Deportation of children" },
+        summary: {
+          uk: "Депортація та незаконне переміщення дітей з окупованих територій України до РФ, щонайменше з 24 лютого 2022 року. Суд дійшов до глави держави.",
+          en: "Deportation and unlawful transfer of children from occupied areas of Ukraine to Russia, at least from 24 February 2022. The Court reached the head of state.",
+        },
+      },
+      {
+        key: "grid",
+        label: { uk: "Удари по енергосистемі", en: "Strikes on the power grid" },
+        summary: {
+          uk: "Ракетна кампанія проти електроінфраструктури по всій країні, щонайменше 10.10.2022 — 09.03.2023. Суд дійшов до міністра оборони та начальника Генштабу.",
+          en: "The missile campaign against electric infrastructure nationwide, at least 10.10.2022 — 09.03.2023. The Court reached the Defence Minister and the Chief of the General Staff.",
+        },
+      },
+    ],
     rungs: [
       { uk: "Глава держави", en: "Head of state" },
       { uk: "Офіс Президента", en: "Presidential office" },
@@ -820,11 +852,12 @@ export const iccUkraine: DecisionSummary = {
       { uk: "Оперативні командувачі", en: "Operational commanders" },
     ],
     note: {
-      uk: "Ордери покривають вертикаль командування згори донизу — від верховного головнокомандувача до командувачів авіації та флоту. Колір — лінія звинувачення. Кожен ордер — висновок Палати про «обґрунтовані підстави вважати», не вирок; кожна лінія посилається на офіційне повідомлення Суду.",
-      en: "The warrants run down the chain of command — from the commander-in-chief to the commanders of the aviation and the fleet. Colour marks the theory of the case. Each warrant is the Chamber's finding of \"reasonable grounds to believe\", not a verdict; each line links to the Court's own announcement.",
+      uk: "Дві лінії звинувачення, і кожна має власну вертикаль. У справі дітей Суд піднявся до глави держави; у справі енергосистеми — до міністра оборони та начальника Генштабу. Жоден ордер не називає главу держави за удари по енергосистемі. Кожен ордер — висновок Палати про «обґрунтовані підстави вважати», не вирок; натисніть ім'я, щоб побачити статті звинувачення.",
+      en: "Two lines of accusation, each with a vertical of its own. Over the children the Court reached the head of state; over the grid, the Defence Minister and the Chief of the General Staff. No warrant names the head of state for the strikes on the grid. Each warrant is the Chamber's finding of \"reasonable grounds to believe\", not a verdict; press a name for the articles charged.",
     },
     waves: [
       {
+        line: "children",
         date: { uk: "17 березня 2023", en: "17 March 2023" },
         iso: "2023-03-17",
         theme: { uk: "Депортація дітей", en: "Deportation of children" },
@@ -892,6 +925,7 @@ export const iccUkraine: DecisionSummary = {
         ],
       },
       {
+        line: "grid",
         date: { uk: "5 березня 2024", en: "5 March 2024" },
         iso: "2024-03-05",
         theme: { uk: "Удари по енергосистемі — виконавці", en: "Strikes on the grid — the operators" },
@@ -963,6 +997,7 @@ export const iccUkraine: DecisionSummary = {
         ],
       },
       {
+        line: "grid",
         date: { uk: "24 червня 2024", en: "24 June 2024" },
         iso: "2024-06-24",
         theme: { uk: "Удари по енергосистемі — командна вертикаль", en: "Strikes on the grid — the chain of command" },

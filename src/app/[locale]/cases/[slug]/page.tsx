@@ -1856,47 +1856,6 @@ export default async function CasePage({
                 }
               />
             </div>
-
-            {takings && (
-              <div>
-                <h2 className="lbl">{pick(takings.heading, locale)}</h2>
-                <TakingsGrid
-                  metrics={takings.metrics.map((m) => ({
-                    label: L(m.label),
-                    value: typeof m.value === "string" ? m.value : L(m.value),
-                    percent: m.percent,
-                    restLabel: m.restLabel && L(m.restLabel),
-                    count: m.count,
-                    partOfAbove: m.partOfAbove,
-                    note: m.note && L(m.note),
-                    alt: m.alt && { label: L(m.alt.label), value: L(m.alt.value) },
-                  }))}
-                  locale={locale}
-                  labels={{ andMore: pick(T.dotCap, locale), shareOf: pick(T.ofWhole, locale) }}
-                  /* Inside the grid, in the cell beside the last figure —
-                     it used to hang under the whole band with the right
-                     half of that row empty. */
-                  note={
-                    takings.note && (
-                      <>
-                        {pick(takings.note, locale)}
-                        {summary.asOf && (
-                          <span className="asof">
-                            {" "}
-                            · {pick(T.asOf, locale)}{" "}
-                            {new Date(summary.asOf + "T00:00:00Z").toLocaleDateString(
-                              locale === "uk" ? "uk-UA" : "en-GB",
-                              { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
-                            )}
-                          </span>
-                        )}
-                      </>
-                    )
-                  }
-                />
-              </div>
-            )}
-
             {amounts && (
               <div>
                 <h2 className="lbl">{pick(T.amountsH, locale)}</h2>
@@ -2347,6 +2306,7 @@ export default async function CasePage({
               <p className="mach-note">{pick(warrants.note, locale)}</p>
               <WarrantWall
                 waves={warrants.waves.map((w) => ({
+                  line: w.line,
                   date: L(w.date),
                   iso: w.iso,
                   theme: L(w.theme),
@@ -2366,6 +2326,11 @@ export default async function CasePage({
                   })),
                 }))}
                 rungs={warrants.rungs?.map(L)}
+                lines={warrants.lines?.map((ln) => ({
+                  key: ln.key,
+                  label: L(ln.label),
+                  summary: L(ln.summary),
+                }))}
                 labels={{
                   charges: pick(T.chargesLbl, locale),
                   modes: pick(T.modesLbl, locale),
@@ -2376,6 +2341,52 @@ export default async function CasePage({
                 }}
               />
             </div>
+
+            {/* Перенесено сюди з-під матриці вироків. Власниця: «думаю цю
+                секцію варто перенести нижче». Там вона стояла одразу після
+                того, що вирішила Палата, і читалася як частина рішення —
+                а вона саме про те, чого в рішенні немає: ордери кількості
+                не називають. Тут, після ордерів і перед картою, вона
+                відповідає на питання, яке щойно виникло. */}
+            {takings && (
+              <div>
+                <h2 className="lbl">{pick(takings.heading, locale)}</h2>
+                <TakingsGrid
+                  metrics={takings.metrics.map((m) => ({
+                    label: L(m.label),
+                    value: typeof m.value === "string" ? m.value : L(m.value),
+                    percent: m.percent,
+                    restLabel: m.restLabel && L(m.restLabel),
+                    count: m.count,
+                    partOfAbove: m.partOfAbove,
+                    note: m.note && L(m.note),
+                    alt: m.alt && { label: L(m.alt.label), value: L(m.alt.value) },
+                  }))}
+                  locale={locale}
+                  labels={{ andMore: pick(T.dotCap, locale), shareOf: pick(T.ofWhole, locale) }}
+                  /* Inside the grid, in the cell beside the last figure —
+                     it used to hang under the whole band with the right
+                     half of that row empty. */
+                  note={
+                    takings.note && (
+                      <>
+                        {pick(takings.note, locale)}
+                        {summary.asOf && (
+                          <span className="asof">
+                            {" "}
+                            · {pick(T.asOf, locale)}{" "}
+                            {new Date(summary.asOf + "T00:00:00Z").toLocaleDateString(
+                              locale === "uk" ? "uk-UA" : "en-GB",
+                              { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
+                            )}
+                          </span>
+                        )}
+                      </>
+                    )
+                  }
+                />
+              </div>
+            )}
           </div>
         </section>
       )}

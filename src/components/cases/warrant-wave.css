@@ -63,3 +63,41 @@
   letter-spacing: 0;
   color: var(--brand-faint);
 }
+
+/* ── Дві вертикалі ────────────────────────────────────────────────────────
+   Кожна лінія звинувачення стоїть окремим блоком: знак свого кольору, назва,
+   одне речення про те, куди Суд дійшов, і власна драбина з власною
+   нумерацією. Легенди поруч більше немає — назва лінії і є її ключем, і
+   заразом зникла та дивина, коли ключ мав три записи й два кольори. */
+.casepage .wr-line + .wr-line {
+  margin-top: var(--space-16);
+}
+.casepage .wr-line-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-ink-2);
+}
+/* Той самий знак, що носять записи ордерів під ним — коротка вертикальна
+   риска в кольорі лінії, а не крапка. */
+.casepage .wr-line-head > i {
+  flex: none;
+  width: 3px;
+  height: 1.05em;
+  background: var(--pgold);
+  transform: translateY(0.1em);
+}
+.casepage .wr-line[data-wave="0"] .wr-line-head > i {
+  background: var(--pred);
+}
+.casepage .wr-line-sum {
+  margin: 0 0 var(--space-6);
+  max-width: var(--prose);
+  font: 400 var(--t-sm) var(--brand-font-body);
+  line-height: 1.55;
+  color: var(--brand-faint);
+}

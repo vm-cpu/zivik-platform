@@ -23,6 +23,8 @@ export interface WarrantPersonR {
   modes: { art: string; label: string }[];
 }
 export interface WarrantWaveR {
+  /** Which accusation line this batch belongs to. */
+  line?: string;
   date: string;
   iso: string;
   theme: string;
@@ -34,10 +36,13 @@ export interface WarrantWaveR {
 export default function WarrantWall({
   waves,
   rungs,
+  lines,
   labels,
 }: {
   waves: WarrantWaveR[];
   rungs?: string[];
+  /** The accusation lines, each drawn as a ladder of its own. */
+  lines?: { key: string; label: string; summary: string }[];
   labels: {
     charges: string;
     modes: string;
@@ -148,6 +153,82 @@ export default function WarrantWall({
             {sel !== null && sel.wi === wi && detail}
           </section>
         ))}
+      </div>
+    );
+  }
+
+  /* ── Two verticals, not one ──────────────────────────────────────────────
+     The band drew a single spine with four rungs and called it the chain of
+     command. It is not one chain: the warrants over the deportation of
+     children name the head of state and the children's commissioner, the
+     warrants over the grid name the Defence Minister, the General Staff and
+     two operational commanders — and no warrant names the head of state for
+     the grid. Drawn as one ladder it asserted a descent that no document
+     draws. Each line now has its own ladder, numbered from its own top, so
+     what the reader sees is the true and stronger fact: how high the Court
+     reached in each. Owner: «переробляй на дві вертикалі». */
+  const drawn =
+    lines && lines.length > 0
+      ? lines
+          .map((ln) => ({
+            ...ln,
+            items: flat.filter((f) => f.w.line === ln.key),
+          }))
+          .filter((ln) => ln.items.length > 0)
+      : null;
+
+  if (rungs && drawn) {
+    return (
+      <div className="warrants warrants-ladder">
+        {drawn.map((ln) => {
+          /* Numbered within the line. Globally these are rungs 3 and 4 of an
+             authored list; inside the grid's own vertical they are its first
+             and second, and the numeral is there to say how far down the
+             line goes, not where it sits in a table. */
+          const used = rungs
+            .map((label, ri) => ({ label, ri, here: ln.items.filter((f) => (f.p.rung ?? 0) === ri) }))
+            .filter((r) => r.here.length > 0);
+          const wi = ln.items[0].wi;
+          return (
+            <section key={ln.key} className="wr-line" data-wave={wi}>
+              <h3 className="wr-line-head">
+                <i aria-hidden="true" />
+                {ln.label}
+              </h3>
+              <p className="wr-line-sum">{ln.summary}</p>
+              <div className="ladder">
+                <div className="ladder-spine" aria-hidden="true" />
+                {used.map((r, n) => (
+                  <div key={r.ri} className="rung">
+                    <div className="rung-label">
+                      <b>{String(n + 1).padStart(2, "0")}</b>
+                      {r.label}
+                    </div>
+                    <div className="rung-people">
+                      {r.here.map((f) => (
+                        <button
+                          key={f.key}
+                          type="button"
+                          className="wr-node"
+                          data-wave={f.wi}
+                          data-on={open === f.key ? "yes" : "no"}
+                          aria-expanded={open === f.key}
+                          aria-controls={sel === null ? undefined : "wr-detail"}
+                          onClick={() => setOpen(open === f.key ? null : f.key)}
+                        >
+                          <span className="wr-node-name">{f.p.name}</span>
+                          <span className="wr-node-role">{f.p.role}</span>
+                          <span className="wr-node-date">{f.w.date}</span>
+                        </button>
+                      ))}
+                      {sel !== null && r.here.some((f) => f.key === sel.key) && detail}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })}
       </div>
     );
   }

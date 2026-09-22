@@ -435,6 +435,8 @@ export interface WarrantPerson {
 
 /** One wave of warrants issued the same day on one theory of the case. */
 export interface WarrantWave {
+  /** Which accusation line this batch belongs to — see `lines`. */
+  line?: string;
   date: Localized;
   iso: string;
   theme: Localized;
@@ -819,5 +821,23 @@ export interface DecisionSummary extends VerbatimSummary {
     note: Localized;
     waves: WarrantWave[];
     rungs?: Localized[];
+    /**
+     * The lines of accusation, each with its own ladder.
+     *
+     * The band drew one vertical and called it one: «Шість ордерів — одна
+     * вертикаль влади», from the commander-in-chief down to the commanders of
+     * the aviation and the fleet. The record does not say that. The warrants
+     * for the deportation of children name the head of state and the
+     * children's commissioner; the warrants for the campaign against the grid
+     * name the Defence Minister, the General Staff and two operational
+     * commanders — and no warrant names the head of state for the grid. Two
+     * verticals of two rungs each, not one of four, and the drawing was
+     * asserting a chain that no document draws.
+     *
+     * So each line gets its own ladder and its own numbering, and the true
+     * statement — how high the Court reached in each — becomes the thing the
+     * reader sees. A wave points at its line with `line`.
+     */
+    lines?: { key: string; label: Localized; summary: Localized }[];
   };
 }

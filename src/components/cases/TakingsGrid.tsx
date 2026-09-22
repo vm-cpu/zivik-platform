@@ -145,6 +145,30 @@ export default function TakingsGrid({
   const shapeOf = (m: MetricR) =>
     m.count !== undefined ? "grid" : m.percent !== undefined ? "bar" : "plain";
 
+  const bar = (m: MetricR, ofWhole?: string) =>
+    m.percent === undefined ? null : (
+      <>
+        <div
+          className="taking-bar"
+          /* Only a share whose remainder has been named is drawn against a
+             breach-coloured track — see the note in the stylesheet. */
+          data-rest={m.restLabel ? "named" : "none"}
+          role="img"
+          aria-label={`${m.label}: ${pct(m.percent)}%`}
+        >
+          <i style={{ width: shown ? `${m.percent}%` : "0%" }} />
+        </div>
+        {m.restLabel && (
+          <p className="taking-split">
+            <span className="ts-share">
+              {pct(m.percent)}%{ofWhole ? ` ${ofWhole}` : ""}
+            </span>
+            <span className="ts-rest">{m.restLabel}</span>
+          </p>
+        )}
+      </>
+    );
+
   const figure = (m: MetricR, ofWhole?: string) => (
     <>
       <div className="taking-head">
@@ -165,29 +189,7 @@ export default function TakingsGrid({
         </>
       )}
 
-      {m.percent !== undefined && (
-        <>
-          <div
-            className="taking-bar"
-            /* Only a share whose remainder has been named is drawn against a
-               breach-coloured track — see the note in the stylesheet. The other
-               four shares on the site are shares of a whole, not of a loss. */
-            data-rest={m.restLabel ? "named" : "none"}
-            role="img"
-            aria-label={`${m.label}: ${pct(m.percent)}%`}
-          >
-            <i style={{ width: shown ? `${m.percent}%` : "0%" }} />
-          </div>
-          {m.restLabel && (
-            <p className="taking-split">
-              <span className="ts-share">
-                {pct(m.percent)}%{ofWhole ? ` ${ofWhole}` : ""}
-              </span>
-              <span className="ts-rest">{m.restLabel}</span>
-            </p>
-          )}
-        </>
-      )}
+      {m.percent !== undefined && bar(m, ofWhole)}
 
       {/* The note belongs to the figure above it, so it closes the figure. */}
       {m.note && <p className="taking-note">{m.note}</p>}
@@ -203,17 +205,32 @@ export default function TakingsGrid({
           data-shape={shapeOf(whole)}
           data-pair={part ? "yes" : undefined}
         >
-          {figure(whole)}
+          {/* A whole and its part flank the bar that relates them.
 
-          {/* The part, inside the tile of the whole it divides and directly
-              under it, so «з них повернуто» has its «них» in reach. The share
-              under the bar names that whole outright — «9,5% з 19 546+» —
-              because the two figures sat one above the other and nothing
-              said the percentage was the ratio between them. */}
-          {part && (
-            <div className="taking-part">
-              {figure(part, labels?.shareOf ? `${labels.shareOf} ${whole.value}` : undefined)}
-            </div>
+              They were stacked — the whole with its figure, then a note, then
+              the part with its own figure, then the bar — and the big number
+              ended up three lines above the drawing it is the length of.
+              Owner: «ця цифра 19546 взагалі ніяк візуально не дотична до
+              лінії графіку». Side by side over the track, the bar reads as
+              what it is: 19 546+ long, 1 859 of it filled. */}
+          {part ? (
+            <>
+              <div className="taking-ends">
+                <div className="taking-head">
+                  <span className="taking-label">{whole.label}</span>
+                  <b className="taking-value">{whole.value}</b>
+                </div>
+                <div className="taking-head taking-end-r">
+                  <span className="taking-label">{part.label}</span>
+                  <b className="taking-value">{part.value}</b>
+                </div>
+              </div>
+              {bar(part, labels?.shareOf ? `${labels.shareOf} ${whole.value}` : undefined)}
+              {whole.note && <p className="taking-note">{whole.note}</p>}
+              {part.note && <p className="taking-note">{part.note}</p>}
+            </>
+          ) : (
+            figure(whole)
           )}
 
           {/* The other measure closes the tile, after the share rather than
