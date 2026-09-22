@@ -19,34 +19,9 @@
 }
 
 /* ---- page navigation: one sticky bar for every band --------------------- */
-.casepage .pagenav {
-  position: sticky;
-  top: 0;
-  z-index: 6;
-  background: var(--bg);
-  border-bottom: 1px solid var(--rule);
-}
 /* The rail holds two things: the scrolling row of sections, and the way back
    to the top. The button is not inside the row — see PageNav for what that
    cost — so the row takes the space the button leaves. */
-.casepage .pagenav-rail {
-  display: flex;
-  align-items: stretch;
-  gap: var(--space-4);
-}
-.casepage .pagenav-row {
-  min-width: 0;
-  flex: 1 1 auto;
-  display: flex;
-  align-items: stretch;
-  gap: clamp(16px, 2.5vw, 36px);
-  height: var(--pagenav-h);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.casepage .pagenav-row::-webkit-scrollbar {
-  display: none;
-}
 /* ---- return to top ------------------------------------------------------
    A disc in the corner of the viewport. It was in the sticky bar, sticky
    against the right end of the scrolling row, which floated it across whatever
@@ -97,35 +72,10 @@
     display: none;
   }
 }
-.casepage .pagenav a {
-  display: inline-flex;
-  align-items: center;
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  /* --muted, not --faint. Every neutral on this palette is warm, and at
-     --faint's lightness (#9c8279, 5.24:1) the warmth stops reading as neutral
-     and starts reading as colour — a salmon that this site's own vocabulary
-     says means a breach, on eleven section links that mean nothing of the
-     kind. --muted is the same family two steps lighter: 9.06:1, and light
-     enough that the hue reads as grey rather than as red. */
-  color: var(--muted);
-  text-decoration: none;
-  border-block: 2px solid transparent;
-  transition: color var(--dur) var(--ease);
-}
-.casepage .pagenav a:hover {
-  color: var(--cream);
-}
-.casepage .pagenav a[data-active="yes"] {
-  color: var(--gold);
-  border-bottom-color: var(--gold);
-}
 /* anchors land below the sticky bar, not under it */
 .casepage [data-navsec],
 .casepage .read h2 {
-  scroll-margin-top: calc(var(--pagenav-h) + var(--space-4));
+  scroll-margin-top: calc(var(--anchor-gap) + var(--space-4));
 }
 
 
@@ -138,9 +88,6 @@
 /* ---- vertical page rail (wide screens) ------------------------------------ */
 /* The rail lives in the left margin outside the content column. It carries its
    own night ground, so it stays legible over dark and paper bands alike. */
-.casepage .pagenav-v {
-  display: none;
-}
 /* The rail only appears when the gutter can actually hold it. At 1440px the
    box is 203px wide and the content starts at 130px, so it sat on top of the
    text; the old threshold assumed a narrower rail. 1700px is the first width
@@ -152,92 +99,20 @@
    text edge moved 72px left, and 24px would have put the rail's border a
    hair off the first character of every line. */
 @media (min-width: 1700px) {
-  .casepage .pagenav-v {
-    display: block;
-    position: fixed;
-    top: 50%;
-    left: max(24px, calc((100vw - var(--measure)) / 2 - 235px));
-    transform: translateY(-50%);
-    z-index: 6;
-    background: var(--brand-night);
-    border: 1px solid var(--brand-night-rule);
-    border-radius: var(--r-lg);
-    padding: var(--space-4) var(--space-5);
-    box-shadow: var(--shadow-md);
-  }
   /* the top bar yields to the rail */
-  .casepage .pagenav {
-    display: none;
-  }
-}
-.casepage .pagenav-v ol {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  display: grid;
-  gap: var(--space-2);
 }
 /* the spine the dots sit on */
-.casepage .pagenav-v ol::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  left: 4px;
-  width: 2px;
-  background: var(--brand-night-rule);
-}
-.casepage .pagenav-v a {
-  position: relative;
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-3);
-  padding: var(--space-1) 0 var(--space-1) var(--space-5);
-  font: 600 var(--t-cap) var(--brand-font-body);
-  letter-spacing: 0.03em;
-  color: var(--faint);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color var(--dur) var(--ease);
-}
-.casepage .pagenav-v a i {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--brand-night);
-  border: 2px solid var(--brand-night-rule);
-  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
-}
-.casepage .pagenav-v b {
-  font: 500 var(--t-micro) var(--brand-font-mono);
-  color: var(--faint);
-}
-.casepage .pagenav-v a:hover {
-  color: var(--cream);
-}
-.casepage .pagenav-v li[data-active="yes"] a {
-  color: var(--gold);
-}
-.casepage .pagenav-v li[data-active="yes"] a i {
-  background: var(--gold);
-  border-color: var(--gold);
-}
 
 
 /* ---- print: a citable document, not a screen ------------------------------ */
 @media print {
-  .casepage .pagenav,
-  .casepage .pagenav-v,
+  .casepage .toc-rail,
+  .casepage .toc-fold,
   .casepage .nsv-topbar,
   .casepage .nsv-mobnav,
   .casepage .nsv-foot,
   .casepage .backlink,
-  .casepage .actions {
+  .casepage .hero-meta {
     display: none !important;
   }
   .casepage,
@@ -315,7 +190,7 @@
    marks where they are actually used. */
 /* glossary entries are jump targets now */
 .casepage .glossary > div {
-  scroll-margin-top: calc(var(--pagenav-h) + var(--space-4));
+  scroll-margin-top: calc(var(--anchor-gap) + var(--space-4));
 }
 
 
@@ -437,3 +312,192 @@
 /* The interpretations used to flow as a two-column multicol here. They are a
    ledger now and live with the rest of the reference band in 30-paper.css —
    one class, one file. */
+
+/* ---- The page's shell: a column of contents beside the text --------------
+   The decision page was a stack of full-bleed bands with its map floating
+   over them — a dark pill in the left margin above 1700px, a sideways-
+   scrolling bar of chips below. Now the masthead is the only full-bleed
+   thing and everything under it stands in one grid: the contents on the
+   left, the reading column on the right.
+
+   226px is the design's own track. Below 1000px there is no margin to put a
+   column in, so the grid collapses to one and `.toc-fold` takes over. */
+.casepage .shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 44px);
+  max-width: calc(var(--measure) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+@media (min-width: 1000px) {
+  .casepage .shell {
+    grid-template-columns: 226px minmax(0, 1fr);
+  }
+}
+.casepage .shell-main {
+  min-width: 0;
+}
+/* Inside the shell a band is a block in the column, not a full-bleed strip:
+   the shell already holds the gutters and the measure, so the rail each
+   section carries stops centring itself and stops adding a second gutter. */
+.casepage .shell .rail {
+  max-width: 820px;
+  margin-inline: 0;
+  padding-inline: 0;
+}
+
+/* The contents column ------------------------------------------------------
+   Sticky, and scrolling on its own once the list outgrows the viewport —
+   which it does on the ECtHR judgment, at twelve entries. */
+.casepage .toc-rail {
+  display: none;
+  align-self: start;
+  position: sticky;
+  top: var(--space-6);
+  max-height: calc(100vh - var(--space-12));
+  overflow-y: auto;
+  margin-bottom: clamp(40px, 5vw, 64px);
+  scrollbar-width: thin;
+}
+@media (min-width: 1000px) {
+  .casepage .toc-rail {
+    display: block;
+  }
+}
+.casepage .toc-h {
+  font: 700 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--space-3);
+}
+.casepage .toc-rail nav,
+.casepage .toc-fold nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+/* A section, and the write-up's own headings under it. */
+.casepage .toc-a {
+  display: block;
+  font: 500 var(--t-cap) var(--brand-font-body), sans-serif;
+  line-height: 1.4;
+  color: var(--ink2);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  /* The active marker is an inset shadow rather than a border, so a row does
+     not move sideways by two pixels the moment it becomes the active one. */
+  box-shadow: inset 0 0 0 0 var(--brand-gold-mark);
+}
+.casepage .toc-a:hover {
+  background: var(--bg-2);
+  color: var(--ink);
+}
+.casepage .toc-a[data-on="yes"] {
+  background: var(--bg-2);
+  box-shadow: inset 2px 0 0 0 var(--brand-gold-mark);
+  color: var(--ink);
+  font-weight: 600;
+}
+.casepage .toc-sub {
+  position: relative;
+  padding-left: var(--space-6);
+}
+.casepage .toc-sub::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 0;
+  bottom: 13px;
+  width: 1px;
+  background: var(--rule);
+}
+.casepage .toc-s {
+  display: block;
+  position: relative;
+  font: 500 var(--t-cap) var(--brand-font-body), sans-serif;
+  line-height: 1.4;
+  color: var(--faint);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+}
+/* The tick that joins a sub-heading to its section's spine. */
+.casepage .toc-s::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 13px;
+  width: 10px;
+  height: 1px;
+  background: var(--rule);
+}
+.casepage .toc-s:hover {
+  background: var(--bg-2);
+  color: var(--ink);
+}
+.casepage .toc-s[data-on="yes"] {
+  background: var(--bg-2);
+  color: var(--ink);
+  font-weight: 600;
+}
+.casepage .toc-s[data-on="yes"]::before {
+  background: var(--brand-gold-mark);
+}
+
+/* The same list, folded, where there is no room for a column --------------- */
+.casepage .toc-fold {
+  display: block;
+  margin-bottom: clamp(24px, 3.5vw, 34px);
+  border: 1px solid var(--rule);
+  background: var(--bg-2);
+}
+@media (min-width: 1000px) {
+  .casepage .toc-fold {
+    display: none;
+  }
+}
+.casepage .toc-fold summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  font: 700 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  cursor: pointer;
+  list-style: none;
+}
+.casepage .toc-fold summary::-webkit-details-marker {
+  display: none;
+}
+.casepage .toc-fold[open] summary {
+  border-bottom: 1px solid var(--brand-gold-mark);
+}
+.casepage .toc-fold summary svg {
+  transition: transform var(--dur) var(--ease);
+  flex: none;
+}
+.casepage .toc-fold[open] summary svg {
+  transform: rotate(180deg);
+}
+.casepage .toc-fold nav {
+  padding: var(--space-2) var(--space-2) var(--space-3);
+  max-height: min(62vh, 520px);
+  overflow-y: auto;
+  background: var(--bg);
+}
+/* Touch targets, where touch is what this is for. */
+@media (max-width: 999px) {
+  .casepage .toc-a,
+  .casepage .toc-s {
+    padding: var(--space-3);
+  }
+  .casepage .toc-s::before {
+    top: 19px;
+  }
+}

@@ -79,7 +79,11 @@
      It is named here because the holdings ledger now takes the same measure,
      and a number that has been wrong four times should not be written twice. */
   --prose: 660px;
-  --pagenav-h: 46px;
+  /* The sticky bar of chips this measured is gone — the page's map is a
+     column beside the text now (see `.casepage .shell`). What is left is the
+     gap an anchored section keeps from the top of the viewport, which is what
+     every `scroll-margin-top` on this page was really asking for. */
+  --anchor-gap: 46px;
 
   background: var(--paper);
   color: var(--ink);

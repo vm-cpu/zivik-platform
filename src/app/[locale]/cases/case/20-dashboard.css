@@ -816,5 +816,5 @@
 /* Landing below the sticky bar rather than under it, the same allowance the
    band anchors already take. */
 .casepage .ctl-list li[id] {
-  scroll-margin-top: calc(var(--pagenav-h) + var(--space-6));
+  scroll-margin-top: calc(var(--anchor-gap) + var(--space-6));
 }

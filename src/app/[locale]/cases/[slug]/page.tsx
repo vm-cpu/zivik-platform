@@ -8,7 +8,8 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import CiteBlock from "@/components/cases/CiteBlock";
 import TermSearch from "@/components/cases/TermSearch";
-import PageNav from "@/components/cases/PageNav";
+import CaseToc from "@/components/cases/CaseToc";
+import ToTop from "@/components/cases/ToTop";
 import { markTerms, type TermRef } from "@/content/mark-terms";
 import TermTooltips from "@/components/cases/TermTooltips";
 import CaseTimeline from "@/components/cases/CaseTimeline";
@@ -1112,11 +1113,18 @@ export default async function CasePage({
           tooltips cannot do for themselves. Renders nothing. */}
       {termRefs.length > 0 && <TermTooltips />}
 
-      <PageNav
-        sections={sections}
-        ariaLabel={pick(T.navAria, locale)}
-        topLabel={pick(T.toTop, locale)}
-      />
+      <ToTop label={pick(T.toTop, locale)} />
+
+      {/* Everything below the masthead is one light canvas with a column of
+          contents beside it, rather than a stack of full-bleed bands with the
+          page's map floating over them. See `.casepage .shell`. */}
+      <div className="shell">
+        <CaseToc
+          items={sections.map((x) => ({ id: x.id, label: x.label }))}
+          title={pick(T.onThisPage, locale)}
+          ariaLabel={pick(T.navAria, locale)}
+        />
+        <div className="shell-main">
 
       {/* 1b — Plain-language lede */}
       {shows("overview") && (
@@ -1797,6 +1805,8 @@ export default async function CasePage({
           </div>
         </section>
       )}
+        </div>
+      </div>
       </main>
     </div>
   );
