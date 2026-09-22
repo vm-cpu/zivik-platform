@@ -1044,3 +1044,38 @@
   text-transform: uppercase;
   color: var(--ink3);
 }
+
+/* ── Columns that share their rows ────────────────────────────────────────
+   Equal-height boxes were not enough: inside them the question, the rule
+   under it and the claims label each ended wherever that column's own text
+   ended, so the two hairlines sat at different heights and the pair read as
+   a broken table from the inside.
+
+   `subgrid` puts every column's four parts on the pair's own four rows, so
+   the question block is as tall as the taller question in both columns and
+   its rule is drawn at the bottom of that row rather than at the bottom of
+   its own sentence. The last row takes the remaining height, which is what
+   keeps the two boxes level.
+
+   Guarded: a browser without subgrid keeps the plain stacked boxes rather
+   than getting `grid-row: span 4` with nothing to span. */
+@supports (grid-template-rows: subgrid) {
+  .casepage .pair-rows {
+    grid-template-rows: auto auto auto 1fr;
+  }
+  .casepage .pair-rows > .claim {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 4;
+  }
+  /* One column at a time — the rows are only shared while there are two. */
+  @media (max-width: 760px) {
+    .casepage .pair-rows {
+      grid-template-rows: none;
+    }
+    .casepage .pair-rows > .claim {
+      display: block;
+      grid-row: auto;
+    }
+  }
+}

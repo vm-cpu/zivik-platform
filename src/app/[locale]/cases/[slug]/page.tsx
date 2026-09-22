@@ -1750,7 +1750,17 @@ export default async function CasePage({
               }
               i -= 1;
               out.push(
-                <div className="pair" key={`pair-${units[0].at}`}>
+                /* Every column carries the same four things, so they sit on
+                   four shared rows: the hairline under the question and the
+                   label under it line up across the pair instead of landing
+                   wherever each column's own text happens to end. Only when
+                   every column has all four — otherwise there is nothing to
+                   line up and the rows would put things on each other's
+                   tracks. */
+                <div
+                  className={units.every((u) => u.subject) ? "pair pair-rows" : "pair"}
+                  key={`pair-${units[0].at}`}
+                >
                   {units.map((u, k) => (
                     <div className="claim" key={u.at}>
                       {u.subject && (
