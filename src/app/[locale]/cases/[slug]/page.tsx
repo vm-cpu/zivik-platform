@@ -644,8 +644,61 @@ function Block({
       ) : (
         <p className="disp">{block.text}</p>
       );
-    default:
-      return <p>{mark(block.text)}</p>;
+    default: {
+      /* Two shapes the write-up already has, drawn as the design draws them.
+         Neither rewrites a word: the text is cut at punctuation the author
+         put there, and what moves is where the pieces sit.
+
+         1. A paragraph that opens by naming which instrument it is about —
+            «Стосовно ICSFT …», "With regard to the ICSFT, …". The design
+            lifts that opening into a gold caption over the paragraph, which
+            is what it does: it labels the paragraph rather than being part
+            of its argument. The remainder keeps every word and gains a
+            capital, because it is now the start of the sentence. */
+      const scope = /^(Стосовно|With regard to)\s+(?:the\s+)?(ICSFT|CERD)[,]?\s+([\s\S]+)$/.exec(
+        block.text,
+      );
+      if (scope) {
+        const rest = scope[3];
+        return (
+          <>
+            <div className="lbl-c scope-l">{`${scope[1]} ${scope[2]}`}</div>
+            <p className="body">{mark(rest.charAt(0).toUpperCase() + rest.slice(1))}</p>
+          </>
+        );
+      }
+      /* 2. A paragraph that announces a list and then runs it into prose —
+            «…такі конкретні категорії дій: a; b; c.» The semicolons are the
+            author's own; the design sets what is between them as the list it
+            already is, behind a rule, under the sentence that announced it.
+
+            Three items at least, so an ordinary sentence with a colon and
+            one semicolon in it is left alone. */
+      const listed = /^([^:]{8,}?:)\s*([\s\S]+;[\s\S]+;[\s\S]+)$/.exec(block.text);
+      if (listed) {
+        const items = listed[2]
+          .split(";")
+          .map((x) => x.trim())
+          /* The serial conjunction before the last item belongs to the
+             sentence the list was, not to the item. Nothing else is touched:
+             the words, their order and the author's own semicolons stand. */
+          .map((x, i, a) => (i === a.length - 1 ? x.replace(/^(та|і|й|and)\s+/i, "") : x))
+          .filter(Boolean);
+        if (items.length >= 3) {
+          return (
+            <div className="listed">
+              <div className="listed-h">{listed[1].replace(/:$/, "")}</div>
+              <ul>
+                {items.map((x, i) => (
+                  <li key={i}>{mark(x)}</li>
+                ))}
+              </ul>
+            </div>
+          );
+        }
+      }
+      return <p className="body">{mark(block.text)}</p>;
+    }
   }
 }
 
