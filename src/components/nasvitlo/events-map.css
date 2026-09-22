@@ -1323,6 +1323,23 @@
   color: var(--brand-gold-mark);
   flex: none;
 }
+/* What a national seat carries where an international one carries its
+   abbreviation: the state whose judiciary it is.
+
+   Set in the same mono micro as the abbreviations, so the rows still line up
+   in one column, but muted rather than gold — a national court is not an
+   acronym anyone would recognise, and dressing the state name as one would
+   claim it is. This is the whole distinction between a national court and an
+   international one on this card, and it is a word rather than a glyph
+   because the marker cannot make it: The Hague's one dot holds three
+   international courts and the Dutch judiciary at once. */
+.emap-seat-state {
+  font: 500 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand-muted-dark);
+  flex: none;
+}
 .emap-seat-name {
   font-size: var(--t-sm);
   line-height: 1.4;

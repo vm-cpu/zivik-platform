@@ -65,7 +65,7 @@ export interface MapCountryR {
   /** The country, in the reader's language. */
   label: string;
   /** Every seat in the country, merged across its markers. */
-  seatList: { id?: string; abbr?: string; name: string }[];
+  seatList: { id?: string; abbr?: string; state?: string; name: string }[];
   /** How much of the archive those seats hold, summed. */
   total: number;
 }
@@ -83,7 +83,7 @@ export interface MapCourtR {
    * the PCA as the *venue* of the Oschadbank arbitration, and the PCA itself
    * sits in The Hague. Such a seat is named and not linked.
    */
-  seatList: { id?: string; abbr?: string; name: string }[];
+  seatList: { id?: string; abbr?: string; state?: string; name: string }[];
   /**
    * The city is off the projection's frame, so it has no point in
    * europe-map.json and is docked against the frame's edge instead.
@@ -2755,11 +2755,13 @@ export default function EventsMap({
                   {seat.id ? (
                     <Link href={`/${locale}/registry?court=${seat.id}`}>
                       {seat.abbr && <span className="emap-seat-abbr">{seat.abbr}</span>}
+                      {seat.state && <span className="emap-seat-state">{seat.state}</span>}
                       <span className="emap-seat-name">{seat.name}</span>
                     </Link>
                   ) : (
                     <span className="emap-seat-plain">
                       {seat.abbr && <span className="emap-seat-abbr">{seat.abbr}</span>}
+                      {seat.state && <span className="emap-seat-state">{seat.state}</span>}
                       <span className="emap-seat-name">{seat.name}</span>
                     </span>
                   )}

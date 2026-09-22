@@ -1,4 +1,5 @@
 import { pick, type Localized } from "./types";
+import { institutions } from "./institutions";
 import type { Locale } from "@/i18n/config";
 import geo from "./europe-map.json";
 
@@ -676,9 +677,27 @@ export const MAP_COUNTRIES: { key: string; name: Localized; courts: string[] }[]
  * the foot of this file checks the two lists are the same length.
  */
 export function seatsList(c: MapCourt, locale: Locale) {
+  /* The state a national court belongs to, for the seats that are one.
+
+     Derived, not written out a third time. A national seat is already a
+     national seat in institutions.ts (`category: "national"`), and the state
+     whose courts these are is already the entry in MAP_COUNTRIES that lists
+     this marker. Repeating either by hand in `seats` would be a fourth place
+     for the same fact to drift.
+
+     The Hague is why this is per seat rather than per marker: one dot there
+     carries three international courts and one national judiciary, so a
+     marker cannot be "the national one" — only a line in its card can. */
+  const stateOf = (id?: string) => {
+    if (!id) return undefined;
+    if (institutions.find((i) => i.id === id)?.category !== "national") return undefined;
+    const country = MAP_COUNTRIES.find((n) => n.courts.includes(c.key));
+    return country ? pick(country.name, locale) : undefined;
+  };
   return c.seats.map((s) => ({
     id: s.institutionId,
     abbr: abbrOf(s.abbr, locale),
+    state: stateOf(s.institutionId),
     name: pick(s.name, locale),
   }));
 }
