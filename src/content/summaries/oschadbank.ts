@@ -50,7 +50,6 @@ export const oschadbank: DecisionSummary = {
      which says the award is final in France: a revision proceeding has been
      resumed and is pending. Do not soften or restate that line by guesswork —
      read 24/05331 and 24/16339 first, then say what they held. */
-  asOf: "2026-08-27",
   title: {
     uk: "Ощадбанк проти Російської Федерації",
     en: "JSC Oschadbank v. the Russian Federation",
@@ -264,38 +263,14 @@ export const oschadbank: DecisionSummary = {
     },
   ],
 
-  related: [
-    {
-      label: {
-        uk: "ПАТ «Укрнафта» проти РФ",
-        en: "PJSC Ukrnafta v. Russian Federation",
-      },
-      note: { uk: "PCA 2015-34 · той самий ДІД", en: "PCA 2015-34 · same treaty" },
-      /* pca-24, the registry row for PCA 2015-34. It has no write-up, and
-         its own page says so; `#registry` sent a reader who wanted this
-         arbitration to the home page's preview of the whole library. */
-      href: "/cases/pca-24",
-    },
-    {
-      label: {
-        uk: "АТ «ДТЕК Крименерго» проти РФ",
-        en: "JSC DTEK Krymenergo v. Russian Federation",
-      },
-      note: {
-        uk: "PCA 2018-41 · енергомережа Криму",
-        en: "PCA 2018-41 · Crimea's power grid",
-      },
-      href: "/cases/dtek-krymenergo",
-    },
-    {
-      label: {
-        uk: "ICSFT і CERD (Україна проти РФ)",
-        en: "ICSFT and CERD (Ukraine v. Russian Federation)",
-      },
-      note: { uk: "Міжнародний суд ООН · Крим і Донбас", en: "ICJ · Crimea and Donbas" },
-      href: "/cases/icj-cerd-icsft",
-    },
-  ],
+  /* Порожньо навмисно. Смуга «Пов'язані рішення» малюється лише там, де
+     цей список не порожній, тож так вона зникає з цієї сторінки, а шаблон
+     лишається тим самим для решти. Власниця: «забери… Пов'язані рішення».
+
+     Три посилання, які тут стояли — «Укрнафта» (PCA 2015-34, той самий
+     ДІД), «ДТЕК Крименерго» (PCA 2018-41) і ICSFT/CERD, — записані в
+     історії цього файлу; повернути їх означає повернути цей масив. */
+  related: [],
 
   judgment: {
     court: { uk: "Постійна палата третейського суду", en: "Permanent Court of Arbitration" },
