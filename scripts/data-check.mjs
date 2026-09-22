@@ -40,7 +40,7 @@
  * here divides one number in a sentence by another. It came out by hand, when
  * a person did the division.
  */
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 
 const cases = readFileSync("src/content/cases.ts", "utf8");
 const TODAY = "2026-08-26";
@@ -402,6 +402,45 @@ for (const [slug, src] of summarySrc) {
       flag(id, "partof-chained", `partOf "${r.partOf}" is itself an act`);
     if (!r.named)
       flag(id, "partof-unnamed", "partOf without actName — the parent's row would print the citation");
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   A findings block's `outcomes` against its own head lines.
+
+   The array is keyed by position — one entry per «ICSFT — …» / «CERD — …»
+   line, in order — and an array keyed by position is only honest while
+   something counts it. Insert a finding and the outcomes slide one heading
+   to the left, silently, and the page prints «ПОРУШЕНО» over a claim that
+   was rejected. That is the kind of error this archive cannot ship.
+   ────────────────────────────────────────────────────────────────────── */
+{
+  const dir = "src/content/summaries";
+  for (const f of readdirSync(dir).filter((n) => n.endsWith(".json"))) {
+    let doc;
+    try {
+      doc = JSON.parse(readFileSync(`${dir}/${f}`, "utf8"));
+    } catch {
+      flag(f, "summary-json-unreadable", "file does not parse as JSON");
+      continue;
+    }
+    (doc.blocks ?? []).forEach((b, i) => {
+      if (!b || !Array.isArray(b.outcomes)) return;
+      if (b.kind !== "findings") {
+        flag(f, "outcomes-wrong-kind", `block ${i} is "${b.kind}", not findings`);
+        return;
+      }
+      const heads = String(b.text ?? "")
+        .split("\n")
+        .filter((l) => /^\s*(ICSFT|CERD)\s*[-\u2013\u2014]/.test(l)).length;
+      if (heads !== b.outcomes.length) {
+        flag(
+          f,
+          "outcomes-miscounted",
+          `block ${i} has ${heads} finding(s) and ${b.outcomes.length} outcome(s)`,
+        );
+      }
+    });
   }
 }
 

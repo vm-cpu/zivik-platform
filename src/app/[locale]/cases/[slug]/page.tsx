@@ -528,8 +528,13 @@ function Findings({
   mark,
   claimLabel,
   positionLabel,
+  outcomes,
+  locale,
 }: {
   text: string;
+  /** How each finding in this block went, in the order the heads appear. */
+  outcomes?: Outcome[];
+  locale: Locale;
   /** «Україна твердила» / «Позиція Суду» — the two columns' captions. */
   claimLabel: string;
   positionLabel: string;
@@ -537,44 +542,91 @@ function Findings({
       page has no glossary to mark against. */
   mark: (s: string) => React.ReactNode;
 }) {
-  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  const lines = text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean);
   /* The design reads a finding as three things: what it is about, what the
      applicant argued, and what the forum held — the last set apart, on its
      own ground, behind a gold rule. Our blocks already carry exactly those
      three: a lead line naming the track and the article, then the argument,
      then a paragraph opening «Позиція Суду:».
 
-     So the block is split rather than restyled paragraph by paragraph. The
-     track prefix comes off the head — the section it sits in has already
-     said ICSFT or CERD — and the position's own opening words come off its
-     paragraph, because the column is labelled with them. */
-  const head = lines.find((l) => /^(ICSFT|CERD)\s*[-–—]/.test(l));
-  const rest = lines.filter((l) => l !== head);
-  const posAt = rest.findIndex((l) => /^(The Court['’]s position:|Позиція Суду:)/.test(l));
-  const claim = posAt === -1 ? rest : rest.slice(0, posAt);
-  const position = posAt === -1 ? [] : rest.slice(posAt);
-  const strip = (l: string) => l.replace(/^(The Court['’]s position:|Позиція Суду:)\s*/, "");
+     A block carries AS MANY findings as it has head lines, and this took
+     only the first. «Висновки за ICSFT» holds four and «Висновки за CERD»
+     holds eight, so eleven of this decision's twelve findings had no heading
+     on the page at all: their heads were left in the running text and their
+     arguments and holdings were poured into one pair, one column of
+     everything Ukraine said and one of everything the Court said, four and
+     eight findings deep. A reader could not see what had been decided
+     separately, which is also why the page could not say which claims were
+     rejected.
+
+     The track prefix comes off each head — the section it sits in has
+     already said ICSFT or CERD — and the position's own opening words come
+     off its paragraph, because the column is labelled with them. */
+  const HEAD = /^(ICSFT|CERD)\s*[-–—]\s*/;
+  const POS = /^(The Court['’]s position:|Позиція Суду:)\s*/;
+  const parts: { head?: string; body: string[] }[] = [];
+  for (const l of lines) {
+    if (HEAD.test(l)) parts.push({ head: l.replace(HEAD, ""), body: [] });
+    else {
+      if (parts.length === 0) parts.push({ body: [] });
+      parts[parts.length - 1].body.push(l);
+    }
+  }
   return (
     <div className="findings">
-      {head && <h3 className="f-head">{head.replace(/^(ICSFT|CERD)\s*[-–—]\s*/, "")}</h3>}
-      <div className="pair">
-        {claim.length > 0 && (
-          <div className="claim">
-            <div className="lbl-c">{claimLabel}</div>
-            {claim.map((l, i) => (
-              <p key={i}>{mark(l)}</p>
-            ))}
+      {parts.map((part, n) => {
+        const posAt = part.body.findIndex((l) => POS.test(l));
+        const claim = posAt === -1 ? part.body : part.body.slice(0, posAt);
+        const position = posAt === -1 ? [] : part.body.slice(posAt);
+        const outcome = outcomes?.[n];
+        return (
+          <div className="finding" key={n}>
+            {part.head && (
+              <div className="f-row">
+                <h3 className="f-head">{part.head}</h3>
+                {outcome && (
+                  <span className="v-out h4-out" data-o={outcome}>
+                    {pick(OUTCOME_LABEL[outcome], locale)}
+                  </span>
+                )}
+              </div>
+            )}
+            {/* Where the write-up records no seam between the argument and
+                the holding, there is no pair to draw: the eight CERD
+                findings run the Court's reasoning and the party's case in
+                and out of each other, and cutting them in two would put
+                sentences in a column that does not own them. One column,
+                and the heading and its answer above it. */}
+            {position.length === 0 ? (
+              claim.map((l, i) => (
+                <p className="body" key={i}>
+                  {mark(l)}
+                </p>
+              ))
+            ) : (
+              <div className="pair">
+                {claim.length > 0 && (
+                  <div className="claim">
+                    <div className="lbl-c">{claimLabel}</div>
+                    {claim.map((l, i) => (
+                      <p key={i}>{mark(l)}</p>
+                    ))}
+                  </div>
+                )}
+                <div className="rule">
+                  <div className="lbl-c">{positionLabel}</div>
+                  {position.map((l, i) => (
+                    <p key={i}>{mark(l.replace(POS, ""))}</p>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
-        {position.length > 0 && (
-          <div className="rule">
-            <div className="lbl-c">{positionLabel}</div>
-            {position.map((l, i) => (
-              <p key={i}>{mark(strip(l))}</p>
-            ))}
-          </div>
-        )}
-      </div>
+        );
+      })}
     </div>
   );
 }
@@ -694,8 +746,10 @@ function Block({
   mark,
   claimLabel,
   positionLabel,
+  locale,
 }: {
   block: SummaryBlock;
+  locale: Locale;
   mark: (s: string) => React.ReactNode;
   /* The two captions a finding's columns carry. Passed down rather than
      read here: this renderer has no locale of its own. */
@@ -745,6 +799,8 @@ function Block({
           mark={mark}
           claimLabel={claimLabel}
           positionLabel={positionLabel}
+          outcomes={block.outcomes}
+          locale={locale}
         />
       );
     case "link":
@@ -1785,6 +1841,7 @@ export default async function CasePage({
               <Block
                 key={i}
                 block={b}
+                locale={locale}
                 mark={mark}
                 claimLabel={pick(T.claimed, locale)}
                 positionLabel={pick(T.courtPosition, locale)}

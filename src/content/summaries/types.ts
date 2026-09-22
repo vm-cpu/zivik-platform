@@ -90,6 +90,21 @@ export interface SummaryBlock {
    * legal meaning, which this page does not do.
    */
   outcome?: Outcome;
+  /**
+   * How each finding in a `findings` block went, in the order its head lines
+   * appear. `findings` only.
+   *
+   * One entry per head, and data-check holds them to that count — an array
+   * keyed by position is only honest while something is counting.
+   *
+   * Read out of the write-up, not out of a rule. Ten of this decision's
+   * twelve findings end on the Court's own formula — «Суд доходить висновку,
+   * що не було встановлено, що…» — and two (law-enforcement measures,
+   * culturally significant gatherings) do not; those two rest on the
+   * dispositif, which rejects every claim under each convention but the one
+   * it upholds. Neither reading belongs in a regular expression.
+   */
+  outcomes?: Outcome[];
 }
 
 /** Raw verbatim payload as ingested from the .docx (shape of the JSON file). */

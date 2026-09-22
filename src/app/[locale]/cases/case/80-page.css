@@ -942,3 +942,28 @@
 .casepage .sec-h + * {
   border-top: 0;
 }
+
+/* ── Each finding, on its own ─────────────────────────────────────────────
+   A findings block holds as many findings as it has head lines — four under
+   ICSFT and eight under CERD on the ICJ case — and they are separate
+   decisions on separate claims. They are drawn as separate things now, each
+   with its heading and how it went. */
+.casepage .finding + .finding {
+  margin-top: var(--space-8);
+}
+.casepage .f-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: var(--space-6) 0 var(--space-3);
+}
+.casepage .f-row .f-head {
+  margin: 0;
+}
+/* A finding the write-up records without a seam between the argument and
+   the holding runs as one column, at the reading measure — the pair is for
+   text that is genuinely in two voices. */
+.casepage .finding > p.body {
+  max-width: var(--prose);
+}
