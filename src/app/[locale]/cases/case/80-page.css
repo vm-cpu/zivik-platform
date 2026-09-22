@@ -1252,3 +1252,46 @@
 .casepage .ctl-row:last-child {
   border-bottom: 0;
 }
+
+/* ── What a box is for ────────────────────────────────────────────────────
+   Owner: «забагато оцих квадратиків по всій сторінці рішення — давай
+   подумаємо де вони мають сенс а де ліпше прибрати».
+
+   Two different jobs had grown into one shape, and the shape stopped
+   saying anything because everything wore it.
+
+   A box that is a COLUMN earns its edges: the two aspects of «Предмет
+   спору» are read across, and without edges there is nothing to read
+   across. Those keep everything they have.
+
+   A box that is a TURN in an exchange does not. Down the reading column
+   the page had an argument in a bordered box, then the answer in a second
+   bordered box, thirty times over, and the border was drawn around text
+   that is simply the next thing to read.
+
+   So in a stacked exchange only the forum's half stays set apart — the
+   warm ground and the gold edge, which are what say the Court is speaking
+   and are the one distinction on this page worth a mark. The party's half
+   becomes what it is: prose, under its caption, on the page's own ground.
+   Half the boxes go and the half that remain mean something again. */
+.casepage .pair-turns {
+  border: 0;
+}
+.casepage .pair-turns > .claim {
+  background: none;
+  border: 0;
+  padding-inline: 0;
+}
+.casepage .pair-turns > .rule {
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+/* Air where the border used to hold them apart. */
+.casepage .pair-turns > * + * {
+  margin-top: var(--space-4);
+}
+.casepage .pair-turns > .claim + .rule,
+.casepage .pair-turns > .rule + .claim {
+  margin-top: var(--space-5);
+}
