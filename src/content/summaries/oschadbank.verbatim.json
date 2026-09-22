@@ -81,7 +81,8 @@
     },
     {
       "kind": "h3",
-      "text": "The Crimean Events of February-March 2014, established by the Arbitral Tribunal"
+      "text": "The Crimean Events of February-March 2014, established by the Arbitral Tribunal",
+      "nav": "The Crimean events of 2014"
     },
     {
       "kind": "p",
@@ -177,42 +178,47 @@
     },
     {
       "kind": "h4",
-      "text": "Jurisdiction"
+      "text": "Jurisdiction",
+      "outcome": "granted"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "The Claimant submitted that the Tribunal has jurisdiction over its claims. Specifically, the Claimant submitted that: (a) the Treaty applies to the Claimant’s investments in the Crimean Peninsula; (b) the Claimant is a qualifying investor that held protected investments in the Crimean Peninsula; and (c) the Tribunal has temporal jurisdiction over the entirety of the Respondent’s conduct that affected the Claimant’s investments."
     },
     {
       "kind": "h4",
-      "text": "Attribution"
+      "text": "Attribution",
+      "outcome": "granted"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "Invoking the customary rules of attribution codified in the International Law Commission’s Draft ILC Articles, the Claimant submitted that the Respondent was responsible for the acts and omissions of the following persons and entities: (i) the Russian military; (ii) the Russian Parliament; (ii) the Bank of Russia; (iii) the DPF; (iv) the Crimean authorities, including the Crimean state officials, the Crimean courts, the Crimean Parliament and Sevastopol’s Assembly; and (v) the Crimean Self-Defense Forces."
     },
     {
       "kind": "h4",
-      "text": "Liability under the Treaty"
+      "text": "Liability under the Treaty",
+      "outcome": "violation"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "The Claimant submitted that the Respondent breached several provisions of the Treaty, including (a) Article 2(2) guaranteeing unconditional legal protection; (b) Article 3(1) guaranteeing non- discriminatory treatment; (c) Article 3(1) guaranteeing most favored nation treatment; (d) Article 4 ensuring transparency and accessibility of legislation; (e) Article 5(1) preventing unlawful expropriation; (f) Article 7 ensuring free transferability of funds; and (g) protection against denial of justice."
     },
     {
       "kind": "h4",
-      "text": "Damages"
+      "text": "Damages",
+      "outcome": "granted"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "The Claimant submitted that, in view of the Respondent’s violations of the Treaty, it was entitled to restitutio in integrum in the form of monetary compensation, as it is impossible strictly to restore the status quo ante. First, the Claimant claims compensation for lost assets comprising corporate and private loans, real property including buildings and ATMs, cash, and other valuables such as gold deposits and securities. Second, the Claimant claimed compensation for the loss of the Crimean Branch as a going concern, calculating a capitalized value of the Crimean Branch’s future income streams using a Discounted Cash Flow (“DCF”) model. Third, the Claimant claimed compensation for other losses not reflected in its records, but nevertheless “connected to the Russian Federation’s unlawful conduct.”"
     },
     {
       "kind": "h4",
-      "text": "Costs"
+      "text": "Costs",
+      "outcome": "granted"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "Relying on Article 40(1) of the UNCITRAL Rules, the Claimant submitted that the Respondent should bear the costs of this arbitration if the Claimant prevails on the merits."
     },
     {
@@ -240,7 +246,7 @@
       "text": "The Tribunal observed that, since the Treaty’s entry into force on 27 January 2000, the Crimean Peninsula has at all times fallen within the territory of one of the two Contracting Parties, and that the question for the Tribunal was which Party owed Treaty obligations to foreign investors there from February/March 2014 onward - a question the Tribunal expressly distinguished from the question of de jure sovereignty over Crimea, on which it found it unnecessary to comment…"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "Applying Articles 31 and 29 of the Vienna Convention on the Law of Treaties (“VCLT”), the Tribunal construed “territory” in its ordinary meaning, in context, and in light of the Treaty’s object and purpose, noting that throughout the Treaty the term is used in conjunction with a Contracting Party’s legislative and administrative control (e.g., the obligations in Articles 2, 4 and 7 to admit investments “subject to its laws” and to guarantee protection “in conformity with its laws”). The Tribunal found that the Treaty applies to each Contracting Party’s entire territory under Article 29 VCLT, and that the Crimean Peninsula fell within the Respondent’s territory for Treaty purposes, given that the Respondent had “taken all steps under its own law to annex” Crimea - including the Crimean parliament’s declaration of independence, the referendum, the Accession Treaty, the Constitutional Court’s decision and the Accession Law - and maintained, against the international community, a sovereign claim coupled with effective control. The Tribunal accordingly held that it was the Respondent, and not Ukraine, that owed Treaty obligations to Ukrainian investors in Crimea from the date of the Accession. The Tribunal found it unnecessary to decide the Claimant’s alternative arguments on the broader public international law meaning of “territory” or on estoppel."
     },
     {
@@ -252,11 +258,11 @@
       "text": "In its sole substantive communication, the Respondent contended that the Claimant’s assets did not constitute “investments” under Article 1(1) of the Treaty, since they were not invested in the territory of the Russian Federation, and, even if they occurred, they were made before accession of the Republic of Crimea and the city of Sevastopol to the Russian Federation and not in conformity with the legislation of the Russian Federation. These assets have not been earlier subject to taxation under the legislation of the Russian Federation and have not contributed to the development of the economy of the Russian Federation."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Tribunal found that the establishment of a Ukrainian bank branch in Crimea satisfied the broad definition of “investments” in Article 1(1), comprising both tangible assets (including leasehold rights) and intangible rights and economic interests arising from loans, deposits and other banking instruments."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Tribunal rejected each of the Respondent’s objections in turn: (i) there is no temporal requirement in the Treaty text limiting investments to those made after Russian obligations became effective in Crimea; (ii) the Claimant’s operations conformed with the Respondent’s own legislation, which expressly permitted Ukrainian banks licensed as of 16 March 2014 to continue operating until 1 January 2015; (iii) non-payment of Russian taxes did not preclude jurisdiction, since under the Respondent’s own legislation no Russian taxes were payable in Crimea before 1 January 2015 and the investment was terminated before any tax could fall due; and (iv) the limited economic benefit the Respondent derived from the investment was itself a product of the Respondent’s Treaty breaches, and the Tribunal was satisfied that, absent those breaches, the Respondent would have received a pronounced economic benefit from the Crimean Branch, one of the Claimant’s most successful branches."
     },
     {
@@ -268,7 +274,7 @@
       "text": "Having found a qualifying investment and that the Treaty applied to Crimea at the relevant time, the Tribunal found no credible objection to the Claimant’s status as a duly incorporated Ukrainian legal entity competent to invest abroad, and accordingly that the Claimant was an “investor” within the meaning of the Treaty."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Tribunal concluded that it had jurisdiction to determine the dispute."
     },
     {
@@ -280,23 +286,23 @@
       "text": "In the absence of express Treaty wording on attribution, the Tribunal applied customary international law as codified in the International Law Commission’s Articles on Responsibility of States for Internationally Wrongful Acts (“ILC Articles”), addressing Article 4 (State organs), Article 5 (entities exercising delegated governmental authority) and Article 8 (conduct directed or controlled by the State). On this basis, the Tribunal found:"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Respondent’s military and Parliament are State organs under Article 4 of the ILC Articles, and their conduct is attributable to the Respondent;"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Bank of Russia is structurally an organ of the Respondent under Article 4, on the basis of its characteristics and functions, consistent with the approach taken in Invesmart, B.V. v. Czech Republic;"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The DPF’s conduct is attributable to the Respondent under Article 8, the DPF having been formed to implement the Depositor Protection Law and the Crimean Financial System Law under the direction and control of the Respondent’s Government, and having played a key role in facilitating the Respondent’s control over the Crimean banking system;"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Crimean authorities (State officials, courts, parliament and the Sevastopol Assembly) effectively became organs of the Respondent under Article 4 from 18 March 2014, given the combined effect of the Accession Treaty and the Accession Law; and"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Crimean Self-Defense Forces were under the instruction, direction or control of the Crimean authorities at all material times after 11 March 2014, and their conduct is therefore attributable to the Respondent under Article 8, rendering it unnecessary to consider the Claimant’s alternative argument based on a failure to prevent."
     },
     {
@@ -316,7 +322,7 @@
       "text": "The Tribunal recalled that, under Article 15(1) of the ILC Articles, a composite breach occurs once the cumulative effect of a series of actions or omissions is sufficient to constitute the wrongful act, and that it could therefore assess the Respondent’s conduct cumulatively."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "Applying these principles, the Tribunal found that the Crimean Financial System Law and the Depositor Protection Law together formed the platform that permitted the Bank of Russia to terminate the Claimant’s Crimean activities. It found that the conditions these laws imposed - servicing customers in rubles, disclosing depositor and creditor registers in breach of Ukrainian banking-secrecy law, and meeting onerous and unrealistic deadlines - were “unduly onerous” and could not realistically be complied with, irrespective of the Respondent’s underlying regulatory intent. The Tribunal found that the Bank of Russia’s 26 May 2014 termination decision triggered, in turn, the Simferopol court’s appointment of the DPF as administrator of the Claimant’s assets (notwithstanding that the court did not explain how the Claimant could perform banking operations that the Bank of Russia had simultaneously prohibited) and the DPF’s subsequent compensation of depositors and assertion of recourse claims against the Claimant for approximately RUB 4.7 billion. The Tribunal further found two raids in May 2014 in which cash and valuables were seized from the Crimean Branch’s head office, the premature termination of 85 lease agreements followed by their assumption by RNCB, and the involuntary transfer of the Claimant’s movable property and staff to RNCB. Considering these measures cumulatively, the Tribunal was satisfied that the Claimant had established that the Respondent’s measures had an effect tantamount to expropriation of the totality of the Claimant’s investment in Crimea."
     },
     {
@@ -328,7 +334,7 @@
       "text": "Because the four conditions of lawful expropriation under Article 5(1) (public interest, due process, non-discrimination, and prompt, adequate and effective compensation) are cumulative, the Tribunal addressed compensation first, noting that a lack of payment is, in itself, sufficient to render an expropriation unlawful. The Tribunal found that no compensation whatsoever had been paid to the Claimant, rendering the expropriation wrongful on that ground alone. The Tribunal nonetheless went on, for completeness, to find that due process had also not been afforded - the legal framework for the Bank of Russia’s termination decision provided no opportunity for the Claimant to be heard, no appeal procedure, and no mechanism to test the basis for alleged non-compliance - and that the Crimean Financial System Law was discriminatory, since Russian-licensed banks were afforded materially more favourable timeframes, procedural safeguards and discretion in the event of non-compliance than were imposed on Ukrainian banks such as the Claimant."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Tribunal accordingly concluded that the Respondent had engaged in unlawful expropriation in breach of Article 5(1) of the Treaty, and that the Respondent’s liability under international law for breach of the Treaty had been established."
     },
     {
@@ -336,7 +342,7 @@
       "text": "Other Claims"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "Having found a breach of Article 5(1), and on grounds of judicial economy consistent with the approach of other tribunals, the Tribunal found it unnecessary to determine the Claimant’s alternative claims under Articles 2(2), 3(1), 4 and 7 of the Treaty or its claim of denial of justice, since the resulting damages would not have varied from those flowing from the finding of unlawful expropriation."
     },
     {
@@ -364,7 +370,7 @@
       "text": "On this basis, the Tribunal found that the Claimant was entitled to compensation comprising: loss of assets (corporate and retail loans - principally the Solar Loans to the ActivSolar Group, which the DPF was separately pursuing for recovery of over RUB 28 billion - together with real property, cash and other physical and financial assets) of USD 597,771,793; loss of future profits (“goodwill”), calculated by capitalising projected maintainable profits at a rate of 14%, of USD 484,616,757; and other heads of loss - comprising third-party valuables (gold, jewellery, precious stones and cash) seized in the May 2014 raids, and unenforceable arbitral awards for commissions and reimbursement owed by a counterparty under stand-by letters of credit, the underlying security for which (petrol and diesel) was located in Crimea - of USD 28,912,179."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "In total, the Tribunal found that the Claimant was entitled to recover, and the Respondent was obliged to pay, USD 1,111,300,729 in compensation."
     },
     {
@@ -388,7 +394,7 @@
       "text": "10. Legal consequences (dispositif)"
     },
     {
-      "kind": "p",
+      "kind": "dispositif",
       "text": "For the foregoing reasons, the Tribunal DECLARED, AWARDED and ORDERED:"
     },
     {
@@ -420,7 +426,7 @@
       "text": "That the Respondent shall pay post-Award interest on the damages, costs and legal fees awarded, from the date of the Award until payment in full, at the same rate, compounded annually."
     },
     {
-      "kind": "p",
+      "kind": "note",
       "text": "As of the date of this summary, the Tribunal’s Award has not been voluntarily satisfied by the Respondent."
     }
   ]

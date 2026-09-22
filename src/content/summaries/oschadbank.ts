@@ -461,6 +461,34 @@ export const oschadbank: DecisionSummary = {
       },
     },
     {
+      date: { uk: "23 черв. 2016", en: "23 Jun 2016" },
+      iso: "2016-06-23",
+      track: "arbitration",
+      kind: "filing",
+      label: {
+        uk: "Єдине змістовне звернення Росії",
+        en: "Russia's only substantive communication",
+      },
+      note: {
+        uk: "Лист через посла в Гаазі: активи Ощадбанку — не «інвестиція» за договором. Більше Росія у справі не озвалася.",
+        en: "A letter through its ambassador in The Hague: Oschadbank's assets are not an “investment” under the treaty. Russia said nothing further.",
+      },
+    },
+    {
+      date: { uk: "22 груд. 2016", en: "22 Dec 2016" },
+      iso: "2016-12-22",
+      track: "arbitration",
+      kind: "order",
+      label: {
+        uk: "Україну допущено як третю сторону",
+        en: "Ukraine admitted as a non-disputing party",
+      },
+      note: {
+        uk: "Крим лишається українським, але договірні зобов'язання там несе той, хто його контролює.",
+        en: "Crimea remains Ukrainian, but treaty obligations there fall on whoever controls it.",
+      },
+    },
+    {
       date: { uk: "27–29 бер. 2017", en: "27–29 Mar 2017" },
       iso: "2017-03-27",
       track: "arbitration",
