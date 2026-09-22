@@ -268,10 +268,11 @@
 .casepage .verdicts .v-out[data-o="granted"] {
   color: var(--pred);
 }
-/* A row that carries no article of its own still keeps the column, so the
-   claims stay on one edge down the whole index. */
-.casepage .verdicts li[data-run="cont"] .v-claim {
-  grid-column: 2;
+/* A continuation row names its article too, quieter: the run it belongs to
+   was announced by the row above, and three identical labels at full strength
+   would read as three separate articles. */
+.casepage .verdicts .v-track-cont {
+  color: var(--ink3);
 }
 @media (max-width: 700px) {
   .casepage .verdicts li {

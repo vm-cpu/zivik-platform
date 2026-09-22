@@ -127,8 +127,19 @@ export default function VerdictMatrix({ rows }: { rows: VerdictRow[] }) {
               for the instrument's official text and says so with ↗; an inward
               one moves the reader down this same page to the moment the track
               names, and an arrow that means "new tab" would be a lie on it. */}
-          {r.opensTrack &&
-            (r.href ? (
+          {/* The article on every row, not only on the first of its run.
+
+              The column was printed once per track and left blank on the
+              rows under it — and a table whose first cell is empty is a
+              table a reader cannot read: «Інші вимоги · Відхилено» with
+              nothing saying what it is other than. The link, though, is
+              offered once: the row that opens a run carries the way out to
+              the instrument's own text, and repeating that on every row
+              would be three identical links to the same document.
+
+              Owner: «а де стаття? чому там пусто?» */}
+          {r.opensTrack ? (
+            r.href ? (
               <a
                 className="v-track v-track-link"
                 href={r.href}
@@ -147,7 +158,10 @@ export default function VerdictMatrix({ rows }: { rows: VerdictRow[] }) {
               </a>
             ) : (
               <span className="v-track">{r.track}</span>
-            ))}
+            )
+          ) : (
+            <span className="v-track v-track-cont">{r.track}</span>
+          )}
           {/* Article, claim, result — the order the design reads them in and
               the order a dispositif is written in. It was outcome first,
               because the row used to run the full 1180px rail and the two

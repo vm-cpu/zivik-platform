@@ -1472,7 +1472,12 @@ export default async function CasePage({
                 reader who pressed the chip landed on a numbered heading from
                 inside the document with nothing saying what they had reached.
                 Now that the chip says «Повний огляд», the band says it too. */}
-            <h2 className="lbl lbl-onpaper read-band-h">{pick(T.navFulltext, locale)}</h2>
+            {/* No head over the write-up. Its parts carry their own —
+                «1 Фактичні обставини» and the rest — and a band label above
+                them was a second title for the same thing, with the hairline
+                `.lbl` trails off every label it draws. Owner: «повний огляд?
+                зайвий заголовок. Зайва смуга.» The contents still names the
+                parts, which is where that label's job went. */}
             {/* The «Терміни в цьому тексті» chip row is gone. It listed the
                 decision's headwords above the verbatim and linked each to the
                 glossary band below — which made sense while the terms were
@@ -1536,7 +1541,9 @@ export default async function CasePage({
       {shows("rulings") && (
         <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
           <div className="rail">
-            <h2 className="lbl lbl-onpaper">{pick(T.keyRulings, locale)}</h2>
+            <div className="sec-h">
+              <h2>{pick(T.keyRulings, locale)}</h2>
+            </div>
             {/* A definition list, because that is what these are: a doctrine
                 and what the Court held it to mean. They were cards — a white
                 box with a serif headline over grey prose, which is the shape of
@@ -1565,12 +1572,14 @@ export default async function CasePage({
       {shows("measures") && provisionalMeasures.length > 0 && (
         <section className="pmeas" data-ground={ground["pmeas"]} id="measures" data-navsec aria-label={pick(T.provMeasures, locale)}>
           <div className="rail">
-            <h2 className="lbl lbl-onpaper">
+            <div className="sec-h">
+              <h2>
               {pick(T.provMeasures, locale)}
               {summary.provisionalMeasuresOrder && (
                 <em className="lbl-sub">{pick(summary.provisionalMeasuresOrder, locale)}</em>
               )}
             </h2>
+            </div>
             <ul className="pmeasures">
               {provisionalMeasures.map((m, i) => (
                 <li key={i} data-order={m.order}>
@@ -1596,7 +1605,9 @@ export default async function CasePage({
           aria-label={pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale)}>
           <div className="rail machinery-stack">
             <div>
-              <h2 className="lbl lbl-onpaper">{pick(warrants.heading, locale)}</h2>
+              <div className="sec-h">
+                <h2>{pick(warrants.heading, locale)}</h2>
+              </div>
               <p className="mach-note">{pick(warrants.note, locale)}</p>
               <WarrantWall
                 waves={warrants.waves.map((w) => ({
@@ -1640,7 +1651,9 @@ export default async function CasePage({
           <div className="rail machinery-stack">
             {attribution && (
               <div>
-                <h2 className="lbl lbl-onpaper">{pick(T.attributionH, locale)}</h2>
+                <div className="sec-h">
+                  <h2>{pick(T.attributionH, locale)}</h2>
+                </div>
                 <p className="mach-note">{pick(attribution.note, locale)}</p>
                 <AttributionTree
                   respondent={pick(attribution.respondent, locale)}
@@ -1660,7 +1673,9 @@ export default async function CasePage({
 
             {objections && (
               <div>
-                <h2 className="lbl lbl-onpaper">{pick(objections.heading, locale)}</h2>
+                <div className="sec-h">
+                  <h2>{pick(objections.heading, locale)}</h2>
+                </div>
                 <p className="mach-note">{pick(objections.note, locale)}</p>
                 <ObjectionCards
                   items={objections.items.map((o) => ({
@@ -1688,7 +1703,9 @@ export default async function CasePage({
 
             {afterlife && (
               <div>
-                <h2 className="lbl lbl-onpaper">{pick(afterlife.heading, locale)}</h2>
+                <div className="sec-h">
+                  <h2>{pick(afterlife.heading, locale)}</h2>
+                </div>
                 <p className="mach-note">{pick(afterlife.note, locale)}</p>
                 <AfterlifeStrip
                   stages={afterlife.stages}
@@ -1708,7 +1725,9 @@ export default async function CasePage({
           tail of the dashboard, below the money bars, under a <div> label. */}
       <section className="chron" data-ground={ground["chron"]} id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
         <div className="rail">
-          <h2 className="lbl lbl-onpaper">{pick(T.timeline, locale)}</h2>
+          <div className="sec-h">
+            <h2>{pick(T.timeline, locale)}</h2>
+          </div>
           <CaseTimeline
             events={timeline.map((e) => ({
               date: L(e.date),
@@ -1794,7 +1813,9 @@ export default async function CasePage({
       {shows("glossary") && glossaryEnabled && (
         <section className="terms" data-ground={ground["terms"]} id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
           <div className="rail">
-            <h2 className="lbl lbl-onpaper">{pick(T.glossaryH, locale)}</h2>
+            <div className="sec-h">
+              <h2>{pick(T.glossaryH, locale)}</h2>
+            </div>
             <TermSearch
               terms={glossary.map((g) => ({
                 term: pick(g.term, locale),
