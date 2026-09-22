@@ -1140,7 +1140,7 @@ export default async function CasePage({
 
   const bands: Array<[string, boolean]> = [
     ["readzone", true],
-    ["refs", true],
+    ["refs", interpretations.length > 0],
     ["pmeas", provisionalMeasures.length > 0],
     ["machinery", hasMachinery],
     ["chron", true],
@@ -1176,7 +1176,7 @@ export default async function CasePage({
       <section
         className="mapband"
         id="theatres"
-        data-lit
+        data-lit={summary.mapInline ? "" : undefined}
         data-navsec
         aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}
       >
@@ -1236,7 +1236,7 @@ export default async function CasePage({
       const listed: typeof parts = [];
       parts.forEach((p, n) => {
         listed.push(p);
-        if (n === 0 && theatres.length > 0) {
+        if (n === 0 && summary.mapInline && theatres.length > 0) {
           listed.push({
             id: "theatres",
             label: pick(summary.theatresHeading ?? T.seatLabel, locale),
@@ -1253,7 +1253,11 @@ export default async function CasePage({
        it moves when the bands move. Rulings and measures now follow the
        dispositif directly; the chronology and the map fall in behind the
        machinery. */
-    { id: "rulings", label: pick(T.navRulings, locale) },
+    /* Guarded with the band: a chip pointing at a section that does not
+       render scrolls a reader to nothing. */
+    ...(interpretations.length > 0
+      ? [{ id: "rulings", label: pick(T.navRulings, locale) }]
+      : []),
     ...(provisionalMeasures.length > 0
       ? [{ id: "measures", label: pick(T.provMeasures, locale) }]
       : []),
@@ -1266,6 +1270,11 @@ export default async function CasePage({
         ]
       : []),
     { id: "chronology", label: pick(T.timeline, locale) },
+    /* The map band, where it is not drawn inside the write-up. Guarded the
+       same way the band is, so the chip never points at nothing. */
+    ...(!summary.mapInline && theatres.length > 0
+      ? [{ id: "theatres", label: pick(summary.theatresHeading ?? T.seatLabel, locale) }]
+      : []),
     ...(glossaryEnabled
       ? [{ id: "glossary", label: pick(T.navGlossary, locale) }]
       : []),
@@ -1771,7 +1780,9 @@ export default async function CasePage({
             if (b.kind === "h2") {
               /* Between part 1 and part 2: part 1 names the two theatres and
                  the drawing is what they look like. */
-              if (h2i === 1 && theatreBand) out.push(<div key={`map-${i}`}>{theatreBand}</div>);
+              if (h2i === 1 && summary.mapInline && theatreBand) {
+                out.push(<div key={`map-${i}`}>{theatreBand}</div>);
+              }
               out.push(<PartHead key={i} id={`sec-${h2i++}`} text={b.text} />);
               continue;
             }
@@ -1988,7 +1999,7 @@ export default async function CasePage({
           sides, which is what DESIGN.md requires of them. */
       }
       {/* 2b — Reference: doctrine and the interim order, on paper */}
-      {shows("rulings") && (
+      {shows("rulings") && interpretations.length > 0 && (
         <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
           <div className="rail">
             <div className="sec-h">
@@ -2197,6 +2208,10 @@ export default async function CasePage({
           />
         </div>
       </section>
+
+      {/* Its own band, below the chronology, for every decision that does
+          not draw it inside the write-up — see `mapInline`. */}
+      {!summary.mapInline && theatreBand}
 
       {/* 2m — Where it was decided and what ground it is about.
           A wide-format band of its own: the drawing runs edge to edge and only

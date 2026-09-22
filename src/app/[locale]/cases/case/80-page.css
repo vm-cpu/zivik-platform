@@ -1106,3 +1106,15 @@
   margin-inline: 0;
   padding-inline: 0;
 }
+
+/* No h2 inside the write-up draws its own top rule.
+   `.read h2` has carried one since a heading stood alone in the text there.
+   The section heads were exempted one by one; the map's heading is an h2
+   too, and the moment the drawing moved inside the article it picked the
+   rule up — a full-width hairline above «ДВА ТЕАТРИ» with nothing above it.
+   Said once, against every h2 in the column, the way the rule under a
+   section head is said once against the head. */
+.casepage .read h2 {
+  border-top: 0;
+  padding-top: 0;
+}

@@ -553,4 +553,18 @@
   --muted: var(--ink2);
   --faint: var(--ink3);
   --rule: var(--prule);
+  --rule-soft: var(--prule);
+  /* The names written on the drawing and the key's own track names take
+     this. Lamp gold measures 2.06:1 on the light land and 1.64:1 on Ukraine
+     — it was the pale lettering on the map. The paper gold measures 4.47:1
+     and 3.56:1, and 5.42:1 on the key's white ground. */
+  --gold: var(--brand-gold-ink);
+}
+/* The key lies on the drawing, so it carries its own ground, and that ground
+   was three night tokens written straight into the rule — a black slab in
+   the middle of a light map. */
+.casepage .mapband[data-lit] .map-legend {
+  background: var(--card);
+  border-color: var(--prule);
+  box-shadow: var(--shadow-md);
 }

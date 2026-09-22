@@ -592,29 +592,21 @@ export const icjCerdIcsft: DecisionSummary = {
     },
   ],
 
-  interpretations: [
-    {
-      term: { uk: "«Кошти» (ICSFT)", en: "“Funds” (ICSFT)" },
-      ruling: {
-        uk: "Лише грошові та фінансові ресурси. Постачання зброї та організація тренувальних таборів — поза сферою дії конвенції.",
-        en: "Monetary and financial resources only. Supplying weapons and running training camps fall outside the Convention.",
-      },
-    },
-    {
-      term: { uk: "Расова дискримінація (CERD)", en: "Racial discrimination (CERD)" },
-      ruling: {
-        uk: "Розрізнення за забороненою ознакою з метою АБО наслідком применшення прав. Зовні нейтральний захід може кваліфікуватися за його непропорційним негативним впливом.",
-        en: "A distinction on a prohibited ground with the purpose OR effect of impairing rights. A facially neutral measure can qualify by its disparate adverse effect.",
-      },
-    },
-    {
-      term: { uk: "Доктрина «чистих рук»", en: "“Clean hands” doctrine" },
-      ruling: {
-        uk: "Не застосовна у міждержавному спорі, де юрисдикцію встановлено, а заяву визнано прийнятною. Відхилена як заперечення по суті.",
-        en: "Cannot apply in an inter-State dispute where jurisdiction is established and the application is admissible. Rejected as a defence on the merits.",
-      },
-    },
-  ],
+  /* Empty, so the «Ключові тлумачення» band does not render on this page.
+   *
+   * It held three entries and all three were the three preliminary
+   * determinations, condensed: «Кошти» (ICSFT), racial discrimination under
+   * CERD Article 1(1), and the clean-hands doctrine. The write-up sets out
+   * each of them under «Попередні визначення», in the Court's own words and
+   * with the argument it answered — so the page said the same three things
+   * twice, in two shapes, eight bands apart, and a reader who met the short
+   * form second had no way to know it was the same ruling.
+   *
+   * The field stays on the type and the band still knows how to draw itself:
+   * a decision whose holdings on the law are not in its write-up should
+   * still have somewhere to put them. Owner: «прибери смугу тлумачення».
+   */
+  interpretations: [],
 
   /* The date the template used to hardcode. It is in the verbatim: "Order on
      Provisional Measures of 19 April 2017", and the dispositif cites
@@ -653,6 +645,11 @@ export const icjCerdIcsft: DecisionSummary = {
       },
     },
   ],
+
+  /* The drawing sits inside the write-up, after part 1, on paper — part 1
+     is where the two theatres are named and the map is what they look like.
+     See `mapInline` in summaries/types.ts. */
+  mapInline: true,
 
   theatres: [
     {
