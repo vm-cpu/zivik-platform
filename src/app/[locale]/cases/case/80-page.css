@@ -983,3 +983,60 @@
   border-bottom: 1px solid var(--prule);
   text-wrap: pretty;
 }
+
+/* ── An argument and its answer run down, not across ──────────────────────
+   Two halves belong side by side when they are two of the same kind and a
+   reader compares them: «Вимоги України за ICSFT» beside «…за CERD» is one
+   question asked of two conventions, and it is read across.
+
+   An argument beside the answer to it is not that. It is one thing after
+   another, and the answer is always the longer — measured over every pair
+   in the archive, the party's case runs between 24% and 52% of the forum's
+   reply, and not one of the eight is within half again of its other half.
+   Side by side that left a third to three-quarters of a box of blank ground
+   under the shorter one, which is what the owner was looking at.
+
+   So this kind stacks: full width each, the argument then the answer, no
+   ragged edge because there is nothing beside anything. The Court's half
+   keeps its gold edge, which is what says which half it is. */
+.casepage .pair-turns {
+  grid-template-columns: minmax(0, 1fr);
+}
+.casepage .pair-turns > * + * {
+  margin-left: 0;
+  margin-top: -1px;
+}
+
+/* ── The aspect a column is about ─────────────────────────────────────────
+   This case is two cases — a terrorism-financing claim about eastern
+   Ukraine under the ICSFT, and a racial-discrimination claim about Crimea
+   under CERD. The page said so in the theatres, on the map and in the
+   index, and said it nowhere at the point where the two tracks are
+   introduced: the reader met two columns of prose and had to work out from
+   the sentences that they were parallel. The numeral counts them, the
+   abbreviation names the convention, the place names the theatre. */
+.casepage .c-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.casepage .c-num {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 400;
+  font-size: var(--t-h3);
+  line-height: 1;
+  color: var(--brand-gold-mark);
+}
+.casepage .c-inst {
+  font: 700 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+.casepage .c-place {
+  margin-left: auto;
+  font: 500 var(--t-micro) var(--brand-font-body), sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink3);
+}

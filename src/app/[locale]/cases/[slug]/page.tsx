@@ -607,7 +607,7 @@ function Findings({
                 </p>
               ))
             ) : (
-              <div className="pair">
+              <div className="pair pair-turns">
                 {claim.length > 0 && (
                   <div className="claim">
                     <div className="lbl-c">{claimLabel}</div>
@@ -670,6 +670,12 @@ function PartHead({ text, id }: { text: string; id?: string }) {
 
    That is the opposite result to the topic-phrase rule this page rejected
    (18 hits, 4 of them right), and it is why this one ships. */
+/* Roman, because the aspects of a subject-matter are numbered that way in
+   the judgments themselves, and because the page already spends arabic
+   numerals on the parts of the write-up. Four is more than any decision in
+   the archive needs; past it the count falls back to a figure. */
+const ROMAN = ["I", "II", "III", "IV"];
+
 const QUOTED = /^[«"“][\s\S]*[»"”][.,;]?$/;
 const TRAILING_CITE = /\s*\(\s*§+[^)]*\)\s*(:?)\s*$/;
 
@@ -787,7 +793,7 @@ function Block({
       /* A claim that no heading names — grouped claims never reach here, the
          walk below pairs them with the h3 above each one. */
       return (
-        <div className="pair">
+        <div className="pair pair-turns">
           <div className="claim">
             <div className="lbl-c">{claimLabel}</div>
             <p>{mark(block.text)}</p>
@@ -1723,6 +1729,8 @@ export default async function CasePage({
                 id: string;
                 text: string;
                 subject?: string;
+                instrument?: string;
+                place?: string;
                 at: number;
               }[] = [];
               for (;;) {
@@ -1731,6 +1739,8 @@ export default async function CasePage({
                 if (!(body[h]?.kind === "h3" && body[h + 1]?.kind === "claim")) break;
                 units.push({
                   subject: sub,
+                  instrument: body[i]?.kind === "subject" ? body[i].instrument : undefined,
+                  place: body[i]?.kind === "subject" ? body[i].place : undefined,
                   head: body[h].text,
                   id: `sub-${h3i++}`,
                   text: body[h + 1].text,
@@ -1741,8 +1751,21 @@ export default async function CasePage({
               i -= 1;
               out.push(
                 <div className="pair" key={`pair-${units[0].at}`}>
-                  {units.map((u) => (
+                  {units.map((u, k) => (
                     <div className="claim" key={u.at}>
+                      {u.subject && (
+                        <div className="c-head">
+                          {/* The numeral counts the aspects, so it is a
+                              layout device and not a word of the heading —
+                              hidden from a screen reader for the same reason
+                              the part numerals are. */}
+                          <span className="c-num" aria-hidden="true">
+                            {ROMAN[k] ?? String(k + 1)}
+                          </span>
+                          {u.instrument && <span className="c-inst">{u.instrument}</span>}
+                          {u.place && <span className="c-place">{u.place}</span>}
+                        </div>
+                      )}
                       {u.subject && <p className="c-sub">{mark(u.subject)}</p>}
                       <div className="lbl-c" id={u.id}>
                         {u.head}
@@ -1771,7 +1794,7 @@ export default async function CasePage({
               }
               if (right.length > 0) {
                 out.push(
-                  <div className="pair" key={`cp-${i}`}>
+                  <div className="pair pair-turns" key={`cp-${i}`}>
                     <div className="claim">
                       <div className="lbl-c">{pick(T.claimed, locale)}</div>
                       <p>{mark(b.text)}</p>

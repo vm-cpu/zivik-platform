@@ -118,6 +118,23 @@ export interface SummaryBlock {
    * it upholds. Neither reading belongs in a regular expression.
    */
   outcomes?: Outcome[];
+  /**
+   * The head of the column this block opens. `subject` only.
+   *
+   * This case is two cases: a terrorism-financing claim about eastern
+   * Ukraine under the ICSFT, and a racial-discrimination claim about Crimea
+   * under CERD. The page says so three times — in the theatres, on the map,
+   * in the index — and said it nowhere at the point where the two tracks are
+   * introduced, so the reader met two columns of prose and had to work out
+   * from the sentences that they were parallel.
+   *
+   * Both values restate `theatres` in summaries/*.ts, which is the record
+   * for this join; nothing here is new about the case. They are per-locale
+   * because the blocks are.
+   */
+  instrument?: string;
+  /** The theatre that instrument's claim is about — see `instrument`. */
+  place?: string;
 }
 
 /** Raw verbatim payload as ingested from the .docx (shape of the JSON file). */
