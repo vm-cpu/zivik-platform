@@ -21,9 +21,9 @@
   column-gap: var(--space-2);
   row-gap: var(--space-1);
   align-items: start;
-  /* One column per wave while there is room; a full-width row once the
-     sentences would be squeezed into a gutter. */
-  flex: 1 1 clamp(230px, 28%, 380px);
+  /* Ширину тепер роздає сітка в 60-warrants.css рівними частками, тож власної
+     гнучкої основи ключ не має: саме вона давала трьом ключам три різні
+     ширини і рваний старт підписів. */
   max-width: 58ch;
 }
 
@@ -32,7 +32,10 @@
 }
 
 .casepage .wr-key .wr-key-head {
-  align-self: center;
+  /* На одній лінії з крапкою, а не по центру рядка: центрування зсувало
+     підпис на кілька пікселів залежно від того, скільки рядків забрала
+     назва. */
+  align-self: start;
   color: var(--brand-ink-2);
 }
 

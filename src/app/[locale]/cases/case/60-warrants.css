@@ -148,10 +148,16 @@
   display: grid;
   gap: var(--space-6);
 }
+/* Три лінії звинувачення — три однакові колонки, а не гнучкий ряд.
+   Власниця: «оце щось дивне». Гнучкий ряд ставив дві поруч, а третю кидав
+   самотньою на другий рядок під першою, і кожна діставала свою ширину, тож
+   підписи під ними починалися на різній висоті. Рівні колонки або рівний
+   стовпчик — інших станів немає. */
 .casepage .wr-legend {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-6);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--space-4) var(--space-6);
+  align-items: start;
 }
 .casepage .wr-key {
   display: inline-flex;
