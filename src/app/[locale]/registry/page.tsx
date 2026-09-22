@@ -286,21 +286,37 @@ const T = {
      appears on any row with a court document, summarised or not. A reader
      hunting for a "no summary yet" badge would have found none.
 
-     The owner's choice, from four drafts: it opens on the proceedings
-     already summarised rather than on the ones that are not, which is the
-     same two facts in the order that does not read as an apology.
+     The owner's own sentence, after four drafts and four continuations. It
+     opens on the proceedings already summarised rather than on the ones that
+     are not — the same facts in the order that does not read as an apology —
+     and it is one clause and a comma rather than two sentences.
+
+     It also drops the growth clause the earlier drafts all carried
+     («список далі поповнюємо новими справами»). That was the note's second
+     job: telling a reader who cannot find a case that the list is still
+     being added to. It is not said here any more, deliberately — flagged to
+     the owner rather than smuggled back in.
 
      And it is said in the first person — owner's instruction, «давай від
      себе писати». The archive is kept by people and the rest of the site
      already says so («ми проливаємо на них світло», «ми шукаємо
      інституції»); a passive «бібліотека наповнюється» was the one line that
      described the work as weather. So: ми опрацювали, ми читаємо, ми
-     поповнюємо. The gold mark is named because we are the ones who put it
-     there — not, as the sentence had it before this pass, as a badge on the
-     rows that lack a summary. Nothing marks those. */
+     поповнюємо.
+
+     «Підсвітили», not «позначили золотим» — owner's word, and the better
+     one. The archive is called НаСвітло, its footer says «ми проливаємо на
+     них світло», and the mark this sentence points at is a lit gold dot.
+     One verb now carries both the fact (that row has a summary) and the
+     figure the whole site is built on, where the earlier phrasing described
+     a colour and left the figure on the floor.
+
+     Whatever the verb, it has to point the right way: it names the rows we
+     have lit, not — as the sentence had it before this pass — a badge on
+     the rows that lack a summary. Nothing marks those. */
   state: {
-    uk: "Частину проваджень ми вже опрацювали й позначили золотим. Решту ще читаємо, а список далі поповнюємо новими справами.",
-    en: "We have already worked through some of these proceedings and marked them in gold. We are still reading the rest, and still adding new cases to the list.",
+    uk: "Частину проваджень ми вже опрацювали й підсвітили, над іншими ще працюємо.",
+    en: "We have already worked through some of these proceedings and lit them up; we are still working on the others.",
   },
 } as const;
 
