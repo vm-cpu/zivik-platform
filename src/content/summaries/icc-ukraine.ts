@@ -665,8 +665,8 @@ export const iccUkraine: DecisionSummary = {
         en: "The Chamber: peace talks do not lift the duty to arrest",
       },
       note: {
-        uk: "Держава-учасниця, яку Суд не називає, звернулася за консультаціями за ст. 97 Статуту: чи може вона приймати мирні переговори за участю Путіна. Палата відповіла, що винятку з обов'язку арешту немає і держава не може призупинити виконання ордера сама; конференція, формально скликана ООН, робить зобов'язання за Статутом ООН релевантними, але зважує їх Суд.",
-        en: "A State Party the Court does not name sought consultations under article 97: whether it could host peace talks with Mr Putin present. The Chamber answered that no exception to the duty to arrest exists and that a State cannot suspend a warrant on its own initiative; a conference formally convened by the United Nations makes UN Charter obligations relevant, but it is the Court that weighs them.",
+        uk: "Держава-учасниця, яку Суд не називає, звернулася за консультаціями за ст. 97 Статуту: чи може вона приймати мирні переговори за участю Путіна. Палата відповіла, що винятку з обов'язку арешту немає і держава не може призупинити виконання ордера сама; конференція, формально скликана ООН, робить зобов'язання за Статутом ООН релевантними, але зважує їх Суд. Єдиний шлях, яким провадження взагалі можна призупинити, — стаття 16 Статуту: відстрочка на прохання Ради Безпеки ООН, і просити про неї держава не може.",
+        en: "A State Party the Court does not name sought consultations under article 97: whether it could host peace talks with Mr Putin present. The Chamber answered that no exception to the duty to arrest exists and that a State cannot suspend a warrant on its own initiative; a conference formally convened by the United Nations makes UN Charter obligations relevant, but it is the Court that weighs them. The one route by which proceedings can be suspended at all is article 16 — a deferral at the request of the UN Security Council, which is not a State's to ask for.",
       },
     },
   ],

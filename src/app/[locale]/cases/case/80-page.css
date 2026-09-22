@@ -1701,12 +1701,16 @@
   padding-top: var(--space-3);
   border-top: 1px solid var(--prule);
 }
-.casepage .taking-alt .taking-label,
-.casepage .taking-alt .taking-value {
+/* `.casepage .taking[data-shape="plain"] .taking-value` is the same weight
+   and sits in a stylesheet that loads after this one, so it was winning:
+   the second estimate came out at the first one's 20px and read as a rival
+   headline rather than as the quieter measure it is. One class deeper. */
+.casepage .taking .taking-alt .taking-label,
+.casepage .taking .taking-alt .taking-value {
   font-size: var(--t-cap);
   color: var(--ink3);
 }
-.casepage .taking-alt .taking-value {
+.casepage .taking .taking-alt .taking-value {
   font-weight: 700;
   color: var(--ink2);
 }
@@ -1725,8 +1729,12 @@
    So the pair keeps the row, in the order they are read, and anything
    left over takes the full width instead of half of it. A tile alone on
    a row is a tile that has stopped belonging to the row above. */
-.casepage .takings > .taking:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
+/* The provenance note joins the grid instead of hanging under it, so the
+   row the enforcement figure opens is a row and not a figure with an empty
+   half beside it. Two subjects above, the caveat and its sources below. */
+.casepage .takings > .takings-note {
+  margin: 0;
+  align-self: start;
 }
 /* The whole and its part, tied by the line they share: the bar in the
    second tile is a share of the figure in the first, so the two sit

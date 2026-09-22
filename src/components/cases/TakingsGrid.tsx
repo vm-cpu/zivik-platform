@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type React from "react";
 /* Locale-resolved props, like every other client component here.
 
    This one took `Metric[]` straight off the summary — raw {uk, en} pairs — and
@@ -45,10 +46,15 @@ export interface MetricR {
 
 export default function TakingsGrid({
   metrics,
+  note,
   locale,
   labels,
 }: {
   metrics: MetricR[];
+  /** Where the figures come from. Sits in the grid as its own cell, so a row
+      with an odd number of tiles closes rather than leaving a hole. Takes a
+      node, not a string: the date of verification is a `<span>` inside it. */
+  note?: React.ReactNode;
   /** Still needed: the share is formatted with the reader's own separator. */
   locale: string;
   /** "of which" and the over-cap note for a dot field too large to draw. */
@@ -203,6 +209,7 @@ export default function TakingsGrid({
           )}
         </div>
       ))}
+      {note && <p className="taking-note takings-note">{note}</p>}
     </div>
   );
 }

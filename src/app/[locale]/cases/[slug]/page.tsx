@@ -1850,22 +1850,27 @@ export default async function CasePage({
                   }))}
                   locale={locale}
                   labels={{ andMore: pick(T.dotCap, locale) }}
-                />
-                {takings.note && (
-                  <p className="dash-note">
-                    {pick(takings.note, locale)}
-                    {summary.asOf && (
-                      <span className="asof">
-                        {" "}
-                        · {pick(T.asOf, locale)}{" "}
-                        {new Date(summary.asOf + "T00:00:00Z").toLocaleDateString(
-                          locale === "uk" ? "uk-UA" : "en-GB",
-                          { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
+                  /* Inside the grid, in the cell beside the last figure —
+                     it used to hang under the whole band with the right
+                     half of that row empty. */
+                  note={
+                    takings.note && (
+                      <>
+                        {pick(takings.note, locale)}
+                        {summary.asOf && (
+                          <span className="asof">
+                            {" "}
+                            · {pick(T.asOf, locale)}{" "}
+                            {new Date(summary.asOf + "T00:00:00Z").toLocaleDateString(
+                              locale === "uk" ? "uk-UA" : "en-GB",
+                              { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
+                            )}
+                          </span>
                         )}
-                      </span>
-                    )}
-                  </p>
-                )}
+                      </>
+                    )
+                  }
+                />
               </div>
             )}
 
