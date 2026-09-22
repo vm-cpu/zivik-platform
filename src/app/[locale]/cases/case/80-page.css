@@ -736,7 +736,10 @@
 .casepage .read > h4 {
   font-family: var(--brand-font-display), serif;
   font-weight: 700;
-  font-size: clamp(14px, 1.7vw, 16px);
+  /* A step under the h3 above it. It shared that clamp, and once the h3 came
+     down to the body's size the two were the same face at the same weight in
+     the same ink at the same size — one level, printed twice. */
+  font-size: var(--t-sm);
   line-height: 1.35;
   color: var(--ink);
   text-transform: none;
