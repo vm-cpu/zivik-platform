@@ -63,7 +63,10 @@ const T = {
   timeline: { uk: "Хронологія", en: "Timeline" },
   tracks: { uk: "Два театри", en: "Two theatres" },
   found: { uk: "Що встановив Суд", en: "What the Court found" },
-  violation: { uk: "Порушення", en: "Violation" },
+  /* «Порушено», not «Порушення»: the column answers what the forum did with
+     the claim, and every other answer in it is a participle — «Відхилено»,
+     «Не встановлено». A noun among them read as a different kind of answer. */
+  violation: { uk: "Порушено", en: "Violation found" },
   noViolation: { uk: "Немає", en: "No violation" },
   /* The scorecard's noun has to agree with the number printed in front of it,
      and the number depends on what kind of dispositif this is. Three

@@ -340,8 +340,19 @@
 /* Inside the shell a band is a block in the column, not a full-bleed strip:
    the shell already holds the gutters and the measure, so the rail each
    section carries stops centring itself and stops adding a second gutter. */
+/* Inside the shell a band is a block in the column, not a full-bleed strip:
+   the shell already holds the gutters and the measure, so the rail each
+   section carries stops centring itself and stops adding a second gutter.
+
+   No width of its own either. It was capped at 820px — the design's figure —
+   inside a cell that is 910px at this page's measure, and the 90px left over
+   sat empty down the whole right side. The design's 820 and its 1160 shell
+   are one pair of numbers: at that shell the cell *is* 778 and the cap never
+   binds. Ours is the page's own measure, which the masthead above also uses,
+   so the column takes the cell and the text keeps the same left and right
+   edges as the title over it. */
 .casepage .shell .rail {
-  max-width: 820px;
+  max-width: none;
   margin-inline: 0;
   padding-inline: 0;
 }
