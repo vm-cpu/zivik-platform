@@ -45,15 +45,16 @@
     },
     {
       "kind": "findings",
-      "text": "the Tribunal has jurisdiction to hear and adjudicate DTEK Krymenergo’s claims against the Russian Federation;\nthe Russian Federation has breached Articles 2, 3, and 5 of the BIT;\nDTEK Krymenergo damages in the amount of not less than US$ 421,198,000, plus a gross-up for Ukrainian taxes on the award and pre- and post-award interest compounded at Russia’s sovereign borrowing rate;\nDTEK Krymenergo its costs and legal fees in accordance with Article 40 of the UNCITRAL Rules;\nDTEK Krymenergo such other relief as it deems appropriate”."
+      "text": "- the Tribunal has jurisdiction to hear and adjudicate DTEK Krymenergo’s claims against the Russian Federation;\n- the Russian Federation has breached Articles 2, 3, and 5 of the BIT;\n- DTEK Krymenergo damages in the amount of not less than US$ 421,198,000, plus a gross-up for Ukrainian taxes on the award and pre- and post-award interest compounded at Russia’s sovereign borrowing rate;\n- DTEK Krymenergo its costs and legal fees in accordance with Article 40 of the UNCITRAL Rules;\n- DTEK Krymenergo such other relief as it deems appropriate”."
     },
     {
       "kind": "h3",
-      "text": "The Respondent raised 6 preliminary objections"
+      "text": "The Respondent raised 6 preliminary objections",
+      "nav": "Preliminary objections"
     },
     {
       "kind": "findings",
-      "text": "the BIT is not applicable to Crimea since there is a territorial dispute between the Russian Federation and Ukraine regarding the status of Crimea (the investment was not made in the territory of the Russian Federation);\nClaimant’s alleged investments were (at least in a substantive portion) made before 1 January 1992 and, as such, they are not protected under Article 12 of the BIT, with the consequence that the Tribunal should “decline jurisdiction in its entirety, or, in the alternative, in part (investment did not meet temporal requirements);\nthe plain language of Article 1(1) of the BIT defining investments requires an active cross-border investment at its inception in conformity with the host State’s legislation. The requirements of Article 1(1) (activity, cross-border and legality) must be met cumulatively and concurrently at the inception of the investment ( It is not investment in the sense of the BIT);\nClaimant does not meet the definition of an investor under Article 1(2)(b) of the BIT"
+      "text": "- the BIT is not applicable to Crimea since there is a territorial dispute between the Russian Federation and Ukraine regarding the status of Crimea (the investment was not made in the territory of the Russian Federation);\n- Claimant’s alleged investments were (at least in a substantive portion) made before 1 January 1992 and, as such, they are not protected under Article 12 of the BIT, with the consequence that the Tribunal should “decline jurisdiction in its entirety, or, in the alternative, in part (investment did not meet temporal requirements);\n- the plain language of Article 1(1) of the BIT defining investments requires an active cross-border investment at its inception in conformity with the host State’s legislation. The requirements of Article 1(1) (activity, cross-border and legality) must be met cumulatively and concurrently at the inception of the investment ( It is not investment in the sense of the BIT);\n- Claimant does not meet the definition of an investor under Article 1(2)(b) of the BIT"
     },
     {
       "kind": "h2",
@@ -81,50 +82,53 @@
     },
     {
       "kind": "h3",
-      "text": "Bilateral investment treaty remains in full force and effect"
+      "text": "Bilateral investment treaty remains in full force and effect",
+      "nav": "The BIT remains in force"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "Tribunal held that, notwithstanding the existence of an armed conflict between Ukraine and the Russian Federation BIT between Ukraine and the Russian Federation remains in full force and effect: the Treaty has not been declared invalid, it has not been terminated, nor has its operation been suspended"
     },
     {
       "kind": "h3",
-      "text": "First preliminary objection: Was the investment made in the “TERRITORY” of the Russian Federation:"
+      "text": "First preliminary objection: Was the investment made in the “TERRITORY” of the Russian Federation:",
+      "nav": "First objection: territory"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "The Position of Respondent’s: the BIT is not applicable to Crimea since there is a territorial dispute between the Russian Federation and Ukraine regarding the status of Crimea."
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "It denied that the term “territory” as used in the BIT has essentially a geographic meaning encompassing areas over which a State exercises effective control; in Russia’s submission, the term is limited to “sovereign territory”. The Tribunal could only decide that Crimea is Russian territory on the basis that Russia enjoys there all sovereign rights, powers and functions. If Crimea is Russian territory, it is not Ukrainian territory, and the BIT only contemplates that a place lies in the territory of Russia or in the territory of Ukraine. It follows that if Russia has sovereignty, Ukraine does not, and if Russia has sovereign rights, Ukraine does not."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "Legal position of the Tribunal on the first jurisdictional objection: The Tribunal, by majority concludes that the proper interpretation of \"territory of the Russian Federation\" refers to the geographical area which, at the relevant date was under the control of the Russian Federation;"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The tribunal held that there is no dispute that Crimea was a territory under the control of the Russian Federation at the moment of dispute. There is a dispute between Ukraine and the Russian Federation regarding which of the two powers held (and still holds) sovereignty over Crimea – but this dispute does not taint the conclusion that, for purposes of the BIT, Crimea forms part of the territory which is entitled to receive protection."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "Moreover, the Russian Federation has run afoul of the principle of good faith."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "Respondent has publicly and repeatedly declared, including in this arbitration, that its firmly held position is that Crimea forms part of its sovereign territory. At the same time, Respondent denies that Crimea is its sovereign territory for the purposes of the BIT. For a treaty to be performed in good faith, a State has to maintain towards a given factual or legal situation an attitude consistent with its prior public proclamations and statements. Respondent is thus estopped from arguing that the territory it unambiguously declares to be part of its sovereign territory, should not be regarded as protected territory under the BIT, when an investor claims protection for its investments in that very territory."
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "Respondent alleges that the DTEK Energy Group corruptly acquired its additional 45% stake in (and thus also control over) Krymenergo. Russia submits that international public policy requires the Tribunal to declare that Claimant’s claim is inadmissible because of the illegal acts of Claimant’s controlling shareholders. Alternatively, Respondent says that the Tribunal lacks jurisdiction because the alleged corruption has stained Claimant’s investment, which therefore was not carried out in accordance with the BIT."
     },
     {
       "kind": "h3",
-      "text": "Second jurisdictional objection: Does the investment meet the temporal requirements?"
+      "text": "Second jurisdictional objection: Does the investment meet the temporal requirements?",
+      "nav": "Second objection: timing"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "Respondent submits that Claimant’s alleged investments were (at least in a substantive portion) made before 1 January 1992 and, as such, they are not protected under Article 12 of the BIT, with the consequence that the Tribunal should “decline jurisdiction in its entirety, or, in the alternative, in part."
     },
     {
@@ -132,15 +136,15 @@
       "text": "When Russia adopted the impugned measures in 2015, Krymenergo owned certain assets in Crimea, for the distribution of electricity within that territory; a significant portion of these assets had been built, constructed or acquired during Soviet times, i.e., before 1 January 1992. Claimant has provided a detailed breakdown as of 2013 (i.e., three years before the alleged impairment) of assets which had come into operation before 1992 [“Soviet Assets”]. 325. Against this factual background."
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "Russia says that, at least with regard to these Soviet Assets, the Tribunal lacks jurisdiction, because these investments do not meet the requirement under Article 12 of the BIT: the investment was not made (or carried out, in the translation preferred by Respondent) on or after 1 January 1992."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Tribunal has unanimously concluded that the proper interpretation of Article 12 of the BIT implies that investments, to be protected, must have been “made” or “carried out” by the investor post-1992; and investments are “made” or “carried out” when the investor acquires ownership (or some other ius in rem over such assets). This conclusion has led to the dismissal of Claimant’s primary argument that it made (or carried out) the investment in 2014, when the Russian Federation incorporated Crimea to the territory under its control."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "In the Tribunal’s unanimous opinion, to benefit from Treaty protection, Krymenergo must have acquired its Crimean assets, including the Soviet Assets, after 1 January 1992. There is no dispute that Krymenergo meets this test. Claimant says that it acquired ownership over the Soviet Assets (and other Crimean assets) in 1995, while Russia acknowledges that this happened in 2012. In any case, both Parties agree that the acquisition occurred after 1 January 1992; the requirement of Article 12 of the Treaty is thus satisfied."
     },
     {
@@ -148,15 +152,15 @@
       "text": "MERITS"
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "Claimant’s fundamental claim is that Russia unlawfully expropriated Krymenergo’s investments, in breach of Article 5 of the BIT. It submitted that Russia directly expropriated Krymenergo’s investment in Crimea by way of overt administrative and legislative measures that were enforced through local courts and physical force."
     },
     {
-      "kind": "p",
+      "kind": "claim",
       "text": "Respondent, in turn, submitted that the taking of Claimant’s assets satisfied the requirements for a lawful expropriation under Article 5 of the BIT."
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "The Tribunal held that DTEK Krymenergo was unlawfully expropriated of its investments by Respondent, in violation of Article 5 of the BIT."
     },
     {
@@ -172,7 +176,7 @@
       "text": "COSTS"
     },
     {
-      "kind": "p",
+      "kind": "position",
       "text": "Tribunal determines that Respondent should reimburse Claimant the amounts of USD 1,362,422.88 paid as Administrative Costs and USD 9,401,644.76 incurred as Legal Costs"
     },
     {
@@ -181,7 +185,11 @@
     },
     {
       "kind": "p",
-      "text": "Respondent is the unsuccessful party. Indeed, Claimant has prevailed: - In all its defenses to Respondent’s multiple jurisdictional objections; - In the merits of the case; and - In the quantification of damages, although the Tribunal has decided on a lower amount than the one claimed by Claimant"
+      "text": "Respondent is the unsuccessful party. Indeed, Claimant has prevailed:"
+    },
+    {
+      "kind": "findings",
+      "text": "- In all its defenses to Respondent’s multiple jurisdictional objections;\n- In the merits of the case; and\n- In the quantification of damages, although the Tribunal has decided on a lower amount than the one claimed by Claimant"
     },
     {
       "kind": "p",

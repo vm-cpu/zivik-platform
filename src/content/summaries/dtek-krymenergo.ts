@@ -22,7 +22,7 @@ export const dtekKrymenergo: DecisionSummary = {
     masthead: { official: string; parties: string; judgment: string };
     blocks: SummaryBlock[];
   }),
-  // Ukrainian translation of the body, structurally 1:1 (49 blocks) — draft,
+  // Ukrainian translation of the body, structurally 1:1 (50 blocks) — draft,
   // pending legal review.
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
