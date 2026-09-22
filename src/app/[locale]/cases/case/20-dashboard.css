@@ -702,3 +702,13 @@
   padding: var(--space-4);
   gap: var(--space-4);
 }
+
+/* The key's type, restored. It was set in a rule that listed `.lg-how`
+   alongside the rest, and when the «press a mark» line went away the dead
+   class took the whole declaration with it — a selector list is only as
+   safe as its least-used member. It stands on its own now. */
+.casepage .mapband[data-lit] .map-legend span,
+.casepage .mapband[data-lit] .map-legend p {
+  font-size: var(--t-map);
+  line-height: 1.6;
+}

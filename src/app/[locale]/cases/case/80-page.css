@@ -1391,3 +1391,21 @@
 .casepage .findings > .finding:first-child > .f-row {
   margin-top: 0;
 }
+
+/* The fold row follows the rows it opens: one column where they are one
+   column, or a three-column control would sit under a stack of one-column
+   rows and read as a different table. */
+@media (max-width: 700px) {
+  .casepage .v-fold {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+    text-align: left;
+  }
+  .casepage .v-fold-t,
+  .casepage .v-fold-n {
+    grid-column: 1;
+  }
+  .casepage .v-fold-n {
+    justify-content: flex-start;
+  }
+}
