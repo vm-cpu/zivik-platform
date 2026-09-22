@@ -286,12 +286,19 @@ const T = {
      appears on any row with a court document, summarised or not. A reader
      hunting for a "no summary yet" badge would have found none.
 
-     So it names the signal that is actually there, and the control that
-     acts on it: the gold dot, and the «Матеріали» filter. Checked against
-     the stylesheet and the served page, not against memory. */
+     So the claim is simply gone. The owner's choice, from four drafts: one
+     that named the gold dot and the «Матеріали» filter, one that opened on
+     the proceedings already summarised, a single-sentence version, and this
+     — two short sentences that say what is true about the library and point
+     at nothing. The marks are visible in the list and the figure above this
+     note already counts them; a caption explaining both was a caption doing
+     the page's work twice.
+
+     What it must not do again is describe them wrongly, which is what sent
+     this line back for a rewrite. */
   state: {
-    uk: "Огляд написано не до кожного провадження: там, де він готовий, рядок має золоту позначку, а фільтр «Матеріали» лишає в списку тільки такі. Бібліотека ще наповнюється, тож справа може існувати й поки що не бути тут.",
-    en: "Not every proceeding has a summary: where one is ready the row carries a lit gold dot, and the «Materials» filter narrows the list to those. The library is still being filled, so a proceeding can exist and not be here yet.",
+    uk: "Огляд є поки що не до кожного провадження, а список ще наповнюється. Відсутність справи тут нічого про неї не каже.",
+    en: "Not every proceeding has a summary yet, and the list is still being filled. A case being absent here says nothing about it.",
   },
 } as const;
 
