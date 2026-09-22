@@ -221,3 +221,13 @@
   vector-effect: non-scaling-stroke;
   pointer-events: none;
 }
+
+/* Столиця — орієнтир, а не предмет справи: кільце, не заповнена позначка.
+   Заповнені золоті кружечки на цій карті означають місце, про яке ордер;
+   Київ ордером не названий, і виглядати однаково вони не мають. */
+.casepage .mk-capital {
+  fill: none;
+  stroke: var(--brand-ink);
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}

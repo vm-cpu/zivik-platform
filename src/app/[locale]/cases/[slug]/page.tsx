@@ -1441,6 +1441,9 @@ export default async function CasePage({
           },
         ]
       : []),
+    /* The figures band, between the warrants and the map — see the section
+       for why it is there and why it is a section at all. */
+    ...(takings ? [{ id: "scale", label: pick(takings.heading, locale) }] : []),
     /* The map band, where it is not drawn inside the write-up. Guarded the
        same way the band is, so the chip never points at nothing. */
     ...(!summary.mapInline && theatres.length > 0
@@ -2341,16 +2344,36 @@ export default async function CasePage({
                 }}
               />
             </div>
+          </div>
+        </section>
+      )}
 
-            {/* Перенесено сюди з-під матриці вироків. Власниця: «думаю цю
-                секцію варто перенести нижче». Там вона стояла одразу після
-                того, що вирішила Палата, і читалася як частина рішення —
-                а вона саме про те, чого в рішенні немає: ордери кількості
-                не називають. Тут, після ордерів і перед картою, вона
-                відповідає на питання, яке щойно виникло. */}
+      {/* 2b′ — The scale, in figures from outside the court.
+
+          A band of its own, between the warrants and the map. It sat under
+          the index of what the Chamber decided and read as part of the
+          decision — and it is precisely about what the decision does not
+          contain: «Ордери кількість не називають». Moved down to where that
+          sentence answers a question the reader has just been given.
+
+          A section rather than a coda inside the warrants band, because as a
+          coda it had no entry in the contents and no heading the rail could
+          see: a reader looking for the numbers could not find them. Owner:
+          «зроби окрему секцію з пунктом у змісті». */}
+      {shows("scale") && takings && (
+        <section
+          className="machinery scale-band"
+          data-ground={ground["machinery"]}
+          id="scale"
+          data-navsec
+          aria-label={pick(takings.heading, locale)}
+        >
+          <div className="rail machinery-stack">
             {takings && (
               <div>
-                <h2 className="lbl">{pick(takings.heading, locale)}</h2>
+                <div className="sec-h">
+                  <h2>{pick(takings.heading, locale)}</h2>
+                </div>
                 <TakingsGrid
                   metrics={takings.metrics.map((m) => ({
                     label: L(m.label),

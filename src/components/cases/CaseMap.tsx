@@ -265,7 +265,20 @@ export default function CaseMap({
                 {/* A theatre whose ground is an area draws no dots. The dot
                     was the whole error: a nationwide missile campaign stood
                     as one circle beside Kyiv, in a row with five occupied
-                    oblasts, as though it were a sixth place. */}
+                    oblasts, as though it were a sixth place.
+
+                    What it does draw is the capital — a small ring, not a
+                    filled mark, because it is a point of reference and not a
+                    subject of the case. Owner: «або можна позначити Київ як
+                    столицю України», «достав точку Київ». */}
+                {t.ground === "area" && t.ptNames?.[0]?.label && (
+                  <circle
+                    className="mk-capital"
+                    cx={t.pts[0][0]}
+                    cy={t.pts[0][1]}
+                    r={R_ZONE * 0.62}
+                  />
+                )}
                 {t.ground !== "area" &&
                   t.pts.map((p, i) => (
                     <g key={i}>
@@ -353,15 +366,16 @@ export default function CaseMap({
               is about there; this says where there is. Not drawn for an area
               theatre, which has no marks to name. */}
           {theatres.flatMap((t) =>
-            t.ground === "area"
-              ? []
-              : (t.ptNames ?? []).map((n, i) => {
+            /* An area theatre names one place only — its capital. */
+            (t.ground === "area" ? (t.ptNames ?? []).slice(0, 1) : (t.ptNames ?? [])).map(
+              (n, i) => {
                   const pt = t.pts[i];
                   if (!pt || !n?.label) return null;
                   return (
                     <span
                       key={`${t.id}-p${i}`}
                       className="ml-pt"
+                      data-capital={t.ground === "area" ? "yes" : undefined}
                       data-state={state(t.id)}
                       /* The nudge is in CSS pixels, not projection units: the
                          name is a fixed 11px whatever the drawing's scale, so
@@ -380,7 +394,8 @@ export default function CaseMap({
                       {n.label}
                     </span>
                   );
-                }),
+              },
+            ),
           )}
         </div>
       </div>
