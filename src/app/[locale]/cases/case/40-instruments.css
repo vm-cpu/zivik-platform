@@ -791,7 +791,11 @@
   margin: var(--space-6) 0 0;
   padding-left: var(--space-5);
   border-left: 2px solid var(--pgold);
-  max-width: 68ch;
+  /* 68ch при 14px — це 531 піксель у смузі на 676, тобто рядок спинявся за
+     півтори сотні пікселів до краю і виглядав обрізаним. Власниця показала
+     саме на цей блок. Міра сторінки дає тут 86 знаків — довше за ідеал, але
+     це один абзац на дві-три стрічки, а не суцільне читання. */
+  max-width: var(--prose);
   font-size: var(--t-sm);
   line-height: 1.6;
   color: var(--ink2);
@@ -1006,6 +1010,15 @@
 .casepage .afterlife li:last-child::before {
   right: 0;
 }
+/* Перемичка через проміжок тримається всередині списку.
+   `:first-child` і `:last-child` прибирають виліт у самого початку і самого
+   кінця — але при трьох колонках останній у ПЕРШОМУ рядку не є жодним із
+   них, і його перемичка вилазила на 16 пікселів за край. Скільки саме
+   колонок, знає лише розкладка (`auto-fit`), тож правило не виражається
+   селектором; список просто не випускає її за себе. */
+.casepage .afterlife {
+  overflow: hidden;
+}
 /* The break. A stage where the award did not stand is drawn as a gap in the
    line rather than a differently-coloured length of it — the award was not a
    different colour in 2021, it was not there. */
@@ -1021,8 +1034,13 @@
   color: var(--ink3);
   font-variant-numeric: tabular-nums;
 }
+/* 22,5px у колонці на 215 — це заголовок статті в картці завширшки з абзац:
+   «Анулювання скасовано» ламалося надвоє й нависало над своєю ж приміткою на
+   14. Власниця: «завеликий шрифт заголовків». 16 із тим самим дисплейним
+   накресленням і вагою тримає ту саму відстань від примітки — так само, як
+   ім'я в картці ордера відрізняється від посади під ним. */
 .casepage .af-title {
-  font: 700 var(--t-h3) var(--brand-font-display), serif;
+  font: 700 var(--t-body) / 1.3 var(--brand-font-display), serif;
   color: var(--ink);
 }
 .casepage .af-note {
