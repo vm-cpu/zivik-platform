@@ -390,80 +390,6 @@
   color: var(--gold);
   font-weight: 700;
 }
-
-/* ---- the dispositif -------------------------------------------------------
-   "What the Court found" is the one instrument on this page that carries the
-   holding, and it used to stand on the same paper2 as the docket facts and the
-   headline figures above it — a third grey strip in a stack of grey strips.
-   Giving it --brand-night, 16.97:1 against that band, made it an object rather
-   than another section, and that is the panel the owner asked to have the
-   whole band painted like.
-
-   Which leaves the panel with nothing left to be darker than. It keeps its
-   shape and gives up its ground: --panel over --bg is 1.07:1 and --shadow-md
-   is a shadow mixed to fall on paper, so a fill and an elevation here would be
-   two declarations that draw nothing, and DESIGN.md is explicit that the range
-   below this ground is worth one eighth of a contrast step. What is left is
-   the edge, the radius and the 24–40px of air inside it — which is what was
-   ever doing the work of saying "this is a block and not a band" — and the
-   edge is the same --rule hairline that already runs under .score-head, so the
-   frame and the head rule are one line drawn twice.
-
-   The dispositif is still the loudest thing in the band, and now it is the
-   type that says so: it is the only block here with a display-serif heading
-   and a count, where the ledger, the figures, the takings and the money each
-   carry an 11px label. */
-/* .vpanel was the card the index sat in: a rounded border and 40px of
-   padding on the night ground. The index is a table on paper now and draws
-   its own edges, so the wrapper carries nothing — kept as a hook only
-   because the print sheet still names it. */
-
-/* Red is a finding of breach and nothing else, so the figure only wears it
-   when that is what it counts. A conviction is a breach found against a
-   person; relief granted is not, and an award the claimant won outright used
-   to print "6 upheld" in the colour this system reserves for a violation. On
-   paper that was --brand-red, dark enough to pass for emphasis. Here it would
-   be --brand-breach, and it would read as exactly what it is not. */
-/* 5.61:1. */
-/* 9.98:1. */
-
-/* the verdict matrix ---------------------------------------------------------
-   One line per claim: the track it was brought under, how it was disposed of,
-   and the claim itself. Two things were wrong with the ledger this replaces.
-
-   The track was a full-width heading over each run of claims, which is right
-   for a dispositif where an article carries several of them and wasteful where
-   it carries one. Eighteen of the twenty-eight tracks in this archive carry
-   one, and on three of the eight decisions — the ECtHR judgment, MH17 and the
-   ICC warrants — every single track does: heading, hairline, one row, 150px of
-   air, eight times over, three screens to say that Ukraine won on all eight
-   counts. The track is a cell now. It prints on the row that opens a run and
-   the cell is left empty under it, so one claim costs one line and four claims
-   still read as one group.
-
-   And the outcomes, which are the point of the block, are still a rail the eye
-   runs down — the column moved right by the width of the track, not away from
-   the claims. Each claim still starts where its own outcome ends.
-
-   The claim column is capped rather than fluid. At 1fr it ran 788px on the
-   rail, which is 95 characters of Fira Sans at 14px; 42rem is 81, the measure
-   this system sets for prose. */
-.casepage .verdicts {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-/* The fallback shape, and the one every row falls back to below the panel's
-   width: each row is its own grid on columns wide enough for the longest label
-   any of these eight dispositifs could hold. Guessed columns, in other words —
-   which is the price of lining eight separate grids up. */
-.casepage .verdicts li {
-  display: grid;
-  grid-template-columns: minmax(0, 12rem) minmax(0, 10rem) minmax(0, 42rem);
-  align-items: baseline;
-  gap: var(--space-2) var(--space-5);
-  padding-bottom: var(--space-3);
-}
 /* With subgrid the guess goes away. The list owns the columns and every row
    borrows them, so track and outcome are exactly as wide as the widest label
    this decision actually contains — 126px of track on the ECtHR judgment
@@ -484,106 +410,6 @@
     grid-column: 1 / -1;
     grid-template-columns: subgrid;
   }
-}
-/* Runs are separated by rhythm, not by a stronger hairline: --rule is 1.28:1
-   on this ground and --rule-soft 1.18:1, and one tenth of a contrast step
-   cannot carry a grouping. A rule plus 20px of air can. */
-.casepage .verdicts li:first-child {
-  margin-top: 0;
-  padding-top: 0;
-  border-top: 0;
-}
-.casepage .verdicts li:last-child {
-  padding-bottom: 0;
-}
-
-/* The article, treaty, stage or defendant. Mono, because on this site mono is
-   the machinery of a judgment — dockets, dates, paragraph refs, track labels. */
-.casepage .v-track,
-.casepage .v-track-link {
-  grid-column: 1;
-  font: 500 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.06em;
-  line-height: 1.45;
-  text-transform: uppercase;
-  /* 9.98:1. */
-  color: var(--gold);
-  text-decoration: none;
-}
-/* 15.53:1 — the link brightens rather than changing hue, so the hover does not
-   have to be read as a change of meaning. */
-.casepage .v-track-link:hover {
-  color: var(--cream);
-}
-.casepage .v-out {
-  grid-column: 2;
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-.casepage .v-claim {
-  grid-column: 3;
-  font-size: var(--t-ui);
-  line-height: 1.5;
-  /* 15.53:1. */
-  color: var(--cream);
-  text-wrap: pretty;
-}
-.casepage .v-out::before {
-  content: "";
-  flex: none;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  /* Baseline-aligned children put a 7px disc on the baseline, sitting under
-     the label rather than beside it; this lifts it onto the x-height. */
-  transform: translateY(-2px);
-}
-/* The mark is never the only carrier: the word is always there, and filled /
-   hollow / dashed separates the three families for a reader who cannot use the
-   colour at all. Every figure below is measured on --brand-night. */
-/* 5.61:1. */
-.casepage .v-out[data-o="violation"] {
-  color: var(--red);
-}
-.casepage .v-out[data-o="violation"]::before {
-  background: var(--red);
-}
-/* 9.06:1. */
-.casepage .v-out[data-o="no-violation"] {
-  color: var(--muted);
-}
-.casepage .v-out[data-o="no-violation"]::before {
-  border: 1.5px solid var(--muted);
-}
-/* An arbitral dispositif also grants, rejects and leaves things undecided.
-   These are outcomes, not breaches, so they run on gold — never red. 9.98:1. */
-.casepage .v-out[data-o="granted"] {
-  color: var(--gold);
-}
-.casepage .v-out[data-o="granted"]::before {
-  background: var(--gold);
-}
-/* Rejected is not a breach and not an award: neutral, hollow ring. It never
-   appears on the same page as no-violation, and the word tells them apart
-   where a mark could not. 9.06:1. */
-.casepage .v-out[data-o="rejected"] {
-  color: var(--muted);
-}
-.casepage .v-out[data-o="rejected"]::before {
-  border: 1.5px solid var(--muted);
-}
-/* Undecided steps back a further tone and takes the dashed ring: it sits
-   beside rejected on three of these pages and the two must not read alike.
-   5.24:1. */
-.casepage .v-out[data-o="not-decided"] {
-  color: var(--faint);
-}
-.casepage .v-out[data-o="not-decided"]::before {
-  border: 1.5px dashed var(--faint);
 }
 
 /* The reveal.
@@ -658,8 +484,6 @@
 
 /* timeline */
 
-
-
 /* On a phone the drawing is 375 x 210, and a 16px place name over 210px of map
    is a caption wearing the picture. The type steps down with the drawing —
    which is the point of having it in HTML: it steps, rather than scaling with
@@ -703,20 +527,6 @@
 .casepage .map .zone-area {
   fill: color-mix(in srgb, var(--brand-gold-lamp) 17%, transparent);
   stroke: none;
-}
-
-/* An inward track link — down this page rather than out to a document.
-
-   It carries the forum hue rather than gold, and that is the point of having a
-   third colour: a link that moves the reader between two blocks of the same
-   decision is not a finding in anyone's favour, and it no longer has to borrow
-   the colour of one to be visible. */
-.casepage .v-track-in {
-  color: var(--forum);
-}
-.casepage .v-track-in:hover,
-.casepage .v-track-in:focus-visible {
-  color: var(--cream);
 }
 /* Landing below the sticky bar rather than under it, the same allowance the
    band anchors already take. */
