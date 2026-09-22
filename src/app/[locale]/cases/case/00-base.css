@@ -97,11 +97,21 @@
      68vw is what makes the two meet: 68% of 1541 is 1048, so the ramp starts
      exactly where the floor ends and nothing jumps. */
   --measure: clamp(1048px, 68vw, 1320px);
-  /* The reading measure — 80 characters of Fira Sans at 16px, argued out four
-     times and finally measured; the working is in 30-paper.css above `.read`.
-     It is named here because the holdings ledger now takes the same measure,
-     and a number that has been wrong four times should not be written twice. */
-  --prose: 660px;
+  /* The reading measure.
+
+     660px — 80 characters of Fira Sans at 16px — was argued out four times
+     and measured; the working is in 30-paper.css above `.read`. It was a
+     fixed number, and beside a column that had grown to 778 it cut the text
+     off a third of the way short of its own edges, which is what a reader
+     sees as the page not using its space.
+
+     The design does not cap prose separately at all: its text runs the
+     content column, and the column itself is what stops at 820. So that is
+     the rule here too — take the column, stop at 820 — and 820 is close
+     enough to the 80-character argument that the argument survives: at 16px
+     it is about 95 characters, the top of the comfortable band rather than
+     the middle of it. */
+  --prose: min(100%, 820px);
   /* The sticky bar of chips this measured is gone — the page's map is a
      column beside the text now (see `.casepage .shell`). What is left is the
      gap an anchored section keeps from the top of the viewport, which is what

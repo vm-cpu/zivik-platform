@@ -733,3 +733,23 @@
   letter-spacing: 0;
   margin: var(--space-6) 0 var(--space-3);
 }
+
+/* The write-up's heading draws no rule of its own.
+
+   `.read h2` carried `border-top` from when a heading stood alone in the
+   text and had to separate itself. It stands in a section head now, and that
+   head draws the rule — under the heading, across the column. The two
+   together put a line above the title and a line below it, and the top one
+   started at the heading's own left edge rather than the column's, which is
+   why it read as stray rather than as a pair. */
+.casepage .read .sec-h h2 {
+  margin: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.casepage .read > .sec-h {
+  margin: var(--space-12) 0 var(--space-5);
+}
+.casepage .read > .sec-h:first-child {
+  margin-top: 0;
+}
