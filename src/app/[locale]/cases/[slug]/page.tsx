@@ -702,6 +702,23 @@ export default async function CasePage({
   /* The masthead's two verbatim lines, in the reader's language where the
      summary carries a rendering. `masthead` itself is untouched — the citation
      below is assembled from it and has to reproduce the caption as published. */
+  /* The title, and the sides set apart from it.
+
+     Every inter-State case here files itself as a subject followed by the
+     parties in brackets — «…расової дискримінації (Україна проти Російської
+     Федерації)». The design sets the two in different type: the subject as
+     the heading, the parties under it in italic gold, one object read in two
+     voices rather than one long line broken wherever it happens to break.
+
+     Split off the *trailing* parenthetical only, and only when it closes the
+     string: «Ситуація в Україні (ICC-01/22)» is a docket, not a pair of
+     parties, but it is the same shape — so this does not try to tell them
+     apart. It sets whatever the record puts in that position apart from the
+     subject, which is what the line is for on every page that has one, and a
+     record with no bracket keeps its title whole. */
+  const partiesMatch = /^(.*?)\s*\(([^()]*)\)$/.exec(parties);
+  const titleMain = partiesMatch ? partiesMatch[1] : parties;
+  const titleSides = partiesMatch ? partiesMatch[2] : null;
   const officialLine =
     (locale === "uk" ? summary.mastheadUk?.official : null) ?? masthead.official;
   const judgmentLine =
@@ -1029,49 +1046,62 @@ export default async function CasePage({
             rail's full width now, so a long official name needs neither a
             smaller step nor an attribute saying it is long. See
             `.casepage .official` in 10-bands.css. */}
-        <h1 className="official" lang={foreignLang(parties, locale)}>
-          {parties}
-        </h1>
-        <p className="parties">
-          {instruments.map((inst, i) => (
-            <span key={inst.url}>
-              {i > 0 && <span className="sep"> · </span>}
-              <a href={inst.url} target="_blank" rel="noopener noreferrer" title={pick(inst.name, locale)}>
-                {typeof inst.abbr === "string" ? inst.abbr : pick(inst.abbr, locale)}
-              </a>{" "}
-              ({inst.year})
+        {/* The sides sit inside the heading, not under it. They are part of
+            the case's name — «…расової дискримінації (Україна проти
+            Російської Федерації)» is one caption — so splitting them into a
+            paragraph of their own would take them out of the h1 and out of
+            the document outline with it. A block-level span keeps the name
+            whole for a screen reader and lets the subject and the parties be
+            set in two voices for the eye. */}
+        <h1 className="official" lang={foreignLang(titleMain, locale)}>
+          {titleMain}
+          {titleSides && (
+            <span className="sides" lang={foreignLang(titleSides, locale)}>
+              ({titleSides})
             </span>
-          ))}
-        </p>
-        {/* The caption the decision files itself under, in the reader's
-            language where the summary carries it. In English it was the longest
-            run of Latin type on a Ukrainian page — eight lines of capitals
-            under a Ukrainian headline — and a screen reader gave it Ukrainian
-            phonetics, which `lang` fixed and nothing else did. */}
-        {/* Not when it is the title again. On the two ICJ pages the h1 is
-            now the Court's full case name, and this caption was that same
-            sentence a second time, two sizes smaller, directly under it. */}
+          )}
+        </h1>
+        {/* The caption the decision files itself under, where it is not the
+            title again. The design's own page has no such line because on
+            that decision the two are the same string and the guard below
+            suppresses it — on MH17 it is the docket and the ECLI, and it is
+            the only place the page prints them. Restored after the row below
+            replaced the block it used to sit in. */}
         {officialLine !== parties && (
           <p className="fullname" lang={foreignLang(officialLine, locale)}>
             {officialLine}
           </p>
         )}
+        {/* One row under a hairline: the instruments the case runs on, then
+            the two ways out to the court's own documents.
 
-        <div className="actions">
-          {/* The sub-label says who stands behind the document at the other
-              end. It was always `judgment.court`, which is right when the link
-              is the court's own text and a false attribution when it is not:
-              finland-torden's primary button read "Окружний суд Гельсінкі"
-              under a link to EJIL:Talk!. */}
-          <a className="btn btn-primary" href={judgment.url} target="_blank" rel="noopener noreferrer">
+            They were three objects — a line of instruments, then two filled
+            pills the width of buttons — and the pills carried a second line
+            of caption apiece naming the body behind the link. The design
+            makes all of it one register: the instrument is its abbreviation
+            and its year, the way out is a word and an arrow. A filled button
+            promises an action; these are references, and a reference that
+            looks like a submit button is a reference that has been oversold.
+
+            The caption the primary pill carried is gone with it. It named
+            the body at the other end — and where that body is not the court
+            whose page this is, the link's own text now says so. */}
+        <div className="hero-meta">
+          {instruments.map((inst) => (
+            <span className="hm-inst" key={inst.url}>
+              <a href={inst.url} target="_blank" rel="noopener noreferrer" title={pick(inst.name, locale)}>
+                {typeof inst.abbr === "string" ? inst.abbr : pick(inst.abbr, locale)}
+              </a>
+              <i>{inst.year}</i>
+            </span>
+          ))}
+          <a className="hm-cta" href={judgment.url} target="_blank" rel="noopener noreferrer">
             {pick(judgment.readLabel ?? T.readJudgment, locale)}
-            <em>
-              {readSrc.caption ?? pick(judgment.court, locale)}
-            </em>
+            <span aria-hidden="true">↗</span>
           </a>
-          <a className="btn btn-ghost" href={judgment.caseUrl} target="_blank" rel="noopener noreferrer">
+          <a className="hm-cta hm-cta-2" href={judgment.caseUrl} target="_blank" rel="noopener noreferrer">
             {pick(judgment.fileLabel ?? T.caseFile, locale)}
-            {fileSrc.caption && <em>{fileSrc.caption}</em>}
+            <span aria-hidden="true">↗</span>
           </a>
         </div>
         </div>
