@@ -1065,6 +1065,33 @@ export const iccUkraine: DecisionSummary = {
         en: "Personal immunities are not opposable before the ICC (art. 27). In the Mongolia decision of 24 October 2024 the Chamber reaffirmed that the duty to arrest does not bend to official capacity.",
       },
     },
+    /* The three enforcement rulings were on this page as dated events, as rows
+       in the matrix and as citations — everywhere except the one band that
+       states what the law now holds. So a reader met «Монголія порушила» three
+       times without ever being told what a finding under article 87(7) does,
+       or what the Court answered when a State asked whether peace talks let it
+       put a warrant aside. Owner: «впиши ці три рішення в дані». */
+    {
+      term: { uk: "Що буває, коли ордер не виконують", en: "What follows when a warrant is not executed" },
+      ruling: {
+        uk: "Стаття 87(7) Статуту: Палата констатує невиконання і передає питання Асамблеї держав-учасниць через Президію Суду. Іншого важеля немає — власної поліції МКС не має. У цій ситуації таких констатацій уже дві: Монголія (24 жовтня 2024, ICC-01/22-90) і Таджикистан (19 березня 2026, ICC-01/22-143).",
+        en: "Article 87(7): the Chamber records the failure and refers the matter to the Assembly of States Parties through the Presidency. There is no other lever — the ICC has no police of its own. In this situation there are two such findings already: Mongolia (24 October 2024, ICC-01/22-90) and Tajikistan (19 March 2026, ICC-01/22-143).",
+      },
+    },
+    /* Written strictly from the chronology entry for 9 June 2026, and it rests
+       on the same two commentaries that entry names — the decision itself is a
+       CourtRecords PDF that refuses automated fetches, and no capture exists.
+       Stating a holding in this band gives it more authority than a dated note
+       does, so nothing is claimed here that those two do not both carry, and
+       the half the press got wrong — that talks under UN auspices create an
+       exception — is stated as what the ruling denies. */
+    {
+      term: { uk: "Мирні переговори не зупиняють ордер", en: "Peace talks do not suspend a warrant" },
+      ruling: {
+        uk: "Рішення за ст. 97 Статуту від 9 червня 2026 року: винятку з обов'язку арешту для мирних переговорів немає, і держава не може призупинити виконання ордера сама. Конференція, формально скликана ООН, робить зобов'язання за Статутом ООН релевантними, але зважує їх Суд, а не держава-господар. Єдиний шлях призупинити провадження — ст. 16: відстрочка на прохання Ради Безпеки ООН, і просити про неї держава не може.",
+        en: "The article 97 decision of 9 June 2026: there is no peace-talks exception to the duty to arrest, and a State cannot suspend a warrant on its own initiative. A conference formally convened by the United Nations makes UN Charter obligations relevant, but it is the Court, not the host State, that weighs them. The one route to suspension is article 16 — a deferral at the request of the UN Security Council, which is not a State's to ask for.",
+      },
+    },
     {
       term: { uk: "«Обґрунтовані підстави вважати»", en: "\"Reasonable grounds to believe\"" },
       ruling: {
