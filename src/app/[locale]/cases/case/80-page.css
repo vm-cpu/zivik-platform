@@ -1448,3 +1448,23 @@
   outline: 2px solid var(--pgold);
   outline-offset: 2px;
 }
+
+/* The folded rows are hidden, not removed. Filtering them out of the markup
+   took twelve of sixteen claims off the printed page and off a page with
+   scripting off — silently, on an archive that exists to be cited. The
+   guard is the one the row animation already uses: with no scripting there
+   is no control to press, so there is nothing to fold. */
+@media screen and (scripting: enabled) {
+  .casepage .verdicts li[data-fold="away"] {
+    display: none;
+  }
+}
+/* On paper the whole table, and none of the machinery for working it. */
+@media print {
+  .casepage .v-fold {
+    display: none !important;
+  }
+  .casepage .ix-sort i {
+    display: none;
+  }
+}

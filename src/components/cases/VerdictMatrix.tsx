@@ -143,9 +143,15 @@ export default function VerdictMatrix({
      which row that is — with the rest hidden, «CERD» would sit on a row in
      the middle of the table and the first CERD row would have an empty
      first cell. Recomputed over what is actually drawn. */
-  const shownRows = folding && !all ? rows.filter(kept) : rows;
+  /* Every row is rendered, always. Filtering the folded ones out of the
+     markup took them off the printed page and off a page with scripting
+     off — twelve of sixteen claims, silently, on an archive that exists to
+     be cited. They are hidden with CSS instead, inside the same
+     `scripting: enabled` guard the row animation uses, so print and a
+     browser without JavaScript both get the whole table. */
+  const folded = (r: VerdictRow) => folding && !all && !kept(r);
   const ordered = sort
-    ? [...shownRows].sort((a, b) => {
+    ? [...rows].sort((a, b) => {
         const v =
           sort.by === "track"
             ? a.track.localeCompare(b.track)
@@ -153,14 +159,19 @@ export default function VerdictMatrix({
               a.outcomeLabel.localeCompare(b.outcomeLabel);
         return v * sort.dir;
       })
-    : shownRows;
+    : rows;
   /* The track cell prints on the row that opens a run, and both folding and
      sorting change which row that is — left alone, «CERD» would sit on a
      row in the middle of the table and the first CERD row would open with
      an empty first cell. Recomputed over what is actually drawn. */
+  /* Computed over every row, which is what the printed table shows. On
+     screen a folded run can therefore open on a row styled as a
+     continuation — the track's name is still printed on it, so nothing is
+     lost, only the link to the instrument sits a row further down. */
   const drawn = ordered.map((r, i, a) => ({
     ...r,
     opensTrack: i === 0 || a[i - 1].track !== r.track,
+    folded: folded(r),
   }));
   const press = (by: "track" | "outcome") =>
     setSort((s) => (s?.by !== by ? { by, dir: 1 } : s.dir === 1 ? { by, dir: -1 } : null));
@@ -239,6 +250,7 @@ export default function VerdictMatrix({
         <li
           key={i}
           data-run={r.opensTrack ? "start" : "cont"}
+          data-fold={r.folded ? "away" : undefined}
           /* Capped so a nine-row dispositif still finishes inside a second.
              Past the cap the tail arrives together, which is what the reader
              wants by then anyway. */
