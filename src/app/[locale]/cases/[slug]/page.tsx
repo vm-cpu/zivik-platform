@@ -594,6 +594,13 @@ function Findings({
      off its paragraph, because the column is labelled with them. */
   const HEAD = /^(ICSFT|CERD)\s*[-–—]\s*/;
   const POS = /^(The Court['’]s position:|Позиція Суду:)\s*/;
+  /* Every line in a block that draws voices carries one, and data-check
+     fails the build if any does not. An unmarked line used to fall through
+     to the party, which is how five paragraphs of the Court's reasoning
+     came to be printed under «Сторона твердила» — the reader was changed
+     and the marks it reads were not re-checked. Silence is no longer an
+     answer the data can give. */
+  const PARTY = /^(The party argued:|Сторона твердила:)\s*/;
   const parts: { head?: string; body: string[] }[] = [];
   for (const l of lines) {
     if (HEAD.test(l)) parts.push({ head: l.replace(HEAD, ""), body: [] });
@@ -619,7 +626,7 @@ function Findings({
           if (turns.length === 0 || turns[turns.length - 1].court !== court) {
             turns.push({ court, lines: [] });
           }
-          turns[turns.length - 1].lines.push(l.replace(POS, ""));
+          turns[turns.length - 1].lines.push(l.replace(POS, "").replace(PARTY, ""));
         }
         const spoken = turns.some((t) => t.court);
         const outcome = outcomes?.[n];

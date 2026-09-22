@@ -444,6 +444,69 @@ for (const [slug, src] of summarySrc) {
   }
 }
 
+/* ──────────────────────────────────────────────────────────────────────────
+   Who said it.
+
+   A findings block that names its findings is drawn as an exchange: each
+   line is either the party's case or the forum's answer, and the page puts
+   them in different columns under different captions. The line says which
+   by the marker it opens with.
+
+   It used to say so only for the forum, and an unmarked line fell through
+   to the party. That was safe while the renderer read "everything after the
+   first marker is the forum" — and the day it changed to "every change of
+   voice opens a block", five paragraphs of the Court's reasoning in
+   icj-cerd-icsft began printing under «Сторона твердила», including the
+   only CERD violation it found. Nothing failed, because nothing was
+   watching: the lint reads type and colour, and the data check read the
+   records against each other. Neither can see an attribution.
+
+   So the absence of a decision is what fails here, not a wrong one —
+   detecting a wrong one would mean reading legal prose and guessing, which
+   is the thing this archive does not do. Every line carries a marker or the
+   build stops, and the next change to the reader cannot quietly re-assign a
+   paragraph to the party that did not say it.
+
+   Blocks with no head lines are left alone: they render as prose, no
+   columns, no voices to get wrong.
+   ────────────────────────────────────────────────────────────────────── */
+{
+  const dir = "src/content/summaries";
+  const HEAD = /^\s*(ICSFT|CERD)\s*[-\u2013\u2014]/;
+  const VOICE = /^(The Court['\u2019]s position:|\u041fози\u0446ія Суду:|The party argued:|Сторона твердила:)/;
+  for (const f of readdirSync(dir).filter((n) => n.endsWith(".json"))) {
+    let doc;
+    try {
+      doc = JSON.parse(readFileSync(`${dir}/${f}`, "utf8"));
+    } catch {
+      continue; // already flagged by the outcomes pass above
+    }
+    (doc.blocks ?? []).forEach((b, i) => {
+      if (b?.kind !== "findings") return;
+      const lines = String(b.text ?? "")
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean);
+      if (!lines.some((l) => HEAD.test(l))) return;
+      let head = "?";
+      for (const l of lines) {
+        if (HEAD.test(l)) {
+          head = l.replace(HEAD, "").replace(/^\s*/, "");
+          continue;
+        }
+        if (!VOICE.test(l)) {
+          flag(
+            f,
+            "voice-unmarked",
+            `block ${i}, «${head.slice(0, 40)}»: a line opens with neither voice — ` +
+              `«${l.slice(0, 56)}…»`,
+          );
+        }
+      }
+    });
+  }
+}
+
 console.log(
   `checked ${ids.size} records, ${summarySrc.size} write-ups, ` +
     `${slugs.size} links between them\n`,
@@ -461,4 +524,13 @@ if (!issues.length) {
     for (const i of list) console.log(`   ${i.id}: ${i.msg}`);
     console.log("");
   }
+  /* And it stops the build.
+     It never did. Every contradiction this script has ever found — a
+     summary that names a record that is not there, a verdict count that
+     does not match its findings, and now a paragraph with no voice — was
+     printed into a passing run and scrolled past. `npm run check` chains
+     on &&, so a script that exits 0 is a script that only ever advised.
+     The tree is clean as this lands, so nothing starts failing today that
+     was not already wrong. */
+  process.exitCode = 1;
 }
