@@ -99,14 +99,34 @@ export default function CaseToc({
     </a>
   );
 
-  const list = items.map((s) => (
-    <div key={s.id} className="toc-group">
-      {link(s, false)}
-      {s.children && s.children.length > 0 && (
-        <div className="toc-sub">{s.children.map((c) => link(c, true))}</div>
-      )}
-    </div>
-  ));
+  /* The second level opens where the reader is.
+   *
+   * Listing it always made the rail look arbitrary: one part showed four
+   * sub-headings and the parts around it showed none, although their own
+   * headings are the same level. The difference is real — those four are
+   * bands a reader jumps between, the others title a paragraph read in
+   * order — but it is a rule the reader cannot see, so on the page it read
+   * as an oversight.
+   *
+   * Shown only for the part being read, it is never two parts side by side
+   * with and without children: it is the section you are in, opened. A part
+   * that has no sub-headings simply opens to nothing, which is the truth
+   * about that part.
+   *
+   * Owner: «зараз такого самого рівня підзаголовки не в навігації».
+   */
+  const list = items.map((s) => {
+    const kids = s.children ?? [];
+    const here = s.id === active || kids.some((c) => c.id === active);
+    return (
+      <div key={s.id} className="toc-group" data-open={here && kids.length > 0 ? "yes" : "no"}>
+        {link(s, false)}
+        {kids.length > 0 && here && (
+          <div className="toc-sub">{kids.map((c) => link(c, true))}</div>
+        )}
+      </div>
+    );
+  });
 
   return (
     <>
