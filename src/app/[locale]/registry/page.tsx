@@ -286,19 +286,21 @@ const T = {
      appears on any row with a court document, summarised or not. A reader
      hunting for a "no summary yet" badge would have found none.
 
-     So the claim is simply gone. The owner's choice, from four drafts: one
-     that named the gold dot and the «Матеріали» filter, one that opened on
-     the proceedings already summarised, a single-sentence version, and this
-     — two short sentences that say what is true about the library and point
-     at nothing. The marks are visible in the list and the figure above this
-     note already counts them; a caption explaining both was a caption doing
-     the page's work twice.
+     The owner's choice, from four drafts: it opens on the proceedings
+     already summarised rather than on the ones that are not, which is the
+     same two facts in the order that does not read as an apology.
 
-     What it must not do again is describe them wrongly, which is what sent
-     this line back for a rewrite. */
+     And it is said in the first person — owner's instruction, «давай від
+     себе писати». The archive is kept by people and the rest of the site
+     already says so («ми проливаємо на них світло», «ми шукаємо
+     інституції»); a passive «бібліотека наповнюється» was the one line that
+     described the work as weather. So: ми опрацювали, ми читаємо, ми
+     поповнюємо. The gold mark is named because we are the ones who put it
+     there — not, as the sentence had it before this pass, as a badge on the
+     rows that lack a summary. Nothing marks those. */
   state: {
-    uk: "Огляд є поки що не до кожного провадження, а список ще наповнюється. Відсутність справи тут нічого про неї не каже.",
-    en: "Not every proceeding has a summary yet, and the list is still being filled. A case being absent here says nothing about it.",
+    uk: "Частину проваджень ми вже опрацювали й позначили золотим. Решту ще читаємо, а список далі поповнюємо новими справами.",
+    en: "We have already worked through some of these proceedings and marked them in gold. We are still reading the rest, and still adding new cases to the list.",
   },
 } as const;
 
