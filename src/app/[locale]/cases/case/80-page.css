@@ -1144,7 +1144,12 @@
   font-weight: 400;
   font-size: var(--t-lead);
   line-height: 1;
-  color: var(--brand-gold-mark);
+  /* Not gold. In one screen a determination had a gold numeral, a gold
+     caption and a gold edge down the whole height of its box, and gold
+     stopped meaning anything. On this page it means the forum is speaking
+     — the edge on the holding — so the numeral, which only counts, gives it
+     up. */
+  color: var(--ink3);
   font-variant-numeric: lining-nums;
 }
 .casepage .d-head::after {
@@ -1152,4 +1157,27 @@
   height: 1px;
   background: var(--prule);
   align-self: center;
+}
+
+/* The elements of a holding that enumerates its own — «по-перше…»,
+   «по-друге…». Numbered by the list, so the reader can count them without
+   reading for the words that do the counting. */
+.casepage .rule .els {
+  margin: var(--space-3) 0 0;
+  padding-left: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  list-style: decimal;
+}
+.casepage .rule .els li {
+  font-size: var(--t-sm);
+  line-height: 1.65;
+  color: var(--ink);
+  padding-left: var(--space-1);
+  text-wrap: pretty;
+}
+.casepage .rule .els li::marker {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  color: var(--ink3);
 }

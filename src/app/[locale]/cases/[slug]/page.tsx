@@ -751,6 +751,34 @@ function takeQuotation(
   return { nodes, next: i };
 }
 
+/* ── A holding that enumerates its own elements ───────────────────────────
+   «…складається з двох елементів: по-перше, …; і по-друге, …». The author
+   numbered them; running them together in one paragraph makes a reader
+   count a definition instead of reading it, and the definition of racial
+   discrimination under CERD Article 1(1) is the one a whole band of
+   findings then turns on.
+
+   Measured over all 652 paragraphs in the archive: four carry both
+   markers, and all four are genuine two-element enumerations. Split at the
+   author's own words and nothing else — the markers stay on the items,
+   because they are how the Court wrote them. */
+const ELEMENTS =
+  /^([\s\S]*?:)\s*((?:по-перше|first(?:ly)?)[,\s][\s\S]+?)[;.]?\s*(?:і\s+|and\s+)?((?:по-друге|second(?:ly)?)[,\s][\s\S]+)$/i;
+
+function HoldingText({ text, mark }: { text: string; mark: (s: string) => React.ReactNode }) {
+  const m = ELEMENTS.exec(text);
+  if (!m) return <p>{mark(text)}</p>;
+  return (
+    <>
+      <p>{mark(m[1])}</p>
+      <ol className="els">
+        <li>{mark(m[2])}</li>
+        <li>{mark(m[3])}</li>
+      </ol>
+    </>
+  );
+}
+
 /** Render one verbatim block in reading order. */
 function Block({
   block,
@@ -791,7 +819,7 @@ function Block({
       return (
         <div className="rule">
           <div className="lbl-c">{positionLabel}</div>
-          <p>{mark(block.text)}</p>
+          <HoldingText text={block.text} mark={mark} />
         </div>
       );
     case "claim":
@@ -1875,9 +1903,9 @@ export default async function CasePage({
               for (;;) {
                 if (body[j]?.kind === "position") {
                   right.push(
-                    <p key={`p-${j}`} className="rule-p">
-                      {mark(body[j].text)}
-                    </p>,
+                    <div key={`p-${j}`} className="rule-p">
+                      <HoldingText text={body[j].text} mark={mark} />
+                    </div>,
                   );
                   j += 1;
                   continue;
@@ -1932,7 +1960,7 @@ export default async function CasePage({
                 <div className="rule" key={`pos-${at}`}>
                   <div className="lbl-c">{pick(T.courtPosition, locale)}</div>
                   {run.map((t, k) => (
-                    <p key={k}>{mark(t)}</p>
+                    <HoldingText key={k} text={t} mark={mark} />
                   ))}
                 </div>,
               );

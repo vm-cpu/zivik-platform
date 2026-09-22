@@ -547,7 +547,14 @@
   --brand-map-land: var(--brand-map-land-lit);
   --brand-map-land-edge: var(--brand-map-land-edge-lit);
   --brand-map-ua: var(--brand-map-ua-lit);
-  --brand-gold-lamp: var(--brand-gold-ink);
+  /* --brand-gold-lamp is NOT remapped. Remapping it to the paper gold was
+     the mistake in the first lit map: it passed the contrast check and took
+     the light out of the drawing, which on a site called НаСвітло is the
+     one thing the map is for. A mid-tone gold cannot reach 3:1 against a
+     mid-tone land at any lightness — darkening the land makes it worse, not
+     better, because the two luminances converge — so the marks keep the
+     lamp's gold and take their contrast from an outline instead, which is
+     how a map does this. See `.zone` below. */
   --brand-cream: var(--brand-ink);
   --cream: var(--ink);
   --muted: var(--ink2);
@@ -567,4 +574,45 @@
   background: var(--card);
   border-color: var(--prule);
   box-shadow: var(--shadow-md);
+}
+/* A place: the lamp's gold, outlined. The disc measures 1.83:1 against the
+   light land on its own — the outline is what makes it an object at 14:1,
+   and the fill is free to be the colour it means. */
+.casepage .mapband[data-lit] .zone {
+  stroke: var(--brand-ink);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.casepage .mapband[data-lit] .map-legend i {
+  border: 1px solid var(--brand-ink);
+}
+/* The glow has more work to do on paper than on night, where the ground did
+   half of it. */
+.casepage .mapband[data-lit] .zone-halo {
+  opacity: 0.3;
+}
+.casepage .mapband[data-lit] .mk-zone[data-state="on"] .zone-halo {
+  opacity: 0.55;
+}
+/* A line cannot be outlined, so the connector is the one mark that takes
+   the paper gold: 4.47:1 over the land, 3.56:1 over Ukraine. */
+.casepage .mapband[data-lit] .map .reach {
+  stroke: var(--brand-gold-ink);
+}
+/* The rim on a selected place, and the selected seat's ring: cream and pale
+   gold are the night map's, and both vanish here. */
+.casepage .mapband[data-lit] .mk-zone[data-state="on"] .zone {
+  stroke: var(--brand-ink);
+}
+.casepage .mapband[data-lit] .mk-seat[data-state="on"] .mk-court {
+  stroke: var(--brand-gold-ink);
+  filter: none;
+}
+/* Quietened, not extinguished. 0.16 is the events map's figure and it is a
+   figure for cream on near-black, where a sixth of full strength still
+   glows. A sixth of ink on near-white is a ghost: with one theatre selected
+   the key's other two entries and every other name on the drawing were
+   gone rather than stepped back. */
+.casepage .mapband[data-lit] [data-state="off"] {
+  opacity: 0.45;
 }
