@@ -644,3 +644,36 @@
   fill: color-mix(in srgb, var(--brand-gold-lamp) 42%, transparent);
   filter: drop-shadow(0 0 6px color-mix(in srgb, var(--brand-gold-lamp) 55%, transparent));
 }
+
+/* ── The key, with room to breathe ────────────────────────────────────────
+   Owner: «тут в легенді бракує марджінів і падінгів і повітря», «легенда
+   карти може бути меншим шрифтом — 9 px».
+
+   Smaller and looser at once, which is not a contradiction: the type comes
+   down because a key lying on a drawing competes with the names written on
+   the map, and the space goes up because at that size the rows need the
+   distance to stay separate. The selected row gets padding of its own, so
+   its highlight has an edge around the words instead of touching them. */
+.casepage .mapband[data-lit] .map-legend {
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  gap: var(--space-5);
+}
+.casepage .mapband[data-lit] .map-legend span,
+.casepage .mapband[data-lit] .map-legend .lg-note,
+.casepage .mapband[data-lit] .map-legend .lg-how {
+  font-size: var(--t-map);
+  line-height: 1.6;
+}
+.casepage .mapband[data-lit] .map-legend button {
+  padding: var(--space-2) var(--space-3);
+  margin: calc(var(--space-2) * -1) calc(var(--space-3) * -1);
+}
+.casepage .mapband[data-lit] .map-legend .lg-note {
+  margin-top: var(--space-1);
+}
+
+/* The sea: a wash of the brown-red the night map was drawn in, so the
+   drawing is a field with an edge rather than land cut out of the paper. */
+.casepage .mapband[data-lit] .map-plot {
+  background: var(--brand-map-sea-lit);
+}

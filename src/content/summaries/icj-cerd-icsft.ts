@@ -616,35 +616,19 @@ export const icjCerdIcsft: DecisionSummary = {
     en: "Order of 19 April 2017",
   },
 
-  provisionalMeasures: [
-    {
-      measure: { uk: "Не обмежувати Меджліс", en: "Not to restrict the Mejlis" },
-      order: "violated",
-      note: {
-        uk: "Заборону збережено (§ 392) — але по суті це не порушення CERD, лише порушення Наказу.",
-        en: "Ban maintained (§ 392) — yet not a CERD violation in substance, only a breach of the Order.",
-      },
-    },
-    {
-      measure: {
-        uk: "Забезпечити освіту українською мовою",
-        en: "Ensure Ukrainian-language education",
-      },
-      order: "complied",
-      note: {
-        uk: "Освіта залишалася доступною (§ 395).",
-        en: "Education remained available (§ 395).",
-      },
-    },
-    {
-      measure: { uk: "Не загострювати спір", en: "Not to aggravate the dispute" },
-      order: "violated",
-      note: {
-        uk: "Визнання «ДНР» і «ЛНР» та початок «спеціальної воєнної операції» (§ 397–398).",
-        en: "Recognition of the “DPR” and “LPR” and the launch of a “special military operation” (§ 397–398).",
-      },
-    },
-  ],
+  /* Empty, so the «Тимчасові заходи» band does not render on this page.
+   *
+   * It held three rows — the measure, whether it was kept, and a note with
+   * the paragraph number — and the write-up answers each of the Order's
+   * three limbs under «Наказ про тимчасові заходи», with the Court's own
+   * words and the same paragraph numbers. The one thing the band had that
+   * the text did not was the plain statement of what each measure
+   * required, and that has moved onto the limb it belongs to.
+   *
+   * Owner: «розділ тимчасові заходи дублює те що вказано у правових
+   * висновках — можеш спробувати обʼєднати».
+   */
+  provisionalMeasures: [],
 
   /* The drawing sits inside the write-up, after part 1, on paper — part 1
      is where the two theatres are named and the map is what they look like.

@@ -162,7 +162,8 @@
     {
       "kind": "h4",
       "text": "(a) Меджліс",
-      "outcome": "violation"
+      "outcome": "violation",
+      "measure": "Не обмежувати Меджліс"
     },
     {
       "kind": "claim",
@@ -191,7 +192,8 @@
     {
       "kind": "h4",
       "text": "(b) Освіта українською мовою",
-      "outcome": "no-violation"
+      "outcome": "no-violation",
+      "measure": "Забезпечити освіту українською мовою"
     },
     {
       "kind": "p",
@@ -212,7 +214,8 @@
     {
       "kind": "h4",
       "text": "(c) Неспроможність врегулювати спір",
-      "outcome": "violation"
+      "outcome": "violation",
+      "measure": "Не загострювати спір"
     },
     {
       "kind": "p",

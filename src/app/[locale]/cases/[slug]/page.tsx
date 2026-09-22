@@ -1989,6 +1989,8 @@ export default async function CasePage({
                   <span className="v-out h4-out" data-o={b.outcome}>
                     {pick(OUTCOME_LABEL[b.outcome], locale)}
                   </span>
+                  {/* What this limb required, before what happened to it. */}
+                  {b.measure && <span className="h4-measure">{b.measure}</span>}
                 </div>,
               );
               continue;

@@ -102,6 +102,17 @@ export interface SummaryBlock {
    * words and a rule that went looking for it there would be guessing at
    * legal meaning, which this page does not do.
    */
+  /**
+   * What this limb of an order actually required. `h4` only.
+   *
+   * The write-up quotes the Order's measures once, together, in one
+   * paragraph of § 376, and then discusses each limb under a heading as
+   * terse as «(a) Меджліс». Between the quotation and the discussion a
+   * reader has to carry three measures in their head to know which one is
+   * being answered. Stated on the heading, each limb says what was ordered
+   * before it says what happened.
+   */
+  measure?: string;
   outcome?: Outcome;
   /**
    * How each finding in a `findings` block went, in the order its head lines

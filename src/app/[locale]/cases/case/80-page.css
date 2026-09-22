@@ -864,6 +864,17 @@
   align-items: baseline;
   gap: var(--space-3);
 }
+/* The order, under the heading, on its own line: the heading names the
+   subject, the chip says how it went, and this is what was actually
+   required. It comes from the provisional-measures band, which said the
+   same three things as this part of the write-up and no longer renders. */
+.casepage .h4-measure {
+  flex-basis: 100%;
+  margin-top: var(--space-1);
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.02em;
+  color: var(--ink3);
+}
 .casepage .h4-row h4 {
   margin-bottom: 0;
 }

@@ -130,7 +130,15 @@
      which is what a marker on a map is. The seat's ring takes --brand-ink
      where the night map takes cream. */
   --brand-map-land-lit: #dcd6cc;
-  --brand-map-land-edge-lit: #a49a8b;
+  /* The frontier hairline keeps the brown-red the night map drew it in —
+     the same colour doing the same job, which is the point of reusing it
+     rather than picking a new grey. 3.03:1 on the light land, where the
+     night map's own edge measured 2.21 on its ground. */
+  --brand-map-land-edge-lit: #6f564a;
+  /* The sea. A wash of that same brown-red over the page, so the drawing is
+     a field with an edge rather than land cut out of the paper — and so the
+     band reads as the map it replaced rather than as a gap in the article. */
+  --brand-map-sea-lit: #f6f2ec;
   /* Ukraine is LIT, so on paper it is warmer and lighter than its
      neighbours rather than darker: a wash of the lamp's own gold over the
      page. It sits 1.17:1 above the land, which is the night map's own step
@@ -292,6 +300,14 @@
      actually was. Steps sit ~1.11–1.14 apart through the reading range
      and open up at the top so display type reads as another register. */
   --t-micro: 11px;    /* uppercase labels */
+  /* The map key, and nothing else.
+     11px is the ramp's floor and the size every label on this site takes;
+     a key lying on a drawing is the one place that reads as too loud at it,
+     because it is competing with the names written on the map rather than
+     with the prose. Declared as a step so the lint can see it — which does
+     mean the lint will now accept 9px anywhere, so: it belongs to
+     `.map-legend`, and a second user of it is a question, not a licence. */
+  --t-map: 9px;
   --t-cap: 12.5px;    /* captions, citations, metadata */
   --t-sm: 14px;       /* secondary prose, list items, UI rows */
   /* --t-ui was 15.5px, a fourth step inside the 11–15.5 band. Four sizes
