@@ -22,8 +22,18 @@ export const echrUkraineNetherlands: DecisionSummary = {
     masthead: { official: string; parties: string; judgment: string };
     blocks: SummaryBlock[];
   }),
-  // Ukrainian translation of the body, structurally 1:1 (23 blocks) — draft,
-  // pending legal review.
+  /* Ukrainian translation of the body, structurally 1:1 (30 blocks) — draft,
+     pending legal review.
+
+     Thirty, not the twenty-three the tab was ingested as. Not a word of the
+     write-up changed: seven of its paragraphs were cut at the author's own
+     full stops, and the two locales were cut at the same sentences, because
+     `blocksUk` is read by index. The two 2022 paragraphs carried six
+     movements between them — the decrees, the four axes of the invasion, the
+     retreat from Kyiv, the counter-offensives, the purported annexation, the
+     strikes on the grid — in two slabs of a thousand characters each; and the
+     four-front sentence is a list the author wrote with his own semicolons,
+     which the page now sets as one. */
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
   title: {
