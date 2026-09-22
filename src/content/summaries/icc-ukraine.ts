@@ -1079,6 +1079,21 @@ export const iccUkraine: DecisionSummary = {
         en: "The Prosecution has built two lines: the deportation of children (the political leadership, wave 1) and the campaign against the grid (the military chain, from operational commanders up to the Defence Minister and General Staff, waves 2–3).",
       },
     },
+    /* Back, and this is why it stands alone.
+       It was removed as a duplicate of the FAQ entry that says the same
+       thing — «А хто судитиме за сам напад на Україну?» — and then the
+       FAQ turned out not to render: that band was taken off these pages
+       earlier in the project and `summary.faq` has been unread data since.
+       So this was not the second telling, it was the only one, and taking
+       it left the page silent on the one limit of the Court's reach here.
+       Owner: «повертай тлумачення». */
+    {
+      term: { uk: "Межа юрисдикції: агресія", en: "The jurisdictional limit: aggression" },
+      ruling: {
+        uk: "Щодо злочину агресії юрисдикція МКС у цій ситуації обмежена, бо РФ не є учасницею Статуту. Саме тому 25 червня 2025 року Україна і Рада Європи підписали угоду про Спеціальний трибунал щодо злочину агресії.",
+        en: "The ICC cannot reach the crime of aggression here, because Russia is not a party to the Statute. That is why Ukraine and the Council of Europe signed the Special Tribunal agreement on 25 June 2025.",
+      },
+    },
 
   ],
 
