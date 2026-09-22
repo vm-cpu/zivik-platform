@@ -314,6 +314,14 @@ export default function CaseMap({
                339px wide and the five names cannot fit at all — there the
                stylesheet hides them and shows this one instead. Which of the
                two is drawn is a question of width, and width is CSS's. */
+            /* A theatre whose ground is the whole country writes nothing on
+               the drawing at all. Its name stood over Kyiv with no mark under
+               it, which put a label where a reader looks for a place — and
+               the thing it names is not a place. The key below is its control:
+               pressing it lights the country. Owner: «енергосистема України —
+               можна прибрати з карти як підпис — нехай карта просто
+               підсвічується під час натискання на легенду». */
+            if (t.ground === "area") return null;
             const named = t.ptNames?.some((n) => n?.label) ? "yes" : undefined;
             const cx = t.pts.reduce((s, p) => s + p[0], 0) / t.pts.length;
             const cy = t.pts.reduce((s, p) => s + p[1], 0) / t.pts.length;
