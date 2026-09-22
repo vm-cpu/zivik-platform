@@ -779,11 +779,11 @@ export const iccUkraine: DecisionSummary = {
          Херсонщина і Крим щораз нижче. Перевірено обрахунком перетинів
          прямокутників на ширині смуги 778 px: жодного. */
       markerNames: [
-        { label: { uk: "Крим", en: "Crimea" }, dy: 12 },
-        { label: { uk: "Донеччина", en: "Donetsk region" }, dy: -46 },
-        { label: { uk: "Луганщина", en: "Luhansk region" }, dx: 34 },
-        { label: { uk: "Херсонщина", en: "Kherson region" }, dy: 16 },
-        { label: { uk: "Запоріжжя", en: "Zaporizhzhia region" }, dy: 16 },
+        { label: { uk: "Крим", en: "Crimea" } },
+        { label: { uk: "Донеччина", en: "Donetsk region" } },
+        { label: { uk: "Луганщина", en: "Luhansk region" }, dx: 40 },
+        { label: { uk: "Херсонщина", en: "Kherson region" }, dx: -26 },
+        { label: { uk: "Запоріжжя", en: "Zaporizhzhia region" }, dx: -40, dy: -22 },
       ],
       areas: ["crimea", "east"],
       // keep the caption clear of the three markers it points at
@@ -1052,14 +1052,6 @@ export const iccUkraine: DecisionSummary = {
         alt: {
           label: { uk: "оцінки омбудсменів", en: "ombudspersons' estimates" },
           value: { uk: "150–300 тис.", en: "150,000–300,000" },
-          /* Куди веде вся смуга. 1 859 від 150–300 тисяч — це 0,6–1,2%, і
-             поки цифра стоїть без цього рядка, читач лишається з 9,5%, які
-             можуть бути вдесятеро завеликі. Умовний спосіб — навмисно: це
-             наш підрахунок з двох чисел, а не чиєсь джерело. */
-          note: {
-            uk: "якщо так, то повернулися не 9,5%, а 0,6–1,2%",
-            en: "if so, the share returned is not 9.5% but 0.6–1.2%",
-          },
         },
       },
       {

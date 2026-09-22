@@ -357,14 +357,6 @@ export interface Metric {
   alt?: {
     label: Localized;
     value: Localized;
-    /**
-     * What follows if the second measure is the right one.
-     *
-     * Derived, not sourced — the band's own note says where the figures come
-     * from, and this is arithmetic on two of them. Written as a conditional
-     * («якщо так…») so it reads as what it is.
-     */
-    note?: Localized;
   };
 }
 

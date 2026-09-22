@@ -174,6 +174,9 @@ const T = {
   railLabel: { uk: "Перейти до події за датою", en: "Jump to an event by date" },
   amountsH: { uk: "Суми", en: "Amounts" },
   shareOf: { uk: "від суми", en: "of the total" },
+  /* Not `shareOf`: that one belongs to sums of money and reads «від суми».
+     This names a counted whole — «9,5% з 19 546+». */
+  ofWhole: { uk: "з", en: "of" },
   attributionH: { uk: "Чия поведінка — це поведінка держави", en: "Whose conduct counts as the State's" },
   objectionLbl: { uk: "Заперечення", en: "Objection" },
   rulingLbl: { uk: "Рішення суду", en: "Ruling" },
@@ -1866,14 +1869,10 @@ export default async function CasePage({
                     count: m.count,
                     partOfAbove: m.partOfAbove,
                     note: m.note && L(m.note),
-                    alt: m.alt && {
-                      label: L(m.alt.label),
-                      value: L(m.alt.value),
-                      note: m.alt.note && L(m.alt.note),
-                    },
+                    alt: m.alt && { label: L(m.alt.label), value: L(m.alt.value) },
                   }))}
                   locale={locale}
-                  labels={{ andMore: pick(T.dotCap, locale) }}
+                  labels={{ andMore: pick(T.dotCap, locale), shareOf: pick(T.ofWhole, locale) }}
                   /* Inside the grid, in the cell beside the last figure —
                      it used to hang under the whole band with the right
                      half of that row empty. */

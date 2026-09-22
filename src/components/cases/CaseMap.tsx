@@ -355,7 +355,19 @@ export default function CaseMap({
                       key={`${t.id}-p${i}`}
                       className="ml-pt"
                       data-state={state(t.id)}
-                      style={at(pt[0] + (n.dx ?? 0), pt[1] + (n.dy ?? 0))}
+                      /* The nudge is in CSS pixels, not projection units: the
+                         name is a fixed 11px whatever the drawing's scale, so
+                         an offset that scales with the map is tuned for one
+                         width and wrong at every other. Measured at 687 the
+                         names cleared; at 1370 the same figures had grown
+                         with the map and walked back onto the marks. */
+                      style={
+                        {
+                          ...at(pt[0], pt[1]),
+                          "--ml-dx": `${n.dx ?? 0}px`,
+                          "--ml-dy": `${n.dy ?? 0}px`,
+                        } as React.CSSProperties
+                      }
                     >
                       {n.label}
                     </span>

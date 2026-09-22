@@ -278,10 +278,14 @@
 
    The halo under it is the band's own ground, twice, so a name that lands on
    an oblast boundary is still readable without a box around it. */
-.casepage .ml-pt {
+/* `.casepage .map-labels span` вище ставить кожній назві display:flex і має
+   (0,2,1) — тобто на клас глибше, ніж просте `.casepage .ml-pt`. Через це
+   перемикач за шириною не вмикався жодного разу: малювалися й назви місць, і
+   назва театру, і вони лягали одна на одну. */
+.casepage .map-labels .ml-pt {
   display: none;
   align-items: center;
-  transform: translate(-50%, 13px);
+  transform: translate(calc(-50% + var(--ml-dx, 0px)), calc(13px + var(--ml-dy, 0px)));
   text-align: center;
   white-space: nowrap;
   font: 500 var(--t-micro) / 1.25 var(--brand-font-body);
@@ -295,10 +299,10 @@
    Тож ширше 900 малюються назви місць, а назва театру ховається — її несе
    ключ під картою; вужче навпаки. */
 @media (min-width: 701px) {
-  .casepage .ml-pt {
+  .casepage .map-labels .ml-pt {
     display: flex;
   }
-  .casepage .ml-zone[data-named="yes"] {
+  .casepage .map-labels .ml-zone[data-named="yes"] {
     display: none;
   }
 }

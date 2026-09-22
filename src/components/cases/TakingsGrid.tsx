@@ -43,7 +43,7 @@ export interface MetricR {
   partOfAbove?: boolean;
   note?: string;
   /** A second measure of the same quantity, where the sources disagree. */
-  alt?: { label: string; value: string; note?: string };
+  alt?: { label: string; value: string };
 }
 
 export default function TakingsGrid({
@@ -60,7 +60,7 @@ export default function TakingsGrid({
   /** Still needed: the share is formatted with the reader's own separator. */
   locale: string;
   /** "of which" and the over-cap note for a dot field too large to draw. */
-  labels?: { andMore?: string };
+  labels?: { andMore?: string; shareOf?: string };
 }) {
   const root = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -145,7 +145,7 @@ export default function TakingsGrid({
   const shapeOf = (m: MetricR) =>
     m.count !== undefined ? "grid" : m.percent !== undefined ? "bar" : "plain";
 
-  const figure = (m: MetricR) => (
+  const figure = (m: MetricR, ofWhole?: string) => (
     <>
       <div className="taking-head">
         <span className="taking-label">{m.label}</span>
@@ -180,7 +180,9 @@ export default function TakingsGrid({
           </div>
           {m.restLabel && (
             <p className="taking-split">
-              <span className="ts-share">{pct(m.percent)}%</span>
+              <span className="ts-share">
+                {pct(m.percent)}%{ofWhole ? ` ${ofWhole}` : ""}
+              </span>
               <span className="ts-rest">{m.restLabel}</span>
             </p>
           )}
@@ -204,8 +206,15 @@ export default function TakingsGrid({
           {figure(whole)}
 
           {/* The part, inside the tile of the whole it divides and directly
-              under it, so «з них повернуто» has its «них» in reach. */}
-          {part && <div className="taking-part">{figure(part)}</div>}
+              under it, so «з них повернуто» has its «них» in reach. The share
+              under the bar names that whole outright — «9,5% з 19 546+» —
+              because the two figures sat one above the other and nothing
+              said the percentage was the ratio between them. */}
+          {part && (
+            <div className="taking-part">
+              {figure(part, labels?.shareOf ? `${labels.shareOf} ${whole.value}` : undefined)}
+            </div>
+          )}
 
           {/* The other measure closes the tile, after the share rather than
               before it: read last, an estimate an order of magnitude larger
@@ -215,9 +224,6 @@ export default function TakingsGrid({
             <div className="taking-alt">
               <span className="taking-label">{whole.alt.label}</span>
               <b className="taking-value">{whole.alt.value}</b>
-              {/* What follows if this is the right measure — the arithmetic
-                  the band has been pointing at all along. */}
-              {whole.alt.note && <p className="taking-note alt-note">{whole.alt.note}</p>}
             </div>
           )}
         </div>
