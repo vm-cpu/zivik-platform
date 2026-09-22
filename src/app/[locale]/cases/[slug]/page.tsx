@@ -57,7 +57,6 @@ const T = {
      a reader would call the overview. What is left over the counters is a row
      of figures, and says so; naming it «Якщо коротко» too would have printed
      the same heading twice in one screen. */
-  figuresH: { uk: "У цифрах", en: "In figures" },
   /* Heading for `DecisionSummary.glance` — the docket facts. Distinct from
      `inShort` ("Якщо коротко"), which heads the plain-language tldr: one is a
      ledger of identifiers, the other is a paragraph. */
@@ -679,7 +678,7 @@ export default async function CasePage({
   // Registry ids without a summary render the pending page; anything else 404s.
   if (!summary) return <CasePending slug={slug} locale={locale} dict={dict} />;
 
-  const { masthead, judgment, instruments, stats, timeline, verdicts, sources } = summary;
+  const { masthead, judgment, instruments, timeline, verdicts, sources } = summary;
   const { interpretations, plain, related } = summary;
   /* Alphabetical, in the reader's own collation, and sorted here rather than
      in the band: the term chips at the head of the verbatim text link to
@@ -1217,39 +1216,21 @@ export default async function CasePage({
               </div>
             )}
 
-            <div>
-              <h2 className="lbl lbl-onpaper">{pick(T.figuresH, locale)}</h2>
-              <div className="kpis">
-                {stats.map((s, i) => (
-                  <div
-                    key={i}
-                    className="kpi"
-                    /* `em` and nothing else. This used to also test
-                       `s.label.en === "violations found"`, which gave the one
-                       tile its accent from the English wording of its label:
-                       reword the label in either locale and the emphasis
-                       disappears with it. The tile that needed it now says so
-                       in the data (icj-cerd-icsft, stats[1]). */
-                    data-em={s.em ? "1" : undefined}
-                  >
-                    <b>
-                      {typeof s.value === "string" ? s.value : pick(s.value, locale)}
-                      {/* The asterisk is the mark, the note under the label is
-                          what it means. Hidden from assistive technology: a
-                          screen reader that reads "six star" learns nothing,
-                          and the note itself follows two lines later. */}
-                      {s.note && (
-                        <sup className="kpi-star" aria-hidden="true">
-                          *
-                        </sup>
-                      )}
-                    </b>
-                    <span>{pick(s.label, locale)}</span>
-                    {s.note && <i className="kpi-note">{pick(s.note, locale)}</i>}
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* «У цифрах» is gone — there is no such section in the design.
+
+                It was three tiles: a count of the conventions, of the
+                violations found, of the years to judgment. Every one of them
+                is said again within a screen of where it stood — the
+                violations by the index below, which lists them; the years by
+                the case card above, which carries the filing and the
+                judgment; the conventions by the masthead, which names both.
+                A figure the page states three times is a figure the reader
+                has to reconcile three times.
+
+                `stats` stays in the data and in the type. It is authored on
+                all eight write-ups, it is checked, and it is the kind of
+                thing a future surface — a registry row, a card on the map —
+                can ask for. What has gone is this page asking for it. */}
 
           </div>
         </section>
