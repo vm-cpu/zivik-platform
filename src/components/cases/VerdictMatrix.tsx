@@ -68,9 +68,39 @@ export interface VerdictRow {
  * scheduled at zero delay and lands on the next tick. Same reason as
  * `TakingsGrid`.
  */
-export default function VerdictMatrix({ rows }: { rows: VerdictRow[] }) {
+export default function VerdictMatrix({
+  rows,
+  fold,
+}: {
+  rows: VerdictRow[];
+  /**
+   * Fold the rows the forum did not uphold behind a control.
+   *
+   * Sixteen claims is the truth of this case and too long to be the first
+   * thing on the page: what the Court found is four lines, and what it
+   * rejected is twelve. Folded, the table answers the first question at a
+   * glance and the second on one press — and the control says how many are
+   * behind it, so nothing is hidden, only put one step away.
+   *
+   * Absent, every row shows. A dispositif of eight upheld claims has
+   * nothing to fold.
+   */
+  fold?: { show: string; hide: string };
+}) {
   const list = useRef<HTMLUListElement>(null);
   const [shown, setShown] = useState(false);
+  const [all, setAll] = useState(false);
+  const kept = (r: VerdictRow) =>
+    r.outcome === "violation" || r.outcome === "convicted" || r.outcome === "granted";
+  const folding = Boolean(fold) && rows.some(kept) && !rows.every(kept);
+  /* The track cell prints on the row that opens a run, and folding changes
+     which row that is — with the rest hidden, «CERD» would sit on a row in
+     the middle of the table and the first CERD row would have an empty
+     first cell. Recomputed over what is actually drawn. */
+  const drawn = (folding && !all ? rows.filter(kept) : rows).map((r, i, a) => ({
+    ...r,
+    opensTrack: i === 0 || a[i - 1].track !== r.track,
+  }));
 
   useEffect(() => {
     const el = list.current;
@@ -113,8 +143,9 @@ export default function VerdictMatrix({ rows }: { rows: VerdictRow[] }) {
   }, []);
 
   return (
+    <>
     <ul className="verdicts" ref={list} data-shown={shown ? "yes" : "no"}>
-      {rows.map((r, i) => (
+      {drawn.map((r, i) => (
         <li
           key={i}
           data-run={r.opensTrack ? "start" : "cont"}
@@ -175,5 +206,11 @@ export default function VerdictMatrix({ rows }: { rows: VerdictRow[] }) {
         </li>
       ))}
     </ul>
+      {folding && (
+        <button type="button" className="v-fold" aria-expanded={all} onClick={() => setAll(!all)}>
+          {all ? fold!.hide : fold!.show}
+        </button>
+      )}
+    </>
   );
 }

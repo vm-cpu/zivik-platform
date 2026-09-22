@@ -50,6 +50,7 @@ export default function CaseMap({
   regions,
   seat,
   reach,
+  reaches,
   theatres,
   labels,
 }: {
@@ -64,6 +65,8 @@ export default function CaseMap({
   regions?: string;
   seat: { name: string; caption: string; at: [number, number] };
   reach: [number, number];
+  /** One beam per theatre: the seat, and the ground each claim is about. */
+  reaches?: { id: string; at: [number, number] }[];
   theatres: CaseMapTheatre[];
   labels: { alt: string; seatRole: string; pick: string };
 }) {
@@ -197,14 +200,21 @@ export default function CaseMap({
             {/* The forum's reach: seat → the ground in dispute. It lights
                 whichever end the reader picked, because it is the one relation
                 this drawing has. */}
-            <line
-              className="reach"
-              data-state={sel === null ? "rest" : "on"}
-              x1={seat.at[0]}
-              y1={seat.at[1]}
-              x2={reach[0]}
-              y2={reach[1]}
-            />
+            {(reaches && reaches.length > 0 ? reaches : [{ id: "t0", at: reach }]).map((r) => (
+              <line
+                key={r.id}
+                className="reach"
+                /* Quiet when another theatre is picked: with one beam the
+                   line had nothing to step back from, and with two the
+                   unpicked one has to, or the drawing says the case reaches
+                   both places at once when the reader asked about one. */
+                data-state={sel === null ? "rest" : sel === r.id ? "on" : "off"}
+                x1={seat.at[0]}
+                y1={seat.at[1]}
+                x2={r.at[0]}
+                y2={r.at[1]}
+              />
+            ))}
             {/* The light itself, the events map's own: one short bright
                 segment runs the length of the connector and is gone. Drawn
                 from the ground in dispute towards the forum, whichever end the

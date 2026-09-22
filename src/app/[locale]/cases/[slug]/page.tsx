@@ -80,6 +80,10 @@ const T = {
      genitive it would need changes with the number in Ukrainian («з 2
      вимог», «з 21 вимоги») and the column head already says what a row is. */
   restCounted: { uk: "відхилено", en: "rejected" },
+  /* The control over the folded half of the index. It names the number, so
+     a reader sees what is behind it before deciding to open it. */
+  showRejected: { uk: "Показати решту вимог", en: "Show the other claims" },
+  hideRejected: { uk: "Згорнути", en: "Collapse" },
   violationWord: {
     uk: { one: "порушення", few: "порушення", many: "порушень" },
     en: { one: "violation", few: "violations", many: "violations" },
@@ -506,6 +510,16 @@ function TheatreMap({
         const r = (key ? MK[key] : undefined) ?? seat;
         return [r[0], r[1]];
       })()}
+      /* A beam to each theatre, not only to the first. This case reaches
+         eastern Ukraine under the ICSFT and Crimea under CERD, and the
+         drawing was connecting the Court to one of them. */
+      reaches={theatres
+        .map((t, i) => {
+          const key = t.markerKeys.find((k) => MK[k]);
+          const at = key ? MK[key] : undefined;
+          return at ? { id: `t${i}`, at: [at[0], at[1]] as [number, number] } : null;
+        })
+        .filter((x): x is { id: string; at: [number, number] } => x !== null)}
       theatres={theatres.map((t, i) => ({
         id: `t${i}`,
         place: pick(t.place, locale),
@@ -1742,6 +1756,16 @@ export default async function CasePage({
                     claim: pick(v.claim, locale),
                   };
                 })}
+                /* Offered only where there is something to fold: a table of
+                   nothing but breaches has no second half. */
+                fold={
+                  rejectedShown > 0
+                    ? {
+                        show: `${pick(T.showRejected, locale)} · ${rejectedShown}`,
+                        hide: pick(T.hideRejected, locale),
+                      }
+                    : undefined
+                }
               />
             </div>
 

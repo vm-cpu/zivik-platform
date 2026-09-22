@@ -663,3 +663,42 @@
 .casepage .mapband[data-lit] .map-plot {
   background: var(--brand-map-sea-lit);
 }
+
+/* ── The beam ─────────────────────────────────────────────────────────────
+   Owner: «не вистачає пунктиру від криму — і він не золотистий як
+   промінчик світла».
+
+   A gold line on a light ground cannot carry 3:1 on its own, so the beam
+   is drawn twice: the lamp's gold for the light, with a glow under it, and
+   the dash pattern and the two marks it joins for the reading. What it
+   says — that this court reached this place — the key also says in words
+   and the labels repeat on the drawing, so the line is the picture of the
+   relation rather than the only statement of it. */
+.casepage .mapband[data-lit] .map .reach {
+  stroke: var(--brand-gold-mark);
+  stroke-width: 1.4;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--brand-gold-lamp) 65%, transparent));
+}
+.casepage .mapband[data-lit] .map .reach[data-state="on"] {
+  stroke: var(--brand-gold-lamp);
+  stroke-width: 2;
+  opacity: 1;
+  filter: drop-shadow(0 0 5px var(--brand-gold-lamp))
+    drop-shadow(0 0 12px color-mix(in srgb, var(--brand-gold-lamp) 55%, transparent));
+}
+
+/* ── The key does not scroll ──────────────────────────────────────────────
+   Owner: «легенда — щось попливла», «треба щоб вона не скролилася».
+
+   It had a height cap and `overflow-y: auto`, so once the rows grew it
+   became a scrolling panel lying on a picture — a second scroll inside a
+   page that already scrolls, and one a reader has no reason to expect. It
+   sizes to its contents now and the air comes back down to what fits: the
+   room the rows needed was what pushed it past the frame. */
+.casepage .mapband[data-lit] .map-legend {
+  max-height: none;
+  overflow: visible;
+  padding: var(--space-4);
+  gap: var(--space-4);
+}
