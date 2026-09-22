@@ -781,9 +781,9 @@ export const iccUkraine: DecisionSummary = {
       markerNames: [
         { label: { uk: "Крим", en: "Crimea" } },
         { label: { uk: "Донеччина", en: "Donetsk region" } },
-        { label: { uk: "Луганщина", en: "Luhansk region" }, dx: 40 },
-        { label: { uk: "Херсонщина", en: "Kherson region" }, dx: -26 },
-        { label: { uk: "Запоріжжя", en: "Zaporizhzhia region" }, dx: -40, dy: -22 },
+        { label: { uk: "Луганщина", en: "Luhansk region" }, dx: 46 },
+        { label: { uk: "Херсонщина", en: "Kherson region" }, dx: -30 },
+        { label: { uk: "Запоріжжя", en: "Zaporizhzhia region" }, dx: -46, dy: -22 },
       ],
       areas: ["crimea", "east"],
       // keep the caption clear of the three markers it points at
