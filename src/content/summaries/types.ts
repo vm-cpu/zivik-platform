@@ -303,6 +303,22 @@ export interface Verdict {
    * heading; see `.sec-sum` in cases/[slug]/page.tsx.
    */
   residual?: boolean;
+  /**
+   * What to print in the result column, where the shared word is wrong.
+   *
+   * `not-decided` prints «Не розглядалося» on three decisions, and on two of
+   * them that is exactly what happened — a tribunal reached the claims it
+   * needed and left the alternatives alone. On icj-genocide it is untrue in a
+   * way a reader cannot catch: the Court DID decide submissions (c) and (d),
+   * held them admissible, and then found it had no power over them. «Не
+   * розглядалося» reads as the Court not getting to them. Owner: «"Not
+   * decided" не коректне формулювання».
+   *
+   * A row-level override rather than a new `Outcome`, because the colour, the
+   * sort order and the scorecard arithmetic are all right already — the only
+   * thing wrong is the word.
+   */
+  outcomeLabel?: Localized;
 }
 
 /** One measured quantity in the "what was taken" instrument. */
@@ -343,6 +359,17 @@ export interface Metric {
    * сказати. Послідовності інформації».
    */
   partOfAbove?: boolean;
+  /**
+   * The subject this figure belongs to, written on the first of its run.
+   *
+   * «Що було втрачено» held six figures of four different kinds: what the
+   * bank *was* in Crimea — 294 outlets, 45% of lending, 16.5% of deposits —
+   * and what was *taken* — the ActivSolar facilities, 85 leases, the cash and
+   * gold seized in the raids. The heading promises the second; half the grid
+   * answers the first, and nothing stood between them. Named, the two runs
+   * stop being one undifferentiated field of numbers.
+   */
+  group?: Localized;
   note?: Localized;
   /**
    * Another measure of the same quantity, where the sources disagree.
@@ -733,8 +760,57 @@ export interface DecisionSummary extends VerbatimSummary {
    * the reading-time estimate and the PDF page count.
    */
   bands?: "four";
+  /**
+   * Individual sections this decision does not render, by the id the band
+   * carries on the page.
+   *
+   * The opposite instrument to `bands`, and the one the corrections actually
+   * ask for most often. `bands: "four"` is a whitelist — it names the four
+   * that stay and silences everything else, so putting one section back means
+   * putting all of them back. When the owner asked for the submissions matrix
+   * on icj-genocide while still wanting «Забрати Key rulings on the law» and
+   * «Забрати Overview — не має ніякої цінності», a whitelist could not say it.
+   *
+   * Ids are the section ids in `pageSections`, which are also the anchors the
+   * contents rail links to: "overview", "dash", "score", "rulings",
+   * "measures", "machinery", "scale", "glossary", "related". The write-up, the
+   * chronology, the map and the sources are not listable — a decision page
+   * without its own text is not a page.
+   *
+   * Hiding a section hides its chip in the contents too, and the ground
+   * alternation closes over the gap, so no band is left stranded on the same
+   * paper as its neighbour.
+   */
+  hideSections?: Array<
+    | "overview"
+    | "dash"
+    | "score"
+    | "rulings"
+    | "measures"
+    | "machinery"
+    | "scale"
+    | "glossary"
+    | "related"
+  >;
   /** Heading for the verdict matrix, when "what the Court found" is wrong. */
   verdictsHeading?: Localized;
+  /**
+   * Drop the verdict matrix's first column — the ground each claim was
+   * brought under.
+   *
+   * It earns its place where the claims run under several instruments: on
+   * icj-cerd-icsft the column is what tells a CERD claim from an ICSFT one.
+   * On icj-genocide every row reads «Genocide Convention», because there is
+   * only one convention in the case and the masthead has already named it
+   * twice — so the column spends 140px repeating itself three times and the
+   * claims beside it wrap for want of that width. Owner: «зліва забрати
+   * Genocide convention».
+   *
+   * The `track` stays in the data: it is what the rows are grouped and sorted
+   * by, and the day a second instrument enters this docket the column comes
+   * back by deleting one line.
+   */
+  verdictsTrackless?: true;
   /**
    * Heading for the index's first column, when «Підстава» is wrong.
    *
@@ -781,7 +857,21 @@ export interface DecisionSummary extends VerbatimSummary {
    * Defaults to The Hague → Kyiv. The labels come from `forum`.
    */
   mapFocus?: { forumKey: string; reachTo?: string };
-  takings?: { heading: Localized; note?: Localized; metrics: Metric[] };
+  takings?: {
+    heading: Localized;
+    /**
+     * The band's own argument, at reading size, before the figures.
+     *
+     * It used to be the last line of the band in caption grey: «кримська
+     * філія була другою за депозитами і першою за кредитуванням на
+     * півострові. Примусове закриття прибрало найбільшого кредитора регіону
+     * за один квартал». That is the thing the figures are evidence for, and
+     * it was set as a footnote to them.
+     */
+    lead?: Localized;
+    note?: Localized;
+    metrics: Metric[];
+  };
   attribution?: {
     respondent: Localized;
     note: Localized;

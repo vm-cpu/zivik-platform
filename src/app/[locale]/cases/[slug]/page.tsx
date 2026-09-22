@@ -2376,6 +2376,10 @@ export default async function CasePage({
                 <div className="sec-h">
                   <h2>{pick(takings.heading, locale)}</h2>
                 </div>
+                {/* The argument the figures are evidence for, at reading size
+                    and before them. It used to close the band in caption
+                    grey. */}
+                {takings.lead && <p className="takings-lead">{pick(takings.lead, locale)}</p>}
                 <TakingsGrid
                   metrics={takings.metrics.map((m) => ({
                     label: L(m.label),
@@ -2383,6 +2387,7 @@ export default async function CasePage({
                     percent: m.percent,
                     restLabel: m.restLabel && L(m.restLabel),
                     count: m.count,
+                    group: m.group && L(m.group),
                     partOfAbove: m.partOfAbove,
                     note: m.note && L(m.note),
                     alt: m.alt && { label: L(m.alt.label), value: L(m.alt.value) },

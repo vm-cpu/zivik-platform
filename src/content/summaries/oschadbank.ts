@@ -694,12 +694,18 @@ export const oschadbank: DecisionSummary = {
 
   takings: {
     heading: { uk: "Що було втрачено", en: "What was taken" },
-    note: {
+    /* Це і є те, задля чого смуга існує, — а стояло останнім рядком дрібним
+       сірим, тобто як виноска до власного доказу. Тепер веде. */
+    lead: {
       uk: "Наприкінці 2013 року кримська філія була другою за депозитами і першою за кредитуванням на півострові. Примусове закриття прибрало найбільшого кредитора регіону за один квартал.",
       en: "At the end of 2013 the Crimean branch was second in deposits and first in lending on the peninsula. The forced closure removed the region's largest lender in a single quarter.",
     },
     metrics: [
       {
+        /* Перша група — міра ваги втрати: чим банк був на півострові до
+           закриття. Поле з 294 позначок веде її, бо це найсильніший об'єкт
+           на сторінці: число, яке стало полем. */
+        group: { uk: "Чим банк був у Криму", en: "What the bank was in Crimea" },
         label: { uk: "Відділень утрачено", en: "Branch outlets lost" },
         value: "294",
         count: 294,
@@ -716,6 +722,9 @@ export const oschadbank: DecisionSummary = {
         percent: 16.5,
       },
       {
+        /* Друга група — сама втрата. Заголовок смуги обіцяє саме її, і доти
+           вона була перемішана з першою в одній сітці. */
+        group: { uk: "Що вилучили", en: "What was taken away" },
         label: { uk: "Кредити групі ActivSolar", en: "Loans to the ActivSolar Group" },
         /* A pair, not a bare string: a bare one printed the English grouping
            on the Ukrainian page, next to money bars that spell the same

@@ -1931,3 +1931,33 @@
 .casepage .scale-band {
   border-bottom: 0;
 }
+
+/* ── Смуга цифр: теза попереду, групи всередині ──────────────────────────
+   Власниця: «роби всі 4 пропозиції по смузі».
+
+   Теза читається як речення — це те, задля чого смуга існує, і вона стояла
+   останнім рядком дрібним сірим, тобто виноскою до власного доказу.
+
+   Підпис групи бере рядок сітки цілком: шість цифр були чотирма різними
+   речами в одному полі, і між «чим банк був» і «що вилучили» не стояло
+   нічого. Регістр той самий, що в решти підписів на папері — мітка в
+   розрядку, а не ще один заголовок. */
+.casepage .takings-lead {
+  margin: 0 0 var(--space-6);
+  max-width: var(--prose);
+  font-size: var(--t-body);
+  line-height: 1.62;
+  color: var(--ink2);
+  text-wrap: pretty;
+}
+.casepage .takings > .takings-group {
+  grid-column: 1 / -1;
+  margin: var(--space-5) 0 0;
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink2);
+}
+.casepage .takings > .takings-group:first-child {
+  margin-top: 0;
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type React from "react";
+import React from "react";
 /* Locale-resolved props, like every other client component here.
 
    This one took `Metric[]` straight off the summary — raw {uk, en} pairs — and
@@ -39,6 +39,8 @@ export interface MetricR {
   percent?: number;
   restLabel?: string;
   count?: number;
+  /** The subject this figure belongs to, on the first of its run. */
+  group?: string;
   /** A part of the figure declared before it — drawn inside its tile. */
   partOfAbove?: boolean;
   note?: string;
@@ -199,8 +201,11 @@ export default function TakingsGrid({
   return (
     <div className="takings" ref={root} data-shown={shown ? "yes" : "no"}>
       {tiles.map(({ whole, part }, i) => (
+        <React.Fragment key={i}>
+          {/* The subject the run below belongs to. Spans the grid, so the
+              figures under it read as one answer rather than six. */}
+          {whole.group && <p className="takings-group">{whole.group}</p>}
         <div
-          key={i}
           className="taking"
           data-shape={shapeOf(whole)}
           data-pair={part ? "yes" : undefined}
@@ -244,6 +249,7 @@ export default function TakingsGrid({
             </div>
           )}
         </div>
+        </React.Fragment>
       ))}
       {note && <p className="taking-note takings-note">{note}</p>}
     </div>
