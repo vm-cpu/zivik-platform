@@ -1433,17 +1433,19 @@ export default async function CasePage({
     ...(provisionalMeasures.length > 0
       ? [{ id: "measures", label: pick(T.provMeasures, locale) }]
       : []),
-    ...(hasMachinery
-      ? [
-          {
-            id: "machinery",
-            label: pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale),
-          },
-        ]
+    /* Order follows the page, and the page's order depends on which machinery
+       band carries the id. With warrants it is the warrants band, which comes
+       first and the figures follow it; without them `#machinery` is the
+       attribution band, which renders *after* the figures. Listed the other
+       way round on Oschadbank, the rail sent a reader past the band they had
+       just asked for. */
+    ...(hasMachinery && summary.warrants
+      ? [{ id: "machinery", label: pick(T.navWarrants, locale) }]
       : []),
-    /* The figures band, between the warrants and the map — see the section
-       for why it is there and why it is a section at all. */
     ...(takings ? [{ id: "scale", label: pick(takings.heading, locale) }] : []),
+    ...(hasMachinery && !summary.warrants
+      ? [{ id: "machinery", label: pick(T.navAnatomy, locale) }]
+      : []),
     /* The map band, where it is not drawn inside the write-up. Guarded the
        same way the band is, so the chip never points at nothing. */
     ...(!summary.mapInline && theatres.length > 0
