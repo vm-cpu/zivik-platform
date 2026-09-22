@@ -11,13 +11,8 @@ import {
 } from "@/lib/seo";
 import { localeOpenGraph, alternateOpenGraphLocales } from "@/i18n/config";
 import { pick } from "@/content/types";
-import {
-  MAP_COURTS,
-  courtMarks,
-  seatsLine,
-  seatsList,
-} from "@/content/map";
-import { countryPanelsFor, courtCaseloadFor } from "@/content/map-links";
+import { MAP_COURTS, courtMarks, seatsLine } from "@/content/map";
+import { countryPanelsFor, courtCaseloadFor, seatRows } from "@/content/map-links";
 import EventsMap from "@/components/nasvitlo/EventsMap";
 import "./map-page.css";
 
@@ -135,7 +130,8 @@ const stageWord = (k: string | undefined) =>
               };
             })(),
             seats: seatsLine(c, locale),
-            seatList: seatsList(c, locale),
+            seatList: seatRows(c.key, locale),
+            at: pick(c.at, locale),
             ...courtMarks(c, locale),
             }))}
             labels={{
@@ -165,6 +161,9 @@ const stageWord = (k: string | undefined) =>
             courtHears: dict.mapSection.courtHears,
             inLibrary: dict.mapSection.inLibrary,
             caseload: dict.mapSection.caseload,
+            seatsTotal: dict.mapSection.seatsTotal,
+            seatsNational: dict.mapSection.seatsNational,
+            seatsOpen: dict.mapSection.seatsOpen,
             caseloadWord: dict.mapSection.caseloadWord,
             zoomLabel: dict.mapSection.zoomLabel,
             zoomWide: dict.mapSection.zoomWide,

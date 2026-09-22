@@ -64,8 +64,12 @@ export interface MapCountryR {
   key: string;
   /** The country, in the reader's language. */
   label: string;
+  /** "in <this country>", authored — see `MapCourt.at` in content/map.ts. */
+  at: string;
+  /** Every institution seated in it, for the card's way into the registry. */
+  courtIds: string[];
   /** Every seat in the country, merged across its markers. */
-  seatList: { id?: string; abbr?: string; state?: string; name: string }[];
+  seatList: { id?: string; abbr?: string; national?: boolean; count?: number; name: string }[];
   /** How much of the archive those seats hold, summed. */
   total: number;
 }
@@ -73,6 +77,8 @@ export interface MapCountryR {
 export interface MapCourtR {
   key: string;
   city: string;
+  /** "in <this city>", authored — see `MapCourt.at` in content/map.ts. */
+  at: string;
   /** The seats joined into one line — still what the list under the map on
    *  the full page prints. The card uses `seatList` instead. */
   seats: string;
@@ -83,7 +89,7 @@ export interface MapCourtR {
    * the PCA as the *venue* of the Oschadbank arbitration, and the PCA itself
    * sits in The Hague. Such a seat is named and not linked.
    */
-  seatList: { id?: string; abbr?: string; state?: string; name: string }[];
+  seatList: { id?: string; abbr?: string; national?: boolean; count?: number; name: string }[];
   /**
    * The city is off the projection's frame, so it has no point in
    * europe-map.json and is docked against the frame's edge instead.
@@ -673,6 +679,11 @@ export default function EventsMap({
      */
     caseload: string;
     caseloadWord: PluralForms;
+    /** The card's foot: the total, and the way out into the registry. */
+    seatsTotal: string;
+    /** The heading over the rows that are a state's own courts. */
+    seatsNational: string;
+    seatsOpen: string;
     /** Heading over the cases a court hears that have no write-up yet. */
     inLibrary: string;
     /** The three framings. */
@@ -1786,13 +1797,17 @@ export default function EventsMap({
   const panel = selectedCourt
     ? {
         title: selectedCourt.city,
+        at: selectedCourt.at,
         seatList: selectedCourt.seatList,
+        courtIds: selectedCourt.caseload.courtIds,
         total: selectedCourt.caseload.total,
       }
     : selectedCountry
       ? {
           title: selectedCountry.label,
+          at: selectedCountry.at,
           seatList: selectedCountry.seatList,
+          courtIds: selectedCountry.courtIds,
           total: selectedCountry.total,
         }
       : null;
@@ -2745,30 +2760,101 @@ export default function EventsMap({
                 here, and how much of the archive they hold. Everything it used
                 to list is one click away, in the one place that can sort and
                 filter it. */}
-            <ul className="emap-seats">
-              {panel.seatList.map((seat) => (
-                <li key={seat.id ?? seat.name}>
-                  {/* A seat with no institution of its own is a fact about
-                      where something sat, not a way into a caseload — so it is
-                      named and not linked, rather than linked at something
-                      else. */}
-                  {seat.id ? (
-                    <Link href={`/${locale}/registry?court=${seat.id}`}>
-                      {seat.abbr && <span className="emap-seat-abbr">{seat.abbr}</span>}
-                      {seat.state && <span className="emap-seat-state">{seat.state}</span>}
-                      <span className="emap-seat-name">{seat.name}</span>
-                    </Link>
-                  ) : (
-                    <span className="emap-seat-plain">
-                      {seat.abbr && <span className="emap-seat-abbr">{seat.abbr}</span>}
-                      {seat.state && <span className="emap-seat-state">{seat.state}</span>}
-                      <span className="emap-seat-name">{seat.name}</span>
-                    </span>
+            {(() => {
+              /* Two groups, in one order: the international courts, then a
+                 heading and the state's own. The card was a flat list in
+                 which the Dutch judiciary sat fourth among three
+                 international courts and nothing said it was a different
+                 kind of thing. The heading says it once, over however many
+                 rows there are, instead of tagging each row with a state
+                 the card's own title already names. */
+              const intl = panel.seatList.filter((s) => !s.national);
+              const national = panel.seatList.filter((s) => s.national);
+              const row = (seat: (typeof panel.seatList)[number]) => {
+                const inner = (
+                  <>
+                    <span className="emap-seat-abbr">{seat.abbr ?? ""}</span>
+                    <span className="emap-seat-name">{seat.name}</span>
+                    {/* The count only where a seat is an institution with a
+                        caseload. Paris's PCA row is the venue of one
+                        arbitration, not a court the registry can be filtered
+                        on, so it carries neither number nor link. */}
+                    {seat.count != null && (
+                      <span className="emap-seat-n">{seat.count}</span>
+                    )}
+                    {seat.id && (
+                      <span className="emap-seat-go" aria-hidden="true">
+                        ›
+                      </span>
+                    )}
+                  </>
+                );
+                return (
+                  <li key={seat.id ?? seat.name}>
+                    {/* A seat with no institution of its own is a fact about
+                        where something sat, not a way into a caseload — so it
+                        is named and not linked, rather than linked at
+                        something else. */}
+                    {seat.id ? (
+                      <Link href={`/${locale}/registry?court=${seat.id}`}>{inner}</Link>
+                    ) : (
+                      <span className="emap-seat-plain">{inner}</span>
+                    )}
+                  </li>
+                );
+              };
+              return (
+                <>
+                  {intl.length > 0 && <ul className="emap-seats">{intl.map(row)}</ul>}
+                  {national.length > 0 && (
+                    <>
+                      <p className="emap-seats-group">{labels.seatsNational}</p>
+                      <ul className="emap-seats emap-seats-nat">{national.map(row)}</ul>
+                    </>
                   )}
-                </li>
-              ))}
-            </ul>
-            <p className="emap-caseload">{caseload(panel.total)}</p>
+                </>
+              );
+            })()}
+            {/* The foot: what the card adds up to, and the one place that can
+                sort and filter the same set. The total used to stand alone as
+                «22 провадження у бібліотеці», which named a number and left
+                the reader no way to reach it. */}
+            <div className="emap-seats-foot">
+              <p className="emap-caseload">
+                {(() => {
+                  /* The figure is what the reader came for, so the figure is
+                     what is lit — which means the sentence has to come apart
+                     at it rather than be substituted whole. Split on the
+                     template's own «{n} {w}», not on the rendered number: a
+                     card whose total is 3 would otherwise light the 3 in
+                     «33 провадження» too. A locale that reorders the two
+                     falls back to the plain sentence rather than to a
+                     mis-split one. */
+                  const figure = `${panel.total} ${plural(panel.total, labels.caseloadWord, locale)}`;
+                  const parts = labels.seatsTotal.replace("{at}", panel.at).split("{n} {w}");
+                  return parts.length === 2 ? (
+                    <>
+                      {parts[0]}
+                      <strong>{figure}</strong>
+                      {parts[1]}
+                    </>
+                  ) : (
+                    labels.seatsTotal
+                      .replace("{at}", panel.at)
+                      .replace("{n}", String(panel.total))
+                      .replace("{w}", plural(panel.total, labels.caseloadWord, locale))
+                  );
+                })()}
+              </p>
+              {panel.courtIds.length > 0 && (
+                <Link
+                  className="emap-seats-open"
+                  href={`/${locale}/registry?court=${panel.courtIds.join(",")}`}
+                >
+                  {labels.seatsOpen} →
+                </Link>
+              )}
+            </div>
         </div>
       )}
       </div>

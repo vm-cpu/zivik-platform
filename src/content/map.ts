@@ -119,6 +119,17 @@ export interface MapEvent {
 export interface MapCourt {
   key: string;
   /**
+   * "in <this place>", authored rather than composed.
+   *
+   * The card's footer reads «Усього у Гаазі: 22 провадження», and Ukrainian
+   * puts the place in the locative: Гаага → у Гаазі, Париж → у Парижі,
+   * Гамбург → у Гамбурзі. There is no rule that turns the nominative in
+   * `city` into any of those, and a template that glued a preposition onto
+   * the nominative would print «Усього в Гаага» on every card. So the phrase
+   * is written out, per locale, next to the name it inflects.
+   */
+  at: Localized;
+  /**
    * Registry institutions seated in this city. The map draws six places where
    * harm happened, but the archive holds 33 proceedings, and the ones not tied
    * to those six places had nowhere to appear. Naming the institutions here
@@ -241,6 +252,7 @@ export function markerSize(weight: number): number {
 export const MAP_COURTS: MapCourt[] = [
   {
     key: "hague",
+    at: { uk: "у Гаазі", en: "in The Hague" },
     institutionIds: ["icj", "icc", "pca", "nl"],
     city: { uk: "Гаага", en: "The Hague" },
     seats: [
@@ -267,15 +279,22 @@ export const MAP_COURTS: MapCourt[] = [
         // whose ECLI the MH17 judgment carries (RBDHA); that trial was heard
         // in the Schiphol justice complex for security, but the court is the
         // Hague one.
+        /* Shortened once the card grouped these rows under a heading that
+           says they are national and an NL in the column that says whose:
+           «…та Верховний суд Нідерландів» was saying the state a third time
+           in one row. Both courts are still named — that is the fact — and
+           the interpunct is the card's own separator, not a dash standing in
+           for a relation. */
         name: {
-          uk: "Окружний суд Гааги та Верховний суд Нідерландів",
-          en: "The Hague District Court and the Supreme Court of the Netherlands",
+          uk: "Окружний суд Гааги · Верховний суд",
+          en: "The Hague District Court · the Supreme Court",
         },
       },
     ],
   },
   {
     key: "strasbourg",
+    at: { uk: "у Страсбурзі", en: "in Strasbourg" },
     institutionIds: ["ecthr"],
     city: { uk: "Страсбург", en: "Strasbourg" },
     seats: [
@@ -288,6 +307,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   {
     key: "hamburg",
+    at: { uk: "у Гамбурзі", en: "in Hamburg" },
     institutionIds: ["itlos"],
     city: { uk: "Гамбург", en: "Hamburg" },
     seats: [
@@ -303,6 +323,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   {
     key: "paris",
+    at: { uk: "у Парижі", en: "in Paris" },
     institutionIds: ["icc-arb"],
     city: { uk: "Париж", en: "Paris" },
     seats: [
@@ -331,6 +352,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   {
     key: "vilnius",
+    at: { uk: "у Вільнюсі", en: "in Vilnius" },
     institutionIds: ["lt"],
     city: { uk: "Вільнюс", en: "Vilnius" },
     seats: [
@@ -376,6 +398,7 @@ export const MAP_COURTS: MapCourt[] = [
    */
   {
     key: "helsinki",
+    at: { uk: "у Гельсінкі", en: "in Helsinki" },
     institutionIds: ["fi"],
     city: { uk: "Гельсінкі", en: "Helsinki" },
     seats: [
@@ -390,6 +413,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   {
     key: "stockholm",
+    at: { uk: "у Стокгольмі", en: "in Stockholm" },
     institutionIds: ["scc"],
     city: { uk: "Стокгольм", en: "Stockholm" },
     seats: [
@@ -649,13 +673,49 @@ export function seatsLine(c: MapCourt, locale: Locale): string {
  * is not lit. Pressing the Brussels marker still works; there is simply no
  * country under it to press.
  */
-export const MAP_COUNTRIES: { key: string; name: Localized; courts: string[] }[] = [
-  { key: "Netherlands", name: { uk: "Нідерланди", en: "The Netherlands" }, courts: ["hague"] },
-  { key: "France", name: { uk: "Франція", en: "France" }, courts: ["strasbourg", "paris"] },
-  { key: "Germany", name: { uk: "Німеччина", en: "Germany" }, courts: ["hamburg"] },
-  { key: "Sweden", name: { uk: "Швеція", en: "Sweden" }, courts: ["stockholm"] },
-  { key: "Finland", name: { uk: "Фінляндія", en: "Finland" }, courts: ["helsinki"] },
-  { key: "Lithuania", name: { uk: "Литва", en: "Lithuania" }, courts: ["vilnius"] },
+export const MAP_COUNTRIES: {
+  key: string;
+  name: Localized;
+  /** "in <this country>" — see the note on `MapCourt.at`. */
+  at: Localized;
+  courts: string[];
+}[] = [
+  {
+    key: "Netherlands",
+    name: { uk: "Нідерланди", en: "The Netherlands" },
+    at: { uk: "в Нідерландах", en: "in the Netherlands" },
+    courts: ["hague"],
+  },
+  {
+    key: "France",
+    name: { uk: "Франція", en: "France" },
+    at: { uk: "у Франції", en: "in France" },
+    courts: ["strasbourg", "paris"],
+  },
+  {
+    key: "Germany",
+    name: { uk: "Німеччина", en: "Germany" },
+    at: { uk: "у Німеччині", en: "in Germany" },
+    courts: ["hamburg"],
+  },
+  {
+    key: "Sweden",
+    name: { uk: "Швеція", en: "Sweden" },
+    at: { uk: "у Швеції", en: "in Sweden" },
+    courts: ["stockholm"],
+  },
+  {
+    key: "Finland",
+    name: { uk: "Фінляндія", en: "Finland" },
+    at: { uk: "у Фінляндії", en: "in Finland" },
+    courts: ["helsinki"],
+  },
+  {
+    key: "Lithuania",
+    name: { uk: "Литва", en: "Lithuania" },
+    at: { uk: "у Литві", en: "in Lithuania" },
+    courts: ["vilnius"],
+  },
 ];
 
 /**
@@ -677,29 +737,34 @@ export const MAP_COUNTRIES: { key: string; name: Localized; courts: string[] }[]
  * the foot of this file checks the two lists are the same length.
  */
 export function seatsList(c: MapCourt, locale: Locale) {
-  /* The state a national court belongs to, for the seats that are one.
+  /* Whether a seat is a state's own court rather than an international one.
 
-     Derived, not written out a third time. A national seat is already a
-     national seat in institutions.ts (`category: "national"`), and the state
-     whose courts these are is already the entry in MAP_COUNTRIES that lists
-     this marker. Repeating either by hand in `seats` would be a fourth place
-     for the same fact to drift.
+     Derived, not written out again: a national seat is already
+     `category: "national"` in institutions.ts. The card groups by this — one
+     heading over the national rows — rather than tagging each row with its
+     state, which is what it did first and which repeated «Нідерланди» in a
+     card already headed НІДЕРЛАНДИ.
 
-     The Hague is why this is per seat rather than per marker: one dot there
-     carries three international courts and one national judiciary, so a
-     marker cannot be "the national one" — only a line in its card can. */
-  const stateOf = (id?: string) => {
-    if (!id) return undefined;
-    if (institutions.find((i) => i.id === id)?.category !== "national") return undefined;
-    const country = MAP_COUNTRIES.find((n) => n.courts.includes(c.key));
-    return country ? pick(country.name, locale) : undefined;
-  };
+     Per seat and not per marker, because The Hague's one dot carries three
+     international courts and the Dutch judiciary at once. */
+  const isNational = (id?: string) =>
+    !!id && institutions.find((i) => i.id === id)?.category === "national";
   return c.seats.map((s) => ({
     id: s.institutionId,
-    abbr: abbrOf(s.abbr, locale),
-    state: stateOf(s.institutionId),
+    abbr: abbrOf(s.abbr, locale) ?? abbrOfInstitution(s.institutionId, locale),
+    national: isNational(s.institutionId),
     name: pick(s.name, locale),
   }));
+}
+
+/* A national seat carries no `abbr` of its own in MAP_COURTS — the marker's
+   own list names the court, not an acronym — but the registry has one for
+   every institution, and the card's first column is empty without it. NL, FI,
+   LT: two letters that say which state's courts these are, which is exactly
+   the thing the grouping heading above them cannot say per row. */
+function abbrOfInstitution(id: string | undefined, locale: Locale) {
+  const inst = id ? institutions.find((i) => i.id === id) : undefined;
+  return inst && inst.category === "national" ? pick(inst.abbr, locale) : undefined;
 }
 
 /**

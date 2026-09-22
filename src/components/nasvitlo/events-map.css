@@ -406,7 +406,18 @@
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--brand-gold-lamp) 70%, transparent)
     var(--brand-night-rule);
-  width: min(300px, calc(100% - 32px));
+  /* 300px until the card became a table. Four columns — abbreviation, name,
+     count, chevron — left «Постійна палата третейського суду» wrapping to
+     two lines in a 300px card, and a wrapped name under a right-aligned
+     number reads as two rows, not one.
+
+     430 is measured, not chosen: the longest court name on this map is the
+     English Dutch row, "The Hague District Court · the Supreme Court", at
+     284px in --t-sm, and the three other tracks and the card's padding take
+     146. Paris's PCA line still wraps and is meant to — it is a sentence
+     about where an arbitration sat, not a court's name. The `calc` floor is
+     unchanged, so a narrow window still gets the card minus its gutters. */
+  width: min(430px, calc(100% - 32px));
   padding: var(--space-3) var(--space-4) var(--space-4);
   background: var(--brand-night-2);
   border: 1px solid var(--brand-night-rule);
@@ -1300,14 +1311,24 @@
   padding: 0;
 }
 .emap-seats li + li {
-  margin-top: var(--space-1);
+  margin-top: var(--space-3);
 }
+/* A row is a grid, not a flex line: four columns — abbreviation, name,
+   count, chevron — and every row in a card takes the same track widths, so
+   the court names start on one edge instead of stepping right by however
+   long the acronym before them was. That stagger is what made the card read
+   as four unrelated lines rather than a table of one place's courts.
+
+   `6ch` on the first track: the longest abbreviation on this map is five
+   characters (ECtHR, ITLOS) and the column is set in mono, where a character
+   is a fixed width. The count column is `auto` rather than fixed, because
+   one card holds 1 and another 12 and a fixed track would centre neither. */
 .emap-seats a,
 /* Not a link: coloured like the prose round it, not like the ways out. */
 .emap-seat-plain {
-  color: var(--brand-muted-dark);
-  display: flex;
-  gap: var(--space-1);
+  display: grid;
+  grid-template-columns: 6ch minmax(0, 1fr) auto auto;
+  gap: 0 var(--space-3);
   align-items: baseline;
   color: var(--brand-gold-pale);
   text-decoration: none;
@@ -1321,36 +1342,83 @@
   font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.04em;
   color: var(--brand-gold-mark);
-  flex: none;
 }
-/* What a national seat carries where an international one carries its
-   abbreviation: the state whose judiciary it is.
-
-   Set in the same mono micro as the abbreviations, so the rows still line up
-   in one column, but muted rather than gold — a national court is not an
-   acronym anyone would recognise, and dressing the state name as one would
-   claim it is. This is the whole distinction between a national court and an
-   international one on this card, and it is a word rather than a glyph
-   because the marker cannot make it: The Hague's one dot holds three
-   international courts and the Dutch judiciary at once. */
-.emap-seat-state {
+/* The national rows' acronym is a state, not a court anyone knows by its
+   initials: NL, FI, LT are there to say whose courts these are, under a
+   heading that has already said they are national. Muted, so the gold in
+   this column keeps meaning "an institution you may recognise". */
+.emap-seats-nat .emap-seat-abbr {
+  color: var(--brand-faint-dark);
+}
+/* The heading over them. It replaced a state name repeated on every national
+   row — in a card already titled НІДЕРЛАНДИ, that was the same word three
+   times over. Said once, and only where there is a national row under it. */
+.emap-seats-group {
+  margin: var(--space-4) 0 var(--space-2);
   font: 500 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--brand-muted-dark);
-  flex: none;
+  color: var(--brand-faint-dark);
 }
 .emap-seat-name {
   font-size: var(--t-sm);
   line-height: 1.4;
+  color: var(--brand-cream);
 }
-
-.emap-caseload {
-  margin: var(--space-2) 0 0;
+/* How much of the archive this one court holds. Tabular figures, so the
+   column is a column and not a ragged edge: 1 beside 12 beside 3. */
+.emap-seat-n {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-faint-dark);
+}
+.emap-seat-go {
+  font-size: var(--t-cap);
+  line-height: 1;
+  color: var(--brand-faint-dark);
+  transition: color var(--dur) var(--ease);
+}
+.emap-seats a:hover .emap-seat-go,
+.emap-seats a:focus-visible .emap-seat-go {
+  color: var(--brand-gold-pale);
+}
+/* The foot: the sum on one side, the way to the whole of it on the other.
+   Ruled off, because it is about the card and not another row in it. */
+.emap-seats-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--brand-night-rule);
+}
+.emap-seats-open {
   font: 500 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--brand-gold-lamp);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.emap-seats-open:hover,
+.emap-seats-open:focus-visible {
+  border-bottom-color: currentColor;
+}
+/* The sum, as a sentence rather than a mono label in capitals. It was set
+   like a system caption — «22 ПРОВАДЖЕННЯ У БІБЛІОТЕЦІ» — which at this
+   length wrapped to two uppercase lines and read as a warning. The figure
+   is the part a reader is after, so the figure is what is lit. */
+.emap-caseload {
+  margin: 0;
+  font-size: var(--t-cap);
+  line-height: 1.4;
   color: var(--brand-muted-dark);
+}
+.emap-caseload strong {
+  font-weight: 500;
+  color: var(--brand-gold-pale);
 }
 
 

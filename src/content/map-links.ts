@@ -138,6 +138,28 @@ export function caseLinksFor(eventKey: string, locale: Locale): MapCaseLink[] {
 }
 
 /** What a court hears, from the registry rather than from the six map sites. */
+/**
+ * The seats of a marker, each with how much of the archive it holds.
+ *
+ * `seatsList` lives in map.ts, next to the markers; the count cannot, because
+ * it is a fact about the registry and map.ts has no business importing the
+ * caseload. So the two are joined here, where both are already in scope, and
+ * every surface takes the joined rows rather than counting again.
+ *
+ * A seat with no institution — Paris holds the PCA as the *venue* of the
+ * Oschadbank arbitration, and the PCA itself sits in The Hague — gets no
+ * count, for the same reason it gets no link: it is a fact about where
+ * something sat, not a court with a caseload.
+ */
+export function seatRows(courtKey: string, locale: Locale) {
+  const court = MAP_COURTS.find((c) => c.key === courtKey);
+  if (!court) throw new Error(`no court "${courtKey}" on the map`);
+  return seatsList(court, locale).map((s) => ({
+    ...s,
+    count: s.id ? registryProceedings.filter((c) => c.institutionId === s.id).length : undefined,
+  }));
+}
+
 export function courtCaseloadFor(courtKey: string, locale: Locale) {
   const court = MAP_COURTS.find((c) => c.key === courtKey);
   const cases = registryProceedings.filter((c) =>
@@ -216,7 +238,12 @@ export function countryPanelsFor(locale: Locale) {
     return {
       key: co.key,
       label: pick(co.name, locale),
-      seatList: seated.flatMap((c) => seatsList(c, locale)),
+      at: pick(co.at, locale),
+      seatList: seated.flatMap((c) => seatRows(c.key, locale)),
+      /* Every institution seated in this country, so the card's way out
+         opens the registry on the same set the card just counted. France
+         holds two markers and four institutions between them. */
+      courtIds: seated.flatMap((c) => c.institutionIds),
       total: seated.reduce((n, c) => n + courtCaseloadFor(c.key, locale).total, 0),
     };
   });

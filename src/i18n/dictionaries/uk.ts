@@ -165,6 +165,12 @@ const uk = {
        template as the genitive plural it read «1 проваджень» on six of the
        nine courts on the map. `plural()` in @/i18n/plural picks the form. */
     caseload: "{n} {w} у бібліотеці",
+    /* The card's foot. `{at}` is the authored locative — «у Гаазі», «в
+       Нідерландах» — because no rule turns the nominative into it; see the
+       note on `MapCourt.at` in content/map.ts. */
+    seatsTotal: "Усього {at}: {n} {w}",
+    seatsNational: "Національні суди",
+    seatsOpen: "Показати в бібліотеці",
     caseloadWord: { one: "провадження", few: "провадження", many: "проваджень" },
     zoomLabel: "Масштаб",
     zoomWide: "Європа",
