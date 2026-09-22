@@ -6,7 +6,6 @@ import { foreignLang, isLocale, type Locale } from "@/i18n/config";
 import { plural } from "@/i18n/plural";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
-import CiteBlock from "@/components/cases/CiteBlock";
 import TermSearch from "@/components/cases/TermSearch";
 import CaseToc from "@/components/cases/CaseToc";
 import ToTop from "@/components/cases/ToTop";
@@ -196,12 +195,6 @@ const T = {
      the label now; the glossary underneath it, which was silently annexed to
      this destination, gets its own entry below. */
   navGlossary: { uk: "Словник", en: "Glossary" },
-  citeH: { uk: "Як цитувати", en: "How to cite" },
-  citeCopy: { uk: "Копіювати", en: "Copy" },
-  citeCopied: { uk: "Скопійовано", en: "Copied" },
-  /* A clipboard write can be refused, and a button that pretends otherwise is
-     worse than one that says so — the text stays selectable either way. */
-  citeFailed: { uk: "Не вдалося — виділіть текст", en: "Blocked — select the text" },
   termsSearch: { uk: "Знайти термін…", en: "Find a term…" },
   termsSearchLabel: { uk: "Пошук у словнику справи", en: "Search this case's terms" },
   termsClear: { uk: "Очистити пошук", en: "Clear search" },
@@ -801,20 +794,6 @@ export default async function CasePage({
     institution: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
     seat: { uk: "Гаага", en: "The Hague" },
   };
-  /* The citation, assembled from what the record already holds.
-
-     Title, parties and the act keep the language of the judgment — that is
-     what a citation carries, and `masthead` is deliberately the source
-     language. The forum and the seat follow the reader, and the permalink is
-     the canonical URL this page already declares. Nothing new is authored. */
-  const citeLines = [
-    masthead.official,
-    `${masthead.parties} · ${masthead.judgment}`,
-    `${pick(forum.institution, locale)}, ${pick(forum.seat, locale)}`,
-    `${siteUrl}/${locale}/cases/${slug}`,
-  ];
-  const citation = citeLines.join(" ").replace(/\s+/g, " ").trim();
-
   const mapForum = {
     key: summary.mapFocus?.forumKey ?? "hague",
     name: forum.seat,
@@ -927,10 +906,44 @@ export default async function CasePage({
 
   const pageSections = [
     { id: "overview", label: pick(T.inShort, locale) },
+    /* The index, second — the design puts what the forum held directly after
+       the summary, before the write-up that explains it. It had no entry at
+       all: the band carried no id, so the one table on the page a reader
+       comes back to was the one thing the contents could not reach. */
+    ...(shows("score") && verdicts.length > 0
+      ? [{ id: "found", label: pick(summary.verdictsHeading ?? T.found, locale) }]
+      : []),
     /* The summary leads now — review: «самері я б можливо перенесла на
        початок і дала відразу після розділу ЯКЩО КОРОТКО. А потім би вже йшли
        вкладки про тлумачення, тимчасові заходи тощо». */
-    { id: "fulltext", label: pick(T.navFulltext, locale) },
+    /* The write-up's own parts, each with its sub-headings under it —
+       «Повний огляд» as one entry was a link to eleven thousand pixels of
+       text with no map of what is in them. The ids are the ones the article
+       stamps as it renders: sec-N per part in order, sub-N per h3 in order,
+       counted the same way here. */
+    ...(() => {
+      let h2n = 0;
+      let h3n = 0;
+      const parts: { id: string; label: string; children?: { id: string; label: string }[] }[] =
+        [];
+      for (const b of body) {
+        if (b.kind === "h2") {
+          parts.push({
+            id: `sec-${h2n++}`,
+            label: b.text.replace(/^(\d{1,2})[.)]\s+/, ""),
+            children: [],
+          });
+        } else if (b.kind === "h3") {
+          const id = `sub-${h3n++}`;
+          if (parts.length > 0) parts[parts.length - 1].children!.push({ id, label: b.text });
+        }
+      }
+      return parts.map((p) => ({
+        id: p.id,
+        label: p.label,
+        children: p.children && p.children.length > 0 ? p.children : undefined,
+      }));
+    })(),
     /* This list is the page's order, and the sticky bar is drawn from it — so
        it moves when the bands move. Rulings and measures now follow the
        dispositif directly; the chronology and the map fall in behind the
@@ -1191,7 +1204,7 @@ export default async function CasePage({
           page's map floating over them. See `.casepage .shell`. */}
       <div className="shell">
         <CaseToc
-          items={sections.map((x) => ({ id: x.id, label: x.label }))}
+          items={sections}
           title={pick(T.onThisPage, locale)}
           ariaLabel={pick(T.navAria, locale)}
         />
@@ -1288,7 +1301,7 @@ export default async function CasePage({
           paper below, which is the rule, and the summary above is no longer
           squeezed between two dark expanses. */}
       {shows("score") && (
-        <section className="score" aria-label={pick(T.found, locale)}>
+        <section className="score" id="found" data-navsec aria-label={pick(T.found, locale)}>
           <div className="rail dash-stack">
             <div className="vpanel">
               <div className="sec-h">
@@ -1413,6 +1426,7 @@ export default async function CasePage({
                 something the text already does. */}
         {(() => {
           let h2i = 0;
+          let h3i = 0;
           /* One set for the whole article, filled as the blocks are walked in
              reading order, so "first occurrence" means first on the page and
              not first in each paragraph. The map callback runs eagerly, here,
@@ -1424,6 +1438,13 @@ export default async function CasePage({
           return body.map((b, i) =>
             b.kind === "h2" ? (
               <PartHead key={i} id={`sec-${h2i++}`} text={b.text} />
+            ) : b.kind === "h3" ? (
+              /* Anchored like the parts, because the contents lists them:
+                 the design nests a write-up's own sub-headings under the
+                 part they belong to. */
+              <h3 key={i} id={`sub-${h3i++}`}>
+                {b.text}
+              </h3>
             ) : (
               <Block
                 key={i}
@@ -1832,21 +1853,14 @@ export default async function CasePage({
             </>
           )}
 
-              {/* The citation, at the foot of the sources rather than under the
-                  masthead. It opened the page for a while, which put an
-                  apparatus block between the title and the first sentence for
-                  every reader, most of whom did not come to cite. A reader who
-                  did arrives here — through the text, past the sources — and
-                  this is the last thing on the page they need. */}
-              <CiteBlock
-                lines={citeLines}
-                locale={locale}
-                citation={citation}
-                label={pick(T.citeH, locale)}
-                copy={pick(T.citeCopy, locale)}
-                copied={pick(T.citeCopied, locale)}
-                failed={pick(T.citeFailed, locale)}
-              />
+              {/* «Як цитувати» is gone — owner's instruction, every page.
+
+                  It was a formatted citation with a copy button at the foot
+                  of the sources. What it produced, a reader can assemble from
+                  what is already on the page: the case name, the forum, the
+                  date of the decision and this page's own address. An
+                  apparatus block that re-states four facts in one order is a
+                  fifth place for them to drift out of agreement. */}
             </article>
           </div>
         </section>
