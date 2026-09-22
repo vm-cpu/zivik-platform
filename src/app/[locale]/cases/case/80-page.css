@@ -44,10 +44,22 @@
 .casepage [data-ground="p"],
 .casepage [data-ground="p2"],
 .casepage .dash,
-.casepage .score {
+.casepage .score,
+.casepage .lede,
+.casepage .refs,
+.casepage .pmeas,
+.casepage .chron,
+.casepage .terms,
+.casepage .neighbours {
   background: transparent;
   color: var(--ink);
+  /* No edge of its own. A band used to be a full-bleed strip and needed a
+     line where one ground ended and the next began; on one canvas that line
+     lands under whatever the section happened to end with — under the
+     summary, a hairline above «Картка справи» that belonged to neither. The
+     rule this page draws is the one under a section's heading. */
   border-bottom: 0;
+  border-top: 0;
 }
 .casepage .dash,
 .casepage .score,
@@ -319,7 +331,7 @@
   grid-template-columns: 118px minmax(0, 1fr) 132px;
   gap: var(--space-4);
   padding: var(--space-2) clamp(14px, 2.4vw, 20px);
-  background: var(--paper2);
+  background: var(--brand-paper-warm-3);
   border: 1px solid var(--prule);
   border-bottom: 0;
   font: 700 var(--t-micro) var(--brand-font-mono);
@@ -338,11 +350,12 @@
     border-top: 1px solid var(--prule);
   }
 }
-/* A row the forum decided against the respondent is the one a reader is
-   looking for, so it is lit rather than merely coloured at one end. */
-.casepage .verdicts li:has(.v-out[data-o="violation"]),
-.casepage .verdicts li:has(.v-out[data-o="convicted"]),
-.casepage .verdicts li:has(.v-out[data-o="granted"]) {
+/* Every row on the page's own paper; the warm tint is the hover state, and
+   only that. A standing highlight on the rows decided against the respondent
+   was mine, not the design's — and it read as a second encoding of what the
+   result column already says in red, on rows the eye had no reason to treat
+   as a different kind of thing. */
+.casepage .verdicts li:hover {
   background: var(--paper2);
 }
 
