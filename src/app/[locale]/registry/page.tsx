@@ -276,10 +276,22 @@ const T = {
      вносимо до неї раніше, ніж встигаємо їх опрацювати» is a process
      described where an outcome was wanted. Two sentences now, each with one
      job — what the marks in the list mean, and what an absence does not
-     mean. */
+     mean.
+
+     The first sentence had the mark the wrong way round, which is the whole
+     reason for this pass. It said «провадження без огляду — вони позначені
+     окремо», and nothing in the list marks a row for lacking a summary: the
+     mark is on the rows that have one — `.reg-drow.is-lit .reg-court .dot`
+     is the lit gold dot, grey on every other row — and «Документ суду»
+     appears on any row with a court document, summarised or not. A reader
+     hunting for a "no summary yet" badge would have found none.
+
+     So it names the signal that is actually there, and the control that
+     acts on it: the gold dot, and the «Матеріали» filter. Checked against
+     the stylesheet and the served page, not against memory. */
   state: {
-    uk: "У списку є провадження без огляду — вони позначені окремо. Бібліотека поповнюється: якщо провадження тут немає, це ще не означає, що його не існує.",
-    en: "Some proceedings in the list have no summary yet — they are marked as such. The library is still growing: if a proceeding is not here, that does not mean it does not exist.",
+    uk: "Огляд написано не до кожного провадження: там, де він готовий, рядок має золоту позначку, а фільтр «Матеріали» лишає в списку тільки такі. Бібліотека ще наповнюється, тож справа може існувати й поки що не бути тут.",
+    en: "Not every proceeding has a summary: where one is ready the row carries a lit gold dot, and the «Materials» filter narrows the list to those. The library is still being filled, so a proceeding can exist and not be here yet.",
   },
 } as const;
 
