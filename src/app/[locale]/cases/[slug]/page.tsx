@@ -1150,6 +1150,36 @@ export default async function CasePage({
     alt++;
   }
 
+  /* Where it was decided and what ground it is about — drawn inside the
+     write-up, directly after the part that describes that ground, rather
+     than as a dark island four bands below it. Part 1 is where the two
+     theatres are named: eastern Ukraine under the ICSFT, Crimea under
+     CERD, which is exactly what the drawing shows.
+
+     `data-lit` puts the same drawing on paper. It was a night band because
+     it stood between paper bands and needed to be its own thing; inside the
+     article it is a figure in a column of text, and a dark slab there reads
+     as an interruption. Every colour it needs is measured — see the light
+     map tokens in globals.css. */
+  const theatreBand =
+    theatres.length > 0 ? (
+      <section
+        className="mapband"
+        id="theatres"
+        data-lit
+        data-navsec
+        aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}
+      >
+        <h2 className="lbl">
+          {pick(
+            summary.theatresHeading ?? (theatres.length > 1 ? T.tracks : T.seatLabel),
+            locale,
+          )}
+        </h2>
+        <TheatreMap theatres={theatres} locale={locale} forum={mapForum} />
+      </section>
+    ) : null;
+
   const pageSections = [
     { id: "overview", label: pick(T.inShort, locale) },
     /* The index, second — the design puts what the forum held directly after
@@ -1190,7 +1220,20 @@ export default async function CasePage({
           }
         }
       }
-      return parts.map((p) => ({
+      /* The map is drawn between part 1 and part 2, so the rail says so —
+         a chip whose position does not match the page sends a reader past
+         the thing they were looking for. */
+      const listed: typeof parts = [];
+      parts.forEach((p, n) => {
+        listed.push(p);
+        if (n === 0 && theatres.length > 0) {
+          listed.push({
+            id: "theatres",
+            label: pick(summary.theatresHeading ?? T.seatLabel, locale),
+          });
+        }
+      });
+      return listed.map((p) => ({
         id: p.id,
         label: p.label,
         children: p.children && p.children.length > 0 ? p.children : undefined,
@@ -1213,17 +1256,6 @@ export default async function CasePage({
         ]
       : []),
     { id: "chronology", label: pick(T.timeline, locale) },
-    /* The map band. It renders on every case that names a theatre and had no
-       entry here at all — see the note on the section itself. Guarded the same
-       way the band is, so the chip never points at nothing. */
-    ...(theatres.length > 0
-      ? [
-          {
-            id: "theatres",
-            label: pick(summary.theatresHeading ?? T.seatLabel, locale),
-          },
-        ]
-      : []),
     ...(glossaryEnabled
       ? [{ id: "glossary", label: pick(T.navGlossary, locale) }]
       : []),
@@ -1717,6 +1749,9 @@ export default async function CasePage({
           for (let i = 0; i < body.length; i++) {
             const b = body[i];
             if (b.kind === "h2") {
+              /* Between part 1 and part 2: part 1 names the two theatres and
+                 the drawing is what they look like. */
+              if (h2i === 1 && theatreBand) out.push(<div key={`map-${i}`}>{theatreBand}</div>);
               out.push(<PartHead key={i} id={`sec-${h2i++}`} text={b.text} />);
               continue;
             }
@@ -2151,27 +2186,6 @@ export default async function CasePage({
       {/* id, data-navsec and a nav entry. It had none of the three: the
           biggest band on the page, and the navigation did not admit it
           existed. */}
-      {theatres.length > 0 && (
-        <section
-          className="mapband"
-          id="theatres"
-          data-navsec
-          aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}
-        >
-          <h2 className="lbl">
-            {pick(
-              summary.theatresHeading ??
-                (theatres.length > 1 ? T.tracks : T.seatLabel),
-              locale,
-            )}
-          </h2>
-          <TheatreMap
-            theatres={theatres}
-            locale={locale}
-            forum={mapForum}
-          />
-        </section>
-      )}
 
       {/* 3 — Reader's guide.
 

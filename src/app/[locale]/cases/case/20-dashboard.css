@@ -533,3 +533,24 @@
 .casepage .ctl-list li[id] {
   scroll-margin-top: calc(var(--anchor-gap) + var(--space-6));
 }
+
+/* ── The same map, on paper ───────────────────────────────────────────────
+   Nothing about the drawing changes: every rule above reads the same four
+   custom properties, and this remaps them. A night palette dropped on paper
+   is not a map — the land goes darker than the ink around it and the lamp
+   gold falls under the floor for a graphical object — so the light values
+   are their own tokens, measured against the night map's ratios in
+   globals.css. The marks take the paper gold, the seat's ring the ink. */
+.casepage .mapband[data-lit] {
+  background: none;
+  color: var(--ink);
+  --brand-map-land: var(--brand-map-land-lit);
+  --brand-map-land-edge: var(--brand-map-land-edge-lit);
+  --brand-map-ua: var(--brand-map-ua-lit);
+  --brand-gold-lamp: var(--brand-gold-ink);
+  --brand-cream: var(--brand-ink);
+  --cream: var(--ink);
+  --muted: var(--ink2);
+  --faint: var(--ink3);
+  --rule: var(--prule);
+}

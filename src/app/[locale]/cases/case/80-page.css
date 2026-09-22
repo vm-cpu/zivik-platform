@@ -1092,3 +1092,17 @@
 .casepage .rule > .rule-p:last-child {
   margin-bottom: 0;
 }
+
+/* The map, drawn inside the reading column rather than as a band of its own:
+   it takes the column's width, not the measure, and its heading keeps the
+   column's edge instead of reaching for the page gutter it no longer sits
+   in. */
+.casepage .read > div > .mapband {
+  max-width: none;
+  padding-block: var(--space-8) var(--space-10);
+}
+.casepage .read .mapband > .lbl {
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: 0;
+}

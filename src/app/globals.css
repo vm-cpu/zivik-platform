@@ -113,6 +113,26 @@
   --brand-map-land-edge: #6f564a; /* the hairline between them */
   --brand-map-ua: #43342c;        /* Ukraine, a shade above its neighbours */
 
+  /* The same drawing on paper.
+     A decision page can want its map inside the reading column rather than
+     as a dark island below it, and a night palette dropped on paper is not
+     a map — the land goes darker than the ink around it and the lamp gold
+     falls under the floor for a graphical object.
+
+     Measured against the dark map's own ratios, so the two read as one
+     drawing at two grounds:
+       land against the page   1.21   (night: 1.25)
+       the border against land 2.21   (night: 2.21)
+       Ukraine against its neighbours 1.25   (night: 1.22)
+     The marks are the paper gold, not the lamp gold: --brand-gold-lamp
+     measures 2.06:1 on this land and 1.64:1 on Ukraine — invisible — while
+     --brand-gold-ink measures 4.47:1 and 3.56:1, over 1.4.11's 3:1 floor,
+     which is what a marker on a map is. The seat's ring takes --brand-ink
+     where the night map takes cream. */
+  --brand-map-land-lit: #e9e5de;
+  --brand-map-land-edge-lit: #a49a8b;
+  --brand-map-ua-lit: #d7cdba;
+
   /* ── Shape & depth ──────────────────────────────────────────────
      The site read as boxy because everything was a 1px hairline
      rectangle. Cards now carry real radii and soft, layered shadows
