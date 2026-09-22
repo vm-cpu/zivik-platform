@@ -442,3 +442,159 @@
   line-height: 1.7;
   color: var(--ink2);
 }
+
+/* ── Chronology ──────────────────────────────────────────────────────────
+   The instrument already had the design's two parts: a rail of years with a
+   dot per event, and the events as a list under it. What it did not have was
+   the design's manners — the rail was a dark strip with coloured beads, the
+   list a stack of blocks. Here it is a hairline scale over a list of pairs.
+
+   Nothing about the markup or the filtering changes; this is the same
+   instrument in the page's own voice. */
+.casepage .ctl-rail {
+  position: relative;
+  height: 44px;
+  margin-bottom: var(--space-6);
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.casepage .ctl-rail-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 5px;
+  height: 1px;
+  background: var(--prule);
+}
+.casepage .ctl-dot {
+  position: absolute;
+  top: 0;
+  width: 11px;
+  height: 11px;
+  margin-left: -5px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand-gold-ink);
+  cursor: pointer;
+  padding: 0;
+}
+.casepage .ctl-dot[data-dim="yes"] {
+  background: var(--prule);
+}
+.casepage .ctl-dot[data-on="yes"] {
+  background: var(--pred);
+}
+.casepage .ctl-tick {
+  position: absolute;
+  top: 22px;
+  transform: translateX(-50%);
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--ink3);
+}
+.casepage .ctl-tick[data-edge="start"] {
+  transform: none;
+}
+.casepage .ctl-tick[data-edge="end"] {
+  transform: translateX(-100%);
+}
+
+/* The events, as dated pairs. */
+.casepage .ctl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--brand-rule-warm-soft);
+}
+.casepage .ctl-list > li {
+  border-bottom: 1px solid var(--brand-rule-warm-soft);
+}
+.casepage .ctl-row {
+  display: grid;
+  grid-template-columns: clamp(96px, 14vw, 150px) minmax(0, 1fr);
+  gap: clamp(12px, 2vw, 20px);
+  align-items: baseline;
+  width: 100%;
+  padding: var(--space-3) 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+}
+.casepage .ctl-date {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--pgold);
+}
+/* Context is the world the case happened in, not a step in it: the date is
+   quiet and the line is set in the display face's italic, which is how this
+   page has always marked something quoted from outside the proceeding. */
+.casepage .ctl-list > li[data-kind="context"] .ctl-date {
+  color: var(--ink3);
+}
+.casepage .ctl-list > li[data-kind="context"] .ctl-label {
+  font-family: var(--brand-font-display-italic), serif;
+  font-style: italic;
+  color: var(--ink2);
+}
+.casepage .ctl-label {
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.45;
+  color: var(--ink);
+}
+@media (max-width: 700px) {
+  .casepage .ctl-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3px;
+  }
+}
+
+/* ── Related decisions ───────────────────────────────────────────────────
+   Cards, each closed at the foot by a red rule: the forum in gold micro,
+   the case in the display face, the detail under it. They were rows in a
+   grid with no edges of their own — a set of links a reader had to read to
+   count. */
+.casepage .nb-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: clamp(12px, 2vw, 18px);
+}
+.casepage .nb-grid > li > a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  height: 100%;
+  background: var(--card);
+  border: 1px solid var(--prule);
+  border-bottom: 3px solid var(--pred);
+  padding: var(--space-5) clamp(16px, 2.4vw, 22px);
+  text-decoration: none;
+  transition: border-color var(--dur) var(--ease);
+}
+.casepage .nb-grid > li > a:hover {
+  border-color: var(--brand-gold-mark);
+  border-bottom-color: var(--pred);
+}
+.casepage .nb-forum {
+  font: 700 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pgold);
+}
+.casepage .nb-grid > li > a b {
+  font-family: var(--brand-font-display), serif;
+  font-weight: 700;
+  font-size: clamp(16px, 1.8vw, 20px);
+  line-height: 1.3;
+  color: var(--ink);
+}
+.casepage .nb-note {
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink2);
+}

@@ -1922,7 +1922,9 @@ export default async function CasePage({
       {shows("related") && related.length > 0 && (
         <section className="neighbours" data-ground={ground["neighbours"]} id="related" data-navsec aria-label={pick(T.relatedH, locale)}>
           <div className="rail">
-            <h2 className="lbl lbl-onpaper">{pick(T.relatedH, locale)}</h2>
+            <div className="sec-h">
+              <h2>{pick(T.relatedH, locale)}</h2>
+            </div>
             <ul className="nb-grid">
               {related.map((r, i) => {
                 /* The note is "court · detail"; the court leads the card so
