@@ -369,9 +369,9 @@
   font: 700 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--ink3);
   padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--prule);
   margin-bottom: var(--space-3);
 }
 .casepage .toc-rail nav,
@@ -393,11 +393,11 @@
   box-shadow: inset 0 0 0 0 var(--brand-gold-mark);
 }
 .casepage .toc-a:hover {
-  background: var(--bg-2);
+  background: var(--paper2);
   color: var(--ink);
 }
 .casepage .toc-a[data-on="yes"] {
-  background: var(--bg-2);
+  background: var(--paper2);
   box-shadow: inset 2px 0 0 0 var(--brand-gold-mark);
   color: var(--ink);
   font-weight: 600;
@@ -413,14 +413,14 @@
   top: 0;
   bottom: 13px;
   width: 1px;
-  background: var(--rule);
+  background: var(--prule);
 }
 .casepage .toc-s {
   display: block;
   position: relative;
   font: 500 var(--t-cap) var(--brand-font-body), sans-serif;
   line-height: 1.4;
-  color: var(--faint);
+  color: var(--ink3);
   text-decoration: none;
   padding: var(--space-2) var(--space-3);
 }
@@ -432,14 +432,14 @@
   top: 13px;
   width: 10px;
   height: 1px;
-  background: var(--rule);
+  background: var(--prule);
 }
 .casepage .toc-s:hover {
-  background: var(--bg-2);
+  background: var(--paper2);
   color: var(--ink);
 }
 .casepage .toc-s[data-on="yes"] {
-  background: var(--bg-2);
+  background: var(--paper2);
   color: var(--ink);
   font-weight: 600;
 }
@@ -451,8 +451,8 @@
 .casepage .toc-fold {
   display: block;
   margin-bottom: clamp(24px, 3.5vw, 34px);
-  border: 1px solid var(--rule);
-  background: var(--bg-2);
+  border: 1px solid var(--prule);
+  background: var(--paper2);
 }
 @media (min-width: 1000px) {
   .casepage .toc-fold {
@@ -468,7 +468,7 @@
   font: 700 var(--t-micro) var(--brand-font-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--faint);
+  color: var(--ink3);
   cursor: pointer;
   list-style: none;
 }
@@ -489,7 +489,7 @@
   padding: var(--space-2) var(--space-2) var(--space-3);
   max-height: min(62vh, 520px);
   overflow-y: auto;
-  background: var(--bg);
+  background: var(--paper);
 }
 /* Touch targets, where touch is what this is for. */
 @media (max-width: 999px) {

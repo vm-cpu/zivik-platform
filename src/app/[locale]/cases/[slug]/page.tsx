@@ -98,6 +98,11 @@ const T = {
   inShort: { uk: "Якщо коротко", en: "In short" },
   whyMatters: { uk: "Чому це важливо", en: "Why it matters" },
   onThisPage: { uk: "На цій сторінці", en: "On this page" },
+  /* The index's column heads. Named for what each column holds: the provision
+     the claim was made under, the claim, and what the forum did with it. */
+  ixArticle: { uk: "Стаття", en: "Article" },
+  ixClaim: { uk: "Вимога", en: "Claim" },
+  ixResult: { uk: "Результат", en: "Result" },
   progress: { uk: "Прогрес читання", en: "Reading progress" },
   glossaryH: { uk: "Словник", en: "Glossary" },
   relatedH: { uk: "Пов'язані рішення", en: "Related decisions" },
@@ -1272,6 +1277,16 @@ export default async function CasePage({
                 <span className="sec-sum" data-of={decidedKind}>
                   <b>{decided}</b> {decidedLabel} {verdicts.length}
                 </span>
+              </div>
+              {/* Column heads. Three tracks of very different content — a
+                  citation, a sentence and a verdict — and without them the
+                  first row has to teach the reader what each one is. Hidden
+                  where the columns are, below 700px, because there they are
+                  heads of nothing. */}
+              <div className="ix-head" aria-hidden="true">
+                <span>{pick(T.ixArticle, locale)}</span>
+                <span>{pick(T.ixClaim, locale)}</span>
+                <span>{pick(T.ixResult, locale)}</span>
               </div>
               <VerdictMatrix
                 rows={verdicts.map((v, i) => {
