@@ -87,7 +87,9 @@
      than the 66 this page was set at, which is the textbook optimum and which
      the owner found cramped in practice — the prose is leaded at 1.65, and
      generous leading is what buys a long line back. One number, one page. */
-  --col: 672px;
+  /* Was a flat 672px. Inside a 1180px rail that left 508px of paper doing
+     nothing beside every paragraph on the page. See --prose-max. */
+  --col: min(100%, var(--prose-max));
   background: var(--paper);
   border-top: 1px solid var(--brand-seam);
 }

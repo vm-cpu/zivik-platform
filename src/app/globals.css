@@ -512,6 +512,20 @@ textarea:disabled {
    ========================================================================== */
 :root {
   --measure-page: 1180px;
+  /* Where a column of running prose stops.
+
+     The rule, learned on the decision page: text takes the column it is in
+     and stops at this, rather than being capped at a fixed number smaller
+     than its own column. A fixed cap does not move when the column grows, so
+     the page ends up with a band of text down the left and a field of empty
+     paper down the right — the reader reads a third of the width the page
+     set aside for them.
+
+     820px is about 95 characters of Fira Sans at 16px: the top of the
+     comfortable band rather than the middle of it, which is the right end to
+     be at on a page that is mostly one column. `min(100%, …)` is the whole
+     rule — take the column, stop here. */
+  --prose-max: 820px;
 }
 .nsv-root {
   --page-gutter: var(--space-7);

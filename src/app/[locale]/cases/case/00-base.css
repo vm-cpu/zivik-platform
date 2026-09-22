@@ -111,7 +111,7 @@
      enough to the 80-character argument that the argument survives: at 16px
      it is about 95 characters, the top of the comfortable band rather than
      the middle of it. */
-  --prose: min(100%, 820px);
+  --prose: min(100%, var(--prose-max));
   /* The sticky bar of chips this measured is gone — the page's map is a
      column beside the text now (see `.casepage .shell`). What is left is the
      gap an anchored section keeps from the top of the viewport, which is what

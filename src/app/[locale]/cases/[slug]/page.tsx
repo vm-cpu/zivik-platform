@@ -703,7 +703,13 @@ function Block({
              sentence the list was, not to the item. Nothing else is touched:
              the words, their order and the author's own semicolons stand. */
           .map((x, i, a) => (i === a.length - 1 ? x.replace(/^(та|і|й|and)\s+/i, "") : x))
-          .filter(Boolean);
+          .filter(Boolean)
+          /* The semicolons go back on. Setting the items as a list does not
+             make them sentence fragments — they are still the clauses of the
+             sentence the paragraph is, and the design keeps the author's
+             punctuation visible; the last item already carries the full stop
+             the source ended on. */
+          .map((x, i, a) => (i === a.length - 1 ? x : `${x};`));
         if (items.length >= 3) {
           return (
             <div className="listed">

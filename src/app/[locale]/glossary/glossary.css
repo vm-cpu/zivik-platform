@@ -333,7 +333,7 @@
    measure can run past what continuous prose wants. */
 .gl-def {
   margin: 0;
-  max-width: 78ch;
+  max-width: min(100%, var(--prose-max));
   font-size: var(--t-body);
   line-height: 1.55;
   color: var(--ink2);

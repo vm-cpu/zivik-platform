@@ -24,7 +24,9 @@
   /* Reading measure, not page width: 680px of prose at 16px is the 60–70
      characters the design contract asks for. The cap goes on the content and
      the gutter is added on top, the same way .casepage .rail does it. */
-  --measure: 680px;
+  /* Was a flat 680px in a 1180px rail — a 500px hole down the right of
+     every terms and privacy page. See --prose-max. */
+  --measure: min(100%, var(--prose-max));
   --gutter: clamp(24px, 5vw, 72px);
 
   background: var(--paper);
