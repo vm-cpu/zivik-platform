@@ -2169,9 +2169,6 @@ export default async function CasePage({
                   </div>,
                 );
               }
-              out.push(
-                <></>,
-              );
               continue;
             }
             if (b.kind === "note") {
