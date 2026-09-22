@@ -868,13 +868,6 @@
    subject, the chip says how it went, and this is what was actually
    required. It comes from the provisional-measures band, which said the
    same three things as this part of the write-up and no longer renders. */
-.casepage .h4-measure {
-  flex-basis: 100%;
-  margin-top: var(--space-1);
-  font: 500 var(--t-cap) var(--brand-font-mono);
-  letter-spacing: 0.02em;
-  color: var(--ink3);
-}
 .casepage .h4-row h4 {
   margin-bottom: 0;
 }
@@ -1206,4 +1199,56 @@
 .casepage .rule .els li::marker {
   font: 500 var(--t-cap) var(--brand-font-mono);
   color: var(--ink3);
+}
+
+/* ── Fewer edges ──────────────────────────────────────────────────────────
+   Owner: «трохи намішано». One limb of the Order had four different left
+   edges stacked inside it — the pair's own border, the gold edge that says
+   the Court is speaking, the rule down each quotation, and the gold edge on
+   the note underneath — and four kinds of caption over them. Three of the
+   four said the same thing in different ways.
+
+   A quotation inside the Court's half does not draw its own rule: the box
+   it sits in has already said whose words these are, and a rule inside a
+   rule is a second voice where there is one. It keeps the reading face, the
+   italic and its paragraph number, which is what tells a reader it is
+   quoted.
+
+   The note keeps its edge but gives up the gold. Gold on this page means
+   the forum is speaking; the note is the write-up speaking about what the
+   forum did, which is the one thing gold must not say. */
+.casepage .rule > .qt,
+.casepage .claim > .qt {
+  border-left: 0;
+  padding-left: 0;
+}
+.casepage .read > .nb {
+  border-left-color: var(--prule);
+}
+
+/* The order a limb was under: the first turn, in the exchange's own
+   vocabulary, rather than a mono line floating between the heading and the
+   box it belonged to. */
+.casepage .pair.ordered {
+  margin-bottom: calc(var(--space-5) * -1 + 1px);
+}
+.casepage .ordered .claim {
+  background: var(--paper2);
+}
+
+/* ── Fewer stripes ────────────────────────────────────────────────────────
+   Owner: «забагато всяких смужок».
+
+   The contents rail drew a 10px tick beside every nested entry — four more
+   hairlines on a page that already rules every section head, every row of
+   the chronology and every line of the sources. The indent and the group
+   say the same thing, and they say it without a line.
+
+   A list stops at its last row rather than under it. A rule between rows
+   separates them; a rule after the last one separates it from nothing, and
+   is why the sources and the chronology each ended on a stripe that read as
+   the start of something that was not there. */
+.casepage .sources li:last-child,
+.casepage .ctl-row:last-child {
+  border-bottom: 0;
 }

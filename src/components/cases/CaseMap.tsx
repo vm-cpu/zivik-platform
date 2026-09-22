@@ -351,7 +351,12 @@ export default function CaseMap({
         ))}
         {/* That the marks answer at all. One line, and only where there is
             more than one thing to tell apart. */}
-        {theatres.length > 1 && <p className="lg-how">{labels.pick}</p>}
+        {/* The «press a mark» line is gone. It was an instruction for
+            something the marks already do — they are buttons, they take a
+            hover and a focus ring, and a reader who does not press them
+            loses nothing: the key says what each one is in words. A caption
+            that teaches an optional interaction is a caption the reader
+            has to read before deciding they did not need it. */}
       </div>
     </div>
   );

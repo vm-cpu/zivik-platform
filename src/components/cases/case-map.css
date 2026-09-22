@@ -191,12 +191,6 @@
 
 /* That the marks answer at all — one line, and only where there is more than
    one thing to tell apart. */
-.casepage .map-legend .lg-how {
-  flex: 1 0 100%;
-  margin: var(--space-2) 0 0;
-  font: 400 var(--t-cap) / 1.5 var(--brand-font-body);
-  color: var(--brand-faint-dark);
-}
 
 @media (prefers-reduced-motion: reduce) {
   .casepage .mk-zone .zone,

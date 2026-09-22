@@ -129,23 +129,24 @@
      --brand-gold-ink measures 4.47:1 and 3.56:1, over 1.4.11's 3:1 floor,
      which is what a marker on a map is. The seat's ring takes --brand-ink
      where the night map takes cream. */
-  --brand-map-land-lit: #dcd6cc;
-  /* The frontier hairline keeps the brown-red the night map drew it in —
-     the same colour doing the same job, which is the point of reusing it
-     rather than picking a new grey. 3.03:1 on the light land, where the
-     night map's own edge measured 2.21 on its ground. */
+  /* All four are the same two colours at four strengths over the same warm
+     page, which is what makes them sit together: the land, the sea and the
+     frontier are #6f564a — the brown-red the night map was drawn in — at
+     20%, 6% and full, and Ukraine is the lamp's gold at 22%, because it is
+     the one thing on this drawing that is lit rather than drawn.
+
+     Mixed over --brand-paper-warm-3 rather than over the page. Over the
+     neutral paper the same mixes came out grey: at 20% the red-blue spread
+     was 9 points and the continent read as cold against a warm article.
+     Over the warm ground it is 18, and the map belongs to the page.
+
+     land against the sea   1.23   (night: land against sea 1.25)
+     Ukraine against land   1.15   (night: 1.22)
+     frontier against land  4.62   (night: 2.21) */
+  --brand-map-land-lit: #ddd4cb;
   --brand-map-land-edge-lit: #6f564a;
-  /* The sea. A wash of that same brown-red over the page, so the drawing is
-     a field with an edge rather than land cut out of the paper — and so the
-     band reads as the map it replaced rather than as a gap in the article. */
-  --brand-map-sea-lit: #f6f2ec;
-  /* Ukraine is LIT, so on paper it is warmer and lighter than its
-     neighbours rather than darker: a wash of the lamp's own gold over the
-     page. It sits 1.17:1 above the land, which is the night map's own step
-     (1.22), and the land in turn stepped down to keep it — the two
-     luminances were converging at 1.02 and the country was disappearing
-     into the continent. */
-  --brand-map-ua-lit: #f2e6d0;
+  --brand-map-sea-lit: #f0ebe1;
+  --brand-map-ua-lit: #f1e2c8;
 
   /* ── Shape & depth ──────────────────────────────────────────────
      The site read as boxy because everything was a 1px hairline

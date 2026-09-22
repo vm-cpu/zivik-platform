@@ -111,6 +111,9 @@ const T = {
      «стверджує»: the argument was made, the Court has since answered it. */
   claimed: { uk: "Сторона твердила", en: "The party argued" },
   courtPosition: { uk: "Позиція Суду", en: "The Court's position" },
+  /* The measure a limb of an order required, set beside the argument and
+     the answer as the third thing in the exchange. */
+  ordered: { uk: "Наказано", en: "Ordered" },
   /* The index's column heads. Named for what each column holds: the provision
      the claim was made under, the claim, and what the forum did with it. */
   /* «Підстава», not «Стаття»: the column holds the instrument or the order a
@@ -583,9 +586,23 @@ function Findings({
   return (
     <div className="findings">
       {parts.map((part, n) => {
-        const posAt = part.body.findIndex((l) => POS.test(l));
-        const claim = posAt === -1 ? part.body : part.body.slice(0, posAt);
-        const position = posAt === -1 ? [] : part.body.slice(posAt);
+        /* An exchange, not a seam. Most findings are argued once and
+           answered once, but «Правоохоронні заходи» is argued, answered,
+           argued again and answered four times over, and taking the first
+           marker as a cut would have put Ukraine's own third paragraph
+           inside the Court's column. So the lines are walked and every
+           change of voice opens a block: the same rule gives the ordinary
+           finding exactly what it had, and gives this one the back-and-
+           forth it is. */
+        const turns: { court: boolean; lines: string[] }[] = [];
+        for (const l of part.body) {
+          const court = POS.test(l);
+          if (turns.length === 0 || turns[turns.length - 1].court !== court) {
+            turns.push({ court, lines: [] });
+          }
+          turns[turns.length - 1].lines.push(l.replace(POS, ""));
+        }
+        const spoken = turns.some((t) => t.court);
         const outcome = outcomes?.[n];
         return (
           <div className="finding" key={n}>
@@ -605,28 +622,28 @@ function Findings({
                 and out of each other, and cutting them in two would put
                 sentences in a column that does not own them. One column,
                 and the heading and its answer above it. */}
-            {position.length === 0 ? (
-              claim.map((l, i) => (
+            {!spoken ? (
+              /* Nothing marks where the Court starts: prose, as written. */
+              part.body.map((l, i) => (
                 <p className="body" key={i}>
                   {mark(l)}
                 </p>
               ))
             ) : (
               <div className="pair pair-turns">
-                {claim.length > 0 && (
-                  <div className="claim">
-                    <div className="lbl-c">{claimLabel}</div>
-                    {claim.map((l, i) => (
-                      <p key={i}>{mark(l)}</p>
+                {turns.map((t, i) => (
+                  <div className={t.court ? "rule" : "claim"} key={i}>
+                    {/* The caption only where the voice changes to it a
+                        first time — a four-turn exchange does not need
+                        «Позиція Суду» printed over every answer. */}
+                    {turns.findIndex((x) => x.court === t.court) === i && (
+                      <div className="lbl-c">{t.court ? positionLabel : claimLabel}</div>
+                    )}
+                    {t.lines.map((l, k) => (
+                      <BoxPara key={k} text={l} mark={mark} />
                     ))}
                   </div>
-                )}
-                <div className="rule">
-                  <div className="lbl-c">{positionLabel}</div>
-                  {position.map((l, i) => (
-                    <p key={i}>{mark(l.replace(POS, ""))}</p>
-                  ))}
-                </div>
+                ))}
               </div>
             )}
           </div>
@@ -770,9 +787,35 @@ function takeQuotation(
 const ELEMENTS =
   /^([\s\S]*?:)\s*(?:по-перше|first(?:ly)?)[,\s]\s*([\s\S]+?)[;.]?\s*(?:і\s+|and\s+)?(?:по-друге|second(?:ly)?)[,\s]\s*([\s\S]+)$/i;
 
+/* A paragraph inside a box that opens by naming what it is about —
+   «Доступ до освіти українською мовою: …». Two of the Court's paragraphs on
+   education do this, and run four lines each, so the reader meets two
+   findings in one column with the only thing telling them apart buried in
+   the first six words.
+
+   Scoped to the inside of a box and applied after the voice marker comes
+   off, which is what keeps it honest: measured over all 806 lines in the
+   archive the shape matches 58 times, and all but a handful of those are
+   the structural markers this page has already consumed by the time the
+   text gets here. What is left is labels. */
+const BOX_LEAD = /^([^:»"”]{6,48}):\s+(\S[\s\S]+)$/;
+
+function BoxPara({ text, mark }: { text: string; mark: (s: string) => React.ReactNode }) {
+  const m = BOX_LEAD.exec(text);
+  if (m && m[1].split(/\s+/).length <= 6 && !/^[«"“]/.test(m[2])) {
+    return (
+      <>
+        <div className="lbl-c box-lead">{m[1]}</div>
+        <p>{mark(m[2])}</p>
+      </>
+    );
+  }
+  return <p>{mark(text)}</p>;
+}
+
 function HoldingText({ text, mark }: { text: string; mark: (s: string) => React.ReactNode }) {
   const m = ELEMENTS.exec(text);
-  if (!m) return <p>{mark(text)}</p>;
+  if (!m) return <BoxPara text={text} mark={mark} />;
   return (
     <>
       <p>{mark(m[1])}</p>
@@ -1994,9 +2037,23 @@ export default async function CasePage({
                   <span className="v-out h4-out" data-o={b.outcome}>
                     {pick(OUTCOME_LABEL[b.outcome], locale)}
                   </span>
-                  {/* What this limb required, before what happened to it. */}
-                  {b.measure && <span className="h4-measure">{b.measure}</span>}
                 </div>,
+              );
+              /* What this limb required, as the first turn of the exchange:
+                 ordered, argued, answered. It was a line of its own between
+                 the heading and the box, belonging to neither. */
+              if (b.measure) {
+                out.push(
+                  <div className="pair pair-turns ordered" key={`m-${i}`}>
+                    <div className="claim">
+                      <div className="lbl-c">{pick(T.ordered, locale)}</div>
+                      <p>{b.measure}</p>
+                    </div>
+                  </div>,
+                );
+              }
+              out.push(
+                <></>,
               );
               continue;
             }
