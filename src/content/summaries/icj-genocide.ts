@@ -48,6 +48,34 @@ import verbatimUk from "./icj-genocide.uk.json";
  * declaration, its (c) the use of force, its (d) the recognition of the
  * “republics”. The dispositif rules on § 178, so the verdict matrix below quotes
  * § 178. The verbatim itself is left exactly as ingested.
+ *
+ * How the write-up is blocked, and why. The prose arrived as 48 blocks of
+ * which 42 were an undifferentiated `p`, so the page drew forty-two identical
+ * paragraphs and a reader had no way to see whose voice any of them was — and
+ * on this decision that is the whole page: `bands: "four"` hides the objection
+ * ledger, the verdict matrix and the interpretations, so the write-up carries
+ * the case alone. The pass that fixed it changed NOT ONE CHARACTER of the
+ * text; it only said what each block is, and joined two runs the author had
+ * already written as one list. In reading order:
+ *
+ *   • the Court's answer to the whole case (block 1), its holding on
+ *     jurisdiction (15-17), its reading of Article IX (19) and its disposal of
+ *     the two aspects (24-25) are `position` — the Court speaking;
+ *   • «Тобто, подаючи позовну заяву…» (7) and the closing paragraph on what
+ *     makes this the first false-genocide case (35) are `note` — the write-up
+ *     speaking about the Court, which was set exactly like the Court's own;
+ *   • the two aspects of the dispute (21, 23) are `claim`, so each is paired
+ *     with the Court's answer beside it — the § 38 quotation for the first,
+ *     the holding for the second;
+ *   • the Memorial's requests (a)-(f) are one `findings` block and Russia's
+ *     six objections one `p`, each joined at the author's own paragraph breaks
+ *     so the page sets them as the lists they already are rather than as
+ *     thirteen loose paragraphs.
+ *
+ * Nothing here interprets: every seam is one the author drew. The one thing
+ * the data cannot yet ask for is a proper ordered list on the (a)-(f) and
+ * (1)-(6) runs — the renderer's enumerator rule knows «1.» and «–» but not
+ * «(1)» or «(a)», which is how the ICJ letters its submissions.
  */
 export const icjGenocide: DecisionSummary = {
   ...(verbatim as {
@@ -665,7 +693,7 @@ export const icjGenocide: DecisionSummary = {
      dispositif (4) — and then found it had no power over them: "submissions
      (c) and (d) in paragraph 178 of Ukraine's Memorial do not fall within the
      jurisdiction of the Court and that the Court may not deal with them on the
-     merits" (§ 149, closing sentence; the same sentence is block 46 of the
+     merits" (§ 149, closing sentence; the same sentence is block 34 of the
      verbatim). `not-decided` is the union member for that, and it leaves the
      scorecard untouched: the count line reads off `granted`, which is still
      submission (b) alone — "1 вимогу задоволено з 3".
