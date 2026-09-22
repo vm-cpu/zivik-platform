@@ -922,3 +922,23 @@
 .casepage .claim > .qt:last-child {
   margin-bottom: 0;
 }
+
+/* ── One rule under a section head ────────────────────────────────────────
+   Nothing directly under a section head draws its own top rule, because the
+   head already drew one. Both lines were right on their own: `.sources` and
+   `.findings` open with a hairline because a list of rows needs an edge at
+   the top as well as between the rows, and that was the edge — back when the
+   heading above them was a bare h2 with nothing under it. The head draws its
+   own now, so the two stack, four pixels apart, and read as a mistake.
+
+   The same fault as the `border-top` that was still on `.read h2`: a rule
+   attached to a thing on the assumption of what would sit above it. Stated
+   once here, against the head, which is the thing that knows.
+
+   Checked against what actually sits there: across the 84 built pages the
+   element directly after a section head is one of seventeen, and none of
+   them draws a top edge that means anything — no warrant's gold bar, no
+   instrument's track. */
+.casepage .sec-h + * {
+  border-top: 0;
+}
