@@ -3,7 +3,7 @@ import type { Partner } from "./types";
 /**
  * Partners — organisations the project works *with*.
  *
- * The university, its Faculty of Law and the Louis B. Sohn Research Centre
+ * The university, its Faculty of Law and the Louis Sohn Research Centre
  * were listed here and have been removed: they run the archive, they are not
  * partners of it. They are named where they belong — in the footer, on the
  * about page and as the controller in the legal pages — and listing them

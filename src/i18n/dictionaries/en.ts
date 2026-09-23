@@ -45,7 +45,7 @@ const en: Dictionary = {
   },
   hero: {
     credit: "A project of",
-    creditCentre: "the Louis B. Sohn Research Centre",
+    creditCentre: "the Louis Sohn Research Centre",
     creditFaculty: "UCU Faculty of Law",
     lead: "The Library of Accountability and Justice for Ukraine — lighting the legal road Ukraine is walking towards justice",
     ctaRegistry: "Library of decisions",
@@ -178,7 +178,7 @@ const en: Dictionary = {
   footer: {
     tagline:
       "A library of international court decisions on Russia's war against Ukraine. We shed light on what they say.",
-    org: "The Louis B. Sohn Research Centre",
+    org: "The Louis Sohn Research Centre",
     faculty: "UCU Faculty of Law",
     colArchive: "Library",
     colCenter: "Centre",
@@ -193,7 +193,7 @@ const en: Dictionary = {
     /* "Svientsitskoho" is the transliteration content/legal.ts already
        uses; the two must not spell the same street two ways. */
     address: "17 Svientsitskoho St., Lviv, 79011",
-    rights: "© 2026 the Louis B. Sohn Research Centre, UCU. Materials — CC BY 4.0.",
+    rights: "© 2026 the Louis Sohn Research Centre, UCU. Materials — CC BY 4.0.",
     privacy: "Privacy policy",
     terms: "Terms of use",
   },
