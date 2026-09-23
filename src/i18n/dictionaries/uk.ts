@@ -333,11 +333,11 @@ const uk = {
     openHeading: "Бібліотека росте разом з тими, хто її підтримує",
     openText:
       "Ми шукаємо інституції, готові працювати над доступністю міжнародного правосуддя для України.",
-    /* What a partnership could be, so the ask is not an abstraction. Four
+    /* What a partnership could be, so the ask is not an abstraction. Three
        plain nouns, not links: there is no page behind any of them, and a
        control that goes nowhere teaches the reader to distrust the ones that
        do. The one thing to press is the letter. */
-    openWays: ["Дослідження", "Переклади", "Освітні події", "Фінансова підтримка"],
+    openWays: ["Дослідження", "Освітні події", "Фінансова підтримка"],
     openCta: "Написати нам",
   },
   footer: {

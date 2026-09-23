@@ -174,7 +174,7 @@ const en: Dictionary = {
     openHeading: "The library grows with those who support it",
     openText:
       "We are looking for institutions ready to work on the accessibility of international justice for Ukraine.",
-    openWays: ["Research", "Translation", "Educational events", "Financial support"],
+    openWays: ["Research", "Educational events", "Financial support"],
     openCta: "Write to us",
   },
   footer: {
