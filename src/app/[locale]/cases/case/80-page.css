@@ -1636,12 +1636,17 @@
   align-items: flex-start;
   gap: 3px;
 }
-/* The date does not wrap. The column asks `max-content` how wide the
-   ground needs to be, and a date allowed to break answers with the width
-   of its longest word — so the column stayed at its 118px floor and every
-   date wrapped to two lines inside it. */
+/* Підстава переноситься. Заборона на перенос писалася тоді, коли колонка
+   питала в `max-content`, якої ширини їй бути: дата, якій дозволено
+   ламатися, відповідала шириною найдовшого слова, і колонка лишалася на
+   своїй підлозі, а дата в ній ламалася надвоє. Відтоді колонка стала
+   фіксованою — 140 пікселів, — і заборона перетворилася на свою
+   протилежність: «Вирок 14 березня 2025» має 173 пікселі, не має куди
+   перенестися й заходить на сусідню колонку з вимогою. Власниця: «щоб
+   текст не налазив на іншу колонку». */
 .casepage .v-ground .v-track {
-  white-space: nowrap;
+  white-space: normal;
+  text-wrap: pretty;
 }
 .casepage .v-stage {
   font: 600 var(--t-micro) var(--brand-font-body), sans-serif;
