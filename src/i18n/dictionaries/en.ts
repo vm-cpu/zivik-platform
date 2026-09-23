@@ -153,7 +153,6 @@ const en: Dictionary = {
       verdict: "Verdict",
       liability: "Liability established",
       warrant: "Warrant",
-      order: "Procedural orders",
       upheld: "Arbitration upheld",
       procedural: "Procedural decisions",
     },

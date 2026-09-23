@@ -297,13 +297,6 @@ const uk = {
       verdict: "Вирок",
       liability: "Відповідальність",
       warrant: "Ордер",
-      /* «Ордер» is an arrest warrant and belongs to the line above. A
-         procedural act of a court or tribunal is «наказ» — the wording every
-         summary on the site already uses for an ICJ order (icj-cerd-icsft,
-         icj-genocide) and for an arbitral one («Процедурний наказ № 1»,
-         oschadbank). This chip is what `outcome: "order"` renders, and the row
-         that carries it — icj-3, ICJ GL 201 — is an ICJ docket. */
-      order: "Процедурні накази",
       upheld: "Арбітраж залишено",
       procedural: "Процедурні рішення",
     },

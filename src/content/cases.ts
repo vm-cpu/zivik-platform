@@ -83,7 +83,7 @@ export const registryCases: RegistryCase[] = [
     nameUk: "Апеляція на рішення Ради ICAO від 30 червня 2025 (РФ проти Австралії та Нідерландів)",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     stage: "preliminary",
-    outcome: "order",
+    outcome: "procedural",
     /* «Накази», not «ордери» — the same confusion as on icj-2 above: this is
        an ICJ docket, and the acts on it are procedural orders. */
     status: { uk: "Попередній етап, рішення нема, лише процедурні накази", en: "Preliminary stage; procedural orders only" },
