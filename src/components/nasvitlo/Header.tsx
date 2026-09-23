@@ -327,6 +327,14 @@ export default function Header({
             rel="noopener noreferrer"
           >
             {supportLabel}
+            {/* Знак виходу назовні — той самий, яким сторінка «Про проєкт»
+                позначає посилання на сайт факультету. Доти цей контрол
+                відкривав нову вкладку без жодного попередження, і читач,
+                який тиснув його з середини огляду, повертався жестом
+                «назад» нікуди. */}
+            <span className="nsv-support-out" aria-hidden="true">
+              {" ↗"}
+            </span>
           </a>
           {langSwitch()}
           <button
@@ -370,6 +378,9 @@ export default function Header({
           onClick={() => setOpen(false)}
         >
           {supportLabel}
+          <span className="nsv-support-out" aria-hidden="true">
+            {" ↗"}
+          </span>
         </a>
         {/* The same switch, for the widths where the bar cannot hold it. Below
             420px it is the only one displayed — header.css shows one and hides
