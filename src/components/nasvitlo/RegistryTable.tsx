@@ -1067,14 +1067,20 @@ export default function RegistryTable({
     writeUrl({ q, court, stage, outcome, material, sort });
   }, [q, court, stage, outcome, material, sort]);
 
+  /* «Щось звужено» — це відхилення від стану за замовчуванням, тож і
+     порівнювати треба з ним. Тут стояло `!== "year" || !== "desc"` —
+     дефолт, який був до того, як він став «за судом». Відколи став,
+     свіжовідкрита сторінка вважалася звуженою, і кнопка «Скинути» стояла
+     під кожним першим переглядом, не маючи чого скидати. Те саме число,
+     що в `writeUrl`, де воно від початку читається з `DEFAULT_SORT`. */
   const active =
     q.trim() !== "" ||
     court.length > 0 ||
     stage.length > 0 ||
     outcome.length > 0 ||
     material.length > 0 ||
-    sort.key !== "year" ||
-    sort.dir !== "desc";
+    sort.key !== DEFAULT_SORT.key ||
+    sort.dir !== DEFAULT_SORT.dir;
 
   /** Normalise once per row, not once per keystroke per row. */
   const haystacks = useMemo(
