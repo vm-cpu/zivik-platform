@@ -367,7 +367,7 @@ export const MAP_COURTS: MapCourt[] = [
   },
   /* Brussels — the EU and Belgium — is deliberately not here either.
    *
-   * Euroclear is where the Russian central-bank assets are immobilised, and
+   * Euroclear is where the russian central-bank assets are immobilised, and
    * the archive tracks it. But it is not a court, and this map says one thing:
    * the states whose courts hear these proceedings, or whose courts have
    * convicted under universal jurisdiction. A marker that is not a seat left
@@ -456,7 +456,7 @@ export const MAP_EVENTS: MapEvent[] = [
     // WHAT THIS COUNTS: the registry rows whose subject is the occupation of
     // Crimea, in the fora named above. Eleven, and they can be listed —
     // icj-1 (CERD limb; its note reads "Crimea, Donbas"), ecthr-4 (Ukraine v
-    // Russia (re Crimea)), and the nine BIT arbitrations over property taken
+    // russia (re Crimea)), and the nine BIT arbitrations over property taken
     // in Crimea: pca-20 Naftogaz/Chornomornaftogaz (PCA 2017-16), pca-21
     // Belbek, pca-22 PrivatBank, pca-23 Oschadbank, pca-24 Ukrnafta, pca-25
     // Stabil and others, pca-26 Everest Estate, pca-27 Lugzor and others,
@@ -538,10 +538,10 @@ export const MAP_EVENTS: MapEvent[] = [
       en: "ECtHR (Strasbourg) · the ICJ (The Hague) · Helsinki District Court",
     },
     // WHAT THIS COUNTS: the four proceedings this card links, one per registry
-    // row — ecthr-5 (Ukraine and Netherlands v Russia), icj-1 (the ICSFT limb,
+    // row — ecthr-5 (Ukraine and Netherlands v russia), icj-1 (the ICSFT limb,
     // terrorism financing in the east), icj-2 (Allegations of Genocide) and
     // fi-38 (Finland v Petrovsky). It said 2 while linking 4.
-    // Deliberately NOT counted: ecthr-8, Russia's own inter-State application
+    // Deliberately NOT counted: ecthr-8, russia's own inter-State application
     // (App 36958/21, Rule 39 refused). The registry fixes no place for it —
     // its note is the application number and nothing else — so it cannot be
     // put on this site's card without deciding, here, what it is about.
@@ -556,11 +556,11 @@ export const MAP_EVENTS: MapEvent[] = [
     title: { uk: "Енергоактиви", en: "Energy assets" },
     note: {
       uk: "Укренерго, Енергоатом, ДТЕК — арбітражі проти РФ.",
-      en: "Ukrenergo, Energoatom and DTEK — arbitrations against Russia.",
+      en: "Ukrenergo, Energoatom and DTEK — arbitrations against russia.",
     },
     courts: ["hague"],
     forums: { uk: "PCA (Гаага)", en: "PCA (The Hague)" },
-    // WHAT THIS COUNTS: the arbitrations against Russia over generation and
+    // WHAT THIS COUNTS: the arbitrations against russia over generation and
     // grid assets that this registry holds — pca-28 DTEK Krymenergo (PCA
     // 2018-41), pca-29 Ukrenergo (PCA 2020-17), pca-30 Energoatom (II) and
     // pca-31 Ukrhydroenergo. Four, and the note above names three of the four
@@ -568,7 +568,7 @@ export const MAP_EVENTS: MapEvent[] = [
     //
     // It said 6, which nothing here reconstructs. Two things it is not: the
     // Naftogaz/Gazprom gas arbitrations (scc-17, scc-18, icc-arb-19) and
-    // Naftogaz v Russia (pca-20) are gas-supply and Crimea-expropriation
+    // Naftogaz v russia (pca-20) are gas-supply and Crimea-expropriation
     // matters, and adding them gives 8, not 6; and row pca-30 is styled
     // "(II)" while the registry holds no Energoatom (I), so the missing first
     // arbitration cannot be counted from this file either. If the six is
@@ -668,7 +668,7 @@ export function seatsLine(c: MapCourt, locale: Locale): string {
  * not a court with a country attached.
  *
  * Belgium is deliberately absent. Brussels is on the map — Euroclear, where
- * the Russian central-bank assets are immobilised — but it is not a court, so
+ * the russian central-bank assets are immobilised — but it is not a court, so
  * Belgium is not one of the states whose courts hear these cases and its shape
  * is not lit. Pressing the Brussels marker still works; there is simply no
  * country under it to press.

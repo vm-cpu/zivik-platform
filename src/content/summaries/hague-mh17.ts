@@ -74,7 +74,7 @@ export const hagueMh17: DecisionSummary = {
       term: { uk: "Buk TELAR", en: "Buk TELAR" },
       def: {
         uk: "Самохідна пускова установка ЗРК «Бук». Суд встановив: ракету випустили з поля біля Первомайського, з установки, привезеної з росії й повернутої туди.",
-        en: "The Buk system's self-propelled launcher. The court found the missile was fired from a field near Pervomaiskyi, from a TELAR brought in from Russia and returned there.",
+        en: "The Buk system's self-propelled launcher. The court found the missile was fired from a field near Pervomaiskyi, from a TELAR brought in from russia and returned there.",
       },
     },
     {
@@ -156,14 +156,14 @@ export const hagueMh17: DecisionSummary = {
       q: { uk: "Чому судили Нідерланди, а не Україна чи міжнародний суд?", en: "Why the Netherlands, not Ukraine or an international court?" },
       a: {
         uk: "Більшість загиблих — 196 із 298 — громадяни Нідерландів, і держави JIT домовилися, що процес вестиме нідерландська юстиція за нідерландським правом. Спроба створити трибунал ООН у 2015 році була заблокована вето росії в Радбезі.",
-        en: "Most of the dead — 196 of 298 — were Dutch, and the JIT States agreed the Netherlands would prosecute under Dutch law. A 2015 attempt at a UN tribunal was vetoed by Russia in the Security Council.",
+        en: "Most of the dead — 196 of 298 — were Dutch, and the JIT States agreed the Netherlands would prosecute under Dutch law. A 2015 attempt at a UN tribunal was vetoed by russia in the Security Council.",
       },
     },
     {
       q: { uk: "Вирок заочний — він щось означає?", en: "The verdict is in absentia — does it mean anything?" },
       a: {
         uk: "Так. Він остаточний (ніхто не оскаржив), довічні строки діють, засуджені — в міжнародному розшуку і фактично замкнені в росії. Суд також задовольнив позови родин — понад 16 млн євро компенсацій. А доказова база вироку лягла в основу рішення ЄСПЛ 2025 року.",
-        en: "Yes. It is final (no one appealed), the life sentences stand, the convicted are internationally wanted and effectively confined to Russia. The court also granted the families' claims — over EUR 16 million in compensation. And its record underpins the ECtHR's 2025 judgment.",
+        en: "Yes. It is final (no one appealed), the life sentences stand, the convicted are internationally wanted and effectively confined to russia. The court also granted the families' claims — over EUR 16 million in compensation. And its record underpins the ECtHR's 2025 judgment.",
       },
     },
     {
@@ -174,10 +174,10 @@ export const hagueMh17: DecisionSummary = {
       },
     },
     {
-      q: { uk: "А хто відповість за сам пуск і за росію як державу?", en: "And who answers for the launch itself — and for Russia as a State?" },
+      q: { uk: "А хто відповість за сам пуск і за росію як державу?", en: "And who answers for the launch itself — and for russia as a State?" },
       a: {
         uk: "Екіпаж «Бука» і командну вертикаль JIT дослідила у 2023 році, але призупинила розслідування без нових підозрюваних. Державну відповідальність росії за MH17 у 2025 році встановив ЄСПЛ у справі «Україна і Нідерланди проти росії»; триває і провадження Ради ІКАО за скаргою Нідерландів та Австралії.",
-        en: "The JIT examined the Buk crew and the chain of command in 2023 but suspended the investigation without new suspects. Russia's State responsibility for MH17 was established by the ECtHR in 2025 in Ukraine and the Netherlands v. Russia; ICAO Council proceedings brought by the Netherlands and Australia also continue.",
+        en: "The JIT examined the Buk crew and the chain of command in 2023 but suspended the investigation without new suspects. russia's State responsibility for MH17 was established by the ECtHR in 2025 in Ukraine and the Netherlands v. russia; ICAO Council proceedings brought by the Netherlands and Australia also continue.",
       },
     },
   ],
@@ -186,7 +186,7 @@ export const hagueMh17: DecisionSummary = {
     {
       label: {
         uk: "Україна і Нідерланди проти росії (ЄСПЛ)",
-        en: "Ukraine and the Netherlands v. Russia (ECtHR)",
+        en: "Ukraine and the Netherlands v. russia (ECtHR)",
       },
       note: { uk: "державна відповідальність за MH17 — рішення 2025 року", en: "State responsibility for MH17 — the 2025 judgment" },
       href: "/cases/echr-ukraine-netherlands",
@@ -297,7 +297,7 @@ export const hagueMh17: DecisionSummary = {
       },
       note: {
         uk: "Суд визнав установку «Бук» російською, привезеною з РФ і повернутою туди; конфлікт на сході кваліфіковано як керований росією.",
-        en: "The court found the Buk was Russian, brought from and returned to Russia; the eastern conflict was Russian-controlled.",
+        en: "The court found the Buk was russian, brought from and returned to russia; the eastern conflict was russian-controlled.",
       },
     },
     {
@@ -319,11 +319,11 @@ export const hagueMh17: DecisionSummary = {
       kind: "context",
       label: {
         uk: "ЄСПЛ покладає на росію державну відповідальність за MH17",
-        en: "The ECtHR fixes Russia's State responsibility for MH17",
+        en: "The ECtHR fixes russia's State responsibility for MH17",
       },
       note: {
         uk: "Рішення «Україна і Нідерланди проти росії» спирається зокрема на фактологію цього вироку.",
-        en: "Ukraine and the Netherlands v. Russia builds in part on this verdict's factual record.",
+        en: "Ukraine and the Netherlands v. russia builds in part on this verdict's factual record.",
       },
     },
   ],

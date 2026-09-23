@@ -54,9 +54,25 @@ const T = {
      length; the user asked for it here and off the home page entirely. Kept in
      this page's own prose rather than in `content/about.ts`, because that file
      feeds the home band too. */
+  /* The five courts are out of the sentence and under it, as a row.
+
+     They were a parenthesis of five institutions inside a sixty-word
+     sentence — the one genuinely enumerable thing on this page, read as
+     prose. A reader scanning for "is my court in here" had to parse a
+     subordinate clause to find out. Nothing is added and nothing is
+     dropped: the same five, in the same order, from `content/institutions`
+     where `phase1` already marks exactly this list, so the row cannot
+     drift from the registry the way a hand-typed parenthesis can. The
+     sentence keeps every other word it had, including «та практики
+     іноземних судів» — the row is the international five and the sentence
+     still says the library goes beyond them.
+
+     Their hue is `--brand-forum`, which on this site names an institution
+     and never an outcome (DESIGN.md §Colour). Gold here would have read as
+     relief granted and red as a finding of breach. */
   scope: {
-    uk: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів у справах, які порушили Україна та іноземні держави, щоб притягнути росію до відповідальності за порушення, вчинені під час війни проти України.",
-    en: "An online library of international case-law — the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration — and of foreign national courts, in the proceedings brought by Ukraine and by foreign States to hold Russia accountable for violations committed during the war against Ukraine.",
+    uk: "Онлайн-бібліотека міжнародної судової практики та практики іноземних судів у справах, які порушили Україна та іноземні держави, щоб притягнути росію до відповідальності за порушення, вчинені під час війни проти України.",
+    en: "An online library of international case-law and of foreign national courts, in the proceedings brought by Ukraine and by foreign States to hold russia accountable for violations committed during the war against Ukraine.",
   },
 
   metaDesc: {
@@ -101,11 +117,21 @@ const T = {
       "Платформа покликана не лише зберігати інформацію про окремі справи, а й допомагати бачити ширшу картину — як через різні юрисдикції та правові механізми формується багаторівнева система відповідальності та правосуддя у відповідь на війну проти України.",
     ],
     en: [
-      "Russia’s war against Ukraine set the law a task of extraordinary scale: to secure accountability for numerous violations of international law, to protect the rights of those harmed, and to build the legal preconditions for restoring justice. The answer has been a wide range of international and national legal mechanisms, and the result is a substantial and constantly growing body of case-law.",
+      "russia’s war against Ukraine set the law a task of extraordinary scale: to secure accountability for numerous violations of international law, to protect the rights of those harmed, and to build the legal preconditions for restoring justice. The answer has been a wide range of international and national legal mechanisms, and the result is a substantial and constantly growing body of case-law.",
       "That practice, however, is scattered across jurisdictions, institutions and information resources. This makes it harder to follow cases systematically, to understand how the different legal mechanisms relate to one another, and to use what they have established.",
       "The platform is meant not merely to hold information about individual cases but to help a reader see the wider picture: how a multi-level system of accountability and justice is taking shape, across jurisdictions and legal mechanisms, in answer to the war against Ukraine.",
     ],
   },
+  /* Дата, з якої все почалося, як подія — з макета власниці. Резолюція
+     названа й у прозі нижче; тут вона позначка на часі, а не речення. */
+  resDate: { uk: "27 березня 2014", en: "27 March 2014" },
+  resText: {
+    uk: "Генеральна Асамблея ООН схвалює резолюцію «Територіальна цілісність України»",
+    en: "The UN General Assembly adopts the resolution ‘Territorial integrity of Ukraine’",
+  },
+  resLink: { uk: "A/RES/68/262", en: "A/RES/68/262" },
+  forumsH: { uk: "Інстанції в бібліотеці", en: "The forums in the library" },
+  forumsNat: { uk: "Іноземні національні суди", en: "Foreign national courts" },
   whoH: { uk: "Хто веде проєкт", en: "Who runs the project" },
   /* Split around the Centre's name so that name can be the link.
 
@@ -165,7 +191,7 @@ const T = {
     ],
     en: [
       "Developing Ukraine’s national law on the foundations of the rule of law, human rights and constitutional democracy",
-      "Expert assessment of the present state of international law and of the challenges thrown up by Russia’s aggression against Ukraine",
+      "Expert assessment of the present state of international law and of the challenges thrown up by russia’s aggression against Ukraine",
       "Shaping public policy that is well-founded and rooted in values",
       "Building a community of lawyers engaged in forming legal answers to the challenges of the war and to difficult social change",
     ],
@@ -235,6 +261,13 @@ const T = {
  */
 const FACULTY_URL = "https://law.ucu.edu.ua/doslidnyczkyj-czentr-luyi-zona";
 
+/* A/RES/68/262 in the UN Digital Library — the same record `content/about.ts`
+   links from the prose. Written out rather than read from that table: the
+   table is keyed by the phrase it matches in a paragraph, and a marker that
+   depended on the wording of a sentence would break the day the sentence is
+   edited. The reason this record and not a mirror is in that file. */
+const RESOLUTION_URL = "https://digitallibrary.un.org/record/767565";
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
@@ -299,6 +332,17 @@ export default async function AboutPage({
      same source — and it used to read the partner list, which is now on the
      home page and only there. */
   const about = await repo.getAbout();
+  /* The five international courts the scope sentence used to carry in a
+     parenthesis, from `content/institutions.ts` rather than typed out here, so
+     the row and the registry cannot disagree.
+
+     `phase1` alone is not that list: it also carries the Dutch and the Finnish
+     courts, which are national. The row is the international five, and the
+     national ones are gathered under one line after them — the same grouping
+     the scope sentence makes when it says «та практики іноземних судів». */
+  const institutions = await repo.getInstitutions();
+  const forums = institutions.filter((i) => i.phase1 && i.category !== "national");
+  const nationals = institutions.filter((i) => i.phase1 && i.category === "national");
 
   const L = <V,>(x: Record<Locale, V>) => pick(x, locale);
   /* The citation table travels with the prose — see content/about.ts. */
@@ -340,6 +384,46 @@ export default async function AboutPage({
             </Link>
             <h1>{L(T.title)}</h1>
             <p className="abt-lede">{L(T.scope)}</p>
+            {/* The courts, as a row rather than as a parenthesis.
+
+                Abbreviation over full name, the way the library rows and a
+                pending page's eyebrow already name a forum, in the forum
+                hue. Across the rail rather than inside the measure: five
+                names at the 820px measure is 148px a column, and the longest
+                of them — «Міжнародний трибунал з морського права» — needs
+                more than that. */}
+            <p className="abt-forums-h">{L(T.forumsH)}</p>
+            <ul className="abt-forums">
+              {forums.map((f) => (
+                <li key={f.id}>
+                  <b>{L(f.abbr)}</b>
+                  <span>{L(f.name)}</span>
+                </li>
+              ))}
+              {/* The national courts as one line, not as two country badges:
+                  what the library covers there is foreign national practice,
+                  and naming «NL» and «FI» in a row of standing institutions
+                  would promise a list that grows a row per country. The
+                  registry names them one by one; this says what kind of
+                  forum they are. */}
+              {nationals.length > 0 && (
+                <li className="abt-forums-nat">
+                  <b aria-hidden="true">—</b>
+                  <span>{L(T.forumsNat)}</span>
+                </li>
+              )}
+            </ul>
+
+            {/* Одна дата, з макета. Протиправність визнали 2014-го, і ця
+                сторінка каже це реченням у прозі нижче; тут те саме стоїть
+                як позначка на часі — дата, подія, документ. */}
+            <p className="abt-res">
+              <time dateTime="2014-03-27">{L(T.resDate)}</time>
+              <span>{L(T.resText)}</span>
+              <a href={RESOLUTION_URL} target="_blank" rel="noopener noreferrer">
+                {L(T.resLink)} →
+              </a>
+            </p>
           </div>
         </header>
 
@@ -383,7 +467,21 @@ export default async function AboutPage({
 
         <section className="abt-band">
           <div className="abt-in">
-            <h2>{L(T.whoH)}</h2>
+            <div className="abt-h-row">
+              <h2>{L(T.whoH)}</h2>
+              {/* Вихід до Центру стоїть у шапці смуги, яка про Центр і
+                  говорить, — так у макеті власниці. Доти він закривав
+                  «Місію» нижче, тобто читач діставав шлях туди вже після
+                  того, як прочитав усе, що сторінка мала сказати. */}
+              <a
+                className="abt-h-link"
+                href={FACULTY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {L(T.centreLink)} ↗
+              </a>
+            </div>
             <div className="abt-prose">
               <p>
                 {L(T.who)[0]}
@@ -410,15 +508,15 @@ export default async function AboutPage({
           <div className="abt-in abt-wide">
             <h2>{L(T.missionH)}</h2>
             <ul>
-              {T.mission[locale].map((m) => (
-                <li key={m}>{m}</li>
+              {T.mission[locale].map((m, i) => (
+                <li key={m}>
+                  {/* Лічить, не називає — як номери частин в огляді рішення,
+                      і так само схований від читача з екранним диктором. */}
+                  <b aria-hidden="true">{String(i + 1).padStart(2, "0")}</b>
+                  <span>{m}</span>
+                </li>
               ))}
             </ul>
-            <p className="abt-more">
-              <a href={FACULTY_URL} target="_blank" rel="noopener noreferrer">
-                {L(T.centreLink)} ↗
-              </a>
-            </p>
           </div>
         </section>
 

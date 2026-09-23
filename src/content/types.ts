@@ -126,7 +126,7 @@ export type InstitutionCategory =
  *
  * The rule lived in CasePending as a local const while the home page printed
  * `name` straight, so the same case read «Ощадбанк проти РФ» on one surface
- * and «JSC Oschadbank v. The Russian Federation, PCA Case No. 2016-14» on the
+ * and «JSC Oschadbank v. The russian federation, PCA Case No. 2016-14» on the
  * other.
  */
 export function caseName(
@@ -136,7 +136,7 @@ export function caseName(
   return locale === "uk" && c.nameUk ? c.nameUk : (c.nameShort ?? c.name);
 }
 
-/** A court, tribunal or body that hears cases against Russia. */
+/** A court, tribunal or body that hears cases against russia. */
 export interface Institution {
   /** Stable slug, e.g. `"ecthr"`. */
   id: string;

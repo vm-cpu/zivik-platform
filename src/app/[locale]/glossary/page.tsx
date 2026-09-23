@@ -52,7 +52,7 @@ const T = {
      made where it can be checked. */
   metaDesc: {
     uk: "Словник термінів міжнародного права з рішень проти росії: пояснення простою мовою і посилання на справу, де термін ужито.",
-    en: "A glossary of the international-law terms used in the decisions against Russia, in plain language, each traced to the case that uses it.",
+    en: "A glossary of the international-law terms used in the decisions against russia, in plain language, each traced to the case that uses it.",
   },
   back: { uk: "← На головну", en: "← Home" },
   search: { uk: "Термін або слово з пояснення…", en: "A term, or a word from a definition…" },

@@ -55,7 +55,7 @@ const T = {
      each row carries. */
   lede: {
     uk: "Провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип.",
-    en: "Proceedings against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
+    en: "Proceedings against russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
   },
   /* The meta description: about 133 / 147 characters, both inside the ~160 a
      search result shows. Says what the page holds and what can be done with
@@ -64,7 +64,7 @@ const T = {
      the whole argument for `registryTotal` in content/legal.ts. */
   metaDesc: {
     uk: "{n} проваджень проти росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
-    en: "{n} proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
+    en: "{n} proceedings against russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
   },
   // The wordmark is «НаСвітло» / "NaSvitlo" everywhere — see i18n/dictionaries/uk.ts.
   // Team and map both say "Home"/"На головну" — so does this now.

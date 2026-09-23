@@ -65,7 +65,7 @@ export const finlandTorden: DecisionSummary = {
   plain: {
     tldr: {
       uk: "Воїслав Торден (раніше Ян Петровський) — заступник командира російського неонацистського загону «Русич». У вересні 2014-го його підрозділ під українським прапором влаштував засідку на батальйон «Айдар»: щонайменше 22 загиблих. У 2023 році Фінляндія затримала його в аеропорту Гельсінкі, а 14 березня 2025 року засудила до довічного ув'язнення за воєнні злочини — за універсальною юрисдикцією, хоча злочини скоєно в Україні проти українців.",
-      en: "Voislav Torden (formerly Yan Petrovsky) was deputy commander of the Russian neo-Nazi unit Rusich. In September 2014 his unit ambushed the Aidar battalion under a Ukrainian flag: at least 22 dead. Finland arrested him at Helsinki airport in 2023 and on 14 March 2025 sentenced him to life imprisonment for war crimes — under universal jurisdiction, though the crimes were committed in Ukraine against Ukrainians.",
+      en: "Voislav Torden (formerly Yan Petrovsky) was deputy commander of the russian neo-Nazi unit Rusich. In September 2014 his unit ambushed the Aidar battalion under a Ukrainian flag: at least 22 dead. Finland arrested him at Helsinki airport in 2023 and on 14 March 2025 sentenced him to life imprisonment for war crimes — under universal jurisdiction, though the crimes were committed in Ukraine against Ukrainians.",
     },
     whyMatters: {
       uk: "Це перше в Фінляндії засудження за воєнні злочини у війні проти України — і демонстрація того, як працює універсальна юрисдикція: виконавцю досить перетнути кордон будь-якої держави, що переслідує міжнародні злочини. Жоден ордер МКС не знадобився — вистачило національного суду.",
@@ -85,7 +85,7 @@ export const finlandTorden: DecisionSummary = {
       term: { uk: "«Русич»", en: "Rusich" },
       def: {
         uk: "російський неонацистський найманецький загін, пов'язаний із «Вагнером»; відомий жорстокістю до полонених. Торден — співзасновник і заступник командира.",
-        en: "A Russian neo-Nazi mercenary unit tied to Wagner, notorious for its treatment of prisoners. Torden co-founded and deputy-commanded it.",
+        en: "A russian neo-Nazi mercenary unit tied to Wagner, notorious for its treatment of prisoners. Torden co-founded and deputy-commanded it.",
       },
     },
     {
@@ -124,7 +124,7 @@ export const finlandTorden: DecisionSummary = {
       name: { uk: "Воїслав Торден (раніше Ян Петровський)", en: "Voislav Torden (formerly Yan Petrovsky)" },
       role: {
         uk: "Підсудний. Підсанкційний росіянин, заступник командира «Русича»; затриманий у Гельсінкі 2023 року під вигаданим ім'ям.",
-        en: "The accused. A sanctioned Russian, Rusich's deputy commander; arrested in Helsinki in 2023 under an assumed name.",
+        en: "The accused. A sanctioned russian, Rusich's deputy commander; arrested in Helsinki in 2023 under an assumed name.",
       },
       kind: "party",
     },
@@ -194,7 +194,7 @@ export const finlandTorden: DecisionSummary = {
     {
       label: {
         uk: "Україна і Нідерланди проти росії (ЄСПЛ)",
-        en: "Ukraine and the Netherlands v. Russia (ECtHR)",
+        en: "Ukraine and the Netherlands v. russia (ECtHR)",
       },
       note: { uk: "державна відповідальність за той самий Донбас-2014", en: "State responsibility for the same Donbas 2014" },
       href: "/cases/echr-ukraine-netherlands",
@@ -404,7 +404,7 @@ export const finlandTorden: DecisionSummary = {
   sources: [
     {
       url: "https://www.ejiltalk.org/prosecuting-members-of-russian-mercenary-groups-for-war-crimes-a-remedy-for-victims/",
-      title: "Prosecuting Members of Russian Mercenary Groups for War Crimes, a Remedy for Victims?",
+      title: "Prosecuting Members of russian Mercenary Groups for War Crimes, a Remedy for Victims?",
       authors: "Sorcha MacLeod, Iryna Marchuk",
       publication: "EJIL: Talk!",
       date: "2025",
@@ -428,7 +428,7 @@ export const finlandTorden: DecisionSummary = {
     },
     {
       url: "https://www.themoscowtimes.com/2025/03/14/finnish-court-sentences-russian-ultranationalist-to-life-in-prison-for-war-crimes-in-ukraine-a88362",
-      title: "Finnish Court Sentences Russian Ultranationalist to Life in Prison for War Crimes in Ukraine",
+      title: "Finnish Court Sentences russian Ultranationalist to Life in Prison for War Crimes in Ukraine",
       authors: "",
       publication: "The Moscow Times",
       date: "14 March 2025",
@@ -436,7 +436,7 @@ export const finlandTorden: DecisionSummary = {
     },
     {
       url: "https://www.aljazeera.com/amp/news/2025/3/14/finnish-court-convicts-russian-man-for-war-crimes-in-ukraine",
-      title: "Finnish court convicts Russian man for war crimes in Ukraine (guilty on four of five charges)",
+      title: "Finnish court convicts russian man for war crimes in Ukraine (guilty on four of five charges)",
       authors: "",
       publication: "Al Jazeera",
       date: "14 March 2025",

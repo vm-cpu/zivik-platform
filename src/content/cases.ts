@@ -11,8 +11,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icj-1",
     institutionId: "icj",
-    name: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation), Judgment, I.C.J. Reports 2024, 31 January 2024",
-    nameShort: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
+    name: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. russian federation), Judgment, I.C.J. Reports 2024, 31 January 2024",
+    nameShort: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. russian federation)",
     /* The official name, the same one the decision page carries as its h1.
        It was a descriptive shorthand — «Україна проти РФ — фінансування
        тероризму і расова дискримінація» — so the library called this case
@@ -36,8 +36,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icj-2",
     institutionId: "icj",
-    name: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening), Preliminary Objections, Judgment, I.C.J. Reports 2024, 2 February 2024",
-    nameShort: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening)",
+    name: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. russian federation: 32 States intervening), Preliminary Objections, Judgment, I.C.J. Reports 2024, 2 February 2024",
+    nameShort: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. russian federation: 32 States intervening)",
     /* The official name, as on the decision page — the same alignment the
        ICSFT/CERD case got. The parties come off the end because the page
        sets them apart from the subject, and the library's own row carries
@@ -79,7 +79,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icj-3",
     institutionId: "icj",
-    name: "Appeal from the ICAO Council Decision dated 30 June 2025 (Russian Federation v. Australia and Netherlands)",
+    name: "Appeal from the ICAO Council Decision dated 30 June 2025 (russian federation v. Australia and Netherlands)",
     nameUk: "Апеляція на рішення Ради ICAO від 30 червня 2025 (РФ проти Австралії та Нідерландів)",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     stage: "preliminary",
@@ -97,7 +97,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "ecthr-4",
     institutionId: "ecthr",
-    name: "Ukraine v Russia (re Crimea) [GC]",
+    name: "Ukraine v russia (re Crimea) [GC]",
     /* No «— Велика палата». Review's edit names the Ukraine-and-Netherlands
        case; the same reasoning applies to its twin above, so both are changed
        and this note says so. The formation that heard a case is not part of
@@ -117,7 +117,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "ecthr-5",
     institutionId: "ecthr",
-    name: "Ukraine and Netherlands v Russia [GC]",
+    name: "Ukraine and Netherlands v russia [GC]",
     nameUk: "Україна і Нідерланди проти росії",
     type: { uk: "Права людини", en: "Human rights" },
     stage: "satisfaction",
@@ -134,7 +134,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "ecthr-8",
     institutionId: "ecthr",
-    name: "Russia v Ukraine no. 36958/21",
+    name: "russia v Ukraine no. 36958/21",
     nameUk: "росія проти України, заява № 36958/21",
     type: { uk: "Права людини", en: "Human rights" },
     stage: "concluded",
@@ -178,7 +178,7 @@ export const registryCases: RegistryCase[] = [
     status: { uk: "Ордер видано", en: "Warrant issued" },
     year: 2023,
     amountUsd: null,
-    note: { uk: "депортації населення (дітей) та незаконного переміщення населення (дітей) з окупованих територій України до російської федерації (відповідно до статей 8(2)(a)(vii) та 8(2)(b)(viii) Римського статуту", en: "Deportation and unlawful transfer of children from occupied territories of Ukraine to Russia (arts. 8(2)(a)(vii) & 8(2)(b)(viii) of the Rome Statute)" },
+    note: { uk: "депортації населення (дітей) та незаконного переміщення населення (дітей) з окупованих територій України до російської федерації (відповідно до статей 8(2)(a)(vii) та 8(2)(b)(viii) Римського статуту", en: "Deportation and unlawful transfer of children from occupied territories of Ukraine to russia (arts. 8(2)(a)(vii) & 8(2)(b)(viii) of the Rome Statute)" },
     pages: null,
     decisionUrl: "https://www.icc-cpi.int/defendant/vladimir-vladimirovich-putin",
     lit: false,
@@ -195,7 +195,7 @@ export const registryCases: RegistryCase[] = [
     status: { uk: "Ордер видано", en: "Warrant issued" },
     year: 2023,
     amountUsd: null,
-    note: { uk: "депортації населення (дітей) та незаконного переміщення населення (дітей) з окупованих територій України до російської федерації (відповідно до статей 8(2)(a)(vii) та 8(2)(b)(viii) Римського статуту", en: "Deportation and unlawful transfer of children from occupied territories of Ukraine to Russia (arts. 8(2)(a)(vii) & 8(2)(b)(viii) of the Rome Statute)" },
+    note: { uk: "депортації населення (дітей) та незаконного переміщення населення (дітей) з окупованих територій України до російської федерації (відповідно до статей 8(2)(a)(vii) та 8(2)(b)(viii) Римського статуту", en: "Deportation and unlawful transfer of children from occupied territories of Ukraine to russia (arts. 8(2)(a)(vii) & 8(2)(b)(viii) of the Rome Statute)" },
     pages: null,
     decisionUrl: "https://www.icc-cpi.int/defendant/maria-alekseyevna-lvova-belova",
     lit: false,
@@ -271,8 +271,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "itlos-15",
     institutionId: "itlos",
-    name: "Detention of Ukrainian Naval Vessels (ITLOS/PCA) — Case Concerning the Detention of Three Ukrainian Naval Vessels (Ukraine v. Russian Federation), Provisional Measures, Order of 25 May 2019, ITLOS Case No. 26; Dispute Concerning the Detention of Ukrainian Naval Vessels and Servicemen (Ukraine v. The Russian Federation), PCA Case No. 2019-28",
-    nameShort: "Detention of Ukrainian Naval Vessels and Servicemen (Ukraine v. Russian Federation) — ITLOS and PCA arbitration",
+    name: "Detention of Ukrainian Naval Vessels (ITLOS/PCA) — Case Concerning the Detention of Three Ukrainian Naval Vessels (Ukraine v. russian federation), Provisional Measures, Order of 25 May 2019, ITLOS Case No. 26; Dispute Concerning the Detention of Ukrainian Naval Vessels and Servicemen (Ukraine v. The russian federation), PCA Case No. 2019-28",
+    nameShort: "Detention of Ukrainian Naval Vessels and Servicemen (Ukraine v. russian federation) — ITLOS and PCA arbitration",
     nameUk: "Затримання трьох українських військових кораблів і моряків (ITLOS та арбітраж PCA)",
     type: { uk: "Морське право", en: "Law of the sea" },
     stage: "merits",
@@ -287,8 +287,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "icao-16",
     institutionId: "icao",
-    name: "Australia & Netherlands v Russia (ICAO, MH17) Australia and the Netherlands v. Russian Federation, ICAO Council Decision under Article 84 of the Chicago Convention, 12 May 2025 (formal decision document - 30 June 2025)",
-    nameShort: "Australia and the Netherlands v. Russian Federation — ICAO Council, MH17",
+    name: "Australia & Netherlands v russia (ICAO, MH17) Australia and the Netherlands v. russian federation, ICAO Council Decision under Article 84 of the Chicago Convention, 12 May 2025 (formal decision document - 30 June 2025)",
+    nameShort: "Australia and the Netherlands v. russian federation — ICAO Council, MH17",
     nameUk: "Австралія і Нідерланди проти РФ — Рада ICAO, справа MH17",
     type: { uk: "Міжнародне публічне", en: "Public international law" },
     stage: "appeal",
@@ -355,8 +355,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-20",
     institutionId: "pca",
-    name: "NJSC Naftogaz of Ukraine, PJSC State Joint Stock Company Chornomornaftogaz, PJSC Ukrgasvydobuvannya and others v. The Russian Federation, PCA Case No. 2017-16",
-    nameShort: "NJSC Naftogaz of Ukraine, Chornomornaftogaz, Ukrgasvydobuvannya and others v. The Russian Federation",
+    name: "NJSC Naftogaz of Ukraine, PJSC State Joint Stock Company Chornomornaftogaz, PJSC Ukrgasvydobuvannya and others v. The russian federation, PCA Case No. 2017-16",
+    nameShort: "NJSC Naftogaz of Ukraine, Chornomornaftogaz, Ukrgasvydobuvannya and others v. The russian federation",
     nameUk: "Нафтогаз України, Чорноморнафтогаз, Укргазвидобування та інші проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
@@ -380,8 +380,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-21",
     institutionId: "pca",
-    name: "Aeroport Belbek LLC and Mr. Igor Valerievich Kolomoisky v. The Russian Federation, PCA Case No. 2015-07",
-    nameShort: "Aeroport Belbek LLC and Igor Kolomoisky v. The Russian Federation",
+    name: "Aeroport Belbek LLC and Mr. Igor Valerievich Kolomoisky v. The russian federation, PCA Case No. 2015-07",
+    nameShort: "Aeroport Belbek LLC and Igor Kolomoisky v. The russian federation",
     nameUk: "Аеропорт «Бельбек» і Ігор Коломойський проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     outcome: "liability",
@@ -398,8 +398,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-22",
     institutionId: "pca",
-    name: "PJSC CB PrivatBank and Finance Company Finilon LLC v. The Russian Federation, PCA Case No. 2015-21",
-    nameShort: "PJSC CB PrivatBank and Finilon LLC v. The Russian Federation",
+    name: "PJSC CB PrivatBank and Finance Company Finilon LLC v. The russian federation, PCA Case No. 2015-21",
+    nameShort: "PJSC CB PrivatBank and Finilon LLC v. The russian federation",
     nameUk: "ПриватБанк і «Фінілон» проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     outcome: "liability",
@@ -415,8 +415,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-23",
     institutionId: "pca",
-    name: "JSC Oschadbank v. The Russian Federation, PCA Case No. 2016-14",
-    nameShort: "JSC Oschadbank v. The Russian Federation",
+    name: "JSC Oschadbank v. The russian federation, PCA Case No. 2016-14",
+    nameShort: "JSC Oschadbank v. The russian federation",
     nameUk: "Ощадбанк проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
@@ -437,8 +437,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-24",
     institutionId: "pca",
-    name: "PJSC Ukrnafta v. The Russian Federation, PCA Case No. 2015-34",
-    nameShort: "PJSC Ukrnafta v. The Russian Federation",
+    name: "PJSC Ukrnafta v. The russian federation, PCA Case No. 2015-34",
+    nameShort: "PJSC Ukrnafta v. The russian federation",
     nameUk: "Укрнафта проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "concluded",
@@ -456,8 +456,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-25",
     institutionId: "pca",
-    name: "Stabil LLC, Rubenor LLC, Rustel LLC, Novel-Estate LLC, PII Kirovograd-Nafta LLC, Crimea-Petrol LLC, Pirsan LLC, Trade-Trust LLC, Elefteria LLC, VKF Satek LLC, Stemv Group LLC v. The Russian Federation, PCA Case No. 2015-35",
-    nameShort: "Stabil LLC and ten other companies v. The Russian Federation",
+    name: "Stabil LLC, Rubenor LLC, Rustel LLC, Novel-Estate LLC, PII Kirovograd-Nafta LLC, Crimea-Petrol LLC, Pirsan LLC, Trade-Trust LLC, Elefteria LLC, VKF Satek LLC, Stemv Group LLC v. The russian federation, PCA Case No. 2015-35",
+    nameShort: "Stabil LLC and ten other companies v. The russian federation",
     nameUk: "«Стабіл» та десять інших компаній проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "concluded",
@@ -473,8 +473,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-26",
     institutionId: "pca",
-    name: "Everest Estate LLC, Edelveis-2000 PE, Fortuna CJSC and others v. The Russian Federation, PCA Case No. 2015-36",
-    nameShort: "Everest Estate LLC, Edelveis-2000 PE, Fortuna CJSC and others v. The Russian Federation",
+    name: "Everest Estate LLC, Edelveis-2000 PE, Fortuna CJSC and others v. The russian federation, PCA Case No. 2015-36",
+    nameShort: "Everest Estate LLC, Edelveis-2000 PE, Fortuna CJSC and others v. The russian federation",
     nameUk: "«Еверест Естейт» та інші проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "remitted",
@@ -491,8 +491,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-27",
     institutionId: "pca",
-    name: "Limited Liability Company Lugzor, Limited Liability Company Libset, Limited Liability Company Ukrinterinvest, Public Joint Stock Company DniproAzot, Limited Liability Company Aberon Ltd v. The Russian Federation, PCA Case No. 2015-29",
-    nameShort: "Lugzor LLC, Libset LLC, Ukrinterinvest LLC, DniproAzot PJSC and Aberon Ltd v. The Russian Federation",
+    name: "Limited Liability Company Lugzor, Limited Liability Company Libset, Limited Liability Company Ukrinterinvest, Public Joint Stock Company DniproAzot, Limited Liability Company Aberon Ltd v. The russian federation, PCA Case No. 2015-29",
+    nameShort: "Lugzor LLC, Libset LLC, Ukrinterinvest LLC, DniproAzot PJSC and Aberon Ltd v. The russian federation",
     nameUk: "«Лугзор», «Лібсет», «Укрінтерінвест», «ДніпроАзот» і «Аберон» проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "concluded",
@@ -514,8 +514,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-28",
     institutionId: "pca",
-    name: "JSC DTEK Krymenergo v. The Russian Federation, PCA Case No. 2018-41",
-    nameShort: "JSC DTEK Krymenergo v. The Russian Federation",
+    name: "JSC DTEK Krymenergo v. The russian federation, PCA Case No. 2018-41",
+    nameShort: "JSC DTEK Krymenergo v. The russian federation",
     nameUk: "ДТЕК Крименерго проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "enforcement",
@@ -536,8 +536,8 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-29",
     institutionId: "pca",
-    name: "National Power Company Ukrenergo v. The Russian Federation, PCA Case No. 2020-17",
-    nameShort: "National Power Company Ukrenergo v. The Russian Federation",
+    name: "National Power Company Ukrenergo v. The russian federation, PCA Case No. 2020-17",
+    nameShort: "National Power Company Ukrenergo v. The russian federation",
     nameUk: "Укренерго проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "merits",
@@ -557,7 +557,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-30",
     institutionId: "pca",
-    name: "NNEGC Energoatom v. The Russian Federation (II)",
+    name: "NNEGC Energoatom v. The russian federation (II)",
     nameUk: "Енергоатом проти РФ — друге провадження",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "upcoming",
@@ -574,7 +574,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "pca-31",
     institutionId: "pca",
-    name: "PrJSC Ukrhydroenergo v. The Russian Federation",
+    name: "PrJSC Ukrhydroenergo v. The russian federation",
     nameUk: "Укргідроенерго проти РФ",
     type: { uk: "BIT арбітраж", en: "Investment (BIT) arbitration" },
     stage: "suspended",
@@ -625,7 +625,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "nl-34",
     institutionId: "nl",
-    name: "Russia v Naftogaz et al. (Hoge Raad)",
+    name: "russia v Naftogaz et al. (Hoge Raad)",
     nameUk: "РФ проти Нафтогазу та інших — Верховний суд Нідерландів",
     type: { uk: "Нац. цивільне", en: "National civil" },
     stage: "concluded",
@@ -641,7 +641,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "nl-35",
     institutionId: "nl",
-    name: "Russia v Belbek/Kolomoisky (Hoge Raad)",
+    name: "russia v Belbek/Kolomoisky (Hoge Raad)",
     nameUk: "РФ проти «Бельбека» і Коломойського — Верховний суд Нідерландів",
     type: { uk: "Нац. цивільне", en: "National civil" },
     stage: "concluded",
@@ -660,7 +660,7 @@ export const registryCases: RegistryCase[] = [
     /* Privatbank alone. Finilon was a co-claimant in the arbitration
        (pca-22) but is not a party to this cassation: ECLI:NL:HR:2024:1807
        names "JSC CB PRIVATBANK, gevestigd te Kiev" and no one else. */
-    name: "Russia v PrivatBank (Hoge Raad)",
+    name: "russia v PrivatBank (Hoge Raad)",
     nameUk: "РФ проти ПриватБанку — Верховний суд Нідерландів",
     type: { uk: "Нац. цивільне", en: "National civil" },
     stage: "concluded",
@@ -676,7 +676,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "nl-37",
     institutionId: "nl",
-    name: "Russia v Everest Estate (Hoge Raad)",
+    name: "russia v Everest Estate (Hoge Raad)",
     nameUk: "РФ проти «Еверест Естейт» — Верховний суд Нідерландів",
     type: { uk: "Нац. цивільне", en: "National civil" },
     stage: "remitted",
@@ -743,7 +743,7 @@ export const registryCases: RegistryCase[] = [
     /* A transfer, not an extradition: a soldier captured in the field and
        handed from one state to another is not the same act, and the archive
        should not blur it. The "first" is attributed rather than asserted —
-       Ukraine's Prosecutor General called it the first time a detained Russian
+       Ukraine's Prosecutor General called it the first time a detained russian
        soldier had been handed to another state, quoted by LRT. */
     note: {
       uk: "Vilnius · перша така передача, за словами ГПУ · катування",
@@ -758,7 +758,7 @@ export const registryCases: RegistryCase[] = [
   {
     id: "eu-40",
     institutionId: "eu",
-    name: "EU / Belgium — frozen assets of the Russian Central Bank (Euroclear)",
+    name: "EU / Belgium — frozen assets of the russian Central Bank (Euroclear)",
     nameUk: "ЄС і Бельгія — знерухомлені активи центрального банку РФ (Euroclear)",
     type: { uk: "Виконавче рішення", en: "Enforcement measure" },
     stage: "frozen",
@@ -768,7 +768,7 @@ export const registryCases: RegistryCase[] = [
     // dollar amount and this field is dollars — `CasePending` formats it with
     // `Intl.NumberFormat(…, {currency: "USD"})`, so the euro figure printed as
     // «210 000 000 000 $» directly above the note's «Euroclear €210 млрд»:
-    // one sum, two currencies, one screen. The immobilised Russian
+    // one sum, two currencies, one screen. The immobilised russian
     // central-bank assets held at Euroclear are quoted in euros by the EU, by
     // Belgium and by Euroclear itself; converting them to dollars here would
     // invent a rate and a date the record does not give. Nor is this a "sum in

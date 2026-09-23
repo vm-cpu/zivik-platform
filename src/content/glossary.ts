@@ -16,8 +16,8 @@
  *   surrendered; killing them is wilful killing under the Geneva Conventions".
  *
  *   «ДНР» / «ЛНР» — under CERD/ICSFT, "self-proclaimed entities in eastern
- *   Ukraine, supported by Russia"; in the Genocide case, "…recognised by
- *   Russia on 21 February 2022".
+ *   Ukraine, supported by russia"; in the Genocide case, "…recognised by
+ *   russia on 21 February 2022".
  *
  * Merging those into one definition would throw away the only interesting
  * thing about them. So a term keeps every reading it has, each attributed to

@@ -24,7 +24,7 @@
  *   • a court's or a State's own register named in quoted or legal text — the
  *     Register of Damage for Ukraine («Реєстр збитків») in
  *     `summaries/echr-ukraine-netherlands.ts`, the register of depositors in
- *     the Russian federal laws quoted by `summaries/oschadbank.ts`;
+ *     the russian federal laws quoted by `summaries/oschadbank.ts`;
  *   • «реєстраційний номер» — a docket reference, which is what a docket is
  *     called in Ukrainian.
  *
@@ -138,7 +138,7 @@ const uk = {
     label: "Мапа",
     heading: "Держави, чиї суди розглядають ці справи",
     /* The three nouns used to be set off by dashes — «обстріли, депортації та
-       захоплення» — which reads as the list of what Russia is accused of. It
+       захоплення» — which reads as the list of what russia is accused of. It
        is not: it was a sample of what six markers happen to show, on a map
        whose own registry carries thirty-nine proceedings. The sentence states
        the mechanic and names nothing it cannot finish. Owner's correction. */

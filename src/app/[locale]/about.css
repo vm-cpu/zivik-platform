@@ -701,3 +701,136 @@
 .aboutpage .abt-band a.nsv-cta {
   color: var(--brand-cream-warm);
 }
+
+/* ── Інстанції, рядком під лідом ──────────────────────────────────────────
+   Макет власниці: п'ять судів вийшли з дужок усередині шістдесятислівного
+   речення і стали рядом. Це єдине на цій сторінці, що справді є переліком,
+   а читач, який шукав «чи є тут мій суд», мусив розбирати підрядне речення.
+
+   Абревіатура над назвою — так само, як форум підписаний у рядку бібліотеки
+   й в оку сторінки без огляду. Поперек рейки, а не в мірі прози: п'ять назв
+   на 820 пікселях — це 148 на колонку, а найдовша з них, «Міжнародний
+   трибунал з морського права», більша. */
+.abt-forums-h {
+  margin: clamp(36px, 4vw, 56px) 0 var(--space-4);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-gold-lit);
+}
+.abt-forums {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-5) var(--space-6);
+}
+.abt-forums li {
+  display: grid;
+  gap: 3px;
+  align-content: start;
+  padding-top: var(--space-3);
+  border-top: 1px solid color-mix(in srgb, var(--brand-gold-lit) 34%, transparent);
+}
+.abt-forums b {
+  font: 700 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--brand-gold-lit);
+}
+.abt-forums span {
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--brand-cream);
+  text-wrap: pretty;
+}
+/* Група, а не інституція: риска замість абревіатури і тихіший знак. */
+.abt-forums-nat b {
+  color: var(--brand-muted-dark);
+}
+
+/* Одна дата, з макета: дата, подія, документ — в один рядок, як подія в
+   хронології рішення. Не абзац: те саме сказано прозою нижче, а тут воно
+   позначка на часі. */
+.abt-res {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-4);
+  margin: clamp(30px, 3.4vw, 46px) 0 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid color-mix(in srgb, var(--brand-gold-lit) 34%, transparent);
+}
+.abt-res time {
+  font: 500 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--brand-gold-lit);
+  white-space: nowrap;
+}
+.abt-res span {
+  font-size: var(--t-sm);
+  line-height: 1.45;
+  color: var(--brand-cream);
+  text-wrap: pretty;
+}
+.abt-res a {
+  font: 600 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--brand-gold-lit);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.abt-res a:hover,
+.abt-res a:focus-visible {
+  border-bottom-color: var(--brand-gold-lit);
+}
+@media (max-width: 700px) {
+  .abt-res {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+}
+
+/* Пункти місії з номерами — з макета. Номер лічить, не називає. */
+.abt-mission ul li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.abt-mission ul li > b {
+  font: 400 var(--t-lead) var(--brand-font-display), serif;
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+  color: var(--brand-faint-dark);
+}
+
+/* Заголовок смуги і вихід із неї — в один рядок: заголовок ліворуч, шлях
+   назовні праворуч, на спільній базовій лінії. Вузьким екраном шлях стає
+   під заголовком, бо два об'єкти в рядку на 375 пікселях — це два обрізані
+   об'єкти. */
+.abt-h-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  max-width: var(--prose);
+}
+.abt-h-row h2 {
+  margin-bottom: 0;
+}
+.abt-h-link {
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--brand-red);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.abt-h-link:hover,
+.abt-h-link:focus-visible {
+  border-bottom-color: var(--brand-red);
+}

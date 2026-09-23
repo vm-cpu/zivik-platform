@@ -9,7 +9,7 @@ import "./quote.css";
  * The decision the pull-quote is taken from.
  *
  * The words are the operative paragraph of the ICJ's Order on provisional
- * measures of 16 March 2022 in *Allegations of Genocide* (Ukraine v. Russian
+ * measures of 16 March 2022 in *Allegations of Genocide* (Ukraine v. russian
  * Federation) — one of the eight decisions written up here. Quoting a court
  * without saying where the sentence comes from is the one thing a legal
  * archive cannot do, and the reader had no way to reach it.
@@ -55,7 +55,7 @@ const MARKS: Record<Locale, [string, string]> = {
  * The parties, read off the case summary rather than typed here: the same
  * value is the <h1> of the page this links to, so the two cannot drift apart.
  *
- * The archive's full name for the case is "Ukraine v. Russian Federation:
+ * The archive's full name for the case is "Ukraine v. russian federation:
  * 32 States intervening" — the title of the Preliminary Objections judgment of
  * 2 February 2024. The sentence quoted here is from the order of 16 March
  * 2022, before any State had intervened, so the rider is cut at the colon
