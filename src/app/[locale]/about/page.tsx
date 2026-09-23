@@ -149,16 +149,16 @@ const T = {
     en: ["The project is run by the ", "Louis B. Sohn Research Centre", " at the Faculty of Law of the Ukrainian Catholic University, Lviv."],
   },
 
-  /* A way out to the Centre, asked for: «може ми вигадаємо якийсь елемент —
-     кнопку тощо який переводить на сторінку сайту». The page already has the
-     element — the arrow link under the roster — so this is that one again
-     rather than a new kind of object: a second shape for the same job is how
-     a page starts having two of everything. It closes the band that describes
-     the Centre, which is where a reader who wants more of it has just been
-     told there is more. */
+  /* Підпис до знака факультету — назва, а не адреса.
+
+     Він казав «Сторінка Центру на сайті УКУ», і це було двічі неточно:
+     сторінка не на сайті УКУ, а на сайті Факультету права, і читачеві
+     байдуже, чий це сайт. Власниця: «це не на сайті УКУ, а на сайті
+     факультету права; тоді давай просто напишемо Центр Луї Зона». Куди
+     веде посилання, каже стрілка, а знак поруч каже, чий це сайт. */
   centreLink: {
-    uk: "Сторінка Центру на сайті УКУ",
-    en: "The Centre’s page on the UCU site",
+    uk: "Центр Луї Зона",
+    en: "The Louis Sohn Centre",
   },
   teamH: { uk: "Хто над цим працює", en: "Who works on this" },
   teamLink: { uk: "Сторінка команди", en: "The team page" },
