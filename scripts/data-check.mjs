@@ -430,9 +430,34 @@ for (const [slug, src] of summarySrc) {
         flag(f, "outcomes-wrong-kind", `block ${i} is "${b.kind}", not findings`);
         return;
       }
-      const heads = String(b.text ?? "")
+      /* Two ways a block can name its findings, and the count has to hold
+         for whichever one it uses. Written into the prose, the head is the
+         treaty acronym at the start of a line; recorded, it is an entry in
+         `heads`, one per enumerated line. The second is the general one —
+         see the note on `heads` in summaries/types.ts. */
+      const lines = String(b.text ?? "")
         .split("\n")
-        .filter((l) => /^\s*(ICSFT|CERD)\s*[-\u2013\u2014]/.test(l)).length;
+        .map((l) => l.trim())
+        .filter(Boolean);
+      const inProse = lines.filter((l) => /^(ICSFT|CERD)\s*[-\u2013\u2014]/.test(l)).length;
+      /* Three shapes, one rule: the head written into the prose, the head
+         recorded in `heads`, or a list the author enumerated himself — where
+         the answer sits on the line and there is no head at all. */
+      const ENUM = /^\s*(?:[\u2013\u2014-]\s+|\d{1,2}[.)]\s+)/;
+      const enumerated =
+        inProse === 0 && lines.length > 1 && lines.every((l) => ENUM.test(l))
+          ? lines.length
+          : 0;
+      const heads = Array.isArray(b.heads)
+        ? b.heads.length
+        : inProse || enumerated;
+      if (Array.isArray(b.heads) && b.heads.length !== lines.length) {
+        flag(
+          f,
+          "heads-miscounted",
+          `block ${i} names ${b.heads.length} finding(s) over ${lines.length} line(s)`,
+        );
+      }
       if (heads !== b.outcomes.length) {
         flag(
           f,

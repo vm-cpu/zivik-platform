@@ -210,9 +210,10 @@ const T = {
 
   // Page-level navigation and the reader's-guide band.
   navAria: { uk: "Розділи сторінки", en: "Page sections" },
-  navWarrants: { uk: "Ордери", en: "Warrants" },
-  navAnatomy: { uk: "Розбір рішення", en: "Anatomy" },
-  navRulings: { uk: "Тлумачення", en: "Key rulings" },
+  /* `navWarrants` («Ордери»), `navAnatomy` («Розбір рішення») and
+     `navRulings` («Тлумачення») stood here: four rail words for bands headed
+     something else on the page. The rail reads each band's own heading now —
+     see `theatresLabel` and `machineryLabel`. */
   toTop: { uk: "Нагору", en: "Top" },
   toChronology: { uk: "До цієї дати в хронології", en: "To this date in the chronology" },
   ofLargest: { uk: "від найбільшої суми тут", en: "of the largest sum here" },
@@ -249,7 +250,6 @@ const T = {
      on a Ukrainian page. Review: «розділ "САМЕРІ" … замінила б на "ПОВНИЙ
      ОГЛЯД"». */
   navFulltext: { uk: "Повний огляд", en: "Full summary" },
-  navSources: { uk: "Джерела", en: "Sources" },
   officialH: { uk: "Офіційні документи Суду", en: "Official court documents" },
   commentaryH: { uk: "Дослідження та коментарі", en: "Research and commentary" },
   updated: { uk: "оновлено", en: "updated" },
@@ -586,10 +586,13 @@ function Findings({
   mark,
   claimLabel,
   positionLabel,
+  heads,
   outcomes,
   locale,
 }: {
   text: string;
+  /** The name of each enumerated finding, where the record gives them. */
+  heads?: string[];
   /** How each finding in this block went, in the order the heads appear. */
   outcomes?: Outcome[];
   locale: Locale;
@@ -655,6 +658,45 @@ function Findings({
        the charges' own. */
     const numbered = /^\s*\d/.test(lines[0]);
     const items = lines.map((l) => l.replace(ENUM, ""));
+    /* An enumerated finding carries its answer beside it, where the record
+       gives one.
+
+       The device this archive uses for a finding — a head, a result chip,
+       the exchange under them — was reachable by one decision out of eight,
+       because the renderer decided what a head was by looking for the
+       literal strings «ICSFT —» and «CERD —». Four decisions record their
+       findings as a list the author numbered himself: the ECtHR's ten
+       violations by article, MH17's two charges, Finland's five counts,
+       DTEK's four objections. None could say how any single one went.
+
+       What they needed was never the head. Every one of those lines opens
+       with its own subject — «порушення статті 2 — …», «Умисне вбивство.
+       …» — so a head above it would print the first three words twice, and
+       this page has spent the day removing exactly that. What was missing is
+       the answer: which of the five counts convicted, which of the four
+       objections fell. So the chip goes on the line, and the words stay the
+       author's.
+
+       `heads` stays for the case this does not cover — a list whose lines do
+       not name themselves — and is simply absent here. */
+    if (outcomes && outcomes.length === items.length) {
+      const Tag = numbered ? "ol" : "ul";
+      return (
+        <Tag className="findings f-list f-list-out">
+          {items.map((t, i) => (
+            <li key={i}>
+              <span className="fl-text">
+                {heads?.[i] ? <b className="fl-head">{heads[i]}</b> : null}
+                {mark(t)}
+              </span>
+              <span className="v-out h4-out" data-o={outcomes[i]}>
+                {pick(OUTCOME_LABEL[outcomes[i]], locale)}
+              </span>
+            </li>
+          ))}
+        </Tag>
+      );
+    }
     return numbered ? (
       <ol className="findings f-list">
         {items.map((t, i) => (
@@ -983,6 +1025,7 @@ function Block({
           mark={mark}
           claimLabel={claimLabel}
           positionLabel={positionLabel}
+          heads={block.heads}
           outcomes={block.outcomes}
           locale={locale}
         />
@@ -1457,6 +1500,29 @@ export default async function CasePage({
         </section>
       );
 
+  /* The rail says what the band says.
+   *
+   * The map band prints «Два театри» when there is more than one theatre and
+   * «Місце розгляду» when there is one, but the rail only ever knew the
+   * second of those — so on every multi-theatre decision a reader clicked
+   * «Місце розгляду» and landed on a band headed «ДВА ТЕАТРИ». One
+   * expression now, read by the band, its aria-label and both rail entries;
+   * the branch cannot go out of step with itself. */
+  const theatresLabel = pick(
+    summary.theatresHeading ?? (theatres.length > 1 ? T.tracks : T.seatLabel),
+    locale,
+  );
+  /* The machinery band's own heading, whichever of its three shapes renders.
+     It was `T.navWarrants` («Ордери») and `T.navAnatomy` («Розбір рішення») —
+     two rail words for four different headings, none of which said either. */
+  const machineryLabel = warrants
+    ? pick(warrants.heading, locale)
+    : attribution
+      ? pick(T.attributionH, locale)
+      : objections
+        ? pick(objections.heading, locale)
+        : "";
+
   const theatreBand =
     theatres.length > 0 ? (
       <section
@@ -1470,14 +1536,9 @@ export default async function CasePage({
            поробити світлими». */
         data-lit=""
         data-navsec
-        aria-label={pick(summary.theatresHeading ?? T.seatLabel, locale)}
+        aria-label={theatresLabel}
       >
-        <h2 className="lbl">
-          {pick(
-            summary.theatresHeading ?? (theatres.length > 1 ? T.tracks : T.seatLabel),
-            locale,
-          )}
-        </h2>
+        <h2 className="lbl">{theatresLabel}</h2>
         <TheatreMap theatres={theatres} locale={locale} forum={mapForum} />
       </section>
     ) : null;
@@ -1491,7 +1552,7 @@ export default async function CasePage({
     /* The map first, where the band now is: it answers «де це було», and the
        case card above it has just named the seat. */
     ...(!summary.mapInline && theatres.length > 0
-      ? [{ id: "theatres", label: pick(summary.theatresHeading ?? T.seatLabel, locale) }]
+      ? [{ id: "theatres", label: theatresLabel }]
       : []),
     ...(shows("score") && verdicts.length > 0
       ? [{ id: "found", label: pick(summary.verdictsHeading ?? T.found, locale) }]
@@ -1541,10 +1602,7 @@ export default async function CasePage({
       parts.forEach((p, n) => {
         listed.push(p);
         if (n === 0 && summary.mapInline && theatres.length > 0) {
-          listed.push({
-            id: "theatres",
-            label: pick(summary.theatresHeading ?? T.seatLabel, locale),
-          });
+          listed.push({ id: "theatres", label: theatresLabel });
         }
       });
       return listed.map((p) => ({
@@ -1560,7 +1618,7 @@ export default async function CasePage({
     /* Guarded with the band: a chip pointing at a section that does not
        render scrolls a reader to nothing. */
     ...(interpretations.length > 0
-      ? [{ id: "rulings", label: pick(T.navRulings, locale) }]
+      ? [{ id: "rulings", label: pick(T.keyRulings, locale) }]
       : []),
     ...(provisionalMeasures.length > 0
       ? [{ id: "measures", label: pick(T.provMeasures, locale) }]
@@ -1572,20 +1630,33 @@ export default async function CasePage({
        way round on Oschadbank, the rail sent a reader past the band they had
        just asked for. */
     ...(hasMachinery && summary.warrants
-      ? [{ id: "machinery", label: pick(T.navWarrants, locale) }]
+      ? [{ id: "machinery", label: machineryLabel }]
       : []),
     ...(takings && summary.warrants
       ? [{ id: "scale", label: pick(takings.heading, locale) }]
       : []),
+    /* Two blocks in one band on Oschadbank — whose conduct, then the
+       objections — so the second gets a child entry rather than the band
+       taking a collective name neither heading uses. It already carries
+       `#objections`; the rail just never pointed at it. */
     ...((attribution || objections) && !summary.warrants
-      ? [{ id: "machinery", label: pick(T.navAnatomy, locale) }]
+      ? [
+          {
+            id: "machinery",
+            label: machineryLabel,
+            children:
+              attribution && objections
+                ? [{ id: "objections", label: pick(objections.heading, locale) }]
+                : undefined,
+          },
+        ]
       : []),
     /* What happened to the award afterwards — its own band now. */
     ...(afterlife ? [{ id: "after", label: pick(afterlife.heading, locale) }] : []),
     ...(glossaryEnabled
       ? [{ id: "glossary", label: pick(T.navGlossary, locale) }]
       : []),
-    ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.navSources, locale) }] : []),
+    ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.sources, locale) }] : []),
   ];
   /* The chip row shows the bands this decision actually renders. */
   const sections = pageSections.filter((x) => shows(x.id));
@@ -2394,7 +2465,7 @@ export default async function CasePage({
       }
       {/* 2b — Reference: doctrine and the interim order, on paper */}
       {shows("rulings") && interpretations.length > 0 && (
-        <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.navRulings, locale)}>
+        <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.keyRulings, locale)}>
           <div className="rail">
             <div className="sec-h">
               <h2>{pick(T.keyRulings, locale)}</h2>
@@ -2469,7 +2540,7 @@ export default async function CasePage({
       {/* 2w — The warrants, wave by wave (ICC situation pages) */}
       {shows("machinery") && warrants && (
         <section className="machinery" data-ground={ground["machinery"]} id="machinery" data-navsec
-          aria-label={pick(summary.warrants ? T.navWarrants : T.navAnatomy, locale)}>
+          aria-label={machineryLabel}>
           <div className="rail machinery-stack">
             <div>
               <div className="sec-h">
@@ -2527,7 +2598,7 @@ export default async function CasePage({
           *after* it. Owner: «роби всі три». */}
       {shows("machinery") && (attribution || objections) && (
         <section className="machinery" data-ground={ground["machinery"]} id={warrants ? undefined : "machinery"} data-navsec
-          aria-label={pick(T.navAnatomy, locale)}>
+          aria-label={machineryLabel}>
           <div className="rail machinery-stack">
             {attribution && (
               <div>

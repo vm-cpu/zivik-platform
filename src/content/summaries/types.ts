@@ -128,6 +128,25 @@ export interface SummaryBlock {
    * dispositif, which rejects every claim under each convention but the one
    * it upholds. Neither reading belongs in a regular expression.
    */
+  /**
+   * The name of each finding in an enumerated block, in the author's order.
+   *
+   * The archive has one device for a finding that carries its own answer —
+   * a head, a result chip beside it, and the exchange under it — and it was
+   * reachable by exactly one decision out of eight, because the renderer
+   * found its heads by looking for the literal strings «ICSFT —» and
+   * «CERD —» at the start of a line. Four decisions record their findings as
+   * a list the author already numbered — the ECtHR's ten violations by
+   * article, MH17's two charges, Finland's five counts, DTEK's four
+   * objections — and none of them could say how any single one of them went.
+   *
+   * So the head is recorded rather than guessed, which is the rule this
+   * archive keeps everywhere else. One entry per enumerated line, and
+   * `outcomes` then runs parallel to it. Absent, nothing changes: the block
+   * renders as it did.
+   */
+  heads?: string[];
+  /** How each finding in this block went — one per head, in order. */
   outcomes?: Outcome[];
   /**
    * The head of the column this block opens. `subject` only.
