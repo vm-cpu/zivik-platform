@@ -827,9 +827,12 @@ export const iccUkraine: DecisionSummary = {
 
        Правдиве твердження сильніше за колишнє: в обох лініях Суд піднявся
        вище за виконавців. */
+    /* Хвіст «і як високо дійшов Суд» прибрано: це була обіцянка читачеві, а
+     не назва того, що в смузі. Смуга показує дві лінії звинувачення і хто
+     під ордером; наскільки це високо, читач бачить сам. */
     heading: {
-      uk: "Дві лінії звинувачення — і як високо дійшов Суд",
-      en: "Two lines of accusation, and how high the Court reached",
+      uk: "Дві лінії звинувачення",
+      en: "Two lines of accusation",
     },
     lines: [
       {
@@ -1076,7 +1079,9 @@ export const iccUkraine: DecisionSummary = {
   },
 
   takings: {
-    heading: { uk: "Масштаб — у цифрах поза Судом", en: "The scale, in figures from outside the Court" },
+    /* «Масштаб» був словом про враження, а не про предмет. Смуга каже рівно
+     одне: це цифри, яких Суд не встановлював, і взяті вони не в нього. */
+    heading: { uk: "Цифри поза Судом", en: "Figures from outside the Court" },
     note: {
       uk: "Ордери кількість не називають. Ці цифри — з офіційної бази «Діти війни», звітів Human Rights Watch і повідомлень уряду; джерела внизу сторінки.",
       en: "The warrants state no numbers. These figures come from the official \"Children of War\" database, Human Rights Watch and government reporting; sources at the foot of the page.",
