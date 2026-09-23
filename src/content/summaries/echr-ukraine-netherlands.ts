@@ -347,10 +347,6 @@ export const echrUkraineNetherlands: DecisionSummary = {
        одне й те саме двічі в одній таблиці. Лишається те, чого більше ніде
        немає: скільки суддів. Власниця: «забрати в назві Велика палата». */
     { label: { uk: "Склад", en: "Formation" }, value: { uk: "17 суддів", en: "17 judges" } },
-    {
-      label: { uk: "Заяви", en: "Applications" },
-      value: { uk: "8019/16 · 43800/14 · 28525/20 · 11055/22", en: "8019/16 · 43800/14 · 28525/20 · 11055/22" },
-    },
     { label: { uk: "Рішення по суті", en: "Merits judgment" }, value: { uk: "9 липня 2025", en: "9 July 2025" } },
     {
       label: { uk: "Сатисфакція", en: "Just satisfaction" },

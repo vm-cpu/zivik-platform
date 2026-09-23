@@ -3,9 +3,6 @@
 @media (max-width: 820px) {
   /* `.refs-grid` was listed here too and matched nothing: no markup has
      carried that class since the reference band was split in two. */
-  .casepage .lede-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 @media (max-width: 760px) {

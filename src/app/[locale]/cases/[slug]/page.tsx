@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { decisionMetadata, jsonLdHtml, siteUrl } from "@/lib/seo";
 import { foreignLang, isLocale, type Locale } from "@/i18n/config";
-import { plural } from "@/i18n/plural";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
 import TermSearch from "@/components/cases/TermSearch";
@@ -16,7 +15,6 @@ import MoneyBars from "@/components/cases/MoneyBars";
 import AttributionTree from "@/components/cases/AttributionTree";
 import ObjectionCards from "@/components/cases/ObjectionCards";
 import TakingsGrid from "@/components/cases/TakingsGrid";
-import VerdictMatrix from "@/components/cases/VerdictMatrix";
 import AfterlifeStrip from "@/components/cases/AfterlifeStrip";
 import WarrantWall from "@/components/cases/WarrantWall";
 import CaseMap from "@/components/cases/CaseMap";
@@ -1210,7 +1208,7 @@ export default async function CasePage({
   // Registry ids without a summary render the pending page; anything else 404s.
   if (!summary) return <CasePending slug={slug} locale={locale} dict={dict} />;
 
-  const { masthead, judgment, instruments, timeline, verdicts, sources } = summary;
+  const { masthead, judgment, instruments, timeline, sources } = summary;
   const { interpretations, plain } = summary;
   /* Alphabetical, in the reader's own collation, and sorted here rather than
      in the band: the term chips at the head of the verbatim text link to
@@ -1250,15 +1248,6 @@ export default async function CasePage({
      inferred here: the two are joined only when the same day appears on both
      sides, so a page whose tracks are articles or defendants simply gets no
      link rather than a guessed one. */
-  const chronoIsos = new Set(
-    (summary.timeline ?? []).map((e) => e.iso).filter((x): x is string => !!x),
-  );
-  const chronoAnchor = (track: string): string | undefined => {
-    const m = track.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
-    if (!m) return undefined;
-    const iso = `${m[3]}-${m[2]}-${m[1]}`;
-    return chronoIsos.has(iso) ? `#ev-${iso}` : undefined;
-  };
 
   const { theatres = [], provisionalMeasures = [], timelineTracks = [], glance = [] } = summary;
   const { takings, attribution, amounts, objections, afterlife, warrants } = summary;
@@ -1266,7 +1255,6 @@ export default async function CasePage({
      two scales: drawn together, the €87 million attached in France read as a
      fraction of a dollar award it is not denominated in, and the caption had
      to say «у євро — поза шкалою» about the very bar it was drawing. */
-  const awarded = (amounts?.figures ?? []).filter((f) => !f.after);
   const afterAward = (amounts?.figures ?? []).filter((f) => f.after);
   const parties = summary.title
     ? pick(summary.title, locale)
@@ -1329,61 +1317,36 @@ export default async function CasePage({
   const isSourcesHeading = (b: SummaryBlock) =>
     b.kind === "h2" && /^\s*(Researches|Дослідження)/.test(b.text);
   const body = rawBlocks.filter((b) => b.kind !== "link" && !isSourcesHeading(b));
-  const violations = verdicts.filter((v) => v.outcome === "violation").length;
 
-  /** Official-text URL for a verdict track, when one exists. Only acronym
-   *  (string) abbrs double as verdict track keys. */
-  const trackUrl = (track: string): string | undefined =>
-    instruments.find((i) => typeof i.abbr === "string" && i.abbr === track)?.url;
+  /* Котрий розділ огляду — «Фактичні обставини»: під ним іде карта, і той
+     самий номер потрібен розмітці огляду й змісту в рейці, тож він
+     рахується раз. Номер, а не текст: частини пронумеровані в самих
+     оглядах («2. Фактичні обставини»), і половина записів несе номер, а
+     половина ні.
+
+     Нуль, якщо такого розділу немає, — тоді карта закриває перший. Три
+     рішення з восьми його не мають: у «Тордені» це «Обвинувачення», в MH17
+     — «Позиція обвинувачення», у справі МКС — «Юрисдикція у загальній
+     ситуації». */
+  const factsPart = Math.max(
+    0,
+    body
+      .filter((b) => b.kind === "h2")
+      .map((b) => b.text)
+      .findIndex((s) =>
+        /^\s*\d*\.?\s*(фактичн[іи]\s+обставин|the\s+facts\b|facts\b)/i.test(s),
+      ),
+  );
+
   /* `pagesLabel` stood here — «PDF, 139 с.» under «Читати рішення». The
      review took the page count off the dashboard and then off the button:
      «Забрати цифру про те, що рішення має 139 сторінок». `judgment.pages`
      stays in the data and still feeds the pending page's «Обсяг рішення». */
-  /*
-   * The scorecard counts what the dispositif is mostly made of. An inter-State
-   * judgment turns on breaches, so it counts violations. An arbitral award
-   * turns on what was granted — counting its single expropriation finding as
-   * "1 of 9" would badly understate an award the claimant won outright.
-   *
-   * A criminal judgment turns on convictions, and that branch did not exist:
-   * the Outcome union gained convicted/acquitted, OUTCOME_LABEL and the chip
-   * colours were updated, this counter was not. So it fell through to the
-   * inter-State branch and printed Petrovsky's life sentence as "0 порушення
-   * з 3", and MH17's three convictions in absentia as "0 порушення з 4" — a
-   * legal archive stating, in red, that nothing was found. The noun agrees
-   * with the number as well; "0 порушення" was not Ukrainian either.
-   */
-  const granted = verdicts.filter((v) => v.outcome === "granted").length;
-  const convictions = verdicts.filter((v) => v.outcome === "convicted").length;
-  /* The third element is which colour the figure may wear. Red on this site
-     means a finding of breach, and a conviction is one; relief granted is not,
-     however large. The count was painted --pred on all three branches, which
-     on paper is a dark cherry nobody read as a semantic and on the panel's
-     dark ground is --brand-breach, which everybody would. */
-  /* The dispositif's catch-all clauses come out of the index: «Інші вимоги ·
-     Відхилено» is not a claim and carried nothing a reader could act on,
-     while taking a row's worth of attention from the findings around it. It
-     is said under the heading instead. */
-  const findings = verdicts.filter((v) => !v.residual);
-  const hasResidual = verdicts.length !== findings.length;
-  /* How many of the rows the index draws are claims the forum did not
-     uphold — the figure the summary line counts. */
-  const notUpheld = (v: (typeof findings)[number]) =>
-    v.outcome !== "violation" && v.outcome !== "convicted" && v.outcome !== "granted";
-  /* Rejected and undecided are counted apart. Lumped together under the word
-     «відхилено» the line stated, of every `not-decided` row, something the
-     forum did not do — see `restUndecided`. */
-  const rejectedShown = findings.filter(
-    (v) => notUpheld(v) && v.outcome !== "not-decided",
-  ).length;
-  const undecidedShown = findings.filter((v) => v.outcome === "not-decided").length;
-  const [decided, decidedForms, decidedKind] =
-    convictions > 0
-      ? ([convictions, T.convictionWord, "breach"] as const)
-      : granted > 0
-        ? ([granted, T.grantedWord, "relief"] as const)
-        : ([violations, T.violationWord, "breach"] as const);
-  const decidedLabel = plural(decided, decidedForms[locale], locale);
+  /* ── Лічильник диспозитива прибрано ──────────────────────────────────
+     Він рахував, чого в диспозитиві більше — порушень, задоволених вимог
+     чи обвинувальних вироків, — і друкував це в шапці смуги «Що вирішив
+     суд». Смуги немає, отже, немає й того, хто ставив це питання.
+     `summary.verdicts` лишається в записі й далі перевіряється. */
 
   /** Resolve a Localized pair for this render's locale (client-prop hygiene:
    *  client components receive plain strings, never both languages). */
@@ -1541,18 +1504,15 @@ export default async function CasePage({
         </section>
       );
 
-  /* The rail says what the band says.
-   *
-   * The map band prints «Два театри» when there is more than one theatre and
-   * «Місце розгляду» when there is one, but the rail only ever knew the
-   * second of those — so on every multi-theatre decision a reader clicked
-   * «Місце розгляду» and landed on a band headed «ДВА ТЕАТРИ». One
-   * expression now, read by the band, its aria-label and both rail entries;
-   * the branch cannot go out of step with itself. */
-  const theatresLabel = pick(
-    summary.theatresHeading ?? (theatres.length > 1 ? T.tracks : T.seatLabel),
-    locale,
-  );
+  /* Одна назва на всі вісім рішень: «Географія справи».
+
+     Смуга встигла зватися «Два театри» там, де театрів більше одного,
+     «Місце розгляду» там, де один, і ще трьома власними формулюваннями з
+     даних — «Де це сталося», «Де це відбувалося». Чотири назви одного
+     об'єкта, і рейка знала лише одну з них. Власниця: «карту перейменуй на
+     Географія справи». `theatresHeading` більше ніхто не читає, тож поле
+     прибрано і з типу, і з трьох записів, які його несли. */
+  const theatresLabel = pick(T.tracks, locale);
   /* The machinery band's own heading, whichever of its three shapes renders.
      It was `T.navWarrants` («Ордери») and `T.navAnatomy` («Розбір рішення») —
      two rail words for four different headings, none of which said either. */
@@ -1590,20 +1550,10 @@ export default async function CasePage({
        the summary, before the write-up that explains it. It had no entry at
        all: the band carried no id, so the one table on the page a reader
        comes back to was the one thing the contents could not reach. */
-    /* The map first, where the band now is: it answers «де це було», and the
-       case card above it has just named the seat. */
-    ...(!summary.mapInline && theatres.length > 0
-      ? [{ id: "theatres", label: theatresLabel }]
-      : []),
-    ...(shows("score") && verdicts.length > 0
-      ? [{ id: "found", label: pick(summary.verdictsHeading ?? T.found, locale) }]
-      : []),
-    /* And the figures, where they are on a decision with no warrants: the
-       ground of the claim, before the chronology. */
-    ...(takings && !summary.warrants
-      ? [{ id: "scale", label: pick(takings.heading, locale) }]
-      : []),
-    /* Between the index and the write-up, where the band now is. */
+    /* Карти в цьому рівні немає: вона всередині огляду, під розділом
+       фактичних обставин, і в зміст її додає той самий обхід, що й розділи
+       огляду — нижче. */
+    /* Хронологія — одразу за карткою, як на сторінці. */
     { id: "chronology", label: pick(T.timeline, locale) },
     /* The summary leads now — review: «самері я б можливо перенесла на
        початок і дала відразу після розділу ЯКЩО КОРОТКО. А потім би вже йшли
@@ -1642,7 +1592,9 @@ export default async function CasePage({
       const listed: typeof parts = [];
       parts.forEach((p, n) => {
         listed.push(p);
-        if (n === 0 && summary.mapInline && theatres.length > 0) {
+        /* Карта — рядком услід за розділом, який вона закриває; `factsPart`
+           рахується так само, як у розмітці огляду. */
+        if (n === factsPart && theatres.length > 0) {
           listed.push({ id: "theatres", label: theatresLabel });
         }
       });
@@ -1652,6 +1604,12 @@ export default async function CasePage({
         children: p.children && p.children.length > 0 ? p.children : undefined,
       }));
     })(),
+    /* Смуга цифр на рішенні без ордерів — після огляду, де вона тепер і
+       стоїть. Доти рядок був другим у рейці, а сама смуга поїхала вниз, і
+       читач, який тиснув «Що було втрачено», їхав через усю сторінку. */
+    ...(takings && !summary.warrants
+      ? [{ id: "scale", label: pick(takings.heading, locale) }]
+      : []),
     /* This list is the page's order, and the sticky bar is drawn from it — so
        it moves when the bands move. Rulings and measures now follow the
        dispositif directly; the chronology and the map fall in behind the
@@ -1956,217 +1914,22 @@ export default async function CasePage({
                 ))}
               </div>
             )}
-            <div className="lede-grid">
-              <p className="body">{pick(plain.tldr, locale)}</p>
-              {/* Not a heading of its own: this is an aside about the
-                  section beside it, and the gold rule down its left is what
-                  says so. */}
-              <aside className="why">
-                <div className="lbl-c">{pick(T.whyMatters, locale)}</div>
-                <p>{pick(plain.whyMatters, locale)}</p>
-              </aside>
-            </div>
+            {/* «Чому це важливо» прибрано — власниця: «чому це важливо
+                також». Це був відступ обіч речення про справу, з золотою
+                лінією ліворуч; `plain.whyMatters` лишається в записі й
+                перевіряється, сторінка його більше не друкує. */}
+            <p className="body">{pick(plain.tldr, locale)}</p>
           </div>
         </section>
       )}
 
-      {/* 2 — Dashboard: one column of full-width instruments */}
-      {shows("dash") && (
-        <section className="dash">
-          <div className="rail dash-stack">
-            {/* Картка реквізитів пішла нагору, у власну секцію — див.
-                примітку при `id="overview"`. */}
+      {/* 2 — Хронологія, одразу за карткою справи.
 
-            {/* «У цифрах» is gone — there is no such section in the design.
-
-                It was three tiles: a count of the conventions, of the
-                violations found, of the years to judgment. Every one of them
-                is said again within a screen of where it stood — the
-                violations by the index below, which lists them; the years by
-                the case card above, which carries the filing and the
-                judgment; the conventions by the masthead, which names both.
-                A figure the page states three times is a figure the reader
-                has to reconcile three times.
-
-                `stats` stays in the data and in the type. It is authored on
-                all eight write-ups, it is checked, and it is the kind of
-                thing a future surface — a registry row, a card on the map —
-                can ask for. What has gone is this page asking for it. */}
-
-          </div>
-        </section>
-      )}
-
-      {/* 2a — Where it was decided and what ground it is about.
-
-          It used to stand second from the bottom, after everything. On this
-          archive the map answers «де це було», and that question is asked on
-          the 350th pixel: the case card names the seat — Париж, Гаага — and
-          the next thing a reader wants is why a court there is hearing about
-          Crimea. Owner: «і порядок теж». Decisions that draw the map inside
-          the write-up keep it there. */}
-      {!summary.mapInline && theatreBand}
-
-      {/* 2b — The holding and the sums, on the night ground.
-
-          One band was tried first: the docket facts, the figures, the
-          dispositif and the money all on --brand-night together. It put a
-          280px light band between a 569px masthead and 2,566px of dark, which
-          is 1.1% of the page — not a band separating two scenes but a slot cut
-          in a dark field, and no amount of softening the light answered it.
-
-          Split here instead. The card and the counters stay on paper, where
-          they were; what goes dark is the part that earns it — what the forum
-          held, and what it cost. The dark scene now has paper above it and
-          paper below, which is the rule, and the summary above is no longer
-          squeezed between two dark expanses. */}
-      {/* The accessible name is the heading the section actually prints. It
-          said «Що встановив Суд» while the h2 inside it said «Аргументи
-          України», so the contents rail and a screen reader announced two
-          different sections. */}
-      {shows("score") && (
-        <section
-          className="score"
-          id="found"
-          data-navsec
-          aria-label={pick(summary.verdictsHeading ?? T.found, locale)}
-        >
-          <div className="rail dash-stack">
-            <div className="vpanel">
-              <div className="sec-h">
-                <h2>{pick(summary.verdictsHeading ?? T.found, locale)}</h2>
-                {/* «4 порушення · решту вимог відхилено». It read «4
-                    порушення з 7», and the seven were clauses of the
-                    dispositif, not claims: a reader took it for "of seven
-                    claims the Court upheld four", which is not what happened
-                    — Ukraine made many, and most were rejected. */}
-                <span className="sec-sum" data-of={decidedKind}>
-                  <b>
-                    {decided} {decidedLabel}
-                  </b>
-                  {/* The index used to say «решту вимог відхилено» because
-                      it listed nothing but the breaches. Where it lists the
-                      rejected claims too, it counts them. */}
-                  {rejectedShown > 0 && (
-                    <>
-                      {" "}
-                      · {rejectedShown} {pick(T.restCounted, locale)}
-                    </>
-                  )}
-                  {undecidedShown > 0 && (
-                    <>
-                      {" "}
-                      · {undecidedShown} {pick(T.restUndecided, locale)}
-                    </>
-                  )}
-                  {rejectedShown === 0 && undecidedShown === 0 && hasResidual && (
-                    <> · {pick(T.restRejected, locale)}</>
-                  )}
-                </span>
-              </div>
-              {/* Column heads. Three tracks of very different content — a
-                  citation, a sentence and a verdict — and without them the
-                  first row has to teach the reader what each one is. Hidden
-                  where the columns are, below 700px, because there they are
-                  heads of nothing. */}
-              {/* The column heads moved into the matrix: two of them are
-                  its sort controls now, and a control cannot live outside
-                  the thing it controls. */}
-              <VerdictMatrix
-                rows={findings.map((v, i) => {
-                  const url = trackUrl(v.track);
-                  const inHref = chronoAnchor(v.track);
-                  return {
-                    /* The track key doubles as an instrument abbr where one
-                       exists, and that is the form the official-text link is
-                       labelled with; everywhere else the display form wins. */
-                    track: url
-                      ? v.track
-                      : v.trackLabel
-                        ? pick(v.trackLabel, locale)
-                        : v.track,
-                    stage: v.trackStage ? pick(v.trackStage, locale) : undefined,
-                    href: url,
-                    inHref: url ? undefined : inHref,
-                    claimHref: v.inAnchor ? `#${v.inAnchor}` : undefined,
-                    inLabel: pick(T.toChronology, locale),
-                    /* Against the list actually drawn, not the record behind
-                       it: with the catch-all clauses filtered out, the row that
-                       opens a run is the first of that run among the findings. */
-                    opensTrack: i === 0 || findings[i - 1].track !== v.track,
-                    outcome: v.outcome,
-                    /* The row's own word where the record gives one — see
-                       `outcomeLabel` in summaries/types.ts. */
-                    outcomeLabel: pick(v.outcomeLabel ?? OUTCOME_LABEL[v.outcome], locale),
-                    ownLabel: v.outcomeLabel !== undefined,
-                    claim: pick(v.claim, locale),
-                  };
-                })}
-                /* Offered only where there is something to fold: a table of
-                   nothing but breaches has no second half. */
-                trackless={summary.verdictsTrackless}
-                head={{
-                  track: pick(summary.verdictsTrackHeading ?? T.ixArticle, locale),
-                  claim: pick(T.ixClaim, locale),
-                  outcome: pick(T.ixResult, locale),
-                  sortedBy: pick(T.sortedBy, locale),
-                  asc: pick(T.sortAsc, locale),
-                  desc: pick(T.sortDesc, locale),
-                }}
-                fold={
-                  rejectedShown > 0
-                    ? {
-                        show: pick(T.showRejected, locale),
-                        hide: pick(T.hideRejected, locale),
-                      }
-                    : undefined
-                }
-              />
-            </div>
-            {amounts && awarded.length > 0 && (
-              <div>
-                <h2 className="lbl">{pick(T.amountsH, locale)}</h2>
-                <MoneyBars
-                  figures={awarded.map((f) => ({
-                    label: L(f.label),
-                    display: typeof f.display === "string" ? f.display : L(f.display),
-                    amount: f.amount,
-                    currency: f.currency,
-                    estimated: f.estimated,
-                    note: f.note && L(f.note),
-                    parts: f.parts?.map((pt) => ({
-                      label: L(pt.label),
-                      display: typeof pt.display === "string" ? pt.display : L(pt.display),
-                      amount: pt.amount,
-                    })),
-                  }))}
-                  shareLabel={pick(T.shareOf, locale)}
-                  ofLargestLabel={pick(T.ofLargest, locale)}
-                  locale={locale}
-                />
-                {/* The note that stood here — «Росія не сплатила рішення
-                    добровільно, тому стягнення відбувається через арешт її
-                    державних активів за кордоном» — is about enforcement, so
-                    it went down with the two figures that are. */}
-              </div>
-            )}
-
-          </div>
-        </section>
-      )}
-
-      {/* The chronology stands here, between what the Court found and
-          why — not after the write-up, where a reader learned when the
-          case happened only once they had read why it came out as it
-          did. It is orientation, the same kind of thing as the docket
-          card above it: the answer, then the shape of the time it took,
-          then the reasoning. Owner: «чи не варто хронологію підняти
-          вище?» */}
-
-      {!summary.warrants && scaleBand}
-
-      {/* 2t — Chronology. Its own band, its own heading: it used to be the
-          tail of the dashboard, below the money bars, under a <div> label. */}
+          Власниця: «перша секція — картка справи, далі має йти хронологія і
+          фактичні обставини». Доти між ними стояли дашборд, карта і смуга
+          «Що вирішив суд»; двох останніх уже немає, а хронологія піднялася
+          на своє місце: реквізити, потім форма часу, який справа зайняла,
+          і аж тоді — те, що в ній сталося. */}
       <section className="chron" data-ground={ground["chron"]} id="chronology" data-navsec aria-label={pick(T.timeline, locale)}>
         <div className="rail">
           <div className="sec-h">
@@ -2191,6 +1954,20 @@ export default async function CasePage({
           />
         </div>
       </section>
+
+
+      {/* ── Смуга-дашборд прибрана ───────────────────────────────────────
+          Після того як картка реквізитів пішла в першу секцію, а «У цифрах»
+          прибрали ще раніше, в ній не лишилося жодного об'єкта — тільки дві
+          примітки про те, чого в ній більше немає. Порожня секція, яку
+          сторінка все одно малювала. */}
+
+      {/* Карта більше не стоїть окремою смугою тут: вона йде під
+          «Фактичними обставинами», всередині огляду — див. примітку при
+          `theatreBand` нижче. */}
+
+      {/* Смуга цифр пішла під огляд — див. `scaleBand` нижче: власниця
+          поставила після карти «всі решта секцій». */}
 
       {/* 4 — Verbatim summary. The page bar is the only navigation. */}
       <section className="readzone" data-ground={ground["readzone"]} id="fulltext" data-navsec aria-label={pick(T.navFulltext, locale)}>
@@ -2241,13 +2018,26 @@ export default async function CasePage({
              The h3 keeps its `sub-N` anchor inside the box: the contents
              still lists it, and the counter still advances in reading order,
              so the ids match the walk that builds the contents above. */
+          let mapDrawn = false;
+
           const out: React.ReactNode[] = [];
           for (let i = 0; i < body.length; i++) {
             const b = body[i];
             if (b.kind === "h2") {
-              /* Between part 1 and part 2: part 1 names the two theatres and
-                 the drawing is what they look like. */
-              if (h2i === 1 && summary.mapInline && theatreBand) {
+              /* Карта закриває розділ фактичних обставин.
+
+                 Власниця: «далі має йти хронологія і фактичні обставини, під
+                 фактичними обставинами карта». Отже, малюнок виходить перед
+                 тим заголовком, який іде за «Фактичними обставинами», — там,
+                 де розділ уже розказаний і читач питає «де це було».
+
+                 Три рішення з восьми такого розділу не мають: у «Тордені» це
+                 «Обвинувачення», в MH17 — «Позиція обвинувачення», у справі
+                 МКС — «Юрисдикція у загальній ситуації». Для них
+                 `factsPart` лишається нулем, тобто карта закриває перший
+                 розділ — рівно те місце, яке вона мала доти на icj-cerd. */
+              if (h2i === factsPart + 1 && theatreBand && !mapDrawn) {
+                mapDrawn = true;
                 out.push(<div key={`map-${i}`}>{theatreBand}</div>);
               }
               out.push(<PartHead key={i} id={`sec-${h2i++}`} text={b.text} />);
@@ -2471,6 +2261,12 @@ export default async function CasePage({
               />,
             );
           }
+          /* Розділ фактичних обставин останній — наступного заголовка, перед
+             яким карта мала б вийти, просто немає. Тоді вона закриває
+             огляд. */
+          if (!mapDrawn && theatreBand) {
+            out.push(<div key="map-tail">{theatreBand}</div>);
+          }
           return out;
         })()}
           </article>
@@ -2493,6 +2289,12 @@ export default async function CasePage({
           the dashboard and the map are each a dark island with paper on both
           sides, which is what DESIGN.md requires of them. */
       }
+      {/* Смуга цифр на рішенні без ордерів: після огляду, разом з усім
+          іншим. Доти вона стояла між хронологією і оглядом, тобто між
+          двома речами, які власниця поставила поспіль. Варіант з ордерами
+          лишається там, де був, — одразу за ними. */}
+      {!summary.warrants && scaleBand}
+
       {/* 2b — Reference: doctrine and the interim order, on paper */}
       {shows("rulings") && interpretations.length > 0 && (
         <section className="refs" data-ground={ground["refs"]} id="rulings" data-navsec aria-label={pick(T.keyRulings, locale)}>

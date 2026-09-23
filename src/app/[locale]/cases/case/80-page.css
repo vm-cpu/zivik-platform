@@ -44,7 +44,6 @@
 .casepage [data-ground="p"],
 .casepage [data-ground="p2"],
 .casepage .dash,
-.casepage .score,
 .casepage .lede,
 .casepage .refs,
 .casepage .pmeas,
@@ -61,7 +60,6 @@
   border-top: 0;
 }
 .casepage .dash,
-.casepage .score,
 .casepage .lede,
 .casepage .readzone,
 .casepage .refs,
@@ -114,15 +112,8 @@
   line-height: 1;
   color: var(--brand-gold-mark);
 }
-/* The one-line verdict a section can carry on its own head. */
-.casepage .sec-h .sec-sum {
-  font: 500 var(--t-cap) var(--brand-font-body), sans-serif;
-  color: var(--ink2);
-}
-.casepage .sec-h .sec-sum b {
-  font-weight: 700;
-  color: var(--pred);
-}
+/* `.sec-sum` пішла зі смугою «Що вирішив суд»: однорядковий підсумок у
+   шапці секції носила тільки вона. */
 
 /* ── Reading type ────────────────────────────────────────────────────────── */
 .casepage .body {
@@ -172,39 +163,9 @@
   }
 }
 
-/* ── «Якщо коротко»: the text, and an aside about it ─────────────────────── */
-.casepage .lede-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-  gap: clamp(20px, 3vw, 36px);
-}
-.casepage .lede-grid .why {
-  border-left: 2px solid var(--brand-gold-mark);
-  padding-left: clamp(16px, 2.4vw, 22px);
-}
-/* When the grid stops being a grid the rule moves from the left edge to the
-   top. Both states live here, in the file that is imported last: the same
-   pair split across two files gave the aside a gold bracket down its left
-   *and* across its top, because the later file won `border-left` while the
-   media query still added `border-top`. */
-@media (max-width: 860px) {
-  .casepage .lede-grid .why {
-    border-left: 0;
-    border-top: 2px solid var(--brand-gold-mark);
-    padding-left: 0;
-    padding-top: var(--space-5);
-  }
-}
-.casepage .lede-grid .why .lbl-c {
-  margin-bottom: var(--space-3);
-}
-.casepage .lede-grid .why p {
-  font-size: clamp(14px, 1.5vw, 16px);
-  line-height: 1.72;
-  color: var(--ink2);
-  margin: 0;
-  text-wrap: pretty;
-}
+/* `.lede-grid` і `.why` пішли разом із «Чому це важливо»: сітка існувала,
+   щоб поставити речення про справу і відступ обіч нього поруч, а відступу
+   вже немає. */
 /* Картка реквізитів стоїть першою в секції, речення — під нею.
 
    `.glance-h` (золотий підпис над карткою) більше нема: секція зветься так
@@ -220,12 +181,6 @@
    what the forum did with the claim. The rows were a dark panel with the
    result at one edge of a 1180px rail and the claim at the other; at 820px
    with a fixed result column the sentence holds together. */
-.casepage .vpanel {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  color: var(--ink);
-}
 .casepage .verdicts {
   display: flex;
   flex-direction: column;

@@ -344,7 +344,6 @@ export const oschadbank: DecisionSummary = {
       label: { uk: "Регламент", en: "Rules" },
       value: { uk: "ЮНСІТРАЛ, 1976", en: "UNCITRAL, 1976" },
     },
-    { label: { uk: "Номер справи", en: "Case number" }, value: { uk: "PCA 2016-14", en: "PCA 2016-14" } },
     {
       label: { uk: "Рішення", en: "Award" },
       value: { uk: "26 листопада 2018", en: "26 November 2018" },

@@ -22,10 +22,7 @@
    one paper canvas now and 80-page.css owns it. What is left here is what is
    still theirs — the stack inside them. */
 
-.casepage .dash-stack {
-  display: grid;
-  gap: clamp(34px, 4vw, 54px);
-}
+/* `.dash-stack` пішла зі смугою-дашбордом. */
 
 /* KPI strip */
 /* A card on the night ground, and it takes three cues because on this ground

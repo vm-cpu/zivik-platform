@@ -313,7 +313,6 @@ export const icjCerdIcsft: DecisionSummary = {
       value: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
     },
     { label: { uk: "Місце", en: "Seat" }, value: { uk: "Гаага", en: "The Hague" } },
-    { label: { uk: "Загальний список", en: "General List" }, value: { uk: "№ 166", en: "No. 166" } },
     {
       label: { uk: "Рішення", en: "Judgment" },
       value: { uk: "31 січня 2024", en: "31 January 2024" },
@@ -630,10 +629,6 @@ export const icjCerdIcsft: DecisionSummary = {
    */
   provisionalMeasures: [],
 
-  /* The drawing sits inside the write-up, after part 1, on paper — part 1
-     is where the two theatres are named and the map is what they look like.
-     See `mapInline` in summaries/types.ts. */
-  mapInline: true,
 
   theatres: [
     {

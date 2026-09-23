@@ -112,41 +112,14 @@
   .casepage,
   .casepage .mast,
   .casepage .dash,
-  .casepage .score,
   .casepage .lede,
   .casepage .refs,
   .casepage .machinery {
     background: #fff !important;
     color: #000 !important;
   }
-  /* Forcing a band white does nothing for the type inside it: every colour in
-     the dashboard is set on the element that wears it, and the whole band is
-     on the night token set, so a printed page would have carried a lit gold
-     figure and a cream ledger onto white paper. Rather than name thirty
-     children, the band re-points its own aliases at their paper twins for the
-     length of the print sheet — the declarations underneath are unchanged and
-     resolve to ink. --bg and --panel go with them, which is what turns the
-     dispositif's frame back into a box on white. The KPI cards left with the
-     band split and are on paper tokens already. */
-  .casepage .score {
-    --bg: #fff;
-    --panel: #fff;
-    --cream: #000;
-    --muted: #000;
-    --faint: #333;
-    --gold: var(--brand-gold-ink);
-    --gold-dim: var(--brand-ink-2);
-    --red: var(--brand-red);
-    --forum: var(--brand-forum);
-    --rule: #999;
-    --rule-soft: #ccc;
-  }
-  /* The dispositif is a hairline frame on screen; on paper it is the block a
-     reader is most likely to be printing the page for, so its edge is the one
-     that goes to black. */
-  .casepage .vpanel {
-    border-color: #000 !important;
-  }
+  /* Друкарські правила для смуги «Що вирішив суд» і її панелі пішли разом
+     зі смугою: ні `.score`, ні `.vpanel` сторінка більше не малює. */
   .casepage .official,
   .casepage .ctl-label,
   .casepage .sec-h h2,

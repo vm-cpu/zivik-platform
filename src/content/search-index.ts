@@ -200,7 +200,7 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
   // ── machinery: what the court did with the claims, and with the facts ──
   out.machinery.push(
     s.verdicts.map((v) => `${v.track} ${all(v.trackLabel, v.claim)}`).join(" "),
-    all(s.verdictsHeading, s.theatresHeading),
+    all(s.verdictsHeading),
     (s.theatres ?? []).map((t) => all(t.place, t.tag, t.summary)).join(" "),
     s.objections
       ? all(s.objections.heading, s.objections.note) +

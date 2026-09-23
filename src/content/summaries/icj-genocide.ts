@@ -185,7 +185,12 @@ export const icjGenocide: DecisionSummary = {
      that band out of the template for every decision (49de66a), so it is not
      a band this list can give back, and "related" is no longer a member of
      `hideSections` either. See `hideSections` in summaries/types.ts. */
-  hideSections: ["overview", "rulings"],
+  /* «overview» більше не в списку: секція, яку він ховав, звалася «Якщо
+     коротко» і була абзацом, а тепер це «Картка справи» — реквізити
+     провадження, які має нести кожне рішення. Власниця: «перша секція —
+     картка справи». Разом із карткою повертається й той абзац; якщо він
+     тут зайвий, прибирати його треба окремо, а не разом із карткою. */
+  hideSections: ["rulings"],
 
   metaDesc: {
     uk: "Рішення МС ООН від 2 лютого 2024 щодо попередніх заперечень: п'ять із шести заперечень Росії відхилено; вимоги (c) і (d) — поза Конвенцією.",
@@ -443,10 +448,6 @@ export const icjGenocide: DecisionSummary = {
     {
       label: { uk: "Автентичний текст", en: "Authoritative text" },
       value: { uk: "французький", en: "French" },
-    },
-    {
-      label: { uk: "Загальний список", en: "General List" },
-      value: { uk: "№ 182", en: "No. 182" },
     },
     {
       label: { uk: "Позов подано", en: "Application filed" },
@@ -995,7 +996,6 @@ export const icjGenocide: DecisionSummary = {
     },
   ],
 
-  theatresHeading: { uk: "Де це відбувалося", en: "Where the case arises" },
 
   theatres: [
     {

@@ -192,20 +192,5 @@
   border-bottom: 1px solid var(--seam);
   padding-block: clamp(32px, 4vw, 56px);
 }
-.casepage .lede-grid {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: clamp(28px, 4vw, 56px);
-  align-items: start;
-}
-.casepage .why {
-  border-left: 2px solid var(--pgold);
-  padding-left: var(--space-6);
-}
-.casepage .why p {
-  margin: 0;
-  font-size: var(--t-ui);
-  line-height: 1.65;
-  color: var(--ink2);
-}
+/* `.lede-grid` і `.why` — див. примітку в 80-page.css. */
 

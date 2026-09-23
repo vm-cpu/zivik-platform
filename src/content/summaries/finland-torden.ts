@@ -347,7 +347,6 @@ export const finlandTorden: DecisionSummary = {
    back to that label, so a criminal conviction was captioned with the
    vocabulary of an investor-state dispute. */
 
-  theatresHeading: { uk: "Де це сталося", en: "Where it happened" },
 
   /*
    * The seat is Helsinki, not The Hague. It was "hague", so the map drew a

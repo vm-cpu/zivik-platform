@@ -891,24 +891,6 @@ export interface DecisionSummary extends VerbatimSummary {
    * own column. Owner: «хіба це підстава?»
    */
   verdictsTrackHeading?: Localized;
-  /** Heading for the map, when neither "two theatres" nor the seat fits. */
-  theatresHeading?: Localized;
-  /**
-   * Draw the map inside the write-up, after its first part, on paper —
-   * instead of as a night band of its own below the text.
-   *
-   * Per decision, because it only reads well where the first part is what
-   * the drawing is about. On icj-cerd-icsft part 1 names the two theatres —
-   * eastern Ukraine under the ICSFT, Crimea under CERD — and the map is
-   * what they look like; on oschadbank part 1 is the procedural history,
-   * where a map of Crimea would answer a question nobody has yet asked.
-   *
-   * The light palette travels with the position and not separately: the
-   * band is dark because it stands between paper bands and has to be its
-   * own thing, and a dark slab inside a column of text reads as an
-   * interruption instead. See the light map tokens in globals.css.
-   */
-  mapInline?: boolean;
   /** Filters for the timeline. Absent → a plain, unfiltered timeline. */
   timelineTracks?: TimelineTrack[];
   provisionalMeasures?: ProvisionalMeasure[];

@@ -241,17 +241,6 @@ export const hagueMh17: DecisionSummary = {
       value: { uk: "Гіркін · Дубинський · Харченко · Пулатов", en: "Girkin · Dubinskiy · Kharchenko · Pulatov" },
     },
     { label: { uk: "Суд", en: "Court" }, value: { uk: "Окружний суд Гааги", en: "District Court of The Hague" } },
-    {
-      label: { uk: "Ідентифікатор", en: "Identifier" },
-      /* The court gave four simultaneous judgments that day, one per accused;
-         14037 is Girkin's. The row is styled as covering all four, so naming
-         one ECLI unqualified sent a citing reader to the wrong document for
-         three of them. */
-      value: {
-        uk: "ECLI:NL:RBDHA:2022:14037 (Гіркін) · 14036 Дубинський · 14039 Харченко · 14040 Пулатов",
-        en: "ECLI:NL:RBDHA:2022:14037 (Girkin) · 14036 Dubinskiy · 14039 Kharchenko · 14040 Pulatov",
-      },
-    },
     { label: { uk: "Вирок", en: "Verdict" }, value: { uk: "17 листопада 2022", en: "17 November 2022" } },
     { label: { uk: "Статус", en: "Status" }, value: { uk: "остаточний — без апеляцій", en: "final — no appeals" } },
   ],
@@ -371,7 +360,6 @@ export const hagueMh17: DecisionSummary = {
 
   /* Same as finland-torden: a criminal trial captioned "seat of arbitration". */
 
-  theatresHeading: { uk: "Де це сталося", en: "Where it happened" },
 
   mapFocus: { forumKey: "hague", reachTo: "donetsk" },
 
