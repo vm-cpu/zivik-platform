@@ -1,7 +1,7 @@
 import type { Institution } from "./types";
 
 /**
- * Courts, tribunals and bodies hearing cases against russia. `phase1` marks the
+ * Courts, tribunals and bodies hearing cases against Russia. `phase1` marks the
  * five international courts featured on the homepage registry (per the project's
  * "Phase 1" court list); the rest surface in the full registry.
  */

@@ -28,7 +28,7 @@ import { locales } from "@/i18n/config";
  * 1. It said the library covers «низки українських ініціатив» / "the various
  *    initiatives launched by Ukraine". Not every proceeding here was brought
  *    by Ukraine: the Netherlands brought the fourth of the inter-State
- *    applications behind *Ukraine and the Netherlands v russia* over MH17, and
+ *    applications behind *Ukraine and the Netherlands v Russia* over MH17, and
  *    Finland tried Torden under universal jurisdiction on its own motion. The
  *    sentence names both origins now.
  * 2. The resolution was identified only by its month. It is General Assembly
@@ -44,13 +44,13 @@ export const about: AboutContent = {
   },
   paragraphs: {
     uk: [
-      "Бібліотека відповідальності та правосуддя для України «НаСвітло» — це онлайн-колекція міжнародної практики та практики іноземних судів, пов'язаної із забезпеченням відповідальності за порушення міжнародного права, вчинені у контексті війни росії проти України. Платформа об'єднує в одному просторі аналіз рішень та інших матеріалів відповідних судових проваджень, роблячи їх доступними для системного пошуку, дослідження та аналізу.",
-      "Протиправний характер дій росії був визнаний ще у 2014 році: схвалена Генеральною Асамблеєю ООН 27 березня 2014 року резолюція «Територіальна цілісність України» наголошувала на незаконності «референдуму» в Криму та закликала всі держави, міжнародні організації і спеціалізовані установи не визнавати жодних змін його статусу.",
+      "Бібліотека відповідальності та правосуддя для України «НаСвітло» — це онлайн-колекція міжнародної практики та практики іноземних судів, пов'язаної із забезпеченням відповідальності за порушення міжнародного права, вчинені у контексті війни Росії проти України. Платформа об'єднує в одному просторі аналіз рішень та інших матеріалів відповідних судових проваджень, роблячи їх доступними для системного пошуку, дослідження та аналізу.",
+      "Протиправний характер дій Росії був визнаний ще у 2014 році: схвалена Генеральною Асамблеєю ООН 27 березня 2014 року резолюція «Територіальна цілісність України» наголошувала на незаконності «референдуму» в Криму та закликала всі держави, міжнародні організації і спеціалізовані установи не визнавати жодних змін його статусу.",
       "«НаСвітло» задумана не просто як архів судових рішень, а як відкритий ресурс для дослідників, практикуючих юристів, студентів, представників громадянського суспільства та всіх, хто працює над питаннями відповідальності, правосуддя і верховенства права у контексті війни проти України.",
     ],
     en: [
-      "The Library of Accountability and Justice for Ukraine ‘NaSvitlo’ is an online collection of international practice and of the practice of foreign courts concerned with accountability for violations of international law committed in the context of russia’s war against Ukraine. The platform brings together, in one place, the analysis of decisions and of other materials from those proceedings, and makes them available for systematic search, research and analysis.",
-      "The unlawful character of russia’s actions was recognized as early as 2014: the resolution ‘Territorial integrity of Ukraine’, adopted by the UN General Assembly on 27 March 2014, underscored the illegality of the ‘referendum’ in Crimea and called upon all States, international organizations, and specialized agencies not to recognize any alteration of its status.",
+      "The Library of Accountability and Justice for Ukraine ‘NaSvitlo’ is an online collection of international practice and of the practice of foreign courts concerned with accountability for violations of international law committed in the context of Russia’s war against Ukraine. The platform brings together, in one place, the analysis of decisions and of other materials from those proceedings, and makes them available for systematic search, research and analysis.",
+      "The unlawful character of Russia’s actions was recognized as early as 2014: the resolution ‘Territorial integrity of Ukraine’, adopted by the UN General Assembly on 27 March 2014, underscored the illegality of the ‘referendum’ in Crimea and called upon all States, international organizations, and specialized agencies not to recognize any alteration of its status.",
       "NaSvitlo is conceived not merely as an archive of court decisions but as an open resource for researchers, practising lawyers, students, civil society and everyone working on accountability, justice and the rule of law in the context of the war against Ukraine.",
     ],
   },

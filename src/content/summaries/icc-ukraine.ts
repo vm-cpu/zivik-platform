@@ -61,7 +61,7 @@ import verbatimUk from "./icc-ukraine.uk.json";
  *  1. Everything inside the warrant wall, the verdict rows and the jurisdiction
  *     timeline restates the verbatim text or an ICC document linked from it.
  *  2. Context the summary does not carry — Mongolia's non-arrest, Ukraine's
- *     ratification mechanics, the scale figures, russia's retaliation, the
+ *     ratification mechanics, the scale figures, Russia's retaliation, the
  *     aggression tribunal — is marked as context (`kind: "context"`, or an
  *     explicit caveat in the note) and every item cites its source in
  *     `sources`. The full research trail lives in
@@ -227,7 +227,7 @@ export const iccUkraine: DecisionSummary = {
       kind: "party",
     },
     {
-      name: { uk: "російська федерація", en: "russian federation" },
+      name: { uk: "Російська Федерація", en: "Russian Federation" },
       role: {
         uk: "Не є учасницею Статуту, юрисдикцію не визнає. У відповідь порушила кримінальні справи проти прокурора та суддів МКС.",
         en: "Not a party to the Statute and rejects the Court's jurisdiction. It responded with criminal cases against the ICC's Prosecutor and judges.",
@@ -280,10 +280,10 @@ export const iccUkraine: DecisionSummary = {
       },
     },
     {
-      q: { uk: "Як відповіла росія?", en: "How has russia responded?" },
+      q: { uk: "Як відповіла Росія?", en: "How has Russia responded?" },
       a: {
         uk: "Дзеркальними переслідуваннями: порушила кримінальні справи проти прокурора Каріма Хана і суддів МКС, а в грудні 2025 року московський суд заочно засудив Хана та вісьмох суддів, включно з президенткою Суду Томоко Аканє, до 3,5–15 років. Спецдоповідачі ООН зажадали припинити ці репресії.",
-        en: "With mirror prosecutions: it opened criminal cases against Prosecutor Karim Khan and ICC judges, and in December 2025 a Moscow court sentenced Khan and eight judges — including Court President Tomoko Akane — in absentia to 3.5–15 years. UN Special Rapporteurs have demanded russia end the reprisals.",
+        en: "With mirror prosecutions: it opened criminal cases against Prosecutor Karim Khan and ICC judges, and in December 2025 a Moscow court sentenced Khan and eight judges — including Court President Tomoko Akane — in absentia to 3.5–15 years. UN Special Rapporteurs have demanded Russia end the reprisals.",
       },
     },
     {
@@ -292,8 +292,8 @@ export const iccUkraine: DecisionSummary = {
         en: "And who will try the invasion itself?",
       },
       a: {
-        uk: "Не МКС: щодо злочину агресії його юрисдикція в цій ситуації обмежена, бо росія не є учасницею Статуту. Цю прогалину закриває Спеціальний трибунал щодо злочину агресії, угоду про який Україна і Рада Європи підписали 25 червня 2025 року.",
-        en: "Not the ICC: its jurisdiction over the crime of aggression is blocked here because russia is not a party to the Statute. That gap is being closed by the Special Tribunal for the Crime of Aggression, whose founding agreement Ukraine and the Council of Europe signed on 25 June 2025.",
+        uk: "Не МКС: щодо злочину агресії його юрисдикція в цій ситуації обмежена, бо Росія не є учасницею Статуту. Цю прогалину закриває Спеціальний трибунал щодо злочину агресії, угоду про який Україна і Рада Європи підписали 25 червня 2025 року.",
+        en: "Not the ICC: its jurisdiction over the crime of aggression is blocked here because Russia is not a party to the Statute. That gap is being closed by the Special Tribunal for the Crime of Aggression, whose founding agreement Ukraine and the Council of Europe signed on 25 June 2025.",
       },
     },
   ],
@@ -302,7 +302,7 @@ export const iccUkraine: DecisionSummary = {
     {
       label: {
         uk: "Звинувачення у геноциді (Україна проти РФ)",
-        en: "Allegations of Genocide (Ukraine v. russian federation)",
+        en: "Allegations of Genocide (Ukraine v. Russian Federation)",
       },
       note: { uk: "МС ООН · держави, не особи", en: "ICJ · States, not individuals" },
       href: "/cases/icj-genocide",
@@ -310,13 +310,13 @@ export const iccUkraine: DecisionSummary = {
     {
       label: {
         uk: "ICSFT і CERD (Україна проти РФ)",
-        en: "ICSFT and CERD (Ukraine v. russian federation)",
+        en: "ICSFT and CERD (Ukraine v. Russian Federation)",
       },
       note: { uk: "МС ООН · Крим і Донбас", en: "ICJ · Crimea and Donbas" },
       href: "/cases/icj-cerd-icsft",
     },
     {
-      label: { uk: "Ощадбанк проти РФ", en: "Oschadbank v. russian federation" },
+      label: { uk: "Ощадбанк проти РФ", en: "Oschadbank v. Russian Federation" },
       note: { uk: "PCA · інвестиційний арбітраж", en: "PCA · investment arbitration" },
       href: "/cases/oschadbank",
     },
@@ -594,7 +594,7 @@ export const iccUkraine: DecisionSummary = {
       /* Split out of the Tajikistan entry — review: «Про Таджикистан
          розділити». One row had held both, under a date range of a quarter,
          and they are different things: a State Party's failure to execute a
-         warrant, and russia's prosecution of the Court's own officers. The
+         warrant, and Russia's prosecution of the Court's own officers. The
          first is a step in this docket; the second is retaliation against the
          institution. */
       date: { uk: "груд. 2025", en: "Dec 2025" },
@@ -602,8 +602,8 @@ export const iccUkraine: DecisionSummary = {
       track: "cooperation",
       kind: "context",
       label: {
-        uk: "росія заочно «засуджує» прокурора і суддів МКС",
-        en: "russia \"sentences\" the ICC's Prosecutor and judges in absentia",
+        uk: "Росія заочно «засуджує» прокурора і суддів МКС",
+        en: "Russia \"sentences\" the ICC's Prosecutor and judges in absentia",
       },
       note: {
         uk: "Московський суд заочно призначив Каріму Хану та вісьмом суддям МКС від 3,5 до 15 років; спецдоповідачі ООН зажадали припинити репресії.",
@@ -789,7 +789,7 @@ export const iccUkraine: DecisionSummary = {
       // keep the caption clear of the three markers it points at
       summary: {
         uk: "Депортація та незаконне переміщення українських дітей до РФ — перша хвиля ордерів.",
-        en: "Deportation and unlawful transfer of Ukrainian children to russia — the first wave of warrants.",
+        en: "Deportation and unlawful transfer of Ukrainian children to Russia — the first wave of warrants.",
       },
     },
     {
@@ -838,7 +838,7 @@ export const iccUkraine: DecisionSummary = {
         label: { uk: "Депортація дітей", en: "Deportation of children" },
         summary: {
           uk: "Депортація та незаконне переміщення дітей з окупованих територій України до РФ, щонайменше з 24 лютого 2022 року. Суд дійшов до глави держави.",
-          en: "Deportation and unlawful transfer of children from occupied areas of Ukraine to russia, at least from 24 February 2022. The Court reached the head of state.",
+          en: "Deportation and unlawful transfer of children from occupied areas of Ukraine to Russia, at least from 24 February 2022. The Court reached the head of state.",
         },
       },
       {
@@ -868,13 +868,13 @@ export const iccUkraine: DecisionSummary = {
         theme: { uk: "Депортація дітей", en: "Deportation of children" },
         summary: {
           uk: "Депортація та незаконне переміщення дітей з окупованих територій України до РФ, щонайменше з 24 лютого 2022 року.",
-          en: "Deportation and unlawful transfer of children from occupied areas of Ukraine to russia, at least from 24 February 2022.",
+          en: "Deportation and unlawful transfer of children from occupied areas of Ukraine to Russia, at least from 24 February 2022.",
         },
         url: "https://www.icc-cpi.int/news/situation-ukraine-icc-judges-issue-arrest-warrants-against-vladimir-vladimirovich-putin-and",
         persons: [
           {
             name: { uk: "Владімір Путін", en: "Vladimir Putin" },
-            role: { uk: "Президент російської федерації", en: "President of the russian federation" },
+            role: { uk: "Президент Російської Федерації", en: "President of the Russian Federation" },
             born: "1952",
             rung: 0,
             charges: [
@@ -1182,7 +1182,7 @@ export const iccUkraine: DecisionSummary = {
       term: { uk: "Межа юрисдикції: агресія", en: "The jurisdictional limit: aggression" },
       ruling: {
         uk: "Щодо злочину агресії юрисдикція МКС у цій ситуації обмежена, бо РФ не є учасницею Статуту. Саме тому 25 червня 2025 року Україна і Рада Європи підписали угоду про Спеціальний трибунал щодо злочину агресії.",
-        en: "The ICC cannot reach the crime of aggression here, because russia is not a party to the Statute. That is why Ukraine and the Council of Europe signed the Special Tribunal agreement on 25 June 2025.",
+        en: "The ICC cannot reach the crime of aggression here, because Russia is not a party to the Statute. That is why Ukraine and the Council of Europe signed the Special Tribunal agreement on 25 June 2025.",
       },
     },
 
@@ -1437,7 +1437,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       url: "https://www.theguardian.com/law/2023/may/19/russia-arrest-order-international-criminal-court-prosecutor-karim-khan",
-      title: "russia issues arrest order for ICC prosecutor Karim Khan",
+      title: "Russia issues arrest order for ICC prosecutor Karim Khan",
       authors: "",
       publication: "The Guardian",
       date: "19 May 2023",
@@ -1461,7 +1461,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       url: "https://opiniojuris.org/2024/03/15/justice-for-victims-of-missile-attacks-in-ukraine-new-icc-arrest-warrants-for-russian-top-military-commanders/",
-      title: "Justice for Victims of Missile Attacks in Ukraine: New ICC Arrest Warrants for russian Top Military Commanders",
+      title: "Justice for Victims of Missile Attacks in Ukraine: New ICC Arrest Warrants for Russian Top Military Commanders",
       authors: "",
       publication: "Opinio Juris",
       date: "15 March 2024",
@@ -1477,7 +1477,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       url: "https://www.researchgate.net/publication/388346326_ICC_Jurisdiction_Analysis_of_the_Legalization_of_the_Russian_President's_Arrest_Warrant_in_View_of_International_Law",
-      title: "ICC Jurisdiction: Analysis of the Legalization of the russian President's Arrest Warrant in View of International Law",
+      title: "ICC Jurisdiction: Analysis of the Legalization of the Russian President's Arrest Warrant in View of International Law",
       authors: "",
       publication: "ResearchGate",
       date: "2025",
@@ -1534,7 +1534,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       url: "https://www.justsecurity.org/97300/icc-warrants-ukraines-power-grid/",
-      title: "ICC Arrest Warrants for russian Attacks on Ukraine's Power Grid",
+      title: "ICC Arrest Warrants for Russian Attacks on Ukraine's Power Grid",
       authors: "",
       publication: "Just Security",
       date: "2024",
@@ -1542,7 +1542,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       url: "https://kyivindependent.com/ukraine-says-1-859-abducted-children-have-been-returned-zelenska-tells-paris-summit/",
-      title: "Ukraine has brought back 1,859 russia-abducted children, Zelenska says",
+      title: "Ukraine has brought back 1,859 Russia-abducted children, Zelenska says",
       authors: "",
       publication: "The Kyiv Independent",
       date: "December 2025",
@@ -1550,7 +1550,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       url: "https://www.eeas.europa.eu/delegations/vienna-international-organisations/deportation-ukrainian-children-amidst-russia%E2%80%99s-war-aggression-how-ensure-accountability-and-children_en",
-      title: "Deportation of Ukrainian Children Amidst russia's War of Aggression",
+      title: "Deportation of Ukrainian Children Amidst Russia's War of Aggression",
       authors: "",
       publication: "European External Action Service",
       date: "2024",
@@ -1558,7 +1558,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       url: "https://www.themoscowtimes.com/2025/12/12/russia-jails-icc-judges-prosecutor-in-absentia-over-putin-arrest-warrant-a91419",
-      title: "russia Jails ICC Judges, Prosecutor in Absentia Over Putin Arrest Warrant",
+      title: "Russia Jails ICC Judges, Prosecutor in Absentia Over Putin Arrest Warrant",
       authors: "",
       publication: "The Moscow Times",
       date: "12 December 2025",
@@ -1566,7 +1566,7 @@ export const iccUkraine: DecisionSummary = {
     },
     {
       url: "https://www.ohchr.org/en/press-releases/2026/02/russia-must-end-reprisals-and-intimidation-icc-prosecutor-and-judges-un",
-      title: "russia must end reprisals and intimidation of ICC Prosecutor and judges: UN Special Rapporteurs",
+      title: "Russia must end reprisals and intimidation of ICC Prosecutor and judges: UN Special Rapporteurs",
       authors: "",
       publication: "OHCHR",
       date: "February 2026",

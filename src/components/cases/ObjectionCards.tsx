@@ -49,7 +49,7 @@ export default function ObjectionCards({
 
                   It used to close each card, under the text of the objection,
                   so a reader scanning six cards for what the Court did read
-                  six paragraphs of what russia argued first. The question this
+                  six paragraphs of what Russia argued first. The question this
                   block answers is "which of these worked" — five of six did
                   not — and that has to be legible in one pass across the
                   grid's top edge. The counter and the outcome share the first

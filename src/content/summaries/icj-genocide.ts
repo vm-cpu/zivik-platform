@@ -3,7 +3,7 @@ import verbatim from "./icj-genocide.verbatim.json";
 import verbatimUk from "./icj-genocide.uk.json";
 
 /**
- * Allegations of Genocide (Ukraine v. russian federation: 32 States
+ * Allegations of Genocide (Ukraine v. Russian Federation: 32 States
  * intervening), ICJ Judgment on Preliminary Objections of 2 February 2024.
  *
  * `verbatim` holds the summary prose exactly as ingested from the source .docx
@@ -69,7 +69,7 @@ import verbatimUk from "./icj-genocide.uk.json";
  *   • the two aspects of the dispute (21, 23) are `claim`, so each is paired
  *     with the Court's answer beside it — the § 38 quotation for the first,
  *     the holding for the second;
- *   • the Memorial's requests (a)-(f) are one `findings` block and russia's
+ *   • the Memorial's requests (a)-(f) are one `findings` block and Russia's
  *     six objections one `p`, each joined at the author's own paragraph breaks
  *     so the page sets them as the lists they already are rather than as
  *     thirteen loose paragraphs.
@@ -105,7 +105,7 @@ export const icjGenocide: DecisionSummary = {
      shape: the Court's case name, with «: 32 States intervening» taken out of
      the parenthesis exactly as the review asked and nothing else altered. */
   /* Third pass on this heading, and the last one is the owner's own string:
-     «одразу великими літерами дати повну назву, а (Ukraine v. russian
+     «одразу великими літерами дати повну назву, а (Ukraine v. Russian
      Federation: 32 States Intervening) маленькими знизу». The template
      already sets a title that way — the subject in the display type, the
      trailing parenthetical under it in italic gold — so the instruction is
@@ -126,8 +126,8 @@ export const icjGenocide: DecisionSummary = {
      same kind of fact, and in the display type it would read as part of the
      Convention's name. See `titleTail` in cases/[slug]/page.tsx. */
   title: {
-    uk: "Звинувачення у геноциді згідно з Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти російської федерації: 32 держави-інтервенти). Попередні заперечення",
-    en: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. russian federation: 32 States intervening). Preliminary Objections",
+    uk: "Звинувачення у геноциді згідно з Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації: 32 держави-інтервенти). Попередні заперечення",
+    en: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening). Preliminary Objections",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
@@ -135,11 +135,11 @@ export const icjGenocide: DecisionSummary = {
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
     /* Identical to `title` on purpose: the caption was that same sentence
-       stopping before «(Україна проти російської федерації)», so under the
+       stopping before «(Україна проти Російської Федерації)», so under the
        full case name it read as a shortened copy of the headline. The masthead
        prints it once — same guard as on icj-cerd-icsft. */
     official:
-      "Звинувачення у геноциді згідно з Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти російської федерації: 32 держави-інтервенти). Попередні заперечення",
+      "Звинувачення у геноциді згідно з Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації: 32 держави-інтервенти). Попередні заперечення",
     judgment: "Рішення від 2 лютого 2024",
   },
 
@@ -178,7 +178,7 @@ export const icjGenocide: DecisionSummary = {
      So the instrument is inverted here: everything renders except the two
      sections the review names. The chronology, the map, the write-up and the
      sources — the four the first line asked for — are all still here; what
-     joins them is the matrix, the docket card, the ledger of russia's six
+     joins them is the matrix, the docket card, the ledger of Russia's six
      objections, the intervention figures and the glossary.
 
      Not the neighbours: «забери з усіх рішень секцію Пов'язані рішення» took
@@ -188,14 +188,14 @@ export const icjGenocide: DecisionSummary = {
   hideSections: ["overview", "rulings"],
 
   metaDesc: {
-    uk: "Рішення МС ООН від 2 лютого 2024 щодо попередніх заперечень: п'ять із шести заперечень росії відхилено; вимоги (c) і (d) — поза Конвенцією.",
-    en: "ICJ judgment on preliminary objections, 2 February 2024: five of russia's six objections rejected; submissions (c) and (d) fall outside the Convention.",
+    uk: "Рішення МС ООН від 2 лютого 2024 щодо попередніх заперечень: п'ять із шести заперечень Росії відхилено; вимоги (c) і (d) — поза Конвенцією.",
+    en: "ICJ judgment on preliminary objections, 2 February 2024: five of Russia's six objections rejected; submissions (c) and (d) fall outside the Convention.",
   },
 
   plain: {
     tldr: {
-      uk: "росія виправдовувала вторгнення вигаданим «геноцидом на Донбасі». Україна пішла до Міжнародного суду ООН, щоб той офіційно засвідчив: геноциду не було. Суд погодився розглядати саме це — і відхилив п'ять із шести заперечень росії. Але вимоги визнати незаконними визнання «ДНР/ЛНР» і саму «спецоперацію» Суд розглядати відмовився: це поза межами Конвенції про геноцид.",
-      en: "russia justified its invasion with a fabricated “genocide in Donbas”. Ukraine went to the International Court of Justice to have it put on the record that no genocide occurred. The Court agreed to hear exactly that claim, rejecting five of russia's six objections. It refused, however, to rule on the recognition of the “DPR/LPR” and on the “special military operation” themselves: those lie outside the Genocide Convention.",
+      uk: "Росія виправдовувала вторгнення вигаданим «геноцидом на Донбасі». Україна пішла до Міжнародного суду ООН, щоб той офіційно засвідчив: геноциду не було. Суд погодився розглядати саме це — і відхилив п'ять із шести заперечень Росії. Але вимоги визнати незаконними визнання «ДНР/ЛНР» і саму «спецоперацію» Суд розглядати відмовився: це поза межами Конвенції про геноцид.",
+      en: "Russia justified its invasion with a fabricated “genocide in Donbas”. Ukraine went to the International Court of Justice to have it put on the record that no genocide occurred. The Court agreed to hear exactly that claim, rejecting five of Russia's six objections. It refused, however, to rule on the recognition of the “DPR/LPR” and on the “special military operation” themselves: those lie outside the Genocide Convention.",
     },
     whyMatters: {
       uk: "Це перша справа в історії Суду, де держава просить визнати, що вона НЕ вчиняла геноциду — щоб вибити ґрунт з-під приводу для війни. Аргумент України підтримали 33 держави, що стало найбільшою участю третіх сторін в історії Суду. Водночас рішення окреслило межу: Конвенція про геноцид не є інструментом для оцінки застосування сили.",
@@ -249,8 +249,8 @@ export const icjGenocide: DecisionSummary = {
     {
       term: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
       def: {
-        uk: "Самопроголошені утворення на сході України, визнані росією 21 лютого 2022 року; лапки означають невизнання.",
-        en: "Self-proclaimed entities in eastern Ukraine, recognized by russia on 21 February 2022; quotation marks signal non-recognition.",
+        uk: "Самопроголошені утворення на сході України, визнані Росією 21 лютого 2022 року; лапки означають невизнання.",
+        en: "Self-proclaimed entities in eastern Ukraine, recognized by Russia on 21 February 2022; quotation marks signal non-recognition.",
       },
     },
   ],
@@ -265,7 +265,7 @@ export const icjGenocide: DecisionSummary = {
       kind: "party",
     },
     {
-      name: { uk: "російська федерація", en: "russian federation" },
+      name: { uk: "Російська Федерація", en: "Russian Federation" },
       role: {
         uk: "Відповідач. Заявила шість попередніх заперечень проти юрисдикції Суду та прийнятності позову.",
         en: "Respondent. Raised six preliminary objections to the Court's jurisdiction and the admissibility of the claim.",
@@ -333,8 +333,8 @@ export const icjGenocide: DecisionSummary = {
         en: "What does “five objections rejected, one upheld” mean?",
       },
       a: {
-        uk: "росія намагалася зупинити справу шістьма способами. П'ять спроб Суд відкинув — справа живе. Одна спрацювала: задоволене друге заперечення відсікло від розгляду вимоги (c) і (d) Меморандуму України.",
-        en: "russia tried six ways to stop the case. Five failed — the case survives. One worked: the second objection, upheld, cut submissions (c) and (d) of Ukraine's Memorial out of the case.",
+        uk: "Росія намагалася зупинити справу шістьма способами. П'ять спроб Суд відкинув — справа живе. Одна спрацювала: задоволене друге заперечення відсікло від розгляду вимоги (c) і (d) Меморандуму України.",
+        en: "Russia tried six ways to stop the case. Five failed — the case survives. One worked: the second objection, upheld, cut submissions (c) and (d) of Ukraine's Memorial out of the case.",
       },
     },
     {
@@ -372,8 +372,8 @@ export const icjGenocide: DecisionSummary = {
   related: [
     {
       label: {
-        uk: "ICSFT і CERD (Україна проти росії)",
-        en: "ICSFT and CERD (Ukraine v. russian federation)",
+        uk: "ICSFT і CERD (Україна проти Росії)",
+        en: "ICSFT and CERD (Ukraine v. Russian Federation)",
       },
       note: {
         uk: "Рішення по суті від 31 січня 2024 — за день до цього. Крим і Донбас, два інші договори.",
@@ -404,7 +404,7 @@ export const icjGenocide: DecisionSummary = {
   ],
 
   stats: [
-    { value: "6", label: { uk: "заперечень росії", en: "objections by russia" } },
+    { value: "6", label: { uk: "заперечень Росії", en: "objections by Russia" } },
     { value: "5", label: { uk: "відхилено", en: "rejected" } },
     { value: "1", label: { uk: "задоволено", en: "upheld" } },
     { value: "32", label: { uk: "держави у справі", en: "States intervening" } },
@@ -423,14 +423,14 @@ export const icjGenocide: DecisionSummary = {
        whom, while every other claim-type case did.
 
        Taken from the judgment's own party block: "between Ukraine, represented
-       by … and the russian federation, represented by …". The 32 intervening
+       by … and the Russian Federation, represented by …". The 32 intervening
        States are deliberately NOT here: they intervene under Article 63 and
        are not parties. They have their own card in «Хто є хто», and the case
        title names them, which is where the judgment names them too. */
     { label: { uk: "Заявник", en: "Applicant" }, value: { uk: "Україна", en: "Ukraine" } },
     {
       label: { uk: "Відповідач", en: "Respondent" },
-      value: { uk: "російська федерація", en: "russian federation" },
+      value: { uk: "Російська Федерація", en: "Russian Federation" },
     },
     {
       label: { uk: "Склад Суду", en: "Bench" },
@@ -508,12 +508,12 @@ export const icjGenocide: DecisionSummary = {
       iso: "2022-02-21",
       kind: "context",
       label: {
-        uk: "росія визнає «ДНР» і «ЛНР» незалежними державами",
-        en: "russia recognizes the “DPR” and “LPR” as independent States",
+        uk: "Росія визнає «ДНР» і «ЛНР» незалежними державами",
+        en: "Russia recognizes the “DPR” and “LPR” as independent States",
       },
       note: {
-        uk: "Указами свого Президента, п. Володимира Путіна, російська федерація формально визнала ДНР і ЛНР незалежними державами. У зверненні того ж дня Президент РФ заявив, зокрема, що це рішення ухвалено з огляду на тривалі напади на громади Донбасу і «вбивства мирних жителів, блокаду, знущання з людей, зокрема дітей, жінок і літніх», тоді як «так званий цивілізований світ, єдиними представниками якого проголосили себе наші західні колеги, воліє не помічати цього, наче цих жаху й геноциду, з якими стикаються майже 4 мільйони людей, не існує» (§ 30).",
-        en: "By decrees of its President, Mr Vladimir Putin, the russian federation formally recognized the DPR and LPR as independent States. In an address delivered the same day, the President of the russian federation stated, inter alia, that the decision was taken in light of continuing attacks against the Donbas communities and “[t]he killing of civilians, the blockade, the abuse of people, including children, women and the elderly”, while “the so-called civilised world, which our Western colleagues proclaimed themselves the only representatives of, prefers not to see this, as if this horror and genocide, which almost 4 million people are facing, do not exist” (§ 30).",
+        uk: "Указами свого Президента, п. Володимира Путіна, Російська Федерація формально визнала ДНР і ЛНР незалежними державами. У зверненні того ж дня Президент РФ заявив, зокрема, що це рішення ухвалено з огляду на тривалі напади на громади Донбасу і «вбивства мирних жителів, блокаду, знущання з людей, зокрема дітей, жінок і літніх», тоді як «так званий цивілізований світ, єдиними представниками якого проголосили себе наші західні колеги, воліє не помічати цього, наче цих жаху й геноциду, з якими стикаються майже 4 мільйони людей, не існує» (§ 30).",
+        en: "By decrees of its President, Mr Vladimir Putin, the Russian Federation formally recognized the DPR and LPR as independent States. In an address delivered the same day, the President of the Russian Federation stated, inter alia, that the decision was taken in light of continuing attacks against the Donbas communities and “[t]he killing of civilians, the blockade, the abuse of people, including children, women and the elderly”, while “the so-called civilised world, which our Western colleagues proclaimed themselves the only representatives of, prefers not to see this, as if this horror and genocide, which almost 4 million people are facing, do not exist” (§ 30).",
       },
     },
     {
@@ -525,8 +525,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Two “Treaties on Friendship, Cooperation and Mutual Assistance”",
       },
       note: {
-        uk: "російська федерація уклала те, що вона називає двома «договорами про дружбу, співробітництво і взаємну допомогу», — один із ДНР, другий із ЛНР. Того ж дня ДНР і ЛНР звернулися до російської федерації по військову допомогу на підставі цих «договорів» (§ 31).",
-        en: "The russian federation concluded what it refers to as two “Treaties on Friendship, Cooperation and Mutual Assistance”, one with the DPR and the other with the LPR. On the same date, the DPR and LPR requested military assistance from the russian federation pursuant to these “treaties” (§ 31).",
+        uk: "Російська Федерація уклала те, що вона називає двома «договорами про дружбу, співробітництво і взаємну допомогу», — один із ДНР, другий із ЛНР. Того ж дня ДНР і ЛНР звернулися до Російської Федерації по військову допомогу на підставі цих «договорів» (§ 31).",
+        en: "The Russian Federation concluded what it refers to as two “Treaties on Friendship, Cooperation and Mutual Assistance”, one with the DPR and the other with the LPR. On the same date, the DPR and LPR requested military assistance from the Russian Federation pursuant to these “treaties” (§ 31).",
       },
     },
     {
@@ -538,8 +538,8 @@ export const icjGenocide: DecisionSummary = {
         en: "The “special military operation” is declared",
       },
       note: {
-        uk: "О 6-й ранку за московським часом Президент російської федерації заявив, що вирішив провести в Україні «спеціальну воєнну операцію». У промові він сказав: «[в]ідповідно до статті 51 (розділ VII) Статуту ООН я ухвалив рішення провести спеціальну воєнну операцію… Її мета — захистити людей, які протягом восьми років зазнають знущань і геноциду з боку київського режиму». «Спеціальну воєнну операцію» розпочато рано вранці того ж дня (§ 31–32).",
-        en: "At 6 a.m. (Moscow time) the President of the russian federation declared that he had decided to conduct a “special military operation” in Ukraine. In his speech he stated: “[I]n accordance with Article 51 (chapter VII) of the Charter of the United Nations, I have decided to conduct a special military operation… Its purpose is to protect people who have been subjected to abuse and genocide by the Kiev regime for eight years.” The “special military operation” was launched early in the morning on the same day (§ 31–32).",
+        uk: "О 6-й ранку за московським часом Президент Російської Федерації заявив, що вирішив провести в Україні «спеціальну воєнну операцію». У промові він сказав: «[в]ідповідно до статті 51 (розділ VII) Статуту ООН я ухвалив рішення провести спеціальну воєнну операцію… Її мета — захистити людей, які протягом восьми років зазнають знущань і геноциду з боку київського режиму». «Спеціальну воєнну операцію» розпочато рано вранці того ж дня (§ 31–32).",
+        en: "At 6 a.m. (Moscow time) the President of the Russian Federation declared that he had decided to conduct a “special military operation” in Ukraine. In his speech he stated: “[I]n accordance with Article 51 (chapter VII) of the Charter of the United Nations, I have decided to conduct a special military operation… Its purpose is to protect people who have been subjected to abuse and genocide by the Kiev regime for eight years.” The “special military operation” was launched early in the morning on the same day (§ 31–32).",
       },
     },
     /* § 33, and it had been missing. The address of 24 February is on this
@@ -554,12 +554,12 @@ export const icjGenocide: DecisionSummary = {
       iso: "2022-02-24",
       kind: "filing",
       label: {
-        uk: "росія повідомляє Раду Безпеки про «самооборону» за статтею 51",
-        en: "russia notifies the United Nations of “self-defence” under Article 51",
+        uk: "Росія повідомляє Раду Безпеки про «самооборону» за статтею 51",
+        en: "Russia notifies the United Nations of “self-defence” under Article 51",
       },
       note: {
-        uk: "Листом від 24 лютого 2022 року Постійний представник російської федерації при ООН передав Генеральному секретареві ООН текст звернення Президента РФ того ж дня, пояснивши, що це звернення повідомляло громадян росії «про заходи, вжиті відповідно до статті 51 Статуту Організації Об'єднаних Націй у здійсненні права на самооборону» (§ 33; док. ООН S/2022/154).",
-        en: "By a letter dated 24 February 2022 the Permanent Representative of the russian federation to the United Nations forwarded to the Secretary-General the text of the address of the President of the russian federation of the same date, explaining that this address informed the citizens of russia “of the measures taken in accordance with Article 51 of the Charter of the United Nations in exercise of the right of self-defence” (§ 33; UN doc. S/2022/154).",
+        uk: "Листом від 24 лютого 2022 року Постійний представник Російської Федерації при ООН передав Генеральному секретареві ООН текст звернення Президента РФ того ж дня, пояснивши, що це звернення повідомляло громадян Росії «про заходи, вжиті відповідно до статті 51 Статуту Організації Об'єднаних Націй у здійсненні права на самооборону» (§ 33; док. ООН S/2022/154).",
+        en: "By a letter dated 24 February 2022 the Permanent Representative of the Russian Federation to the United Nations forwarded to the Secretary-General the text of the address of the President of the Russian Federation of the same date, explaining that this address informed the citizens of Russia “of the measures taken in accordance with Article 51 of the Charter of the United Nations in exercise of the right of self-defence” (§ 33; UN doc. S/2022/154).",
       },
     },
     {
@@ -571,8 +571,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Ukraine files its Application",
       },
       note: {
-        uk: "МЗС України оприлюднило заяву, у якій викрило «неправдиві й образливі звинувачення росії у геноциді як привід для незаконної воєнної агресії проти України»: «Україна рішуче заперечує звинувачення росії у геноциді й відкидає будь-які спроби використати такі маніпулятивні звинувачення як виправдання своєї незаконної агресії. Злочин геноциду визначено в Конвенції про геноцид, і за цією Конвенцією твердження росії безпідставні й абсурдні». Того ж дня, за кілька годин після заяви, Україна подала позовну заяву до Суду разом із запитом про вжиття тимчасових заходів (§ 34–35).",
-        en: "Ukraine's Ministry of Foreign Affairs issued a statement denouncing “russia's false and offensive allegations of genocide as a pretext for its unlawful military aggression against Ukraine”: “Ukraine resolutely denies russia's allegations of genocide and rejects any attempt to use such manipulative allegations as an excuse for its unlawful aggression. The crime of genocide is defined in the Genocide Convention, and under that Convention, russia's claims are baseless and absurd.” The same day, a few hours after the statement, Ukraine filed its Application before the Court together with a Request for the indication of provisional measures (§ 34–35).",
+        uk: "МЗС України оприлюднило заяву, у якій викрило «неправдиві й образливі звинувачення Росії у геноциді як привід для незаконної воєнної агресії проти України»: «Україна рішуче заперечує звинувачення Росії у геноциді й відкидає будь-які спроби використати такі маніпулятивні звинувачення як виправдання своєї незаконної агресії. Злочин геноциду визначено в Конвенції про геноцид, і за цією Конвенцією твердження Росії безпідставні й абсурдні». Того ж дня, за кілька годин після заяви, Україна подала позовну заяву до Суду разом із запитом про вжиття тимчасових заходів (§ 34–35).",
+        en: "Ukraine's Ministry of Foreign Affairs issued a statement denouncing “Russia's false and offensive allegations of genocide as a pretext for its unlawful military aggression against Ukraine”: “Ukraine resolutely denies Russia's allegations of genocide and rejects any attempt to use such manipulative allegations as an excuse for its unlawful aggression. The crime of genocide is defined in the Genocide Convention, and under that Convention, Russia's claims are baseless and absurd.” The same day, a few hours after the statement, Ukraine filed its Application before the Court together with a Request for the indication of provisional measures (§ 34–35).",
       },
     },
     {
@@ -580,12 +580,12 @@ export const icjGenocide: DecisionSummary = {
       iso: "2022-03-07",
       track: "provisional",
       label: {
-        uk: "Слухання щодо тимчасових заходів — росія не з'явилася",
-        en: "Hearing on provisional measures — russia does not appear",
+        uk: "Слухання щодо тимчасових заходів — Росія не з'явилася",
+        en: "Hearing on provisional measures — Russia does not appear",
       },
       note: {
         uk: "Посол РФ повідомив листом від 5 березня, що його уряд вирішив не брати участі. Одразу після закриття слухання він передав документ про «відсутність юрисдикції Суду» (§ 8–9).",
-        en: "By a letter of 5 March the russian Ambassador stated that his Government had decided not to participate. Shortly after the hearing closed he transmitted a document on “the lack of jurisdiction of the Court” (§ 8–9).",
+        en: "By a letter of 5 March the Russian Ambassador stated that his Government had decided not to participate. Shortly after the hearing closed he transmitted a document on “the lack of jurisdiction of the Court” (§ 8–9).",
       },
     },
     {
@@ -598,8 +598,8 @@ export const icjGenocide: DecisionSummary = {
         en: "The Court indicates provisional measures",
       },
       note: {
-        uk: "13 голосами проти 2: «російська федерація повинна негайно призупинити воєнні операції, які вона розпочала 24 лютого 2022 року на території України». Другий захід — тим самим складом голосів — поширив це на підконтрольні їй формування; третій, одностайний, зобов'язав обидві сторони не поглиблювати спір (§ 10; наказ, § 86).",
-        en: "By thirteen votes to two: “The russian federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine.” The second measure, on the same split, extended that to units it directs or supports; the third, unanimous, bound both Parties not to aggravate the dispute (§ 10; the Order, § 86).",
+        uk: "13 голосами проти 2: «Російська Федерація повинна негайно призупинити воєнні операції, які вона розпочала 24 лютого 2022 року на території України». Другий захід — тим самим складом голосів — поширив це на підконтрольні їй формування; третій, одностайний, зобов'язав обидві сторони не поглиблювати спір (§ 10; наказ, § 86).",
+        en: "By thirteen votes to two: “The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine.” The second measure, on the same split, extended that to units it directs or supports; the third, unanimous, bound both Parties not to aggravate the dispute (§ 10; the Order, § 86).",
       },
     },
     {
@@ -633,8 +633,8 @@ export const icjGenocide: DecisionSummary = {
       kind: "filing",
       track: "objections",
       label: {
-        uk: "росія заявляє шість попередніх заперечень",
-        en: "russia raises six preliminary objections",
+        uk: "Росія заявляє шість попередніх заперечень",
+        en: "Russia raises six preliminary objections",
       },
       note: {
         uk: "Розгляд по суті зупинено. Наказом від 7 жовтня 2022 року Суд дав Україні строк до 3 лютого 2023 року на письмову заяву із зауваженнями — вона подала її вчасно (§ 13).",
@@ -702,8 +702,8 @@ export const icjGenocide: DecisionSummary = {
       kind: "filing",
       track: "merits",
       label: {
-        uk: "росія подає Контрмеморандум із зустрічними вимогами",
-        en: "russia files a Counter-Memorial containing counter-claims",
+        uk: "Росія подає Контрмеморандум із зустрічними вимогами",
+        en: "Russia files a Counter-Memorial containing counter-claims",
       },
       note: {
         uk: "Україна заперечила проти прийнятності зустрічних вимог; Суд запропонував сторонам викласти свої позиції до 20 травня і 22 вересня 2025 року (прес-реліз 2025/5).",
@@ -716,12 +716,12 @@ export const icjGenocide: DecisionSummary = {
       kind: "order",
       track: "merits",
       label: {
-        uk: "Зустрічні вимоги росії визнано прийнятними як такі",
-        en: "russia's counter-claims held admissible as such",
+        uk: "Зустрічні вимоги Росії визнано прийнятними як такі",
+        en: "Russia's counter-claims held admissible as such",
       },
       note: {
-        uk: "11 голосами проти 4. Тим самим наказом, одностайно, Суд дозволив Україні подати Репліку до 7 грудня 2026 року, а росії — Дуплік до 7 грудня 2027 року. До наказу додано сім окремих і особливих думок та заяв (наказ, § 68; прес-реліз 2025/55).",
-        en: "By eleven votes to four. By the same Order, unanimously, the Court authorized Ukraine to submit a Reply by 7 December 2026 and russia a Rejoinder by 7 December 2027. Seven separate and dissenting opinions and declarations are appended to it (the Order, § 68; press release 2025/55).",
+        uk: "11 голосами проти 4. Тим самим наказом, одностайно, Суд дозволив Україні подати Репліку до 7 грудня 2026 року, а Росії — Дуплік до 7 грудня 2027 року. До наказу додано сім окремих і особливих думок та заяв (наказ, § 68; прес-реліз 2025/55).",
+        en: "By eleven votes to four. By the same Order, unanimously, the Court authorized Ukraine to submit a Reply by 7 December 2026 and Russia a Rejoinder by 7 December 2027. Seven separate and dissenting opinions and declarations are appended to it (the Order, § 68; press release 2025/55).",
       },
     },
   ],
@@ -759,7 +759,7 @@ export const icjGenocide: DecisionSummary = {
      One open question for the researchers, deliberately not answered here.
      § 178 of the Memorial has five submissions, (a)-(e); this matrix carries
      three. (a) is the request that the Court declare it has jurisdiction, which
-     the dispositif answers at (8). (e) — that russia breached the Order of
+     the dispositif answers at (8). (e) — that Russia breached the Order of
      16 March 2022 — the judgment never touches: § 55 defines the second aspect
      of the dispute as (c) and (d) only, and no paragraph of the judgment
      mentions submission (e). Adding either row would change the denominator the
@@ -776,8 +776,8 @@ export const icjGenocide: DecisionSummary = {
     {
       track: "Genocide Convention",
       claim: {
-        uk: "(c) Застосування росією сили в Україні та проти України, розпочате 24 лютого 2022 року, порушує статті I і IV Конвенції",
-        en: "(c) The russian federation's use of force in and against Ukraine beginning on 24 February 2022 violates Articles I and IV of the Genocide Convention",
+        uk: "(c) Застосування Росією сили в Україні та проти України, розпочате 24 лютого 2022 року, порушує статті I і IV Конвенції",
+        en: "(c) The Russian Federation's use of force in and against Ukraine beginning on 24 February 2022 violates Articles I and IV of the Genocide Convention",
       },
       outcome: "not-decided",
       outcomeLabel: {
@@ -788,8 +788,8 @@ export const icjGenocide: DecisionSummary = {
     {
       track: "Genocide Convention",
       claim: {
-        uk: "(d) Визнання росією незалежності «ДНР» і «ЛНР» 21 лютого 2022 року порушує статті I і IV Конвенції",
-        en: "(d) The russian federation's recognition of the independence of the so-called “DPR” and “LPR” on 21 February 2022 violates Articles I and IV of the Genocide Convention",
+        uk: "(d) Визнання Росією незалежності «ДНР» і «ЛНР» 21 лютого 2022 року порушує статті I і IV Конвенції",
+        en: "(d) The Russian Federation's recognition of the independence of the so-called “DPR” and “LPR” on 21 February 2022 violates Articles I and IV of the Genocide Convention",
       },
       outcome: "not-decided",
       outcomeLabel: {
@@ -862,10 +862,10 @@ export const icjGenocide: DecisionSummary = {
   },
 
   objections: {
-    heading: { uk: "Шість заперечень росії", en: "russia's six objections" },
+    heading: { uk: "Шість заперечень Росії", en: "Russia's six objections" },
     note: {
-      uk: "росія намагалася зупинити справу шістьма способами; п'ять Суд відхилив. Тексти заперечень наведено за самері, підрахунки голосів — за резолютивною частиною рішення, якої самері не відтворює. Натисніть картку, щоб побачити позицію Суду.",
-      en: "russia tried six ways to stop the case; the Court rejected five. The objections are quoted from the summary; the tallies come from the operative clause, which the summary does not reproduce. Tap a card for the Court's position.",
+      uk: "Росія намагалася зупинити справу шістьма способами; п'ять Суд відхилив. Тексти заперечень наведено за самері, підрахунки голосів — за резолютивною частиною рішення, якої самері не відтворює. Натисніть картку, щоб побачити позицію Суду.",
+      en: "Russia tried six ways to stop the case; the Court rejected five. The objections are quoted from the summary; the tallies come from the operative clause, which the summary does not reproduce. Tap a card for the Court's position.",
     },
     benchSize: 16,
     items: [
@@ -891,7 +891,7 @@ export const icjGenocide: DecisionSummary = {
         },
         outcome: "upheld",
         reasoning: {
-          uk: "Єдине заперечення, яке спрацювало. Дії, у яких Україна звинувачує росію, «з якого боку на них не дивитися», не здатні становити порушення статей I і IV Конвенції, тож вимоги (c) і (d) § 178 Меморандуму випадають зі справи (§ 147).",
+          uk: "Єдине заперечення, яке спрацювало. Дії, у яких Україна звинувачує Росію, «з якого боку на них не дивитися», не здатні становити порушення статей I і IV Конвенції, тож вимоги (c) і (d) § 178 Меморандуму випадають зі справи (§ 147).",
           en: "The one objection that worked. The acts Ukraine complains of, “from whichever point of view they are considered”, are not capable of constituting violations of Articles I and IV, so submissions (c) and (d) of § 178 of the Memorial fall out of the case (§ 147).",
         },
         votes: [
@@ -956,8 +956,8 @@ export const icjGenocide: DecisionSummary = {
         },
         outcome: "rejected",
         reasoning: {
-          uk: "Суд не знайшов виняткових обставин, які виправдали б відмову у розгляді на цій підставі; на підтримку третього аргументу росія спиралася виключно на поведінку й заяви держав, що вступили у справу (§ 117–118).",
-          en: "The Court found no exceptional circumstances that would justify rejecting the claim on this ground; in support of its third argument russia relied exclusively on the conduct and statements of the intervening States (§ 117–118).",
+          uk: "Суд не знайшов виняткових обставин, які виправдали б відмову у розгляді на цій підставі; на підтримку третього аргументу Росія спиралася виключно на поведінку й заяви держав, що вступили у справу (§ 117–118).",
+          en: "The Court found no exceptional circumstances that would justify rejecting the claim on this ground; in support of its third argument Russia relied exclusively on the conduct and statements of the intervening States (§ 117–118).",
         },
         votes: [{ for: 15, against: 1 }],
       },
@@ -968,15 +968,15 @@ export const icjGenocide: DecisionSummary = {
     {
       term: { uk: "Один спір — два аспекти", en: "One dispute, two aspects" },
       ruling: {
-        uk: "Суд розділив вимогу України надвоє (§ 53–57). Перший аспект — прохання визнати, що Україна «не вчиняла геноциду»; лише він відповідає ознакам спору за статтею IX. Другий — прохання визнати незаконними дії росії; ним Україна порушує питання міжнародної відповідальності, і його Суд розглядати не має права.",
-        en: "The Court split Ukraine's claim in two (§ 53–57). The first aspect — the request to find that Ukraine “has not committed genocide” — alone answers to a dispute under Article IX. The second — the request to find russia's conduct unlawful — invokes State responsibility, and the Court has no jurisdiction over it.",
+        uk: "Суд розділив вимогу України надвоє (§ 53–57). Перший аспект — прохання визнати, що Україна «не вчиняла геноциду»; лише він відповідає ознакам спору за статтею IX. Другий — прохання визнати незаконними дії Росії; ним Україна порушує питання міжнародної відповідальності, і його Суд розглядати не має права.",
+        en: "The Court split Ukraine's claim in two (§ 53–57). The first aspect — the request to find that Ukraine “has not committed genocide” — alone answers to a dispute under Article IX. The second — the request to find Russia's conduct unlawful — invokes State responsibility, and the Court has no jurisdiction over it.",
       },
     },
     {
       term: { uk: "Межа Конвенції про геноцид", en: "The limit of the Convention" },
       ruling: {
-        uk: "Застосування сили з 24 лютого 2022 року й визнання «ДНР/ЛНР» лежать поза Конвенцією про геноцид: вони є зовнішніми щодо неї й регулюються іншими нормами міжнародного права (§ 147). Суд додав, що це не залежить від того, чи дії росії справді доведені: навіть якби їх було доведено повністю, вони не здатні становити порушення статей I і IV (§ 139).",
-        en: "The use of force since 24 February 2022 and the recognition of the “DPR/LPR” lie outside the Genocide Convention: they are extrinsic to it and governed by other rules of international law (§ 147). The Court added that this does not turn on whether russia's acts are made out: even assuming they were fully established, they could not constitute violations of Articles I and IV (§ 139).",
+        uk: "Застосування сили з 24 лютого 2022 року й визнання «ДНР/ЛНР» лежать поза Конвенцією про геноцид: вони є зовнішніми щодо неї й регулюються іншими нормами міжнародного права (§ 147). Суд додав, що це не залежить від того, чи дії Росії справді доведені: навіть якби їх було доведено повністю, вони не здатні становити порушення статей I і IV (§ 139).",
+        en: "The use of force since 24 February 2022 and the recognition of the “DPR/LPR” lie outside the Genocide Convention: they are extrinsic to it and governed by other rules of international law (§ 147). The Court added that this does not turn on whether Russia's acts are made out: even assuming they were fully established, they could not constitute violations of Articles I and IV (§ 139).",
       },
     },
     {
@@ -1005,8 +1005,8 @@ export const icjGenocide: DecisionSummary = {
       areas: ["east"],
       // the only theatre sits level with Kyiv — drop the label below the zones
       summary: {
-        uk: "Саме тут, за твердженням росії, стався «геноцид», що став приводом для вторгнення. Україна просить Суд встановити, що жодних актів геноциду тут вчинено не було.",
-        en: "This is where russia claims a “genocide” took place — the stated pretext for the invasion. Ukraine asks the Court to find that no acts of genocide were committed here.",
+        uk: "Саме тут, за твердженням Росії, стався «геноцид», що став приводом для вторгнення. Україна просить Суд встановити, що жодних актів геноциду тут вчинено не було.",
+        en: "This is where Russia claims a “genocide” took place — the stated pretext for the invasion. Ukraine asks the Court to find that no acts of genocide were committed here.",
       },
     },
   ],
@@ -1015,7 +1015,7 @@ export const icjGenocide: DecisionSummary = {
     {
       url: "https://www.ejiltalk.org/icj-delivers-preliminary-objections-judgment-in-the-ukraine-v-russia-genocide-case-ukraine-loses-on-the-most-important-aspects/",
       title:
-        "ICJ Delivers Preliminary Objections Judgment in the Ukraine v. russia Genocide Case, Ukraine Loses on the Most Important Aspects",
+        "ICJ Delivers Preliminary Objections Judgment in the Ukraine v. Russia Genocide Case, Ukraine Loses on the Most Important Aspects",
       authors: "Marko Milanovic",
       publication: "EJIL: Talk!",
       date: "2 February 2024",
@@ -1024,7 +1024,7 @@ export const icjGenocide: DecisionSummary = {
     {
       url: "https://verfassungsblog.de/the-curious-fate-of-the-false-claim-of-genocide/",
       title:
-        "The Curious Fate of the False Claim of Genocide: On the ICJ's Preliminary Objections Judgment in Ukraine v. russia and Beyond",
+        "The Curious Fate of the False Claim of Genocide: On the ICJ's Preliminary Objections Judgment in Ukraine v. Russia and Beyond",
       authors: "Iryna Marchuk, Aloka Wanigasuriya",
       publication: "Verfassungsblog",
       date: "24 February 2024",
@@ -1033,7 +1033,7 @@ export const icjGenocide: DecisionSummary = {
     {
       url: "https://www.ejiltalk.org/human-rights-reparations-and-fact-finding-quandaries-in-the-2024-icj-judgments-in-ukraine-v-russian-federation/",
       title:
-        "Human Rights, Reparations and Fact-Finding Quandaries in the 2024 ICJ Judgments in Ukraine v. russian federation",
+        "Human Rights, Reparations and Fact-Finding Quandaries in the 2024 ICJ Judgments in Ukraine v. Russian Federation",
       authors: "",
       publication: "EJIL: Talk!",
       date: "2024",
@@ -1042,7 +1042,7 @@ export const icjGenocide: DecisionSummary = {
     {
       url: "https://opiniojuris.org/2026/02/24/icjs-recent-order-in-ukraine-v-russia-genocide-case-declaratory-relief-asymmetric-counter-claims-and-direct-connection-requirement/",
       title:
-        "ICJ's Recent Order in Ukraine v. russia Genocide Case: Declaratory Relief, Asymmetric Counter-Claims and Direct Connection Requirement",
+        "ICJ's Recent Order in Ukraine v. Russia Genocide Case: Declaratory Relief, Asymmetric Counter-Claims and Direct Connection Requirement",
       authors: "",
       publication: "Opinio Juris",
       date: "24 February 2026",

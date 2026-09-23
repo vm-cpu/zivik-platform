@@ -3,7 +3,7 @@ import verbatim from "./oschadbank.verbatim.json";
 import verbatimUk from "./oschadbank.uk.json";
 
 /**
- * JSC Oschadbank v. The russian federation, PCA Case No. 2016-14,
+ * JSC Oschadbank v. The Russian Federation, PCA Case No. 2016-14,
  * Award of 26 November 2018.
  *
  * `verbatim` holds the summary prose exactly as ingested from the source
@@ -51,8 +51,8 @@ export const oschadbank: DecisionSummary = {
      resumed and is pending. Do not soften or restate that line by guesswork —
      read 24/05331 and 24/16339 first, then say what they held. */
   title: {
-    uk: "Ощадбанк проти російської федерації",
-    en: "JSC Oschadbank v. the russian federation",
+    uk: "Ощадбанк проти Російської Федерації",
+    en: "JSC Oschadbank v. the Russian Federation",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
@@ -60,7 +60,7 @@ export const oschadbank: DecisionSummary = {
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
     official:
-      "Арбітраж за Угодою між Урядом російської федерації та Кабінетом Міністрів України про заохочення та взаємний захист інвестицій від 27 листопада 1998 року і за Арбітражним регламентом ЮНСІТРАЛ 1976 року",
+      "Арбітраж за Угодою між Урядом Російської Федерації та Кабінетом Міністрів України про заохочення та взаємний захист інвестицій від 27 листопада 1998 року і за Арбітражним регламентом ЮНСІТРАЛ 1976 року",
     judgment: "Арбітражне рішення від 26 листопада 2018",
   },
 
@@ -79,12 +79,12 @@ export const oschadbank: DecisionSummary = {
 
   plain: {
     tldr: {
-      uk: "Ощадбанк — державний банк України — до 2014 року мав у Криму 294 відділення. Після анексії російські закони й Банк росії зробили роботу банку неможливою, а його активи перейшли під управління російського фонду. Арбітраж у Парижі визнав це незаконною експропріацією і присудив банку понад 1,1 млрд доларів. росія в процесі не брала участі й досі не заплатила.",
-      en: "Oschadbank is Ukraine's state savings bank. Until 2014 it ran 294 outlets in Crimea. After the annexation, russian law and the Bank of russia made the business impossible to run, and a russian fund took over its assets. A tribunal sitting in Paris found this to be an unlawful expropriation and awarded the bank more than USD 1.1 billion. russia did not take part in the arbitration and has not paid.",
+      uk: "Ощадбанк — державний банк України — до 2014 року мав у Криму 294 відділення. Після анексії російські закони й Банк Росії зробили роботу банку неможливою, а його активи перейшли під управління російського фонду. Арбітраж у Парижі визнав це незаконною експропріацією і присудив банку понад 1,1 млрд доларів. Росія в процесі не брала участі й досі не заплатила.",
+      en: "Oschadbank is Ukraine's state savings bank. Until 2014 it ran 294 outlets in Crimea. After the annexation, Russian law and the Bank of Russia made the business impossible to run, and a Russian fund took over its assets. A tribunal sitting in Paris found this to be an unlawful expropriation and awarded the bank more than USD 1.1 billion. Russia did not take part in the arbitration and has not paid.",
     },
     whyMatters: {
       uk: "Це один із перших «кримських» арбітражів, який пройшов повну перевірку в судах Франції та дійшов до стадії стягнення. Він показує робочу схему: інвестиційний договір 1998 року застосовується до Криму за критерієм фактичного контролю, а рішення можна виконувати за рахунок російських активів за кордоном.",
-      en: "This is one of the first Crimea expropriation awards to survive full set-aside review and reach enforcement. It shows a working route: the 1998 investment treaty applies to Crimea on an effective-control test, and the award can be enforced against russian state assets abroad.",
+      en: "This is one of the first Crimea expropriation awards to survive full set-aside review and reach enforcement. It shows a working route: the 1998 investment treaty applies to Crimea on an effective-control test, and the award can be enforced against Russian state assets abroad.",
     },
   },
 
@@ -92,8 +92,8 @@ export const oschadbank: DecisionSummary = {
     {
       term: { uk: "ДІД (BIT)", en: "BIT" },
       def: {
-        uk: "Двосторонній інвестиційний договір — угода двох держав про захист інвестицій їхніх компаній. Тут: угода Україна–росія від 27 листопада 1998 року.",
-        en: "Bilateral investment treaty — an agreement between two States protecting each other's investors. Here: the Ukraine–russia treaty of 27 November 1998.",
+        uk: "Двосторонній інвестиційний договір — угода двох держав про захист інвестицій їхніх компаній. Тут: угода Україна–Росія від 27 листопада 1998 року.",
+        en: "Bilateral investment treaty — an agreement between two States protecting each other's investors. Here: the Ukraine–Russia treaty of 27 November 1998.",
       },
     },
     {
@@ -157,7 +157,7 @@ export const oschadbank: DecisionSummary = {
       kind: "party",
     },
     {
-      name: { uk: "російська федерація", en: "russian federation" },
+      name: { uk: "Російська Федерація", en: "Russian Federation" },
       role: {
         uk: "Відповідач. Участі в арбітражі не брала — лише оспорила юрисдикцію листами.",
         en: "Respondent. It did not take part in the arbitration, beyond letters contesting jurisdiction.",
@@ -173,10 +173,10 @@ export const oschadbank: DecisionSummary = {
       kind: "court",
     },
     {
-      name: { uk: "Банк росії", en: "Bank of russia" },
+      name: { uk: "Банк Росії", en: "Bank of Russia" },
       role: {
         uk: "Центральний банк РФ. 26 травня 2014 року заборонив філії банківську діяльність у Криму.",
-        en: "russia's central bank. On 26 May 2014 it barred the branch from banking activity in Crimea.",
+        en: "Russia's central bank. On 26 May 2014 it barred the branch from banking activity in Crimea.",
       },
       kind: "actor",
     },
@@ -184,7 +184,7 @@ export const oschadbank: DecisionSummary = {
       name: { uk: "Фонд захисту вкладників (ФЗВ)", en: "Depositor Protection Fund" },
       role: {
         uk: "Створений російським законом; виплачував вкладникам, перебрав управління активами банку і подавав до нього регресні вимоги.",
-        en: "Created by russian law; it paid out depositors, took over the bank's assets and pursued recourse claims against it.",
+        en: "Created by Russian law; it paid out depositors, took over the bank's assets and pursued recourse claims against it.",
       },
       kind: "actor",
     },
@@ -216,17 +216,17 @@ export const oschadbank: DecisionSummary = {
          hedged or recomputed. See the note in `amounts.figures` below. */
       a: {
         uk: "Добровільно — ні. Стягнення йде через арешт російських державних активів за кордоном: у квітні 2025 року у Франції заарештовано майна приблизно на 87 млн євро. Процедура визнання рішення у США триває.",
-        en: "Not voluntarily. Recovery runs through attaching russian state assets abroad: in April 2025 about EUR 87 million of property was seized in France. Confirmation proceedings in the United States are pending.",
+        en: "Not voluntarily. Recovery runs through attaching Russian state assets abroad: in April 2025 about EUR 87 million of property was seized in France. Confirmation proceedings in the United States are pending.",
       },
     },
     {
       q: {
         uk: "Чи означає рішення, що Крим — російський?",
-        en: "Does the award say Crimea is russian?",
+        en: "Does the award say Crimea is Russian?",
       },
       a: {
-        uk: "Ні. Арбітраж прямо відмовився висловлюватися про суверенітет. Він вирішував інше питання: хто з двох держав ніс договірні обов'язки перед інвесторами в Криму після березня 2014 року. Відповідь — росія, бо вона мала фактичний контроль. Це працює проти неї, а не на її користь.",
-        en: "No. The tribunal expressly declined to comment on sovereignty. It answered a different question: which of the two States owed treaty obligations to investors in Crimea after March 2014. The answer was russia, because it had effective control — which cuts against russia, not for it.",
+        uk: "Ні. Арбітраж прямо відмовився висловлюватися про суверенітет. Він вирішував інше питання: хто з двох держав ніс договірні обов'язки перед інвесторами в Криму після березня 2014 року. Відповідь — Росія, бо вона мала фактичний контроль. Це працює проти неї, а не на її користь.",
+        en: "No. The tribunal expressly declined to comment on sovereignty. It answered a different question: which of the two States owed treaty obligations to investors in Crimea after March 2014. The answer was Russia, because it had effective control — which cuts against Russia, not for it.",
       },
     },
     {
@@ -235,25 +235,25 @@ export const oschadbank: DecisionSummary = {
         en: "Why did French courts get involved?",
       },
       a: {
-        uk: "Місцем арбітражу був Париж, тож заяву росії про скасування рішення розглядали суди Франції. Апеляційний суд Парижа скасував рішення у 2021 році, Касаційний суд це скасування відмінив у 2022-му, і 1 липня 2025 року апеляційний суд відхилив усі заперечення росії.",
-        en: "The seat of the arbitration was Paris, so russia's set-aside application went to the French courts. The Paris Court of Appeal annulled the award in 2021, the Cour de cassation reversed that annulment in 2022, and on 1 July 2025 the Court of Appeal rejected all of russia's grounds.",
+        uk: "Місцем арбітражу був Париж, тож заяву Росії про скасування рішення розглядали суди Франції. Апеляційний суд Парижа скасував рішення у 2021 році, Касаційний суд це скасування відмінив у 2022-му, і 1 липня 2025 року апеляційний суд відхилив усі заперечення Росії.",
+        en: "The seat of the arbitration was Paris, so Russia's set-aside application went to the French courts. The Paris Court of Appeal annulled the award in 2021, the Cour de cassation reversed that annulment in 2022, and on 1 July 2025 the Court of Appeal rejected all of Russia's grounds.",
       },
     },
     {
       q: { uk: "Що далі?", en: "What happens next?" },
       a: {
-        uk: "Два напрями. Перший — стягнення: рішення остаточне у Франції, тривають процедури у Франції та США. Другий — новий спір: 24 липня 2025 року Ощадбанк повідомив росію про претензії за тим самим договором щодо втрат на Донеччині, Луганщині, Херсонщині та Запоріжжі. Це окрема справа, рішення в ній ще немає.",
-        en: "Two tracks. Enforcement: the award is final in France, and proceedings continue in France and the United States. And a new claim: on 24 July 2025 Oschadbank notified russia of a dispute under the same treaty over losses in Donetsk, Luhansk, Kherson and Zaporizhzhia. That is a separate case, with no ruling yet.",
+        uk: "Два напрями. Перший — стягнення: рішення остаточне у Франції, тривають процедури у Франції та США. Другий — новий спір: 24 липня 2025 року Ощадбанк повідомив Росію про претензії за тим самим договором щодо втрат на Донеччині, Луганщині, Херсонщині та Запоріжжі. Це окрема справа, рішення в ній ще немає.",
+        en: "Two tracks. Enforcement: the award is final in France, and proceedings continue in France and the United States. And a new claim: on 24 July 2025 Oschadbank notified Russia of a dispute under the same treaty over losses in Donetsk, Luhansk, Kherson and Zaporizhzhia. That is a separate case, with no ruling yet.",
       },
     },
     {
       q: {
-        uk: "Чому росія не брала участі в арбітражі?",
-        en: "Why did russia not take part?",
+        uk: "Чому Росія не брала участі в арбітражі?",
+        en: "Why did Russia not take part?",
       },
       a: {
-        uk: "росія заперечувала юрисдикцію арбітражу і обмежилася листами. Стаття 28 Регламенту ЮНСІТРАЛ дозволяє арбітражу розглянути справу за наявними доказами. Арбітраж зазначив, що через неявку відповідача мав «більший, ніж зазвичай, обов'язок» ретельно перевірити доказову базу.",
-        en: "russia denied the tribunal's jurisdiction and confined itself to letters. Article 28 of the UNCITRAL Rules lets a tribunal proceed on the evidence before it. The tribunal noted that the non-appearance placed on it “a heavier than usual obligation” to test that evidence.",
+        uk: "Росія заперечувала юрисдикцію арбітражу і обмежилася листами. Стаття 28 Регламенту ЮНСІТРАЛ дозволяє арбітражу розглянути справу за наявними доказами. Арбітраж зазначив, що через неявку відповідача мав «більший, ніж зазвичай, обов'язок» ретельно перевірити доказову базу.",
+        en: "Russia denied the tribunal's jurisdiction and confined itself to letters. Article 28 of the UNCITRAL Rules lets a tribunal proceed on the evidence before it. The tribunal noted that the non-appearance placed on it “a heavier than usual obligation” to test that evidence.",
       },
     },
     {
@@ -293,7 +293,7 @@ export const oschadbank: DecisionSummary = {
       abbr: "BIT",
       name: {
         uk: "Угода між Урядом РФ і Кабінетом Міністрів України про заохочення та взаємний захист інвестицій",
-        en: "Agreement between the Government of the russian federation and the Cabinet of Ministers of Ukraine on the Encouragement and Mutual Protection of Investments",
+        en: "Agreement between the Government of the Russian Federation and the Cabinet of Ministers of Ukraine on the Encouragement and Mutual Protection of Investments",
       },
       year: 1998,
       url: "https://investmentpolicy.unctad.org/international-investment-agreements/treaties/bilateral-investment-treaties/2907/russian-federation---ukraine-bit-1998-",
@@ -321,7 +321,7 @@ export const oschadbank: DecisionSummary = {
     },
     {
       value: { uk: "€87 млн", en: "€87M" },
-      label: { uk: "активів РФ арештовано у Франції", en: "russian assets seized in France" },
+      label: { uk: "активів РФ арештовано у Франції", en: "Russian assets seized in France" },
     },
     {
       value: { uk: "3 з 3", en: "3 of 3" },
@@ -333,7 +333,7 @@ export const oschadbank: DecisionSummary = {
     { label: { uk: "Позивач", en: "Claimant" }, value: { uk: "АТ «Ощадбанк»", en: "JSC Oschadbank" } },
     {
       label: { uk: "Відповідач", en: "Respondent" },
-      value: { uk: "російська федерація", en: "russian federation" },
+      value: { uk: "Російська Федерація", en: "Russian Federation" },
     },
     {
       label: { uk: "Установа", en: "Institution" },
@@ -365,8 +365,8 @@ export const oschadbank: DecisionSummary = {
       track: "background",
       kind: "context",
       label: {
-        uk: "росія й Україна підписують інвестиційний договір",
-        en: "russia and Ukraine sign a bilateral investment treaty",
+        uk: "Росія й Україна підписують інвестиційний договір",
+        en: "Russia and Ukraine sign a bilateral investment treaty",
       },
       note: {
         uk: "Той самий договір через два десятиліття стане підставою позову. Він набув чинності 27 січня 2000 року.",
@@ -379,8 +379,8 @@ export const oschadbank: DecisionSummary = {
       track: "background",
       kind: "context",
       label: {
-        uk: "росія встановлює контроль над Кримом",
-        en: "russia takes control of Crimea",
+        uk: "Росія встановлює контроль над Кримом",
+        en: "Russia takes control of Crimea",
       },
       note: {
         uk: "Від присутності військових наприкінці лютого до федеральних законів про приєднання 21 березня 2014 року.",
@@ -407,8 +407,8 @@ export const oschadbank: DecisionSummary = {
       track: "background",
       kind: "context",
       label: {
-        uk: "Банк росії забороняє діяльність кримської філії",
-        en: "The Bank of russia bars the Crimean branch",
+        uk: "Банк Росії забороняє діяльність кримської філії",
+        en: "The Bank of Russia bars the Crimean branch",
       },
       note: {
         uk: "Через три дні суд у Сімферополі передав усі активи банку під управління Фонду захисту вкладників.",
@@ -421,8 +421,8 @@ export const oschadbank: DecisionSummary = {
       track: "arbitration",
       kind: "filing",
       label: {
-        uk: "Ощадбанк повідомляє росію про спір",
-        en: "Oschadbank notifies russia of the dispute",
+        uk: "Ощадбанк повідомляє Росію про спір",
+        en: "Oschadbank notifies Russia of the dispute",
       },
       note: {
         uk: "Стаття 9(1) договору вимагає спробувати домовитися, перш ніж іти в арбітраж.",
@@ -436,8 +436,8 @@ export const oschadbank: DecisionSummary = {
       kind: "filing",
       label: { uk: "Початок арбітражу", en: "The arbitration begins" },
       note: {
-        uk: "Вручено повідомлення про арбітраж. росія юрисдикцію заперечила, але участі не взяла.",
-        en: "The Notice of Arbitration is served. russia contested jurisdiction but never appeared.",
+        uk: "Вручено повідомлення про арбітраж. Росія юрисдикцію заперечила, але участі не взяла.",
+        en: "The Notice of Arbitration is served. Russia contested jurisdiction but never appeared.",
       },
     },
     {
@@ -446,12 +446,12 @@ export const oschadbank: DecisionSummary = {
       track: "arbitration",
       kind: "filing",
       label: {
-        uk: "Єдине змістовне звернення росії",
-        en: "russia's only substantive communication",
+        uk: "Єдине змістовне звернення Росії",
+        en: "Russia's only substantive communication",
       },
       note: {
-        uk: "Лист через посла в Гаазі: активи Ощадбанку — не «інвестиція» за договором. Більше росія у справі не озвалася.",
-        en: "A letter through its ambassador in The Hague: Oschadbank's assets are not an “investment” under the treaty. russia said nothing further.",
+        uk: "Лист через посла в Гаазі: активи Ощадбанку — не «інвестиція» за договором. Більше Росія у справі не озвалася.",
+        en: "A letter through its ambassador in The Hague: Oschadbank's assets are not an “investment” under the treaty. Russia said nothing further.",
       },
     },
     {
@@ -485,8 +485,8 @@ export const oschadbank: DecisionSummary = {
       track: "arbitration",
       kind: "judgment",
       label: {
-        uk: "Рішення: росія має сплатити понад 1,1 млрд доларів",
-        en: "Final award: russia ordered to pay over USD 1.1 billion",
+        uk: "Рішення: Росія має сплатити понад 1,1 млрд доларів",
+        en: "Final award: Russia ordered to pay over USD 1.1 billion",
       },
       note: {
         uk: "Арбітраж підтвердив свою юрисдикцію і визнав незаконну експропріацію інвестицій банку в Криму.",
@@ -527,12 +527,12 @@ export const oschadbank: DecisionSummary = {
       track: "arbitration",
       kind: "order",
       label: {
-        uk: "Арбітраж відхиляє заяву росії про перегляд",
-        en: "The tribunal dismisses russia's revision request",
+        uk: "Арбітраж відхиляє заяву Росії про перегляд",
+        en: "The tribunal dismisses Russia's revision request",
       },
       note: {
-        uk: "Паралельно зі спробою скасувати рішення у Франції росія просила сам арбітраж переглянути його.",
-        en: "In parallel with the French set-aside, russia asked the tribunal itself to revise the award.",
+        uk: "Паралельно зі спробою скасувати рішення у Франції Росія просила сам арбітраж переглянути його.",
+        en: "In parallel with the French set-aside, Russia asked the tribunal itself to revise the award.",
       },
     },
     {
@@ -542,7 +542,7 @@ export const oschadbank: DecisionSummary = {
       kind: "order",
       label: {
         uk: "У Франції арештовано російського майна на €87 млн",
-        en: "EUR 87 million of russian property seized in France",
+        en: "EUR 87 million of Russian property seized in France",
       },
       /* «близько 6% основної суми» removed here too — see the FAQ above. What
          is left is what the reporting says: this is the first attachment of
@@ -572,8 +572,8 @@ export const oschadbank: DecisionSummary = {
       track: "arbitration",
       kind: "context",
       label: {
-        uk: "Ощадбанк заявляє про другий спір проти росії",
-        en: "Oschadbank notifies russia of a second dispute",
+        uk: "Ощадбанк заявляє про другий спір проти Росії",
+        en: "Oschadbank notifies Russia of a second dispute",
       },
       note: {
         uk: "Окрема справа за тим самим договором 1998 року — про втрати на Донеччині, Луганщині, Херсонщині та Запоріжжі. Це повідомлення про спір, а не рішення; склад арбітражу формується.",
@@ -591,7 +591,7 @@ export const oschadbank: DecisionSummary = {
       },
       note: {
         uk: "Стягнення розширюється на інші юрисдикції, де є російські державні активи.",
-        en: "Recovery extends to other jurisdictions where russian state assets can be found.",
+        en: "Recovery extends to other jurisdictions where Russian state assets can be found.",
       },
     },
   ],
@@ -634,8 +634,8 @@ export const oschadbank: DecisionSummary = {
          вело туди з цього рядка. */
       inAnchor: "objections",
       claim: {
-        uk: "Заперечення росії щодо юрисдикції",
-        en: "russia's objections to jurisdiction",
+        uk: "Заперечення Росії щодо юрисдикції",
+        en: "Russia's objections to jurisdiction",
       },
       outcome: "rejected",
     },
@@ -764,7 +764,7 @@ export const oschadbank: DecisionSummary = {
   },
 
   attribution: {
-    respondent: { uk: "російська федерація", en: "The russian federation" },
+    respondent: { uk: "Російська Федерація", en: "The Russian Federation" },
     routes: [
       {
         basis: "ILC art. 4",
@@ -784,7 +784,7 @@ export const oschadbank: DecisionSummary = {
     },
     nodes: [
       {
-        actor: { uk: "Збройні сили і парламент РФ", en: "russian military and Parliament" },
+        actor: { uk: "Збройні сили і парламент РФ", en: "Russian military and Parliament" },
         basis: "ILC art. 4",
         basisNote: { uk: "органи держави", en: "State organs" },
         did: {
@@ -793,7 +793,7 @@ export const oschadbank: DecisionSummary = {
         },
       },
       {
-        actor: { uk: "Банк росії", en: "Bank of russia" },
+        actor: { uk: "Банк Росії", en: "Bank of Russia" },
         basis: "ILC art. 4",
         basisNote: { uk: "орган держави за структурою", en: "structurally a State organ" },
         did: {
@@ -835,8 +835,8 @@ export const oschadbank: DecisionSummary = {
     /* The third and last statement of «≈6% основної суми» — see the FAQ. The
        sentence it closed carried the point on its own. */
     note: {
-      uk: "росія не сплатила рішення добровільно, тому стягнення відбувається через арешт її державних активів за кордоном.",
-      en: "russia has not paid voluntarily, so recovery proceeds by attaching russian state assets abroad.",
+      uk: "Росія не сплатила рішення добровільно, тому стягнення відбувається через арешт її державних активів за кордоном.",
+      en: "Russia has not paid voluntarily, so recovery proceeds by attaching Russian state assets abroad.",
     },
     // NOTATION. Every `display` here is a pair, because Ukrainian and English
     // group and point numbers differently and this card printed one notation
@@ -910,7 +910,7 @@ export const oschadbank: DecisionSummary = {
       {
         label: {
           uk: "Арештовано у Франції, квітень 2025",
-          en: "russian property seized in France, April 2025",
+          en: "Russian property seized in France, April 2025",
         },
         // Euros, and the scale is dollars. The figure stays in euros because
         // that is the currency the French seizure is recorded in; converting
@@ -950,10 +950,10 @@ export const oschadbank: DecisionSummary = {
   },
 
   objections: {
-    heading: { uk: "Заперечення росії щодо юрисдикції", en: "russia's jurisdiction objections" },
+    heading: { uk: "Заперечення Росії щодо юрисдикції", en: "Russia's jurisdiction objections" },
     note: {
-      uk: "росія доводила, що договір не поширюється на кримські активи Ощадбанку. Апеляційний суд Парижа відхилив усі три підстави 1 липня 2025 року.",
-      en: "russia argued that the treaty did not apply to Oschadbank's Crimean assets. The Paris Court of Appeal rejected all three grounds on 1 July 2025.",
+      uk: "Росія доводила, що договір не поширюється на кримські активи Ощадбанку. Апеляційний суд Парижа відхилив усі три підстави 1 липня 2025 року.",
+      en: "Russia argued that the treaty did not apply to Oschadbank's Crimean assets. The Paris Court of Appeal rejected all three grounds on 1 July 2025.",
     },
     items: [
       {
@@ -978,8 +978,8 @@ export const oschadbank: DecisionSummary = {
         },
         outcome: "rejected",
         reasoning: {
-          uk: "Після березня 2014 року активи перебували на території під контролем росії — цього достатньо для територіальної вимоги договору.",
-          en: "After March 2014 the assets were in territory under russian control, which satisfies the treaty's territorial requirement.",
+          uk: "Після березня 2014 року активи перебували на території під контролем Росії — цього достатньо для територіальної вимоги договору.",
+          en: "After March 2014 the assets were in territory under Russian control, which satisfies the treaty's territorial requirement.",
         },
       },
       {
@@ -1001,8 +1001,8 @@ export const oschadbank: DecisionSummary = {
   afterlife: {
     heading: { uk: "Рішення у судах Франції", en: "The award in the French courts" },
     note: {
-      uk: "Місцем арбітражу був Париж, тому заяву росії про скасування розглядали французькі суди: два раунди в апеляційному суді й один у касаційному — понад шість років.",
-      en: "The seat was Paris, so russia's set-aside application ran through the French courts: two rounds before the Court of Appeal and one before the Cour de cassation, over six years.",
+      uk: "Місцем арбітражу був Париж, тому заяву Росії про скасування розглядали французькі суди: два раунди в апеляційному суді й один у касаційному — понад шість років.",
+      en: "The seat was Paris, so Russia's set-aside application ran through the French courts: two rounds before the Court of Appeal and one before the Cour de cassation, over six years.",
     },
     stages: [
       {
@@ -1010,8 +1010,8 @@ export const oschadbank: DecisionSummary = {
         year: "2018",
         title: { uk: "Рішення ухвалено", en: "Award rendered" },
         note: {
-          uk: "Арбітраж PCA зобов'язує росію сплатити близько 1,1 млрд доларів.",
-          en: "The PCA tribunal orders russia to pay about USD 1.1 billion.",
+          uk: "Арбітраж PCA зобов'язує Росію сплатити близько 1,1 млрд доларів.",
+          en: "The PCA tribunal orders Russia to pay about USD 1.1 billion.",
         },
         standing: "yes",
       },
@@ -1052,15 +1052,15 @@ export const oschadbank: DecisionSummary = {
     {
       term: { uk: "«Територія» (ст. 1(4))", en: "“Territory” (Art. 1(4))" },
       ruling: {
-        uk: "Питання не в суверенітеті, а в тому, хто мав законодавчий та адміністративний контроль. Після приєднання договірні обов'язки перед інвесторами в Криму несла росія.",
-        en: "The test is not sovereignty but which State had legislative and administrative control. After the accession, the treaty obligations to investors in Crimea were russia's.",
+        uk: "Питання не в суверенітеті, а в тому, хто мав законодавчий та адміністративний контроль. Після приєднання договірні обов'язки перед інвесторами в Криму несла Росія.",
+        en: "The test is not sovereignty but which State had legislative and administrative control. After the accession, the treaty obligations to investors in Crimea were Russia's.",
       },
     },
     {
       term: { uk: "«Інвестиція» (ст. 1(1))", en: "“Investment” (Art. 1(1))" },
       ruling: {
-        uk: "Визначення широке: матеріальні активи, права оренди, а також вимоги за кредитами й депозитами. Часового обмеження в тексті немає — інвестиція не мусить бути зробленою після появи зобов'язань росії.",
-        en: "The definition is broad: tangible assets, leasehold rights, and claims arising from loans and deposits. The text has no temporal limit — the investment need not post-date russia's obligations.",
+        uk: "Визначення широке: матеріальні активи, права оренди, а також вимоги за кредитами й депозитами. Часового обмеження в тексті немає — інвестиція не мусить бути зробленою після появи зобов'язань Росії.",
+        en: "The definition is broad: tangible assets, leasehold rights, and claims arising from loans and deposits. The text has no temporal limit — the investment need not post-date Russia's obligations.",
       },
     },
     {
@@ -1111,7 +1111,7 @@ export const oschadbank: DecisionSummary = {
     {
       url: "https://www.iisd.org/itn/2023/07/01/pca-tribunal-finds-that-russia-committed-an-illegal-expropriation-against-ukrainian-bank/",
       title:
-        "PCA tribunal finds that russia committed an illegal expropriation against Ukrainian bank",
+        "PCA tribunal finds that Russia committed an illegal expropriation against Ukrainian bank",
       authors: "",
       publication: "IISD — Investment Treaty News",
       date: "1 July 2023",
@@ -1129,7 +1129,7 @@ export const oschadbank: DecisionSummary = {
     {
       url: "https://www.iareporter.com/articles/analysis-unpacking-the-reasons-that-led-the-paris-court-of-appeal-to-dismiss-russias-bid-to-set-aside-the-oschadbank-v-russia-crimea-award/",
       title:
-        "Analysis: unpacking the reasons that led the Paris Court of Appeal to dismiss russia's bid to set aside the Oschadbank v. russia Crimea award",
+        "Analysis: unpacking the reasons that led the Paris Court of Appeal to dismiss Russia's bid to set aside the Oschadbank v. Russia Crimea award",
       authors: "",
       publication: "IAReporter",
       date: "2025",
@@ -1138,7 +1138,7 @@ export const oschadbank: DecisionSummary = {
     {
       url: "https://www.iareporter.com/articles/ukraines-oschadbank-submits-notice-of-treaty-dispute-to-russia-over-donbass-kherson-and-zaporizhzhia-assets/",
       title:
-        "Ukraine's Oschadbank submits notice of treaty dispute to russia over Donbass, Kherson, and Zaporizhzhia assets",
+        "Ukraine's Oschadbank submits notice of treaty dispute to Russia over Donbass, Kherson, and Zaporizhzhia assets",
       authors: "",
       publication: "IAReporter",
       date: "2025",
@@ -1162,7 +1162,7 @@ export const oschadbank: DecisionSummary = {
     },
     {
       url: "https://www.lexology.com/library/detail.aspx?g=2692554c-0509-4ca7-b0d9-8903155bf6e0",
-      title: "Oschadbank v. russia — set-aside proceedings before the French courts",
+      title: "Oschadbank v. Russia — set-aside proceedings before the French courts",
       authors: "",
       publication: "Lexology",
       date: "",

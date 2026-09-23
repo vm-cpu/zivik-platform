@@ -34,7 +34,7 @@ export const localeShortNames: Record<Locale, string> = {
  *
  * Thirty-five of the registry's thirty-nine case names are Latin-script and
  * carry no Cyrillic at all — "Allegations of Genocide under the Convention…",
- * "russia v Belbek/Kolomoisky (Hoge Raad)". On a `lang="uk"` page a screen
+ * "Russia v Belbek/Kolomoisky (Hoge Raad)". On a `lang="uk"` page a screen
  * reader speaks those with Ukrainian phonetics, which is not English with an
  * accent: it is unintelligible. WCAG 3.1.2 (AA) asks for the change of
  * language to be marked, and marking it is all a synthesiser needs to switch

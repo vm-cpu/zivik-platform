@@ -24,7 +24,7 @@
  *   • a court's or a State's own register named in quoted or legal text — the
  *     Register of Damage for Ukraine («Реєстр збитків») in
  *     `summaries/echr-ukraine-netherlands.ts`, the register of depositors in
- *     the russian federal laws quoted by `summaries/oschadbank.ts`;
+ *     the Russian federal laws quoted by `summaries/oschadbank.ts`;
  *   • «реєстраційний номер» — a docket reference, which is what a docket is
  *     called in Ukrainian.
  *
@@ -62,7 +62,7 @@ const uk = {
        court wrote it, and several of them write «агресія». */
     title: "НаСвітло — рішення міжнародних судів щодо війни проти України",
     description:
-      "Відкрита бібліотека рішень міжнародних судів щодо війни росії проти України: ЄСПЛ, Міжнародний суд ООН, ICC, арбітражі. Проєкт Факультету права УКУ.",
+      "Відкрита бібліотека рішень міжнародних судів щодо війни Росії проти України: ЄСПЛ, Міжнародний суд ООН, ICC, арбітражі. Проєкт Факультету права УКУ.",
     ogAlt: "НаСвітло — бібліотека рішень міжнародних судів",
   },
   nav: {
@@ -102,11 +102,15 @@ const uk = {
     lampLabel: "Увімкнути або вимкнути лампу",
   },
   intro: {
-    /* Not «українських ініціатив». The Netherlands brought one of the four
-       inter-State applications behind the MH17 judgment, and Finland tried
-       Torden on its own motion — the collection is not only Ukraine's doing.
-       Owner's correction; content/about.ts and /about carry the same fix. */
-    text: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів у справах, які порушили Україна та іноземні держави, щоб притягнути росію до відповідальності за порушення, вчинені під час війни проти України.",
+    /* Owner's wording, September 2026, handed over whole. It drops the clause
+       that named who brought the proceedings — «які порушили Україна та
+       іноземні держави» — which had itself been her correction of
+       «українських ініціатив». Nothing is lost by it: the sentence no longer
+       says who brought the cases at all, rather than saying it wrongly, and
+       /about still carries the origins in full.
+
+       «Росії» stays capitalised, as she wrote it. */
+    text: "Онлайн-бібліотека міжнародної судової практики (Міжнародний суд ООН, ЄСПЛ, МКС, Міжнародний трибунал з морського права, Постійна палата третейського суду) та практики іноземних судів у справах щодо притягнення Росії до відповідальності за порушення, вчинені під час війни проти України.",
     about: "Про нас",
   },
   about: {
@@ -128,7 +132,7 @@ const uk = {
     toMap: "До мапи",
   },
   quote: {
-    text: "російська федерація повинна негайно призупинити воєнні операції, які вона розпочала 24 лютого 2022 року на території України",
+    text: "Російська Федерація повинна негайно призупинити воєнні операції, які вона розпочала 24 лютого 2022 року на території України",
     source: "Міжнародний суд ООН · Тимчасові заходи · 16 березня 2022",
     read: "Читати рішення",
   },
@@ -138,7 +142,7 @@ const uk = {
     label: "Мапа",
     heading: "Держави, чиї суди розглядають ці справи",
     /* The three nouns used to be set off by dashes — «обстріли, депортації та
-       захоплення» — which reads as the list of what russia is accused of. It
+       захоплення» — which reads as the list of what Russia is accused of. It
        is not: it was a sample of what six markers happen to show, on a map
        whose own registry carries thirty-nine proceedings. The sentence states
        the mechanic and names nothing it cannot finish. Owner's correction. */
@@ -256,7 +260,7 @@ const uk = {
        with the collection's one name — the same name the page, the nav item
        and the footer link carry. The key stays `registry.*`; the words the
        reader sees do not. See the note at the top of this file. */
-    /* It read «Кожне провадження проти росії — в одній бібліотеці». That is a
+    /* It read «Кожне провадження проти Росії — в одній бібліотеці». That is a
        claim of completeness, and the library is still being filled: one
        proceeding we have not reached yet makes the heading false. The band
        says where the proceedings are gathered, not that they are all here.
@@ -342,7 +346,7 @@ const uk = {
   },
   footer: {
     tagline:
-      "Бібліотека рішень міжнародних судів щодо війни росії проти України. Ми проливаємо на них світло.",
+      "Бібліотека рішень міжнародних судів щодо війни Росії проти України. Ми проливаємо на них світло.",
     org: "Дослідницький центр імені Луї Б. Зона",
     faculty: "Факультет права УКУ",
     colArchive: "Бібліотека",

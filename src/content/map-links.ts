@@ -48,7 +48,7 @@ const OFF_MAP_INSTITUTIONS: Record<string, string> = {
      the appeal against the Council's decision went to the ICJ — which is on
      the map. */
   icao: "Montreal is off the European frame; the proceeding stays in the registry",
-  /* Euroclear, where the russian central-bank assets are immobilised. It is
+  /* Euroclear, where the Russian central-bank assets are immobilised. It is
      an enforcement measure and not a proceeding, and the EU is not a court —
      so on a map about the states whose courts hear these cases it was a marker
      that could never have a lit country under it. The measure is in the

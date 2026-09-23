@@ -3,7 +3,7 @@ import verbatim from "./icj-cerd-icsft.verbatim.json";
 import verbatimUk from "./icj-cerd-icsft.uk.json";
 
 /**
- * ICSFT & CERD (Ukraine v. russian federation), ICJ Judgment of 31 January 2024.
+ * ICSFT & CERD (Ukraine v. Russian Federation), ICJ Judgment of 31 January 2024.
  *
  * `verbatim` holds the summary prose exactly as ingested from the source .docx
  * (English — the language of the judgment). The fields below add a localized
@@ -28,7 +28,7 @@ export const icjCerdIcsft: DecisionSummary = {
 
   /* «Стандартизована назва з одним розміром шрифту. Замінюємо назву на таку»
      — the owner's own wording, and it is the ICJ's full case name. What stood
-     here was «Україна проти російської федерації», which is also the h1 of
+     here was «Україна проти Російської Федерації», which is also the h1 of
      icj-genocide: the archive's two ICJ cases carried one headline between
      them and neither said which it was.
 
@@ -45,22 +45,22 @@ export const icjCerdIcsft: DecisionSummary = {
      there are that document's heading style, and 130 characters of display
      serif in capitals is six lines of shouting. */
   title: {
-    uk: "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти російської федерації)",
-    en: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. russian federation)",
+    uk: "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти Російської Федерації)",
+    en: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
   },  /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
     /* The same sentence as `title`, deliberately. The caption used to stop
-       before «(Україна проти російської федерації)», so with the full case
+       before «(Україна проти Російської Федерації)», so with the full case
        name in the h1 it rendered as a shortened copy of the headline directly
        under it — one name at two sizes, which is what the review asked to end.
        Identical, the masthead prints it once; see the guard on `.fullname` in
        cases/[slug]/page.tsx. The English `masthead.official` is untouched and
        is what the citation block reproduces. */
     official:
-      "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти російської федерації)",
+      "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти Російської Федерації)",
     judgment: "Рішення від 31 січня 2024",
   },
 
@@ -81,8 +81,8 @@ export const icjCerdIcsft: DecisionSummary = {
   /* Search-result description. `plain.tldr` used to serve as this and runs
      three to four sentences, so the snippet was cut off mid-word. */
   metaDesc: {
-    uk: "Рішення МС ООН від 31 січня 2024: два порушення — росія не розслідувала фінансування тероризму і згорнула українську освіту в Криму.",
-    en: "ICJ judgment of 31 January 2024: two breaches upheld — russia failed to investigate terrorism financing and curtailed Ukrainian schooling in Crimea.",
+    uk: "Рішення МС ООН від 31 січня 2024: два порушення — Росія не розслідувала фінансування тероризму і згорнула українську освіту в Криму.",
+    en: "ICJ judgment of 31 January 2024: two breaches upheld — Russia failed to investigate terrorism financing and curtailed Ukrainian schooling in Crimea.",
   },
 
   plain: {
@@ -95,8 +95,8 @@ export const icjCerdIcsft: DecisionSummary = {
        треба забрати)». So the paragraph moved rather than being copied: the
        `lead` block is gone from both summary files, and the closing sentence
        about the dismissal of most claims is the review's own addition. */
-      uk: "31 січня 2024 року Міжнародний суд ООН («Суд») виніс рішення по суті у справі, порушеній Україною проти російської федерації у 2017 році («Рішення»). Україна стверджувала про численні порушення росією двох договорів: Міжнародної конвенції про боротьбу з фінансуванням тероризму 1999 року («ICSFT») та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації 1965 року («CERD»). Більшість вимог України було відхилено.",
-      en: "On January 31, 2024, the International Court of Justice (“the Court”) issued a judgment on the merits of the case brought by Ukraine against the russian federation in 2017 (“the Judgment”). Ukraine alleged numerous violations by russia of two treaties: the 1999 International Convention for the Suppression of the Financing of Terrorism (“ICSFT”), and the 1965 International Convention on the Elimination of All Forms of Racial Discrimination (“CERD”). Most of Ukraine's claims were dismissed.",
+      uk: "31 січня 2024 року Міжнародний суд ООН («Суд») виніс рішення по суті у справі, порушеній Україною проти Російської Федерації у 2017 році («Рішення»). Україна стверджувала про численні порушення Росією двох договорів: Міжнародної конвенції про боротьбу з фінансуванням тероризму 1999 року («ICSFT») та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації 1965 року («CERD»). Більшість вимог України було відхилено.",
+      en: "On January 31, 2024, the International Court of Justice (“the Court”) issued a judgment on the merits of the case brought by Ukraine against the Russian Federation in 2017 (“the Judgment”). Ukraine alleged numerous violations by Russia of two treaties: the 1999 International Convention for the Suppression of the Financing of Terrorism (“ICSFT”), and the 1965 International Convention on the Elimination of All Forms of Racial Discrimination (“CERD”). Most of Ukraine's claims were dismissed.",
     },
     whyMatters: {
       uk: "Рішення Міжнародного суду ООН остаточне й оскарженню не підлягає, але не має механізму примусового виконання. Його головна вага — фактологічна та правова: воно офіційно фіксує порушення й дає опору для майбутніх позовів, статей та аргументів.",
@@ -108,8 +108,8 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       term: { uk: "Меджліс", en: "Mejlis" },
       def: {
-        uk: "Представницький орган кримськотатарського народу; заборонений росією у 2016 році.",
-        en: "The representative body of the Crimean Tatar people; banned by russia in 2016.",
+        uk: "Представницький орган кримськотатарського народу; заборонений Росією у 2016 році.",
+        en: "The representative body of the Crimean Tatar people; banned by Russia in 2016.",
       },
     },
     {
@@ -143,8 +143,8 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       term: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
       def: {
-        uk: "Самопроголошені утворення на сході України, підтримувані росією; лапки означають невизнання.",
-        en: "Self-proclaimed entities in eastern Ukraine backed by russia; quotation marks signal non-recognition.",
+        uk: "Самопроголошені утворення на сході України, підтримувані Росією; лапки означають невизнання.",
+        en: "Self-proclaimed entities in eastern Ukraine backed by Russia; quotation marks signal non-recognition.",
       },
     },
     {
@@ -163,7 +163,7 @@ export const icjCerdIcsft: DecisionSummary = {
       kind: "party",
     },
     {
-      name: { uk: "російська федерація", en: "russian federation" },
+      name: { uk: "Російська Федерація", en: "Russian Federation" },
       role: { uk: "Відповідач.", en: "Respondent." },
       kind: "party",
     },
@@ -187,7 +187,7 @@ export const icjCerdIcsft: DecisionSummary = {
       name: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
       role: {
         uk: "Самопроголошені збройні угруповання на сході; за їх фінансування Україна винила РФ.",
-        en: "Self-proclaimed armed groups in the east; Ukraine blamed russia for financing them.",
+        en: "Self-proclaimed armed groups in the east; Ukraine blamed Russia for financing them.",
       },
       kind: "actor",
     },
@@ -202,7 +202,7 @@ export const icjCerdIcsft: DecisionSummary = {
       },
     },
     {
-      q: { uk: "Чи можна змусити росію виконати рішення?", en: "Can russia be forced to comply?" },
+      q: { uk: "Чи можна змусити Росію виконати рішення?", en: "Can Russia be forced to comply?" },
       a: {
         uk: "Прямого механізму примусу немає. Рішення остаточне, але його дотримання залежить від самої держави; теоретично питання виконання може розглядати Рада Безпеки ООН.",
         en: "There is no direct enforcement mechanism. The judgment is final, but compliance depends on the State itself; in theory enforcement can be raised at the UN Security Council.",
@@ -219,7 +219,7 @@ export const icjCerdIcsft: DecisionSummary = {
       q: { uk: "Що буде далі?", en: "What happens next?" },
       a: {
         uk: "Рішення МС ООН оскарженню не підлягає. Паралельно тривають інші справи проти РФ — про геноцид (МС ООН), у ЄСПЛ та в Міжнародному кримінальному суді.",
-        en: "An ICJ judgment cannot be appealed. Other cases against russia continue in parallel — on genocide (ICJ), at the ECtHR, and at the International Criminal Court.",
+        en: "An ICJ judgment cannot be appealed. Other cases against Russia continue in parallel — on genocide (ICJ), at the ECtHR, and at the International Criminal Court.",
       },
     },
   ],
@@ -228,7 +228,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       label: {
         uk: "Звинувачення у геноциді (Україна проти РФ)",
-        en: "Allegations of Genocide (Ukraine v. russian federation)",
+        en: "Allegations of Genocide (Ukraine v. Russian Federation)",
       },
       note: { uk: "МС ООН · 32 держави-інтервенти", en: "ICJ · 32 States intervening" },
       href: "/cases/icj-genocide",
@@ -306,7 +306,7 @@ export const icjCerdIcsft: DecisionSummary = {
     { label: { uk: "Заявник", en: "Applicant" }, value: { uk: "Україна", en: "Ukraine" } },
     {
       label: { uk: "Відповідач", en: "Respondent" },
-      value: { uk: "російська федерація", en: "russian federation" },
+      value: { uk: "Російська Федерація", en: "Russian Federation" },
     },
     {
       label: { uk: "Суд", en: "Court" },
@@ -339,7 +339,7 @@ export const icjCerdIcsft: DecisionSummary = {
       iso: "2014",
       label: {
         uk: "РФ встановлює контроль над Кримським півостровом",
-        en: "russian federation takes control of the Crimean peninsula",
+        en: "Russian Federation takes control of the Crimean peninsula",
       },
       kind: "context",
     },
@@ -503,7 +503,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       url: "https://asil.org/ilib/icj-delivers-judgment-ukraine-v-russia-case-concerning-terrorism-financing-and-cerd/",
       title:
-        "ICJ Delivers Judgment in Ukraine v. russia Case Concerning Terrorism Financing and CERD",
+        "ICJ Delivers Judgment in Ukraine v. Russia Case Concerning Terrorism Financing and CERD",
       authors: "",
       publication: "ASIL",
       date: "2024",
@@ -512,7 +512,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       url: "https://www.ejiltalk.org/human-rights-reparations-and-fact-finding-quandaries-in-the-2024-icj-judgments-in-ukraine-v-russian-federation/",
       title:
-        "Human Rights Reparations and Fact-Finding Quandaries in the 2024 ICJ Judgments in Ukraine v. russian federation",
+        "Human Rights Reparations and Fact-Finding Quandaries in the 2024 ICJ Judgments in Ukraine v. Russian Federation",
       authors: "Diane Desierto",
       publication: "EJIL: Talk!",
       date: "11 March 2024",
@@ -521,7 +521,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       url: "https://www.researchgate.net/publication/381785364_Judgment_on_the_merits_of_the_International_Court_of_Justice_of_January_31_2024_case_Ukraine_vs_Russian_Federation",
       title:
-        "Judgment on the merits of the International Court of Justice of January 31, 2024, case Ukraine vs russian federation",
+        "Judgment on the merits of the International Court of Justice of January 31, 2024, case Ukraine vs Russian Federation",
       authors: "O.A. Kiseleva",
       publication: "Law Enforcement Review (via ResearchGate)",
       date: "2024",
@@ -530,7 +530,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       url: "https://www.cambridge.org/core/journals/american-journal-of-international-law/article/application-of-the-international-convention-for-the-suppression-of-the-financing-of-terrorism-and-of-international-convention-on-the-elimination-of-all-forms-of-racial-discrimination-ukraine-v-russian-federation-judgment/1C4B2C51220C6332B91392FAC2204267",
       title:
-        "Application of the International Convention for the Suppression of the Financing of Terrorism and of International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. russian federation), Judgment",
+        "Application of the International Convention for the Suppression of the Financing of Terrorism and of International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation), Judgment",
       authors: "Lauri Mälksoo",
       publication: "American Journal of International Law",
       date: "2024",
@@ -548,7 +548,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       url: "https://www.researchgate.net/publication/385033225_Application_of_the_International_Convention_for_the_Suppression_of_the_Financing_of_Terrorism_and_of_International_Convention_on_the_Elimination_of_All_Forms_of_Racial_Discrimination_Ukraine_v_Russian",
       title:
-        "Application of the International Convention for the Suppression of the Financing of Terrorism and of International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. russian federation)",
+        "Application of the International Convention for the Suppression of the Financing of Terrorism and of International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
       authors: "",
       publication: "ResearchGate",
       date: "2024",
@@ -557,7 +557,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       url: "https://www.researchgate.net/publication/389453084_Comments_on_the_judgment_of_the_International_Court_of_Justice_of_31_January_2024_Case_No_166_Application_of_the_International_Convention_for_the_Suppression_of_the_Financing_of_Terrorism_and_the_Inte",
       title:
-        "Comments on the judgment of the International Court of Justice of 31 January 2024, Case No. 166 (Ukraine v. russian federation)",
+        "Comments on the judgment of the International Court of Justice of 31 January 2024, Case No. 166 (Ukraine v. Russian Federation)",
       authors: "Kaja Kowalczewska, Barbara Pauli",
       publication: "Polish Review of International and European Law",
       date: "2024",
@@ -575,7 +575,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       url: "https://www.researchgate.net/publication/388942304_Reflecting_on_the_interpretation_and_application_of_the_international_convention_for_the_suppression_of_the_financing_of_terrorism_in_light_of_the_Ukraine_v_Russia_case",
       title:
-        "Reflecting on the interpretation and application of the International Convention for the Suppression of the Financing of Terrorism in light of the Ukraine v. russia case",
+        "Reflecting on the interpretation and application of the International Convention for the Suppression of the Financing of Terrorism in light of the Ukraine v. Russia case",
       authors: "Daniele Musmeci",
       publication: "Journal of International Dispute Settlement (via ResearchGate)",
       date: "2025",

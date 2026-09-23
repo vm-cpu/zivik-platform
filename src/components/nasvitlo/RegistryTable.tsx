@@ -58,7 +58,7 @@ const ALIASES: ReadonlyArray<readonly string[]> = [
   ["gazprom", "газпром"].map(norm),
   ["oschadbank", "ощадбанк"].map(norm),
   ["ukraina", "україна", "ukraine"].map(norm),
-  ["rosiia", "росія", "russia"].map(norm),
+  ["rosiia", "Росія", "Russia"].map(norm),
 ];
 
 /** Every spelling a token should also be tried under. */

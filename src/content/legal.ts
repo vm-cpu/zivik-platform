@@ -463,8 +463,8 @@ export const terms: LegalDocument = {
              name used here is the map page's own title. */
           kind: "p",
           text: {
-            uk: "Сайт — це відкрита бібліотека проваджень проти російської федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, огляди рішень, хронології, мапа судів і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
-            en: "The Site is an open library of proceedings against the russian federation before international courts, tribunals and arbitrations: a list of cases, decision summaries, chronologies, a map of the courts and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
+            uk: "Сайт — це відкрита бібліотека проваджень проти Російської Федерації в міжнародних судах, трибуналах та арбітражах: перелік справ, огляди рішень, хронології, мапа судів і посилання на першоджерела. Він адресований науковцям, практикам, журналістам і всім, хто цікавиться темою.",
+            en: "The Site is an open library of proceedings against the Russian Federation before international courts, tribunals and arbitrations: a list of cases, decision summaries, chronologies, a map of the courts and links to primary sources. It is addressed to scholars, practitioners, journalists and anyone interested in the subject.",
           },
         },
         {

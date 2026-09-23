@@ -48,14 +48,14 @@ const T = {
   /* Not «Усі провадження». The review's question is the right one — «чи
      правильно буде писати про КОЖНЕ провадження. А якщо ми щось пропустимо?
      Похибка можлива» — and it is the same correction the home band's heading
-     already took, where «Кожне провадження проти росії» became «Провадження
-     проти росії». One proceeding nobody has reached yet makes a claim of
+     already took, where «Кожне провадження проти Росії» became «Провадження
+     проти Росії». One proceeding nobody has reached yet makes a claim of
      completeness false, and this page is the one a reader would cite it from.
      What the sentence can say without risk is what the library holds and what
      each row carries. */
   lede: {
     uk: "Провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип.",
-    en: "Proceedings against russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
+    en: "Proceedings against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
   },
   /* The meta description: about 133 / 147 characters, both inside the ~160 a
      search result shows. Says what the page holds and what can be done with
@@ -63,8 +63,8 @@ const T = {
      went stale the moment the six ICC warrants stopped being rows, which is
      the whole argument for `registryTotal` in content/legal.ts. */
   metaDesc: {
-    uk: "{n} проваджень проти росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
-    en: "{n} proceedings against russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
+    uk: "{n} проваджень проти Росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
+    en: "{n} proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
   },
   // The wordmark is «НаСвітло» / "NaSvitlo" everywhere — see i18n/dictionaries/uk.ts.
   // Team and map both say "Home"/"На головну" — so does this now.

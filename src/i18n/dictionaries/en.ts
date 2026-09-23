@@ -23,7 +23,7 @@ const en: Dictionary = {
   meta: {
     title: "NaSvitlo — international court decisions on the war against Ukraine",
     description:
-      "An open library of international court decisions on russia's war against Ukraine: the ECtHR, ICJ, ICC and arbitral tribunals. UCU Faculty of Law.",
+      "An open library of international court decisions on Russia's war against Ukraine: the ECtHR, ICJ, ICC and arbitral tribunals. UCU Faculty of Law.",
     ogAlt: "NaSvitlo — library of international court decisions",
   },
   nav: {
@@ -53,7 +53,7 @@ const en: Dictionary = {
     lampLabel: "Turn the lamp on or off",
   },
   intro: {
-    text: "An online library of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, in the proceedings brought by Ukraine and by foreign States to hold russia accountable for violations committed during the war against Ukraine.",
+    text: "An online library of international case-law (the International Court of Justice, the ECtHR, the ICC, the International Tribunal for the Law of the Sea, the Permanent Court of Arbitration) and of foreign national courts, in proceedings to hold Russia accountable for violations committed during the war against Ukraine.",
     about: "About us",
   },
   about: {
@@ -72,7 +72,7 @@ const en: Dictionary = {
     toMap: "The map",
   },
   quote: {
-    text: "The russian federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine",
+    text: "The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine",
     source: "International Court of Justice · Provisional Measures · 16 March 2022",
     read: "Read the decision",
   },
@@ -179,7 +179,7 @@ const en: Dictionary = {
   },
   footer: {
     tagline:
-      "A library of international court decisions on russia's war against Ukraine. We shed light on what they say.",
+      "A library of international court decisions on Russia's war against Ukraine. We shed light on what they say.",
     org: "The Louis B. Sohn Research Centre",
     faculty: "UCU Faculty of Law",
     colArchive: "Library",

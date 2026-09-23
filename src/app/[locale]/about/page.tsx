@@ -71,8 +71,8 @@ const T = {
      and never an outcome (DESIGN.md §Colour). Gold here would have read as
      relief granted and red as a finding of breach. */
   scope: {
-    uk: "Онлайн-бібліотека міжнародної судової практики та практики іноземних судів у справах, які порушили Україна та іноземні держави, щоб притягнути росію до відповідальності за порушення, вчинені під час війни проти України.",
-    en: "An online library of international case-law and of foreign national courts, in the proceedings brought by Ukraine and by foreign States to hold russia accountable for violations committed during the war against Ukraine.",
+    uk: "Онлайн-бібліотека міжнародної судової практики та практики іноземних судів у справах, які порушили Україна та іноземні держави, щоб притягнути Росію до відповідальності за порушення, вчинені під час війни проти України.",
+    en: "An online library of international case-law and of foreign national courts, in the proceedings brought by Ukraine and by foreign States to hold Russia accountable for violations committed during the war against Ukraine.",
   },
 
   metaDesc: {
@@ -112,12 +112,12 @@ const T = {
   whyH: { uk: "Навіщо ця бібліотека", en: "Why this library" },
   why: {
     uk: [
-      "Війна росії проти України поставила перед правом надзвичайне за масштабом завдання — забезпечити відповідальність за численні порушення міжнародного права, захистити права постраждалих та створити правові передумови для відновлення справедливості. Відповіддю стало використання широкого кола міжнародних і національних правових механізмів, і в результаті формується значний та постійно зростаючий масив судової практики.",
+      "Війна Росії проти України поставила перед правом надзвичайне за масштабом завдання — забезпечити відповідальність за численні порушення міжнародного права, захистити права постраждалих та створити правові передумови для відновлення справедливості. Відповіддю стало використання широкого кола міжнародних і національних правових механізмів, і в результаті формується значний та постійно зростаючий масив судової практики.",
       "Водночас ця практика розпорошена між різними юрисдикціями, інституціями та інформаційними ресурсами. Це ускладнює системне відстеження справ, розуміння взаємозв'язків між різними правовими механізмами та використання сформованої практики.",
       "Платформа покликана не лише зберігати інформацію про окремі справи, а й допомагати бачити ширшу картину — як через різні юрисдикції та правові механізми формується багаторівнева система відповідальності та правосуддя у відповідь на війну проти України.",
     ],
     en: [
-      "russia’s war against Ukraine set the law a task of extraordinary scale: to secure accountability for numerous violations of international law, to protect the rights of those harmed, and to build the legal preconditions for restoring justice. The answer has been a wide range of international and national legal mechanisms, and the result is a substantial and constantly growing body of case-law.",
+      "Russia’s war against Ukraine set the law a task of extraordinary scale: to secure accountability for numerous violations of international law, to protect the rights of those harmed, and to build the legal preconditions for restoring justice. The answer has been a wide range of international and national legal mechanisms, and the result is a substantial and constantly growing body of case-law.",
       "That practice, however, is scattered across jurisdictions, institutions and information resources. This makes it harder to follow cases systematically, to understand how the different legal mechanisms relate to one another, and to use what they have established.",
       "The platform is meant not merely to hold information about individual cases but to help a reader see the wider picture: how a multi-level system of accountability and justice is taking shape, across jurisdictions and legal mechanisms, in answer to the war against Ukraine.",
     ],
@@ -191,7 +191,7 @@ const T = {
     ],
     en: [
       "Developing Ukraine’s national law on the foundations of the rule of law, human rights and constitutional democracy",
-      "Expert assessment of the present state of international law and of the challenges thrown up by russia’s aggression against Ukraine",
+      "Expert assessment of the present state of international law and of the challenges thrown up by Russia’s aggression against Ukraine",
       "Shaping public policy that is well-founded and rooted in values",
       "Building a community of lawyers engaged in forming legal answers to the challenges of the war and to difficult social change",
     ],
