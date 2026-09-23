@@ -123,6 +123,17 @@ const T = {
     en: ["The project is run by the ", "Louis B. Sohn Research Centre", " at the Faculty of Law of the Ukrainian Catholic University, Lviv."],
   },
 
+  /* A way out to the Centre, asked for: «може ми вигадаємо якийсь елемент —
+     кнопку тощо який переводить на сторінку сайту». The page already has the
+     element — the arrow link under the roster — so this is that one again
+     rather than a new kind of object: a second shape for the same job is how
+     a page starts having two of everything. It closes the band that describes
+     the Centre, which is where a reader who wants more of it has just been
+     told there is more. */
+  centreLink: {
+    uk: "Сторінка Центру на сайті УКУ",
+    en: "The Centre’s page on the UCU site",
+  },
   teamH: { uk: "Хто над цим працює", en: "Who works on this" },
   teamLink: { uk: "Сторінка команди", en: "The team page" },
 
@@ -211,16 +222,18 @@ const T = {
 /**
  * The Centre's page on the Faculty of Law's own site.
  *
- * `lawmigration.ucu.org.ua` is the faculty site — its <title> is «Факультет
- * права УКУ» — and the Centre has a page on it, so one address satisfies both
- * halves of the edit: the link is to the faculty's site, and it lands on the
- * Centre rather than on a home page the reader then has to search.
+ * It used to be `lawmigration.ucu.org.ua`, chosen because `law.ucu.edu.ua`
+ * answered 403 to anything that was not a browser. That reasoning aged badly:
+ * the 403 was bot protection, not a dead host, and the migration host has
+ * since stopped resolving at all — NXDOMAIN, checked. So the one link that
+ * left this page led nowhere, and had for a while.
  *
- * Not `law.ucu.edu.ua`: that host answers 403 to anything that is not a
- * browser, which is not proof it is dead but is enough reason not to make it
- * the one address on this page that leaves the site.
+ * This address is the owner's own: «це посилання на центр луї зона на сайті».
+ * It still refuses automated requests — a security-verification interlude
+ * rather than an error — which is why it cannot be checked from here and is
+ * taken on her word.
  */
-const FACULTY_URL = "https://lawmigration.ucu.org.ua/doslidnyczkyj-czentr-luyi-zona";
+const FACULTY_URL = "https://law.ucu.edu.ua/doslidnyczkyj-czentr-luyi-zona";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -401,6 +414,11 @@ export default async function AboutPage({
                 <li key={m}>{m}</li>
               ))}
             </ul>
+            <p className="abt-more">
+              <a href={FACULTY_URL} target="_blank" rel="noopener noreferrer">
+                {L(T.centreLink)} ↗
+              </a>
+            </p>
           </div>
         </section>
 
