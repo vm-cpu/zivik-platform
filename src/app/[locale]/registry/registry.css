@@ -691,7 +691,13 @@
 /* Only inside the ledger: the columns are narrower than the widest Ukrainian
    label, so a long one wraps rather than spilling into its neighbour. The
    home page's accordion keeps a single wide chip group and its nowrap. */
-.registrypage .reg-tags .tag{white-space:normal}
+/* Чип переносить рядки — отже, і центрує їх.
+
+   «Процедурні рішення» не влазить у рядок, тож `white-space:normal` пускає
+   його на два. Другий рядок коротший за перший, і при лівому вирівнюванні
+   пігулка виходила однобока: текст тулиться ліворуч, праворуч порожньо.
+   Власниця: «відцентруй». */
+.registrypage .reg-tags .tag{white-space:normal;text-align:center}
 .reg-when{
   display:flex;flex-direction:column;align-items:flex-end;gap:2px;
   text-align:right;
@@ -710,14 +716,9 @@
 .reg-decided .dl{
   font-family:var(--brand-font-body);letter-spacing:.05em;text-transform:uppercase;
 }
-/* The sum in dispute, under the dates. Gold, because it is the one figure in
-   the ledger a reader scans for, and `--brand-gold-ink` is the small-text
-   variant this page already uses where gold has to carry text. Tabular so the
-   thirteen rows that have one line up against each other. */
-.reg-amount{
-  font:500 var(--t-cap) var(--brand-font-mono);color:var(--goldink);
-  font-variant-numeric:tabular-nums;white-space:nowrap;
-}
+/* `.reg-amount` пішла разом із сумами: власниця забрала їх із таблиці
+   бібліотеки. Сама величина лишилася в записі (`amountUsd` у
+   content/cases.ts) і в оглядах рішень, де про неї є що сказати. */
 
 /* ---- empty state ---- */
 .reg-empty{

@@ -15,7 +15,8 @@
   .dot{width:6px;height:6px;border-radius:50%;flex:none}
   .btn{display:inline-flex;align-items:center;gap:var(--space-2);font:700 var(--t-micro) var(--brand-font-body),sans-serif;letter-spacing:.07em;text-transform:uppercase;padding:var(--space-3) var(--space-5);border-radius:var(--r-pill);border:2px solid var(--red);cursor:pointer;text-decoration:none;transition:transform var(--dur) var(--ease),box-shadow var(--dur) var(--ease),background-color var(--dur) var(--ease),color var(--dur) var(--ease)}
   .btn:hover{transform:translateY(-1px)}
-  .btn-o{background:transparent;color:var(--red)}
+  /* `.btn-o` пішла: смуга «Про проєкт» узяла спільну пігулку сайту, і це
+     було єдине місце, де прозорий червоний варіант вживався. */
   /* On the lamp scene the paper red is too dark to read, and a saturated red
      rectangle was the only jarring note in a warm gold composition — red also
      means "breach" on the decision pages, which a navigation button is not.

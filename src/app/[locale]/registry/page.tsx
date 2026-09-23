@@ -17,7 +17,6 @@ import {
   type CaseDate,
   type Localized,
 } from "@/content/types";
-import { moneyCompact } from "@/content/money";
 import { actsOf } from "@/content/cases";
 import { plural } from "@/i18n/plural";
 import { registryTotal } from "@/content/legal";
@@ -116,24 +115,13 @@ const T = {
      the page a row without a summary leads to — the reader meets the same
      three words in the list and at the destination. */
   doc: { uk: "Документ суду", en: "The court's document" },
-  /* The label the map tag and the pending page already give this figure. It
-     is visually hidden here: in the figures column the currency mark says
-     what the number is, and a caption on thirteen of thirty-three rows would
-     be louder than the years above it. */
-  amountName: { uk: "Сума у спорі", en: "Amount in dispute" },
   sort: { uk: "Порядок", en: "Sort" },
   sortOpt: {
-    yearDesc: { uk: "Спершу нові", en: "Newest first" },
-    yearAsc: { uk: "Спершу давні", en: "Oldest first" },
     decidedDesc: { uk: "За датою рішення", en: "By decision date" },
     readable: { uk: "Спершу опрацьовані", en: "Ready to read first" },
     /* Thirteen rows carry a sum and the largest is five billion; until now
        the figure was in the record and on no surface that lists these cases. */
-    amountDesc: { uk: "Найбільші суми", en: "Largest amounts" },
     court: { uk: "За судом", en: "By court" },
-    stage: { uk: "За станом розгляду", en: "By stage" },
-    outcome: { uk: "За типом рішення", en: "By decision type" },
-    name: { uk: "За назвою", en: "By name" },
   },
   colCourt: { uk: "Суд", en: "Court" },
   colCase: { uk: "Справа", en: "Case" },
@@ -504,9 +492,6 @@ export default async function RegistryPage({
       lit: c.lit,
       slug: c.summarySlug ?? null,
       docUrl: c.decisionUrl,
-      amountUsd: c.amountUsd,
-      amountLabel:
-        c.amountUsd != null ? moneyCompact(c.amountUsd, locale) : null,
       fieldKey: fieldKey(c.type),
       fieldLabel: pick(c.type, locale),
       href: c.summarySlug ? `/${locale}/cases/${c.summarySlug}` : null,
@@ -635,7 +620,6 @@ export default async function RegistryPage({
             matLit: pick(T.matLit, locale),
             matWip: pick(T.matWip, locale),
             doc: pick(T.doc, locale),
-            amountName: pick(T.amountName, locale),
             filters: pick(T.filters, locale),
             sort: pick(T.sort, locale),
             sortOpt: Object.fromEntries(

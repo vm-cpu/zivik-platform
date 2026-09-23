@@ -132,9 +132,6 @@ export interface RegRow {
    * five billion. Print it through `content/money.ts`, which explains why the
    * sign never reaches the reader and why these are never summed.
    */
-  amountUsd: number | null;
-  /** `amountUsd`, already formatted for the locale. */
-  amountLabel: string | null;
   /** Subject-matter field, as a stable key and as a label in the locale. */
   fieldKey: string;
   fieldLabel: string;
@@ -314,7 +311,6 @@ export type SortKey =
   | "stage"
   | "outcome"
   | "readable"
-  | "amount"
   | "name";
 type SortDir = "asc" | "desc";
 
@@ -374,20 +370,6 @@ function compare(a: RegRow, b: RegRow, { key, dir }: SortState): number {
     case "readable":
       primary = Number(a.lit) - Number(b.lit);
       break;
-    case "amount": {
-      /* Same rule as the decision date above, for the same reason: a row
-         whose record fixes no amount has nothing to sort by, so it goes last
-         in both directions rather than pretending to be worth nothing. The
-         magnitude, because that is the only thing the sign lets us compare —
-         see content/money.ts. */
-      const av = a.amountUsd == null ? null : Math.abs(a.amountUsd);
-      const bv = b.amountUsd == null ? null : Math.abs(b.amountUsd);
-      if (av == null && bv == null) return tail(a, b);
-      if (av == null) return 1;
-      if (bv == null) return -1;
-      primary = av - bv;
-      break;
-    }
     case "name":
       primary = a.name.localeCompare(b.name);
       break;
@@ -438,7 +420,6 @@ const SORT_KEYS: SortKey[] = [
   "stage",
   "outcome",
   "readable",
-  "amount",
   "name",
 ];
 
@@ -555,7 +536,6 @@ export interface RegistryLabels {
   /** The link on a row that opens the court's own document. */
   doc: string;
   /** Assistive-technology prefix on the figure: «Сума у спорі: $5,0 млрд». */
-  amountName: string;
   /* The name on the control that folds the five filters away below 640. Just
      «Фільтри»: ordering sits outside it and is not one. */
   filters: string;
@@ -598,20 +578,22 @@ export interface RegistryLabels {
 }
 
 /** The axes offered by the sort control, in the order they are listed. */
+/* Тільки те, чого не вміють заголовки колонок.
+
+   У списку було девʼять порядків, і шість із них — за судом, за назвою, за
+   станом розгляду, за типом рішення, спершу нові, спершу давні — це рівно
+   те, що дає натискання на «СУД», «СПРАВА», «СТАН РОЗГЛЯДУ», «ТИП РІШЕННЯ»
+   і «РІК». Той самий порядок, двома різними органами. Власниця: «забери
+   зайві сортування».
+
+   Лишилося три: сортування за судом (воно ж стан за замовчуванням, і
+   контрол мусить уміти його показати), за датою рішення — колонки з нею
+   немає — і «спершу опрацьовані», якої в таблиці теж немає колонки. Порядок
+   за сумами пішов разом із сумами. */
 const SORTS: Array<{ id: string; key: SortKey; dir: SortDir }> = [
-  /* The default leads the list, so the control opens on what the table is
-     already doing rather than on an axis it is not. */
   { id: "court", key: "court", dir: "asc" },
-  { id: "yearDesc", key: "year", dir: "desc" },
-  { id: "yearAsc", key: "year", dir: "asc" },
   { id: "decidedDesc", key: "decided", dir: "desc" },
   { id: "readable", key: "readable", dir: "desc" },
-  /* Descending only. "Smallest claim first" is not a question anyone has
-     about an archive of claims against a State. */
-  { id: "amountDesc", key: "amount", dir: "desc" },
-  { id: "stage", key: "stage", dir: "asc" },
-  { id: "outcome", key: "outcome", dir: "asc" },
-  { id: "name", key: "name", dir: "asc" },
 ];
 
 /* ============================================================================
@@ -1786,12 +1768,6 @@ export default function RegistryTable({
                         <span className="dl">{t.decidedOn}</span>
                         {"\u00a0"}
                         {r.decidedLabel}
-                      </span>
-                    )}
-                    {r.amountLabel && (
-                      <span className="reg-amount">
-                        <span className="sr-only">{t.amountName}: </span>
-                        {r.amountLabel}
                       </span>
                     )}
                   </span>
