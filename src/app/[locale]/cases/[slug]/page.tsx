@@ -63,11 +63,17 @@ const T = {
      сталося»); they keep it. */
   tracks: { uk: "Географія справи", en: "Case geography" },
   found: { uk: "Що встановив Суд", en: "What the Court found" },
-  /* «Порушено», not «Порушення»: the column answers what the forum did with
-     the claim, and every other answer in it is a participle — «Відхилено»,
-     «Не встановлено». A noun among them read as a different kind of answer. */
-  violation: { uk: "Порушено", en: "Violation found" },
-  noViolation: { uk: "Немає", en: "No violation" },
+  /* Обидва відповіді кажуть, що суд установив, а не чого немає.
+
+     Було «Порушено» і «Немає». Друге читалося як порожнє місце в таблиці —
+     ніби суд нічого не сказав, — тоді як він сказав протилежне до першого
+     і сказав це так само прямо. Власниця: «Немає -> встановлено відсутність
+     порушення; Порушено - встановлено порушення». */
+  violation: { uk: "Встановлено порушення", en: "Violation established" },
+  noViolation: {
+    uk: "Встановлено відсутність порушення",
+    en: "No violation established",
+  },
   /* The scorecard's noun has to agree with the number printed in front of it,
      and the number depends on what kind of dispositif this is. Three
      Ukrainian forms; English reads the same three keys. */
