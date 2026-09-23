@@ -792,26 +792,33 @@
 .abt-wide > .abt-prose {
   max-width: var(--col);
 }
+/* Картки, а не рядки під рисочками.
+
+   Шість назв через усю рейку, кожна з волосинкою згори, читалися як
+   розтягнута таблиця: рисочки різної довжини, назви різної довжини і багато
+   повітря між ними. Власниця: «зроби гарним списком, не розтягуй в ширину —
+   або тоді якісь блоки їм зроби, а не рисочки».
+
+   Блок має край, і край робить об'єкт: шість однакових карток читаються як
+   набір, а не як рядки, що не доїхали до правого боку. Колія від 230 — на
+   рейці це п'ять-шість у ряд, на планшеті три, на телефоні одна; `min(100%,
+   …)`, щоб `auto-fit` не лишив колію ширшою за екран. */
 .abt-forums {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-5) var(--space-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+  gap: var(--space-4);
 }
 .abt-forums li {
   display: grid;
-  gap: 3px;
+  gap: var(--space-2);
   align-content: start;
-  padding-top: var(--space-3);
-  /* Волосинка на папері, а не на темному: смуга вийшла з шапки. */
-  border-top: 1px solid var(--rule);
-}
-.abt-forums b {
-  font: 700 var(--t-cap) var(--brand-font-mono);
-  letter-spacing: 0.04em;
-  color: var(--brand-forum);
+  padding: var(--space-4);
+  background: var(--brand-surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-xs);
 }
 .abt-forums span {
   font-size: var(--t-sm);
@@ -819,9 +826,21 @@
   color: var(--ink);
   text-wrap: pretty;
 }
-/* Група, а не інституція: риска замість абревіатури і тихіший знак. */
+/* Знак — фішкою під назвою: у картці він мітка, за якою цей суд зветься
+   далі по сайту, а не другий рядок тієї самої фрази. */
+.abt-forums b {
+  justify-self: start;
+  padding: 2px var(--space-2);
+  font: 700 var(--t-micro) var(--brand-font-mono);
+  letter-spacing: 0.06em;
+  color: var(--brand-forum);
+  background: color-mix(in srgb, var(--brand-forum) 9%, transparent);
+  border-radius: var(--r-xs);
+}
+/* Група, а не інституція: тихіша фішка з рискою замість абревіатури. */
 .abt-forums-nat b {
   color: var(--faint);
+  background: color-mix(in srgb, var(--faint) 9%, transparent);
 }
 
 /* Закладка на часі, при абзаці, який її розповідає.
@@ -875,6 +894,20 @@
 .abt-first .abt-prose {
   max-width: var(--col);
 }
+/* Вужче за 1000 закладка стає над прозою — і там вона мусить стишитися.
+
+   Збоку антиква курсивом у 22,5 пікселя читається як позначка на полі: її
+   міра 300, а поруч на 820 йде проза, і більший кегль там нікого не
+   переважує. У стовпчик, на всю ширину, той самий рядок стає першим
+   великим реченням сторінки — власниця: «в мобільній версії Генеральна
+   Асамблея звучить як найголовніше». І це неправда: сторінка про
+   бібліотеку, а не про резолюцію, яку вона цитує абзацом нижче.
+
+   Тож на вузькому екрані закладка набирається тим самим шрифтом і кеглем,
+   що проза під нею, тільки тихішим чорнилом; від блоку лишаються дата,
+   лінія і посилання — тобто він і далі позначка, просто більше не
+   заголовок. Порядок не міняється: у розмітці й на екрані вона там сама,
+   де й була. */
 @media (max-width: 1000px) {
   .abt-first {
     grid-template-columns: minmax(0, 1fr);
@@ -882,6 +915,17 @@
   }
   .abt-res {
     max-width: var(--col);
+    border-top-width: 1px;
+  }
+  .abt-res time {
+    margin-bottom: var(--space-2);
+  }
+  .abt-res span {
+    margin-bottom: var(--space-3);
+    font-family: var(--brand-font-body);
+    font-size: var(--t-sm);
+    line-height: 1.5;
+    color: var(--ink2);
   }
 }
 
