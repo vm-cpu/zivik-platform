@@ -764,10 +764,34 @@
    й в оку сторінки без огляду. Поперек рейки, а не в мірі прози: п'ять назв
    на 820 пікселях — це 148 на колонку, а найдовша з них, «Міжнародний
    трибунал з морського права», більша. */
-/* Заголовка власного тут нема: смуга інстанцій дістала звичайний <h2>, як
-   «Навіщо ця бібліотека» і «Хто веде проєкт» поруч. Підпис, яким він був у
-   темній шапці, там і лишився б капітеллю — але то був підпис до ліда, а це
-   назва смуги, і дві смуги поспіль мають називатися однаково. */
+/* Перелік усередині міркування — власний об'єкт, а не смуга.
+
+   Він стоїть між двома абзацами розділу, тож заголовком бути не може: <h2>
+   тут розірвав би розділ надвоє, а це один доказ в одному міркуванні. Отже
+   капітель, як підпис до ряду, і дві лінії — згори й знизу, — які кажуть,
+   де об'єкт починається і де закінчується. Проза обабіч тримає свою міру,
+   перелік бере рейку: шість назв на 820 пікселях — це 137 на колонку, а
+   «Міжнародний трибунал з морського права» довший. */
+.abt-forums-block {
+  max-width: none;
+  margin: clamp(30px, 3.4vw, 44px) 0;
+  padding: clamp(24px, 2.6vw, 34px) 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.abt-forums-h {
+  margin: 0 0 var(--space-5);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-gold-warm);
+}
+/* Проза розділу лишається в мірі, хоч смуга й стала широкою заради
+   переліку. */
+.abt-forums-block ~ .abt-prose,
+.abt-wide > .abt-prose {
+  max-width: var(--col);
+}
 .abt-forums {
   list-style: none;
   margin: 0;
@@ -895,19 +919,57 @@
 .abt-who .abt-prose {
   max-width: var(--col);
 }
-/* Підпис установи, а не кнопка: волосинка згори, знак, рядок під ним — те
-   саме, чим ця сторінка підписує ряд інстанцій двома смугами вище. Коробки
-   немає; єдине, що відбуває натискання, — колір підпису й лінія над ним. */
+/* Картка, яку видно, що можна натиснути.
+
+   Спершу це був підпис без коробки — волосинка згори, знак, рядок під ним.
+   Власниця: «допрацюй цей елемент, щоб він мав тінь, контури, наведення
+   тощо». Підпис і посилання виглядають однаково доти, доки на них не
+   наведеш, а на цій сторінці це єдиний вихід назовні, який щось важить.
+
+   Тож: біла поверхня над папером смуги, волосинкова рамка, найлегша з трьох
+   тіней системи. Наведення піднімає картку на два пікселі й міняє тінь на
+   середню — рух, який каже «це підніметься», а не світиться. Рамка при
+   цьому стає червоною, тобто тим самим кольором, яким набрано підпис.
+   Натиснення саджає її назад на місце.
+
+   `:focus-visible` — не те саме, що наведення: клавіатурі потрібен контур,
+   який видно на білому, тож там ще й обвід у два пікселі з відступом.
+   Читачеві, який попросив менше руху, лишаються рамка, тінь і обвід —
+   зникає тільки зсув. */
 .abt-fac {
   display: block;
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--rule);
+  padding: var(--space-5);
+  background: var(--brand-surface);
+  border: 1px solid var(--rule);
+  box-shadow: var(--shadow-sm);
   text-decoration: none;
-  transition: border-color 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
 }
 .abt-fac:hover,
 .abt-fac:focus-visible {
-  border-top-color: var(--brand-red);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand-red);
+}
+.abt-fac:focus-visible {
+  outline: 2px solid var(--brand-red);
+  outline-offset: 3px;
+}
+.abt-fac:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+@media (prefers-reduced-motion: reduce) {
+  .abt-fac,
+  .abt-fac:hover,
+  .abt-fac:focus-visible,
+  .abt-fac:active {
+    transform: none;
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  }
 }
 .abt-fac-mark {
   /* Висота, не ширина: локапи двох мов різних пропорцій (2020×797 і
@@ -931,6 +993,7 @@
 .abt-fac:focus-visible .abt-fac-t {
   text-decoration: underline;
   text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
 }
 /* Вужче — одна колонка: 340 пікселів збоку тут уже немає, і знак стає під
    прозою, лівим краєм на її лівому краї. */

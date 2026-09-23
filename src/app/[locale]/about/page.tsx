@@ -440,15 +440,43 @@ export default async function AboutPage({
           </div>
         </section>
 
-        {/* Інстанції — власною смугою на папері, не рядком у темній шапці.
 
-            Власниця: «я б інстанції на сторінці про проєкт зробила окремою
-            секцією не чорною». У шапці вони були приміткою до ліда; окремою
-            смугою вони те, чим є — перелік того, чию практику ця бібліотека
-            тримає. */}
+        {/* ── «Чого тут немає» — removed, owner's decision ──────────────────
+            Four statements about what the archive does not do, and three of
+            them drew a separate objection in the review: that the summary
+            never stands in for the decision (it does, where no text has been
+            published and the record is a court's own account of it); that
+            nothing is added beyond the ruling; and that every figure is
+            sourced to a paragraph, when what the pages link is the decision
+            and not its paragraphs. A section that states four disciplines and
+            gets three of them wrong is worse than no section. */}
+
+        {/* ── «Стан бібліотеки» — moved, owner's decision ───────────────────
+            Three figures and a line about how much of the archive is written
+            up. It belongs where the archive is: the library page opens with
+            the same count from the same source. */}
+
+        {/* Інстанції стоять там, де їх називає документ.
+
+            Вони встигли побувати рядком у темній шапці й окремою смугою
+            перед цим розділом. Власниця: «цю секцію перероби і розмісти в
+            порядку як вона в доці». А документ називає суди всередині
+            цього-таки міркування: спершу завдання, яке війна поставила
+            перед правом, потім перелік тих, хто це завдання розбирає, і
+            тільки потім — що ця практика розпорошена. Смугою перед
+            розділом вони відповідали на питання, якого читач ще не поставив.
+
+            Тому перелік лишається власним об'єктом — своя назва, свої
+            волосинки, повна рейка, — але стоїть усередині розділу, між
+            першим абзацом і другим, саме там, де про нього йдеться. */}
         <section className="abt-band abt-recess">
           <div className="abt-in abt-wide">
-            <h2>{L(T.forumsH)}</h2>
+            <h2>{L(T.whyH)}</h2>
+            <div className="abt-prose">
+              <p>{L(T.why)[0]}</p>
+            </div>
+            <div className="abt-forums-block">
+              <p className="abt-forums-h">{L(T.forumsH)}</p>
             <ul className="abt-forums">
               {/* Назва, а під нею абревіатура — порядок макета власниці.
                   Доти абревіатура стояла зверху, як у рядку бібліотеки, де
@@ -474,31 +502,13 @@ export default async function AboutPage({
                 </li>
               )}
             </ul>
-          </div>
-        </section>
-
-        {/* ── «Чого тут немає» — removed, owner's decision ──────────────────
-            Four statements about what the archive does not do, and three of
-            them drew a separate objection in the review: that the summary
-            never stands in for the decision (it does, where no text has been
-            published and the record is a court's own account of it); that
-            nothing is added beyond the ruling; and that every figure is
-            sourced to a paragraph, when what the pages link is the decision
-            and not its paragraphs. A section that states four disciplines and
-            gets three of them wrong is worse than no section. */}
-
-        {/* ── «Стан бібліотеки» — moved, owner's decision ───────────────────
-            Three figures and a line about how much of the archive is written
-            up. It belongs where the archive is: the library page opens with
-            the same count from the same source. */}
-
-        <section className="abt-band abt-recess">
-          <div className="abt-in">
-            <h2>{L(T.whyH)}</h2>
+            </div>
             <div className="abt-prose">
-              {L(T.why).map((text, i) => (
-                <p key={i}>{text}</p>
-              ))}
+              {L(T.why)
+                .slice(1)
+                .map((text, i) => (
+                  <p key={i}>{text}</p>
+                ))}
             </div>
           </div>
         </section>
