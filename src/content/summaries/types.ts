@@ -828,7 +828,6 @@ export interface DecisionSummary extends VerbatimSummary {
     | "machinery"
     | "scale"
     | "glossary"
-    | "related"
   >;
   /** Heading for the verdict matrix, when "what the Court found" is wrong. */
   verdictsHeading?: Localized;

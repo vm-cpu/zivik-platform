@@ -93,10 +93,10 @@ const INDEX_VERBATIM = false;
  * page renders (`app/[locale]/cases/[slug]/page.tsx`), so a hit links to it.
  *
  * `#sources` is deliberately absent: it is apparatus, not a destination.
- * `related` used to be indexed into `questions` alongside the FAQ; the FAQ
- * band is gone from the decision page, so the section it shared is now the
- * neighbouring-decisions band under its own anchor. A hit has to land on text
- * the reader can see, and #questions no longer exists.
+ * `questions` and `related` both stood here once. A hit has to land on text
+ * the reader can see, and neither the FAQ band nor the neighbouring-decisions
+ * band is on the decision page any more — #questions and #related would each
+ * scroll to nothing.
  */
 export const SECTIONS = [
   "overview",
@@ -110,7 +110,6 @@ export const SECTIONS = [
      one band too high, on the who's-who, and had to find the word themselves.
      The link resolved, which is why nothing caught it. */
   "glossary",
-  "related",
   "fulltext",
 ] as const;
 
@@ -178,7 +177,6 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
     rulings: [],
     measures: [],
     glossary: [],
-    related: [],
     fulltext: [],
   };
 
@@ -294,9 +292,6 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
     out.glossary.push(s.glossary.map((g) => all(g.term, g.def)).join(" "));
   }
 
-  // ── related: the pointers to neighbouring cases ──
-  out.related.push(s.related.map((r) => all(r.label, r.note)).join(" "));
-
   // ── fulltext: the verbatim body and its bibliography ──
   if (INDEX_VERBATIM) {
     out.fulltext.push(
@@ -407,7 +402,6 @@ export const contentIndex: ContentIndex = build();
     "measures",
     "glossary",
     "fulltext",
-    "related",
   ]);
   const stray = SECTIONS.filter((s) => !rendered.has(s));
   if (stray.length) {

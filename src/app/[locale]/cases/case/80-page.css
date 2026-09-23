@@ -49,8 +49,7 @@
 .casepage .refs,
 .casepage .pmeas,
 .casepage .chron,
-.casepage .terms,
-.casepage .neighbours {
+.casepage .terms {
   background: transparent;
   color: var(--ink);
   /* No edge of its own. A band used to be a full-bleed strip and needed a
@@ -76,8 +75,7 @@
    Та сама причина, що й із тлом і швами: смуги ставали одним аркушем
    поіменно, і ці три в список не потрапили. */
 .casepage .machinery,
-.casepage .mapband,
-.casepage .neighbours {
+.casepage .mapband {
   padding-block: 0;
   margin-bottom: clamp(28px, 4vw, 42px);
 }
@@ -642,59 +640,10 @@
   }
 }
 
-/* ── Related decisions ───────────────────────────────────────────────────
-   Cards, each closed at the foot by a red rule: the forum in gold micro,
-   the case in the display face, the detail under it. They were rows in a
-   grid with no edges of their own — a set of links a reader had to read to
-   count. */
-.casepage .nb-grid {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: clamp(12px, 2vw, 18px);
-}
-.casepage .nb-grid > li > a {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  height: 100%;
-  background: var(--card);
-  border: 1px solid var(--prule);
-  border-bottom: 3px solid var(--pred);
-  padding: var(--space-5) clamp(16px, 2.4vw, 22px);
-  text-decoration: none;
-  transition: border-color var(--dur) var(--ease);
-}
-.casepage .nb-grid > li > a:hover {
-  border-color: var(--brand-gold-mark);
-  border-bottom-color: var(--pred);
-}
-.casepage .nb-forum {
-  font: 700 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--pgold);
-}
-.casepage .nb-grid > li > a b {
-  font-family: var(--brand-font-display), serif;
-  font-weight: 700;
-  /* A step down. At 20px in a third of the rail the longest name on this
-     page — «Звинувачення у геноциді (Україна проти РФ)» — took three lines
-     over a one-line note, and the card was mostly its own title. It is the
-     same step every heading inside the write-up takes, for the same reason:
-     a bold serif reads as a heading against a sans note without the scale
-     doing the work. */
-  font-size: clamp(14px, 1.2vw, 16px);
-  line-height: 1.3;
-  color: var(--ink);
-}
-.casepage .nb-note {
-  font-size: var(--t-sm);
-  line-height: 1.55;
-  color: var(--ink2);
-}
+/* «Пов'язані рішення» більше немає на жодному рішенні — див. примітку в
+   cases/[slug]/page.tsx. Разом зі смугою пішли й картки: форум золотим
+   мікрорегістром, назва дисплейним накресленням, червона риска внизу.
+   Смуга повертається разом зі своєю розміткою або ніяк. */
 
 /* ── Sources ─────────────────────────────────────────────────────────────
    Three tracks: the number, the source, what kind of source it is. The
@@ -1869,8 +1818,8 @@
    картку, а не рядок. */
 
 /* Усі картки ряду, а не лише перша: зняти кант з однієї означає лінію на
-   дві третини ширини. Ряд тримає проміжок. */
-.casepage .sec-h + .nb-grid > li > a,
+   дві третини ширини. Ряд тримає проміжок. `.nb-grid` стояв тут другим
+   селектором і пішов разом зі смугою «Пов'язані рішення». */
 .casepage .sec-h + .verdicts > li:first-child {
   border-top: 0;
 }

@@ -222,10 +222,10 @@ const T = {
        own section here since the index was still filing terms under the one
        above — a term search landed on the cast list. */
     glossary: { uk: "Словник", en: "Glossary" },
-    /* `questions` stood here. The band is gone from the decision page, and a
-       hit that pointed at #questions would land on nothing; the neighbouring
-       decisions it shared that section with now have their own. */
-    related: { uk: "Пов'язані рішення", en: "Related decisions" },
+    /* `questions` and `related` both stood here. Each band is gone from the
+       decision page, and a hit pointing at #questions or #related would land
+       on nothing. Neighbouring decisions are this page's own job: the docket
+       filters by court, ground and date. */
     fulltext: { uk: "Повний огляд", en: "Full summary" },
   },
   group: {
