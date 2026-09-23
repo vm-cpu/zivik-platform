@@ -2045,6 +2045,22 @@
   white-space: normal;
   text-align: center;
 }
+/* На телефоні дві колонки не діляться.
+
+   На 375 пікселях сітка давала 139 на речення і 148 на чип — половину
+   ширини під два слова, а перший пункт виростав на 517 пікселів вежею по
+   два-три слова в рядок. Тож нижче 560 чип стає під рядок, ліворуч: він і
+   там відповідь на те, що щойно прочитано, просто не збоку. */
+@media (max-width: 560px) {
+  .casepage .f-list-out > li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+  .casepage .f-list-out .h4-out {
+    justify-self: start;
+    text-align: left;
+  }
+}
 .casepage .f-list-out .fl-head {
   margin-right: var(--space-2);
   color: var(--ink);
