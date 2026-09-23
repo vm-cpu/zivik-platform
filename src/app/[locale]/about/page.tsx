@@ -132,21 +132,42 @@ const T = {
   resLink: { uk: "A/RES/68/262", en: "A/RES/68/262" },
   forumsH: { uk: "Інстанції в бібліотеці", en: "The forums in the library" },
   forumsNat: { uk: "Іноземні національні суди", en: "Foreign national courts" },
-  whoH: { uk: "Хто веде проєкт", en: "Who runs the project" },
-  /* Split around the Centre's name so that name can be the link.
+  /* Заголовок із документа, а не про власника.
 
-     Owner's edit: wherever the Research Centre is named, link out to the
-     faculty's site. This sentence is the site's own, unlike `centre` and
-     `centre2` below, which are the Centre's description of itself quoted from
-     that same site — so the anchor goes here, where a rewrite of the quoted
-     description cannot carry it off with it.
+     Він казав «Хто веде проєкт», а під ним стояло «Проєкт веде
+     Дослідницький центр…». Власниця запитала, чи так було в документі —
+     не було: документ ніде не каже, хто проєкт веде. Він каже інше, і
+     каже це першим же реченням цього розділу: створення «НаСвітла» є
+     частиною ширшої місії. Звідти й назва. */
+  whoH: { uk: "Частина ширшої місії", en: "Part of a wider mission" },
+  /* Обидва абзаци — з «Про платформу», слово в слово.
 
-     One link, not two. The faculty and the university are named in the same
-     breath and both would resolve to the same host; two anchors in one
-     sentence would read as two destinations. */
+     Тут стояло власне речення сайту: «Проєкт веде Дослідницький центр імені
+     Луї Б. Зона Факультету права Українського католицького університету,
+     Львів». Воно було коротше й зручніше, але казало те, чого документ не
+     каже, і називало Центр інакше, ніж він. Власниця: «використай текст з
+     файлу і не вигадуй».
+
+     Перший абзац розрізано навколо назви Центру, щоб назва була
+     посиланням. Одне посилання, не два: факультет і університет названо в
+     тому самому подиху й обидва вели б на той самий сайт.
+
+     Англійська — переклад, зроблений тут: документ її не має. */
   who: {
-    uk: ["Проєкт веде ", "Дослідницький центр імені Луї Б. Зона", " Факультету права Українського католицького університету, Львів."],
-    en: ["The project is run by the ", "Louis B. Sohn Research Centre", " at the Faculty of Law of the Ukrainian Catholic University, Lviv."],
+    uk: [
+      "Створення «НаСвітло» є частиною ширшої місії Факультету права Українського католицького університету та ",
+      "Дослідницького центру Луї Зона",
+      " — утверджувати цінність людської гідності, верховенства права і прав людини та посилювати роль академічної спільноти у відповіді на суспільні й правові виклики війни.",
+    ],
+    en: [
+      "The making of NaSvitlo is part of a wider mission of the Faculty of Law of the Ukrainian Catholic University and of the ",
+      "Louis Sohn Research Centre",
+      " — to uphold the value of human dignity, the rule of law and human rights, and to strengthen the part the academic community plays in answering the social and legal challenges of the war.",
+    ],
+  },
+  who2: {
+    uk: "Через дослідження, освіту та відкритий доступ до правового знання ми прагнемо сприяти осмисленню того, як право може служити інструментом захисту людини, встановлення відповідальності та відновлення справедливості.",
+    en: "Through research, education and open access to legal knowledge we seek to help make sense of how the law can serve as an instrument for protecting the person, establishing accountability and restoring justice.",
   },
 
   /* Підпис до знака факультету — назва, а не адреса.
@@ -424,6 +445,20 @@ export default async function AboutPage({
         <section className="abt-band">
           <div className="abt-in">
             <div className="abt-first">
+              {/* Проза перша в розмітці, закладка друга.
+
+                  На широкому екрані вони поруч, і порядок читання між ними
+                  не встановлений: закладка сідає в ліву колонку правилом
+                  сітки. На вузькому колонки складаються в одну — і там
+                  порядок уже є. Власниця: «цитату я б навпаки робила нижче
+                  текст в мобілці». Вона й іде нижче, бо в розмітці стоїть
+                  другою; жодного `order`, який розвів би побачене і
+                  прочитане вголос. */}
+              <div className="abt-prose">
+                {L(about.paragraphs).map((text, i) => (
+                  <p key={i}>{linkAboutProse(text, aboutLinks)}</p>
+                ))}
+              </div>
               <p className="abt-res">
                 <time dateTime="2014-03-27">{L(T.resDate)}</time>
                 <span>{L(T.resText)}</span>
@@ -431,11 +466,6 @@ export default async function AboutPage({
                   {L(T.resLink)} →
                 </a>
               </p>
-              <div className="abt-prose">
-                {L(about.paragraphs).map((text, i) => (
-                  <p key={i}>{linkAboutProse(text, aboutLinks)}</p>
-                ))}
-              </div>
             </div>
           </div>
         </section>
@@ -542,6 +572,7 @@ export default async function AboutPage({
                   </a>
                   {L(T.who)[2]}
                 </p>
+                <p>{L(T.who2)}</p>
                 <p>{L(T.centre)}</p>
                 <p>{L(T.centre2)}</p>
               </div>

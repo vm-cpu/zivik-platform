@@ -891,8 +891,18 @@
   align-items: start;
   gap: clamp(32px, 4vw, 64px);
 }
+/* Проза стоїть першою в розмітці, а ліворуч сідає закладка — не `order`, а
+   пряме місце в сітці: обидві клітинки названі, тож ніщо не «переставлене»,
+   просто кожна там, де їй бути. Коли колонки складаються в одну, обидва
+   правила знімаються і все читається так, як написано. */
 .abt-first .abt-prose {
+  grid-column: 2;
+  grid-row: 1;
   max-width: var(--col);
+}
+.abt-first .abt-res {
+  grid-column: 1;
+  grid-row: 1;
 }
 /* Вужче за 1000 закладка стає над прозою — і там вона мусить стишитися.
 
@@ -912,6 +922,11 @@
   .abt-first {
     grid-template-columns: minmax(0, 1fr);
     gap: clamp(26px, 3vw, 36px);
+  }
+  .abt-first .abt-prose,
+  .abt-first .abt-res {
+    grid-column: auto;
+    grid-row: auto;
   }
   .abt-res {
     max-width: var(--col);
