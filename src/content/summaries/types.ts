@@ -810,10 +810,11 @@ export interface DecisionSummary extends VerbatimSummary {
    * «Забрати Overview — не має ніякої цінності», a whitelist could not say it.
    *
    * Ids are the section ids in `pageSections`, which are also the anchors the
-   * contents rail links to: "overview", "dash", "score", "rulings",
-   * "measures", "machinery", "scale", "glossary", "related". The write-up, the
-   * chronology, the map and the sources are not listable — a decision page
-   * without its own text is not a page.
+   * contents rail links to — the union below is the list. The write-up, the
+   * chronology, the map and the sources are not among them: a decision page
+   * without its own text is not a page. Nor is "related", which left the
+   * template altogether in 49de66a; a band no decision draws is not a band
+   * this list can hide.
    *
    * Hiding a section hides its chip in the contents too, and the ground
    * alternation closes over the gap, so no band is left stranded on the same

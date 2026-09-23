@@ -164,7 +164,7 @@ export const icjGenocide: DecisionSummary = {
   /* Search-result description. `plain.tldr` used to serve as this and runs
      three to four sentences, so the snippet was cut off mid-word. */
   /* Named removals, not a whitelist of four.
-     
+
      This page carried `bands: "four"` — «ЗАЛИШАТИ ХРОНОЛОГІЮ, МІСЦЕ РОЗГЛЯДУ,
      ОГЛЯД ТА ДЖЕРЕЛА» from the corrections document, applied as a whitelist
      that silenced every other band. The next review overturned it from the
@@ -174,13 +174,17 @@ export const icjGenocide: DecisionSummary = {
      rulings on the law» and «Забрати Overview — не має ніякої цінності»,
      which a whitelist cannot express either, because naming what stays says
      nothing about what the reviewer wants gone.
-     
+
      So the instrument is inverted here: everything renders except the two
      sections the review names. The chronology, the map, the write-up and the
      sources — the four the first line asked for — are all still here; what
      joins them is the matrix, the docket card, the ledger of Russia's six
-     objections, the intervention figures, the glossary and the neighbours.
-     See `hideSections` in summaries/types.ts. */
+     objections, the intervention figures and the glossary.
+
+     Not the neighbours: «забери з усіх рішень секцію Пов'язані рішення» took
+     that band out of the template for every decision (49de66a), so it is not
+     a band this list can give back, and "related" is no longer a member of
+     `hideSections` either. See `hideSections` in summaries/types.ts. */
   hideSections: ["overview", "rulings"],
 
   metaDesc: {
