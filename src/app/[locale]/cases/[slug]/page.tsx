@@ -50,18 +50,18 @@ import "../case/80-page.css";
 
 /** Localized chrome labels (the summary body stays in its source language). */
 const T = {
-  /* The row of counters used to be headed «Огляд» / "Overview", and the chip
-     that led here said the same. Review: «Розділ "ОГЛЯД" я б назвала "ЯКЩО
-     КОРОТКО"» — so `inShort` is the chip now, and it points at the paragraph
-     a reader would call the overview. What is left over the counters is a row
-     of figures, and says so; naming it «Якщо коротко» too would have printed
-     the same heading twice in one screen. */
-  /* Heading for `DecisionSummary.glance` — the docket facts. Distinct from
-     `inShort` ("Якщо коротко"), which heads the plain-language tldr: one is a
-     ledger of identifiers, the other is a paragraph. */
+  /* Ім'я першої секції сторінки: реквізити справи, а під ними речення про
+     неї. Секція двічі мінялася назвою — «Огляд», потім «Якщо коротко», —
+     і обидва рази називала абзац. Тепер вона називає картку, з якої
+     починається, а абзац читається після неї. */
   glanceH: { uk: "Картка справи", en: "Case at a glance" },
   timeline: { uk: "Хронологія", en: "Timeline" },
-  tracks: { uk: "Два театри", en: "Two theatres" },
+  /* «Географія справи», not «Два театри». Owner's rename: the count of
+     theatres is not what the band is about, and on a page that shows one
+     campaign across five regions «два» was the least of what the drawing
+     said. Three decisions override this with their own wording («Де це
+     сталося»); they keep it. */
+  tracks: { uk: "Географія справи", en: "Case geography" },
   found: { uk: "Що встановив Суд", en: "What the Court found" },
   /* «Порушено», not «Порушення»: the column answers what the forum did with
      the claim, and every other answer in it is a participle — «Відхилено»,
@@ -123,7 +123,6 @@ const T = {
      to build a summary that has the instrument without naming its Order. */
   orderBreached: { uk: "Наказ порушено", en: "Order breached" },
   orderComplied: { uk: "Дотримано", en: "Complied" },
-  inShort: { uk: "Якщо коротко", en: "In short" },
   whyMatters: { uk: "Чому це важливо", en: "Why it matters" },
   onThisPage: { uk: "На цій сторінці", en: "On this page" },
   /* The two sides of a finding, as column captions. «Твердила» and not
@@ -1580,7 +1579,7 @@ export default async function CasePage({
     ) : null;
 
   const pageSections = [
-    { id: "overview", label: pick(T.inShort, locale) },
+    { id: "overview", label: pick(T.glanceH, locale) },
     /* The index, second — the design puts what the forum held directly after
        the summary, before the write-up that explains it. It had no entry at
        all: the band carried no id, so the one table on the page a reader
@@ -1926,18 +1925,31 @@ export default async function CasePage({
         />
         <div className="shell-main">
 
-      {/* 1b — Plain-language lede */}
+      {/* 1b — «Картка справи»: реквізити, а під ними речення про справу.
+
+          Було дві речі в різних місцях: секція «Якщо коротко» тут і картка
+          реквізитів — першим об'єктом дашборда, екраном нижче. Власниця:
+          «картку справи підіймаємо вище і розділ називаємо картка справи, а
+          не якщо коротко, а під карткою справи речення коротко». Тож картка
+          стоїть перша й дає секції ім'я, а абзац, який доти був самою
+          секцією, читається після неї — як речення про те, що в картці
+          названо рядками. `inShort` більше не заголовок нічого. */}
       {shows("overview") && (
         <section className="lede" id="overview" data-navsec>
           <div className="rail">
-            {/* The section says its own name in a heading now, over a rule,
-                the way every other section on the page does. It used to
-                carry the name as a small gold label above the text and no
-                heading at all — which left the page's first section outside
-                its own outline. */}
             <div className="sec-h">
-              <h2>{pick(T.inShort, locale)}</h2>
+              <h2>{pick(T.glanceH, locale)}</h2>
             </div>
+            {glance.length > 0 && (
+              <div className="rows glance-rows">
+                {glance.map((g, i) => (
+                  <div className="row" key={i}>
+                    <span className="row-k">{pick(g.label, locale)}</span>
+                    <span className="row-v">{pick(g.value, locale)}</span>
+                  </div>
+                ))}
+              </div>
+            )}
             <div className="lede-grid">
               <p className="body">{pick(plain.tldr, locale)}</p>
               {/* Not a heading of its own: this is an aside about the
@@ -1956,32 +1968,8 @@ export default async function CasePage({
       {shows("dash") && (
         <section className="dash">
           <div className="rail dash-stack">
-            {/* The docket facts, then the figures. `glance` is authored on all
-                eight summaries — 57 facts — and rendered nowhere until now. */}
-            {glance.length > 0 && (
-              <div>
-                {/* `lbl-onpaper` again: the docket card stayed on paper when
-                    the band split, and the plain `.lbl` is the dark-ground
-                    label. */}
-                {/* The docket, as a list of pairs on hairlines.
-
-                    It was `GlanceFacts`, a bordered instrument with its own
-                    card grid; the design sets the same facts as rows in the
-                    reading column, which is what they are — a label and a
-                    value, read down. A gold caption rather than a heading:
-                    the card is apparatus for the section above it, not a
-                    part of the document in its own right. */}
-                <div className="lbl-c glance-h">{pick(T.glanceH, locale)}</div>
-                <div className="rows">
-                  {glance.map((g, i) => (
-                    <div className="row" key={i}>
-                      <span className="row-k">{pick(g.label, locale)}</span>
-                      <span className="row-v">{pick(g.value, locale)}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            {/* Картка реквізитів пішла нагору, у власну секцію — див.
+                примітку при `id="overview"`. */}
 
             {/* «У цифрах» is gone — there is no such section in the design.
 

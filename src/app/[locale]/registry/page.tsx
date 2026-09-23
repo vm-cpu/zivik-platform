@@ -221,10 +221,10 @@ const T = {
      shipping a per-case label table for a single band; it is noted rather than
      built, and it is the only place these two lists differ. */
   section: {
-    /* «Якщо коротко», not «Огляд»: the chip on the decision page was renamed
-       and now lands on the plain-language paragraph rather than on the row of
-       counters. */
-    overview: { uk: "Якщо коротко", en: "In short" },
+    /* «Картка справи»: секція, на яку веде цей чип, тепер зветься так —
+       реквізити справи, а під ними речення про неї. «Якщо коротко» більше
+       не заголовок нічого. */
+    overview: { uk: "Картка справи", en: "Case at a glance" },
     chronology: { uk: "Хронологія", en: "Timeline" },
     machinery: { uk: "Розбір рішення", en: "Anatomy" },
     rulings: { uk: "Тлумачення", en: "Key rulings" },
