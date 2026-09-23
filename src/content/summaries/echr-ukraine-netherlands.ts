@@ -342,7 +342,11 @@ export const echrUkraineNetherlands: DecisionSummary = {
       value: { uk: "Україна (×3) і Нідерланди", en: "Ukraine (×3) and the Netherlands" },
     },
     { label: { uk: "Відповідач", en: "Respondent" }, value: { uk: "Російська Федерація", en: "Russian Federation" } },
-    { label: { uk: "Склад", en: "Formation" }, value: { uk: "Велика палата (17 суддів)", en: "Grand Chamber (17 judges)" } },
+    /* «Велика палата» вже стоїть у назві суду поруч — у картці справи це
+       рядок над цим, і повторювати її в значенні «Складу» означає сказати
+       одне й те саме двічі в одній таблиці. Лишається те, чого більше ніде
+       немає: скільки суддів. Власниця: «забрати в назві Велика палата». */
+    { label: { uk: "Склад", en: "Formation" }, value: { uk: "17 суддів", en: "17 judges" } },
     {
       label: { uk: "Заяви", en: "Applications" },
       value: { uk: "8019/16 · 43800/14 · 28525/20 · 11055/22", en: "8019/16 · 43800/14 · 28525/20 · 11055/22" },

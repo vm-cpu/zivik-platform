@@ -1974,3 +1974,34 @@
 .casepage .v-claim-link:focus-visible {
   border-bottom-color: var(--pgold);
 }
+
+/* ── Хронологія: колонки, які справді колонки ─────────────────────────────
+   Власниця: «поправ в хронології wrapping — наїжджає на іншу колонку».
+
+   Рядок має чотири комірки — дата, напрям, подія, «+» — але шаблон, який
+   вигравав, описував три. Четверта лягала куди прийдеться, а подія
+   починалася одразу за текстом напряму, тобто на різній відстані від краю в
+   кожному рядку: виміряно на зібраній сторінці, ліві краї подій стояли на
+   1312, 1195, 1051, 1373, 1146 і 1366 пікселях. Довгий рядок при цьому не
+   мав куди переноситися й заходив на сусідню комірку.
+
+   Кожна комірка прив'язана до своєї колонки, а гнучка з них — та, в якій
+   лежить текст. Нижче 761px 50-responsive.css розкладає рядок у стовпчик,
+   тому правило під ту ширину не лізе. */
+@media (min-width: 761px) {
+  .casepage .ctl[data-tracks="yes"] .ctl-row {
+    grid-template-columns: clamp(96px, 12vw, 150px) auto minmax(0, 1fr) auto;
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-date {
+    grid-column: 1;
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-track {
+    grid-column: 2;
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-label {
+    grid-column: 3;
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-more {
+    grid-column: 4;
+  }
+}
