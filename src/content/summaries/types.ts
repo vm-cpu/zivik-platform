@@ -849,6 +849,18 @@ export interface DecisionSummary extends VerbatimSummary {
     | "scale"
     | "glossary"
   >;
+  /**
+   * What to call the forum's own voice, where «Суд» is wrong.
+   *
+   * The gold box over a holding is captioned «Позиція Суду» on every page.
+   * Two of the eight were decided by an arbitral tribunal under UNCITRAL
+   * rules — Oschadbank and DTEK Krymenergo — and there the caption names an
+   * institution that did not sit: the Permanent Court of Arbitration
+   * administers the case, it does not decide it, and the body that decided
+   * is a tribunal of three. The page says «Трибунал» in its own prose and
+   * «Суд» in the caption over the same paragraph.
+   */
+  positionLabel?: Localized;
   /** Heading for the verdict matrix, when "what the Court found" is wrong. */
   verdictsHeading?: Localized;
   /**

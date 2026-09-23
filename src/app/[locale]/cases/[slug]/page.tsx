@@ -1103,6 +1103,43 @@ function Block({
           );
         }
       }
+      /* The same thing, glued with commas instead of semicolons.
+
+         «…подала спільне звернення: Республіка Албанія, Австралійський Союз,
+         …» — thirty-eight States, nine lines of running text, and the one
+         fact the paragraph carries is how many there are. The semicolon rule
+         above cannot see it, and adding separators to the text is not ours
+         to do.
+
+         Measured over every block in the archive, both languages: with a
+         floor of nine items and no full stop inside any of them, this matches
+         exactly two blocks — that paragraph in Ukrainian and in English. It
+         is a rule for a list of names, not a general comma rule, and the
+         numbers say so.
+
+         The commas do not go back on, unlike the semicolons above: those
+         separate clauses that are still clauses, this separates names, and a
+         name does not carry the sentence's punctuation into a list. */
+      const named = /^([^:]{8,}?:)\s*([^;]+)$/.exec(block.text);
+      if (named) {
+        const items = named[2]
+          .split(",")
+          .map((x) => x.trim())
+          .map((x, i, a) => (i === a.length - 1 ? x.replace(/^(та|і|й|and)\s+/i, "") : x))
+          .filter(Boolean);
+        if (items.length >= 9 && !items.some((x) => /\.\s*\S/.test(x))) {
+          return (
+            <div className="listed" data-shape="names">
+              <div className="listed-h">{named[1].replace(/:$/, "")}</div>
+              <ul>
+                {items.map((x, i) => (
+                  <li key={i}>{mark(x)}</li>
+                ))}
+              </ul>
+            </div>
+          );
+        }
+      }
       return <p className="body">{mark(block.text)}</p>;
     }
   }
@@ -2326,7 +2363,7 @@ export default async function CasePage({
                       <p>{mark(b.text)}</p>
                     </div>
                     <div className="rule">
-                      <div className="lbl-c">{pick(T.courtPosition, locale)}</div>
+                      <div className="lbl-c">{pick(summary.positionLabel ?? T.courtPosition, locale)}</div>
                       {right}
                     </div>
                   </div>,
@@ -2361,7 +2398,7 @@ export default async function CasePage({
               i -= 1;
               out.push(
                 <div className="rule" key={`pos-${at}`}>
-                  <div className="lbl-c">{pick(T.courtPosition, locale)}</div>
+                  <div className="lbl-c">{pick(summary.positionLabel ?? T.courtPosition, locale)}</div>
                   {run.map((t, k) => (
                     <HoldingText key={k} text={t} mark={mark} />
                   ))}
@@ -2437,7 +2474,7 @@ export default async function CasePage({
                 locale={locale}
                 mark={mark}
                 claimLabel={pick(T.claimed, locale)}
-                positionLabel={pick(T.courtPosition, locale)}
+                positionLabel={pick(summary.positionLabel ?? T.courtPosition, locale)}
               />,
             );
           }

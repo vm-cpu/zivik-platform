@@ -2075,3 +2075,14 @@
   margin-right: var(--space-2);
   color: var(--ink);
 }
+
+/* Перелік імен — сіткою, а не стовпчиком у тридцять вісім рядків. Назви
+   держав короткі й однорідні, тож колонка марнує ширину, а око однаково
+   читає їх як множину, а не як послідовність. */
+.casepage .listed[data-shape="names"] ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: var(--space-1) var(--space-6);
+  list-style: none;
+  padding: 0;
+}
