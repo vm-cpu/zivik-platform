@@ -53,7 +53,11 @@ const T = {
      What the sentence can say without risk is what the library holds and what
      each row carries. */
   lede: {
-    uk: "Провадження проти РФ у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип.",
+    /* «Росії», не «РФ»: це перше, що читач зустрічає на сторінці, і решта
+       сайту пише державу словом. І «тип рішення», а не «тип» — колонка
+       зветься так, відколи власниця її перейменувала, а лід лишався
+       поясненням до попередньої таблиці. */
+    uk: "Провадження проти Росії у міжнародних судах, трибуналах та арбітражах. Кожен рядок має рік відкриття провадження, а де рішення вже ухвалене — його точну дату. Дві окремі колонки кажуть, на якому етапі провадження — стан розгляду — і що саме суд ухвалив — тип рішення.",
     en: "Proceedings against Russia across international courts, tribunals and arbitrations. Each row carries the year the proceeding was opened and, where a decision has been handed down, its exact date. Two separate columns carry the stage of the proceedings and the type of decision the court issued.",
   },
   /* The meta description: about 133 / 147 characters, both inside the ~160 a
