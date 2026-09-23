@@ -10,7 +10,7 @@ import {
 } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContentRepository } from "@/content/repository";
-import { team } from "@/content/team";
+import { team, teamGroups } from "@/content/team";
 import { pick } from "@/content/types";
 import { linkAboutProse } from "@/content/about-prose";
 import {
@@ -344,6 +344,31 @@ export default async function AboutPage({
   const forums = institutions.filter((i) => i.phase1 && i.category !== "national");
   const nationals = institutions.filter((i) => i.phase1 && i.category === "national");
 
+  /* Люди, зібрані в групи за посадою.
+
+     Порядок дає `teamGroups`; посада, якої в тій таблиці немає, все одно
+     рендериться — власною назвою, у кінці, — щоб додана людина не могла
+     зникнути зі сторінки через забуту таблицю. */
+  const roleGroups = (() => {
+    const byKey = new Map<string, typeof team>();
+    for (const m of team) {
+      const list = byKey.get(m.role.en);
+      if (list) list.push(m);
+      else byKey.set(m.role.en, [m]);
+    }
+    const out: { key: string; label: { uk: string; en: string }; members: typeof team }[] = [];
+    for (const g of teamGroups) {
+      const members = byKey.get(g.key);
+      if (!members) continue;
+      byKey.delete(g.key);
+      out.push({ key: g.key, label: g.label, members });
+    }
+    for (const [key, members] of byKey) {
+      out.push({ key, label: members[0].role, members });
+    }
+    return out;
+  })();
+
   const L = <V,>(x: Record<Locale, V>) => pick(x, locale);
   /* The citation table travels with the prose — see content/about.ts. */
   const aboutLinks = about.links ? L(about.links) : [];
@@ -589,14 +614,29 @@ export default async function AboutPage({
                 {L(T.teamLink)} →
               </Link>
             </div>
-            <ul className="abt-roster">
-              {team.map((m) => (
-                <li key={m.name.en}>
-                  <b>{L(m.name)}</b>
-                  <span>{L(m.role)}</span>
-                </li>
+            {/* За ролями, а не суцільним списком. Власниця: «погрупуй по
+                ролях». Сім рядків «ім'я — посада» читалися як реєстр, у
+                якому та сама посада повторювалася двічі поспіль і щоразу
+                іншим родом; тепер посада сказана раз, над своїми людьми, а
+                рядок несе лише ім'я.
+
+                Групування по `role.en`: українська посада гендерована —
+                «Старший дослідник» і «Старша дослідниця» — і розвела б
+                кожну пару, яку групування й існує, щоб звести. */}
+            <div className="abt-roles">
+              {roleGroups.map((g) => (
+                <div className="abt-role" key={g.key}>
+                  <p className="abt-role-h">{L(g.label)}</p>
+                  <ul className="abt-roster">
+                    {g.members.map((m) => (
+                      <li key={m.name.en}>
+                        <b>{L(m.name)}</b>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
 
