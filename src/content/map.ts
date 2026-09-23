@@ -300,7 +300,8 @@ export const MAP_COURTS: MapCourt[] = [
     seats: [
       {
         institutionId: "ecthr",
-        abbr: { uk: "ЄСПЛ", en: "ECtHR" },
+        /* Той самий бейдж, що в institutions.ts — див. примітку там. */
+        abbr: { uk: "ECtHR", en: "ECtHR" },
         name: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
       },
     ],

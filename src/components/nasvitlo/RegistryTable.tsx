@@ -425,7 +425,11 @@ function compare(a: RegRow, b: RegRow, { key, dir }: SortState): number {
 const useIsomorphicLayoutEffect =
   typeof window === "undefined" ? useEffect : useLayoutEffect;
 
-const DEFAULT_SORT: SortState = { key: "year", dir: "desc" };
+/* By court. The reader arrives at a docket of thirty-nine proceedings across
+   twelve bodies, and the first question the page is asked is which forum a
+   case sits in — «дефолтне сортування за Судом». Newest-first is still one
+   press away and is the second option in the control. */
+const DEFAULT_SORT: SortState = { key: "court", dir: "asc" };
 
 const SORT_KEYS: SortKey[] = [
   "year",
@@ -444,7 +448,6 @@ interface UrlState {
   court: string[];
   stage: string[];
   outcome: string[];
-  field: string[];
   material: string[];
   sort: SortState;
 }
@@ -455,7 +458,6 @@ interface Allowed {
   court: Set<string>;
   stage: Set<string>;
   outcome: Set<string>;
-  field: Set<string>;
 }
 
 /**
@@ -481,8 +483,7 @@ function readUrl(allow: Allowed): UrlState {
     court: list("court", (v) => allow.court.has(v)),
     stage: list("stage", (v) => allow.stage.has(v)),
     outcome: list("outcome", (v) => allow.outcome.has(v)),
-    field: list("field", (v) => allow.field.has(v)),
-    material: list("material", (v) => v === "lit" || v === "doc"),
+    material: list("material", (v) => v === "lit" || v === "wip"),
     sort:
       (SORT_KEYS as string[]).includes(key) && (dir === "asc" || dir === "desc")
         ? { key: key as SortKey, dir }
@@ -502,7 +503,6 @@ function writeUrl(s: UrlState): void {
   if (s.court.length) p.set("court", s.court.join(","));
   if (s.stage.length) p.set("stage", s.stage.join(","));
   if (s.outcome.length) p.set("outcome", s.outcome.join(","));
-  if (s.field.length) p.set("field", s.field.join(","));
   if (s.material.length) p.set("material", s.material.join(","));
   if (s.sort.key !== DEFAULT_SORT.key || s.sort.dir !== DEFAULT_SORT.dir) {
     p.set("sort", `${s.sort.key}:${s.sort.dir}`);
@@ -543,11 +543,6 @@ export interface RegistryLabels {
   stagesAll: string;
   outcomes: string;
   outcomesAll: string;
-  /* Subject-matter field. Nine values, and every one of them is already in
-     `content/cases.ts` as `type` — an authored vocabulary that covers all
-     thirty-nine rows, was searchable and was not filterable. */
-  fields: string;
-  fieldsAll: string;
   /* What a reader can actually open. Two facts the record already fixes: a
      row has a summary on this site (`lit`), and a row has a link to the
      court's own document (`decisionUrl`). Seventeen of thirty-nine have no
@@ -556,7 +551,7 @@ export interface RegistryLabels {
   materials: string;
   materialsAll: string;
   matLit: string;
-  matDoc: string;
+  matWip: string;
   /** The link on a row that opens the court's own document. */
   doc: string;
   /** Assistive-technology prefix on the figure: «Сума у спорі: $5,0 млрд». */
@@ -604,6 +599,9 @@ export interface RegistryLabels {
 
 /** The axes offered by the sort control, in the order they are listed. */
 const SORTS: Array<{ id: string; key: SortKey; dir: SortDir }> = [
+  /* The default leads the list, so the control opens on what the table is
+     already doing rather than on an axis it is not. */
+  { id: "court", key: "court", dir: "asc" },
   { id: "yearDesc", key: "year", dir: "desc" },
   { id: "yearAsc", key: "year", dir: "asc" },
   { id: "decidedDesc", key: "decided", dir: "desc" },
@@ -611,7 +609,6 @@ const SORTS: Array<{ id: string; key: SortKey; dir: SortDir }> = [
   /* Descending only. "Smallest claim first" is not a question anyone has
      about an archive of claims against a State. */
   { id: "amountDesc", key: "amount", dir: "desc" },
-  { id: "court", key: "court", dir: "asc" },
   { id: "stage", key: "stage", dir: "asc" },
   { id: "outcome", key: "outcome", dir: "asc" },
   { id: "name", key: "name", dir: "asc" },
@@ -945,7 +942,6 @@ export default function RegistryTable({
   courts,
   stages,
   outcomes,
-  fields,
   content,
   t,
 }: {
@@ -953,8 +949,6 @@ export default function RegistryTable({
   courts: Array<{ id: string; abbr: string }>;
   stages: Array<{ key: CaseStageKey; label: string }>;
   outcomes: Array<{ key: CaseOutcomeKey; label: string }>;
-  /** Subject-matter values the thirty-nine rows actually carry. */
-  fields: Array<{ key: string; label: string }>;
   /** The build-time index over the eight write-ups. */
   content: ContentIndexProp;
   t: RegistryLabels;
@@ -975,7 +969,6 @@ export default function RegistryTable({
   const [court, setCourt] = useState<string[]>([]);
   const [stage, setStage] = useState<string[]>([]);
   const [outcome, setOutcome] = useState<string[]>([]);
-  const [field, setField] = useState<string[]>([]);
   const [material, setMaterial] = useState<string[]>([]);
   const [sort, setSort] = useState<SortState>(DEFAULT_SORT);
   /* Below 640 the five filters fold away behind one control. Shut by default:
@@ -1023,9 +1016,8 @@ export default function RegistryTable({
       court: new Set(courts.map((c) => c.id)),
       stage: new Set<string>(stages.map((x) => x.key)),
       outcome: new Set<string>(outcomes.map((x) => x.key)),
-      field: new Set(fields.map((f) => f.key)),
     }),
-    [courts, stages, outcomes, fields],
+    [courts, stages, outcomes],
   );
 
   /* Read the URL — a *layout* effect, not an ordinary one.
@@ -1054,7 +1046,6 @@ export default function RegistryTable({
     if (u.court.length) setCourt(u.court);
     if (u.stage.length) setStage(u.stage);
     if (u.outcome.length) setOutcome(u.outcome);
-    if (u.field.length) setField(u.field);
     if (u.material.length) setMaterial(u.material);
     if (u.sort.key !== DEFAULT_SORT.key || u.sort.dir !== DEFAULT_SORT.dir) {
       setSort(u.sort);
@@ -1074,7 +1065,6 @@ export default function RegistryTable({
       setCourt(u.court);
       setStage(u.stage);
       setOutcome(u.outcome);
-      setField(u.field);
       setMaterial(u.material);
       setSort(u.sort);
     };
@@ -1092,15 +1082,14 @@ export default function RegistryTable({
       firstWrite.current = false;
       return;
     }
-    writeUrl({ q, court, stage, outcome, field, material, sort });
-  }, [q, court, stage, outcome, field, material, sort]);
+    writeUrl({ q, court, stage, outcome, material, sort });
+  }, [q, court, stage, outcome, material, sort]);
 
   const active =
     q.trim() !== "" ||
     court.length > 0 ||
     stage.length > 0 ||
     outcome.length > 0 ||
-    field.length > 0 ||
     material.length > 0 ||
     sort.key !== "year" ||
     sort.dir !== "desc";
@@ -1157,10 +1146,9 @@ export default function RegistryTable({
       if (stage.length && !(r.stage && stage.includes(r.stage))) return false;
       if (outcome.length && !(r.outcome && outcome.includes(r.outcome)))
         return false;
-      if (field.length && !field.includes(r.fieldKey)) return false;
       if (
         material.length &&
-        !material.some((m) => (m === "lit" ? r.lit : r.docUrl != null))
+        !material.some((m) => (m === "lit" ? r.lit : !r.lit))
       )
         return false;
       if (tokens.length === 0) return true;
@@ -1180,7 +1168,6 @@ export default function RegistryTable({
     court,
     stage,
     outcome,
-    field,
     material,
     tokens,
     haystacks,
@@ -1252,7 +1239,6 @@ export default function RegistryTable({
     setCourt([]);
     setStage([]);
     setOutcome([]);
-    setField([]);
     setMaterial([]);
     setSort(DEFAULT_SORT);
     /* «Скинути» is the last control standing after it runs — it takes itself
@@ -1308,16 +1294,10 @@ export default function RegistryTable({
       label: outcomes.find((o) => o.key === v)?.label ?? v,
       clear: () => setOutcome(outcome.filter((x) => x !== v)),
     })),
-    ...field.map((v) => ({
-      id: `field:${v}`,
-      dim: t.fields,
-      label: fields.find((f) => f.key === v)?.label ?? v,
-      clear: () => setField(field.filter((x) => x !== v)),
-    })),
     ...material.map((v) => ({
       id: `material:${v}`,
       dim: t.materials,
-      label: v === "lit" ? t.matLit : t.matDoc,
+      label: v === "lit" ? t.matLit : t.matWip,
       clear: () => setMaterial(material.filter((x) => x !== v)),
     })),
   ];
@@ -1359,7 +1339,6 @@ export default function RegistryTable({
     (court.length > 1 ? 1 : 0) +
     (stage.length > 1 ? 1 : 0) +
     (outcome.length > 1 ? 1 : 0) +
-    (field.length > 1 ? 1 : 0) +
     (material.length > 1 ? 1 : 0);
 
   return (
@@ -1495,24 +1474,10 @@ export default function RegistryTable({
             selected={outcome}
             onChange={setOutcome}
           />
-          {/* Subject-matter field. The record has carried it on all thirty-nine
-              rows from the beginning — `type` in content/cases.ts — and the
-              search already looked in it; only the filter was missing. */}
-          <Listbox
-            label={t.fields}
-            allLabel={t.fieldsAll}
-            multi
-            options={fields.map((f) => ({
-              value: f.key,
-              label: f.label,
-              count: rows.filter((r) => r.fieldKey === f.key).length,
-            }))}
-            selected={field}
-            onChange={setField}
-          />
-          {/* What can be opened. Not a taxonomy — two booleans the record
-              already fixes, and the two questions a reader about to cite the
-              archive asks first. */}
+          {/* Де рядок у нас: огляд готовий, або ми його пишемо. Дві
+              половини однієї величини (`lit`), а не два незалежні прапорці,
+              тож разом вони дають усі тридцять девʼять — вибрати обидві те
+              саме, що не вибрати жодної, і рахунки це показують. */}
           <Listbox
             label={t.materials}
             allLabel={t.materialsAll}
@@ -1520,9 +1485,9 @@ export default function RegistryTable({
             options={[
               { value: "lit", label: t.matLit, count: rows.filter((r) => r.lit).length },
               {
-                value: "doc",
-                label: t.matDoc,
-                count: rows.filter((r) => r.docUrl != null).length,
+                value: "wip",
+                label: t.matWip,
+                count: rows.filter((r) => !r.lit).length,
               },
             ]}
             selected={material}

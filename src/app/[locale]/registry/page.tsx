@@ -86,21 +86,32 @@ const T = {
      they had not been told by the page they were on. */
   stages: { uk: "Стан розгляду", en: "Stage" },
   stagesAll: { uk: "Будь-який стан", en: "Any stage" },
-  outcomes: { uk: "Тип", en: "Decision type" },
-  outcomesAll: { uk: "Будь-який тип", en: "Any decision type" },
-  /* «Галузь» is the word the pending case page and the search's own group
-     label already use for `type`; the filter takes it rather than inventing a
-     fifth name for the same column of the record. */
-  fields: { uk: "Галузь", en: "Field" },
-  fieldsAll: { uk: "Будь-яка галузь", en: "Any field" },
-  materials: { uk: "Матеріали", en: "Materials" },
-  materialsAll: { uk: "Будь-які матеріали", en: "Any materials" },
+  /* «Тип» саме по собі нічого не називало — поруч стояли «Стан розгляду»
+     і «Галузь», і три з них читалися як три таксономії без предмета.
+     Власниця: «не тип а тип рішення». Так само зветься і колонка. */
+  outcomes: { uk: "Тип рішення", en: "Decision type" },
+  outcomesAll: { uk: "Будь-який тип рішення", en: "Any decision type" },
+  /* ── «Галузь» прибрано як критерій ──────────────────────────────────────
+     Власниця: «галузь як критурій пошуку прибрати». Випав увесь фасет —
+     список, стан у рядку адреси, чип, предикат і обидва рядки. Сама
+     величина лишилася в записі (`type` у content/cases.ts) і далі
+     відповідає на текстовий запит: прибрано критерій-контрол, а не слово,
+     яке треба зробити незнайденним. */
+  /* ── «Матеріали» стали «Станом опрацювання» ─────────────────────────────
+     Власниця: «Матеріали фільтр - заміни на стан опрацювання: є огляд і в
+     процесі опрацювання». Фільтр питав, що в рядка є — огляд, документ
+     суду; тепер він питає, на чому рядок стоїть у нас. Це та сама одна
+     величина `lit`, але названа з боку читача: або огляд готовий, або ми
+     його пишемо. Посилання на документ суду нікуди не поділося — воно на
+     самому рядку, просто перестало бути критерієм. */
+  materials: { uk: "Стан опрацювання", en: "Editorial state" },
+  materialsAll: { uk: "Будь-який стан", en: "Any state" },
   /* The control that folds the five filters away on a phone. See the note in
      RegistryTable for why it exists and why the sort control is not inside
      it. */
   filters: { uk: "Фільтри", en: "Filters" },
-  matLit: { uk: "Є огляд", en: "Has a summary" },
-  matDoc: { uk: "Є документ суду", en: "Has a court document" },
+  matLit: { uk: "Є огляд", en: "Summary ready" },
+  matWip: { uk: "В процесі опрацювання", en: "Being worked on" },
   /* The link itself, in the wording `dict.pending.official` already uses on
      the page a row without a summary leads to — the reader meets the same
      three words in the list and at the destination. */
@@ -129,7 +140,7 @@ const T = {
   /* «Теги» named the widget, not the facts. Two columns now, each named for
      what it holds, and each sortable on its own axis. */
   colStage: { uk: "Стан розгляду", en: "Stage" },
-  colOutcome: { uk: "Тип", en: "Decision type" },
+  colOutcome: { uk: "Тип рішення", en: "Decision type" },
   colDate: { uk: "Рік", en: "Year" },
   sortAsc: { uk: "за зростанням", en: "sorted ascending" },
   sortDesc: { uk: "за спаданням", en: "sorted descending" },
@@ -542,17 +553,6 @@ export default async function RegistryPage({
     (key) => ({ key, label: dict.registry.outcome[key] }),
   );
 
-  /* Subject-matter options, in the order the source file lists them: the
-     spreadsheet's own order, not an alphabet imposed on top of it. */
-  const fields: Array<{ key: string; label: string }> = [];
-  const seenFields = new Set<string>();
-  for (const c of cases) {
-    const key = fieldKey(c.type);
-    if (seenFields.has(key)) continue;
-    seenFields.add(key);
-    fields.push({ key, label: pick(c.type, locale) });
-  }
-
   /* What is left of the content index on this page: eight section labels.
 
      The postings are language-agnostic — both locales of every field went into
@@ -619,7 +619,6 @@ export default async function RegistryPage({
           courts={courts}
           stages={stages}
           outcomes={outcomes}
-          fields={fields}
           content={content}
           t={{
             search: pick(T.search, locale),
@@ -631,12 +630,10 @@ export default async function RegistryPage({
             stagesAll: pick(T.stagesAll, locale),
             outcomes: pick(T.outcomes, locale),
             outcomesAll: pick(T.outcomesAll, locale),
-            fields: pick(T.fields, locale),
-            fieldsAll: pick(T.fieldsAll, locale),
             materials: pick(T.materials, locale),
             materialsAll: pick(T.materialsAll, locale),
             matLit: pick(T.matLit, locale),
-            matDoc: pick(T.matDoc, locale),
+            matWip: pick(T.matWip, locale),
             doc: pick(T.doc, locale),
             amountName: pick(T.amountName, locale),
             filters: pick(T.filters, locale),

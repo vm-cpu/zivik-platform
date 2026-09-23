@@ -155,8 +155,7 @@ const en: Dictionary = {
       warrant: "Warrant",
       order: "Procedural orders",
       upheld: "Arbitration upheld",
-      settlement: "Settled",
-      rejected: "Rejected",
+      procedural: "Procedural decisions",
     },
   },
   newsletter: {

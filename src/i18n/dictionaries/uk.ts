@@ -305,8 +305,7 @@ const uk = {
          that carries it — icj-3, ICJ GL 201 — is an ICJ docket. */
       order: "Процедурні накази",
       upheld: "Арбітраж залишено",
-      settlement: "Врегульовано",
-      rejected: "Відхилено",
+      procedural: "Процедурні рішення",
     },
   },
   newsletter: {

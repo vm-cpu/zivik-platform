@@ -55,8 +55,13 @@ export type CaseOutcomeKey =
   | "warrant" // «ордер видано»
   | "order" // «процедурні накази» (an ICJ/arbitral order, never «ордер»)
   | "upheld" // «арбітраж залишено»
-  | "settlement" // «врегульовано»
-  | "rejected"; // «відхилено»
+  /* «Процедурні рішення» — одна корзина замість «врегульовано» і
+     «відхилено». Власниця: «і відхилено і врегульовано заміни на процедурні
+     рішення, бо відхилено це не тип рішення». Обидва казали, чим скінчилося
+     провадження, а не що суд вирішив. Сам факт нікуди не дівся: у трьох
+     рядків, яких це стосується, `status` і далі каже «Відхилено (Правило
+     39)» та «Врегульовано 2019». */
+  | "procedural"; // «процедурні рішення»
 
 /**
  * The order the stages are offered and sorted in — the life-cycle, not an
@@ -92,8 +97,7 @@ export const OUTCOME_ORDER: readonly CaseOutcomeKey[] = [
   "upheld",
   "warrant",
   "order",
-  "settlement",
-  "rejected",
+  "procedural",
 ] as const;
 
 /**
