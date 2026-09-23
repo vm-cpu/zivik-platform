@@ -394,10 +394,15 @@ export default async function AboutPage({
                 more than that. */}
             <p className="abt-forums-h">{L(T.forumsH)}</p>
             <ul className="abt-forums">
+              {/* Назва, а під нею абревіатура — порядок макета власниці.
+                  Доти абревіатура стояла зверху, як у рядку бібліотеки, де
+                  читач уже знає, що таке ICJ. Тут він читає сторінку про
+                  проєкт: відповідь на «чи є тут мій суд» — це повна назва, а
+                  знак під нею каже, як цей суд зветься далі по сайту. */}
               {forums.map((f) => (
                 <li key={f.id}>
-                  <b>{L(f.abbr)}</b>
                   <span>{L(f.name)}</span>
+                  <b>{L(f.abbr)}</b>
                 </li>
               ))}
               {/* The national courts as one line, not as two country badges:
@@ -408,8 +413,8 @@ export default async function AboutPage({
                   forum they are. */}
               {nationals.length > 0 && (
                 <li className="abt-forums-nat">
-                  <b aria-hidden="true">—</b>
                   <span>{L(T.forumsNat)}</span>
+                  <b aria-hidden="true">—</b>
                 </li>
               )}
             </ul>
@@ -575,7 +580,15 @@ export default async function AboutPage({
             people in two columns is a long list, and in four it is a masthead. */}
         <section className="abt-band abt-team">
           <div className="abt-in abt-wide">
-            <h2>{L(T.teamH)}</h2>
+            {/* Шлях на сторінку команди — в рядку заголовка, як у макеті.
+                Доти він стояв під списком із семи людей, тобто читач
+                діставав його вже після того, як прочитав усіх. */}
+            <div className="abt-h-row">
+              <h2>{L(T.teamH)}</h2>
+              <Link className="abt-h-link" href={`/${locale}/team`}>
+                {L(T.teamLink)} →
+              </Link>
+            </div>
             <ul className="abt-roster">
               {team.map((m) => (
                 <li key={m.name.en}>
@@ -584,9 +597,6 @@ export default async function AboutPage({
                 </li>
               ))}
             </ul>
-            <p className="abt-more">
-              <Link href={`/${locale}/team`}>{L(T.teamLink)} →</Link>
-            </p>
           </div>
         </section>
 

@@ -345,17 +345,35 @@
    --ink2 for all of it, which is what every other reading surface on the site
    sets: the decision pages' prose and the legal documents are both --ink2. */
 
-/* `.abt-addr` is gone with the line it styled — the address under the contact
-   pill, which repeated what the pill already links and what the footer of this
-   page already prints. `npm run ghosts` would have caught the rule left
-   behind; it is quicker to take it out now. */
-.abt-more {
-  margin: var(--space-8) 0 0;
+/* Заголовок смуги і вихід із неї — в один рядок: заголовок ліворуч, шлях
+   назовні праворуч, на спільній базовій лінії, з макета власниці. Вузьким
+   екраном шлях стає під заголовком, бо два обʼєкти в рядку на 375 пікселях —
+   це два обрізані обʼєкти.
+
+   `.abt-more` (той самий лінк під списком) пішов разом із розміткою: смуга
+   команди була єдиним місцем, де він лишався. */
+.abt-h-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
 }
-.abt-more a {
+.abt-h-row h2 {
+  margin-bottom: 0;
+}
+.abt-h-link {
   font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.07em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--brand-red);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.abt-h-link:hover,
+.abt-h-link:focus-visible {
+  border-bottom-color: var(--brand-red);
 }
 /* Holds the shared CTA pill (`.nsv-cta` in shared.css). Its own margin, not
    `.abt-more`'s, because that selector is the 11px uppercase arrow-link rule
@@ -645,7 +663,11 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  /* `min(100%, 420px)`, не просто 420px: `auto-fit` не звужує колію нижче
+     її мінімуму, тож на 375 пікселях доріжка лишалася 420-ма і сторінка
+     діставала горизонтальну прокрутку — 448 проти 375, виміряно. Телефон
+     бачить одну колонку на всю ширину, ширший екран — дві, як і доти. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
   column-gap: var(--space-10);
 }
 .abt-roster li {
