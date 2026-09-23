@@ -12,6 +12,18 @@ import { locales } from "@/i18n/config";
  * it was the home page's intro band and the user asked for it off the home
  * page entirely.
  *
+ * ── The owner's own description, September 2026 ────────────────────────────
+ * The first and third paragraphs are the platform's own text, handed over as
+ * «Про платформу — опис повний»: what the library is, and who it is for. The
+ * English is a translation of that Ukrainian, made here — the document
+ * carries no English of its own, and the site cannot render a paragraph in
+ * one language only.
+ *
+ * The middle paragraph is not in that document and is kept: the 2014
+ * resolution is the one sourced fact these paragraphs carry, and the owner
+ * asked earlier for it to be named in full and linked. The document describes
+ * the platform; it does not withdraw a citation.
+ *
  * ── Two owner's corrections, March 2026 ─────────────────────────────────────
  * 1. It said the library covers «низки українських ініціатив» / "the various
  *    initiatives launched by Ukraine". Not every proceeding here was brought
@@ -32,12 +44,14 @@ export const about: AboutContent = {
   },
   paragraphs: {
     uk: [
-      "Бібліотека відповідальності та правосуддя для України «НаСвітло» — це онлайн-бібліотека міжнародної судової практики у справах, які порушили Україна та іноземні держави, щоб притягнути Росію до відповідальності за війну проти України. Протиправний характер дій Росії був визнаний ще у 2014 році: схвалена Генеральною Асамблеєю ООН 27 березня 2014 року резолюція «Територіальна цілісність України» наголошувала на незаконності «референдуму» в Криму та закликала всі держави, міжнародні організації і спеціалізовані установи не визнавати жодних змін його статусу.",
-      "Упродовж наступних років Україна розпочала численні судові провадження в міжнародних судах та трибуналах у відповідь на війну Росії проти України. Бібліотека «НаСвітло» має на меті зібрати в одному місці всю відповідну судову практику та аналітичні матеріали, що стосуються цих проваджень, і розрахована на науковців, практиків та всіх, хто цікавиться цією темою.",
+      "Бібліотека відповідальності та правосуддя для України «НаСвітло» — це онлайн-колекція міжнародної практики та практики іноземних судів, пов'язаної із забезпеченням відповідальності за порушення міжнародного права, вчинені у контексті війни Росії проти України. Платформа об'єднує в одному просторі аналіз рішень та інших матеріалів відповідних судових проваджень, роблячи їх доступними для системного пошуку, дослідження та аналізу.",
+      "Протиправний характер дій Росії був визнаний ще у 2014 році: схвалена Генеральною Асамблеєю ООН 27 березня 2014 року резолюція «Територіальна цілісність України» наголошувала на незаконності «референдуму» в Криму та закликала всі держави, міжнародні організації і спеціалізовані установи не визнавати жодних змін його статусу.",
+      "«НаСвітло» задумана не просто як архів судових рішень, а як відкритий ресурс для дослідників, практикуючих юристів, студентів, представників громадянського суспільства та всіх, хто працює над питаннями відповідальності, правосуддя і верховенства права у контексті війни проти України.",
     ],
     en: [
-      "The Library of Accountability and Justice for Ukraine ‘NaSvitlo’ is an online library of international case-law in the proceedings brought by Ukraine and by foreign States to hold Russia accountable for its war against Ukraine. The unlawful character of Russia’s actions was recognized as early as 2014: the resolution ‘Territorial integrity of Ukraine’, adopted by the UN General Assembly on 27 March 2014, underscored the illegality of the ‘referendum’ in Crimea and called upon all States, international organizations, and specialized agencies not to recognize any alteration of its status.",
-      "Over the following years, Ukraine instituted numerous legal proceedings before multiple international courts and tribunals in response to Russia’s war against Ukraine. The Library NaSvitlo aims to bring together all relevant jurisprudence and analytical materials arising from these proceedings, and is designed for scholars, practitioners, and all those with an interest in the subject.",
+      "The Library of Accountability and Justice for Ukraine ‘NaSvitlo’ is an online collection of international practice and of the practice of foreign courts concerned with accountability for violations of international law committed in the context of Russia’s war against Ukraine. The platform brings together, in one place, the analysis of decisions and of other materials from those proceedings, and makes them available for systematic search, research and analysis.",
+      "The unlawful character of Russia’s actions was recognized as early as 2014: the resolution ‘Territorial integrity of Ukraine’, adopted by the UN General Assembly on 27 March 2014, underscored the illegality of the ‘referendum’ in Crimea and called upon all States, international organizations, and specialized agencies not to recognize any alteration of its status.",
+      "NaSvitlo is conceived not merely as an archive of court decisions but as an open resource for researchers, practising lawyers, students, civil society and everyone working on accountability, justice and the rule of law in the context of the war against Ukraine.",
     ],
   },
   /* A/RES/68/262, in the UN Digital Library — not a PDF on a mirror, and not

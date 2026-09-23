@@ -80,6 +80,32 @@ const T = {
      with the markup rather than sitting here as text nothing renders and a
      translator would keep up to date. */
 
+  /* ── Навіщо, з owner's «Про платформу — опис повний» ─────────────────────
+     Три абзаци того документа, які сторінка доти не казала: завдання, що
+     його війна поставила перед правом; розпорошеність практики між
+     юрисдикціями; і те, задля чого платформа існує — не зберігати справи, а
+     давати побачити, як із них складається система.
+
+     Чого з документа тут немає і чому. Перелік судів — ЄСПЛ, МС ООН, МКС,
+     МТМП, ППТС, суди іноземних держав — уже стоїть лідом цієї ж сторінки,
+     двома екранами вище. Абзац про ширшу місію факультету й Центру теж:
+     нижче її розказано конкретніше, чотирма пунктами, і третій переказ
+     зробив би з неї тло.
+
+     Англійська — переклад, зроблений тут: документ її не має. */
+  whyH: { uk: "Навіщо ця бібліотека", en: "Why this library" },
+  why: {
+    uk: [
+      "Війна Росії проти України поставила перед правом надзвичайне за масштабом завдання — забезпечити відповідальність за численні порушення міжнародного права, захистити права постраждалих та створити правові передумови для відновлення справедливості. Відповіддю стало використання широкого кола міжнародних і національних правових механізмів, і в результаті формується значний та постійно зростаючий масив судової практики.",
+      "Водночас ця практика розпорошена між різними юрисдикціями, інституціями та інформаційними ресурсами. Це ускладнює системне відстеження справ, розуміння взаємозв'язків між різними правовими механізмами та використання сформованої практики.",
+      "Платформа покликана не лише зберігати інформацію про окремі справи, а й допомагати бачити ширшу картину — як через різні юрисдикції та правові механізми формується багаторівнева система відповідальності та правосуддя у відповідь на війну проти України.",
+    ],
+    en: [
+      "Russia’s war against Ukraine set the law a task of extraordinary scale: to secure accountability for numerous violations of international law, to protect the rights of those harmed, and to build the legal preconditions for restoring justice. The answer has been a wide range of international and national legal mechanisms, and the result is a substantial and constantly growing body of case-law.",
+      "That practice, however, is scattered across jurisdictions, institutions and information resources. This makes it harder to follow cases systematically, to understand how the different legal mechanisms relate to one another, and to use what they have established.",
+      "The platform is meant not merely to hold information about individual cases but to help a reader see the wider picture: how a multi-level system of accountability and justice is taking shape, across jurisdictions and legal mechanisms, in answer to the war against Ukraine.",
+    ],
+  },
   whoH: { uk: "Хто веде проєкт", en: "Who runs the project" },
   /* Split around the Centre's name so that name can be the link.
 
@@ -330,6 +356,17 @@ export default async function AboutPage({
             Three figures and a line about how much of the archive is written
             up. It belongs where the archive is: the library page opens with
             the same count from the same source. */}
+
+        <section className="abt-band abt-recess">
+          <div className="abt-in">
+            <h2>{L(T.whyH)}</h2>
+            <div className="abt-prose">
+              {L(T.why).map((text, i) => (
+                <p key={i}>{text}</p>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section className="abt-band">
           <div className="abt-in">
