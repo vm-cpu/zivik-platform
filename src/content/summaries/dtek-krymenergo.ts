@@ -294,6 +294,10 @@ export const dtekKrymenergo: DecisionSummary = {
     { id: "enforcement", label: { uk: "Стягнення", en: "Enforcement" } },
   ],
 
+  /* Карта закриває розділ фактичних обставин — див. `mapAfterPart`
+     у summaries/types.ts. */
+  mapAfterPart: 0,
+
   timeline: [
     {
       date: { uk: "2006–2012", en: "2006–2012" },

@@ -362,6 +362,10 @@ export const echrUkraineNetherlands: DecisionSummary = {
     { id: "judgment", label: { uk: "Рішення і далі", en: "Judgment and after" } },
   ],
 
+  /* Карта закриває розділ фактичних обставин — див. `mapAfterPart`
+     у summaries/types.ts. */
+  mapAfterPart: 0,
+
   timeline: [
     {
       date: { uk: "лист. 2013 — лют. 2014", en: "Nov 2013 – Feb 2014" },

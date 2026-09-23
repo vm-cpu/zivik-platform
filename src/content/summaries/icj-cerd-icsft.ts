@@ -332,6 +332,10 @@ export const icjCerdIcsft: DecisionSummary = {
      timeline already reads a four-character key at year precision — see the
      rail in CaseTimeline.tsx, which places `"2014"` as `2014-01-01`. So the
      key is given at the precision the label claims and no finer. */
+  /* Карта закриває розділ фактичних обставин — див. `mapAfterPart`
+     у summaries/types.ts. */
+  mapAfterPart: 0,
+
   timeline: [
     {
       date: { uk: "поч. 2014", en: "Early 2014" },

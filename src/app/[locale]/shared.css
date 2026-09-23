@@ -251,7 +251,7 @@
 }
 
 /* Quiet tone — navigation, not contact. Same pill, the outlined idiom the
-   home page's `.btn .btn-o` already uses, so a "see everything" link does not
+   home page's quiet outline button used to use, so a "see everything" link does not
    compete with the one control that asks the reader to do something. */
 
 /* Touch targets ------------------------------------------------------------
@@ -314,6 +314,24 @@
   .nsvq-doc {
     display: inline-flex;
     align-items: center;
+  }
+  /* Два контроли, яким 24 замало.
+
+     У шапці «Підтримати нас» і перемикач мов стоять самі, і 24 там
+     виправдані — поруч немає нічого, у що можна промазати. У висувному меню
+     вони опиняються під рядками навігації заввишки 42, тобто там, де
+     натискають пальцем, і виміряно на 375 давали 24 і 33. Росте тільки
+     поле, тож вигляд той самий.
+
+     Тут, а не в header.css: цей блок — єдине місце, де сайт домовляється
+     про пороги дотику, і те, що 899 у власному правилі розходилося з 900 і
+     не знало про `pointer: coarse`, і є доказ, навіщо він єдиний. */
+  .nsv-mobnav .nsv-support,
+  .nsv-mobnav .nsv-langsw-drawer a {
+    min-height: 44px;
+  }
+  .nsv-mobnav .nsv-support {
+    padding-inline: var(--space-4);
   }
   /* The lamp's pull chain is 22px of button around a 1.5px chain and a bead,
      absolutely placed. Its `<i>` is positioned from the button's left edge, so

@@ -362,21 +362,6 @@ function both(v: Localized | null | undefined): string {
   return v ? `${v.uk} ${v.en}` : "";
 }
 
-/**
- * A stable key for a subject-matter value.
- *
- * `cases.ts` records `type` as a localized pair and no key — the nine values
- * are an authored vocabulary, but an unkeyed one. This derives the key
- * mechanically from the English wording rather than inventing a taxonomy
- * beside it, so a filter value cannot drift from the label it filters on and
- * nothing here adds a category the record does not already carry.
- */
-function fieldKey(v: Localized): string {
-  return v.en
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -496,8 +481,6 @@ export default async function RegistryPage({
       lit: c.lit,
       slug: c.summarySlug ?? null,
       docUrl: c.decisionUrl,
-      fieldKey: fieldKey(c.type),
-      fieldLabel: pick(c.type, locale),
       href: c.summarySlug ? `/${locale}/cases/${c.summarySlug}` : null,
       /* Both locales go into every group. Most case names are recorded only in
          English while the interface is Ukrainian, and until `nameUk` a reader

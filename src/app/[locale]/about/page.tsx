@@ -1,4 +1,5 @@
 import { CENTRE_URL } from "@/content/centre";
+import { RESOLUTION_URL } from "@/content/about";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -11,7 +12,7 @@ import {
 } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { getContentRepository } from "@/content/repository";
-import { team, teamGroups } from "@/content/team";
+import { groupTeamByRole } from "@/content/team";
 import { pick } from "@/content/types";
 import { linkAboutProse } from "@/content/about-prose";
 import {
@@ -267,17 +268,11 @@ const T = {
      Ukrainian one and `pick` would stop type-checking. */
 };
 
-/* Адреса Центру живе в `content/centre.ts`: на неї показують і ця сторінка,
-   і заклик підтримати в шапці, меню та підвалі, а три місця з тим самим
-   рядком у трьох файлах — це три місця, які можуть розійтися. */
-const FACULTY_URL = CENTRE_URL;
 
-/* A/RES/68/262 in the UN Digital Library — the same record `content/about.ts`
-   links from the prose. Written out rather than read from that table: the
-   table is keyed by the phrase it matches in a paragraph, and a marker that
-   depended on the wording of a sentence would break the day the sentence is
-   edited. The reason this record and not a mirror is in that file. */
-const RESOLUTION_URL = "https://digitallibrary.un.org/record/767565";
+/* Той самий запис, що й у прозі, — з `content/about.ts`, а не переписаний
+   сюди третім рядком. Читається саме константа, а не таблиця посилань: та
+   таблиця ключується фразою, яку шукає в абзаці, і позначка, що залежала б
+   від формулювання речення, зламалася б того дня, коли речення відредагують. */
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -355,30 +350,7 @@ export default async function AboutPage({
   const forums = institutions.filter((i) => i.phase1 && i.category !== "national");
   const nationals = institutions.filter((i) => i.phase1 && i.category === "national");
 
-  /* Люди, зібрані в групи за посадою.
-
-     Порядок дає `teamGroups`; посада, якої в тій таблиці немає, все одно
-     рендериться — власною назвою, у кінці, — щоб додана людина не могла
-     зникнути зі сторінки через забуту таблицю. */
-  const roleGroups = (() => {
-    const byKey = new Map<string, typeof team>();
-    for (const m of team) {
-      const list = byKey.get(m.role.en);
-      if (list) list.push(m);
-      else byKey.set(m.role.en, [m]);
-    }
-    const out: { key: string; label: { uk: string; en: string }; members: typeof team }[] = [];
-    for (const g of teamGroups) {
-      const members = byKey.get(g.key);
-      if (!members) continue;
-      byKey.delete(g.key);
-      out.push({ key: g.key, label: g.label, members });
-    }
-    for (const [key, members] of byKey) {
-      out.push({ key, label: members[0].role, members });
-    }
-    return out;
-  })();
+  const roleGroups = groupTeamByRole();
 
   const L = <V,>(x: Record<Locale, V>) => pick(x, locale);
   /* The citation table travels with the prose — see content/about.ts. */
@@ -557,7 +529,7 @@ export default async function AboutPage({
               <div className="abt-prose">
                 <p>
                   {L(T.who)[0]}
-                  <a href={FACULTY_URL} target="_blank" rel="noopener noreferrer">
+                  <a href={CENTRE_URL} target="_blank" rel="noopener noreferrer">
                     {L(T.who)[1]}
                   </a>
                   {L(T.who)[2]}
@@ -568,7 +540,7 @@ export default async function AboutPage({
               </div>
               <a
                 className="abt-fac"
-                href={FACULTY_URL}
+                href={CENTRE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -577,6 +549,11 @@ export default async function AboutPage({
                   className="abt-fac-mark"
                   src={`/logos/fp-logo-red-${locale}.svg`}
                   alt=""
+                  /* Четверта смуга з восьми — знак нижче згину на будь-якому
+                     екрані, а важить він стільки ж, скільки білий знак у
+                     шапці, який потрібен одразу. Хай чекає своєї черги. */
+                  loading="lazy"
+                  decoding="async"
                   /* Власні розміри на теґу: інакше коробка нульової ширини
                      до приходу файлу, а потім стрибок — те саме, що вже
                      було в шапці сайту. Українська й англійська версії

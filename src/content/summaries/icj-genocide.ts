@@ -490,6 +490,10 @@ export const icjGenocide: DecisionSummary = {
     { id: "merits", label: { uk: "По суті", en: "Merits" } },
   ],
 
+  /* Карта закриває розділ фактичних обставин — див. `mapAfterPart`
+     у summaries/types.ts. */
+  mapAfterPart: 0,
+
   timeline: [
     {
       date: { uk: "Весна 2014", en: "Spring 2014" },

@@ -95,3 +95,39 @@ export const teamGroups: { key: string; label: Localized }[] = [
     label: { uk: "Технічні експерти", en: "Technical Experts" },
   },
 ];
+
+/**
+ * The roster, in the order the band reads: each group's label, then its
+ * people.
+ *
+ * Here rather than in the page because it is data shaping, not markup — and
+ * because `teamGroups` above has exactly one reader, so the table and the
+ * walk over it belong in one file where they can be read together.
+ *
+ * A role the table does not name still renders, under its own name, at the
+ * end: adding a person cannot make them disappear from the page because
+ * somebody forgot the table.
+ */
+export function groupTeamByRole(): {
+  key: string;
+  label: Localized;
+  members: TeamMember[];
+}[] {
+  const byKey = new Map<string, TeamMember[]>();
+  for (const m of team) {
+    const list = byKey.get(m.role.en);
+    if (list) list.push(m);
+    else byKey.set(m.role.en, [m]);
+  }
+  const out: { key: string; label: Localized; members: TeamMember[] }[] = [];
+  for (const g of teamGroups) {
+    const members = byKey.get(g.key);
+    if (!members) continue;
+    byKey.delete(g.key);
+    out.push({ key: g.key, label: g.label, members });
+  }
+  for (const [key, members] of byKey) {
+    out.push({ key, label: members[0].role, members });
+  }
+  return out;
+}

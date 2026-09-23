@@ -118,12 +118,9 @@
     background: #fff !important;
     color: #000 !important;
   }
-  /* Друкарські правила для смуги «Що вирішив суд» і її панелі пішли разом
-     зі смугою: ні `.score`, ні `.vpanel` сторінка більше не малює. */
   .casepage .official,
   .casepage .ctl-label,
-  .casepage .sec-h h2,
-  .casepage .v-claim {
+  .casepage .sec-h h2{
     color: #000 !important;
   }
   .casepage a {

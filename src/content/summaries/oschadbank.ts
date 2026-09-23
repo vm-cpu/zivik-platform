@@ -357,6 +357,10 @@ export const oschadbank: DecisionSummary = {
     { id: "enforcement", label: { uk: "Стягнення", en: "Enforcement" } },
   ],
 
+  /* Карта закриває розділ фактичних обставин — див. `mapAfterPart`
+     у summaries/types.ts. */
+  mapAfterPart: 1,
+
   timeline: [
     {
       date: { uk: "27 лист. 1998", en: "27 Nov 1998" },

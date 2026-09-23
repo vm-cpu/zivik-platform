@@ -37,6 +37,13 @@ import { locales } from "@/i18n/config";
  *    a reader can check a statement against the document behind it.
  * ────────────────────────────────────────────────────────────────────────────
  */
+/** A/RES/68/262 in the UN Digital Library.
+ *
+ *  Exported because three places name it: both language link tables below and
+ *  the dated marker on /about. The reason it is this record and not a mirror
+ *  is in the note above `links`. */
+export const RESOLUTION_URL = "https://digitallibrary.un.org/record/767565";
+
 export const about: AboutContent = {
   title: {
     uk: "Про проєкт",
@@ -64,13 +71,13 @@ export const about: AboutContent = {
     uk: [
       {
         text: "резолюція «Територіальна цілісність України»",
-        href: "https://digitallibrary.un.org/record/767565",
+        href: RESOLUTION_URL,
       },
     ],
     en: [
       {
         text: "resolution ‘Territorial integrity of Ukraine’",
-        href: "https://digitallibrary.un.org/record/767565",
+        href: RESOLUTION_URL,
       },
     ],
   },

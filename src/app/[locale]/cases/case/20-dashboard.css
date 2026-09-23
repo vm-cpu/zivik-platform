@@ -447,14 +447,6 @@
    2023», at 211px: past that the column would be sized by one page's dates for
    all eight. Anything longer wraps inside the cell rather than widening it. */
 @supports (grid-template-columns: subgrid) {
-  .casepage .verdicts {
-    display: grid;
-    grid-template-columns: fit-content(14rem) max-content minmax(0, 42rem);
-  }
-  .casepage .verdicts li {
-    grid-column: 1 / -1;
-    grid-template-columns: subgrid;
-  }
 }
 
 /* The reveal.
@@ -475,17 +467,6 @@
      - the observer never speaking — VerdictMatrix's two-second failsafe.
    The per-row delay is inline, from the component. */
 @media screen and (scripting: enabled) and (prefers-reduced-motion: no-preference) {
-  .casepage .verdicts li {
-    transition:
-      opacity var(--dur-slow) var(--ease-out),
-      transform var(--dur-slow) var(--ease-out);
-  }
-  .casepage .verdicts[data-shown="no"] li {
-    opacity: 0;
-    /* 6px, not a rise the reader watches — enough to give the row a direction
-       and nothing more. */
-    transform: translateY(6px);
-  }
 }
 
 /* Below the panel's width the three columns cannot hold: a 10rem outcome
@@ -497,32 +478,14 @@
    to be given columns of their own again: `subgrid` on an item whose parent is
    not a grid computes to `none`, and every cell would pile into one column. */
 @media (max-width: 900px) {
-  .casepage .verdicts {
-    display: block;
-  }
-  .casepage .verdicts li {
-    grid-column: auto;
-    grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
-  }
-  .casepage .v-track,
-  .casepage .v-track-link {
-    grid-column: 1 / -1;
-  }
   .casepage .v-out {
     grid-column: 1;
-  }
-  .casepage .v-claim {
-    grid-column: 2;
   }
 }
 /* And at phone width even that fails: a 10rem column cannot set «НЕ
    РОЗГЛЯДАЛОСЯ» without hyphenating it. One column, three lines. */
 @media (max-width: 560px) {
-  .casepage .verdicts li {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .casepage .v-out,
-  .casepage .v-claim {
+  .casepage .v-out{
     grid-column: 1;
   }
 }

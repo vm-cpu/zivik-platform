@@ -818,6 +818,30 @@ export interface DecisionSummary extends VerbatimSummary {
    */
   bands?: "four";
   /**
+   * Which part of the write-up the map closes, counting h2s from nought.
+   *
+   * The map answers «де це було», and it answers it where the reader has just
+   * been told what happened — at the end of the factual part. Which part that
+   * is differs: five write-ups open with it, oschadbank puts the procedural
+   * history first, and three have no factual part at all (the charges, the
+   * prosecution's position, jurisdiction in the situation). Where this is
+   * absent the map closes the whole write-up.
+   *
+   * Recorded, not matched. The first version of this read the heading text —
+   * `/(фактичн[іи] обставин|the facts)/` — and it worked in Ukrainian and
+   * matched nothing at all in English, because the English write-ups say
+   * «Factual background». Four decisions drew the map in the middle of the
+   * page in one language and at the foot of it in the other. That is the
+   * failure `position` and `heads` above are each written to avoid, in the
+   * same words: the archive records the seam rather than guessing at it.
+   *
+   * The number is an index into the parts, so it is the same in both
+   * languages by construction — the two renderings of a write-up carry the
+   * same sections in the same order, which `data-check` enforces.
+   */
+  mapAfterPart?: number;
+
+  /**
    * Individual sections this decision does not render, by the id the band
    * carries on the page.
    *

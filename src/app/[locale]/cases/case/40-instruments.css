@@ -841,7 +841,6 @@
   height: 100%;
   text-align: left;
   padding: var(--space-5) var(--space-6);
-  border: 0;
   border-radius: var(--r-md);
   background: var(--card);
   /* Волосинка, а не сама тільки тінь.

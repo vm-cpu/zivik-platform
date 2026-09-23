@@ -76,45 +76,6 @@ const T = {
      and the number depends on what kind of dispositif this is. Three
      Ukrainian forms; English reads the same three keys. */
   ofTotal: { uk: "з", en: "of" },
-  /* The catch-all clauses, said once under the heading instead of three times
-     in the table. */
-  restRejected: { uk: "решту вимог відхилено", en: "all other submissions rejected" },
-  /* Used where the index lists the rejected claims itself, so the line can
-     count them instead of gesturing at them. No noun after the figure: the
-     genitive it would need changes with the number in Ukrainian («з 2
-     вимог», «з 21 вимоги») and the column head already says what a row is. */
-  restCounted: { uk: "відхилено", en: "rejected" },
-  /* Not every claim the forum did not uphold was rejected, and this line used
-     to call them all rejected. On icj-genocide submissions (c) and (d) were
-     held ADMISSIBLE and then found to be outside the Court's jurisdiction, so
-     «2 відхилено» under the heading contradicted the two rows below it — the
-     same untruth the owner caught in the rows themselves: «"Not decided" не
-     коректне формулювання». Counted apart, with the word that is true of both
-     senses of `not-decided`: the tribunal that reaches its answer on other
-     grounds and the court that finds it has no power to answer at all both
-     leave the claim undecided. */
-  restUndecided: { uk: "залишено без вирішення", en: "left undecided" },
-  /* The control over the folded half of the index. It names the number, so
-     a reader sees what is behind it before deciding to open it. */
-  showRejected: { uk: "Показати решту вимог", en: "Show the other claims" },
-  hideRejected: { uk: "Згорнути", en: "Collapse" },
-  sortedBy: { uk: "Сортувати", en: "Sort" },
-  /* Spoken, not drawn: the arrow is hidden from a screen reader, so the
-     direction has to be in the control's name. */
-  sortAsc: { uk: "зараз за зростанням", en: "currently ascending" },
-  sortDesc: { uk: "зараз за спаданням", en: "currently descending" },
-  violationWord: {
-    uk: { one: "порушення", few: "порушення", many: "порушень" },
-    en: { one: "violation", few: "violations", many: "violations" },
-  },
-  convictionWord: {
-    uk: { one: "засудження", few: "засудження", many: "засуджень" },
-    en: { one: "conviction", few: "convictions", many: "convictions" },
-  },
-  grantedWord: {
-    uk: { one: "вимогу задоволено", few: "вимоги задоволено", many: "вимог задоволено" },
-    en: { one: "claim upheld", few: "claims upheld", many: "claims upheld" },
-  },
   sources: { uk: "Джерела та коментарі", en: "Sources and commentary" },
   back: { uk: "До бібліотеки", en: "Back to the library" },
   readJudgment: { uk: "Читати рішення", en: "Read the judgment" },
@@ -127,7 +88,6 @@ const T = {
      to build a summary that has the instrument without naming its Order. */
   orderBreached: { uk: "Наказ порушено", en: "Order breached" },
   orderComplied: { uk: "Дотримано", en: "Complied" },
-  whyMatters: { uk: "Чому це важливо", en: "Why it matters" },
   onThisPage: { uk: "На цій сторінці", en: "On this page" },
   /* The two sides of a finding, as column captions. «Твердила» and not
      «стверджує»: the argument was made, the Court has since answered it. */
@@ -136,15 +96,6 @@ const T = {
   /* The measure a limb of an order required, set beside the argument and
      the answer as the third thing in the exchange. */
   ordered: { uk: "Наказано", en: "Ordered" },
-  /* The index's column heads. Named for what each column holds: the provision
-     the claim was made under, the claim, and what the forum did with it. */
-  /* «Підстава», not «Стаття»: the column holds the instrument or the order a
-     claim was made under — ICSFT, CERD, the Order on provisional measures —
-     and the article itself is in the claim beside it. It was «Стаття», which
-     promised one thing and held another. */
-  ixArticle: { uk: "Підстава", en: "Basis" },
-  ixClaim: { uk: "Вимога", en: "Claim" },
-  ixResult: { uk: "Результат", en: "Result" },
   progress: { uk: "Прогрес читання", en: "Reading progress" },
   glossaryH: { uk: "Словник", en: "Glossary" },
 
@@ -184,7 +135,6 @@ const T = {
      and the reader saw four dots for twenty events. Placed by date and
      pressable, it is the index of the chronology under it. */
   railLabel: { uk: "Перейти до події за датою", en: "Jump to an event by date" },
-  amountsH: { uk: "Суми", en: "Amounts" },
   shareOf: { uk: "від суми", en: "of the total" },
   /* Not `shareOf`: that one belongs to sums of money and reads «від суми».
      This names a counted whole — «9,5% з 19 546+». */
@@ -218,7 +168,6 @@ const T = {
      something else on the page. The rail reads each band's own heading now —
      see `theatresLabel` and `machineryLabel`. */
   toTop: { uk: "Нагору", en: "Top" },
-  toChronology: { uk: "До цієї дати в хронології", en: "To this date in the chronology" },
   ofLargest: { uk: "від найбільшої суми тут", en: "of the largest sum here" },
   /* `floored` stood here — a sentence on any bar the minimum width had to
      widen. It was written when a small bar was a stub alone on the ground and
@@ -1318,24 +1267,15 @@ export default async function CasePage({
     b.kind === "h2" && /^\s*(Researches|Дослідження)/.test(b.text);
   const body = rawBlocks.filter((b) => b.kind !== "link" && !isSourcesHeading(b));
 
-  /* Котрий розділ огляду — «Фактичні обставини»: під ним іде карта, і той
-     самий номер потрібен розмітці огляду й змісту в рейці, тож він
-     рахується раз. Номер, а не текст: частини пронумеровані в самих
-     оглядах («2. Фактичні обставини»), і половина записів несе номер, а
-     половина ні.
+  /* Після якого розділу виходить карта.
 
-     −1, якщо такого розділу немає: тоді карта не влазить у середину огляду,
-     а закриває його. Власниця: «в деяких рішеннях, у яких немає розділу
-     фактичні обставини, карту можна опустити нижче». Таких три з восьми: у
-     «Тордені» перший розділ — «Обвинувачення», в MH17 — «Позиція
-     обвинувачення», у справі МКС — «Юрисдикція у загальній ситуації», і
-     під жодним із них карта не є відповіддю на щойно сказане. */
-  const factsPart = body
-    .filter((b) => b.kind === "h2")
-    .map((b) => b.text)
-    .findIndex((s) =>
-      /^\s*\d*\.?\s*(фактичн[іи]\s+обставин|the\s+facts\b|facts\b)/i.test(s),
-    );
+     Записане число, не здогад по заголовку: `mapAfterPart` у
+     summaries/types.ts пояснює, чому. Де його немає — карта закриває
+     весь огляд, і тоді це індекс останнього розділу. Одне число на
+     обидва обходи: і рейка, і розмітка огляду питають його, тож вони не
+     можуть розійтися. */
+  const lastPart = body.filter((b) => b.kind === "h2").length - 1;
+  const mapAfterPart = summary.mapAfterPart ?? lastPart;
 
   /* `pagesLabel` stood here — «PDF, 139 с.» under «Читати рішення». The
      review took the page count off the dashboard and then off the button:
@@ -1591,10 +1531,9 @@ export default async function CasePage({
       const listed: typeof parts = [];
       parts.forEach((p, n) => {
         listed.push(p);
-        /* Карта — рядком услід за розділом, який вона закриває. Де розділу
-           фактичних обставин немає, `factsPart` дорівнює −1, і рядок стає
-           після останнього — там, де карта й виходить. */
-        if (theatres.length > 0 && n === (factsPart >= 0 ? factsPart : parts.length - 1)) {
+        /* Карта — рядком услід за розділом, який вона закриває: те саме
+           число, що й у розмітці огляду. */
+        if (theatres.length > 0 && n === mapAfterPart) {
           listed.push({ id: "theatres", label: theatresLabel });
         }
       });
@@ -2031,10 +1970,10 @@ export default async function CasePage({
                  тим заголовком, який іде за «Фактичними обставинами», — там,
                  де розділ уже розказаний і читач питає «де це було».
 
-                 Де такого розділу немає, `factsPart` дорівнює −1 і ця умова
-                 не спрацьовує жодного разу: карту малює хвостовий випадок
-                 після циклу, тобто вона закриває весь огляд. */
-              if (factsPart >= 0 && h2i === factsPart + 1 && theatreBand && !mapDrawn) {
+                 Коли розділ, який вона закриває, останній, наступного
+                 заголовка немає і умова не спрацьовує — тоді карту малює
+                 хвостовий випадок після циклу. */
+              if (h2i === mapAfterPart + 1 && theatreBand && !mapDrawn) {
                 mapDrawn = true;
                 out.push(<div key={`map-${i}`}>{theatreBand}</div>);
               }
@@ -2259,9 +2198,8 @@ export default async function CasePage({
               />,
             );
           }
-          /* Карта ще не вийшла: або розділ фактичних обставин останній і
-             наступного заголовка немає, або такого розділу в огляді немає
-             взагалі. В обох випадках вона закриває огляд. */
+          /* Карта ще не вийшла — отже, розділ, який вона закриває, був
+             останнім. Тоді вона закриває огляд. */
           if (!mapDrawn && theatreBand) {
             out.push(<div key="map-tail">{theatreBand}</div>);
           }

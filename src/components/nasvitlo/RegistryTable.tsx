@@ -132,9 +132,6 @@ export interface RegRow {
    * five billion. Print it through `content/money.ts`, which explains why the
    * sign never reaches the reader and why these are never summed.
    */
-  /** Subject-matter field, as a stable key and as a label in the locale. */
-  fieldKey: string;
-  fieldLabel: string;
   /** Decision page, when a summary is published. Otherwise `/cases/{id}`. */
   href: string | null;
   /**
@@ -591,10 +588,19 @@ export interface RegistryLabels {
    немає — і «спершу опрацьовані», якої в таблиці теж немає колонки. Порядок
    за сумами пішов разом із сумами. */
 const SORTS: Array<{ id: string; key: SortKey; dir: SortDir }> = [
+  /* Перший — той, що за замовчуванням: `DEFAULT_SORT_ID` читає його звідси,
+     а не називає своїм рядком. Доти контрол тричі згадував «yearDesc» —
+     підписом, ознакою «не за замовчуванням» і станом, у який повертався при
+     знятті вибору, — і коли той порядок прибрали зі списку, підпис став
+     undefined, а зняття вибору кидало таблицю в порядок, якого в меню вже
+     немає. Та сама помилка, що й у `active` нижче, і те саме лікування:
+     одне джерело. */
   { id: "court", key: "court", dir: "asc" },
   { id: "decidedDesc", key: "decided", dir: "desc" },
   { id: "readable", key: "readable", dir: "desc" },
 ];
+/** Порядок за замовчуванням, названий так, як його називає контрол. */
+const DEFAULT_SORT_ID = SORTS[0].id;
 
 /* ============================================================================
    Listbox — a real one.
@@ -1490,11 +1496,11 @@ export default function RegistryTable({
           <div className="reg-sort">
             <Listbox
               label={t.sort}
-              allLabel={t.sortOpt.yearDesc}
+              allLabel={t.sortOpt[DEFAULT_SORT_ID]}
               multi={false}
               variant="sort"
               summaryOverride={sortSummary}
-              activeOverride={sortId !== "yearDesc"}
+              activeOverride={sortId !== DEFAULT_SORT_ID}
               options={sortOptions}
               selected={sortId ? [sortId] : []}
               onChange={(next) => {
@@ -1502,7 +1508,7 @@ export default function RegistryTable({
                 setSort(
                   picked
                     ? { key: picked.key, dir: picked.dir }
-                    : { key: "year", dir: "desc" },
+                    : DEFAULT_SORT,
                 );
               }}
             />

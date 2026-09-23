@@ -175,107 +175,7 @@
 .casepage .glance-rows {
   margin-bottom: clamp(24px, 2.6vw, 34px);
 }
-
-/* ── What the forum held, as an index ────────────────────────────────────
-   Three columns on hairlines: the article, the claim made under it, and
-   what the forum did with the claim. The rows were a dark panel with the
-   result at one edge of a 1180px rail and the claim at the other; at 820px
-   with a fixed result column the sentence holds together. */
-.casepage .verdicts {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--prule);
-  border: 1px solid var(--prule);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.casepage .verdicts li {
-  display: grid;
-  grid-template-columns: 118px minmax(0, 1fr) 132px;
-  gap: var(--space-4);
-  align-items: start;
-  padding: var(--space-4) clamp(14px, 2.4vw, 20px);
-  background: var(--card);
-}
-.casepage .verdicts .v-track,
-.casepage .verdicts .v-track-link {
-  grid-column: 1;
-  font: 700 var(--t-cap) var(--brand-font-mono);
-  letter-spacing: 0;
-  color: var(--brand-gold-ink);
-  text-decoration: none;
-  align-self: start;
-  background: none;
-  border: 0;
-  padding: 0;
-}
-.casepage .verdicts .v-track-link:hover {
-  color: var(--pred);
-}
-.casepage .verdicts .v-claim {
-  grid-column: 2;
-  font-size: clamp(14px, 1.6vw, 16px);
-  line-height: 1.55;
-  color: var(--ink);
-}
-/* The result: a word, right-aligned, red where the forum found against the
-   respondent and muted where it did not. */
-.casepage .verdicts .v-out {
-  grid-column: 3;
-  justify-self: end;
-  text-align: right;
-  font: 600 var(--t-micro) var(--brand-font-body), sans-serif;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink3);
-  background: none;
-  border: 0;
-  padding: 0;
-}
-.casepage .verdicts .v-out[data-o="violation"],
-.casepage .verdicts .v-out[data-o="convicted"],
-.casepage .verdicts .v-out[data-o="granted"] {
-  color: var(--pred);
-}
-/* A continuation row names its article too, quieter: the run it belongs to
-   was announced by the row above, and three identical labels at full strength
-   would read as three separate articles. */
-.casepage .verdicts .v-track-cont {
-  color: var(--ink3);
-}
-
-/* A result the record wrote itself: prose, so it is set as prose. The shared
-   labels are one or two words and tracked capitals suit them; «Суд не знайшов
-   юрисдикції, аби розглядати аргумент» in the same treatment is four lines of
-   shouting in the corner of the table. Same size, same colour, same column —
-   only the case and the tracking give way. */
-.casepage .verdicts .v-out[data-own] {
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 500;
-  line-height: 1.4;
-}
 @media (max-width: 700px) {
-  .casepage .verdicts li {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
-  }
-  .casepage .verdicts .v-track,
-  .casepage .verdicts .v-claim,
-  .casepage .verdicts .v-out {
-    grid-column: 1;
-  }
-  /* Where the columns are gone the result needs an edge of its own, or it
-     reads as another line of the claim. */
-  .casepage .verdicts .v-out {
-    justify-self: start;
-    text-align: left;
-    margin-top: var(--space-1);
-    border: 1px solid var(--prule);
-    padding: 3px var(--space-2);
-  }
 }
 
 /* ── The write-up's own parts ────────────────────────────────────────────
@@ -313,46 +213,7 @@
   letter-spacing: 0;
   margin: var(--space-6) 0 var(--space-3);
 }
-
-/* The index's head row, on the same tracks as the rows under it. */
-.casepage .ix-head {
-  display: grid;
-  grid-template-columns: 118px minmax(0, 1fr) 132px;
-  gap: var(--space-4);
-  padding: var(--space-2) clamp(14px, 2.4vw, 20px);
-  background: var(--brand-paper-warm-3);
-  border: 1px solid var(--prule);
-  border-bottom: 0;
-  font: 700 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink3);
-}
-.casepage .ix-head span:last-child {
-  text-align: right;
-}
 @media (max-width: 700px) {
-  .casepage .ix-head {
-    display: none;
-  }
-  .casepage .verdicts {
-    border-top: 1px solid var(--prule);
-  }
-}
-/* Every row on the page's own paper; the warm tint is the hover state, and
-   only that. A standing highlight on the rows decided against the respondent
-   was mine, not the design's — and it read as a second encoding of what the
-   result column already says in red, on rows the eye had no reason to treat
-   as a different kind of thing. */
-.casepage .verdicts li:hover {
-  background: var(--paper2);
-}
-
-/* No dot before the result. The index has one column for the result and the
-   word fills it; a coloured bead in front of «Порушення» was a second
-   encoding of what the word and its colour already say. */
-.casepage .verdicts .v-out::before {
-  content: none;
 }
 
 /* ── A finding: what was argued, and what the forum held ──────────────────
@@ -1256,59 +1117,6 @@
   margin-top: 0;
 }
 
-/* ── The way into the rest of the table ───────────────────────────────────
-   Owner: «якийсь елегантніший колапс зроби».
-
-   It was a bordered block the width of the panel, in capitals — a second
-   object under the table, announcing itself. The index already has a
-   shape, and the way into the rest of it is the next line down: the same
-   three columns, the same hairline between rows, the label where a claim
-   goes and the count where its outcome would be. Nothing new on the page,
-   one more row that happens to open the others. */
-.casepage .v-fold {
-  display: grid;
-  grid-template-columns: 118px minmax(0, 1fr) 132px;
-  gap: var(--space-4);
-  align-items: center;
-  width: 100%;
-  padding: var(--space-3) clamp(14px, 2.4vw, 20px);
-  background: var(--brand-paper-warm-3);
-  border: 1px solid var(--prule);
-  border-top: 0;
-  border-radius: 0;
-  font: 500 var(--t-cap) var(--brand-font-body), sans-serif;
-  color: var(--ink3);
-  text-align: left;
-  cursor: pointer;
-}
-.casepage .v-fold-t {
-  grid-column: 2;
-}
-.casepage .v-fold-n {
-  grid-column: 3;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-2);
-  font: 700 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.06em;
-}
-.casepage .v-fold svg {
-  transition: transform var(--dur) var(--ease);
-}
-.casepage .v-fold[aria-expanded="true"] svg {
-  transform: rotate(180deg);
-}
-.casepage .v-fold:hover,
-.casepage .v-fold:focus-visible {
-  color: var(--ink);
-  background: var(--card);
-}
-.casepage .v-fold:focus-visible {
-  outline: 2px solid var(--pgold);
-  outline-offset: -2px;
-}
-
 
 /* The hole under a band head. Killing the neighbour's margin was not
    enough: `.findings` also carries 20px of its own top padding — from when
@@ -1326,57 +1134,6 @@
    column, or a three-column control would sit under a stack of one-column
    rows and read as a different table. */
 @media (max-width: 700px) {
-  .casepage .v-fold {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-1);
-    text-align: left;
-  }
-  .casepage .v-fold-t,
-  .casepage .v-fold-n {
-    grid-column: 1;
-  }
-  .casepage .v-fold-n {
-    justify-content: flex-start;
-  }
-}
-
-/* The two column heads that sort. They look like the third one until a
-   reader goes near them: a head that shouts «sortable» in a table of
-   sixteen rows is chrome competing with the rows. The arrow says which way
-   and, at rest, that there is a way at all. */
-.casepage .ix-sort {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  padding: 0;
-  background: none;
-  border: 0;
-  font: inherit;
-  color: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  cursor: pointer;
-}
-.casepage .ix-sort-e {
-  justify-content: flex-end;
-}
-.casepage .ix-sort i {
-  font-style: normal;
-  color: var(--prule);
-}
-.casepage .ix-sort:hover,
-.casepage .ix-sort[aria-sort="ascending"],
-.casepage .ix-sort[aria-sort="descending"] {
-  color: var(--ink);
-}
-.casepage .ix-sort:hover i,
-.casepage .ix-sort[aria-sort="ascending"] i,
-.casepage .ix-sort[aria-sort="descending"] i {
-  color: var(--pgold);
-}
-.casepage .ix-sort:focus-visible {
-  outline: 2px solid var(--pgold);
-  outline-offset: 2px;
 }
 
 /* The folded rows are hidden, not removed. Filtering them out of the markup
@@ -1385,18 +1142,9 @@
    guard is the one the row animation already uses: with no scripting there
    is no control to press, so there is nothing to fold. */
 @media screen and (scripting: enabled) {
-  .casepage .verdicts li[data-fold="away"] {
-    display: none;
-  }
 }
 /* On paper the whole table, and none of the machinery for working it. */
 @media print {
-  .casepage .v-fold {
-    display: none !important;
-  }
-  .casepage .ix-sort i {
-    display: none;
-  }
 }
 
 /* ── A findings block that enumerates ─────────────────────────────────────
@@ -1498,10 +1246,6 @@
 .casepage .mapband[data-lit] .lg-note {
   color: var(--ink2);
 }
-/* The sort affordance at 1.35:1 was a hint nobody could see. */
-.casepage .ix-sort i {
-  color: var(--ink3);
-}
 
 /* ── The ground column takes what the ground needs ────────────────────────
    Owner: «треба розширити колонку підстави».
@@ -1535,25 +1279,6 @@
    against. 701px because 700 is where this file's own single-column block
    begins. */
 @media (min-width: 701px) {
-  .casepage .verdicts li,
-  .casepage .ix-head,
-  .casepage .v-fold {
-    /* One width for all three, because they are three grids and
-       `max-content` is measured per grid: sized to content the rows came out
-       127.5px and the head and the fold stayed at 118, so the table's own
-       columns no longer lined up.
-
-       140px is what the widest thing that goes here needs on one line — the
-       ICC's «19 березня 2026 ↓» at the mono 12.5px, and the ICJ's
-       «Тимчасові заходи», which was wrapping at 118 too. Fixed, so the
-       three rows of the table stay one table.
-
-       (The first attempt was `minmax(118px, min(max-content, 38%))`, which
-       is invalid — `min()` takes lengths and `max-content` is not one — so
-       the declaration dropped and the 118px it meant to replace went on
-       winning, silently.) */
-    grid-template-columns: 140px minmax(0, 1fr) 132px;
-  }
 }
 /* ── The same table at two columns ───────────────────────────────────────
    Where the ground column is dropped (`verdictsTrackless`). Same shape as the
@@ -1562,59 +1287,6 @@
    that rule, because these selectors weigh the same as the ones they
    override and it is source order that decides. */
 @media (min-width: 701px) {
-  .casepage .verdicts-2 li,
-  .casepage .ix-head-2,
-  .casepage .v-fold-2 {
-    grid-template-columns: minmax(0, 1fr) 232px;
-  }
-  .casepage .verdicts-2 .v-claim {
-    grid-column: 1;
-  }
-  .casepage .verdicts-2 .v-out {
-    grid-column: 2;
-  }
-}
-
-/* The stage over the ground: a category, so it reads as a tag and not as
-   the first half of the date under it. */
-/* ── The stage and the ground it names ───────────────────────────────────
-   Owner: «цей тег виглядає погано — попрацюй зі шрифтами в тій колонці».
-
-   A box was the wrong instrument. This page already tells a label from a
-   figure by register, everywhere: a label is tracked sans in capitals, a
-   date or a docket is the machine face. The two lines of this cell are
-   exactly that pair — «ПЕРША ХВИЛЯ» is a category, «17 березня 2023» is a
-   date — so they differ the way every other label and figure here differ,
-   and nothing is drawn around either.
-
-   The stage steps back in weight and colour as well as face: it names the
-   run, and the date is what the reader is looking for. */
-.casepage .v-ground {
-  /* So one long ground cannot eat the claim it introduces. */
-  max-width: 34ch;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 3px;
-}
-/* Підстава переноситься. Заборона на перенос писалася тоді, коли колонка
-   питала в `max-content`, якої ширини їй бути: дата, якій дозволено
-   ламатися, відповідала шириною найдовшого слова, і колонка лишалася на
-   своїй підлозі, а дата в ній ламалася надвоє. Відтоді колонка стала
-   фіксованою — 140 пікселів, — і заборона перетворилася на свою
-   протилежність: «Вирок 14 березня 2025» має 173 пікселі, не має куди
-   перенестися й заходить на сусідню колонку з вимогою. Власниця: «щоб
-   текст не налазив на іншу колонку». */
-.casepage .v-ground .v-track {
-  white-space: normal;
-  text-wrap: pretty;
-}
-.casepage .v-stage {
-  font: 600 var(--t-micro) var(--brand-font-body), sans-serif;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink3);
-  white-space: nowrap;
 }
 
 /* ── The event a date brought you to ──────────────────────────────────────
@@ -1752,25 +1424,6 @@
    closer to each other than to anything else in the band. */
 .casepage .takings {
   align-items: start;
-}
-
-/* ── Подвійні лінії під заголовком секції ────────────────────────────────
-   Owner: «перевір на наявність зайвих ліній».
-
-   `.sec-h` малює риску під заголовком секції, а перший рядок смуги під ним
-   малює власну верхню — дві паралельні лінії за двадцять пікселів одна від
-   одної, і жодна з них нічого не ділить, бо між ними нічого немає. Риска
-   заголовка вже відділила смугу; перший рядок починає рахунок від неї.
-
-   Три смуги, три селектори, а не одне широке правило: `.sec-h + * > *` зняло
-   б кант і там, де він щось означає — як золота риска `.why`, що позначає
-   картку, а не рядок. */
-
-/* Усі картки ряду, а не лише перша: зняти кант з однієї означає лінію на
-   дві третини ширини. Ряд тримає проміжок. `.nb-grid` стояв тут другим
-   селектором і пішов разом зі смугою «Пов'язані рішення». */
-.casepage .sec-h + .verdicts > li:first-child {
-  border-top: 0;
 }
 
 /* ── Тлумачення в регістрі визначень ──────────────────────────────────────
@@ -1926,19 +1579,6 @@
 }
 .casepage .takings > .takings-group:first-child {
   margin-top: 0;
-}
-
-/* Вимога, розібрана нижче на сторінці, веде туди сама. Підкреслення лише
-   під курсором: матриця з шістнадцяти рядків, де один підкреслений, і так
-   покаже, що він інший. */
-.casepage .v-claim-link {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid var(--prule);
-}
-.casepage .v-claim-link:hover,
-.casepage .v-claim-link:focus-visible {
-  border-bottom-color: var(--pgold);
 }
 
 /* ── Хронологія: колонки, які справді колонки ─────────────────────────────

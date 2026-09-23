@@ -383,13 +383,13 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
-  color: var(--brand-red);
+  color: var(--red);
   text-decoration: none;
   border-bottom: 1px solid transparent;
 }
 .abt-h-link:hover,
 .abt-h-link:focus-visible {
-  border-bottom-color: var(--brand-red);
+  border-bottom-color: var(--red);
 }
 /* Holds the shared CTA pill (`.nsv-cta` in shared.css). Its own margin, not
    `.abt-more`'s, because that selector is the 11px uppercase arrow-link rule
@@ -727,12 +727,18 @@
    стільки разів, скільки людей її обіймає, і щоразу іншим родом. Колір —
    золото, бо на цій сторінці золотом підписані ряди («Інстанції в
    бібліотеці»), а `--faint` тут був би третім сірим на одній ділянці. */
-.abt-role-h {
-  margin: 0 0 var(--space-3);
+/* Той самий підпис, що над рядом інстанцій нижче: капітель, розрядка,
+   тепле золото. Одне правило на обидва — вони той самий об'єкт, і
+   різняться тільки відступом під собою. */
+.abt-role-h,
+.abt-forums-h {
   font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--brand-gold-warm);
+}
+.abt-role-h {
+  margin: 0 0 var(--space-3);
 }
 /* Групи одна під одною, а не в сітці: у двох із них по двоє людей, і
    поставлені поруч вони дали б два стовпці по дві лінійки — сітку, яку
@@ -767,15 +773,6 @@
   color: var(--brand-cream-warm);
 }
 
-/* ── Інстанції, рядком під лідом ──────────────────────────────────────────
-   Макет власниці: п'ять судів вийшли з дужок усередині шістдесятислівного
-   речення і стали рядом. Це єдине на цій сторінці, що справді є переліком,
-   а читач, який шукав «чи є тут мій суд», мусив розбирати підрядне речення.
-
-   Абревіатура над назвою — так само, як форум підписаний у рядку бібліотеки
-   й в оку сторінки без огляду. Поперек рейки, а не в мірі прози: п'ять назв
-   на 820 пікселях — це 148 на колонку, а найдовша з них, «Міжнародний
-   трибунал з морського права», більша. */
 /* Перелік усередині міркування — власний об'єкт, а не смуга.
 
    Він стоїть між двома абзацами розділу, тож заголовком бути не може: <h2>
@@ -793,10 +790,6 @@
 }
 .abt-forums-h {
   margin: 0 0 var(--space-5);
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--brand-gold-warm);
 }
 /* Проза розділу лишається в мірі, хоч смуга й стала широкою заради
    переліку. */
@@ -828,7 +821,7 @@
   gap: var(--space-2);
   align-content: start;
   padding: var(--space-4);
-  background: var(--brand-surface);
+  background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--r-xs);
 }
@@ -890,18 +883,31 @@
 .abt-res a {
   font: 600 var(--t-cap) var(--brand-font-mono);
   letter-spacing: 0.04em;
-  color: var(--brand-red);
+  color: var(--red);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-/* Проза і закладка — дві колонки; закладка ліворуч, як у макеті. Вужче
-   за 1000 вона стає над прозою: 300 пікселів збоку там уже немає. */
-.abt-first {
+/* Дві смуги цієї сторінки стоять у два стовпці: проза і щось при ній —
+   закладка на часі ліворуч у першій, знак факультету праворуч у «Хто веде».
+   Спільне в них усе, крім того, з якого боку вузька колонка, тож спільне
+   сказано раз. Обидві складаються в один стовпець вужче за 1000: там
+   300 пікселів збоку вже немає.
+
+   `max-width: none` знімає з обгортки обмеження `--col`, яке `.abt-in > *`
+   кладе на кожну дитину смуги; міру тримає колонка прози всередині. */
+.abt-first,
+.abt-who {
   max-width: none;
   display: grid;
-  grid-template-columns: minmax(0, 300px) minmax(0, var(--col));
   align-items: start;
   gap: clamp(32px, 4vw, 64px);
+}
+.abt-first .abt-prose,
+.abt-who .abt-prose {
+  max-width: var(--col);
+}
+.abt-first {
+  grid-template-columns: minmax(0, 300px) minmax(0, var(--col));
 }
 /* Проза стоїть першою в розмітці, а ліворуч сідає закладка — не `order`, а
    пряме місце в сітці: обидві клітинки названі, тож ніщо не «переставлене»,
@@ -910,7 +916,6 @@
 .abt-first .abt-prose {
   grid-column: 2;
   grid-row: 1;
-  max-width: var(--col);
 }
 .abt-first .abt-res {
   grid-column: 1;
@@ -931,10 +936,6 @@
    заголовок. Порядок не міняється: у розмітці й на екрані вона там сама,
    де й була. */
 @media (max-width: 1000px) {
-  .abt-first {
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(26px, 3vw, 36px);
-  }
   .abt-first .abt-prose,
   .abt-first .abt-res {
     grid-column: auto;
@@ -981,14 +982,7 @@
    посередині трьох; вертикально центрований, він опинявся навпроти другого
    і читався як ілюстрація до нього. */
 .abt-who {
-  max-width: none;
-  display: grid;
   grid-template-columns: minmax(0, var(--col)) minmax(0, 1fr);
-  align-items: start;
-  gap: clamp(32px, 4vw, 64px);
-}
-.abt-who .abt-prose {
-  max-width: var(--col);
 }
 /* Картка, яку видно, що можна натиснути.
 
@@ -1019,23 +1013,23 @@
   width: fit-content;
   max-width: 100%;
   padding: var(--space-5);
-  background: var(--brand-surface);
+  background: var(--surface);
   border: 1px solid var(--rule);
   box-shadow: var(--shadow-sm);
   text-decoration: none;
   transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease;
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
 }
 .abt-fac:hover,
 .abt-fac:focus-visible {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  border-color: var(--brand-red);
+  border-color: var(--red);
 }
 .abt-fac:focus-visible {
-  outline: 2px solid var(--brand-red);
+  outline: 2px solid var(--red);
   outline-offset: 3px;
 }
 .abt-fac:active {
@@ -1048,7 +1042,7 @@
   .abt-fac:focus-visible,
   .abt-fac:active {
     transform: none;
-    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+    transition: box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
   }
 }
 .abt-fac-mark {
@@ -1066,7 +1060,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.5;
-  color: var(--brand-red);
+  color: var(--red);
   text-wrap: pretty;
 }
 .abt-fac:hover .abt-fac-t,
@@ -1088,9 +1082,17 @@
    по вмісту: об'єкт розміром із те, що в ньому, замість коробки на всю
    ширину з дірою. */
 @media (max-width: 1000px) {
+  /* Обидві смуги складаються в один стовпець — одне правило на дві.
+
+     Стоїть нижче за обидва базові оголошення навмисне: у `.abt-first` і
+     `.abt-who` селектори тієї самої ваги, що й тут, і при рівній вазі
+     виграє той, хто пізніше у файлі. Поставлене вище, це правило програвало
+     базовому `.abt-who` — смуга не складалася і на 375 виводила сторінку за
+     край на тридцять пікселів. */
+  .abt-first,
   .abt-who {
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(28px, 3vw, 40px);
+    gap: clamp(26px, 3vw, 40px);
   }
   .abt-fac {
     display: grid;
