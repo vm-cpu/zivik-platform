@@ -467,21 +467,7 @@ export default async function AboutPage({
 
         <section className="abt-band">
           <div className="abt-in">
-            <div className="abt-h-row">
-              <h2>{L(T.whoH)}</h2>
-              {/* Вихід до Центру стоїть у шапці смуги, яка про Центр і
-                  говорить, — так у макеті власниці. Доти він закривав
-                  «Місію» нижче, тобто читач діставав шлях туди вже після
-                  того, як прочитав усе, що сторінка мала сказати. */}
-              <a
-                className="abt-h-link"
-                href={FACULTY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {L(T.centreLink)} ↗
-              </a>
-            </div>
+            <h2>{L(T.whoH)}</h2>
             <div className="abt-prose">
               <p>
                 {L(T.who)[0]}
@@ -493,6 +479,42 @@ export default async function AboutPage({
               <p>{L(T.centre)}</p>
               <p>{L(T.centre2)}</p>
             </div>
+            {/* Вихід до Центру — знаком самого факультету.
+
+                Він був рядком у шапці смуги, потім власниця дала червоний
+                знак факультету саме «для елемента що посилається на
+                факультет». Знак не декорація: смуга каже, хто веде проєкт,
+                і підпис під ним — це відповідь, а не оздоба. Тому він
+                закриває смугу, коли про Центр уже сказано, а не стоїть над
+                нею.
+
+                Той самий герб, що в шапці сайту, але в червоному, а не
+                білому: шапка темна, ця смуга — папір. alt порожній — назва
+                факультету в знаку, а поруч написано, куди веде посилання;
+                озвучене двічі, це два рядки про одне. */}
+            <a
+              className="abt-fac"
+              href={FACULTY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="abt-fac-mark"
+                src={`/logos/fp-logo-red-${locale}.svg`}
+                alt=""
+                /* Власні розміри на теґу: інакше коробка нульової ширини до
+                   приходу файлу, а потім стрибок — те саме, що вже було в
+                   шапці сайту. Українська й англійська версії локапу різних
+                   пропорцій, тому число залежить від мови. */
+                width={2020}
+                height={locale === "uk" ? 797 : 1079}
+              />
+              <span className="abt-fac-t">{L(T.centreLink)}</span>
+              <span className="abt-fac-a" aria-hidden="true">
+                ↗
+              </span>
+            </a>
           </div>
         </section>
 

@@ -806,31 +806,67 @@
   color: var(--brand-faint-dark);
 }
 
-/* Заголовок смуги і вихід із неї — в один рядок: заголовок ліворуч, шлях
-   назовні праворуч, на спільній базовій лінії. Вузьким екраном шлях стає
-   під заголовком, бо два об'єкти в рядку на 375 пікселях — це два обрізані
-   об'єкти. */
-.abt-h-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-3) var(--space-6);
+/* Знак факультету як вихід на сайт Центру.
+
+   Плитка, а не кнопка: кнопки на цій сторінці золоті або червоні й кличуть
+   до дії, а це посилання на чужий сайт — воно має виглядати як підпис
+   установи, а не як заклик. Тому папір другого рівня, волосяна рамка й
+   червоний тільки в самому знаку.
+
+   Сітка, а не flex: знак фіксованої ширини, підпис розтягується, стрілка
+   притиснута праворуч. `minmax(0, 1fr)` у середній колонці — інакше довгий
+   англійський підпис не переноситься, а розсуває плитку.
+
+   Висота знака, а не ширина: локапи двох мов різних пропорцій (2020×797 і
+   2020×1079), і однакова ширина дала б англійський знак у півтора раза
+   вищим. */
+.abt-fac {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-5);
   max-width: var(--prose);
+  margin-top: clamp(28px, 3vw, 40px);
+  padding: var(--space-5) var(--space-6);
+  background: var(--paper2);
+  border: 1px solid var(--rule);
+  text-decoration: none;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
 }
-.abt-h-row h2 {
-  margin-bottom: 0;
+.abt-fac:hover,
+.abt-fac:focus-visible {
+  background: var(--paper);
+  border-color: var(--brand-red);
 }
-.abt-h-link {
-  font: 700 var(--t-micro) var(--brand-font-body);
+.abt-fac-mark {
+  /* Як у шапці сайту, тільки на крок нижче: там знак несе всю смугу, тут він
+     стоїть поруч із підписом. На 34px другий рядок самого знака — «ПРАВА» —
+     виходив у п'ять пікселів, тобто назва факультету була найдрібнішим на
+     сторінці, а вся плитка існує заради неї. */
+  height: clamp(44px, 5.4vw, 62px);
+  width: auto;
+  display: block;
+}
+.abt-fac-t {
+  font: 700 var(--t-cap) var(--brand-font-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  white-space: nowrap;
+  line-height: 1.5;
   color: var(--brand-red);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
 }
-.abt-h-link:hover,
-.abt-h-link:focus-visible {
-  border-bottom-color: var(--brand-red);
+.abt-fac-a {
+  font-size: var(--t-sm);
+  color: var(--brand-red);
+}
+/* Вузький екран: знак над підписом, стрілка йде в його рядок. */
+@media (max-width: 560px) {
+  .abt-fac {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-4) var(--space-5);
+  }
+  .abt-fac-mark {
+    grid-column: 1 / -1;
+  }
 }
