@@ -52,9 +52,11 @@ import verbatimUk from "./icj-genocide.uk.json";
  * How the write-up is blocked, and why. The prose arrived as 48 blocks of
  * which 42 were an undifferentiated `p`, so the page drew forty-two identical
  * paragraphs and a reader had no way to see whose voice any of them was — and
- * on this decision that is the whole page: `bands: "four"` hides the objection
- * ledger, the verdict matrix and the interpretations, so the write-up carries
- * the case alone. The pass that fixed it changed NOT ONE CHARACTER of the
+ * at the time that was the whole page: `bands: "four"` hid the objection
+ * ledger, the submissions matrix and the interpretations, so the write-up
+ * carried the case alone. (That whitelist is gone — see `hideSections` below,
+ * which drops the overview and the interpretations and lets everything else
+ * render.) The pass that fixed it changed NOT ONE CHARACTER of the
  * text; it only said what each block is, and joined two runs the author had
  * already written as one list. In reading order:
  *
@@ -102,9 +104,30 @@ export const icjGenocide: DecisionSummary = {
      while the instruction is «стандартизована назва». So this is the same
      shape: the Court's case name, with «: 32 States intervening» taken out of
      the parenthesis exactly as the review asked and nothing else altered. */
+  /* Third pass on this heading, and the last one is the owner's own string:
+     «одразу великими літерами дати повну назву, а (Ukraine v. Russian
+     Federation: 32 States Intervening) маленькими знизу». The template
+     already sets a title that way — the subject in the display type, the
+     trailing parenthetical under it in italic gold — so the instruction is
+     satisfied in the data alone. Two things came back into the string:
+
+       • «: 32 States intervening». It had been cut on the ground that the
+         interveners are a fact about the proceeding and not its subject.
+         They are, but they are in the parenthesis, which is where the facts
+         about the proceeding go — and that parenthesis is the small line.
+       • «. Попередні заперечення». This docket has produced an order on
+         provisional measures, a judgment on preliminary objections and an
+         order on counter-claims, and the archive will hold more of them. A
+         title that does not say which one this is cannot be cited, and it
+         is the one thing the masthead's own «Рішення від 2 лютого 2024»
+         says only by its date.
+
+     The phase rides with the parties rather than in the heading — it is the
+     same kind of fact, and in the display type it would read as part of the
+     Convention's name. See `titleTail` in cases/[slug]/page.tsx. */
   title: {
-    uk: "Звинувачення у геноциді за Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації)",
-    en: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation)",
+    uk: "Звинувачення у геноциді згідно з Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації: 32 держави-інтервенти). Попередні заперечення",
+    en: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening). Preliminary Objections",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
@@ -116,7 +139,7 @@ export const icjGenocide: DecisionSummary = {
        full case name it read as a shortened copy of the headline. The masthead
        prints it once — same guard as on icj-cerd-icsft. */
     official:
-      "Звинувачення у геноциді за Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації)",
+      "Звинувачення у геноциді згідно з Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації: 32 держави-інтервенти). Попередні заперечення",
     judgment: "Рішення від 2 лютого 2024",
   },
 
@@ -140,22 +163,25 @@ export const icjGenocide: DecisionSummary = {
 
   /* Search-result description. `plain.tldr` used to serve as this and runs
      three to four sentences, so the snippet was cut off mid-word. */
-  /* Four bands on this page and no others: «ЗАЛИШАТИ ХРОНОЛОГІЮ, МІСЦЕ
-     РОЗГЛЯДУ, ОГЛЯД ТА ДЖЕРЕЛА», which in both versions of the corrections
-     document stands directly under this decision — version 2 carries the
-     link, `/uk/cases/icj-genocide`, in the line above it.
-
-     It had been sitting on icj-cerd-icsft, which is the one page the same
-     document asks for the opposite of: «А потім би вже йшли вкладки про
-     тлумачення, тимчасові заходи тощо». So both pages were wrong, in
-     opposite directions, and nothing on either could reveal it — the hidden
-     bands are written and complete in the data, they simply did not render.
-
-     «ОГЛЯД» in that line is the one ambiguous word: the same document renames
-     ОГЛЯД → «Якщо коротко» and САМЕРІ → «Повний огляд», so the line could
-     mean either. Owner's decision: the full one. See `bands` in
-     summaries/types.ts. */
-  bands: "four",
+  /* Named removals, not a whitelist of four.
+     
+     This page carried `bands: "four"` — «ЗАЛИШАТИ ХРОНОЛОГІЮ, МІСЦЕ РОЗГЛЯДУ,
+     ОГЛЯД ТА ДЖЕРЕЛА» from the corrections document, applied as a whitelist
+     that silenced every other band. The next review overturned it from the
+     other end: it asked for edits to the submissions matrix — a new heading,
+     the ground column gone, the result column reworded — which is a section a
+     whitelist of four cannot show, and at the same time for «Забрати Key
+     rulings on the law» and «Забрати Overview — не має ніякої цінності»,
+     which a whitelist cannot express either, because naming what stays says
+     nothing about what the reviewer wants gone.
+     
+     So the instrument is inverted here: everything renders except the two
+     sections the review names. The chronology, the map, the write-up and the
+     sources — the four the first line asked for — are all still here; what
+     joins them is the matrix, the docket card, the ledger of Russia's six
+     objections, the intervention figures, the glossary and the neighbours.
+     See `hideSections` in summaries/types.ts. */
+  hideSections: ["overview", "rulings"],
 
   metaDesc: {
     uk: "Рішення МС ООН від 2 лютого 2024 щодо попередніх заперечень: п'ять із шести заперечень Росії відхилено; вимоги (c) і (d) — поза Конвенцією.",
@@ -469,8 +495,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Armed conflict erupts in Donbas",
       },
       note: {
-        uk: "Між силами України та формуваннями, пов'язаними з «ДНР» і «ЛНР». Попри спроби мирного врегулювання конфлікт тривав з 2014 до 2022 року (§ 29).",
-        en: "Between Ukrainian armed forces and forces linked to the “DPR” and “LPR”. Despite attempts at a peaceful resolution the conflict continued between 2014 and 2022 (§ 29).",
+        uk: "У Донбаському регіоні на сході України — між збройними силами України та силами, пов'язаними з двома утвореннями, які називають себе «Донецька Народна Республіка» (ДНР) і «Луганська Народна Республіка» (ЛНР). Попри спроби досягти мирного врегулювання збройний конфлікт тривав з 2014 до 2022 року (§ 29).",
+        en: "In the Donbas region of eastern Ukraine, between Ukrainian armed forces and forces linked to two entities that refer to themselves as the “Donetsk People's Republic” (DPR) and the “Luhansk People's Republic” (LPR). Despite attempts to achieve a peaceful resolution, the armed conflict continued between 2014 and 2022 (§ 29).",
       },
     },
     {
@@ -482,8 +508,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Russia recognizes the “DPR” and “LPR” as independent States",
       },
       note: {
-        uk: "Указами Президента РФ. У зверненні того ж дня він послався на «цей жах і геноцид, з якими стикаються майже 4 мільйони людей» (§ 30).",
-        en: "By decrees of the Russian President. In an address the same day he invoked “this horror and genocide, which almost 4 million people are facing” (§ 30).",
+        uk: "Указами свого Президента, п. Володимира Путіна, Російська Федерація формально визнала ДНР і ЛНР незалежними державами. У зверненні того ж дня Президент РФ заявив, зокрема, що це рішення ухвалено з огляду на тривалі напади на громади Донбасу і «вбивства мирних жителів, блокаду, знущання з людей, зокрема дітей, жінок і літніх», тоді як «так званий цивілізований світ, єдиними представниками якого проголосили себе наші західні колеги, воліє не помічати цього, наче цих жаху й геноциду, з якими стикаються майже 4 мільйони людей, не існує» (§ 30).",
+        en: "By decrees of its President, Mr Vladimir Putin, the Russian Federation formally recognized the DPR and LPR as independent States. In an address delivered the same day, the President of the Russian Federation stated, inter alia, that the decision was taken in light of continuing attacks against the Donbas communities and “[t]he killing of civilians, the blockade, the abuse of people, including children, women and the elderly”, while “the so-called civilised world, which our Western colleagues proclaimed themselves the only representatives of, prefers not to see this, as if this horror and genocide, which almost 4 million people are facing, do not exist” (§ 30).",
       },
     },
     {
@@ -495,8 +521,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Two “Treaties on Friendship, Cooperation and Mutual Assistance”",
       },
       note: {
-        uk: "Того ж дня «ДНР» і «ЛНР» просять у Росії військової допомоги на підставі цих «договорів» (§ 31).",
-        en: "The same day the “DPR” and “LPR” request military assistance from Russia under these “treaties” (§ 31).",
+        uk: "Російська Федерація уклала те, що вона називає двома «договорами про дружбу, співробітництво і взаємну допомогу», — один із ДНР, другий із ЛНР. Того ж дня ДНР і ЛНР звернулися до Російської Федерації по військову допомогу на підставі цих «договорів» (§ 31).",
+        en: "The Russian Federation concluded what it refers to as two “Treaties on Friendship, Cooperation and Mutual Assistance”, one with the DPR and the other with the LPR. On the same date, the DPR and LPR requested military assistance from the Russian Federation pursuant to these “treaties” (§ 31).",
       },
     },
     {
@@ -508,8 +534,28 @@ export const icjGenocide: DecisionSummary = {
         en: "The “special military operation” is declared",
       },
       note: {
-        uk: "О 6-й ранку за московським часом Президент РФ заявив, що її мета — «захистити людей, які протягом восьми років зазнають знущань і геноциду з боку київського режиму». Операцію розпочато вранці того ж дня (§ 31–32).",
-        en: "At 6 a.m. Moscow time the Russian President said its purpose was “to protect people who have been subjected to abuse and genocide by the Kiev regime for eight years”. It was launched early the same morning (§ 31–32).",
+        uk: "О 6-й ранку за московським часом Президент Російської Федерації заявив, що вирішив провести в Україні «спеціальну воєнну операцію». У промові він сказав: «[в]ідповідно до статті 51 (розділ VII) Статуту ООН я ухвалив рішення провести спеціальну воєнну операцію… Її мета — захистити людей, які протягом восьми років зазнають знущань і геноциду з боку київського режиму». «Спеціальну воєнну операцію» розпочато рано вранці того ж дня (§ 31–32).",
+        en: "At 6 a.m. (Moscow time) the President of the Russian Federation declared that he had decided to conduct a “special military operation” in Ukraine. In his speech he stated: “[I]n accordance with Article 51 (chapter VII) of the Charter of the United Nations, I have decided to conduct a special military operation… Its purpose is to protect people who have been subjected to abuse and genocide by the Kiev regime for eight years.” The “special military operation” was launched early in the morning on the same day (§ 31–32).",
+      },
+    },
+    /* § 33, and it had been missing. The address of 24 February is on this
+       page twice over — in the entry above and in the write-up — but the
+       letter that put it before the United Nations was not, and that letter
+       is the document in which the invasion is filed as self-defence under
+       Article 51. It is the same UN doc. S/2022/154 the judgment cites for
+       the address itself: the speech is the annex, this is the cover letter.
+       Owner's chronology names it; the archive's did not. */
+    {
+      date: { uk: "24 лютого 2022", en: "24 February 2022" },
+      iso: "2022-02-24",
+      kind: "filing",
+      label: {
+        uk: "Росія повідомляє Раду Безпеки про «самооборону» за статтею 51",
+        en: "Russia notifies the United Nations of “self-defence” under Article 51",
+      },
+      note: {
+        uk: "Листом від 24 лютого 2022 року Постійний представник Російської Федерації при ООН передав Генеральному секретареві ООН текст звернення Президента РФ того ж дня, пояснивши, що це звернення повідомляло громадян Росії «про заходи, вжиті відповідно до статті 51 Статуту Організації Об'єднаних Націй у здійсненні права на самооборону» (§ 33; док. ООН S/2022/154).",
+        en: "By a letter dated 24 February 2022 the Permanent Representative of the Russian Federation to the United Nations forwarded to the Secretary-General the text of the address of the President of the Russian Federation of the same date, explaining that this address informed the citizens of Russia “of the measures taken in accordance with Article 51 of the Charter of the United Nations in exercise of the right of self-defence” (§ 33; UN doc. S/2022/154).",
       },
     },
     {
@@ -521,8 +567,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Ukraine files its Application",
       },
       note: {
-        uk: "МЗС України заявило, що «рішуче заперечує звинувачення Росії у геноциді»; за кілька годин Україна подала позов разом із запитом про тимчасові заходи (§ 34–35).",
-        en: "Ukraine's Ministry of Foreign Affairs “resolutely denies Russia's allegations of genocide”; hours later Ukraine filed its Application together with a Request for the indication of provisional measures (§ 34–35).",
+        uk: "МЗС України оприлюднило заяву, у якій викрило «неправдиві й образливі звинувачення Росії у геноциді як привід для незаконної воєнної агресії проти України»: «Україна рішуче заперечує звинувачення Росії у геноциді й відкидає будь-які спроби використати такі маніпулятивні звинувачення як виправдання своєї незаконної агресії. Злочин геноциду визначено в Конвенції про геноцид, і за цією Конвенцією твердження Росії безпідставні й абсурдні». Того ж дня, за кілька годин після заяви, Україна подала позовну заяву до Суду разом із запитом про вжиття тимчасових заходів (§ 34–35).",
+        en: "Ukraine's Ministry of Foreign Affairs issued a statement denouncing “Russia's false and offensive allegations of genocide as a pretext for its unlawful military aggression against Ukraine”: “Ukraine resolutely denies Russia's allegations of genocide and rejects any attempt to use such manipulative allegations as an excuse for its unlawful aggression. The crime of genocide is defined in the Genocide Convention, and under that Convention, Russia's claims are baseless and absurd.” The same day, a few hours after the statement, Ukraine filed its Application before the Court together with a Request for the indication of provisional measures (§ 34–35).",
       },
     },
     {
@@ -676,10 +722,18 @@ export const icjGenocide: DecisionSummary = {
     },
   ],
 
+  /* «Сформулювати, як "Аргументи України"» (review). The heading it replaces
+     — «Що з вимог України пройшло далі» — asked the reader to hold a question
+     while reading three long submissions, and the answer to it is the result
+     column anyway. What the section is, is Ukraine's submissions and what
+     became of each. */
   verdictsHeading: {
-    uk: "Що з вимог України пройшло далі",
-    en: "Which of Ukraine's submissions survive",
+    uk: "Аргументи України",
+    en: "Ukraine's submissions",
   },
+  /* «Зліва забрати Genocide convention». One convention in the case, three
+     rows, one string — see `verdictsTrackless` in summaries/types.ts. */
+  verdictsTrackless: true,
 
   /* These are the submissions in § 178 of Ukraine's Memorial, quoted as the
      judgment reproduces them at § 25 — the list the dispositif actually rules
@@ -722,6 +776,10 @@ export const icjGenocide: DecisionSummary = {
         en: "(c) The Russian Federation's use of force in and against Ukraine beginning on 24 February 2022 violates Articles I and IV of the Genocide Convention",
       },
       outcome: "not-decided",
+      outcomeLabel: {
+        uk: "Суд не знайшов юрисдикції, аби розглядати аргумент",
+        en: "The Court found no jurisdiction to entertain this submission",
+      },
     },
     {
       track: "Genocide Convention",
@@ -730,6 +788,10 @@ export const icjGenocide: DecisionSummary = {
         en: "(d) The Russian Federation's recognition of the independence of the so-called “DPR” and “LPR” on 21 February 2022 violates Articles I and IV of the Genocide Convention",
       },
       outcome: "not-decided",
+      outcomeLabel: {
+        uk: "Суд не знайшов юрисдикції, аби розглядати аргумент",
+        en: "The Court found no jurisdiction to entertain this submission",
+      },
     },
   ],
 

@@ -285,13 +285,6 @@
   color: var(--ink3);
 }
 
-/* ── Two columns, where the ground column would say one thing three times ──
-   See `verdictsTrackless` in summaries/types.ts. The claim takes the width
-   the ground gave up, and the result column takes the rest of it, because a
-   row that writes its own result writes a sentence and not a status word.
-
-   The three grids — head, rows, fold — take the same track here as they do
-   at three columns, or the table stops being a table. */
 /* A result the record wrote itself: prose, so it is set as prose. The shared
    labels are one or two words and tracked capitals suit them; «Суд не знайшов
    юрисдикції, аби розглядати аргумент» in the same treatment is four lines of
@@ -1562,72 +1555,62 @@
    short ones from collapsing, and the 38% ceiling keeps a long one from
    eating the claim it is supposed to introduce. The three rows of the
    table — head, claims, fold — take the same track so they stay a table. */
-.casepage .verdicts li,
-.casepage .ix-head,
-.casepage .v-fold {
-  /* One width for all three, because they are three grids and
-     `max-content` is measured per grid: sized to content the rows came out
-     127.5px and the head and the fold stayed at 118, so the table's own
-     columns no longer lined up.
+/* Wide widths only, and that qualifier is the whole of a bug this block
+   carried on every decision page.
 
-     140px is what the widest thing that goes here needs on one line — the
-     ICC's «19 березня 2026 ↓» at the mono 12.5px, and the ICJ's
-     «Тимчасові заходи», which was wrapping at 118 too. Fixed, so the
-     three rows of the table stay one table.
+   Unscoped, this declaration was the last word on `grid-template-columns`
+   for all three grids at every width — later in this file than the narrow
+   rules above, and in a later file than the ones in 20-dashboard.css, at the
+   same weight. So the phone block at line 308 got exactly half of what it
+   asks for: `grid-column: 1` on the three cells applied, because that
+   selector carries a class more than the rules it overrides, while its
+   `grid-template-columns: minmax(0, 1fr)` did not. Measured at 600px the row
+   was three tracks wide — 140px, 241px, 132px — with all three cells stacked
+   in the first of them: a claim set 140px wide beside 373px of empty ground,
+   on every decision in the archive. `.v-fold`'s own phone rule (line 1425)
+   was dead the same way.
 
-     (The first attempt was `minmax(118px, min(max-content, 38%))`, which
-     is invalid — `min()` takes lengths and `max-content` is not one — so
-     the declaration dropped and the 118px it meant to replace went on
-     winning, silently.) */
-  grid-template-columns: 140px minmax(0, 1fr) 132px;
+   Nothing below is new; it is the rule the narrow blocks were always written
+   against. 701px because 700 is where this file's own single-column block
+   begins. */
+@media (min-width: 701px) {
+  .casepage .verdicts li,
+  .casepage .ix-head,
+  .casepage .v-fold {
+    /* One width for all three, because they are three grids and
+       `max-content` is measured per grid: sized to content the rows came out
+       127.5px and the head and the fold stayed at 118, so the table's own
+       columns no longer lined up.
+
+       140px is what the widest thing that goes here needs on one line — the
+       ICC's «19 березня 2026 ↓» at the mono 12.5px, and the ICJ's
+       «Тимчасові заходи», which was wrapping at 118 too. Fixed, so the
+       three rows of the table stay one table.
+
+       (The first attempt was `minmax(118px, min(max-content, 38%))`, which
+       is invalid — `min()` takes lengths and `max-content` is not one — so
+       the declaration dropped and the 118px it meant to replace went on
+       winning, silently.) */
+    grid-template-columns: 140px minmax(0, 1fr) 132px;
+  }
 }
 /* ── The same table at two columns ───────────────────────────────────────
-   Where the ground column is dropped (`verdictsTrackless`), and it has to be
-   said at each of the widths the three-column table is said at, in this file
-   and after the rule above: these selectors weigh exactly what the ones they
-   override weigh, so it is source order that decides, and a single unscoped
-   declaration would win on a phone too — which left a 29px claim column
-   beside a 132px result and 140px of empty ground where the track used to be.
-
-   The breakpoints are the block's own, not new ones: 900px is where the
-   claim can no longer sit beside a full-width result, 560px where it can no
-   longer sit beside one at all. */
-.casepage .verdicts-2 li,
-.casepage .ix-head-2,
-.casepage .v-fold-2 {
-  grid-template-columns: minmax(0, 1fr) 232px;
-}
-.casepage .verdicts-2 .v-claim {
-  grid-column: 1;
-}
-.casepage .verdicts-2 .v-out {
-  grid-column: 2;
-}
-/* Tablet: the result goes over the claim, the way it does with a track. */
-@media (max-width: 900px) {
+   Where the ground column is dropped (`verdictsTrackless`). Same shape as the
+   rule above and at the same widths: three columns become two, and below
+   701px the table is one column like every other decision's. Set here, after
+   that rule, because these selectors weigh the same as the ones they
+   override and it is source order that decides. */
+@media (min-width: 701px) {
   .casepage .verdicts-2 li,
   .casepage .ix-head-2,
   .casepage .v-fold-2 {
-    grid-template-columns: minmax(0, 10rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 232px;
+  }
+  .casepage .verdicts-2 .v-claim {
+    grid-column: 1;
   }
   .casepage .verdicts-2 .v-out {
-    grid-column: 1;
-  }
-  .casepage .verdicts-2 .v-claim {
     grid-column: 2;
-  }
-}
-/* Phone: one column. «Суд не знайшов юрисдикції, аби розглядати аргумент» in
-   a 10rem column is six lines. */
-@media (max-width: 560px) {
-  .casepage .verdicts-2 li,
-  .casepage .ix-head-2,
-  .casepage .v-fold-2 {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .casepage .verdicts-2 .v-out,
-  .casepage .verdicts-2 .v-claim {
-    grid-column: 1;
   }
 }
 
