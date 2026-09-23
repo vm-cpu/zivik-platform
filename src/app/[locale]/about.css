@@ -367,6 +367,13 @@
   align-items: baseline;
   justify-content: space-between;
   gap: var(--space-3) var(--space-6);
+  /* Відступ, який доти носив сам заголовок. `.abt-h-row h2` обнуляє
+     `margin-bottom`, щоб заголовок і лінк стояли на спільній базовій лінії,
+     — і смуга команди, яка щойно дістала цей рядок, лишилася без простору
+     під заголовком: підпис першої групи стояв упритул до нього. Власниця:
+     «тут простору не вистачає». Відступ належить рядку, а не заголовку в
+     ньому. */
+  margin-bottom: var(--space-6);
 }
 .abt-h-row h2 {
   margin-bottom: 0;
@@ -757,13 +764,10 @@
    й в оку сторінки без огляду. Поперек рейки, а не в мірі прози: п'ять назв
    на 820 пікселях — це 148 на колонку, а найдовша з них, «Міжнародний
    трибунал з морського права», більша. */
-.abt-forums-h {
-  margin: clamp(36px, 4vw, 56px) 0 var(--space-4);
-  font: 700 var(--t-micro) var(--brand-font-body);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--brand-gold-lit);
-}
+/* Заголовка власного тут нема: смуга інстанцій дістала звичайний <h2>, як
+   «Навіщо ця бібліотека» і «Хто веде проєкт» поруч. Підпис, яким він був у
+   темній шапці, там і лишився б капітеллю — але то був підпис до ліда, а це
+   назва смуги, і дві смуги поспіль мають називатися однаково. */
 .abt-forums {
   list-style: none;
   margin: 0;
@@ -777,64 +781,83 @@
   gap: 3px;
   align-content: start;
   padding-top: var(--space-3);
-  border-top: 1px solid color-mix(in srgb, var(--brand-gold-lit) 34%, transparent);
+  /* Волосинка на папері, а не на темному: смуга вийшла з шапки. */
+  border-top: 1px solid var(--rule);
 }
 .abt-forums b {
   font: 700 var(--t-cap) var(--brand-font-mono);
   letter-spacing: 0.04em;
-  color: var(--brand-gold-lit);
+  color: var(--brand-forum);
 }
 .abt-forums span {
   font-size: var(--t-sm);
   line-height: 1.4;
-  color: var(--brand-cream);
+  color: var(--ink);
   text-wrap: pretty;
 }
 /* Група, а не інституція: риска замість абревіатури і тихіший знак. */
 .abt-forums-nat b {
-  color: var(--brand-muted-dark);
+  color: var(--faint);
 }
 
-/* Одна дата, з макета: дата, подія, документ — в один рядок, як подія в
-   хронології рішення. Не абзац: те саме сказано прозою нижче, а тут воно
-   позначка на часі. */
+/* Закладка на часі, при абзаці, який її розповідає.
+
+   Вона була рядком упоперек темної шапки — дата, речення, документ в один
+   рядок. Власниця перенесла її сюди, до першої смуги тексту, і на папері
+   рядок уже не тримається: 340 пікселів збоку — це не рядок, а стовпчик.
+   Тож три речі стали одна під одною, з макета: золота лінія, дата,
+   речення антиквою, документ під ним.
+
+   Антиква курсивом на одну річ на всю сторінку — це цитата з документа,
+   а не проза сторінки, і вона стоїть у тій самій ролі, що епіграф. */
 .abt-res {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: var(--space-4);
-  margin: clamp(30px, 3.4vw, 46px) 0 0;
+  display: block;
+  margin: 0;
   padding-top: var(--space-4);
-  border-top: 1px solid color-mix(in srgb, var(--brand-gold-lit) 34%, transparent);
+  border-top: 2px solid var(--brand-gold-warm);
 }
 .abt-res time {
+  display: block;
+  margin-bottom: var(--space-4);
   font: 500 var(--t-cap) var(--brand-font-mono);
-  letter-spacing: 0.04em;
-  color: var(--brand-gold-lit);
-  white-space: nowrap;
+  letter-spacing: 0.12em;
+  color: var(--brand-gold-warm);
 }
 .abt-res span {
-  font-size: var(--t-sm);
-  line-height: 1.45;
-  color: var(--brand-cream);
+  display: block;
+  margin-bottom: var(--space-4);
+  font-family: var(--brand-font-display-italic), Georgia, serif;
+  font-size: var(--t-h3);
+  line-height: 1.32;
+  color: var(--ink);
   text-wrap: pretty;
 }
 .abt-res a {
-  font: 600 var(--t-micro) var(--brand-font-mono);
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  color: var(--brand-gold-lit);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
+  font: 600 var(--t-cap) var(--brand-font-mono);
+  letter-spacing: 0.04em;
+  color: var(--brand-red);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
-.abt-res a:hover,
-.abt-res a:focus-visible {
-  border-bottom-color: var(--brand-gold-lit);
+/* Проза і закладка — дві колонки; закладка ліворуч, як у макеті. Вужче
+   за 1000 вона стає над прозою: 300 пікселів збоку там уже немає. */
+.abt-first {
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, var(--col));
+  align-items: start;
+  gap: clamp(32px, 4vw, 64px);
 }
-@media (max-width: 700px) {
-  .abt-res {
+.abt-first .abt-prose {
+  max-width: var(--col);
+}
+@media (max-width: 1000px) {
+  .abt-first {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2);
+    gap: clamp(26px, 3vw, 36px);
+  }
+  .abt-res {
+    max-width: var(--col);
   }
 }
 
@@ -852,78 +875,71 @@
   color: var(--brand-faint-dark);
 }
 
-/* Знак факультету як вихід на сайт Центру.
+/* Знак факультету — бічна колонка при прозі, не плитка під нею.
 
-   Плитка, а не кнопка: кнопки на цій сторінці золоті або червоні й кличуть
-   до дії, а це посилання на чужий сайт — воно має виглядати як підпис
-   установи, а не як заклик. Тому папір другого рівня, волосяна рамка й
-   червоний тільки в самому знаку.
+   Рейка тут 1180, міра прози — 820; праворуч лишається близько 340, і саме
+   стільки треба знакові з підписом. Смуга через це єдина на сторінці, що
+   знімає обмеження `--col` зі свого вмісту: обмеження тримає колонка прози
+   всередині, а не обгортка.
 
-   Сітка, а не flex: знак фіксованої ширини, підпис розтягується, стрілка
-   притиснута праворуч. `minmax(0, 1fr)` у середній колонці — інакше довгий
-   англійський підпис не переноситься, а розсуває плитку.
-
-   Висота знака, а не ширина: локапи двох мов різних пропорцій (2020×797 і
-   2020×1079), і однакова ширина дала б англійський знак у півтора раза
-   вищим. */
-.abt-fac {
+   `align-items: start` — знак стоїть на верхній лінії першого абзаца, а не
+   посередині трьох; вертикально центрований, він опинявся навпроти другого
+   і читався як ілюстрація до нього. */
+.abt-who {
+  max-width: none;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--space-5);
-  /* `fit-content`, і міра цієї сторінки — `--col`, не `--prose`.
-
-     Тут було `max-width: var(--prose)` — змінна з сторінок рішень, якої на
-     цій сторінці немає. Оголошення було недійсне, обмеження не діяло, і
-     плитка розтягувалася на всю рейку, тоді як проза над нею стоїть у мірі.
-     Власниця: «оця секція відрізняється, вона має бути зліва».
-
-     Не просто менша ширина, а по вмісту: плитка — це підпис установи, і
-     розтягнута до краю міри вона лишала півметра порожнечі між підписом і
-     стрілкою. */
-  width: fit-content;
+  grid-template-columns: minmax(0, var(--col)) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(32px, 4vw, 64px);
+}
+.abt-who .abt-prose {
   max-width: var(--col);
-  margin-top: clamp(28px, 3vw, 40px);
-  padding: var(--space-5) var(--space-6);
-  background: var(--paper2);
-  border: 1px solid var(--rule);
+}
+/* Підпис установи, а не кнопка: волосинка згори, знак, рядок під ним — те
+   саме, чим ця сторінка підписує ряд інстанцій двома смугами вище. Коробки
+   немає; єдине, що відбуває натискання, — колір підпису й лінія над ним. */
+.abt-fac {
+  display: block;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--rule);
   text-decoration: none;
-  transition:
-    border-color 0.18s ease,
-    background 0.18s ease;
+  transition: border-color 0.18s ease;
 }
 .abt-fac:hover,
 .abt-fac:focus-visible {
-  background: var(--paper);
-  border-color: var(--brand-red);
+  border-top-color: var(--brand-red);
 }
 .abt-fac-mark {
-  /* Як у шапці сайту, тільки на крок нижче: там знак несе всю смугу, тут він
-     стоїть поруч із підписом. На 34px другий рядок самого знака — «ПРАВА» —
-     виходив у п'ять пікселів, тобто назва факультету була найдрібнішим на
-     сторінці, а вся плитка існує заради неї. */
-  height: clamp(44px, 5.4vw, 62px);
+  /* Висота, не ширина: локапи двох мов різних пропорцій (2020×797 і
+     2020×1079), і однакова ширина дала б англійський знак у півтора раза
+     вищим. */
+  height: clamp(40px, 4.6vw, 56px);
   width: auto;
   display: block;
+  margin-bottom: var(--space-4);
 }
 .abt-fac-t {
-  font: 700 var(--t-cap) var(--brand-font-body);
+  display: block;
+  font: 700 var(--t-micro) var(--brand-font-body);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.5;
   color: var(--brand-red);
+  text-wrap: pretty;
 }
-.abt-fac-a {
-  font-size: var(--t-sm);
-  color: var(--brand-red);
+.abt-fac:hover .abt-fac-t,
+.abt-fac:focus-visible .abt-fac-t {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-/* Вузький екран: знак над підписом, стрілка йде в його рядок. */
-@media (max-width: 560px) {
-  .abt-fac {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: var(--space-4) var(--space-5);
+/* Вужче — одна колонка: 340 пікселів збоку тут уже немає, і знак стає під
+   прозою, лівим краєм на її лівому краї. */
+@media (max-width: 1000px) {
+  .abt-who {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(28px, 3vw, 40px);
   }
-  .abt-fac-mark {
-    grid-column: 1 / -1;
+  .abt-fac {
+    max-width: var(--col);
   }
 }

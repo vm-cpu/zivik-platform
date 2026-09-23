@@ -409,15 +409,46 @@ export default async function AboutPage({
             </Link>
             <h1>{L(T.title)}</h1>
             <p className="abt-lede">{L(T.scope)}</p>
-            {/* The courts, as a row rather than as a parenthesis.
+          </div>
+        </header>
 
-                Abbreviation over full name, the way the library rows and a
-                pending page's eyebrow already name a forum, in the forum
-                hue. Across the rail rather than inside the measure: five
-                names at the 820px measure is 148px a column, and the longest
-                of them — «Міжнародний трибунал з морського права» — needs
-                more than that. */}
-            <p className="abt-forums-h">{L(T.forumsH)}</p>
+        {/* The library's own description, from the content layer, so the
+            home page section and this page cannot drift apart.
+
+            Дата поруч із текстом, не в шапці. Власниця: «про генеральну
+            асамблею поставила поруч з текстом першої секції тексту». Позначка
+            стояла впоперек темної шапки під рядом судів — третій об'єкт у
+            блоці, який уже ніс заголовок, лід і п'ять інстанцій. Те саме
+            речення є в прозі праворуч; збоку воно тепер не повтор, а
+            закладка на часі при абзаці, який його розповідає. */}
+        <section className="abt-band">
+          <div className="abt-in">
+            <div className="abt-first">
+              <p className="abt-res">
+                <time dateTime="2014-03-27">{L(T.resDate)}</time>
+                <span>{L(T.resText)}</span>
+                <a href={RESOLUTION_URL} target="_blank" rel="noopener noreferrer">
+                  {L(T.resLink)} →
+                </a>
+              </p>
+              <div className="abt-prose">
+                {L(about.paragraphs).map((text, i) => (
+                  <p key={i}>{linkAboutProse(text, aboutLinks)}</p>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Інстанції — власною смугою на папері, не рядком у темній шапці.
+
+            Власниця: «я б інстанції на сторінці про проєкт зробила окремою
+            секцією не чорною». У шапці вони були приміткою до ліда; окремою
+            смугою вони те, чим є — перелік того, чию практику ця бібліотека
+            тримає. */}
+        <section className="abt-band abt-recess">
+          <div className="abt-in abt-wide">
+            <h2>{L(T.forumsH)}</h2>
             <ul className="abt-forums">
               {/* Назва, а під нею абревіатура — порядок макета власниці.
                   Доти абревіатура стояла зверху, як у рядку бібліотеки, де
@@ -443,29 +474,6 @@ export default async function AboutPage({
                 </li>
               )}
             </ul>
-
-            {/* Одна дата, з макета. Протиправність визнали 2014-го, і ця
-                сторінка каже це реченням у прозі нижче; тут те саме стоїть
-                як позначка на часі — дата, подія, документ. */}
-            <p className="abt-res">
-              <time dateTime="2014-03-27">{L(T.resDate)}</time>
-              <span>{L(T.resText)}</span>
-              <a href={RESOLUTION_URL} target="_blank" rel="noopener noreferrer">
-                {L(T.resLink)} →
-              </a>
-            </p>
-          </div>
-        </header>
-
-        {/* The library's own description, from the content layer, so the
-            home page section and this page cannot drift apart. */}
-        <section className="abt-band">
-          <div className="abt-in">
-            <div className="abt-prose">
-              {L(about.paragraphs).map((text, i) => (
-                <p key={i}>{linkAboutProse(text, aboutLinks)}</p>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -498,53 +506,62 @@ export default async function AboutPage({
         <section className="abt-band">
           <div className="abt-in">
             <h2>{L(T.whoH)}</h2>
-            <div className="abt-prose">
-              <p>
-                {L(T.who)[0]}
-                <a href={FACULTY_URL} target="_blank" rel="noopener noreferrer">
-                  {L(T.who)[1]}
-                </a>
-                {L(T.who)[2]}
-              </p>
-              <p>{L(T.centre)}</p>
-              <p>{L(T.centre2)}</p>
+            {/* Проза і знак факультету — поруч, не одне під одним.
+
+                Плитка стояла під текстом і на широкому екрані закривала
+                смугу поперечною коробкою; власниця: «я хочу щоб вона була
+                зліва чи справа від тексту, а не внизу — та зміни дизайн
+                цього елемента». Тепер це бічна колонка: рейка 1180, проза
+                тримає свої 820, знак займає те, що лишилося праворуч, і
+                стоїть на верхній лінії першого абзаца.
+
+                Коробки більше немає. Знак підписаний рядком під собою і
+                відбитий волосинкою згори — тим самим знаком, яким ця
+                сторінка підписує ряд інстанцій. Вужче за 1000 пікселів
+                колонки складаються в одну, і знак стає під прозою, бо 340
+                пікселів збоку там уже немає.
+
+                alt порожній: назва факультету всередині знака, а поруч
+                написано, куди веде посилання. */}
+            <div className="abt-who">
+              <div className="abt-prose">
+                <p>
+                  {L(T.who)[0]}
+                  <a href={FACULTY_URL} target="_blank" rel="noopener noreferrer">
+                    {L(T.who)[1]}
+                  </a>
+                  {L(T.who)[2]}
+                </p>
+                <p>{L(T.centre)}</p>
+                <p>{L(T.centre2)}</p>
+              </div>
+              <a
+                className="abt-fac"
+                href={FACULTY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="abt-fac-mark"
+                  src={`/logos/fp-logo-red-${locale}.svg`}
+                  alt=""
+                  /* Власні розміри на теґу: інакше коробка нульової ширини
+                     до приходу файлу, а потім стрибок — те саме, що вже
+                     було в шапці сайту. Українська й англійська версії
+                     локапу різних пропорцій, тому число залежить від
+                     мови. */
+                  width={2020}
+                  height={locale === "uk" ? 797 : 1079}
+                />
+                <span className="abt-fac-t">
+                  {L(T.centreLink)}
+                  <span className="abt-fac-a" aria-hidden="true">
+                    {" ↗"}
+                  </span>
+                </span>
+              </a>
             </div>
-            {/* Вихід до Центру — знаком самого факультету.
-
-                Він був рядком у шапці смуги, потім власниця дала червоний
-                знак факультету саме «для елемента що посилається на
-                факультет». Знак не декорація: смуга каже, хто веде проєкт,
-                і підпис під ним — це відповідь, а не оздоба. Тому він
-                закриває смугу, коли про Центр уже сказано, а не стоїть над
-                нею.
-
-                Той самий герб, що в шапці сайту, але в червоному, а не
-                білому: шапка темна, ця смуга — папір. alt порожній — назва
-                факультету в знаку, а поруч написано, куди веде посилання;
-                озвучене двічі, це два рядки про одне. */}
-            <a
-              className="abt-fac"
-              href={FACULTY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="abt-fac-mark"
-                src={`/logos/fp-logo-red-${locale}.svg`}
-                alt=""
-                /* Власні розміри на теґу: інакше коробка нульової ширини до
-                   приходу файлу, а потім стрибок — те саме, що вже було в
-                   шапці сайту. Українська й англійська версії локапу різних
-                   пропорцій, тому число залежить від мови. */
-                width={2020}
-                height={locale === "uk" ? 797 : 1079}
-              />
-              <span className="abt-fac-t">{L(T.centreLink)}</span>
-              <span className="abt-fac-a" aria-hidden="true">
-                ↗
-              </span>
-            </a>
           </div>
         </section>
 

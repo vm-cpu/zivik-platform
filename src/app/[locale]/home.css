@@ -405,7 +405,15 @@
    its right is margin. That is what an editorial column on a wide page looks
    like, and it is honest about there being two paragraphs here rather than
    dressing them up as a spread. */
-.nsv-about-main{max-width:720px;display:flex;flex-direction:column;gap:var(--space-4)}
+/* Міра сайту, а не власна.
+
+   Смуга набиралася на 720px усередині 1180-ї рейки: текст тулився до лівого
+   краю, а 460 пікселів паперу праворуч лишалися порожні, і на широкому
+   екрані абзац читався клаптем. Власниця: «пошматовано виглядає».
+
+   820 — це `--prose-max`, та сама міра, якою набрано /about і сторінки
+   рішень; ті самі три абзаци там стоять саме так. Одна міра на сайт. */
+.nsv-about-main{max-width:min(100%, var(--prose-max));display:flex;flex-direction:column;gap:var(--space-4)}
 
 /* Both paragraphs in the About band are body prose of one rank, so they carry
    one colour. The opening one used to be painted --ink (#1a1917, 17.57:1 on
