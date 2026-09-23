@@ -157,8 +157,8 @@ export const privacy: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Володільцем персональних даних є Український католицький університет, Факультет права, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна. Бібліотеку веде Дослідницький центр імені Луї Б. Зона Факультету права УКУ.",
-            en: "The controller of personal data is the Ukrainian Catholic University, Faculty of Law, 17 Svientsitskoho St., Lviv, 79011, Ukraine. The library is run by the Louis B. Sohn Research Centre at the UCU Faculty of Law.",
+            uk: "Володільцем персональних даних є Український католицький університет, Факультет права, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна. Бібліотеку веде Дослідницький центр Луї Зона Факультету права УКУ.",
+            en: "The controller of personal data is the Ukrainian Catholic University, Faculty of Law, 17 Svientsitskoho St., Lviv, 79011, Ukraine. The library is run by the Louis Sohn Research Centre at the UCU Faculty of Law.",
           },
         },
         {
@@ -434,8 +434,8 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Ці Умови користування (далі — Умови) регулюють доступ до вебсайту бібліотеки «НаСвітло» (далі — Сайт) і користування ним. Сайт веде Дослідницький центр імені Луї Б. Зона Факультету права Українського католицького університету, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна.",
-            en: "These Terms of use (the Terms) govern access to and use of the website of the NaSvitlo library (the Site). The Site is run by the Louis B. Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, 17 Svientsitskoho St., Lviv, 79011, Ukraine.",
+            uk: "Ці Умови користування (далі — Умови) регулюють доступ до вебсайту бібліотеки «НаСвітло» (далі — Сайт) і користування ним. Сайт веде Дослідницький центр Луї Зона Факультету права Українського католицького університету, вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна.",
+            en: "These Terms of use (the Terms) govern access to and use of the website of the NaSvitlo library (the Site). The Site is run by the Louis Sohn Research Centre at the Faculty of Law of the Ukrainian Catholic University, 17 Svientsitskoho St., Lviv, 79011, Ukraine.",
           },
         },
         {
@@ -531,15 +531,15 @@ export const terms: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Що справді є нашим — це те, що ми створюємо самі: огляди й аналітичні тексти, хронології, неофіційні переклади, добір та впорядкування матеріалів у бібліотеці, мапи, ілюстрації, дизайн і код Сайту. Ці матеріали є об'єктами авторського права і належать Факультету права УКУ та Дослідницькому центру імені Луї Б. Зона або використовуються на законних підставах.",
-            en: "What is ours is what we make ourselves: the summaries and analytical texts, the chronologies, the unofficial translations, the selection and arrangement of the material in the library, the maps, the illustrations, and the design and code of the Site. These are subject to copyright and belong to the UCU Faculty of Law and the Louis B. Sohn Research Centre, or are used on lawful grounds.",
+            uk: "Що справді є нашим — це те, що ми створюємо самі: огляди й аналітичні тексти, хронології, неофіційні переклади, добір та впорядкування матеріалів у бібліотеці, мапи, ілюстрації, дизайн і код Сайту. Ці матеріали є об'єктами авторського права і належать Факультету права УКУ та Дослідницькому центру Луї Зона або використовуються на законних підставах.",
+            en: "What is ours is what we make ourselves: the summaries and analytical texts, the chronologies, the unofficial translations, the selection and arrangement of the material in the library, the maps, the illustrations, and the design and code of the Site. These are subject to copyright and belong to the UCU Faculty of Law and the Louis Sohn Research Centre, or are used on lawful grounds.",
           },
         },
         {
           kind: "p",
           text: {
-            uk: "Наші матеріали поширюються на умовах ліцензії Creative Commons Attribution 4.0 International (CC BY 4.0). Ви можете вільно копіювати, поширювати, переробляти й використовувати їх — зокрема в комерційних цілях — за єдиної умови: зазначте авторство («НаСвітло», Дослідницький центр імені Луї Б. Зона Факультету права УКУ), дайте активне посилання на відповідну сторінку Сайту й вкажіть, чи вносили ви зміни.",
-            en: "Our materials are released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). You are free to copy, redistribute, adapt and build upon them — including commercially — on one condition: give attribution (NaSvitlo, the Louis B. Sohn Research Centre at the UCU Faculty of Law), link to the relevant page of the Site, and indicate whether you made changes.",
+            uk: "Наші матеріали поширюються на умовах ліцензії Creative Commons Attribution 4.0 International (CC BY 4.0). Ви можете вільно копіювати, поширювати, переробляти й використовувати їх — зокрема в комерційних цілях — за єдиної умови: зазначте авторство («НаСвітло», Дослідницький центр Луї Зона Факультету права УКУ), дайте активне посилання на відповідну сторінку Сайту й вкажіть, чи вносили ви зміни.",
+            en: "Our materials are released under the Creative Commons Attribution 4.0 International licence (CC BY 4.0). You are free to copy, redistribute, adapt and build upon them — including commercially — on one condition: give attribution (NaSvitlo, the Louis Sohn Research Centre at the UCU Faculty of Law), link to the relevant page of the Site, and indicate whether you made changes.",
           },
         },
         {
@@ -680,13 +680,13 @@ export const terms: LegalDocument = {
           kind: "ul",
           items: {
             uk: [
-              "Дослідницький центр імені Луї Б. Зона, Факультет права УКУ",
+              "Дослідницький центр Луї Зона, Факультет права УКУ",
               "вул. Іларіона Свєнціцького, 17, м. Львів, 79011, Україна",
               `Телефон: ${legalPhone}`,
               `Електронна пошта: ${legalEmail}`,
             ],
             en: [
-              "The Louis B. Sohn Research Centre, UCU Faculty of Law",
+              "The Louis Sohn Research Centre, UCU Faculty of Law",
               "17 Svientsitskoho St., Lviv, 79011, Ukraine",
               `Telephone: ${legalPhone}`,
               `Email: ${legalEmail}`,
