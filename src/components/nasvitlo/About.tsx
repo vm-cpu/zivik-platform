@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { pick, type AboutContent } from "@/content/types";
@@ -9,6 +10,7 @@ import { linkAboutProse } from "@/content/about-prose";
  */
 export default function About({
   locale,
+  dict,
   about,
 }: {
   locale: Locale;
@@ -36,6 +38,17 @@ export default function About({
       <div className="lbl">
         <span>{pick(about.title, locale)}</span>
       </div>
+      {/* Проза і вихід на сторінку — двома колонками.
+
+          Кнопка стояла окремим блоком під смугою, з від'ємним полем, яке
+          підтягувало її назад під підошву смуги, — і на широкому екрані вона
+          опинялася під текстом, що займає ліві дві третини, з порожнім
+          папером праворуч. Власниця: «може докладніше про проєкт поставимо
+          праворуч від тексту в другу колонку?». Тепер це друга колонка тієї
+          самої сітки: проза тримає свою міру, кнопка стоїть на верхній лінії
+          першого абзаца. Вужче за 1000 колонки складаються, і кнопка
+          повертається під текст — туди, де й була. */}
+      <div className="nsv-about-grid">
       <div className="nsv-about-main">
         {/* All prose of one rank, so one face, one size and one colour —
             set together on `.nsv-about-main p` in home.css. The opening
@@ -47,6 +60,12 @@ export default function About({
         {paragraphs.map((text, i) => (
           <p key={i}>{linkAboutProse(text, links)}</p>
         ))}
+      </div>
+        <p className="nsv-about-go">
+          <Link className="btn btn-o" href={`/${locale}/about`}>
+            {dict.about.more}
+          </Link>
+        </p>
       </div>
     </div>
   );

@@ -413,6 +413,21 @@
 
    820 — це `--prose-max`, та сама міра, якою набрано /about і сторінки
    рішень; ті самі три абзаци там стоять саме так. Одна міра на сайт. */
+/* Смуга «Про проєкт» — дві колонки: проза і вихід на сторінку.
+
+   Кнопка була окремим блоком під смугою; на широкому екрані вона стояла
+   під текстом, який займає ліві дві третини, а праворуч лишався порожній
+   папір. Тепер вона друга колонка при прозі, на верхній лінії першого
+   абзаца — те саме, що знак факультету робить на /about.
+
+   `align-items: start`, бо посередині трьох абзаців кнопка читалася б як
+   підпис до другого. Вужче за 1000 колонки складаються і кнопка
+   повертається під текст. */
+.nsv-about-grid{display:grid;grid-template-columns:minmax(0, var(--prose-max)) minmax(0, 1fr);align-items:start;gap:clamp(32px,4vw,64px)}
+.nsv-about-go{margin:0}
+@media (max-width:1000px){
+  .nsv-about-grid{grid-template-columns:minmax(0, 1fr);gap:var(--space-6)}
+}
 .nsv-about-main{max-width:min(100%, var(--prose-max));display:flex;flex-direction:column;gap:var(--space-4)}
 
 /* Both paragraphs in the About band are body prose of one rank, so they carry
