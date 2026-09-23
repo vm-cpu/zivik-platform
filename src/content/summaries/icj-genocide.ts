@@ -512,8 +512,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Russia recognizes the “DPR” and “LPR” as independent States",
       },
       note: {
-        uk: "Указами свого Президента, п. Володимира Путіна, Російська Федерація формально визнала ДНР і ЛНР незалежними державами. У зверненні того ж дня Президент РФ заявив, зокрема, що це рішення ухвалено з огляду на тривалі напади на громади Донбасу і «вбивства мирних жителів, блокаду, знущання з людей, зокрема дітей, жінок і літніх», тоді як «так званий цивілізований світ, єдиними представниками якого проголосили себе наші західні колеги, воліє не помічати цього, наче цих жаху й геноциду, з якими стикаються майже 4 мільйони людей, не існує» (§ 30).",
-        en: "By decrees of its President, Mr Vladimir Putin, the Russian Federation formally recognized the DPR and LPR as independent States. In an address delivered the same day, the President of the Russian Federation stated, inter alia, that the decision was taken in light of continuing attacks against the Donbas communities and “[t]he killing of civilians, the blockade, the abuse of people, including children, women and the elderly”, while “the so-called civilised world, which our Western colleagues proclaimed themselves the only representatives of, prefers not to see this, as if this horror and genocide, which almost 4 million people are facing, do not exist” (§ 30).",
+        uk: "Указами свого Президента, п. Володимира Путіна, Російська Федерація формально визнала ДНР і ЛНР незалежними державами. У зверненні того ж дня Президент РФ послався на нібито тривалі напади на громади Донбасу і на геноцид, якого нібито не помічає світ (§ 30).",
+        en: "By decrees of its President, Mr Vladimir Putin, the Russian Federation formally recognized the DPR and LPR as independent States. In an address delivered the same day, the President of the Russian Federation invoked purported continuing attacks against the Donbas communities and a genocide the world was said to be ignoring (§ 30).",
       },
     },
     {
@@ -538,8 +538,8 @@ export const icjGenocide: DecisionSummary = {
         en: "The “special military operation” is declared",
       },
       note: {
-        uk: "О 6-й ранку за московським часом Президент Російської Федерації заявив, що вирішив провести в Україні «спеціальну воєнну операцію». У промові він сказав: «[в]ідповідно до статті 51 (розділ VII) Статуту ООН я ухвалив рішення провести спеціальну воєнну операцію… Її мета — захистити людей, які протягом восьми років зазнають знущань і геноциду з боку київського режиму». «Спеціальну воєнну операцію» розпочато рано вранці того ж дня (§ 31–32).",
-        en: "At 6 a.m. (Moscow time) the President of the Russian Federation declared that he had decided to conduct a “special military operation” in Ukraine. In his speech he stated: “[I]n accordance with Article 51 (chapter VII) of the Charter of the United Nations, I have decided to conduct a special military operation… Its purpose is to protect people who have been subjected to abuse and genocide by the Kiev regime for eight years.” The “special military operation” was launched early in the morning on the same day (§ 31–32).",
+        uk: "О 6-й ранку за московським часом Президент Російської Федерації заявив, що вирішив провести в Україні «спеціальну воєнну операцію», пославшись на статтю 51 Статуту ООН і на потребу захистити людей від нібито геноциду. Операцію розпочато рано вранці того ж дня (§ 31–32).",
+        en: "At 6 a.m. (Moscow time) the President of the Russian Federation declared that he had decided to conduct a “special military operation” in Ukraine, invoking Article 51 of the Charter of the United Nations and the need to protect people from a purported genocide. The operation was launched early in the morning on the same day (§ 31–32).",
       },
     },
     /* § 33, and it had been missing. The address of 24 February is on this
@@ -558,8 +558,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Russia notifies the United Nations of “self-defence” under Article 51",
       },
       note: {
-        uk: "Листом від 24 лютого 2022 року Постійний представник Російської Федерації при ООН передав Генеральному секретареві ООН текст звернення Президента РФ того ж дня, пояснивши, що це звернення повідомляло громадян Росії «про заходи, вжиті відповідно до статті 51 Статуту Організації Об'єднаних Націй у здійсненні права на самооборону» (§ 33; док. ООН S/2022/154).",
-        en: "By a letter dated 24 February 2022 the Permanent Representative of the Russian Federation to the United Nations forwarded to the Secretary-General the text of the address of the President of the Russian Federation of the same date, explaining that this address informed the citizens of Russia “of the measures taken in accordance with Article 51 of the Charter of the United Nations in exercise of the right of self-defence” (§ 33; UN doc. S/2022/154).",
+        uk: "Листом від 24 лютого 2022 року Постійний представник Російської Федерації при ООН передав Генеральному секретареві ООН текст звернення Президента РФ того ж дня, пояснивши, що ним громадян Росії повідомлено про заходи, вжиті за статтею 51 Статуту ООН у здійсненні права на самооборону (§ 33; док. ООН S/2022/154).",
+        en: "By a letter dated 24 February 2022 the Permanent Representative of the Russian Federation to the United Nations forwarded to the Secretary-General the text of the address of the President of the Russian Federation of the same date, explaining that it informed the citizens of Russia of measures taken under Article 51 of the Charter in exercise of the right of self-defence (§ 33; UN doc. S/2022/154).",
       },
     },
     {
@@ -571,8 +571,8 @@ export const icjGenocide: DecisionSummary = {
         en: "Ukraine files its Application",
       },
       note: {
-        uk: "МЗС України оприлюднило заяву, у якій викрило «неправдиві й образливі звинувачення Росії у геноциді як привід для незаконної воєнної агресії проти України»: «Україна рішуче заперечує звинувачення Росії у геноциді й відкидає будь-які спроби використати такі маніпулятивні звинувачення як виправдання своєї незаконної агресії. Злочин геноциду визначено в Конвенції про геноцид, і за цією Конвенцією твердження Росії безпідставні й абсурдні». Того ж дня, за кілька годин після заяви, Україна подала позовну заяву до Суду разом із запитом про вжиття тимчасових заходів (§ 34–35).",
-        en: "Ukraine's Ministry of Foreign Affairs issued a statement denouncing “Russia's false and offensive allegations of genocide as a pretext for its unlawful military aggression against Ukraine”: “Ukraine resolutely denies Russia's allegations of genocide and rejects any attempt to use such manipulative allegations as an excuse for its unlawful aggression. The crime of genocide is defined in the Genocide Convention, and under that Convention, Russia's claims are baseless and absurd.” The same day, a few hours after the statement, Ukraine filed its Application before the Court together with a Request for the indication of provisional measures (§ 34–35).",
+        uk: "МЗС України оприлюднило заяву, у якій викрило «неправдиві й образливі звинувачення Росії у геноциді як привід для незаконної воєнної агресії проти України». Того ж дня, за кілька годин після заяви, Україна подала позовну заяву до Суду разом із запитом про вжиття тимчасових заходів (§ 34–35).",
+        en: "Ukraine's Ministry of Foreign Affairs issued a statement denouncing “Russia's false and offensive allegations of genocide as a pretext for its unlawful military aggression against Ukraine”. The same day, a few hours after the statement, Ukraine filed its Application before the Court together with a Request for the indication of provisional measures (§ 34–35).",
       },
     },
     {
@@ -598,8 +598,8 @@ export const icjGenocide: DecisionSummary = {
         en: "The Court indicates provisional measures",
       },
       note: {
-        uk: "13 голосами проти 2: «Російська Федерація повинна негайно призупинити воєнні операції, які вона розпочала 24 лютого 2022 року на території України». Другий захід — тим самим складом голосів — поширив це на підконтрольні їй формування; третій, одностайний, зобов'язав обидві сторони не поглиблювати спір (§ 10; наказ, § 86).",
-        en: "By thirteen votes to two: “The Russian Federation shall immediately suspend the military operations that it commenced on 24 February 2022 in the territory of Ukraine.” The second measure, on the same split, extended that to units it directs or supports; the third, unanimous, bound both Parties not to aggravate the dispute (§ 10; the Order, § 86).",
+        uk: "13 голосами проти 2 Суд зобов'язав Росію негайно призупинити воєнні операції, розпочаті 24 лютого 2022 року на території України. Другий захід — тим самим складом голосів — поширив це на підконтрольні їй формування; третій, одностайний, зобов'язав обидві сторони не поглиблювати спір (§ 10; наказ, § 86).",
+        en: "By thirteen votes to two the Court ordered Russia to suspend immediately the military operations it commenced on 24 February 2022 in the territory of Ukraine. The second measure, on the same split, extended that to units it directs or supports; the third, unanimous, bound both Parties not to aggravate the dispute (§ 10; the Order, § 86).",
       },
     },
     {
@@ -891,8 +891,8 @@ export const icjGenocide: DecisionSummary = {
         },
         outcome: "upheld",
         reasoning: {
-          uk: "Єдине заперечення, яке спрацювало. Дії, у яких Україна звинувачує Росію, «з якого боку на них не дивитися», не здатні становити порушення статей I і IV Конвенції, тож вимоги (c) і (d) § 178 Меморандуму випадають зі справи (§ 147).",
-          en: "The one objection that worked. The acts Ukraine complains of, “from whichever point of view they are considered”, are not capable of constituting violations of Articles I and IV, so submissions (c) and (d) of § 178 of the Memorial fall out of the case (§ 147).",
+          uk: "Єдине заперечення, яке спрацювало. Дії, у яких Україна звинувачує Росію, з жодного боку не здатні становити порушення статей I і IV Конвенції, тож вимоги (c) і (d) § 178 Меморандуму випадають зі справи (§ 147).",
+          en: "The one objection that worked. The acts Ukraine complains of are not capable, on any view, of constituting violations of Articles I and IV, so submissions (c) and (d) of § 178 of the Memorial fall out of the case (§ 147).",
         },
         votes: [
           {
