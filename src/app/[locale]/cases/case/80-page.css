@@ -2010,3 +2010,52 @@
     grid-column: 4;
   }
 }
+
+/* ── Одна відстань, а не дві однакові ────────────────────────────────────
+   Власниця: «перевір вирівнювання тексту в секції хронологія по всіх
+   рішеннях — вирівняй із заголовком».
+
+   Відступ розгорнутої примітки був сталою — `--ctl-indent` = 8.5rem + 16px,
+   — а проміжок у самому рядку клампом `clamp(12px, 2vw, 20px)`. Дві різні
+   величини для однієї відстані: на 1440 рядок брав 20, стала лишалася на 16,
+   і заголовок починався на 622 пікселі, а текст під ним на 618. Ці чотири
+   пікселі й читалися як зайвий пробіл перед заголовком.
+
+   Тепер проміжок і колонки оголошені один раз на самій смузі, а рядок,
+   примітка і відступ беруть їх звідти. Колонка напряму стала фіксованою
+   разом з іншими: інакше відстань до тексту не обчислюється, бо `auto`
+   знає свою ширину лише після розкладки. */
+.casepage .ctl {
+  --ctl-gap: clamp(12px, 2vw, 20px);
+  --ctl-indent: calc(8.5rem + var(--ctl-gap));
+}
+/* Обидва випадки на трьох класах, бо 40-instruments.css оголошує ту саму
+   змінну саме так — на два класи вона до неї не дістає. */
+.casepage .ctl[data-tracks="no"] {
+  --ctl-indent: calc(8.5rem + var(--ctl-gap));
+}
+.casepage .ctl[data-tracks="yes"] {
+  --ctl-indent: calc(8.5rem * 2 + var(--ctl-gap) * 2);
+}
+@media (min-width: 761px) {
+  .casepage .ctl[data-tracks="no"] .ctl-row {
+    grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+    column-gap: var(--ctl-gap);
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-row {
+    grid-template-columns: 8.5rem 8.5rem minmax(0, 1fr) auto;
+    column-gap: var(--ctl-gap);
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-date {
+    grid-column: 1;
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-track {
+    grid-column: 2;
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-label {
+    grid-column: 3;
+  }
+  .casepage .ctl[data-tracks="yes"] .ctl-more {
+    grid-column: 4;
+  }
+}
