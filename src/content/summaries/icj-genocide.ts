@@ -870,7 +870,10 @@ export const icjGenocide: DecisionSummary = {
   },
 
   objections: {
-    heading: { uk: "Шість заперечень Росії", en: "Russia's six objections" },
+    /* Без числа: скільки їх, видно з самих карток, а назва розділу, яка
+     рахує, застаріває від першої ж правки в даних. Власниця: «може
+     перейменувати розділи без цифри». */
+    heading: { uk: "Заперечення Росії", en: "Russia's objections" },
     note: {
       uk: "Росія намагалася зупинити справу шістьма способами; п'ять Суд відхилив. Тексти заперечень наведено за самері, підрахунки голосів — за резолютивною частиною рішення, якої самері не відтворює. Натисніть картку, щоб побачити позицію Суду.",
       en: "Russia tried six ways to stop the case; the Court rejected five. The objections are quoted from the summary; the tallies come from the operative clause, which the summary does not reproduce. Tap a card for the Court's position.",

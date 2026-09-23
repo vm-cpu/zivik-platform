@@ -540,7 +540,8 @@ export const dtekKrymenergo: DecisionSummary = {
   },
 
   objections: {
-    heading: { uk: "П'ять заперечень Росії", en: "Russia's five objections" },
+    /* Без числа — див. примітку в icj-genocide.ts. */
+    heading: { uk: "Заперечення Росії", en: "Russia's objections" },
     note: {
       uk: "На відміну від справи Ощадбанку, Росія брала участь і боронилася. Трибунал відхилив усі заперечення. Щодо «території» — одностайно; щодо строку за статтею 12 — більшістю голосів.",
       en: "Unlike in Oschadbank, Russia appeared and fought. The tribunal rejected every objection — on territory unanimously, on the Article 12 timing point by majority.",

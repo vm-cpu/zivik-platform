@@ -115,8 +115,12 @@ export const iccUkraine: DecisionSummary = {
       en: "The International Criminal Court is investigating war crimes, crimes against humanity and genocide on the territory of Ukraine since 2013. Its judges have issued six arrest warrants: for Putin and Lvova-Belova over the deportation of Ukrainian children, and for four top military commanders over the missile campaign against the power grid. None of this is a verdict: a warrant means reasonable grounds to believe, and the ICC can only try a person it has in custody.",
     },
     whyMatters: {
-      uk: "Уперше під ордером МКС — глава держави, що є постійним членом Ради Безпеки ООН. 125 держав-учасниць Римського статуту юридично зобов'язані заарештувати підозрюваних на своїй території.",
-      en: "For the first time, the head of state of a permanent member of the UN Security Council is under an ICC warrant. The 125 States Parties to the Rome Statute are legally bound to arrest the suspects on their territory.",
+      /* Зачин «уперше під ордером МКС — глава держави, що є постійним
+         членом Ради Безпеки» прибрано з тієї самої причини, що й у
+         примітці хронології: в огляді його немає. Лишилося зобов'язання,
+         яке справді випливає з Римського статуту. */
+      uk: "125 держав-учасниць Римського статуту юридично зобов'язані заарештувати підозрюваних на своїй території.",
+      en: "The 125 States Parties to the Rome Statute are legally bound to arrest the suspects on their territory.",
     },
   },
 
@@ -487,8 +491,13 @@ export const iccUkraine: DecisionSummary = {
         en: "Warrants for Putin and Lvova-Belova — deportation of children",
       },
       note: {
-        uk: "Уперше під ордером МКС — глава держави, що є постійним членом Ради Безпеки ООН; лише вдруге в історії Суду — чинний глава держави (після аль-Башира у 2009 році).",
-        en: "The first ICC warrant against the head of state of a permanent Security Council member; only the second ever against a sitting head of state, after Al-Bashir in 2009.",
+        /* Примітка казала «уперше» і «лише вдруге в історії Суду, після
+           аль-Башира». Жодного з цих порівнянь в огляді немає — звірено
+           обома мовами, — тож це була наша аналітика під виглядом факту.
+           Власниця: «перші два прибери». Лишилося те, що в ордерах
+           справді написано. */
+        uk: "Палата попереднього провадження II видала ордери на арешт Володимира Путіна і Марії Львової-Бєлової.",
+        en: "Pre-Trial Chamber II issued arrest warrants for Vladimir Putin and Maria Lvova-Belova.",
       },
     },
     {

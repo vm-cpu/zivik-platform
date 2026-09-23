@@ -197,7 +197,9 @@ export const echrUkraineNetherlands: DecisionSummary = {
       },
     },
     {
-      q: { uk: "Чим це рішення історичне для самого Суду?", en: "Why is the judgment historic for the Court itself?" },
+      /* «Історичне» — наше слово, в огляді його немає. Питання ставить те
+         саме, не оцінюючи наперед. */
+      q: { uk: "Що це рішення змінює для самого Суду?", en: "What does the judgment change for the Court itself?" },
       a: {
         uk: "Суд уперше застосував Конвенцію до активної фази міждержавної війни, відійшовши від Georgia v. Russia (II) з її «контекстом хаосу». Планована державна кампанія насильства — це не хаос, а здійснення влади і контролю, сказав Суд.",
         en: "For the first time the Court applied the Convention to the active phase of an inter-State war, stepping away from Georgia v. Russia (II) and its \"context of chaos\". A planned State campaign of violence, the Court said, is not chaos but the exercise of authority and control.",
