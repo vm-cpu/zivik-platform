@@ -28,7 +28,7 @@ export const icjCerdIcsft: DecisionSummary = {
 
   /* «Стандартизована назва з одним розміром шрифту. Замінюємо назву на таку»
      — the owner's own wording, and it is the ICJ's full case name. What stood
-     here was «Україна проти Російської Федерації», which is also the h1 of
+     here was «Україна проти російської федерації», which is also the h1 of
      icj-genocide: the archive's two ICJ cases carried one headline between
      them and neither said which it was.
 
@@ -45,7 +45,7 @@ export const icjCerdIcsft: DecisionSummary = {
      there are that document's heading style, and 130 characters of display
      serif in capitals is six lines of shouting. */
   title: {
-    uk: "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти Російської Федерації)",
+    uk: "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти російської федерації)",
     en: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
   },  /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
@@ -53,14 +53,14 @@ export const icjCerdIcsft: DecisionSummary = {
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
     /* The same sentence as `title`, deliberately. The caption used to stop
-       before «(Україна проти Російської Федерації)», so with the full case
+       before «(Україна проти російської федерації)», so with the full case
        name in the h1 it rendered as a shortened copy of the headline directly
        under it — one name at two sizes, which is what the review asked to end.
        Identical, the masthead prints it once; see the guard on `.fullname` in
        cases/[slug]/page.tsx. The English `masthead.official` is untouched and
        is what the citation block reproduces. */
     official:
-      "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти Російської Федерації)",
+      "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти російської федерації)",
     judgment: "Рішення від 31 січня 2024",
   },
 
@@ -81,7 +81,7 @@ export const icjCerdIcsft: DecisionSummary = {
   /* Search-result description. `plain.tldr` used to serve as this and runs
      three to four sentences, so the snippet was cut off mid-word. */
   metaDesc: {
-    uk: "Рішення МС ООН від 31 січня 2024: два порушення — Росія не розслідувала фінансування тероризму і згорнула українську освіту в Криму.",
+    uk: "Рішення МС ООН від 31 січня 2024: два порушення — росія не розслідувала фінансування тероризму і згорнула українську освіту в Криму.",
     en: "ICJ judgment of 31 January 2024: two breaches upheld — Russia failed to investigate terrorism financing and curtailed Ukrainian schooling in Crimea.",
   },
 
@@ -95,7 +95,7 @@ export const icjCerdIcsft: DecisionSummary = {
        треба забрати)». So the paragraph moved rather than being copied: the
        `lead` block is gone from both summary files, and the closing sentence
        about the dismissal of most claims is the review's own addition. */
-      uk: "31 січня 2024 року Міжнародний суд ООН («Суд») виніс рішення по суті у справі, порушеній Україною проти Російської Федерації у 2017 році («Рішення»). Україна стверджувала про численні порушення Росією двох договорів: Міжнародної конвенції про боротьбу з фінансуванням тероризму 1999 року («ICSFT») та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації 1965 року («CERD»). Більшість вимог України було відхилено.",
+      uk: "31 січня 2024 року Міжнародний суд ООН («Суд») виніс рішення по суті у справі, порушеній Україною проти російської федерації у 2017 році («Рішення»). Україна стверджувала про численні порушення росією двох договорів: Міжнародної конвенції про боротьбу з фінансуванням тероризму 1999 року («ICSFT») та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації 1965 року («CERD»). Більшість вимог України було відхилено.",
       en: "On January 31, 2024, the International Court of Justice (“the Court”) issued a judgment on the merits of the case brought by Ukraine against the Russian Federation in 2017 (“the Judgment”). Ukraine alleged numerous violations by Russia of two treaties: the 1999 International Convention for the Suppression of the Financing of Terrorism (“ICSFT”), and the 1965 International Convention on the Elimination of All Forms of Racial Discrimination (“CERD”). Most of Ukraine's claims were dismissed.",
     },
     whyMatters: {
@@ -108,7 +108,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       term: { uk: "Меджліс", en: "Mejlis" },
       def: {
-        uk: "Представницький орган кримськотатарського народу; заборонений Росією у 2016 році.",
+        uk: "Представницький орган кримськотатарського народу; заборонений росією у 2016 році.",
         en: "The representative body of the Crimean Tatar people; banned by Russia in 2016.",
       },
     },
@@ -143,7 +143,7 @@ export const icjCerdIcsft: DecisionSummary = {
     {
       term: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
       def: {
-        uk: "Самопроголошені утворення на сході України, підтримувані Росією; лапки означають невизнання.",
+        uk: "Самопроголошені утворення на сході України, підтримувані росією; лапки означають невизнання.",
         en: "Self-proclaimed entities in eastern Ukraine backed by Russia; quotation marks signal non-recognition.",
       },
     },
@@ -163,7 +163,7 @@ export const icjCerdIcsft: DecisionSummary = {
       kind: "party",
     },
     {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
+      name: { uk: "російська федерація", en: "Russian Federation" },
       role: { uk: "Відповідач.", en: "Respondent." },
       kind: "party",
     },
@@ -202,7 +202,7 @@ export const icjCerdIcsft: DecisionSummary = {
       },
     },
     {
-      q: { uk: "Чи можна змусити Росію виконати рішення?", en: "Can Russia be forced to comply?" },
+      q: { uk: "Чи можна змусити росію виконати рішення?", en: "Can Russia be forced to comply?" },
       a: {
         uk: "Прямого механізму примусу немає. Рішення остаточне, але його дотримання залежить від самої держави; теоретично питання виконання може розглядати Рада Безпеки ООН.",
         en: "There is no direct enforcement mechanism. The judgment is final, but compliance depends on the State itself; in theory enforcement can be raised at the UN Security Council.",
@@ -306,7 +306,7 @@ export const icjCerdIcsft: DecisionSummary = {
     { label: { uk: "Заявник", en: "Applicant" }, value: { uk: "Україна", en: "Ukraine" } },
     {
       label: { uk: "Відповідач", en: "Respondent" },
-      value: { uk: "Російська Федерація", en: "Russian Federation" },
+      value: { uk: "російська федерація", en: "Russian Federation" },
     },
     {
       label: { uk: "Суд", en: "Court" },

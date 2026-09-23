@@ -367,7 +367,7 @@ export default function VerdictMatrix({
           {/* Where the detail of this claim lives further down the page, the
               claim itself is the way there. Not the ground cell: the matrix
               draws that once per group, and the row that needed the seam —
-              «Заперечення Росії щодо юрисдикції» — is the fourth of its
+              «Заперечення росії щодо юрисдикції» — is the fourth of its
               group, so its ground cell is not drawn at all. */}
           {r.claimHref ? (
             <a className="v-claim v-claim-link" href={r.claimHref}>

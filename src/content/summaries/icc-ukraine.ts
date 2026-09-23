@@ -227,7 +227,7 @@ export const iccUkraine: DecisionSummary = {
       kind: "party",
     },
     {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
+      name: { uk: "російська федерація", en: "Russian Federation" },
       role: {
         uk: "Не є учасницею Статуту, юрисдикцію не визнає. У відповідь порушила кримінальні справи проти прокурора та суддів МКС.",
         en: "Not a party to the Statute and rejects the Court's jurisdiction. It responded with criminal cases against the ICC's Prosecutor and judges.",
@@ -280,7 +280,7 @@ export const iccUkraine: DecisionSummary = {
       },
     },
     {
-      q: { uk: "Як відповіла Росія?", en: "How has Russia responded?" },
+      q: { uk: "Як відповіла росія?", en: "How has Russia responded?" },
       a: {
         uk: "Дзеркальними переслідуваннями: порушила кримінальні справи проти прокурора Каріма Хана і суддів МКС, а в грудні 2025 року московський суд заочно засудив Хана та вісьмох суддів, включно з президенткою Суду Томоко Аканє, до 3,5–15 років. Спецдоповідачі ООН зажадали припинити ці репресії.",
         en: "With mirror prosecutions: it opened criminal cases against Prosecutor Karim Khan and ICC judges, and in December 2025 a Moscow court sentenced Khan and eight judges — including Court President Tomoko Akane — in absentia to 3.5–15 years. UN Special Rapporteurs have demanded Russia end the reprisals.",
@@ -292,7 +292,7 @@ export const iccUkraine: DecisionSummary = {
         en: "And who will try the invasion itself?",
       },
       a: {
-        uk: "Не МКС: щодо злочину агресії його юрисдикція в цій ситуації обмежена, бо Росія не є учасницею Статуту. Цю прогалину закриває Спеціальний трибунал щодо злочину агресії, угоду про який Україна і Рада Європи підписали 25 червня 2025 року.",
+        uk: "Не МКС: щодо злочину агресії його юрисдикція в цій ситуації обмежена, бо росія не є учасницею Статуту. Цю прогалину закриває Спеціальний трибунал щодо злочину агресії, угоду про який Україна і Рада Європи підписали 25 червня 2025 року.",
         en: "Not the ICC: its jurisdiction over the crime of aggression is blocked here because Russia is not a party to the Statute. That gap is being closed by the Special Tribunal for the Crime of Aggression, whose founding agreement Ukraine and the Council of Europe signed on 25 June 2025.",
       },
     },
@@ -602,7 +602,7 @@ export const iccUkraine: DecisionSummary = {
       track: "cooperation",
       kind: "context",
       label: {
-        uk: "Росія заочно «засуджує» прокурора і суддів МКС",
+        uk: "росія заочно «засуджує» прокурора і суддів МКС",
         en: "Russia \"sentences\" the ICC's Prosecutor and judges in absentia",
       },
       note: {
@@ -874,7 +874,7 @@ export const iccUkraine: DecisionSummary = {
         persons: [
           {
             name: { uk: "Владімір Путін", en: "Vladimir Putin" },
-            role: { uk: "Президент Російської Федерації", en: "President of the Russian Federation" },
+            role: { uk: "Президент російської федерації", en: "President of the Russian Federation" },
             born: "1952",
             rung: 0,
             charges: [

@@ -84,7 +84,7 @@ export const finlandTorden: DecisionSummary = {
     {
       term: { uk: "«Русич»", en: "Rusich" },
       def: {
-        uk: "Російський неонацистський найманецький загін, пов'язаний із «Вагнером»; відомий жорстокістю до полонених. Торден — співзасновник і заступник командира.",
+        uk: "російський неонацистський найманецький загін, пов'язаний із «Вагнером»; відомий жорстокістю до полонених. Торден — співзасновник і заступник командира.",
         en: "A Russian neo-Nazi mercenary unit tied to Wagner, notorious for its treatment of prisoners. Torden co-founded and deputy-commanded it.",
       },
     },
@@ -193,7 +193,7 @@ export const finlandTorden: DecisionSummary = {
     },
     {
       label: {
-        uk: "Україна і Нідерланди проти Росії (ЄСПЛ)",
+        uk: "Україна і Нідерланди проти росії (ЄСПЛ)",
         en: "Ukraine and the Netherlands v. Russia (ECtHR)",
       },
       note: { uk: "державна відповідальність за той самий Донбас-2014", en: "State responsibility for the same Donbas 2014" },

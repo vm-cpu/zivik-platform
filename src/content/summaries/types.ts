@@ -291,7 +291,7 @@ export interface Verdict {
    * An id on this page the row's ground links to, where the detail lives
    * somewhere below.
    *
-   * «Заперечення Росії щодо юрисдикції — відхилено» is one row of the index;
+   * «Заперечення росії щодо юрисдикції — відхилено» is one row of the index;
    * eighteen thousand pixels down, a panel of cards says which three
    * objections and on what ground each fell. Nothing joined them. Where the
    * ground is a date the row already links into the chronology; this is the

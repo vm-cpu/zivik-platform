@@ -51,7 +51,7 @@ const T = {
      carry the forum and the case they come from, which is the same claim
      made where it can be checked. */
   metaDesc: {
-    uk: "Словник термінів міжнародного права з рішень проти Росії: пояснення простою мовою і посилання на справу, де термін ужито.",
+    uk: "Словник термінів міжнародного права з рішень проти росії: пояснення простою мовою і посилання на справу, де термін ужито.",
     en: "A glossary of the international-law terms used in the decisions against Russia, in plain language, each traced to the case that uses it.",
   },
   back: { uk: "← На головну", en: "← Home" },

@@ -27,7 +27,7 @@ export const dtekKrymenergo: DecisionSummary = {
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
   title: {
-    uk: "ДТЕК Крименерго проти Російської Федерації",
+    uk: "ДТЕК Крименерго проти російської федерації",
     en: "JSC DTEK Krymenergo v. the Russian Federation",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
@@ -36,7 +36,7 @@ export const dtekKrymenergo: DecisionSummary = {
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
     official:
-      "Арбітраж ad hoc перед трибуналом, сформованим за Угодою між Урядом Російської Федерації та Кабінетом Міністрів України про заохочення та взаємний захист інвестицій від 27 листопада 1998 року і за Арбітражним регламентом Комісії ООН з права міжнародної торгівлі 1976 року",
+      "Арбітраж ad hoc перед трибуналом, сформованим за Угодою між Урядом російської федерації та Кабінетом Міністрів України про заохочення та взаємний захист інвестицій від 27 листопада 1998 року і за Арбітражним регламентом Комісії ООН з права міжнародної торгівлі 1976 року",
     judgment: "Арбітражне рішення від 1 листопада 2023",
   },
 
@@ -58,11 +58,11 @@ export const dtekKrymenergo: DecisionSummary = {
 
   plain: {
     tldr: {
-      uk: "«Крименерго» — кримський енергооператор групи ДТЕК: 27 тисяч км² мережі, понад 780 тисяч споживачів. У 2015 році Росія забрала компанію. Арбітраж у Гаазі відхилив усі п'ять заперечень Росії і визнав незаконну експропріацію: 207,8 млн доларів відшкодування плюс відсотки — разом близько 267 млн. Росія добровільно не платить, тож ДТЕК стягує борг через суди США і Нідерландів — аж до арешту акцій структур «Газпрому».",
+      uk: "«Крименерго» — кримський енергооператор групи ДТЕК: 27 тисяч км² мережі, понад 780 тисяч споживачів. У 2015 році росія забрала компанію. Арбітраж у Гаазі відхилив усі п'ять заперечень росії і визнав незаконну експропріацію: 207,8 млн доларів відшкодування плюс відсотки — разом близько 267 млн. росія добровільно не платить, тож ДТЕК стягує борг через суди США і Нідерландів — аж до арешту акцій структур «Газпрому».",
       en: "Krymenergo was DTEK's Crimean grid operator: 27,000 km² of network, more than 780,000 customers. In 2015 Russia took the company. A tribunal in The Hague rejected all five of Russia's objections and found an unlawful expropriation: USD 207.8 million in damages plus interest — about USD 267 million in all. Russia has not paid, so DTEK is enforcing through US and Dutch courts — up to the seizure of Gazprom-linked shares.",
     },
     whyMatters: {
-      uk: "Це друге «кримське» рішення на платформі за тим самим договором 1998 року — і воно пішло далі за Ощадбанк у двох речах: трибунал прямо застосував естопель (Росія не може називати Крим своїм і водночас не своїм) і чітко визначив, коли інвестицію «зроблено» за ст. 12. А стягнення вже дотяглося до активів «Газпрому» в Нідерландах.",
+      uk: "Це друге «кримське» рішення на платформі за тим самим договором 1998 року — і воно пішло далі за Ощадбанк у двох речах: трибунал прямо застосував естопель (росія не може називати Крим своїм і водночас не своїм) і чітко визначив, коли інвестицію «зроблено» за ст. 12. А стягнення вже дотяглося до активів «Газпрому» в Нідерландах.",
       en: "This is the platform's second Crimea award under the same 1998 treaty — and it goes beyond Oschadbank in two ways: the tribunal applied estoppel outright (Russia cannot call Crimea its own and not its own at once) and settled when an investment is \"made\" under Article 12. Enforcement has already reached Gazprom assets in the Netherlands.",
     },
   },
@@ -71,14 +71,14 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       term: { uk: "ДІД (BIT)", en: "BIT" },
       def: {
-        uk: "Двосторонній інвестиційний договір Україна–Росія від 27 листопада 1998 року — той самий, за яким виграв Ощадбанк.",
+        uk: "Двосторонній інвестиційний договір Україна–росія від 27 листопада 1998 року — той самий, за яким виграв Ощадбанк.",
         en: "The Ukraine–Russia bilateral investment treaty of 27 November 1998 — the same treaty Oschadbank won under.",
       },
     },
     {
       term: { uk: "Естопель", en: "Estoppel" },
       def: {
-        uk: "Заборона суперечити власним попереднім заявам. Тут: Росія проголошує Крим своєю суверенною територією — отже, не може заперечувати, що для цілей ДІД він є її «територією».",
+        uk: "Заборона суперечити власним попереднім заявам. Тут: росія проголошує Крим своєю суверенною територією — отже, не може заперечувати, що для цілей ДІД він є її «територією».",
         en: "A bar on contradicting one's own prior statements. Here: Russia proclaims Crimea its sovereign territory — so it cannot deny that Crimea is its \"territory\" for the purposes of the BIT.",
       },
     },
@@ -92,7 +92,7 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       term: { uk: "«Радянські активи»", en: "\"Soviet Assets\"" },
       def: {
-        uk: "Активи, збудовані чи набуті до 1 січня 1992 року. Росія доводила, що ст. 12 ДІД їх не захищає; трибунал відповів: важить дата набуття власності інвестором, а вона — після 1992 року.",
+        uk: "Активи, збудовані чи набуті до 1 січня 1992 року. росія доводила, що ст. 12 ДІД їх не захищає; трибунал відповів: важить дата набуття власності інвестором, а вона — після 1992 року.",
         en: "Assets built or acquired before 1 January 1992. Russia argued Article 12 leaves them unprotected; the tribunal answered that what counts is when the investor acquired ownership — after 1992.",
       },
     },
@@ -137,7 +137,7 @@ export const dtekKrymenergo: DecisionSummary = {
       kind: "actor",
     },
     {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
+      name: { uk: "російська федерація", en: "Russian Federation" },
       role: {
         uk: "Відповідач. На відміну від справи Ощадбанку, брала участь у процесі й висунула п'ять попередніх заперечень — усі відхилено.",
         en: "Respondent. Unlike in Oschadbank, it took part and raised six preliminary objections — all rejected.",
@@ -166,14 +166,14 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       q: { uk: "Скільки насправді присуджено — 207,8 чи 267 мільйонів?", en: "So is the award 207.8 or 267 million?" },
       a: {
-        uk: "Обидва числа правильні. Диспозитив присуджує 207,8 млн доларів відшкодування плюс відсотки за ставкою LIBOR 3м (або SOFR) + 1%, складні, від 22 січня 2015 року — дня, коли Росія забрала компанію. З нарахованими відсотками на день рішення сума становила близько 267 млн, і саме її називала преса.",
+        uk: "Обидва числа правильні. Диспозитив присуджує 207,8 млн доларів відшкодування плюс відсотки за ставкою LIBOR 3м (або SOFR) + 1%, складні, від 22 січня 2015 року — дня, коли росія забрала компанію. З нарахованими відсотками на день рішення сума становила близько 267 млн, і саме її називала преса.",
         en: "Both numbers are right. The dispositif awards USD 207.8 million plus interest at 3-month LIBOR (or SOFR) + 1%, compounded from 22 January 2015 — the day Russia took the company. With interest accrued to the award date that came to about USD 267 million, the figure the press reported.",
       },
     },
     {
       q: { uk: "Чим ця справа відрізняється від Ощадбанку?", en: "How does this differ from Oschadbank?" },
       a: {
-        uk: "Той самий договір і той самий висновок про «територію», але процесуально — протилежність: Росія тут брала участь, наймала адвокатів і висунула п'ять заперечень, включно зі звинуваченням у корупційному придбанні акцій. Трибунал відхилив усі п'ять — тож це рішення пройшло повноцінний змагальний процес.",
+        uk: "Той самий договір і той самий висновок про «територію», але процесуально — протилежність: росія тут брала участь, наймала адвокатів і висунула п'ять заперечень, включно зі звинуваченням у корупційному придбанні акцій. Трибунал відхилив усі п'ять — тож це рішення пройшло повноцінний змагальний процес.",
         en: "Same treaty, same territory holding — but procedurally the opposite: Russia participated, briefed counsel and raised five objections, including a corruption allegation. The tribunal rejected all five — so this award survived a fully contested process.",
       },
     },
@@ -185,16 +185,16 @@ export const dtekKrymenergo: DecisionSummary = {
       },
     },
     {
-      q: { uk: "Росія платить?", en: "Is Russia paying?" },
+      q: { uk: "росія платить?", en: "Is Russia paying?" },
       a: {
-        uk: "Добровільно — ні. ДТЕК пішов шляхом Нью-Йоркської конвенції: у листопаді 2023 року подав до федерального суду США клопотання про визнання рішення; у лютому 2026-го апеляційний суд США відмовив Росії в суверенному імунітеті, у квітні — відхилив її прохання про зупинку. У Нідерландах у березні 2026 року апеляція підтвердила арешт акцій Gazprom International на виконання рішення.",
+        uk: "Добровільно — ні. ДТЕК пішов шляхом Нью-Йоркської конвенції: у листопаді 2023 року подав до федерального суду США клопотання про визнання рішення; у лютому 2026-го апеляційний суд США відмовив росії в суверенному імунітеті, у квітні — відхилив її прохання про зупинку. У Нідерландах у березні 2026 року апеляція підтвердила арешт акцій Gazprom International на виконання рішення.",
         en: "Not voluntarily. DTEK took the New York Convention route: a petition to confirm in US federal court in November 2023; in February 2026 the US Court of Appeals denied Russia sovereign immunity, and in April declined its stay request. In the Netherlands, a March 2026 appeal confirmed the seizure of Gazprom International shares in satisfaction of the award.",
       },
     },
     {
       q: { uk: "Що таке аргумент про «радянські активи»?", en: "What was the \"Soviet Assets\" argument?" },
       a: {
-        uk: "Значну частину мережі збудовано до 1992 року, і Росія доводила, що ст. 12 ДІД такі активи не захищає. Трибунал одностайно відповів: інвестицію «зроблено» тоді, коли інвестор набув власність, — а це сталося після 1 січня 1992 року за версією обох сторін (1995 чи 2012). Тест виконано.",
+        uk: "Значну частину мережі збудовано до 1992 року, і росія доводила, що ст. 12 ДІД такі активи не захищає. Трибунал одностайно відповів: інвестицію «зроблено» тоді, коли інвестор набув власність, — а це сталося після 1 січня 1992 року за версією обох сторін (1995 чи 2012). Тест виконано.",
         en: "Much of the grid predates 1992, and Russia argued Article 12 leaves such assets unprotected. The tribunal answered unanimously: an investment is \"made\" when the investor acquires ownership — which on both parties' versions (1995 or 2012) happened after 1 January 1992. Test satisfied.",
       },
     },
@@ -265,7 +265,7 @@ export const dtekKrymenergo: DecisionSummary = {
       },
       em: true,
     },
-    { value: "5", label: { uk: "заперечень Росії — всі відхилено", en: "objections by Russia — all rejected" } },
+    { value: "5", label: { uk: "заперечень росії — всі відхилено", en: "objections by Russia — all rejected" } },
     {
       value: { uk: "27 000 км²", en: "27,000 km²" },
       label: { uk: "території обслуговувала мережа", en: "of territory the grid served" },
@@ -278,7 +278,7 @@ export const dtekKrymenergo: DecisionSummary = {
 
   glance: [
     { label: { uk: "Позивач", en: "Claimant" }, value: { uk: "АТ «ДТЕК Крименерго»", en: "JSC DTEK Krymenergo" } },
-    { label: { uk: "Відповідач", en: "Respondent" }, value: { uk: "Російська Федерація", en: "Russian Federation" } },
+    { label: { uk: "Відповідач", en: "Respondent" }, value: { uk: "російська федерація", en: "Russian Federation" } },
     {
       label: { uk: "Установа", en: "Institution" },
       value: { uk: "ПАС (ad hoc)", en: "PCA (ad hoc)" },
@@ -312,7 +312,7 @@ export const dtekKrymenergo: DecisionSummary = {
       iso: "2014-03-01",
       track: "background",
       kind: "context",
-      label: { uk: "Росія встановлює контроль над Кримом", en: "Russia takes control of Crimea" },
+      label: { uk: "росія встановлює контроль над Кримом", en: "Russia takes control of Crimea" },
       note: {
         uk: "Від зайняття будівлі Держради 27 лютого до федерального конституційного закону 21 березня 2014 року.",
         en: "From the seizure of the State Council building on 27 February to the federal constitutional law of 21 March 2014.",
@@ -323,7 +323,7 @@ export const dtekKrymenergo: DecisionSummary = {
       iso: "2015-01-22",
       track: "background",
       kind: "context",
-      label: { uk: "Росія забирає компанію — дата, з якої біжать відсотки", en: "Russia takes the company — the date interest runs from" },
+      label: { uk: "росія забирає компанію — дата, з якої біжать відсотки", en: "Russia takes the company — the date interest runs from" },
       note: {
         uk: "Адміністративні й законодавчі заходи, виконані «місцевими судами і фізичною силою». Саме з цього дня диспозитив нараховує відсотки.",
         en: "Administrative and legislative measures enforced \"through local courts and physical force\". The dispositif runs interest from this day.",
@@ -336,7 +336,7 @@ export const dtekKrymenergo: DecisionSummary = {
       kind: "filing",
       label: { uk: "ДТЕК подає позов", en: "DTEK files the claim" },
       note: {
-        uk: "Вимога — не менш як 421,2 млн доларів. Росія, на відміну від справи Ощадбанку, бере участь у процесі.",
+        uk: "Вимога — не менш як 421,2 млн доларів. росія, на відміну від справи Ощадбанку, бере участь у процесі.",
         en: "The claim: at least USD 421.2 million. Unlike in Oschadbank, Russia takes part in the proceedings.",
       },
     },
@@ -370,9 +370,9 @@ export const dtekKrymenergo: DecisionSummary = {
       iso: "2026-02-15",
       track: "enforcement",
       kind: "order",
-      label: { uk: "Апеляційний суд США відмовляє Росії в імунітеті", en: "US Court of Appeals denies Russia immunity" },
+      label: { uk: "Апеляційний суд США відмовляє росії в імунітеті", en: "US Court of Appeals denies Russia immunity" },
       note: {
-        uk: "У квітні 2026-го той самий суд відхилив і прохання Росії про зупинку виконання у «кримських» справах.",
+        uk: "У квітні 2026-го той самий суд відхилив і прохання росії про зупинку виконання у «кримських» справах.",
         en: "In April 2026 the same court declined Russia's request for a stay of mandate in the Crimea cases.",
       },
     },
@@ -398,7 +398,7 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       track: "Jurisdiction",
       trackLabel: { uk: "Юрисдикція", en: "Jurisdiction" },
-      claim: { uk: "Усі п'ять попередніх заперечень Росії", en: "All five of Russia's preliminary objections" },
+      claim: { uk: "Усі п'ять попередніх заперечень росії", en: "All five of Russia's preliminary objections" },
       outcome: "rejected",
     },
     {
@@ -500,7 +500,7 @@ export const dtekKrymenergo: DecisionSummary = {
         amount: 421198000,
         estimated: true,
         note: {
-          uk: "плюс компенсація податків і відсотки за ставкою суверенних запозичень Росії",
+          uk: "плюс компенсація податків і відсотки за ставкою суверенних запозичень росії",
           en: "plus a tax gross-up and interest at Russia's sovereign borrowing rate",
         },
       },
@@ -541,9 +541,9 @@ export const dtekKrymenergo: DecisionSummary = {
   },
 
   objections: {
-    heading: { uk: "П'ять заперечень Росії", en: "Russia's five objections" },
+    heading: { uk: "П'ять заперечень росії", en: "Russia's five objections" },
     note: {
-      uk: "На відміну від справи Ощадбанку, Росія брала участь і боронилася. Трибунал відхилив усі заперечення. Щодо «території» — одностайно; щодо строку за статтею 12 — більшістю голосів.",
+      uk: "На відміну від справи Ощадбанку, росія брала участь і боронилася. Трибунал відхилив усі заперечення. Щодо «території» — одностайно; щодо строку за статтею 12 — більшістю голосів.",
       en: "Unlike in Oschadbank, Russia appeared and fought. The tribunal rejected every objection — on territory unanimously, on the Article 12 timing point by majority.",
     },
     benchSize: 3,
@@ -584,7 +584,7 @@ export const dtekKrymenergo: DecisionSummary = {
            3-0 — the two were the wrong way round. */
         votes: [{ for: 3, against: 0 }],
         reasoning: {
-          uk: "«Територія РФ» — це простір під її контролем на відповідну дату; Крим безспірно був під контролем Росії. І естопель: не можна проголошувати Крим своїм суверенним і водночас заперечувати це для цілей ДІД.",
+          uk: "«Територія РФ» — це простір під її контролем на відповідну дату; Крим безспірно був під контролем росії. І естопель: не можна проголошувати Крим своїм суверенним і водночас заперечувати це для цілей ДІД.",
           en: "\"Territory of the Russian Federation\" is the area under its control at the relevant date; Crimea indisputably was. And estoppel: a State cannot proclaim Crimea sovereign territory while denying it for BIT purposes.",
         },
       },
@@ -651,7 +651,7 @@ export const dtekKrymenergo: DecisionSummary = {
   afterlife: {
     heading: { uk: "Рішення на стадії стягнення", en: "The award in enforcement" },
     note: {
-      uk: "Росія добровільно не платить, тож рішення виконується за Нью-Йоркською конвенцією — у США та Нідерландах, аж до арешту акцій структур «Газпрому».",
+      uk: "росія добровільно не платить, тож рішення виконується за Нью-Йоркською конвенцією — у США та Нідерландах, аж до арешту акцій структур «Газпрому».",
       en: "Russia has not paid voluntarily, so the award is being enforced under the New York Convention — in the US and the Netherlands, up to the seizure of Gazprom-linked shares.",
     },
     stages: [
@@ -668,7 +668,7 @@ export const dtekKrymenergo: DecisionSummary = {
         year: "2026",
         title: { uk: "Імунітет відхилено (США)", en: "Immunity denied (US)" },
         note: {
-          uk: "Апеляційний суд США відмовив Росії в суверенному імунітеті (лютий) і в зупинці виконання (квітень).",
+          uk: "Апеляційний суд США відмовив росії в суверенному імунітеті (лютий) і в зупинці виконання (квітень).",
           en: "The US Court of Appeals denied Russia sovereign immunity (February) and a stay of mandate (April).",
         },
         standing: "yes",
@@ -689,7 +689,7 @@ export const dtekKrymenergo: DecisionSummary = {
     {
       term: { uk: "«Територія» = контроль", en: "\"Territory\" = control" },
       ruling: {
-        uk: "Більшістю: «територія Російської Федерації» — це географічний простір під контролем РФ на відповідну дату. Суверенітет вирішувати не потрібно — і це той самий підхід, що у справі Ощадбанку.",
+        uk: "Більшістю: «територія російської федерації» — це географічний простір під контролем РФ на відповідну дату. Суверенітет вирішувати не потрібно — і це той самий підхід, що у справі Ощадбанку.",
         en: "By majority: \"territory of the Russian Federation\" is the geographical area under its control at the relevant date. Sovereignty need not be decided — the same approach as in Oschadbank.",
       },
     },

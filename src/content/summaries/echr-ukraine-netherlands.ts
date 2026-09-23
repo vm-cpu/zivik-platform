@@ -37,7 +37,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
   blocksUk: (verbatimUk as { blocks: SummaryBlock[] }).blocks,
 
   title: {
-    uk: "Україна і Нідерланди проти Росії",
+    uk: "Україна і Нідерланди проти росії",
     en: "Ukraine and the Netherlands v. Russia",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
@@ -46,7 +46,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
     official:
-      "Справа «Україна та Нідерланди проти Росії» (заяви № 8019/16, 43800/14, 28525/20 і 11055/22) — Велика палата, Європейський суд з прав людини",
+      "Справа «Україна та Нідерланди проти росії» (заяви № 8019/16, 43800/14, 28525/20 і 11055/22) — Велика палата, Європейський суд з прав людини",
     judgment: "Рішення по суті від 9 липня 2025",
   },
 
@@ -64,17 +64,17 @@ export const echrUkraineNetherlands: DecisionSummary = {
   /* Search-result description. `plain.tldr` used to serve as this and runs
      three to four sentences, so the snippet was cut off mid-word. */
   metaDesc: {
-    uk: "Рішення Великої палати ЄСПЛ від 9 липня 2025: Росія відповідальна за системні порушення прав людини в Україні з 2014 року, зокрема збиття MH17.",
+    uk: "Рішення Великої палати ЄСПЛ від 9 липня 2025: росія відповідальна за системні порушення прав людини в Україні з 2014 року, зокрема збиття MH17.",
     en: "ECtHR Grand Chamber judgment of 9 July 2025: Russia held responsible for systemic human-rights violations in Ukraine since 2014, MH17 included.",
   },
 
   plain: {
     tldr: {
-      uk: "Чотири міждержавні скарги — три від України, одна від Нідерландів через збиття MH17 — Велика палата ЄСПЛ розглянула разом і 9 липня 2025 року винесла рішення по суті. Суд визнав Росію відповідальною за системні порушення прав людини на сході України з 2014 року і по всій країні з 2022-го: від збиття MH17 і страт полонених до катувань, депортації дітей і заборони української освіти. Сатисфакцію (компенсації) буде визначено окремим рішенням.",
+      uk: "Чотири міждержавні скарги — три від України, одна від Нідерландів через збиття MH17 — Велика палата ЄСПЛ розглянула разом і 9 липня 2025 року винесла рішення по суті. Суд визнав росію відповідальною за системні порушення прав людини на сході України з 2014 року і по всій країні з 2022-го: від збиття MH17 і страт полонених до катувань, депортації дітей і заборони української освіти. Сатисфакцію (компенсації) буде визначено окремим рішенням.",
       en: "Four inter-State applications — three by Ukraine, one by the Netherlands over the downing of MH17 — were decided together by the ECtHR's Grand Chamber on 9 July 2025. The Court held Russia responsible for systemic human-rights violations in eastern Ukraine since 2014 and across the country from 2022: from the downing of MH17 and executions of prisoners to torture, the deportation of children and the ban on Ukrainian-language education. Just satisfaction is reserved for a separate ruling.",
     },
     whyMatters: {
-      uk: "Це перше рішення ЄСПЛ по суті про повномасштабну міждержавну війну в Європі — і розворот від Georgia v. Russia (II): Суд поширив Конвенцію на активні бойові дії. Для сімей жертв MH17 це перша судова констатація відповідальності Росії; для тисяч індивідуальних скарг українців — фундамент фактів і права.",
+      uk: "Це перше рішення ЄСПЛ по суті про повномасштабну міждержавну війну в Європі — і розворот від Georgia v. Russia (II): Суд поширив Конвенцію на активні бойові дії. Для сімей жертв MH17 це перша судова констатація відповідальності росії; для тисяч індивідуальних скарг українців — фундамент фактів і права.",
       en: "It is the ECtHR's first merits judgment on a full-scale inter-State war in Europe — and a turn away from Georgia v. Russia (II): the Court extended the Convention to active hostilities. For the MH17 families it is the first judicial finding of Russia's responsibility; for thousands of individual Ukrainian applications, a foundation of fact and law.",
     },
   },
@@ -83,7 +83,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
     {
       term: { uk: "ЄКПЛ / Конвенція", en: "ECHR / the Convention" },
       def: {
-        uk: "Європейська конвенція з прав людини (1950). Росія була її стороною до 16 вересня 2022 року — тому Суд розглядає події лише до цієї дати.",
+        uk: "Європейська конвенція з прав людини (1950). росія була її стороною до 16 вересня 2022 року — тому Суд розглядає події лише до цієї дати.",
         en: "The European Convention on Human Rights (1950). Russia was a party until 16 September 2022 — so the Court examines events only up to that date.",
       },
     },
@@ -149,7 +149,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       kind: "party",
     },
     {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
+      name: { uk: "російська федерація", en: "Russian Federation" },
       role: {
         uk: "Відповідачка. Виключена з Ради Європи 16 березня 2022 року; з 16 вересня 2022-го — поза Конвенцією; у провадженні по суті участі не брала.",
         en: "Respondent. Expelled from the Council of Europe on 16 March 2022; outside the Convention from 16 September 2022; it did not take part on the merits.",
@@ -167,7 +167,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
     {
       name: { uk: "«ДНР» / «ЛНР»", en: "\"DPR\" / \"LPR\"" },
       role: {
-        uk: "Сепаратистські утворення, чиї дії з 11 травня 2014 року автоматично присвоюються Росії.",
+        uk: "Сепаратистські утворення, чиї дії з 11 травня 2014 року автоматично присвоюються росії.",
         en: "The separatist entities whose acts are automatically attributable to Russia from 11 May 2014.",
       },
       kind: "actor",
@@ -178,21 +178,21 @@ export const echrUkraineNetherlands: DecisionSummary = {
     {
       q: { uk: "Чому Нідерланди — сторона цієї справи?", en: "Why are the Netherlands a party?" },
       a: {
-        uk: "Через MH17. 17 липня 2014 року ракета «Бук», яку Росія передала сепаратистам, збила малайзійський Boeing над Донеччиною — загинули всі 298 людей на борту, зокрема 196 нідерландців. У 2020 році Нідерланди подали власну міждержавну заяву, і Суд об'єднав її з українськими.",
+        uk: "Через MH17. 17 липня 2014 року ракета «Бук», яку росія передала сепаратистам, збила малайзійський Boeing над Донеччиною — загинули всі 298 людей на борту, зокрема 196 нідерландців. У 2020 році Нідерланди подали власну міждержавну заяву, і Суд об'єднав її з українськими.",
         en: "Because of MH17. On 17 July 2014 a Buk missile that Russia had supplied to the separatists downed the Malaysian Boeing over the Donetsk region — all 298 aboard died, 196 of them Dutch. In 2020 the Netherlands filed its own inter-State application, joined with Ukraine's.",
       },
     },
     {
-      q: { uk: "Росію ж виключили з Ради Європи — чому Суд узагалі розглядав справу?", en: "Russia was expelled — how could the Court still decide?" },
+      q: { uk: "росію ж виключили з Ради Європи — чому Суд узагалі розглядав справу?", en: "Russia was expelled — how could the Court still decide?" },
       a: {
-        uk: "Конвенція діяла для Росії до 16 вересня 2022 року, і Суд зберігає юрисдикцію щодо всього, що сталося до цієї дати. Тому рішення охоплює вісім років конфлікту — від 2014-го до перших семи місяців повномасштабного вторгнення.",
+        uk: "Конвенція діяла для росії до 16 вересня 2022 року, і Суд зберігає юрисдикцію щодо всього, що сталося до цієї дати. Тому рішення охоплює вісім років конфлікту — від 2014-го до перших семи місяців повномасштабного вторгнення.",
         en: "The Convention bound Russia until 16 September 2022, and the Court keeps jurisdiction over everything before that date. So the judgment covers eight years of the conflict — from 2014 through the first seven months of the full-scale invasion.",
       },
     },
     {
-      q: { uk: "Що це дає практично, якщо Росія не визнає Суд?", en: "What does it change if Russia ignores the Court?" },
+      q: { uk: "Що це дає практично, якщо росія не визнає Суд?", en: "What does it change if Russia ignores the Court?" },
       a: {
-        uk: "Три речі. Авторитетно встановлені факти — від «Бука» для MH17 до системних катувань — які працюють в інших процесах. Правову базу для понад десяти тисяч індивідуальних скарг українців, що чекають у Страсбурзі. І стадію сатисфакції: присуджені суми стануть частиною загального рахунку до Росії, як у справах Ощадбанку і ДТЕК.",
+        uk: "Три речі. Авторитетно встановлені факти — від «Бука» для MH17 до системних катувань — які працюють в інших процесах. Правову базу для понад десяти тисяч індивідуальних скарг українців, що чекають у Страсбурзі. І стадію сатисфакції: присуджені суми стануть частиною загального рахунку до росії, як у справах Ощадбанку і ДТЕК.",
         en: "Three things. Authoritatively established facts — from the Buk for MH17 to systemic torture — usable in other fora. A legal foundation for the ten-thousand-plus individual Ukrainian applications pending in Strasbourg. And the just-satisfaction phase: the sums awarded will join the broader bill to Russia, as in Oschadbank and DTEK.",
       },
     },
@@ -245,7 +245,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       href: "/cases/icc-ukraine",
     },
     {
-      label: { uk: "Україна проти Росії (Крим) [ВП]", en: "Ukraine v. Russia (re Crimea) [GC]" },
+      label: { uk: "Україна проти росії (Крим) [ВП]", en: "Ukraine v. Russia (re Crimea) [GC]" },
       note: { uk: "ЄСПЛ · кримська гілка", en: "ECtHR · the Crimea branch" },
       href: "/cases/ecthr-4",
     },
@@ -341,7 +341,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       label: { uk: "Заявники", en: "Applicants" },
       value: { uk: "Україна (×3) і Нідерланди", en: "Ukraine (×3) and the Netherlands" },
     },
-    { label: { uk: "Відповідач", en: "Respondent" }, value: { uk: "Російська Федерація", en: "Russian Federation" } },
+    { label: { uk: "Відповідач", en: "Respondent" }, value: { uk: "російська федерація", en: "Russian Federation" } },
     /* «Велика палата» вже стоїть у назві суду поруч — у картці справи це
        рядок над цим, і повторювати її в значенні «Складу» означає сказати
        одне й те саме двічі в одній таблиці. Лишається те, чого більше ніде
@@ -370,7 +370,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       iso: "2014-02-22",
       track: "background",
       kind: "context",
-      label: { uk: "Євромайдан; Янукович виїжджає до Росії", en: "Euromaidan; Yanukovych departs for Russia" },
+      label: { uk: "Євромайдан; Янукович виїжджає до росії", en: "Euromaidan; Yanukovych departs for Russia" },
     },
     {
       date: { uk: "квіт. 2014", en: "Apr 2014" },
@@ -389,11 +389,11 @@ export const echrUkraineNetherlands: DecisionSummary = {
       track: "background",
       kind: "order",
       label: {
-        uk: "З цієї дати Росія має фактичний контроль над районами «ДНР»/«ЛНР»",
+        uk: "З цієї дати росія має фактичний контроль над районами «ДНР»/«ЛНР»",
         en: "From this date Russia has effective control of the \"DPR\"/\"LPR\" areas",
       },
       note: {
-        uk: "Висновок Суду: на момент «референдумів» сепаратистську операцію в цілому вже керувала і координувала Росія — відтоді їхні дії присвоюються їй автоматично.",
+        uk: "Висновок Суду: на момент «референдумів» сепаратистську операцію в цілому вже керувала і координувала росія — відтоді їхні дії присвоюються їй автоматично.",
         en: "The Court's finding: by the \"referendum\" date the separatist operation was managed and coordinated by Russia — from then on their acts are automatically attributable to it.",
       },
     },
@@ -404,7 +404,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       kind: "context",
       label: { uk: "Збиття MH17: 298 загиблих", en: "MH17 is downed: 298 dead" },
       note: {
-        uk: "Ракета «Бук», передана Росією сепаратистам, — серед доказів масштабного військового постачання, встановленого Судом. 196 загиблих — громадяни Нідерландів.",
+        uk: "Ракета «Бук», передана росією сепаратистам, — серед доказів масштабного військового постачання, встановленого Судом. 196 загиблих — громадяни Нідерландів.",
         en: "The Buk missile Russia supplied to the separatists is among the evidence of large-scale military supply the Court established. 196 of the dead were Dutch nationals.",
       },
     },
@@ -439,7 +439,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       track: "proceedings",
       kind: "order",
       label: {
-        uk: "Росію виключено з Ради Європи; Конвенція перестає для неї діяти",
+        uk: "росію виключено з Ради Європи; Конвенція перестає для неї діяти",
         en: "Russia is expelled from the Council of Europe; the Convention ceases to bind it",
       },
       note: {
@@ -460,7 +460,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       track: "judgment",
       kind: "judgment",
       label: {
-        uk: "Рішення по суті: Росія відповідальна за системні порушення",
+        uk: "Рішення по суті: росія відповідальна за системні порушення",
         en: "Merits judgment: Russia responsible for systemic violations",
       },
       /* The 16–1 was attached to the wrong thing here. Checked against the
@@ -600,7 +600,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       track: "Діти · Children",
       trackLabel: { uk: "Депортація дітей", en: "Deportation of children" },
       claim: {
-        uk: "Ст. 3, 5 і 8: викрадення і переміщення до Росії трьох груп дітей (одностайно)",
+        uk: "Ст. 3, 5 і 8: викрадення і переміщення до росії трьох груп дітей (одностайно)",
         en: "Arts. 3, 5 and 8: abduction and transfer to Russia of three groups of children (unanimously)",
       },
       outcome: "violation",
@@ -620,7 +620,7 @@ export const echrUkraineNetherlands: DecisionSummary = {
       markerKeys: ["donetsk", "luhansk"],
       areas: ["east"],
       summary: {
-        uk: "Фактичний контроль Росії над районами «ДНР»/«ЛНР»; збиття MH17 17 липня 2014 року.",
+        uk: "Фактичний контроль росії над районами «ДНР»/«ЛНР»; збиття MH17 17 липня 2014 року.",
         en: "Russia's effective control of the \"DPR\"/\"LPR\" areas; the downing of MH17 on 17 July 2014.",
       },
     },
@@ -661,14 +661,14 @@ export const echrUkraineNetherlands: DecisionSummary = {
     {
       term: { uk: "Автоматичне присвоєння", en: "Automatic attribution" },
       ruling: {
-        uk: "Після встановлення фактичного контролю дії та бездіяльність сепаратистів присвоюються Росії автоматично — окремого доказування по кожному епізоду не потрібно.",
+        uk: "Після встановлення фактичного контролю дії та бездіяльність сепаратистів присвоюються росії автоматично — окремого доказування по кожному епізоду не потрібно.",
         en: "Once effective control is established, the separatists' acts and omissions are attributable to Russia automatically — no episode-by-episode proof is needed.",
       },
     },
     {
       term: { uk: "Межа юрисдикції: 16.09.2022", en: "The jurisdictional edge: 16 Sep 2022" },
       ruling: {
-        uk: "Виключення з Ради Європи не звільнило Росію від відповідальності за минуле: Суд розглядає все до дати, коли Конвенція перестала для неї діяти.",
+        uk: "Виключення з Ради Європи не звільнило росію від відповідальності за минуле: Суд розглядає все до дати, коли Конвенція перестала для неї діяти.",
         en: "Expulsion from the Council of Europe did not erase past responsibility: the Court examines everything up to the date the Convention ceased to bind Russia.",
       },
     },

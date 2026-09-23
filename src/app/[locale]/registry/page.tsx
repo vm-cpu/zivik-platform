@@ -48,8 +48,8 @@ const T = {
   /* Not «Усі провадження». The review's question is the right one — «чи
      правильно буде писати про КОЖНЕ провадження. А якщо ми щось пропустимо?
      Похибка можлива» — and it is the same correction the home band's heading
-     already took, where «Кожне провадження проти Росії» became «Провадження
-     проти Росії». One proceeding nobody has reached yet makes a claim of
+     already took, where «Кожне провадження проти росії» became «Провадження
+     проти росії». One proceeding nobody has reached yet makes a claim of
      completeness false, and this page is the one a reader would cite it from.
      What the sentence can say without risk is what the library holds and what
      each row carries. */
@@ -63,7 +63,7 @@ const T = {
      went stale the moment the six ICC warrants stopped being rows, which is
      the whole argument for `registryTotal` in content/legal.ts. */
   metaDesc: {
-    uk: "{n} проваджень проти Росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
+    uk: "{n} проваджень проти росії в міжнародних судах, трибуналах і арбітражах — з фільтрами за судом, станом розгляду і типом рішення.",
     en: "{n} proceedings against Russia before international courts, tribunals and arbitrations, filterable by court, by stage of proceedings and by type of decision.",
   },
   // The wordmark is «НаСвітло» / "NaSvitlo" everywhere — see i18n/dictionaries/uk.ts.

@@ -1272,8 +1272,8 @@ export default async function CasePage({
   /* The title, and the sides set apart from it.
 
      Every inter-State case here files itself as a subject followed by the
-     parties in brackets — «…расової дискримінації (Україна проти Російської
-     Федерації)». The design sets the two in different type: the subject as
+     parties in brackets — «…расової дискримінації (Україна проти російської
+     федерації)». The design sets the two in different type: the subject as
      the heading, the parties under it in italic gold, one object read in two
      voices rather than one long line broken wherever it happens to break.
 
@@ -1283,7 +1283,7 @@ export default async function CasePage({
      apart. It sets whatever the record puts in that position apart from the
      subject, which is what the line is for on every page that has one, and a
      record with no bracket keeps its title whole. */
-  /* A phase may follow the parties: «…(Україна проти Російської Федерації).
+  /* A phase may follow the parties: «…(Україна проти російської федерації).
      Попередні заперечення». It belongs with them and not with the subject —
      it says which of a docket's several judgments this page is, which is the
      same kind of fact as who the parties are, and set in the heading it would
@@ -1850,7 +1850,7 @@ export default async function CasePage({
             `.casepage .official` in 10-bands.css. */}
         {/* The sides sit inside the heading, not under it. They are part of
             the case's name — «…расової дискримінації (Україна проти
-            Російської Федерації)» is one caption — so splitting them into a
+            російської федерації)» is one caption — so splitting them into a
             paragraph of their own would take them out of the h1 and out of
             the document outline with it. A block-level span keeps the name
             whole for a screen reader and lets the subject and the parties be
@@ -2151,7 +2151,7 @@ export default async function CasePage({
                   ofLargestLabel={pick(T.ofLargest, locale)}
                   locale={locale}
                 />
-                {/* The note that stood here — «Росія не сплатила рішення
+                {/* The note that stood here — «росія не сплатила рішення
                     добровільно, тому стягнення відбувається через арешт її
                     державних активів за кордоном» — is about enforcement, so
                     it went down with the two figures that are. */}
@@ -2780,7 +2780,7 @@ export default async function CasePage({
           «Цей підрозділ забрати». Taking the «Учасники» group out left two
           groups — the parties and the court — and those are the first three
           rows of «Картка справи» a screen above: «Заявник — Україна»,
-          «Відповідач — Російська Федерація», «Суд — Міжнародний суд ООН».
+          «Відповідач — російська федерація», «Суд — Міжнародний суд ООН».
           A band whose whole content is a restatement of the table over it is
           not a band. `summary.whoIsWho` stays in the data, unread, the way
           `faq` does. */}
