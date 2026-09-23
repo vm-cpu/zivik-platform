@@ -537,7 +537,13 @@ export interface RegistryLabels {
      «Фільтри»: ordering sits outside it and is not one. */
   filters: string;
   sort: string;
-  sortOpt: Record<string, string>;
+  /* Ключами — саме ті порядки, що є в `SORTS`, а не будь-який рядок.
+     Індексна сигнатура казала, що будь-який ключ на місці, і через це
+     компілятор не побачив, як `yearDesc` зник зі словника, а контрол і далі
+     просив у нього підпис: тип сказав «рядок», tsc промовчав, прод показав
+     `undefined`. Тепер прибраний порядок ламає збірку в обох кінцях —
+     і там, де його дають, і там, де просять. */
+  sortOpt: Record<SortId, string>;
   colCourt: string;
   colCase: string;
   /* The tag column used to be called «Теги», which named the widget rather
@@ -587,7 +593,7 @@ export interface RegistryLabels {
    контрол мусить уміти його показати), за датою рішення — колонки з нею
    немає — і «спершу опрацьовані», якої в таблиці теж немає колонки. Порядок
    за сумами пішов разом із сумами. */
-const SORTS: Array<{ id: string; key: SortKey; dir: SortDir }> = [
+const SORTS = [
   /* Перший — той, що за замовчуванням: `DEFAULT_SORT_ID` читає його звідси,
      а не називає своїм рядком. Доти контрол тричі згадував «yearDesc» —
      підписом, ознакою «не за замовчуванням» і станом, у який повертався при
@@ -598,9 +604,11 @@ const SORTS: Array<{ id: string; key: SortKey; dir: SortDir }> = [
   { id: "court", key: "court", dir: "asc" },
   { id: "decidedDesc", key: "decided", dir: "desc" },
   { id: "readable", key: "readable", dir: "desc" },
-];
+] as const satisfies ReadonlyArray<{ id: string; key: SortKey; dir: SortDir }>;
+/** Ідентифікатор кожного порядку, який контрол уміє показати. */
+type SortId = (typeof SORTS)[number]["id"];
 /** Порядок за замовчуванням, названий так, як його називає контрол. */
-const DEFAULT_SORT_ID = SORTS[0].id;
+const DEFAULT_SORT_ID: SortId = SORTS[0].id;
 
 /* ============================================================================
    Listbox — a real one.

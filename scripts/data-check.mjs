@@ -532,6 +532,44 @@ for (const [slug, src] of summarySrc) {
   }
 }
 
+/* ──────────────────────────────────────────────────────────────────────
+   `mapAfterPart` names a part the write-up actually has.
+
+   The field is an index into the write-up's h2s: the map is drawn at the end
+   of that part, and the contents rail puts its chip after the same one. Two
+   walks read one number, which is the point of recording it — but only while
+   the number is in range. Out of range the page still draws the map, from the
+   tail case, and the rail never emits the chip at all: a band on the page
+   with nothing in the contents pointing at it.
+
+   The two renderings of a write-up carry the same sections in the same order,
+   so one count answers for both; the Ukrainian file is the one read here
+   because it is the one every summary has.
+   ────────────────────────────────────────────────────────────────────── */
+{
+  const dir = "src/content/summaries";
+  for (const [slug, src] of summarySrc) {
+    const m = src.match(/\n\s*mapAfterPart:\s*(-?\d+)\s*,/);
+    if (!m) continue;
+    const want = Number(m[1]);
+    let doc;
+    try {
+      doc = JSON.parse(readFileSync(`${dir}/${slug}.uk.json`, "utf8"));
+    } catch {
+      continue; // flagged elsewhere
+    }
+    const parts = (doc.blocks ?? []).filter((b) => b?.kind === "h2").length;
+    if (want < 0 || want >= parts) {
+      flag(
+        slug,
+        "map-after-part-out-of-range",
+        `mapAfterPart is ${want} and the write-up has ${parts} part(s) — ` +
+          `the map would draw at the foot of the article with no chip in the contents`,
+      );
+    }
+  }
+}
+
 console.log(
   `checked ${ids.size} records, ${summarySrc.size} write-ups, ` +
     `${slugs.size} links between them\n`,

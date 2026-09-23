@@ -865,8 +865,6 @@ export interface DecisionSummary extends VerbatimSummary {
    */
   hideSections?: Array<
     | "overview"
-    | "dash"
-    | "score"
     | "rulings"
     | "measures"
     | "machinery"

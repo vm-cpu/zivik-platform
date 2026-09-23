@@ -1275,7 +1275,16 @@ export default async function CasePage({
      обидва обходи: і рейка, і розмітка огляду питають його, тож вони не
      можуть розійтися. */
   const lastPart = body.filter((b) => b.kind === "h2").length - 1;
-  const mapAfterPart = summary.mapAfterPart ?? lastPart;
+  /* Затиснуте в межі розділів, які огляд справді має. `data-check` не пускає
+     число поза межами — але два обходи читають його по-різному, і поза
+     межами вони розходяться мовчки: розмітка малює карту хвостовим випадком
+     у кінці, а рейка, яка чекає точного збігу, не дає жодного рядка. Смуга
+     на сторінці, на яку ніщо в змісті не показує, — гірше за карту не там.
+     Затиск робить цю пару неможливою, хоч би що стояло в записі. */
+  const mapAfterPart = Math.min(
+    Math.max(summary.mapAfterPart ?? lastPart, 0),
+    lastPart,
+  );
 
   /* `pagesLabel` stood here — «PDF, 139 с.» under «Читати рішення». The
      review took the page count off the dashboard and then off the button:

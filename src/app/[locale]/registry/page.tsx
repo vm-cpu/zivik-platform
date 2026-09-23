@@ -363,6 +363,25 @@ function both(v: Localized | null | undefined): string {
 }
 
 
+/**
+ * Resolve a whole table of localized strings, keeping its keys.
+ *
+ * `Object.fromEntries` loses them — it returns `{ [k: string]: string }`, and
+ * an index signature satisfies any `Record<Something, string>` the caller
+ * asks for whether the keys are there or not. That is how the sort control
+ * came to ask for a label the dictionary no longer had: the types agreed all
+ * the way down and the reader got `undefined`. Keeping `K` means a preset
+ * without a label now fails the build at the call site.
+ */
+function pickAll<K extends string>(
+  table: Record<K, Localized>,
+  locale: Locale,
+): Record<K, string> {
+  const out = {} as Record<K, string>;
+  for (const k of Object.keys(table) as K[]) out[k] = pick(table[k], locale);
+  return out;
+}
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
@@ -609,9 +628,7 @@ export default async function RegistryPage({
             doc: pick(T.doc, locale),
             filters: pick(T.filters, locale),
             sort: pick(T.sort, locale),
-            sortOpt: Object.fromEntries(
-              Object.entries(T.sortOpt).map(([k, v]) => [k, pick(v, locale)]),
-            ),
+            sortOpt: pickAll(T.sortOpt, locale),
             colCourt: pick(T.colCourt, locale),
             colCase: pick(T.colCase, locale),
             colStage: pick(T.colStage, locale),
