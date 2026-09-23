@@ -316,7 +316,16 @@ export default function Header({
               Quiet on purpose: an outline in the bar's own gold, not a filled
               pill. This is an archive of court decisions, and the loudest
               thing on its first screen should not be an ask for money. */}
-          <a className="nsv-support" href={supportHref}>
+          {/* Ведé на сторінку Центру на сайті Факультету права — адресу дала
+              власниця. Зовнішнє посилання, тож у новій вкладці: читач,
+              якого відвели з архіву на чужий сайт, не має втрачати те, що
+              читав. */}
+          <a
+            className="nsv-support"
+            href={supportHref}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {supportLabel}
           </a>
           {langSwitch()}
@@ -356,6 +365,8 @@ export default function Header({
         <a
           className="nsv-support nsv-support-drawer"
           href={supportHref}
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={() => setOpen(false)}
         >
           {supportLabel}

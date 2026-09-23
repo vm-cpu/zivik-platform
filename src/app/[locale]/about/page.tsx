@@ -1,3 +1,4 @@
+import { CENTRE_URL } from "@/content/centre";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -266,21 +267,10 @@ const T = {
      Ukrainian one and `pick` would stop type-checking. */
 };
 
-/**
- * The Centre's page on the Faculty of Law's own site.
- *
- * It used to be `lawmigration.ucu.org.ua`, chosen because `law.ucu.edu.ua`
- * answered 403 to anything that was not a browser. That reasoning aged badly:
- * the 403 was bot protection, not a dead host, and the migration host has
- * since stopped resolving at all — NXDOMAIN, checked. So the one link that
- * left this page led nowhere, and had for a while.
- *
- * This address is the owner's own: «це посилання на центр луї зона на сайті».
- * It still refuses automated requests — a security-verification interlude
- * rather than an error — which is why it cannot be checked from here and is
- * taken on her word.
- */
-const FACULTY_URL = "https://law.ucu.edu.ua/doslidnyczkyj-czentr-luyi-zona";
+/* Адреса Центру живе в `content/centre.ts`: на неї показують і ця сторінка,
+   і заклик підтримати в шапці, меню та підвалі, а три місця з тим самим
+   рядком у трьох файлах — це три місця, які можуть розійтися. */
+const FACULTY_URL = CENTRE_URL;
 
 /* A/RES/68/262 in the UN Digital Library — the same record `content/about.ts`
    links from the prose. Written out rather than read from that table: the

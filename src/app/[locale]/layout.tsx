@@ -1,3 +1,4 @@
+import { CENTRE_URL } from "@/content/centre";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
@@ -179,7 +180,7 @@ export default async function LocaleLayout({
             locale={safe}
             dict={dict}
             showGlossary={glossaryEnabled}
-            supportHref={`mailto:${dict.footer.email}?subject=${encodeURIComponent(dict.footer.support)}`}
+            supportHref={CENTRE_URL}
             supportLabel={dict.footer.support}
           />
           {children}
