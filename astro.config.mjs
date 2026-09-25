@@ -17,6 +17,7 @@ import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
 import { clientIslands } from "./site/islands/vite-plugin.mjs";
 import { contentSnapshot } from "./site/content/vite-plugin.mjs";
+import { adminLocales } from "./site/emdash/admin-locales.mjs";
 import { securityHeaders } from "./src/lib/security-headers.ts";
 import { appendFileSync } from "node:fs";
 
@@ -97,6 +98,7 @@ export default defineConfig({
     plugins: [
       clientIslands({ root: here("./src") }),
       contentSnapshot({ snapshot: here("./.emdash/snapshot.json"), root: here(".") }),
+      adminLocales({ keep: ["en", "uk"] }),
     ],
     resolve: {
       alias: [
