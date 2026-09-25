@@ -127,11 +127,14 @@ JSON — але кожен окремим полем: повторювач EmDas
    - Змінні збірки: `NEXT_PUBLIC_SITE_URL` = адреса сайту на Cloudflare
      (канонічні URL, sitemap); `SITE_INDEXABLE` / `FEATURE_GLOSSARY` — як на
      Vercel.
-   - **Токен збірки має читати D1.** Токен, який Workers Builds створює сам,
-     має права на Workers, KV і R2, але не на D1, а `cf:pull` читає з D1
-     опублікований контент. My Profile → API Tokens → токен Workers Builds →
-     Edit → додати *Account · D1 · Edit*. Без цього збірка зупиниться з
-     повідомленням `cf:pull: could not read remote D1`.
+   - **Токен збірки має читати D1** — `cf:pull` бере з D1 опублікований
+     контент. Токен, який Workers Builds створює тепер (у нас — «nasvitlo
+     build token»), уже має *Account · D1 · Edit*; старіші токени могли його
+     не мати. Перевірити: My Profile → API Tokens → токен → Edit. Без цього
+     права збірка зупиниться з `cf:pull: could not read remote D1`.
+   - **Ручний запуск (Deploy / Retry) може взяти `main`**, навіть коли в
+     Branch control стоїть інша гілка. Доки цей код не на `main`, збірку
+     запускає пуш у гілку з Branch control.
 3. Перша збірка піде з файлів (база ще порожня — `cf:pull` так і скаже).
 4. Відкрити `https://<адреса>/_emdash/admin`, пройти налаштування (перший
    користувач — адміністратор, вхід через passkey) і **погодитися імпортувати
