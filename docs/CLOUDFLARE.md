@@ -127,6 +127,11 @@ JSON — але кожен окремим полем: повторювач EmDas
    - Змінні збірки: `NEXT_PUBLIC_SITE_URL` = адреса сайту на Cloudflare
      (канонічні URL, sitemap); `SITE_INDEXABLE` / `FEATURE_GLOSSARY` — як на
      Vercel.
+   - **Токен збірки має читати D1.** Токен, який Workers Builds створює сам,
+     має права на Workers, KV і R2, але не на D1, а `cf:pull` читає з D1
+     опублікований контент. My Profile → API Tokens → токен Workers Builds →
+     Edit → додати *Account · D1 · Edit*. Без цього збірка зупиниться з
+     повідомленням `cf:pull: could not read remote D1`.
 3. Перша збірка піде з файлів (база ще порожня — `cf:pull` так і скаже).
 4. Відкрити `https://<адреса>/_emdash/admin`, пройти налаштування (перший
    користувач — адміністратор, вхід через passkey) і **погодитися імпортувати

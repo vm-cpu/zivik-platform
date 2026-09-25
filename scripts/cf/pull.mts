@@ -26,11 +26,25 @@ const OUT = resolve(".emdash/snapshot.json");
 const local = process.argv.includes("--local");
 
 function query(sql: string): Row[][] {
-  const out = execFileSync(
-    "npx",
-    ["wrangler", "d1", "execute", DB, local ? "--local" : "--remote", "--json", "--command", sql],
-    { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 256 * 1024 * 1024 },
-  );
+  let out: string;
+  try {
+    out = execFileSync(
+      "npx",
+      ["wrangler", "d1", "execute", DB, local ? "--local" : "--remote", "--json", "--command", sql],
+      { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], maxBuffer: 256 * 1024 * 1024 },
+    );
+  } catch (err) {
+    const e = err as { stderr?: string; stdout?: string };
+    /* The token Workers Builds generates can deploy but cannot read D1. */
+    throw new Error(
+      `cf:pull: could not read ${local ? "local" : "remote"} D1 "${DB}".\n` +
+        (local
+          ? ""
+          : "If this is Workers Builds: give the build's API token D1 access — My Profile → " +
+            "API Tokens → the Workers Builds token → add Account · D1 · Edit. See docs/CLOUDFLARE.md.\n") +
+        (e.stderr || e.stdout || String(err)),
+    );
+  }
   const results = JSON.parse(out) as { results: Row[]; success: boolean }[];
   return results.map((r) => r.results);
 }
