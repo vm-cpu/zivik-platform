@@ -1,5 +1,7 @@
 /** src/app/robots.ts, serialised the way Next serialises it. */
 import type { APIRoute } from "astro";
+
+export const prerender = true;
 import robots from "@/app/robots";
 
 export const GET: APIRoute = () => {

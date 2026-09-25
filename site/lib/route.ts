@@ -2,29 +2,41 @@
  * Route adapter: runs a Next App Router page module under Astro.
  *
  * A page in src/app is an async function of `{ params }` that returns a React
- * tree, plus an optional `generateMetadata`/`metadata`. This calls both
- * exactly as Next would, layers the page's metadata over the locale layout's
- * (`homeMetadata`), and turns `notFound()` into the locale 404 with its own
- * metadata and a 404 status. The Astro route files stay three lines long, and
- * every page keeps a single implementation shared by both builds.
+ * tree, plus an optional `generateMetadata`/`metadata` and
+ * `generateStaticParams`. This calls all three exactly as Next would, layers
+ * the page's metadata over the locale layout's (`homeMetadata`), and turns
+ * `notFound()` into the locale 404 with its own metadata and a 404 status.
+ * The Astro route files stay a few lines long, and every page keeps a single
+ * implementation shared by both builds.
+ *
+ * Every public page is prerendered. Content reaches this build as a snapshot
+ * taken at build time (see site/content/), so a page cannot change between
+ * builds and there is nothing to gain from rendering it per request — and a
+ * good deal to lose: the invariants src/content checks when its modules load
+ * would otherwise first run on a reader's request, and a bad edit published
+ * from the admin would take the site down instead of failing the build.
  */
 import type { AstroGlobal } from "astro";
 import type { Metadata } from "next";
 import { createElement, type ReactNode } from "react";
-import { renderIslands } from "../islands/runtime";
-import { defaultLocale, isLocale, type Locale } from "@/i18n/config";
+import { defaultLocale, isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary, type Dictionary } from "@/i18n/dictionaries";
 import { homeMetadata } from "@/lib/seo";
 import * as localeNotFound from "@/app/[locale]/not-found";
 import { isNotFound, RedirectError } from "../shims/navigation";
+import { renderIslands } from "../islands/runtime";
 import { mergeMetadata } from "./metadata";
 import Chrome from "./Chrome";
 
 type Params = Record<string, string | undefined>;
 
 export interface NextPageModule {
-  default: (props: { params: Promise<Params>; searchParams?: Promise<Params> }) => ReactNode | Promise<ReactNode>;
+  default: (props: {
+    params: Promise<Params>;
+    searchParams?: Promise<Params>;
+  }) => ReactNode | Promise<ReactNode>;
   generateMetadata?: (props: { params: Promise<Params> }) => Metadata | Promise<Metadata>;
+  generateStaticParams?: () => Params[] | Promise<Params[]>;
   metadata?: Metadata;
 }
 
@@ -34,6 +46,10 @@ export interface Resolved {
   /** The page with its header and footer, rendered. */
   html: string;
 }
+
+type Outcome =
+  | { kind: "page"; status: 200 | 404; resolved: Resolved }
+  | { kind: "redirect"; location: string; status: 307 | 308 };
 
 /**
  * Render to a string before Astro starts the response.
@@ -48,40 +64,99 @@ function renderPage(locale: Locale, dict: Dictionary, pathname: string, node: Re
   return renderIslands(createElement(Chrome, { locale, dict, pathname, node }), pathname);
 }
 
-export async function notFoundPage(astro: AstroGlobal, locale: Locale = defaultLocale): Promise<Resolved> {
-  astro.response.status = 404;
+async function notFoundOutcome(locale: Locale, pathname: string): Promise<Outcome> {
   const dict = await getDictionary(locale);
   const NotFound = localeNotFound.default as () => ReactNode;
   return {
-    locale,
-    metadata: mergeMetadata(homeMetadata(locale, dict), localeNotFound.metadata),
-    html: await renderPage(locale, dict, astro.url.pathname, createElement(NotFound)),
+    kind: "page",
+    status: 404,
+    resolved: {
+      locale,
+      metadata: mergeMetadata(homeMetadata(locale, dict), localeNotFound.metadata),
+      html: await renderPage(locale, dict, pathname, createElement(NotFound)),
+    },
   };
 }
 
-export async function runRoute(
-  astro: AstroGlobal,
+async function resolvePage(
   page: NextPageModule,
-  params: Params = {},
-): Promise<Resolved | Response> {
-  const raw = params.locale ?? astro.params.locale ?? "";
-  if (!isLocale(raw)) return notFoundPage(astro);
+  params: Params,
+  pathname: string,
+  search: Params = {},
+): Promise<Outcome> {
+  const raw = params.locale ?? "";
+  if (!isLocale(raw)) return notFoundOutcome(defaultLocale, pathname);
   const locale = raw;
-  const all = { ...astro.params, ...params, locale };
-  const p = () => Promise.resolve(all);
-
+  const p = () => Promise.resolve({ ...params, locale });
   try {
     const dict = await getDictionary(locale);
     const pageMeta = page.generateMetadata ? await page.generateMetadata({ params: p() }) : page.metadata;
-    const node = await page.default({
-      params: p(),
-      searchParams: Promise.resolve(Object.fromEntries(astro.url.searchParams)),
-    });
-    const html = await renderPage(locale, dict, astro.url.pathname, node);
-    return { locale, metadata: mergeMetadata(homeMetadata(locale, dict), pageMeta), html };
+    const node = await page.default({ params: p(), searchParams: Promise.resolve(search) });
+    const html = await renderPage(locale, dict, pathname, node);
+    return {
+      kind: "page",
+      status: 200,
+      resolved: { locale, metadata: mergeMetadata(homeMetadata(locale, dict), pageMeta), html },
+    };
   } catch (err) {
-    if (isNotFound(err)) return notFoundPage(astro, locale);
-    if (err instanceof RedirectError) return astro.redirect(err.location, err.status as 307 | 308);
+    if (isNotFound(err)) return notFoundOutcome(locale, pathname);
+    if (err instanceof RedirectError) {
+      return { kind: "redirect", location: err.location, status: err.status as 307 | 308 };
+    }
     throw err;
   }
+}
+
+/** Pages already rendered by `staticPaths`, by pathname. */
+const rendered = new Map<string, Outcome>();
+
+const fill = (pattern: string, params: Params) =>
+  pattern.replace(/\[(\w+)\]/g, (_, k: string) => params[k] ?? "");
+
+/**
+ * `getStaticPaths` for a Next page: its `generateStaticParams` crossed with
+ * the locales, as the `[locale]` layout does under Next.
+ *
+ * A path whose page calls `notFound()` is left out rather than written: a
+ * prerendered 404 would be served as a file, with a 200. That is how the
+ * glossary stays absent from a build that does not carry it.
+ */
+export function staticPaths(page: NextPageModule, pattern: string) {
+  return async () => {
+    const own = page.generateStaticParams ? await page.generateStaticParams() : [{}];
+    const paths = [];
+    for (const locale of locales) {
+      for (const p of own) {
+        const params = { ...p, locale };
+        const pathname = fill(pattern, params);
+        const outcome = await resolvePage(page, params, pathname);
+        if (outcome.kind === "page" && outcome.status === 404) continue;
+        rendered.set(pathname, outcome);
+        paths.push({ params });
+      }
+    }
+    return paths;
+  };
+}
+
+export async function runRoute(astro: AstroGlobal, page: NextPageModule): Promise<Resolved | Response> {
+  const pathname = astro.url.pathname;
+  const outcome =
+    rendered.get(pathname) ??
+    (await resolvePage(
+      page,
+      astro.params,
+      pathname,
+      astro.isPrerendered ? {} : Object.fromEntries(astro.url.searchParams),
+    ));
+  rendered.delete(pathname);
+  if (outcome.kind === "redirect") return astro.redirect(outcome.location, outcome.status);
+  astro.response.status = outcome.status;
+  return outcome.resolved;
+}
+
+export async function notFoundPage(astro: AstroGlobal): Promise<Resolved> {
+  const outcome = await notFoundOutcome(defaultLocale, astro.url.pathname);
+  astro.response.status = 404;
+  return (outcome as Extract<Outcome, { kind: "page" }>).resolved;
 }

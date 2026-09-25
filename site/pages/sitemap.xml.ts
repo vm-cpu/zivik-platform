@@ -1,5 +1,7 @@
 /** src/app/sitemap.ts, serialised the way Next serialises it. */
 import type { APIRoute } from "astro";
+
+export const prerender = true;
 import sitemap from "@/app/sitemap";
 
 const esc = (s: string) =>

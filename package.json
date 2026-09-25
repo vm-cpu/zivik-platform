@@ -13,11 +13,14 @@
     "text": "node scripts/text-check.mjs",
     "ghosts": "node scripts/ghost-check.mjs",
     "verify": "node scripts/flag-check.mjs && node scripts/build-css-check.mjs && node scripts/ghost-check.mjs",
-    "cf:dev": "astro dev",
-    "cf:build": "astro build",
-    "cf:preview": "astro build && wrangler dev",
-    "cf:deploy": "astro build && wrangler deploy",
-    "cf:check": "astro check"
+    "cf:dev": "npm run cf:content -- seed && astro dev",
+    "cf:content": "tsx scripts/cf/content.mts",
+    "cf:pull": "tsx scripts/cf/pull.mts",
+    "cf:build": "npm run cf:content -- check && npm run cf:content -- seed && npm run cf:pull && astro build",
+    "cf:build:local": "npm run cf:content -- check && npm run cf:content -- seed && npm run cf:pull -- --local && astro build",
+    "cf:preview": "astro preview",
+    "cf:deploy": "npm run cf:build && wrangler deploy",
+    "cf:check": "tsc --noEmit -p site/tsconfig.json"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.3.3",
@@ -44,6 +47,7 @@
     "eslint-config-next": "16.3.2",
     "tailwindcss": "^4",
     "topojson-client": "^3.1.0",
+    "tsx": "^4.23.15",
     "typescript": "^5",
     "wrangler": "^4.140.0"
   }

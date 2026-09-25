@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nasvitlo",
+  "account_id": "55d2d3b8fd8d4d615a297eb49f5622c9",
   "main": "./site/worker.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
@@ -8,6 +9,7 @@
     {
       "binding": "DB",
       "database_name": "nasvitlo",
+      "database_id": "bbde7a56-829d-49b3-b898-eede9a347fa3",
     },
   ],
   "r2_buckets": [

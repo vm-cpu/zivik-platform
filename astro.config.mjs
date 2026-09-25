@@ -16,6 +16,9 @@ import { d1, r2 } from "@emdash-cms/cloudflare";
 import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
 import { clientIslands } from "./site/islands/vite-plugin.mjs";
+import { contentSnapshot } from "./site/content/vite-plugin.mjs";
+import { securityHeaders } from "./src/lib/security-headers.ts";
+import { appendFileSync } from "node:fs";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 
@@ -35,31 +38,68 @@ const define = Object.fromEntries(
   buildEnv.map((k) => [`process.env.${k}`, JSON.stringify(process.env[k])]),
 );
 
+/**
+ * The Next build's security headers, for Cloudflare's static asset server.
+ *
+ * Every public page is a prerendered file, and Cloudflare serves files
+ * without running the Worker, so the headers go where the asset server reads
+ * them: `_headers`. The admin (/_emdash/*) is rendered by the Worker and keeps
+ * EmDash's own policy — this CSP would break its editor.
+ *
+ * HSTS is added here because Vercel sent it on its own and Cloudflare does
+ * not; the Next policy relies on that (see src/lib/security-headers.ts).
+ */
+const headersFile = {
+  name: "nsv-security-headers",
+  hooks: {
+    "astro:build:done": ({ dir }) => {
+      const lines = [
+        "",
+        "/*",
+        ...securityHeaders.map((h) => `  ${h.key}: ${h.value}`),
+        "  Strict-Transport-Security: max-age=63072000; includeSubDomains",
+        "",
+      ];
+      appendFileSync(new URL("_headers", dir), lines.join("\n"));
+    },
+  },
+};
+
 export default defineConfig({
   srcDir: "./site",
   publicDir: "./public",
   output: "server",
   adapter: cloudflare(),
   trailingSlash: "never",
+  /* `/uk/about` is written as uk/about.html, not uk/about/index.html, so the
+     static asset server answers the URL Next answers — no slash, no redirect. */
+  build: { format: "file" },
   integrations: [
+    headersFile,
     react(),
     emdash({
       database: d1({ binding: "DB", session: "auto" }),
       storage: r2({ binding: "MEDIA" }),
+      plugins: [
+        {
+          id: "nsv-rebuild-on-publish",
+          version: "1.0.0",
+          entrypoint: here("./site/emdash/rebuild-on-publish.ts"),
+          format: "native",
+          capabilities: ["content:read"],
+        },
+      ],
     }),
   ],
   devToolbar: { enabled: false },
   vite: {
     define,
-    plugins: [clientIslands({ root: here("./src") })],
+    plugins: [
+      clientIslands({ root: here("./src") }),
+      contentSnapshot({ snapshot: here("./.emdash/snapshot.json"), root: here(".") }),
+    ],
     resolve: {
       alias: [
-        // The content boundary: under Astro the repository reads EmDash.
-        // First, so the general `@/` rule below does not claim it.
-        {
-          find: /^@\/content\/repository$/,
-          replacement: here("./site/lib/emdash-repository.ts"),
-        },
         { find: /^@\//, replacement: here("./src/") },
         { find: /^next\/link$/, replacement: here("./site/shims/link.tsx") },
         { find: /^next\/navigation$/, replacement: here("./site/shims/navigation.ts") },
