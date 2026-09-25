@@ -1,0 +1,8 @@
+---
+import Document from "../layouts/Document.astro";
+import { notFoundPage } from "../lib/route";
+
+const resolved = await notFoundPage(Astro);
+---
+
+<Document {...resolved} />

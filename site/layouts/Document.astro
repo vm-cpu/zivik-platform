@@ -1,0 +1,67 @@
+---
+/**
+ * The document shell — the <html>/<head> half of src/app/[locale]/layout.tsx.
+ * Pages arrive here already resolved by site/lib/route.ts: a locale, the
+ * merged Next metadata, and the React tree Next would have rendered.
+ */
+import type { Metadata } from "next";
+import type { Locale } from "@/i18n/config";
+import { localeHtmlLang } from "@/i18n/config";
+import favicon from "@/app/favicon.ico?url";
+// Imported for its stylesheets: the page itself arrives rendered.
+import "../lib/Chrome";
+import { metadataTags } from "../lib/metadata";
+import "@/app/globals.css";
+import "@/app/[locale]/shared.css";
+import "../styles/fonts.css";
+import "../styles/islands.css";
+
+interface Props {
+  locale: Locale;
+  metadata: Metadata;
+  html: string;
+}
+
+const { locale, metadata, html } = Astro.props;
+const tags = metadataTags(metadata);
+---
+
+<!doctype html>
+<html lang={localeHtmlLang[locale]} class="h-full antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {
+      tags.map((t) =>
+        t.tag === "title" ? (
+          <title>{t.text}</title>
+        ) : t.tag === "meta" ? (
+          <meta {...t.attrs} />
+        ) : (
+          <link {...t.attrs} />
+        ),
+      )
+    }
+    <link rel="icon" href={favicon} sizes="any" />
+  </head>
+  <body class="min-h-full">
+    <Fragment set:html={html} />
+    {
+      /* Dev only: React Fast Refresh expects its preamble before any
+         component module runs. Astro installs it only for its own
+         `client:*` islands, and these islands are not those. */
+      import.meta.env.DEV && (
+        <script is:inline type="module">
+          import RefreshRuntime from "/@react-refresh";
+          RefreshRuntime.injectIntoGlobalHook(window);
+          window.$RefreshReg$ = () => {};
+          window.$RefreshSig$ = () => (type) => type;
+          window.__vite_plugin_react_preamble_installed__ = true;
+        </script>
+      )
+    }
+    <script>
+      import "../islands/client.tsx";
+    </script>
+  </body>
+</html>

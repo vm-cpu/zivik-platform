@@ -12,14 +12,29 @@
     "data": "node scripts/data-check.mjs",
     "text": "node scripts/text-check.mjs",
     "ghosts": "node scripts/ghost-check.mjs",
-    "verify": "node scripts/flag-check.mjs && node scripts/build-css-check.mjs && node scripts/ghost-check.mjs"
+    "verify": "node scripts/flag-check.mjs && node scripts/build-css-check.mjs && node scripts/ghost-check.mjs",
+    "cf:dev": "astro dev",
+    "cf:build": "astro build",
+    "cf:preview": "astro build && wrangler dev",
+    "cf:deploy": "astro build && wrangler deploy",
+    "cf:check": "astro check"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.3.3",
+    "@astrojs/react": "^6.0.6",
+    "@emdash-cms/cloudflare": "^0.40.0",
+    "astro": "^7.3.5",
+    "emdash": "^0.40.0",
     "next": "16.3.2",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20260925.1",
+    "@fontsource/charis-sil": "^5.3.0",
+    "@fontsource/fira-sans": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -29,6 +44,7 @@
     "eslint-config-next": "16.3.2",
     "tailwindcss": "^4",
     "topojson-client": "^3.1.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.140.0"
   }
 }

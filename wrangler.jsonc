@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nasvitlo",
+  "main": "./site/worker.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nasvitlo",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "nasvitlo-media",
+    },
+  ],
+  "observability": { "enabled": true },
+  // EmDash's maintenance tasks (scheduled publishing, cleanup).
+  "triggers": {
+    "crons": ["*/5 * * * *"],
+  },
+}

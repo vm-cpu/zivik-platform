@@ -1,0 +1,10 @@
+---
+import Document from "../../layouts/Document.astro";
+import { runRoute } from "../../lib/route";
+import * as page from "@/app/[locale]/registry/page";
+
+const resolved = await runRoute(Astro, page);
+if (resolved instanceof Response) return resolved;
+---
+
+<Document {...resolved} />
