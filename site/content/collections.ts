@@ -31,11 +31,18 @@ export type FieldType =
   | "number"
   | "boolean"
   | "select"
-  | "json";
+  | "multiSelect"
+  | "json"
+  | "repeater";
 
 /** One property of the exported value, stored as one field (or two, if localized). */
 export interface Prop {
-  /** Property name on the exported value. */
+  /**
+   * Property name on the exported value. A dotted path (`judgment.court`)
+   * reaches into a nested object; the object is created on the way back only
+   * if one of its properties has a value, so an optional group that was
+   * absent stays absent.
+   */
   path: string;
   /** Admin label. */
   label: string;
@@ -50,6 +57,23 @@ export interface Prop {
   options?: readonly string[];
   /** For `text`: an array of paragraphs, stored as text separated by blank lines. */
   paragraphs?: boolean;
+  /** For `text`: an array of short strings, one per line. */
+  lines?: boolean;
+  /**
+   * `string | Localized` in the value — a figure like "298" that needs no
+   * translation, or a phrase that does. Stored as a pair like `localized`; an
+   * empty EN field means the value is one string for both languages.
+   */
+  either?: boolean;
+  /**
+   * `string | false` in the value. `false` (e.g. "leave this heading out of
+   * the contents") is a separate checkbox, `<slug>_off`.
+   */
+  allowFalse?: boolean;
+  /** For `repeater`: the properties of one item. */
+  items?: Prop[];
+  /** An empty string is a value here, not an absence (e.g. a source with no named author). */
+  blankOk?: boolean;
   /** Admin help text. */
   help?: string;
 }
@@ -104,6 +128,257 @@ const STAGES = [
   "concluded",
 ] as const;
 const OUTCOMES = ["judgment", "award", "verdict", "liability", "upheld", "warrant", "procedural"] as const;
+
+/* ─── Decision summaries ───────────────────────────────────────────────────
+ * DecisionSummary (src/content/summaries/types.ts) as editor-facing fields.
+ *
+ * Flat parts become ordinary fields; lists of flat records — the text of the
+ * write-up itself, the glossary, the chronology, the FAQ, the sources — become
+ * repeaters, one row per item. The parts that nest a list inside a list
+ * (warrants → waves → persons → charges, objections → votes, the map's
+ * theatres) stay JSON, one field per section: a repeater cannot hold another
+ * repeater. */
+
+const BLOCK_KINDS = [
+  "lead", "h2", "h3", "h4", "p", "dispositif", "findings",
+  "position", "claim", "note", "subject", "link",
+] as const;
+const VERDICT_OUTCOMES = [
+  "violation", "no-violation", "granted", "rejected", "not-decided", "convicted", "acquitted",
+] as const;
+
+const blockItems: Prop[] = [
+  { path: "kind", label: "Тип", type: "select", options: BLOCK_KINDS, required: true },
+  { path: "text", label: "Текст", type: "text", required: true },
+  { path: "nav", label: "Назва в змісті", type: "string", allowFalse: true },
+  { path: "measure", label: "Захід (dispositif)", type: "string" },
+  { path: "outcome", label: "Результат", type: "select", options: VERDICT_OUTCOMES },
+  { path: "heads", label: "Заголовки частин (по рядку)", type: "text", lines: true },
+  { path: "outcomes", label: "Результати частин (по рядку)", type: "text", lines: true },
+  { path: "instrument", label: "Інструмент", type: "string" },
+  { path: "place", label: "Місце", type: "string" },
+];
+
+const SUMMARY_PROPS: Prop[] = [
+  { path: "id", slug: "key", label: "Ідентифікатор (slug сторінки)", type: "string", required: true },
+  { path: "caseId", label: "Провадження (id у реєстрі)", type: "string", required: true },
+  { path: "title", label: "Заголовок", type: "string", localized: true },
+  { path: "metaDesc", label: "Опис для пошуковиків (до 160 знаків)", type: "text", localized: true },
+  { path: "asOf", label: "Станом на (РРРР-ММ-ДД)", type: "string" },
+  { path: "provisionalSource", label: "Джерело попереднє", type: "boolean" },
+
+  { path: "masthead.official", slug: "masthead_official", label: "Шапка: офіційна назва", type: "text", required: true },
+  { path: "masthead.parties", slug: "masthead_parties", label: "Шапка: сторони", type: "string", required: true },
+  { path: "masthead.judgment", slug: "masthead_judgment", label: "Шапка: рішення", type: "string", required: true },
+  { path: "mastheadUk.official", slug: "masthead_uk_official", label: "Шапка (укр.): офіційна назва", type: "text" },
+  { path: "mastheadUk.judgment", slug: "masthead_uk_judgment", label: "Шапка (укр.): рішення", type: "string" },
+
+  { path: "plain.tldr", slug: "tldr", label: "Коротко", type: "text", localized: true, required: true },
+  { path: "plain.whyMatters", slug: "why_matters", label: "Чому це важливо", type: "text", localized: true, required: true },
+
+  { path: "judgment.court", slug: "judgment_court", label: "Рішення: суд", type: "string", localized: true, required: true },
+  { path: "judgment.date", slug: "judgment_date", label: "Рішення: дата", type: "string", required: true },
+  { path: "judgment.url", slug: "judgment_url", label: "Рішення: посилання на документ", type: "string", required: true },
+  { path: "judgment.urlType", slug: "judgment_url_type", label: "Рішення: тип документа", type: "string" },
+  { path: "judgment.caseUrl", slug: "judgment_case_url", label: "Рішення: сторінка справи", type: "string", required: true },
+  { path: "judgment.caseUrlType", slug: "judgment_case_url_type", label: "Рішення: тип сторінки справи", type: "string" },
+  { path: "judgment.pages", slug: "judgment_pages", label: "Рішення: сторінок", type: "integer" },
+  { path: "judgment.readLabel", slug: "judgment_read_label", label: "Рішення: підпис «читати»", type: "string", localized: true },
+  { path: "judgment.fileLabel", slug: "judgment_file_label", label: "Рішення: підпис файлу", type: "string", localized: true },
+
+  { path: "forum.institution", slug: "forum_institution", label: "Форум: інституція", type: "string", localized: true },
+  { path: "forum.seat", slug: "forum_seat", label: "Форум: місто", type: "string", localized: true },
+
+  {
+    path: "blocks",
+    label: "Текст огляду (англійський оригінал)",
+    type: "repeater",
+    required: true,
+    items: blockItems,
+    help: "Абзац за абзацом, у порядку на сторінці.",
+  },
+  {
+    path: "blocksUk",
+    label: "Текст огляду (українською)",
+    type: "repeater",
+    items: blockItems,
+    help: "Має йти паралельно до англійського: той самий порядок і типи абзаців.",
+  },
+
+  {
+    path: "stats",
+    label: "Цифри",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "value", label: "Значення", type: "string", either: true, required: true },
+      { path: "label", label: "Підпис", type: "string", localized: true, required: true },
+      { path: "em", label: "Виділити", type: "boolean" },
+      { path: "note", label: "Примітка", type: "text", localized: true },
+    ],
+  },
+  {
+    path: "glance",
+    label: "Коротко про справу",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "label", label: "Що", type: "string", localized: true, required: true },
+      { path: "value", label: "Значення", type: "text", localized: true, required: true },
+    ],
+  },
+  {
+    path: "whoIsWho",
+    label: "Хто є хто",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "name", label: "Ім'я / назва", type: "string", localized: true, required: true },
+      { path: "role", label: "Роль", type: "text", localized: true, required: true },
+      { path: "kind", label: "Тип", type: "select", options: ["party", "court", "actor"], required: true },
+    ],
+  },
+  {
+    path: "timeline",
+    label: "Хронологія",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "date", label: "Дата", type: "string", localized: true, required: true },
+      { path: "iso", label: "Дата для сортування (РРРР-ММ-ДД)", type: "string" },
+      { path: "label", label: "Подія", type: "text", localized: true, required: true },
+      { path: "kind", label: "Тип", type: "select", options: ["filing", "order", "judgment", "context"] },
+      { path: "track", label: "Доріжка", type: "string" },
+      { path: "note", label: "Примітка", type: "text", localized: true },
+    ],
+  },
+  {
+    path: "timelineTracks",
+    label: "Хронологія: доріжки",
+    type: "repeater",
+    items: [
+      { path: "id", label: "Ідентифікатор", type: "string", required: true },
+      { path: "label", label: "Назва", type: "string", localized: true, required: true },
+    ],
+  },
+  { path: "verdictsHeading", label: "Висновки: заголовок", type: "string", localized: true },
+  { path: "verdictsTrackHeading", label: "Висновки: заголовок доріжок", type: "string", localized: true },
+  { path: "verdictsTrackless", label: "Висновки без доріжок", type: "boolean" },
+  { path: "positionLabel", label: "Підпис позиції сторони", type: "string", localized: true },
+  {
+    path: "verdicts",
+    label: "Висновки суду",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "track", label: "Доріжка", type: "string", required: true },
+      { path: "trackLabel", label: "Назва доріжки", type: "string", localized: true },
+      { path: "trackStage", label: "Стадія доріжки", type: "string", localized: true },
+      { path: "claim", label: "Твердження", type: "text", localized: true, required: true },
+      { path: "outcome", label: "Результат", type: "select", options: VERDICT_OUTCOMES, required: true },
+      { path: "outcomeLabel", label: "Підпис результату", type: "string", localized: true },
+      { path: "residual", label: "Залишкове", type: "boolean" },
+      { path: "inAnchor", label: "Якір у тексті", type: "string" },
+    ],
+  },
+  {
+    path: "interpretations",
+    label: "Тлумачення",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "term", label: "Термін", type: "string", localized: true, required: true },
+      { path: "ruling", label: "Як суд витлумачив", type: "text", localized: true, required: true },
+    ],
+  },
+  { path: "provisionalMeasuresOrder", label: "Тимчасові заходи: наказ", type: "string", localized: true },
+  {
+    path: "provisionalMeasures",
+    label: "Тимчасові заходи",
+    type: "repeater",
+    items: [
+      { path: "measure", label: "Захід", type: "text", localized: true, required: true },
+      { path: "order", label: "Виконано?", type: "select", options: ["violated", "complied"], required: true },
+      { path: "note", label: "Примітка", type: "text", localized: true },
+    ],
+  },
+  {
+    path: "glossary",
+    label: "Глосарій",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "term", label: "Термін", type: "string", localized: true, required: true },
+      { path: "def", label: "Визначення", type: "text", localized: true, required: true },
+    ],
+  },
+  {
+    path: "faq",
+    label: "Питання й відповіді",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "q", label: "Питання", type: "text", localized: true, required: true },
+      { path: "a", label: "Відповідь", type: "text", localized: true, required: true },
+    ],
+  },
+  {
+    path: "instruments",
+    label: "Міжнародні інструменти",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "abbr", label: "Абревіатура", type: "string", either: true, required: true },
+      { path: "name", label: "Назва", type: "string", localized: true, required: true },
+      { path: "year", label: "Рік", type: "integer", required: true },
+      { path: "url", label: "Посилання", type: "string", required: true },
+    ],
+  },
+  {
+    path: "related",
+    label: "Пов'язані справи",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "label", label: "Назва", type: "string", localized: true, required: true },
+      { path: "note", label: "Примітка", type: "text", localized: true, required: true },
+      { path: "href", label: "Посилання", type: "string", required: true },
+    ],
+  },
+  {
+    path: "sources",
+    label: "Джерела",
+    type: "repeater",
+    required: true,
+    items: [
+      { path: "title", label: "Назва", type: "text", required: true },
+      { path: "authors", label: "Автори", type: "string", blankOk: true },
+      { path: "publication", label: "Видання", type: "string", required: true },
+      { path: "date", label: "Дата", type: "string", blankOk: true },
+      { path: "type", label: "Тип", type: "string", required: true },
+      { path: "url", label: "Посилання", type: "string", required: true },
+    ],
+  },
+
+  { path: "bands", label: "Смуги сторінки", type: "select", options: ["four"] },
+  { path: "mapAfterPart", label: "Мапа після частини №", type: "integer" },
+  {
+    path: "hideSections",
+    label: "Приховати розділи",
+    type: "multiSelect",
+    options: ["overview", "rulings", "measures", "machinery", "scale", "glossary"],
+  },
+
+  /* Nested sections: JSON, one field each. */
+  { path: "theatres", label: "Мапа: театри подій (JSON)", type: "json" },
+  { path: "mapFocus", label: "Мапа: фокус (JSON)", type: "json", help: '{"forumKey":"hague","reachTo":"…"}' },
+  { path: "takings", label: "Втрати в цифрах (JSON)", type: "json" },
+  { path: "amounts", label: "Суми (JSON)", type: "json" },
+  { path: "attribution", label: "Ланцюг відповідальності (JSON)", type: "json" },
+  { path: "objections", label: "Заперечення (JSON)", type: "json" },
+  { path: "afterlife", label: "Що було далі (JSON)", type: "json" },
+  { path: "warrants", label: "Ордери (JSON)", type: "json" },
+];
 
 export const COLLECTIONS: CollectionSpec[] = [
   {
@@ -313,34 +588,53 @@ export const COLLECTIONS: CollectionSpec[] = [
     titleField: LIST_LABEL,
     group: GROUP_LIBRARY,
     listLabel: (v, key) => (v.title as L | undefined)?.uk ?? key,
-    props: [
-      {
-        path: "",
-        slug: "document",
-        label: "Огляд (JSON)",
-        type: "json",
-        required: true,
-        help: "Уся структура огляду — див. DecisionSummary у src/content/summaries/types.ts.",
-      },
-    ],
+    props: SUMMARY_PROPS,
   },
 ];
 
 /* ─── Row ⇄ value ──────────────────────────────────────────────────────── */
 
 export type Row = Record<string, unknown>;
+type Obj = Record<string, unknown>;
+
+function getIn(obj: Obj, path: string): unknown {
+  let cur: unknown = obj;
+  for (const k of path.split(".")) {
+    if (cur == null || typeof cur !== "object") return undefined;
+    cur = (cur as Obj)[k];
+  }
+  return cur;
+}
+
+function setIn(obj: Obj, path: string, v: unknown) {
+  const keys = path.split(".");
+  let cur = obj;
+  for (const k of keys.slice(0, -1)) cur = (cur[k] ??= {}) as Obj;
+  cur[keys[keys.length - 1]] = v;
+}
 
 function encode(p: Prop, v: unknown): unknown {
   if (v === undefined || v === null) return null;
-  if (p.type === "json") return v;
+  if (p.type === "json" || p.type === "multiSelect") return v;
+  if (p.type === "repeater") return (v as Obj[]).map((item) => encodeProps(p.items!, item));
   if (p.paragraphs) return (v as string[]).join("\n\n");
+  if (p.lines) return (v as string[]).join("\n");
   return v;
 }
 
 function decode(p: Prop, v: unknown): unknown {
+  if (p.type === "repeater") {
+    const list = (typeof v === "string" ? JSON.parse(v) : v) as Row[] | null | undefined;
+    /* An empty list is kept as an empty list, and a missing one as missing —
+       except that a required list is always there. */
+    if (!list) return p.required ? [] : undefined;
+    return list.map((item) => decodeProps(p.items!, item));
+  }
+  if (v === "" && p.blankOk) return "";
   if (v === undefined || v === null || v === "") return p.nullable ? null : undefined;
   switch (p.type) {
     case "json":
+    case "multiSelect":
       return typeof v === "string" ? JSON.parse(v) : v;
     case "boolean":
       return v === true || v === 1 || v === "1" || v === "true";
@@ -348,24 +642,29 @@ function decode(p: Prop, v: unknown): unknown {
     case "number":
       return typeof v === "number" ? v : Number(v);
     default:
-      return p.paragraphs ? String(v).split(/\n\s*\n/) : v;
+      if (p.paragraphs) return String(v).split(/\n\s*\n/);
+      if (p.lines) return String(v).split("\n");
+      return v;
   }
 }
 
-/** The exported value → the fields of an EmDash entry. */
-export function toRow(spec: CollectionSpec, value: Record<string, unknown>): Row {
+function encodeProps(props: Prop[], value: Obj): Row {
   const row: Row = {};
-  for (const p of spec.props) {
+  for (const p of props) {
     const slug = slugOf(p);
     if (p.path === "") {
       row[slug] = value;
       continue;
     }
-    const v = value[p.path];
-    if (p.localized) {
+    const v = getIn(value, p.path);
+    if (p.localized || p.either) {
+      const plain = p.either && typeof v === "string";
       const l = v as L | null | undefined;
-      row[`${slug}_uk`] = encode(p, l?.uk);
-      row[`${slug}_en`] = encode(p, l?.en);
+      row[`${slug}_uk`] = encode(p, plain ? v : l?.uk);
+      row[`${slug}_en`] = encode(p, plain ? null : l?.en);
+    } else if (p.allowFalse) {
+      row[slug] = v === false ? null : encode(p, v);
+      row[`${slug}_off`] = v === false;
     } else {
       row[slug] = encode(p, v);
     }
@@ -373,23 +672,72 @@ export function toRow(spec: CollectionSpec, value: Record<string, unknown>): Row
   return row;
 }
 
-/** An EmDash entry's fields → the value the file would have exported. */
-export function fromRow(spec: CollectionSpec, row: Row): Record<string, unknown> {
-  const out: Record<string, unknown> = {};
-  for (const p of spec.props) {
+function decodeProps(props: Prop[], row: Row): Obj {
+  const out: Obj = {};
+  for (const p of props) {
     const slug = slugOf(p);
-    if (p.path === "") return decode(p, row[slug]) as Record<string, unknown>;
+    if (p.path === "") return decode(p, row[slug]) as Obj;
     let v: unknown;
-    if (p.localized) {
+    if (p.localized || p.either) {
       const a = decode(p, row[`${slug}_uk`]);
       const b = decode(p, row[`${slug}_en`]);
-      v = a == null && b == null ? (p.nullable ? null : undefined) : { uk: a, en: b };
+      if (a == null && b == null) v = p.nullable ? null : undefined;
+      else if (p.either && b == null) v = a;
+      else v = { uk: a, en: b };
+    } else if (p.allowFalse && decode({ ...p, type: "boolean" }, row[`${slug}_off`])) {
+      v = false;
     } else {
       v = decode(p, row[slug]);
     }
-    if (v !== undefined) out[p.path] = v;
+    if (v !== undefined) setIn(out, p.path, v);
   }
   return out;
+}
+
+/** The exported value → the fields of an EmDash entry. */
+export function toRow(spec: CollectionSpec, value: Obj): Row {
+  return encodeProps(spec.props, value);
+}
+
+/** An EmDash entry's fields → the value the file would have exported. */
+export function fromRow(spec: CollectionSpec, row: Row): Obj {
+  return decodeProps(spec.props, row);
+}
+
+/** EmDash field definitions for a list of properties (fields or repeater sub-fields). */
+function fieldDefs(props: Prop[], sub: boolean): Record<string, unknown>[] {
+  const fields: Record<string, unknown>[] = [];
+  for (const p of props) {
+    const slug = slugOf(p);
+    const validation: Record<string, unknown> = {};
+    if (p.options && !sub) validation.options = [...p.options];
+    if (p.type === "repeater") validation.subFields = fieldDefs(p.items!, true);
+    const base = {
+      type: p.type,
+      ...(Object.keys(validation).length ? { validation } : {}),
+      /* Repeater sub-fields take their choices directly. */
+      ...(p.options && sub ? { options: [...p.options] } : {}),
+      ...(p.help && !sub ? { options: { helpText: p.help } } : {}),
+    };
+    /* A repeater may be empty even where the list is required: the site
+       tells "none" from "absent" by `required`, not by the editor. */
+    const required = !!p.required && p.type !== "repeater";
+    if (p.localized || p.either) {
+      fields.push({ ...base, slug: `${slug}_uk`, label: `${p.label} (UA)`, required });
+      fields.push({
+        ...base,
+        slug: `${slug}_en`,
+        label: p.either ? `${p.label} (EN; порожньо — те саме, що UA)` : `${p.label} (EN)`,
+        required: required && !p.either,
+      });
+    } else {
+      fields.push({ ...base, slug, label: p.label, required });
+      if (p.allowFalse) {
+        fields.push({ slug: `${slug}_off`, label: `${p.label}: не показувати`, type: "boolean" });
+      }
+    }
+  }
+  return fields;
 }
 
 /** EmDash seed field definitions for a collection. */
@@ -413,19 +761,9 @@ export function seedFields(spec: CollectionSpec) {
       options: { helpText: "Порядок, у якому записи йдуть на сайті (менше — вище)." },
     });
   }
-  for (const p of spec.props) {
-    const base = {
-      type: p.type,
-      ...(p.options ? { validation: { options: [...p.options] } } : {}),
-      ...(p.help ? { options: { helpText: p.help } } : {}),
-    };
-    const slug = slugOf(p);
-    if (p.localized) {
-      fields.push({ slug: `${slug}_uk`, label: `${p.label} (UA)`, required: !!p.required, searchable: p.type !== "json", ...base });
-      fields.push({ slug: `${slug}_en`, label: `${p.label} (EN)`, required: !!p.required, searchable: p.type !== "json", ...base });
-    } else {
-      fields.push({ slug, label: p.label, required: !!p.required, ...base });
-    }
+  for (const f of fieldDefs(spec.props, false)) {
+    const localizedText = /_(uk|en)$/.test(String(f.slug)) && f.type !== "json" && f.type !== "repeater";
+    fields.push(localizedText ? { ...f, searchable: true } : f);
   }
   return fields;
 }
