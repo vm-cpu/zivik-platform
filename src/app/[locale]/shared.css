@@ -87,6 +87,44 @@
     display: none;
   }
 }
+/* The same ask on a phone, as a mark: a heart on the UCU cherry, the button
+   the Faculty of Law's own site puts in its bar — owner's request, so a reader
+   who came from there recognises it. Filled, unlike the outline chip on the
+   desktop bar, because on a phone it has no words to carry it; 44×44 like the
+   burger beside it. Hidden where the text chip shows. */
+.nsv-support-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: var(--r-sm);
+  background: var(--brand-red);
+  color: var(--brand-cream-warm);
+  transition: background-color var(--dur) var(--ease);
+}
+.nsv-support-icon:hover {
+  background: var(--brand-red-dark);
+}
+.nsv-support-icon:focus-visible {
+  outline: 2px solid var(--brand-gold-lit);
+  outline-offset: 2px;
+}
+@media (max-width: 880px) {
+  .nsv-support-icon {
+    display: inline-flex;
+  }
+}
+/* Under 375px the bar has no room for it: at 320 it landed on the wordmark
+   («НаСв…» under the heart). The ask stays in the drawer there, and every
+   phone from 375 up — nearly all of them — shows the button. */
+@media (max-width: 374px) {
+  .nsv-support-icon {
+    display: none;
+  }
+}
+
 /* Inside the drawer it has to out-specify `.nsv-mobnav a`, which gives every
    link there a rule under it and the cream the menu rows take — both of which
    turned this back into a menu row with a stray hairline across its bottom.
