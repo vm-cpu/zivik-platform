@@ -125,7 +125,12 @@ export function homeMetadata(locale: Locale, dict: Dictionary): Metadata {
   const path = `/${locale}`;
   return {
     metadataBase: new URL(siteUrl),
-    title,
+    /* Pages under the layout read «Команда — НаСвітло», not a bare «Team»:
+       a tab, a bookmark and a search result all show this string, and a
+       four-letter title says nothing about whose team it is. The decision
+       pages opt out with `absolute` — their titles already carry the court
+       and run long enough. */
+    title: { default: title, template: `%s — ${dict.brand.wordmark}` },
     description,
     // Inherited by every page under the [locale] layout — none of them set
     // `robots`, so this one tag closes the whole tree until launch.
@@ -184,7 +189,7 @@ export function decisionMetadata({
   const og = image ?? defaultOgImage;
   return {
     metadataBase: new URL(siteUrl),
-    title,
+    title: { absolute: title },
     description,
     // Redundant with the layout's inherited value, and deliberately so: the
     // decision pages are the ones that must not be indexed half-finished.

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { foreignLang, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { decisionMetadata } from "@/lib/seo";
+import { decisionMetadata, isIndexable, robotsMetadata } from "@/lib/seo";
 import { caseName, pick } from "@/content/types";
 import type { RegistryCase } from "@/content/types";
 import { institutions } from "@/content/institutions";
@@ -99,7 +99,7 @@ export function pendingMetadata({
   if (!entry) return {};
   const inst = institutions.find((i) => i.id === entry.institutionId);
   const t = dict.pending;
-  return decisionMetadata({
+  const metadata = decisionMetadata({
     locale,
     slug,
     /* The heading's name, in the reader's language. A tab, a search result and
@@ -115,6 +115,12 @@ export function pendingMetadata({
     ogAlt: dict.meta.ogAlt,
     siteName: dict.brand.wordmark,
   });
+  /* Out of the index even after launch, but followed. A page that says the
+     summary is still being written and lists the court's own documents is
+     useful to a reader arriving from the registry and thin to a search engine
+     — sixty-two of them would be most of what Google saw. The links out of it
+     still count. Until launch the site-wide noindex, nofollow stands. */
+  return { ...metadata, robots: isIndexable ? { index: false, follow: true } : robotsMetadata };
 }
 
 /**
@@ -220,7 +226,9 @@ export default function CasePending({
         {items.slice(0, SHOWN).map((c) => (
           <li key={c.id} data-lit={c.lit ? "yes" : "no"}>
             <Link href={caseHref(c)}>
-              <span className="pend-rel-year">{c.year ?? ""}</span>
+              <span className="pend-rel-year">{c.year ?? ""}</span>{" "}
+              {/* The space is for the link's text, not its look — the grid
+                  drops it. Without it the name read «2015Укрнафта проти РФ». */}
               <span className="pend-rel-name">
                 {/* `lang` belongs to the case name and not to the mark beside
                     it: the names are English on a Ukrainian page, the mark is
