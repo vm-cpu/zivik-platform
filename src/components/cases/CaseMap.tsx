@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import atlas from "@/content/europe-map.json";
 import "./theatre-legend.css";
 import "./case-map.css";
 
@@ -27,6 +28,17 @@ import "./case-map.css";
  *
  * Props arrive locale-resolved: this is a client component, and its props are
  * serialized into the page payload.
+ *
+ * The ground itself is not a prop. The neighbours, Ukraine's outline, its
+ * oblast mesh and the lit areas used to cross the boundary as path strings —
+ * 88–95 KB of every decision page's HTML, the same bytes on all eight of them,
+ * written a second time beside the SVG they had just been rendered into. They
+ * are read here from the atlas instead, which the events map and the home
+ * page's map already import: one module the browser fetches once and keeps,
+ * rather than a copy per page it cannot. What still crosses is what differs
+ * per case — the frame, the points, the names, and which areas to light, as
+ * keys into `atlas.areas`. The markup is the same either way, so the server
+ * render and the hydration still agree path for path.
  */
 export interface CaseMapTheatre {
   id: string;
@@ -39,19 +51,22 @@ export interface CaseMapTheatre {
   ptNames?: { label: string; dx?: number; dy?: number }[];
   /** "area" draws no dots: the ground itself is the theatre. */
   ground?: "points" | "area";
-  /** The ground this theatre is about, already resolved to path strings. */
+  /** The ground this theatre is about, as keys: "country" is the outline
+      itself, anything else names a path in the atlas's `areas`. The page hands
+      over only keys that resolve, so every one of them draws. */
   areas?: string[];
   labelDx?: number;
   labelDy?: number;
 }
 
+/** An area key, as the path it names — see `areas` on `CaseMapTheatre`. */
+const AREAS = (atlas as { areas?: Record<string, string> }).areas ?? {};
+const areaPath = (key: string) => (key === "country" ? atlas.ukraine : AREAS[key]);
+
 export default function CaseMap({
   frame,
   strip,
   unit,
-  context,
-  uaPath,
-  regions,
   seat,
   reach,
   reaches,
@@ -63,10 +78,6 @@ export default function CaseMap({
   strip: number;
   /** Projection units per CSS pixel at the band's full width. */
   unit: number;
-  context: string[];
-  uaPath: string;
-  /** Ukraine's internal oblast boundaries, as one mesh. */
-  regions?: string;
   seat: { name: string; caption: string; at: [number, number] };
   reach: [number, number];
   /** One beam per theatre: the seat, and the ground each claim is about. */
@@ -174,10 +185,10 @@ export default function CaseMap({
             </clipPath>
           </defs>
           <g clipPath="url(#mapclip)">
-            {context.map((d, i) => (
+            {atlas.context.map((d, i) => (
               <path key={i} className="ctx" d={d} />
             ))}
-            <path className="ua-fill" d={uaPath} />
+            <path className="ua-fill" d={atlas.ukraine} />
             {/* The oblasts, as the lines between them. The decision maps never
                 had these — the atlas that carried them was the other one — and
                 they are what lets a reader see that Crimea is a piece of this
@@ -185,13 +196,13 @@ export default function CaseMap({
                 because the mesh is 10m and the outline 110m and where an
                 internal line runs out to meet the coast the two disagree by a
                 pixel. */}
-            {regions && (
-              <path className="ua-regions" d={regions} clipPath="url(#mapclip)" />
+            {atlas.regions && (
+              <path className="ua-regions" d={atlas.regions} clipPath="url(#mapclip)" />
             )}
 
             {/* The ground each theatre is about, under every mark. */}
             {theatres.flatMap((t) =>
-              (t.areas ?? []).map((d, i) => (
+              (t.areas ?? []).map(areaPath).filter(Boolean).map((d, i) => (
                 <path
                   key={`${t.id}-${i}`}
                   className="zone-area"

@@ -15,58 +15,14 @@
  * never thrown: a failed rebuild must not read as a failed publish.
  */
 import { definePlugin, type PluginContext } from "emdash";
-import { env } from "cloudflare:workers";
+import { requestRebuild } from "./deploy-hook";
 
-/**
- * The hook URL as pasted into `wrangler secret put` or the dashboard, cleaned
- * of what a paste tends to carry along: surrounding whitespace and newlines,
- * and quotes around the whole value.
- */
-function hookUrl(raw: string): URL | string {
-  const cleaned = raw.trim().replace(/^(["'])(.*)\1$/s, "$2").trim();
-  try {
-    const url = new URL(cleaned);
-    if (url.protocol !== "https:") return `expected an https:// URL, got ${url.protocol}`;
-    return url;
-  } catch {
-    /* Only the length: a mis-pasted secret may be some other credential. */
-    return `not a valid URL (${cleaned.length} characters; expected https://api.cloudflare.com/…)`;
-  }
-}
-
-/* The hook URL is a credential — anyone holding it can start builds — so logs
-   name only its host, never the path with the hook id, and never any part of
-   a value that failed to parse. */
-async function rebuild(reason: string, ctx: PluginContext) {
-  const raw = (env as unknown as Record<string, string | undefined>).DEPLOY_HOOK_URL;
-  if (!raw?.trim()) {
-    ctx.log.info(`rebuild skipped (${reason}): DEPLOY_HOOK_URL is not set`);
-    return;
-  }
-  const url = hookUrl(raw);
-  if (typeof url === "string") {
-    ctx.log.error(`rebuild skipped (${reason}): DEPLOY_HOOK_URL is ${url}`);
-    return;
-  }
-  let res: Response;
-  try {
-    res = await fetch(url, { method: "POST" });
-  } catch (error) {
-    const message = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
-    ctx.log.error(`rebuild request to ${url.host} did not complete (${reason}): ${message}`);
-    return;
-  }
-  if (!res.ok) {
-    const body = (await res.text().catch(() => "")).slice(0, 500);
-    ctx.log.error(`rebuild request failed (${reason}): ${res.status} ${body}`);
-    return;
-  }
-  ctx.log.info(`rebuild requested (${reason})`);
-}
+const rebuild = (reason: string, ctx: PluginContext) => requestRebuild(reason, ctx.log);
 
 type Event = { collection: string; id?: string; content?: { slug?: string | null; id?: string } };
-const on = (what: string) => async (event: Event, ctx: PluginContext) =>
-  rebuild(`${what} ${event.collection}/${event.content?.slug ?? event.content?.id ?? event.id ?? "?"}`, ctx);
+const on = (what: string) => async (event: Event, ctx: PluginContext) => {
+  await rebuild(`${what} ${event.collection}/${event.content?.slug ?? event.content?.id ?? event.id ?? "?"}`, ctx);
+};
 
 export function createPlugin() {
   return definePlugin({

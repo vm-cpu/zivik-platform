@@ -91,6 +91,15 @@ export function metadataTags(md: Metadata): Tag[] {
     meta({ name: "robots", content: content || undefined });
   }
 
+  /* Search Console — лише `google`, бо тільки його сайт і задає
+     (`verificationMetadata` у src/lib/seo.ts). Рядок або масив, як у Next;
+     інші пошуковики (yandex, yahoo, `other`) додати тут, коли знадобляться. */
+  if (md.verification) {
+    for (const code of list(md.verification.google)) {
+      meta({ name: "google-site-verification", content: String(code) });
+    }
+  }
+
   if (md.alternates) {
     link({ rel: "canonical", href: abs(md.alternates.canonical as string | URL | undefined) });
     for (const [lang, href] of Object.entries(md.alternates.languages ?? {})) {

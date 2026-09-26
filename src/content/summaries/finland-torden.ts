@@ -37,6 +37,15 @@ export const finlandTorden: DecisionSummary = {
     uk: "Фінляндія проти Воїслава Тордена",
     en: "Finland v. Voislav Torden",
   },
+  /* The share card's wording (scripts/og-cards.mts). Carried over from the
+     hand-drawn cards so the redrawn ones say the same — except the name: the
+     old card still read «проти Яна Петровського» after the page had moved to
+     the name he was tried under, which is the drift a hand-kept card invites. */
+  card: {
+    title: "Фінляндія проти Воїслава Тордена",
+    eyebrow: "Окружний суд Гельсінкі · 14 березня 2025",
+    kicker: "Довічне за воєнні злочини — універсальна юрисдикція",
+  },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader

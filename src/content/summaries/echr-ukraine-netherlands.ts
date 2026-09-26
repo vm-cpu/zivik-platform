@@ -40,6 +40,13 @@ export const echrUkraineNetherlands: DecisionSummary = {
     uk: "Україна і Нідерланди проти Росії",
     en: "Ukraine and the Netherlands v. Russia",
   },
+  /* The share card's wording (scripts/og-cards.mts). Carried over from the
+     hand-drawn cards so the redrawn ones say the same. */
+  card: {
+    title: "Україна і Нідерланди проти Росії",
+    eyebrow: "ЄСПЛ, Велика палата · 9 липня 2025",
+    kicker: "Системні порушення від Донбасу-2014 до вторгнення",
+  },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader

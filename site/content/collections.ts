@@ -101,6 +101,12 @@ export interface CollectionSpec {
   urlPattern: string;
   props: Prop[];
   /**
+   * A collection added after the database was seeded. Until it exists in D1
+   * (`cf:content -- schema --yes`, or by hand in Content types) the build
+   * reads its value from the file instead of failing on the missing table.
+   */
+  optional?: boolean;
+  /**
    * A field that exists only to make the admin list readable. Written by the
    * seed; never read back, so editing it changes nothing on the site.
    */
@@ -119,6 +125,7 @@ type L = { uk: string; en: string };
 const GROUP_LIBRARY = "Бібліотека";
 const GROUP_MAP = "Мапа";
 const GROUP_SITE = "Сайт";
+const GROUP_BLOG = "Блог";
 
 const STAGES = [
   "upcoming",
@@ -185,6 +192,31 @@ const SUMMARY_PROPS: Prop[] = [
   { path: "masthead.judgment", slug: "masthead_judgment", label: "Шапка: рішення", type: "string", required: true },
   { path: "mastheadUk.official", slug: "masthead_uk_official", label: "Шапка (укр.): офіційна назва", type: "text" },
   { path: "mastheadUk.judgment", slug: "masthead_uk_judgment", label: "Шапка (укр.): рішення", type: "string" },
+
+  /* The share card's three lines (scripts/og-cards.mts draws it at build
+     time). Optional: without them the card derives its text, and a D1 that
+     does not have these columns yet reads as all three empty. */
+  {
+    path: "card.title",
+    slug: "card_title",
+    label: "Картка для соцмереж: заголовок",
+    type: "string",
+    help: "Назва справи на картці, до ~45 знаків. Порожнє — коротка назва для пошуку або заголовок.",
+  },
+  {
+    path: "card.eyebrow",
+    slug: "card_eyebrow",
+    label: "Картка для соцмереж: суд і дата",
+    type: "string",
+    help: "Напр. «ЄСПЛ, Велика палата · 9 липня 2025». Порожнє — інституція і рядок «Шапка (укр.): рішення».",
+  },
+  {
+    path: "card.kicker",
+    slug: "card_kicker",
+    label: "Картка для соцмереж: підсумок",
+    type: "string",
+    help: "Один рядок під назвою: головний результат. Порожнє — виділена цифра з «Цифри».",
+  },
 
   { path: "plain.tldr", slug: "tldr", label: "Коротко", type: "text", localized: true, required: true },
   { path: "plain.whyMatters", slug: "why_matters", label: "Чому це важливо", type: "text", localized: true, required: true },
@@ -611,6 +643,59 @@ export const COLLECTIONS: CollectionSpec[] = [
     urlPattern: "/uk/cases/{slug}",
     listLabel: (v, key) => (v.title as L | undefined)?.uk ?? key,
     props: SUMMARY_PROPS,
+  },
+  /* Блог — закладено наперед: сторінок /blog ще немає (див. src/content/blog.ts). */
+  {
+    slug: "posts",
+    label: "Блог",
+    labelSingular: "Допис",
+    shape: "array",
+    source: { file: "src/content/blog.ts", export: "posts" },
+    key: (v) => String(v.slug),
+    titleField: "title_uk",
+    group: GROUP_BLOG,
+    urlPattern: "/uk/blog/{slug}",
+    optional: true,
+    props: [
+      {
+        path: "slug",
+        slug: "key",
+        label: "Адреса (slug, латиницею через дефіс)",
+        type: "string",
+        required: true,
+        help: "Стане частиною адреси: /uk/blog/<slug>. Після публікації краще не змінювати.",
+      },
+      { path: "title", label: "Заголовок", type: "string", localized: true, required: true },
+      {
+        path: "excerpt",
+        label: "Анонс (до 160 знаків)",
+        type: "text",
+        localized: true,
+        required: true,
+        help: "Показується в списку дописів і в Google.",
+      },
+      {
+        path: "body",
+        label: "Текст",
+        type: "text",
+        localized: true,
+        paragraphs: true,
+        required: true,
+        help: "Абзаци розділяйте порожнім рядком.",
+      },
+      { path: "date", label: "Дата (РРРР-ММ-ДД)", type: "string", required: true },
+      { path: "author", label: "Автор", type: "string", localized: true },
+      { path: "cover", label: "Обкладинка (шлях у /public/blog)", type: "string" },
+      { path: "coverAlt", label: "Опис обкладинки для незрячих", type: "string", localized: true },
+      { path: "tags", label: "Теги (по одному в рядку)", type: "text", lines: true },
+      {
+        path: "relatedCases",
+        label: "Пов'язані огляди (slug, по одному в рядку)",
+        type: "text",
+        lines: true,
+        help: "Наприклад: icj-genocide",
+      },
+    ],
   },
 ];
 

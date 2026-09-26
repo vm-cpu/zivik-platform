@@ -1,0 +1,13 @@
+{
+  "note": "Written by scripts/og-cards.mts. Slug → hash of what its card was drawn from. The site links a case's own card only if its slug is listed here (src/lib/seo.ts).",
+  "cards": {
+    "dtek-krymenergo": "b1e393c546084b43",
+    "echr-ukraine-netherlands": "e20563a698789879",
+    "finland-torden": "f6ea5b7783de1dfa",
+    "hague-mh17": "a2e520418ed037c9",
+    "icc-ukraine": "edc0c7789a782e8a",
+    "icj-cerd-icsft": "36f97c1e7d67a29a",
+    "icj-genocide": "9f4f4821be1de247",
+    "oschadbank": "d3d4e8f36f831a78"
+  }
+}

@@ -19,7 +19,7 @@ import { clientIslands } from "./site/islands/vite-plugin.mjs";
 import { contentSnapshot } from "./site/content/vite-plugin.mjs";
 import { adminLocales } from "./site/emdash/admin-locales.mjs";
 import { securityHeaders } from "./src/lib/security-headers.ts";
-import { appendFileSync } from "node:fs";
+import { appendFileSync, readFileSync } from "node:fs";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 
@@ -34,9 +34,32 @@ const buildEnv = [
   "NEXT_PUBLIC_SITE_URL",
   "VERCEL_PROJECT_PRODUCTION_URL",
   "VERCEL_ENV",
+  /* Вмикають те, що вимкнено до запуску: маячок Cloudflare Web Analytics
+     (src/lib/analytics.ts) і мета-тег підтвердження Google Search Console
+     (`verificationMetadata` у src/lib/seo.ts). Без значення — нічого з цього в HTML
+     немає. Див. docs/LAUNCH.md. */
+  "NEXT_PUBLIC_CF_ANALYTICS_TOKEN",
+  "GOOGLE_SITE_VERIFICATION",
 ];
 const define = Object.fromEntries(
   buildEnv.map((k) => [`process.env.${k}`, JSON.stringify(process.env[k])]),
+);
+/* When the content snapshot this build compiles was taken, for the Worker's
+   cron to compare against the latest publish in D1 (site/worker.ts). Null
+   when the build ran from the files — then there is nothing to compare. */
+{
+  let pulledAt = null;
+  try {
+    pulledAt = JSON.parse(readFileSync(here("./.emdash/snapshot.json"), "utf8")).pulledAt ?? null;
+  } catch {
+    /* no snapshot: a build from src/content */
+  }
+  define.__NSV_SNAPSHOT_PULLED_AT__ = JSON.stringify(pulledAt);
+}
+/* Who may publish from the admin (site/emdash/review-policy.ts): an EmDash
+   role level, 50 (administrator) unless the build says otherwise. */
+define.__NSV_PUBLISH_MIN_ROLE__ = JSON.stringify(
+  [20, 30, 40, 50].includes(Number(process.env.PUBLISH_MIN_ROLE)) ? Number(process.env.PUBLISH_MIN_ROLE) : 50,
 );
 
 /**
@@ -98,6 +121,40 @@ export default defineConfig({
           entrypoint: here("./site/emdash/rebuild-on-publish.ts"),
           format: "native",
           capabilities: ["content:read"],
+        },
+        /* Email for sign-in links, recovery and invitations — only once the
+           build says a provider is set up (see site/emdash/email-resend.ts). */
+        ...(process.env.EMAIL_PROVIDER === "resend"
+          ? [
+              {
+                id: "nsv-email-resend",
+                version: "1.0.0",
+                entrypoint: here("./site/emdash/email-resend.ts"),
+                format: /** @type {const} */ ("native"),
+                capabilities: /** @type {any} */ (["email:provide"]),
+              },
+            ]
+          : []),
+        {
+          id: "nsv-staging-on-save",
+          version: "1.0.0",
+          entrypoint: here("./site/emdash/staging-on-save.ts"),
+          format: "native",
+          capabilities: ["content:read"],
+        },
+        {
+          id: "nsv-review-policy",
+          version: "1.0.0",
+          entrypoint: here("./site/emdash/review-policy.ts"),
+          format: "native",
+          capabilities: ["hooks.content-policy:register"],
+        },
+        {
+          id: "nsv-validate-content",
+          version: "1.0.0",
+          entrypoint: here("./site/emdash/validate-content.ts"),
+          format: "native",
+          capabilities: ["content:write"],
         },
       ],
     }),

@@ -26,6 +26,13 @@ export const hagueMh17: DecisionSummary = {
     uk: "Справа MH17: вирок у Гаазі",
     en: "The MH17 verdict in The Hague",
   },
+  /* The share card's wording (scripts/og-cards.mts). Carried over from the
+     hand-drawn cards so the redrawn ones say the same. */
+  card: {
+    title: "Справа MH17: вирок у Гаазі",
+    eyebrow: "Окружний суд Гааги · 17 листопада 2022",
+    kicker: "Три довічні вироки за 298 загиблих",
+  },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader

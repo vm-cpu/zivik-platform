@@ -21,8 +21,7 @@
  *   - Text inside an <iframe> is invisible to search engines and could not be
  *     translated, so the English homepage embedded a Ukrainian map.
  *
- * The output is committed, like scripts/og-cards.py's cards: the build stays
- * offline and deterministic.
+ * The output is committed: the build stays offline and deterministic.
  */
 import { geoGraticule, geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";

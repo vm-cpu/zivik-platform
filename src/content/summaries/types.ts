@@ -766,6 +766,22 @@ export interface DecisionSummary extends VerbatimSummary {
    */
   mastheadUk?: { official?: string; judgment?: string };
   /**
+   * The three lines of the share card, /og/cases/<slug>.png — Ukrainian only,
+   * because one card serves both locales.
+   *
+   * The card is drawn at build time by scripts/og-cards.mts. Each part left
+   * empty is derived, so a summary made in the admin still gets a card:
+   *   title   ← `seoTitle` up to « — », else `title`
+   *   eyebrow ← the forum's institution · `mastheadUk.judgment`
+   *   kicker  ← the accented stat tile, value and label
+   * The derivation is presentable, not good: the full ICJ captions run to
+   * three lines of 64px and end in «…», and «0 підозрюваних під вартою» is
+   * a fact but not the headline. Written by hand, the title is the case as a
+   * reader would say it, the eyebrow the court and the date, the kicker the
+   * one result that makes the link worth opening.
+   */
+  card?: { title?: string; eyebrow?: string; kicker?: string };
+  /**
    * Date the page's context layer was last verified against its sources
    * (ISO 8601). For live dockets — an ICC situation, an enforcement stage —
    * it renders next to the out-of-record figures and feeds `dateModified` in

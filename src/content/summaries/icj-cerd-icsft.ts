@@ -48,6 +48,13 @@ export const icjCerdIcsft: DecisionSummary = {
     uk: "Застосування Міжнародної конвенції про боротьбу з фінансуванням тероризму та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації (Україна проти Російської Федерації)",
     en: "Application of the International Convention for the Suppression of the Financing of Terrorism and of the International Convention on the Elimination of All Forms of Racial Discrimination (Ukraine v. Russian Federation)",
   },
+  /* The share card's wording (scripts/og-cards.mts). Carried over from the
+     hand-drawn cards so the redrawn ones say the same. */
+  card: {
+    title: "Україна проти Російської Федерації",
+    eyebrow: "Міжнародний суд ООН · рішення 31 січня 2024",
+    kicker: "4 порушення двох конвенцій — ICSFT і CERD",
+  },
   seoTitle: {
     uk: "Україна проти Росії (ICSFT і CERD) — Міжнародний суд ООН",
     en: "Ukraine v. Russia (ICSFT and CERD) — International Court of Justice",
