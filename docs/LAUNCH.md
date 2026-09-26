@@ -45,6 +45,15 @@
       `https://<домен>/_emdash/admin` пускає в адмінку.
 - [ ] Passkey адмінки прив'язані до домену: після переїзду редакторам
       доведеться зареєструвати їх заново на новій адресі. Попередити.
+- [ ] `public/.well-known/security.txt`: додати рядок
+      `Canonical: https://<домен>/.well-known/security.txt`. Поле `Expires`
+      там діє рік (зараз до 2027-09-26) — продовжувати щороку, інакше файл
+      вважається простроченим.
+- [ ] **Захист на рівні зони** (з'являється лише з власним доменом): Security →
+      Bots → **Bot Fight Mode**; **AI Crawl Control** — узгодити з
+      `src/app/robots.ts`, щоб правила Cloudflare не суперечили нашим;
+      правило **Rate limiting** на `/_emdash/*`; **Cloudflare Access**
+      (Zero Trust) на `/_emdash/*` з політикою «Emails» редакції.
 
 ## 2. Адреса сайту в збірці
 

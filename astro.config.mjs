@@ -93,6 +93,9 @@ const headersFile = {
         "/logos/*",
         "  Cache-Control: public, max-age=86400",
         "",
+        "/favicon.ico",
+        "  Cache-Control: public, max-age=86400",
+        "",
       ];
       appendFileSync(new URL("_headers", dir), lines.join("\n"));
     },

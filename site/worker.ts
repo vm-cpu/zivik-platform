@@ -27,6 +27,10 @@ export { PluginBridge };
  *     use it, always carries the session cookie.
  *   - HSTS on everything the Worker answers. `_headers` covers the static
  *     files only; on a custom domain nothing else would add it to the admin.
+ *   - `X-Robots-Tag: noindex` on the admin, and no `Server-Timing` anywhere.
+ *     The login page had neither a robots tag nor a header, so a crawler that
+ *     ignores robots.txt could list it; and EmDash's Server-Timing told any
+ *     visitor how long each D1 step took — a free map of the runtime.
  */
 const HSTS = "max-age=63072000; includeSubDomains";
 
@@ -124,9 +128,11 @@ export default {
       );
     }
     const response = await handler.fetch!(request, env, ctx);
-    if (response.headers.has("strict-transport-security") || response.status === 101) return response;
+    if (response.status === 101) return response;
     const out = new Response(response.body, response);
-    out.headers.set("strict-transport-security", HSTS);
+    if (!out.headers.has("strict-transport-security")) out.headers.set("strict-transport-security", HSTS);
+    out.headers.delete("server-timing");
+    if (pathname.startsWith("/_emdash/")) out.headers.set("x-robots-tag", "noindex, nofollow");
     return out;
   },
   async scheduled(controller, env, ctx) {
