@@ -44,8 +44,8 @@ Cloudflare, що й база. Від втрати акаунта чи помил
 1. <https://dash.cloudflare.com/profile/api-tokens> → **Create Token** →
    **Create Custom Token** → *Get started*.
 2. **Token name:** `nasvitlo d1 backup (GitHub Actions)`.
-3. **Permissions:** один рядок — **Account** · **D1** · **Read**.
-   Нічого більше: ні Workers, ні Edit.
+3. **Permissions:** один рядок — **Account** · **D1** · **Edit**.
+   Нічого більше: ні Workers, ні інших сервісів.
 4. **Account Resources:** *Include* → `Vm@bot-partners.com's Account`.
 5. (За бажання) **Client IP Address Filtering** не ставити — IP раннерів
    GitHub змінюються. **TTL** можна лишити порожнім або поставити рік і
@@ -53,11 +53,11 @@ Cloudflare, що й база. Від втрати акаунта чи помил
 6. **Continue to summary** → **Create Token** → скопіювати токен (показують
    один раз).
 
-> Якщо перший запуск упаде з помилкою автентифікації саме на
-> `wrangler d1 export` (а не на першому кроці), значить, Cloudflare вимагає
-> для експорту права запису: змініть рядок на **D1 · Edit**. Це ширше, ніж
-> хотілося б, — токен тоді зможе й змінювати базу, — тож тримайте його
-> тільки в секретах GitHub і більше ніде.
+> **Чому Edit, а не Read.** `wrangler d1 export` створює на боці Cloudflare
+> завдання експорту, і з правом *Read* Cloudflare відповідає
+> `Authentication error [code: 10000]` — перевірено першим запуском
+> 26 вересня 2026. Edit ширше, ніж хотілося б: токен може й змінювати
+> базу. Тож тримайте його тільки в секретах GitHub і більше ніде.
 
 ### 2. Секрети в GitHub
 
