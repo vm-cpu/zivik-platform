@@ -798,7 +798,24 @@ export default function EventsMap({
      stylesheet answers it — open on a window wide enough to lay it beside the
      drawing, folded on a phone, where an open key stands between the reader
      and everything under it. */
-  const legendOpen = legendUser ?? true;
+  /* Вузьке вікно — та сама межа, що в events-map.css (`max-width: 900px`).
+
+     Стилі й розмітка відповідали на `null` по-різному. CSS ховав ключ на
+     телефоні, а кнопка вважала `null` відкритим: на 390 «Легенда» стояла з
+     трикутником донизу і `aria-expanded="true"` над складеним блоком, а
+     перший дотик ставив `false` — тобто нічого не робив, і відкрити ключ
+     вдавалося лише з другого разу. Тепер кнопка питає ту саму ширину, що й
+     стилі. До гідратації `narrow` — `false`, як на сервері, тож розмітка
+     збігається; перший кадр усе одно малює CSS, а JS лише доганяє атрибут. */
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 900px)");
+    const sync = () => setNarrow(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  const legendOpen = legendUser ?? !narrow;
 
   /**
    * A legend key held down: show me this set of marks and quieten the rest.
@@ -1867,9 +1884,20 @@ export default function EventsMap({
    * rows, six filters, a search box, one click away in the top bar. What this
    * block has that the registry does not is nine caseloads side by side, which
    * is worth a line, not a screen. Folded.
+   *
+   * Складені — на широкому вікні. На вузькому навпаки, і так само, як ключ,
+   * `null` тут означає «як вирішить ширина», а не «закрито». На 390 мапа —
+   * це смужка 341 піксель заввишки, де дев'ять міст злипаються в кластер, а
+   * під нею був складений ключ і складений перелік судів: читач, що
+   * догортав до кінця мапи, бачив два заголовки й жодного міста. На телефоні
+   * перелік і є мапою судів, тож він відкритий, а ключ — складений (див.
+   * `narrow` вище). Перший кадр вирішує CSS за шириною (`data-seats="auto"`,
+   * events-map.css), тож блок не стрибає після гідратації; натискання
+   * читача переважує обидва.
    */
   const [listUser, setListUser] = useState<boolean | null>(null);
-  const [seatsOpen, setSeatsOpen] = useState(false);
+  const [seatsUser, setSeatsUser] = useState<boolean | null>(null);
+  const seatsOpen = seatsUser ?? narrow;
   const [rov, setRov] = useState<string | null>(null);
   /* The remembered mark, unless it has just gone inert under the reader —
      zooming out past the floor, or turning the phone. Then the ring's first. */
@@ -1950,7 +1978,7 @@ export default function EventsMap({
       data-hi={hi ?? undefined}
       data-legend={legendUser === null ? "auto" : legendUser ? "on" : "off"}
       data-list={listUser === null ? "auto" : listUser ? "on" : "off"}
-      data-seats={seatsOpen ? "on" : "off"}
+      data-seats={seatsUser === null ? "auto" : seatsUser ? "on" : "off"}
       data-touch={touch ? "yes" : "no"}
       /* Which framing is on the screen, for the one rule that has to know.
          The Atlantic framing is 2.3 times as wide as the projection and puts
@@ -2230,7 +2258,15 @@ export default function EventsMap({
               a scatter of city dots the eye has to gather up itself.
 
               Under Ukraine and under the markers: the subject of these
-              proceedings and the seats themselves both stay on top. */}
+              proceedings and the seats themselves both stay on top.
+
+              Outside the aria-hidden group: these shapes are buttons, and a
+              focusable control inside aria-hidden is announced as nothing —
+              the keyboard lands on it and a screen reader says silence. The
+              group closes around them and reopens after, so the painting
+              order is unchanged. */}
+        </g>
+        <g>
           {Object.entries(geo.forums).map(([name, d]) => {
             /* A shape with a country entry behind it answers when pressed; one
                without is scenery. Today every lit shape has an entry — the
@@ -2263,6 +2299,8 @@ export default function EventsMap({
               />
             );
           })}
+        </g>
+        <g aria-hidden="true">
           <path className="emap-ua" d={geo.ukraine} />
           {/* The 27 regions, as the lines between them. Six unlabelled dots
               inside a blank country said nothing about where anything was;
@@ -2927,7 +2965,7 @@ export default function EventsMap({
             type="button"
             className="emap-leg-toggle"
             aria-expanded={legendOpen}
-            onClick={() => setLegendUser((v) => !(v ?? true))}
+            onClick={() => setLegendUser(!legendOpen)}
           >
             <span className="emap-leg-chev" aria-hidden="true" />
             {labels.legendTitle}
@@ -3145,7 +3183,7 @@ export default function EventsMap({
             type="button"
             className="emap-fold-h"
             aria-expanded={seatsOpen}
-            onClick={() => setSeatsOpen((v) => !v)}
+            onClick={() => setSeatsUser(!seatsOpen)}
           >
             <span className="emap-leg-chev" aria-hidden="true" />
             {labels.courtsSeat}

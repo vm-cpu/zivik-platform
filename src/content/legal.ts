@@ -2,6 +2,8 @@ import type { Localized } from "./types";
 import { locales, type Locale } from "@/i18n/config";
 import { registryProceedings, registryCases } from "./cases";
 import { SUMMARIES } from "./summaries";
+import { siteUrl } from "@/lib/seo";
+import { analyticsEnabled } from "@/lib/analytics";
 
 /**
  * Legal pages — the Privacy Policy and the Terms of Use, bilingual.
@@ -64,23 +66,36 @@ export const registrySummarised = registryCases.filter(
 export const legalPhone = "+38 (032) 240-99-40";
 
 /**
- * The production host.
+ * The production host — похідний від `siteUrl`, а не вписаний руками.
  *
- * NOT used in the prose: both documents refer to the site by name («НаСвітло»
- * / the Site) precisely because the final domain is unsettled — today the
- * library answers on a Vercel preview host. This constant exists only so
- * there is one place to correct if a clause ever has to name the host.
+ * Тут стояв літерал `zivik-platform.vercel.app` з приміткою «MUST BE
+ * CONFIRMED BEFORE LAUNCH»: сайт тим часом переїхав на Cloudflare
+ * (`*.workers.dev`), а константа лишилася на Vercel. Тепер зміна домену —
+ * це одна змінна збірки, NEXT_PUBLIC_SITE_URL, і ця константа йде за нею
+ * разом з канонічними URL і sitemap (docs/LAUNCH.md).
  *
- * MUST BE CONFIRMED BEFORE LAUNCH — and if it changes, the revision date of
- * both documents changes with it.
+ * У прозі й далі НЕ використовується: обидва документи називають сайт на
+ * ім'я («НаСвітло» / the Site), тож переїзд на інший домен тексту не
+ * змінює. Якщо колись пункт муситиме назвати адресу — брати звідси.
  */
-export const legalHost = "zivik-platform.vercel.app";
+export const legalHost = new URL(siteUrl).host;
 
 /**
  * Date of the current revision of both documents, ISO — for `<time dateTime>`
  * and for the human string below, so the two can never disagree.
+ *
+ * Дві редакції, бо розділ «Файли cookie та аналітика» має два варіанти
+ * (`cookiesBlocks` нижче): без аналітики — редакція від 25 серпня, з
+ * Cloudflare Web Analytics — від дня, коли написано абзац про неї. Збірка з
+ * NEXT_PUBLIC_CF_ANALYTICS_TOKEN показує другу дату, і обіцянка з тексту
+ * («назвемо сервіс … та оновимо дату редакції») виконується сама.
+ * Правлячи будь-який із двох варіантів, оновлюйте відповідну дату.
  */
-export const legalRevisedIso = "2026-08-25";
+const revisedWithoutAnalytics = "2026-08-25";
+const revisedWithAnalytics = "2026-09-26";
+export const legalRevisedIso = analyticsEnabled
+  ? revisedWithAnalytics
+  : revisedWithoutAnalytics;
 
 /** Locale tags for date formatting (the site's `uk`/`en` are not enough: a
  *  bare "en" formats as American and would print "August 25, 2026"). */
@@ -134,6 +149,63 @@ export interface LegalDocument {
 }
 
 /* ── Privacy policy ─────────────────────────────────────────────────────── */
+
+/**
+ * Розділ «Файли cookie та аналітика» — залежно від збірки.
+ *
+ * Текст мусить бути правдою про ту саму збірку, яку читач відкрив: маячок
+ * Cloudflare Web Analytics вмикається змінною NEXT_PUBLIC_CF_ANALYTICS_TOKEN
+ * (`lib/analytics.ts`), і та сама змінна перемикає тут абзац. Інакше
+ * політика або обіцяла б «аналітики немає» на сторінці з маячком, або
+ * описувала б сервіс, якого немає.
+ *
+ * Що саме стверджує варіант з аналітикою — з документації Cloudflare
+ * (developers.cloudflare.com/web-analytics і /speed/observatory/rum-beacon):
+ * скрипт нічого не зберігає в браузері й не читає (cookie, localStorage,
+ * sessionStorage, IndexedDB); IP-адресу Cloudflare відкидає в найближчому
+ * дата-центрі й не зберігає; у звітах дані доступні за попередні шість
+ * місяців. Якщо Cloudflare змінить ці умови — змінити й текст.
+ */
+const cookiesBlocks: LegalBlock[] = analyticsEnabled
+  ? [
+      {
+        kind: "p",
+        text: {
+          uk: "Сайт не встановлює файлів cookie. Щоб розуміти, скільки людей читає бібліотеку і які сторінки відкривають, ми використовуємо Cloudflare Web Analytics — сервіс вебаналітики компанії Cloudflare, Inc. Його скрипт не зберігає у вашому браузері нічого (ні cookie, ні localStorage чи інших сховищ) і не створює «відбитка» пристрою, тож банера згоди на cookie ми не показуємо.",
+          en: "The Site sets no cookies. To understand how many people read the library and which pages they open, we use Cloudflare Web Analytics, a web-analytics service of Cloudflare, Inc. Its script stores nothing in your browser (no cookies, no localStorage or other storage) and does not fingerprint your device, so we show no cookie consent banner.",
+        },
+      },
+      {
+        kind: "p",
+        text: {
+          uk: "Під час перегляду сторінки скрипт надсилає до Cloudflare знеособлені технічні відомості: адресу сторінки й сторінки, з якої ви перейшли, тип браузера й пристрою, країну та показники швидкості завантаження. IP-адресу Cloudflare відкидає одразу в найближчому дата-центрі й не зберігає. Ми бачимо лише зведену статистику — без даних про окремих читачів; у звітах вона доступна за попередні шість місяців.",
+          en: "When a page is viewed, the script sends Cloudflare anonymised technical information: the page address and the referring page, the browser and device type, the country and page-load performance measurements. Cloudflare discards the IP address at the nearest data centre and does not store it. We see only aggregate statistics, with nothing about individual readers; reports cover the previous six months.",
+        },
+      },
+      {
+        kind: "p",
+        text: {
+          uk: "Мета — підтримувати бібліотеку корисною та швидкою; підстава — законний інтерес Факультету. Щоб скрипт не завантажувався, достатньо блокувальника вмісту чи вбудованого захисту від стеження у вашому браузері — бібліотека працює й без нього.",
+          en: "The purpose is to keep the library useful and fast; the ground is the Faculty’s legitimate interest. To stop the script from loading, a content blocker or your browser’s built-in tracking protection is enough — the library works without it.",
+        },
+      },
+    ]
+  : [
+      {
+        kind: "p",
+        text: {
+          uk: "Станом на дату цієї редакції Сайт не встановлює власних файлів cookie і не використовує сервісів вебаналітики. Ми не показуємо банера згоди на cookie, бо погоджуватися немає на що.",
+          en: "As at the date of this revision the Site sets no cookies of its own and uses no web-analytics service. We show no cookie consent banner because there is nothing to consent to.",
+        },
+      },
+      {
+        kind: "p",
+        text: {
+          uk: "Якщо аналітику колись буде запроваджено, ми назвемо тут сервіс, мету, дані, які він збирає, і строк їх зберігання, та оновимо дату редакції. Керувати файлами cookie ви завжди можете в налаштуваннях свого браузера.",
+          en: "If analytics is ever introduced, we will name here the service, its purpose, the data it collects and how long that data is kept, and we will update the revision date. You can always manage cookies in your browser settings.",
+        },
+      },
+    ];
 
 export const privacy: LegalDocument = {
   slug: "privacy",
@@ -237,22 +309,7 @@ export const privacy: LegalDocument = {
     {
       id: "cookies",
       heading: { uk: "Файли cookie та аналітика", en: "Cookies and analytics" },
-      blocks: [
-        {
-          kind: "p",
-          text: {
-            uk: "Станом на дату цієї редакції Сайт не встановлює власних файлів cookie і не використовує сервісів вебаналітики. Ми не показуємо банера згоди на cookie, бо погоджуватися немає на що.",
-            en: "As at the date of this revision the Site sets no cookies of its own and uses no web-analytics service. We show no cookie consent banner because there is nothing to consent to.",
-          },
-        },
-        {
-          kind: "p",
-          text: {
-            uk: "Якщо аналітику колись буде запроваджено, ми назвемо тут сервіс, мету, дані, які він збирає, і строк їх зберігання, та оновимо дату редакції. Керувати файлами cookie ви завжди можете в налаштуваннях свого браузера.",
-            en: "If analytics is ever introduced, we will name here the service, its purpose, the data it collects and how long that data is kept, and we will update the revision date. You can always manage cookies in your browser settings.",
-          },
-        },
-      ],
+      blocks: cookiesBlocks,
     },
     {
       id: "sharing",
@@ -269,12 +326,16 @@ export const privacy: LegalDocument = {
           kind: "ul",
           items: {
             uk: [
-              "постачальникам технічних послуг — хостинг Сайту та поштова служба університету, у межах, потрібних для того, щоб Сайт відкривався, а лист доходив;",
+              analyticsEnabled
+                ? "постачальникам технічних послуг — хостинг Сайту, сервіс вебаналітики Cloudflare Web Analytics і поштова служба університету, у межах, потрібних для того, щоб Сайт відкривався, статистика відвідувань рахувалася, а лист доходив;"
+                : "постачальникам технічних послуг — хостинг Сайту та поштова служба університету, у межах, потрібних для того, щоб Сайт відкривався, а лист доходив;",
               "іншим підрозділам Українського католицького університету — лише тоді й у тому обсязі, як цього вимагає розгляд вашого звернення;",
               "державним органам — у випадках, прямо передбачених законодавством України.",
             ],
             en: [
-              "technical service providers — the Site’s hosting and the University’s mail service, to the extent needed for the Site to load and for an email to arrive;",
+              analyticsEnabled
+                ? "technical service providers — the Site’s hosting, the Cloudflare Web Analytics service and the University’s mail service, to the extent needed for the Site to load, for visits to be counted and for an email to arrive;"
+                : "technical service providers — the Site’s hosting and the University’s mail service, to the extent needed for the Site to load and for an email to arrive;",
               "other units of the Ukrainian Catholic University — only where and to the extent that handling your message requires it;",
               "state authorities — in the cases directly provided for by the legislation of Ukraine.",
             ],
@@ -378,8 +439,12 @@ export const privacy: LegalDocument = {
         {
           kind: "p",
           text: {
-            uk: "Ми можемо оновлювати цю Політику — зокрема якщо на Сайті з'являться аналітика чи форма підписки. Чинна редакція завжди опублікована на цій сторінці із зазначенням дати оновлення.",
-            en: "We may update this Policy — in particular if analytics or a subscription form appears on the Site. The current revision is always published on this page with the date of the update.",
+            uk: analyticsEnabled
+              ? "Ми можемо оновлювати цю Політику — зокрема якщо зміниться сервіс аналітики або на Сайті з'явиться форма підписки. Чинна редакція завжди опублікована на цій сторінці із зазначенням дати оновлення."
+              : "Ми можемо оновлювати цю Політику — зокрема якщо на Сайті з'являться аналітика чи форма підписки. Чинна редакція завжди опублікована на цій сторінці із зазначенням дати оновлення.",
+            en: analyticsEnabled
+              ? "We may update this Policy — in particular if the analytics service changes or a subscription form appears on the Site. The current revision is always published on this page with the date of the update."
+              : "We may update this Policy — in particular if analytics or a subscription form appears on the Site. The current revision is always published on this page with the date of the update.",
           },
         },
       ],

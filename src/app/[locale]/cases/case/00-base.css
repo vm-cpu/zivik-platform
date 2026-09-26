@@ -135,9 +135,16 @@
    registry, and on a 1990px screen it left a 477px void down each side while
    the site header and footer ran to a 28px gutter above and below it. */
 .casepage .rail {
-  max-width: calc(var(--measure) + var(--gutter) * 2);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+  /* On the site's one rail (DESIGN.md §2). Centred, the column started at
+     196 on a 1440 window while the header, the registry and every other page
+     start at 130 — going from the library into a decision, the text stepped
+     sideways. It now starts on --page-gutter like everything else and keeps
+     its own measure from there: capped against the left edge, never centred.
+     --measure still widens on large screens, so past ~1700 the column runs a
+     little into the right gutter rather than giving up the width. */
+  width: min(100%, calc(var(--page-gutter) + var(--measure) + var(--gutter)));
+  margin-inline: 0;
+  padding-inline: var(--page-gutter) var(--gutter);
 }
 
 /* section label — gold, quiet rule */

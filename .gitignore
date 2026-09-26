@@ -42,7 +42,6 @@ next-env.d.ts
 
 # keep the env template tracked
 !.env.example
-.fonts-cache/
 
 # Astro / Cloudflare build
 /dist/

@@ -155,6 +155,25 @@
 .casepage .hm-cta:focus-visible {
   border-bottom-color: var(--brand-gold-pale);
 }
+/* Поле під пальцем — більше за те, що намальовано.
+
+   Виміряно на 390: «Читати рішення» і «Справа на сайті Суду» — 16 пікселів
+   заввишки, абревіатура інструмента поруч — 17. Це 11-піксельний капс із
+   рискою під ним, і риска — частина вигляду: `min-height` чи `padding`
+   відсунули б її від слів. Тож росте не коробка, а прозорий `::after` поверх
+   неї, на 6 пікселів у кожен бік. Шість — половина `--space-3`, проміжку між
+   рядами `.hero-meta`: поля двох рядів сходяться впритул і не
+   перекриваються, тож кожне натискання влучає в те, що під пальцем. */
+.casepage .hm-cta,
+.casepage .hm-inst a {
+  position: relative;
+}
+.casepage .hm-cta::after,
+.casepage .hm-inst a::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+}
 .casepage .hm-cta-2 {
   color: var(--brand-muted-dark);
   border-bottom-color: color-mix(in srgb, var(--brand-muted-dark) 30%, transparent);

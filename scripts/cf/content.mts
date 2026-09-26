@@ -4,6 +4,7 @@
  *   npm run cf:content -- seed    write .emdash/seed.json from src/content
  *   npm run cf:content -- check   prove the mapping loses nothing
  *   npm run cf:content -- push    bring a running EmDash up to date with the files
+ *   npm run cf:content -- schema  add collections and fields the running EmDash lacks
  *
  * `seed` turns today's file content into an EmDash seed: the schema from
  * site/content/collections.ts and one published entry per record. EmDash
@@ -194,6 +195,75 @@ async function push(write: boolean) {
   );
 }
 
+/**
+ * `schema`: the collections and fields described in collections.ts that the
+ * running EmDash does not have yet — created through its schema API.
+ *
+ *   EMDASH_URL=https://… EMDASH_TOKEN=… npm run cf:content -- schema [--yes]
+ *
+ * The seed shapes a database only once, on its first request, so every later
+ * schema change — a new field such as `seo_title`, a new collection such as
+ * the blog — had to be clicked into Content types by hand, field by field,
+ * with slugs that must match this file exactly. This does it from the same
+ * description the seed uses. It only adds: nothing is renamed, changed or
+ * removed, and without `--yes` it only reports. The token needs the
+ * schema:manage permission (Settings → API tokens).
+ */
+async function schema(write: boolean) {
+  const base = process.env.EMDASH_URL?.replace(/\/$/, "");
+  const token = process.env.EMDASH_TOKEN;
+  if (!base || !token) throw new Error("schema needs EMDASH_URL and EMDASH_TOKEN");
+  const api = async (method: string, path: string, body?: unknown) => {
+    const res = await fetch(`${base}/_emdash/api${path}`, {
+      method,
+      headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+    const json = (await res.json().catch(() => ({}))) as {
+      data?: { item?: { fields?: { slug: string }[] } };
+      error?: { message?: string };
+    };
+    if (res.status >= 400 && res.status !== 404) {
+      throw new Error(`${method} ${path}: ${res.status} ${json.error?.message ?? ""}`);
+    }
+    return { status: res.status, item: json.data?.item };
+  };
+
+  let missing = 0;
+  for (const [order, spec] of COLLECTIONS.entries()) {
+    const got = await api("GET", `/schema/collections/${spec.slug}?includeFields=true`);
+    const fields = seedFields(spec);
+    if (got.status === 404) {
+      missing++;
+      console.log(`  + collection ${spec.slug} (${spec.label}) with ${fields.length} fields`);
+      if (!write) continue;
+      await api("POST", "/schema/collections", {
+        slug: spec.slug,
+        label: spec.label,
+        labelSingular: spec.labelSingular,
+        supports: ["drafts", "revisions", "search"],
+        routable: false,
+        group: spec.group,
+        urlPattern: spec.urlPattern,
+        sortOrder: order,
+      });
+      for (const f of fields) await api("POST", `/schema/collections/${spec.slug}/fields`, f);
+      await api("PUT", `/schema/collections/${spec.slug}`, { titleField: spec.titleField });
+      continue;
+    }
+    const have = new Set((got.item?.fields ?? []).map((f) => f.slug));
+    for (const f of fields) {
+      if (have.has(String(f.slug))) continue;
+      missing++;
+      console.log(`  + field ${spec.slug}.${f.slug} (${f.label})`);
+      if (write) await api("POST", `/schema/collections/${spec.slug}/fields`, f);
+    }
+  }
+  if (!missing) console.log("  cf:content schema: the running EmDash has every collection and field.");
+  else if (!write) console.log(`  cf:content schema: ${missing} to add — run again with --yes to create them.`);
+  else console.log(`  cf:content schema: added ${missing}.`);
+}
+
 const [cmd = "check", ...rest] = process.argv.slice(2);
 if (cmd === "check") {
   const failures = await check();
@@ -206,6 +276,8 @@ if (cmd === "check") {
   await seed(resolve(rest[0] ?? ".emdash/seed.json"));
 } else if (cmd === "push") {
   await push(rest.includes("--yes"));
+} else if (cmd === "schema") {
+  await schema(rest.includes("--yes"));
 } else {
   console.error(`unknown command: ${cmd}`);
   process.exit(2);

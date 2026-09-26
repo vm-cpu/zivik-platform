@@ -11,7 +11,9 @@ import { IBM_Plex_Mono, Charis_SIL, Fira_Sans } from "next/font/google";
 import { getDictionary } from "@/i18n/dictionaries";
 import { homeMetadata } from "@/lib/seo";
 import { glossaryEnabled } from "@/lib/flags";
+import { CF_BEACON_SRC, cfBeaconConfig } from "@/lib/analytics";
 import Header from "@/components/nasvitlo/Header";
+import { headerDict } from "@/components/nasvitlo/header-dict";
 import Footer from "@/components/nasvitlo/Footer";
 // Only cross-surface primitives load for every page. home.css is the home
 // page's own stylesheet and is imported there — loading it here put 399
@@ -178,7 +180,7 @@ export default async function LocaleLayout({
         <div className="nsv-root">
           <Header
             locale={safe}
-            dict={dict}
+            dict={headerDict(dict)}
             showGlossary={glossaryEnabled}
             supportHref={CENTRE_URL}
             supportLabel={dict.footer.support}
@@ -186,6 +188,16 @@ export default async function LocaleLayout({
           {children}
           <Footer dict={dict} locale={safe} />
         </div>
+        {/* Cloudflare Web Analytics — лише коли збірка має
+            NEXT_PUBLIC_CF_ANALYTICS_TOKEN (див. lib/analytics.ts). Без
+            cookie і без відбитка браузера, тому й без банера згоди.
+            Звичайний <script defer>, а не next/script: маячку не потрібен
+            React, а `defer` і так не блокує розбір сторінки. CSP дозволяє
+            обидва його джерела лише в цій самій збірці
+            (lib/security-headers.ts). */}
+        {cfBeaconConfig && (
+          <script defer src={CF_BEACON_SRC} data-cf-beacon={cfBeaconConfig} />
+        )}
       </body>
     </html>
   );

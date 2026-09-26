@@ -2030,6 +2030,20 @@ a.emap-seat-count:focus-visible {
 .emap[data-seats="off"] .emap-fold-h:last-of-type {
   border-bottom: 1px solid var(--brand-night-rule);
 }
+/* `auto` для судів — дзеркало `auto` для ключа вище: на широкому вікні
+   складено, на вузькому відкрито. На телефоні ключ ховається, а перелік
+   відкривається, бо там мапа — смужка, де дев'ять міст злипаються, і
+   перелік — єдине місце, де їх видно поіменно (див. `seatsUser` в
+   EventsMap.tsx). Та сама межа 900px, що й у ключа, і JS питає ту саму,
+   тож `aria-expanded` збігається з тим, що намальовано. */
+@media (min-width: 901px) {
+  .emap[data-seats="auto"] .emap-index {
+    display: none;
+  }
+  .emap[data-seats="auto"] .emap-fold-h:last-of-type {
+    border-bottom: 1px solid var(--brand-night-rule);
+  }
+}
 
 
 /* ---- the key on the home band ---- */

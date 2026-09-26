@@ -87,6 +87,44 @@
     display: none;
   }
 }
+/* The same ask on a phone, as a mark: a heart on the UCU cherry, the button
+   the Faculty of Law's own site puts in its bar — owner's request, so a reader
+   who came from there recognises it. Filled, unlike the outline chip on the
+   desktop bar, because on a phone it has no words to carry it; 44×44 like the
+   burger beside it. Hidden where the text chip shows. */
+.nsv-support-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: var(--r-sm);
+  background: var(--brand-red);
+  color: var(--brand-cream-warm);
+  transition: background-color var(--dur) var(--ease);
+}
+.nsv-support-icon:hover {
+  background: var(--brand-red-dark);
+}
+.nsv-support-icon:focus-visible {
+  outline: 2px solid var(--brand-gold-lit);
+  outline-offset: 2px;
+}
+@media (max-width: 880px) {
+  .nsv-support-icon {
+    display: inline-flex;
+  }
+}
+/* Under 375px the bar has no room for it: at 320 it landed on the wordmark
+   («НаСв…» under the heart). The ask stays in the drawer there, and every
+   phone from 375 up — nearly all of them — shows the button. */
+@media (max-width: 374px) {
+  .nsv-support-icon {
+    display: none;
+  }
+}
+
 /* Inside the drawer it has to out-specify `.nsv-mobnav a`, which gives every
    link there a rule under it and the cream the menu rows take — both of which
    turned this back into a menu row with a stray hairline across its bottom.
@@ -370,6 +408,26 @@
   }
   .nsv-mobnav .nsv-support {
     padding-inline: var(--space-4);
+  }
+  /* «← На головну» у бібліотеці й на мапі: 24 → 40.
+
+     24 — це поріг, і вище він їх уже підняв. Але це вихід зі сторінки, і
+     стоїть він сам-один угорі, над заголовком: промах тут не шкодить нікому
+     поруч, а влучання важить більше, ніж у рядку підвалу. Коробку далі не
+     ростимо — на мапі під посиланням заголовок на відстані 2px, у бібліотеці
+     під ним вирахуваний відступ до h1, і обидва зсунулися б. Росте прозорий
+     `::after` на `--space-2` вгору і вниз: ціль 40, текст і ритм шапки ті
+     самі. На мапі шапка має `pointer-events: none`, а посилання — `auto`;
+     псевдоелемент успадковує від посилання, тож поле працює й над полотном. */
+  .reg-back,
+  .mp-back {
+    position: relative;
+  }
+  .reg-back::after,
+  .mp-back::after {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--space-2)) 0;
   }
   /* The lamp's pull chain is 22px of button around a 1.5px chain and a bead,
      absolutely placed. Its `<i>` is positioned from the button's left edge, so

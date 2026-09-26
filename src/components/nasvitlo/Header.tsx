@@ -4,18 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { locales, localeNames, type Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/dictionaries";
-
-/**
- * Only what the bar reads.
- *
- * This is a client component, so whatever it takes is serialized into the
- * payload of every page. It used to take the whole `Dictionary` — 4,937 bytes
- * of it — to read ten strings worth 250. Narrowing the prop is the difference,
- * on every one of the site's ninety-odd pages.
- */
-export type HeaderDict = Pick<Dictionary, "nav" | "brand">;
+import type { HeaderDict } from "./header-dict";
 import "./header.css";
+
+/* Only what the bar reads — built by `headerDict()` in ./header-dict.ts, which
+   is where the reason lives. Re-exported so the type keeps its old address. */
+export type { HeaderDict };
 
 /** Dark top bar: brand, primary nav (collapses to a menu), language switch. */
 export default function Header({
@@ -337,6 +331,27 @@ export default function Header({
             </span>
           </a>
           {langSwitch()}
+          {/* На телефоні — те саме прохання, згорнуте в знак: серце на
+              вишневому, як у шапці сайту Факультету права, щоб читач, який
+              прийшов звідти, упізнав його. Текстова кнопка вище на цій
+              ширині схована (shared.css), а в меню її треба ще знайти;
+              власниця: «зроби в нас також». Підпис — для скрінрідера й
+              підказки, бо на кнопці немає слів. */}
+          <a
+            className="nsv-support-icon"
+            href={supportHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={supportLabel}
+            title={supportLabel}
+          >
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+              <path
+                fill="currentColor"
+                d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 2.9 4.5 6.6 4.1c2.1-.2 3.9.9 5.4 2.7 1.5-1.8 3.3-2.9 5.4-2.7 3.7.4 5.7 4.2 4.2 7.6C19.5 16.4 12 21 12 21z"
+              />
+            </svg>
+          </a>
           <button
             type="button"
             className="nsv-burger"

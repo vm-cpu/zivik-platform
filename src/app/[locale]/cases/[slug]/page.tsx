@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { decisionMetadata, jsonLdHtml, siteUrl } from "@/lib/seo";
+import {
+  caseOgImage,
+  decisionMetadata,
+  descriptionFromProse,
+  jsonLdHtml,
+  META_MIN,
+  siteUrl,
+} from "@/lib/seo";
 import { foreignLang, isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
@@ -263,7 +270,6 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
 const MK = atlas.markers as Record<string, number[]>;
 const MAP_AREAS = (atlas as { areas?: Record<string, string> }).areas ?? {};
 
-const mapContext = atlas.context;
 /**
  * Named pieces of ground a theatre can be about — see `areas` on `Theatre`.
  * "country" is the outline itself and is not in here; drawing it twice would
@@ -299,29 +305,67 @@ const mapContext = atlas.context;
   }
 }
 
-/** A search snippet is cut off around here. */
-const META_MAX = 160;
-
 /**
  * The description a search result shows.
  *
  * `pick(summary.plain.tldr, locale)` used to be handed to `description`
  * verbatim, and the tldr is a three-to-four-sentence paragraph: every decision
  * page's snippet ran 300–496 characters and broke off mid-sentence. A summary
- * that has authored a `metaDesc` gets it (index.ts enforces the limit). The
- * rest fall back to the tldr's opening sentence — which is always "what this
- * case is and how it ended" — and only if that too is over the limit is it cut,
- * at a word boundary, with a visible ellipsis rather than the engine's silent
- * one.
+ * that has authored a `metaDesc` gets it (index.ts enforces the limit).
+ *
+ * Решта брала лише перше речення tldr — і на Ощадбанку це було «Oschadbank is
+ * Ukraine's state savings bank.»: 43 символи, без суду, без рішення, без
+ * суми (аудит SEO). Тепер tldr береться реченнями від початку, поки вони
+ * вміщаються в 160, а якщо й так виходить менше за `META_MIN`, наступне
+ * речення доводиться до межі й обрізається на слові з видимою трикрапкою
+ * (`descriptionFromProse` у lib/seo.ts). Жодного слова не додано — це той
+ * самий tldr, лише коротший.
+ *
+ * Авторський `metaDesc`, коротший за `META_MIN`, так само поступається
+ * довшому з tldr; сьогодні таких немає (найкоротший — 132), але межа
+ * одна для обох джерел.
  */
 function shortDescription(summary: DecisionSummary, locale: Locale): string {
-  if (summary.metaDesc) return pick(summary.metaDesc, locale);
-  const tldr = pick(summary.plain.tldr, locale).trim();
-  const first = /^[^.!?]*[.!?]/.exec(tldr)?.[0]?.trim() ?? tldr;
-  if (first.length <= META_MAX) return first;
-  const cut = first.slice(0, META_MAX - 1);
-  const lastSpace = cut.lastIndexOf(" ");
-  return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+  const authored = summary.metaDesc ? pick(summary.metaDesc, locale).trim() : "";
+  if (authored.length >= META_MIN) return authored;
+  const fromTldr = descriptionFromProse(pick(summary.plain.tldr, locale));
+  return fromTldr.length > authored.length ? fromTldr : authored;
+}
+
+/**
+ * Реєстровий номер справи — для `identifier` у структурованих даних.
+ *
+ * Окремого поля для нього немає ні в огляді, ні в реєстрі: номер живе там,
+ * де його записали — у примітці рядка («ICJ GL 166 · Крим, Донбас», «PCA
+ * 2016-14», «ICC-01/22», «Apps 8019/16 et al. · …», «Helsinki · R
+ * 706/2024/11203 · …»), у повній назві («…, PCA Case No. 2018-41») або, для
+ * MH17, в адресі самого вироку на rechtspraak.nl (примітка там обірвана на
+ * «ECLI:NL:RBDHA»). Нового поля не заведено навмисно: збірка для Cloudflare
+ * бере реєстр із D1, і поле, якого немає в схемі EmDash, у продакшені просто
+ * зникло б.
+ *
+ * Тому тут — лише точні формати реєстрів, кожен зі своєю назвою, і нічого,
+ * що довелося б угадувати: рядок, який не збігся з жодним, не дає
+ * `identifier` зовсім. Значення — дослівно те, що стоїть у записі.
+ */
+const DOCKETS: { re: RegExp; propertyID: string; value: (m: RegExpExecArray) => string }[] = [
+  { re: /\bICJ GL (\d+)\b/, propertyID: "ICJ General List No.", value: (m) => m[1] },
+  { re: /\bPCA (?:Case No\. )?(\d{4}-\d+)\b/, propertyID: "PCA Case No.", value: (m) => m[1] },
+  { re: /\bICC-\d{2}\/\d{2}\b/, propertyID: "ICC situation", value: (m) => m[0] },
+  { re: /\bApps? (\d+\/\d{2})\b/, propertyID: "ECHR application no.", value: (m) => m[1] },
+  { re: /\bR \d+\/\d{4}\/\d+\b/, propertyID: "Case No.", value: (m) => m[0] },
+  { re: /\bECLI:[A-Z]{2}:[A-Z0-9]+:\d{4}:[A-Z0-9.]+\b/, propertyID: "ECLI", value: (m) => m[0] },
+];
+
+function docketOf(caseId: string): { propertyID: string; value: string } | undefined {
+  const row = registryCases.find((c) => c.id === caseId);
+  if (!row) return undefined;
+  const haystack = [row.note.en, row.name, row.decisionUrl ?? ""].join("\n");
+  for (const d of DOCKETS) {
+    const m = d.re.exec(haystack);
+    if (m) return { propertyID: d.propertyID, value: d.value(m) };
+  }
+  return undefined;
 }
 
 /**
@@ -378,8 +422,9 @@ function TheatreMap({
 }) {
   /* Everything resolved here, on the server: `CaseMap` is a client component
      and its props are serialized into the payload, so a {uk, en} pair would
-     ship both languages to every reader — and the atlas would ship whole
-     rather than the handful of paths this case actually draws. */
+     ship both languages to every reader. The ground is the exception: it
+     is the same on every case, so the component imports the atlas itself
+     and this hands it only the keys of the areas to light. */
   const seat = MK[forum.key] ?? MK.hague;
   const marks: [number, number][] = [
     [seat[0], seat[1]],
@@ -455,9 +500,6 @@ function TheatreMap({
          a different size on each of the eight. This is what turns one back
          into the other. */
       unit={Math.round((w / 1000) * 1000) / 1000}
-      context={mapContext}
-      uaPath={atlas.ukraine}
-      regions={atlas.regions}
       seat={{
         name: pick(forum.name, locale),
         caption: pick(forum.caption, locale),
@@ -517,9 +559,12 @@ function TheatreMap({
           dy: n.dy,
         })),
         ground: t.ground,
-        areas: (t.areas ?? [])
-          .map((k) => (k === "country" ? atlas.ukraine : MAP_AREAS[k]))
-          .filter(Boolean),
+        /* Keys, not paths: the component reads the ground from the atlas
+           it imports, so the geometry is fetched once as a module and
+           cached rather than written into every decision page's payload.
+           Filtered to keys that resolve, as the paths were — a key naming
+           nothing lit nothing then and must not light anything now. */
+        areas: (t.areas ?? []).filter((k) => k === "country" || k in MAP_AREAS),
         labelDx: t.labelDx,
         labelDy: t.labelDy,
       }))}
@@ -1121,6 +1166,31 @@ export function generateStaticParams() {
   return [...slugs, ...pending].map((slug) => ({ slug }));
 }
 
+/**
+ * Hosts that belong to a court or tribunal itself — the only pages the
+ * JSON-LD may call the same thing as the case (`sameAs`). A case page on a
+ * database of awards or a news site is a citation, not the case.
+ */
+const COURT_HOSTS = [
+  "icj-cij.org",
+  "icc-cpi.int",
+  "echr.coe.int",
+  "hudoc.echr.coe.int",
+  "pca-cpa.org",
+  "docs.pca-cpa.org",
+  "courtmh17.com",
+  "rechtspraak.nl",
+  "itlos.org",
+];
+function isCourtSite(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    return COURT_HOSTS.some((h) => host === h || host.endsWith(`.${h}`));
+  } catch {
+    return false;
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -1137,11 +1207,15 @@ export async function generateMetadata({
   return decisionMetadata({
     locale,
     slug,
-    title: `${parties} — ${pick(summary.judgment.court, locale)}`,
+    /* The tab and the search result take the short name where the summary
+       has one; the H1 keeps the full title (see `seoTitle`). */
+    title: summary.seoTitle
+      ? pick(summary.seoTitle, locale)
+      : `${parties} — ${pick(summary.judgment.court, locale)}`,
     description: shortDescription(summary, locale),
     ogAlt: dict.meta.ogAlt,
     siteName: dict.brand.wordmark,
-    image: `/og/cases/${slug}.png`,
+    image: caseOgImage(slug),
   });
 }
 
@@ -1615,18 +1689,32 @@ export default async function CasePage({
    * based on, the questions it answers, and where it sits in the site.
    */
   const pageUrl = `${siteUrl}/${locale}/cases/${slug}`;
+  const fullHeadline = `${parties} — ${pick(judgment.court, locale)}`;
+  const shortHeadline = summary.seoTitle ? pick(summary.seoTitle, locale) : fullHeadline;
+  const docket = docketOf(summary.caseId);
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Article",
         "@id": `${pageUrl}#article`,
-        headline: `${parties} — ${pick(judgment.court, locale)}`,
+        /* `headline` is what a result shows, so it takes the short name where
+           there is one; the full title — the caption a lawyer searches by —
+           stays as `alternativeHeadline`. */
+        headline: shortHeadline,
+        ...(fullHeadline !== shortHeadline ? { alternativeHeadline: fullHeadline } : {}),
         description: pick(plain.tldr, locale),
         inLanguage: locale,
         url: pageUrl,
-        datePublished: judgment.date,
-        ...(summary.asOf ? { dateModified: summary.asOf } : {}),
+        mainEntityOfPage: pageUrl,
+        image: `${siteUrl}${caseOgImage(slug)}`,
+        /* The article's dates, not the decision's. `datePublished` carried
+           the judgment date, so a summary of the 2018 Oschadbank award read as
+           a 2018 article. The decision's date is `about.datePublished` below;
+           the summary's own is the date its context was last verified, where
+           one is recorded, and absent where it is not rather than invented. */
+        ...(summary.asOf ? { datePublished: summary.asOf, dateModified: summary.asOf } : {}),
+        author: { "@type": "Organization", name: dict.footer.org, url: `${siteUrl}/${locale}/about` },
         /*
          * The decision itself is a court document, not legislation; the
          * treaties it applies stay Legislation in `mentions` below.
@@ -1650,12 +1738,31 @@ export default async function CasePage({
             : readSrc.official
               ? { url: judgment.url }
               : {}),
+          /* Номер справи в реєстрі суду — див. `docketOf`. Лише якщо запис
+             його справді містить. */
+          ...(docket
+            ? { identifier: { "@type": "PropertyValue", ...docket } }
+            : {}),
+          /* `sameAs` — твердження, що ця адреса і є справа, лише іншою
+             сторінкою. Тому тільки сторінка справи, яку підсумок визнає
+             судовою (`fileSrc.official`) — та сама умова, що вже стоїть над
+             `url`. finland-torden, де `caseUrl` — стаття в «Українській
+             правді», його не отримує.
+
+             І тільки сайт самого суду (`isCourtSite`): у Ощадбанку й ДТЕК
+             сторінка справи — italaw та IAReporter, добрі бази, але не суд;
+             `sameAs` на них казав би Google, що справа — це їхній запис.
+             Власниця: «прибери sameAs». */
+          ...(fileSrc.official && isCourtSite(judgment.caseUrl) ? { sameAs: judgment.caseUrl } : {}),
         },
         ...(readSrc.official ? { isBasedOn: judgment.url } : {}),
+        /* Не голий корінь: `/` відповідає 307 на мовну версію, і видавець,
+           що вказує на редирект, — посилання, яке краулер мусить розгортати. */
         publisher: {
           "@type": "Organization",
           name: dict.footer.org,
-          url: siteUrl,
+          // The locale's home, not the bare origin: `/` is a 307.
+          url: `${siteUrl}/${locale}`,
         },
         citation: sources.map((s) => ({
           "@type": "CreativeWork",
@@ -1690,7 +1797,7 @@ export default async function CasePage({
             name: dict.nav.decisions,
             item: `${siteUrl}/${locale}/registry`,
           },
-          { "@type": "ListItem", position: 3, name: parties },
+          { "@type": "ListItem", position: 3, name: shortHeadline },
         ],
       },
     ],

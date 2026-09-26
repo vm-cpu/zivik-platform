@@ -40,10 +40,13 @@ export default async function HomePage({
     url: `${siteUrl}/${locale}`,
     inLanguage: locale,
     description: dict.meta.description,
+    /* `url: siteUrl` вказував на голий корінь, а `/` — це 307 на мовну
+       версію: видавець, що веде на редирект. Тепер — мовна головна, як і
+       `url` самого WebSite вище. */
     publisher: {
       "@type": "Organization",
       name: dict.footer.org,
-      url: siteUrl,
+      url: `${siteUrl}/${locale}`,
     },
   };
 

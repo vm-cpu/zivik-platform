@@ -62,11 +62,15 @@
    Fixed the way /about's identical fault was fixed — the exception belongs in
    the rule that overreaches, not in a heavier selector on the thing it hits. */
 .registrypage .reg-wrap a:not(.reg-back) {
-  color: var(--red);
+  /* Ink, gold on hover — not the cherry. In the library red is the colour of
+     an outcome (violation, convicted), and with every case name in it too a
+     link and a verdict looked the same (DESIGN.md: red means a finding of
+     breach, not emphasis). */
+  color: var(--ink);
   text-decoration: none;
 }
 .registrypage .reg-wrap a:not(.reg-back):hover {
-  color: var(--redd);
+  color: var(--goldink);
 }
 
 /* ── On the rail ───────────────────────────────────────────────────────────
@@ -146,7 +150,7 @@
     margin-top: 0;
   }
 }
-.reg-back:hover{color:var(--red)}
+.reg-back:hover{color:var(--goldink)}
 .reg-mast h1{
   font-family:var(--brand-font-display),Georgia,serif;font-weight:400;
   font-size:var(--t-mast);line-height:1.08;color:var(--ink);margin:0 0 var(--space-3);
@@ -479,9 +483,9 @@
 .reg-reset{
   min-height:24px;display:inline-flex;align-items:center;
   font:700 var(--t-micro) var(--brand-font-body);letter-spacing:.06em;text-transform:uppercase;
-  color:var(--red);background:none;border:0;padding:0 2px;cursor:pointer;
+  color:var(--goldink);background:none;border:0;padding:0 2px;cursor:pointer;
 }
-.reg-reset:hover{color:var(--redd)}
+.reg-reset:hover{color:var(--ink)}
 
 /* ---- the table ------------------------------------------------------------
    role="table" on a div rather than a <table>: the rows are a CSS grid at
@@ -563,7 +567,7 @@
   color:var(--ink);display:block;overflow-wrap:anywhere;
 }
 .reg-name::after{content:"";position:absolute;inset:0}
-.registrypage .reg-wrap .reg-drow:hover .reg-name{color:var(--red)}
+.registrypage .reg-wrap .reg-drow:hover .reg-name{color:var(--goldink)}
 .reg-note{display:block;margin-top:3px;font-size:var(--t-cap);color:var(--ink2);line-height:1.4;overflow-wrap:anywhere}
 .reg-why{
   display:block;margin-top:4px;
@@ -593,27 +597,27 @@
   text-decoration-color:color-mix(in srgb,var(--goldink) 42%,transparent);
 }
 .registrypage .reg-wrap .reg-inwrite a.rw-s:hover{
-  color:var(--red);
+  color:var(--ink);
   text-decoration-color:currentColor;
 }
 
 /* The court's own document. Same construction as `.rw-s` above and for the
    same reason — it has to sit above `.reg-name::after`, which covers the row
-   — but it is a destination off this site, so it takes the cherry the rest of
-   `.reg-wrap` gives a link rather than the gold the in-page anchors use. */
+   — and the same gold: the cherry it used to take is the library's outcome
+   colour. */
 .registrypage .reg-wrap a.reg-doc{
   position:relative;z-index:1;
   display:inline-flex;align-items:center;min-height:24px;
   margin-top:5px;
   font:600 var(--t-cap) var(--brand-font-body);
-  color:var(--red);
+  color:var(--goldink);
   text-decoration:underline;
   text-decoration-thickness:1px;
   text-underline-offset:3px;
-  text-decoration-color:color-mix(in srgb,var(--red) 38%,transparent);
+  text-decoration-color:color-mix(in srgb,var(--goldink) 38%,transparent);
 }
 .registrypage .reg-wrap a.reg-doc:hover{
-  color:var(--redd);
+  color:var(--ink);
   text-decoration-color:currentColor;
 }
 /* Both on one line when a row carries a document and a matched write-up: they
@@ -661,8 +665,19 @@
    people. Breaks fall between names instead, where the separator already is;
    the longest of the six measures 127px against a 237px column at 375, so nothing
    here can overflow the rail. */
+/* Ім'я — ціль, а не підрядковий текст.
+
+   Виміряно на 390: шість імен по 15 пікселів заввишки, а ціль під пальцем —
+   щонайменше 24 (WCAG 2.5.8). Виняток «посилання всередині речення» тут не
+   діє: це перелік із шести окремих переходів на сайт МКС, і кожне стоїть
+   саме. `inline-flex` із `min-height`, як у `.reg-doc` і `.rw-s` вище: рядки
+   переліку стають вищими, але між двома рядками імен більше немає зони, де
+   палець влучає в обидва одразу. Базова лінія `inline-flex` — це базова
+   лінія його тексту, тож «·» між іменами стоїть на тій самій лінії, що й
+   були. */
 .registrypage .reg-wrap .reg-acts-list a{
   position:relative;z-index:1;
+  display:inline-flex;align-items:center;min-height:24px;
   white-space:nowrap;
   color:var(--ink2);
   text-decoration:underline;
@@ -797,8 +812,17 @@
 }
 
 /* The citation, under the name. Quieter than the line above it — the reader
-   finds the row by its name and quotes it by its citation, in that order —
-   and set in the mono face a thing you quote deserves.
+   finds the row by its name and quotes it by its citation, in that order.
+
+   Шрифт — Fira, не моноширинний. Тут стояло «mono face a thing you quote
+   deserves», але DESIGN.md віддає моноширинний машинерії — датам, номерам
+   справ, § — а це назва справи, людська фраза: «Allegations of Genocide
+   under the Convention… (Ukraine v. Russian Federation)». Моноширинним на
+   390 вона розтягувалася на три–п'ять рядків під назвою, яку читач шукав, і
+   виглядала як службовий код. Тихішою за назву її роблять розмір
+   (`--t-cap`) і колір (`--ink2`), а не гарнітура; `lang="en"` у розмітці
+   лишається. Рік і дата рішення праворуч (`.reg-year`, `.reg-decided`) і
+   далі моноширинні — машинерія рядка це вони.
 
    The class is named for what it used to hold: the Ukrainian line, when the
    citation led and this sat under it. The two changed places (see the note in
@@ -807,7 +831,7 @@
 .registrypage .reg-name-uk {
   display: block;
   margin-top: 2px;
-  font-family: var(--brand-font-mono);
+  font-family: var(--brand-font-body), sans-serif;
   font-size: var(--t-cap);
   line-height: 1.35;
   /* `--ink2`, not `--ink-2`. The hyphenated spelling is the token name in

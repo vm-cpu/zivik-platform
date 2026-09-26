@@ -30,7 +30,11 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx tsc --noEmit
+      # design-lint, data-check, text-check, tsc and eslint — the checks a
+      # contributor runs locally. Until now CI ran only tsc, so a hex literal
+      # or a broken data invariant reached the branch that every CMS publish
+      # rebuilds from, and blocked publishing until someone noticed.
+      - run: npm run check
       - run: npm run build
 
   # The Cloudflare build (Astro + EmDash, see docs/CLOUDFLARE.md). It builds

@@ -20,13 +20,29 @@ export type Tag =
 
 export function mergeMetadata(...layers: (Metadata | undefined)[]): Metadata {
   const out: Record<string, unknown> = {};
+  /* A layout's `title.template` dresses the titles of the layers below it —
+     a plain string, or `{ default }` — and never its own; `{ absolute }`
+     opts out. As in Next. */
+  let template: string | undefined;
   for (const layer of layers) {
     if (!layer) continue;
     for (const [k, v] of Object.entries(layer)) {
-      if (v !== undefined) out[k] = v;
+      if (v === undefined) continue;
+      out[k] = k === "title" ? templated(v, template) : v;
     }
+    const t = layer.title;
+    if (t && typeof t === "object" && "template" in t && t.template) template = t.template;
   }
   return out as Metadata;
+}
+
+function templated(title: unknown, template: string | undefined): unknown {
+  if (!template || title == null) return title;
+  if (typeof title === "string") return template.replace("%s", title);
+  if (typeof title === "object" && !("absolute" in title) && "default" in title) {
+    return { ...title, default: template.replace("%s", String((title as { default: string }).default)) };
+  }
+  return title;
 }
 
 type Absolute = (u: string | URL | undefined | null) => string | undefined;
@@ -73,6 +89,15 @@ export function metadataTags(md: Metadata): Tag[] {
             .filter(Boolean)
             .join(", ");
     meta({ name: "robots", content: content || undefined });
+  }
+
+  /* Search Console — лише `google`, бо тільки його сайт і задає
+     (`verificationMetadata` у src/lib/seo.ts). Рядок або масив, як у Next;
+     інші пошуковики (yandex, yahoo, `other`) додати тут, коли знадобляться. */
+  if (md.verification) {
+    for (const code of list(md.verification.google)) {
+      meta({ name: "google-site-verification", content: String(code) });
+    }
   }
 
   if (md.alternates) {

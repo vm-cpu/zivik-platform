@@ -735,6 +735,17 @@ export interface DecisionSummary extends VerbatimSummary {
    */
   title?: Localized;
   /**
+   * The page's name for a browser tab, a search result and a shared link —
+   * `<title>`, `og:title`, the Article `headline`. Only where the full title
+   * runs past what a result shows (about 60–70 characters): the two ICJ
+   * cases carry a whole convention in their names, and a result cut after
+   * «Застосування Міжнародної конвенції про боротьбу з…» never reached the
+   * court. The page itself keeps the full title in its H1, and the structured
+   * data keeps it as `alternativeHeadline` — a lawyer searches by the full
+   * caption, and it has to be there to be found.
+   */
+  seoTitle?: Localized;
+  /**
    * The masthead's two verbatim lines, said in Ukrainian.
    *
    * `masthead.official` and `masthead.judgment` come out of the verbatim
@@ -754,6 +765,22 @@ export interface DecisionSummary extends VerbatimSummary {
    * NEEDS THE OWNER'S REVIEW: these are renderings, not official texts.
    */
   mastheadUk?: { official?: string; judgment?: string };
+  /**
+   * The three lines of the share card, /og/cases/<slug>.png — Ukrainian only,
+   * because one card serves both locales.
+   *
+   * The card is drawn at build time by scripts/og-cards.mts. Each part left
+   * empty is derived, so a summary made in the admin still gets a card:
+   *   title   ← `seoTitle` up to « — », else `title`
+   *   eyebrow ← the forum's institution · `mastheadUk.judgment`
+   *   kicker  ← the accented stat tile, value and label
+   * The derivation is presentable, not good: the full ICJ captions run to
+   * three lines of 64px and end in «…», and «0 підозрюваних під вартою» is
+   * a fact but not the headline. Written by hand, the title is the case as a
+   * reader would say it, the eyebrow the court and the date, the kicker the
+   * one result that makes the link worth opening.
+   */
+  card?: { title?: string; eyebrow?: string; kicker?: string };
   /**
    * Date the page's context layer was last verified against its sources
    * (ISO 8601). For live dockets — an ICC situation, an enforcement stage —

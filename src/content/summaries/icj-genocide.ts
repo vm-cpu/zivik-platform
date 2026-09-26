@@ -129,6 +129,17 @@ export const icjGenocide: DecisionSummary = {
     uk: "Звинувачення у геноциді згідно з Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації: 32 держави-інтервенти). Попередні заперечення",
     en: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening). Preliminary Objections",
   },
+  /* The share card's wording (scripts/og-cards.mts). Carried over from the
+     hand-drawn cards so the redrawn ones say the same. */
+  card: {
+    title: "Україна проти РФ: 32 держави-інтервенти",
+    eyebrow: "Міжнародний суд ООН · рішення 2 лютого 2024",
+    kicker: "Юрисдикцію за Конвенцією про геноцид підтверджено",
+  },
+  seoTitle: {
+    uk: "Україна проти Росії: геноцид, попередні заперечення — МС ООН",
+    en: "Ukraine v. Russia (Genocide), Preliminary Objections — ICJ",
+  },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader

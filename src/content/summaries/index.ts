@@ -95,6 +95,12 @@ export const SUMMARIES: Record<string, DecisionSummary> = Object.assign(
       if (d && d.length > 160) {
         bad.push(`${slug}: metaDesc.${loc} is ${d.length} characters (max 160)`);
       }
+      // The same for the result's title line; past ~70 it is cut, which is
+      // the one thing `seoTitle` is for.
+      const t = s.seoTitle?.[loc];
+      if (t && t.length > 70) {
+        bad.push(`${slug}: seoTitle.${loc} is ${t.length} characters (max 70)`);
+      }
     }
   }
   if (bad.length) {
@@ -106,4 +112,22 @@ export const SUMMARIES: Record<string, DecisionSummary> = Object.assign(
 export function summaryLastModified(slug: string): string | undefined {
   const s = SUMMARIES[slug];
   return s?.asOf ?? s?.judgment.date;
+}
+
+/**
+ * Найсвіжіша з дат `summaryLastModified` по всіх оглядах — коли востаннє
+ * змінився зміст архіву.
+ *
+ * Для сторінок, що зібрані з оглядів, але своєї дати не мають: головна й
+ * бібліотека в sitemap стояли без `lastModified` зовсім, тож краулер не мав
+ * жодного сигналу, що вони змінилися, коли з'явився новий огляд. Дати — ISO
+ * 8601 (YYYY-MM-DD), тож найбільша рядком — найпізніша.
+ */
+export function latestSummaryLastModified(): string | undefined {
+  let latest: string | undefined;
+  for (const slug of Object.keys(SUMMARIES)) {
+    const d = summaryLastModified(slug);
+    if (d && (!latest || d > latest)) latest = d;
+  }
+  return latest;
 }
