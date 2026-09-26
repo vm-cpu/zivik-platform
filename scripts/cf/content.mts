@@ -25,6 +25,7 @@ import {
   COLLECTIONS,
   LIST_LABEL,
   POSITION,
+  formProblems,
   fromRow,
   seedFields,
   toRow,
@@ -53,6 +54,11 @@ const plain = (v: unknown) => JSON.parse(JSON.stringify(v)) as unknown;
 async function check(): Promise<number> {
   let failures = 0;
   for (const spec of COLLECTIONS) {
+    for (const problem of formProblems(spec)) {
+      console.error(`✗ ${problem}`);
+      failures++;
+    }
+    const limited = seedFields(spec).filter((f) => (f.validation as { maxLength?: number } | undefined)?.maxLength);
     const entries = await loadSource(spec);
     const keys = new Set<string>();
     for (const [key, value] of entries) {
@@ -65,6 +71,17 @@ async function check(): Promise<number> {
         failures++;
       }
       keys.add(key);
+      /* A limit the admin enforces must hold for what is already there, or
+         the first save of that entry fails on a field nobody touched. */
+      const row = toRow(spec, value);
+      for (const f of limited) {
+        const v = row[String(f.slug)];
+        const max = (f.validation as { maxLength: number }).maxLength;
+        if (typeof v === "string" && v.length > max) {
+          console.error(`✗ ${spec.slug}/${key}: ${f.slug} is ${v.length} characters, the form allows ${max}`);
+          failures++;
+        }
+      }
       /* Through JSON on the way in too: a row is stored, not handed over. */
       const back = fromRow(spec, plain(toRow(spec, value)) as Rec);
       if (!isDeepStrictEqual(plain(back), plain(value))) {
@@ -97,7 +114,9 @@ async function seed(out: string) {
       urlPattern: spec.urlPattern,
       sortOrder: order++,
       titleField: spec.titleField,
-      fields: seedFields(spec),
+      ...(spec.listColumns ? { admin: { listColumns: spec.listColumns } } : {}),
+      /* The seed format has no sortOrder: the array order is the order. */
+      fields: seedFields(spec).map(({ sortOrder: _, ...f }) => f),
     });
     const entries = await loadSource(spec);
     content[spec.slug] = entries.map(([key, value], i) => ({
@@ -196,19 +215,33 @@ async function push(write: boolean) {
 }
 
 /**
- * `schema`: the collections and fields described in collections.ts that the
- * running EmDash does not have yet — created through its schema API.
+ * `schema`: bring the running EmDash's collections and fields in line with
+ * collections.ts, through its schema API.
  *
  *   EMDASH_URL=https://… EMDASH_TOKEN=… npm run cf:content -- schema [--yes]
  *
  * The seed shapes a database only once, on its first request, so every later
  * schema change — a new field such as `seo_title`, a new collection such as
- * the blog — had to be clicked into Content types by hand, field by field,
- * with slugs that must match this file exactly. This does it from the same
- * description the seed uses. It only adds: nothing is renamed, changed or
- * removed, and without `--yes` it only reports. The token needs the
- * schema:manage permission (Settings → API tokens).
+ * the blog, the admin form's order and labels — had to be clicked into
+ * Content types by hand, field by field. This does it from the same
+ * description the seed uses:
+ *
+ *   + a collection or field that is missing is created;
+ *   ~ a field whose label, position or length limit differs is updated;
+ *   ~ a collection whose admin list columns differ is updated.
+ *
+ * It never renames a slug, changes a type or removes anything, so no stored
+ * value is touched. Without `--yes` it only reports. The token needs Schema
+ * Read and Schema Write (Settings → API tokens).
  */
+type RemoteField = {
+  slug: string;
+  label: string;
+  sortOrder: number;
+  validation?: Record<string, unknown> | null;
+  options?: Record<string, unknown> | null;
+};
+
 async function schema(write: boolean) {
   const base = process.env.EMDASH_URL?.replace(/\/$/, "");
   const token = process.env.EMDASH_TOKEN;
@@ -220,7 +253,7 @@ async function schema(write: boolean) {
       body: body === undefined ? undefined : JSON.stringify(body),
     });
     const json = (await res.json().catch(() => ({}))) as {
-      data?: { item?: { fields?: { slug: string }[] } };
+      data?: { item?: { fields?: RemoteField[]; admin?: { listColumns?: string[] } } };
       error?: { message?: string };
     };
     if (res.status >= 400 && res.status !== 404) {
@@ -229,12 +262,13 @@ async function schema(write: boolean) {
     return { status: res.status, item: json.data?.item };
   };
 
-  let missing = 0;
+  let added = 0;
+  let updated = 0;
   for (const [order, spec] of COLLECTIONS.entries()) {
     const got = await api("GET", `/schema/collections/${spec.slug}?includeFields=true`);
     const fields = seedFields(spec);
     if (got.status === 404) {
-      missing++;
+      added++;
       console.log(`  + collection ${spec.slug} (${spec.label}) with ${fields.length} fields`);
       if (!write) continue;
       await api("POST", "/schema/collections", {
@@ -246,22 +280,56 @@ async function schema(write: boolean) {
         group: spec.group,
         urlPattern: spec.urlPattern,
         sortOrder: order,
+        ...(spec.listColumns ? { admin: { listColumns: spec.listColumns } } : {}),
       });
       for (const f of fields) await api("POST", `/schema/collections/${spec.slug}/fields`, f);
       await api("PUT", `/schema/collections/${spec.slug}`, { titleField: spec.titleField });
       continue;
     }
-    const have = new Set((got.item?.fields ?? []).map((f) => f.slug));
+    const have = new Map((got.item?.fields ?? []).map((f) => [f.slug, f]));
     for (const f of fields) {
-      if (have.has(String(f.slug))) continue;
-      missing++;
-      console.log(`  + field ${spec.slug}.${f.slug} (${f.label})`);
-      if (write) await api("POST", `/schema/collections/${spec.slug}/fields`, f);
+      const slug = String(f.slug);
+      const remote = have.get(slug);
+      if (!remote) {
+        added++;
+        console.log(`  + field ${spec.slug}.${slug} (${f.label})`);
+        if (write) await api("POST", `/schema/collections/${spec.slug}/fields`, f);
+        continue;
+      }
+      const wantMax = (f.validation as { maxLength?: number } | undefined)?.maxLength;
+      const haveMax = remote.validation?.maxLength as number | undefined;
+      const changes: string[] = [];
+      if (remote.label !== f.label) changes.push(`label «${f.label}»`);
+      if (remote.sortOrder !== f.sortOrder) changes.push(`position ${remote.sortOrder} → ${f.sortOrder}`);
+      if (wantMax !== haveMax) changes.push(`max length ${haveMax ?? "—"} → ${wantMax ?? "—"}`);
+      if (!changes.length) continue;
+      updated++;
+      console.log(`  ~ field ${spec.slug}.${slug}: ${changes.join(", ")}`);
+      if (!write) continue;
+      /* `validation` is required by the update and replaces the stored one,
+         so the stored value goes back with only maxLength changed — sending
+         null would drop a select's options or a repeater's sub-fields. */
+      const validation = { ...(remote.validation ?? {}) };
+      if (wantMax === undefined) delete validation.maxLength;
+      else validation.maxLength = wantMax;
+      await api("PUT", `/schema/collections/${spec.slug}/fields/${slug}`, {
+        label: f.label,
+        sortOrder: f.sortOrder,
+        validation: Object.keys(validation).length ? validation : null,
+      });
+    }
+    const wantCols = spec.listColumns ?? [];
+    const haveCols = got.item?.admin?.listColumns ?? [];
+    if (wantCols.join() !== haveCols.join()) {
+      updated++;
+      console.log(`  ~ collection ${spec.slug}: list columns ${haveCols.join(", ") || "—"} → ${wantCols.join(", ") || "—"}`);
+      if (write) await api("PUT", `/schema/collections/${spec.slug}`, { admin: { listColumns: wantCols } });
     }
   }
-  if (!missing) console.log("  cf:content schema: the running EmDash has every collection and field.");
-  else if (!write) console.log(`  cf:content schema: ${missing} to add — run again with --yes to create them.`);
-  else console.log(`  cf:content schema: added ${missing}.`);
+  const n = added + updated;
+  if (!n) console.log("  cf:content schema: the running EmDash matches collections.ts.");
+  else if (!write) console.log(`  cf:content schema: ${added} to add, ${updated} to update — run again with --yes to apply.`);
+  else console.log(`  cf:content schema: added ${added}, updated ${updated}.`);
 }
 
 const [cmd = "check", ...rest] = process.argv.slice(2);

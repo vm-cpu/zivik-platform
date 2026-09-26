@@ -76,6 +76,28 @@ export interface Prop {
   blankOk?: boolean;
   /** Admin help text. */
   help?: string;
+  /**
+   * For `string`/`text`: the most characters the site accepts. The admin
+   * shows a live «N / max» counter under the field and stops typing at the
+   * limit — the one hint it renders (it does not show `help`).
+   */
+  maxLength?: number;
+}
+
+/**
+ * The admin form, in the order of the page it edits.
+ *
+ * EmDash draws an entry as one long column of fields in `sortOrder`, with no
+ * sections or tabs, and does not render help text. So the sections are
+ * written into the labels — «2 · Шапка — Суд (UA)» — and the order follows
+ * the page top to bottom, which is how an editor looks for a field: by where
+ * its text sits on the page. `cf:content check` fails if a top-level
+ * property is missing here or listed twice.
+ */
+export interface FormSection {
+  title: string;
+  /** Prop paths, or `[path, label]` to give the field a shorter label here. */
+  fields: (string | [string, string])[];
 }
 
 export interface CollectionSpec {
@@ -111,6 +133,10 @@ export interface CollectionSpec {
    * seed; never read back, so editing it changes nothing on the site.
    */
   listLabel?: (value: Record<string, unknown>, key: string) => string;
+  /** The admin form's sections — see `FormSection`. */
+  form?: FormSection[];
+  /** Up to four field slugs shown as columns in the admin list. */
+  listColumns?: string[];
 }
 
 /** Slug of the `listLabel` field, and of the array-order field. */
@@ -172,6 +198,135 @@ const blockItems: Prop[] = [
   { path: "place", label: "Місце", type: "string" },
 ];
 
+/**
+ * The summary's admin form, top to bottom in the order of the decision page
+ * (src/app/[locale]/cases/[slug]/page.tsx): the masthead, then the overview
+ * band, the chronology, the map, the text, the findings and so on down to the
+ * sources. What is not on the page — the search and share lines, the page
+ * switches — is grouped at the top and the bottom. Owner's request: «зручніший
+ * вигляд адмінки для огляду рішення».
+ */
+const SUMMARY_FORM: FormSection[] = [
+  {
+    title: "Службове",
+    fields: [
+      ["id", "Адреса сторінки (slug)"],
+      ["caseId", "Провадження в реєстрі (id)"],
+      ["asOf", "Станом на (РРРР-ММ-ДД)"],
+      ["provisionalSource", "Джерело попереднє"],
+    ],
+  },
+  {
+    title: "Шапка",
+    fields: [
+      ["title", "Повна назва (заголовок сторінки)"],
+      ["masthead.official", "Офіційна назва мовою суду"],
+      ["mastheadUk.official", "Офіційна назва українською"],
+      ["masthead.parties", "Сторони"],
+      ["masthead.judgment", "Рішення (рядок під назвою)"],
+      ["mastheadUk.judgment", "Рішення українською"],
+      ["judgment.court", "Суд"],
+      ["judgment.date", "Дата рішення (РРРР-ММ-ДД)"],
+      ["forum.institution", "Інституція"],
+      ["forum.seat", "Місто"],
+    ],
+  },
+  {
+    title: "Google і соцмережі",
+    fields: [
+      ["seoTitle", "Коротка назва для Google (порожньо — повна)"],
+      ["metaDesc", "Опис для Google"],
+      ["card.title", "Картка: назва (до ~45 знаків)"],
+      ["card.eyebrow", "Картка: суд і дата"],
+      ["card.kicker", "Картка: головний результат"],
+    ],
+  },
+  {
+    title: "Коротко",
+    fields: [
+      ["plain.tldr", "Коротко"],
+      ["plain.whyMatters", "Чому це важливо"],
+      ["glance", "Коротко про справу (таблиця)"],
+      ["stats", "Цифри"],
+      ["whoIsWho", "Хто є хто"],
+    ],
+  },
+  {
+    title: "Документ суду",
+    fields: [
+      ["judgment.url", "Посилання на рішення"],
+      ["judgment.urlType", "Тип документа"],
+      ["judgment.caseUrl", "Сторінка справи на сайті суду"],
+      ["judgment.caseUrlType", "Тип сторінки справи"],
+      ["judgment.pages", "Сторінок у рішенні"],
+      ["judgment.readLabel", "Підпис кнопки «читати»"],
+      ["judgment.fileLabel", "Підпис файлу"],
+    ],
+  },
+  { title: "Хронологія", fields: [["timeline", "Події"], ["timelineTracks", "Доріжки"]] },
+  {
+    title: "Мапа і масштаб",
+    fields: [
+      ["theatres", "Театри подій (JSON)"],
+      ["mapFocus", "Фокус мапи (JSON)"],
+      ["mapAfterPart", "Мапа після частини №"],
+      ["takings", "Втрати в цифрах (JSON)"],
+    ],
+  },
+  {
+    title: "Текст огляду",
+    fields: [
+      ["blocks", "Англійський оригінал"],
+      ["blocksUk", "Українською"],
+    ],
+  },
+  {
+    title: "Висновки суду",
+    fields: [
+      ["verdictsHeading", "Заголовок"],
+      ["verdictsTrackHeading", "Заголовок доріжок"],
+      ["verdictsTrackless", "Без доріжок"],
+      ["positionLabel", "Підпис позиції сторони"],
+      ["verdicts", "Висновки"],
+      ["interpretations", "Тлумачення"],
+    ],
+  },
+  {
+    title: "Тимчасові заходи",
+    fields: [
+      ["provisionalMeasuresOrder", "Наказ"],
+      ["provisionalMeasures", "Заходи"],
+    ],
+  },
+  {
+    title: "Механізм",
+    fields: [
+      ["instruments", "Міжнародні інструменти"],
+      ["attribution", "Ланцюг відповідальності (JSON)"],
+      ["amounts", "Суми (JSON)"],
+      ["warrants", "Ордери (JSON)"],
+    ],
+  },
+  { title: "Заперечення", fields: [["objections", "Заперечення (JSON)"]] },
+  { title: "Що було далі", fields: [["afterlife", "Що було далі (JSON)"]] },
+  { title: "Глосарій", fields: [["glossary", "Терміни"]] },
+  {
+    title: "Джерела",
+    fields: [
+      ["sources", "Джерела"],
+      ["related", "Пов'язані справи"],
+    ],
+  },
+  {
+    title: "Вигляд сторінки",
+    fields: [
+      ["bands", "Смуги сторінки"],
+      ["hideSections", "Приховати розділи"],
+      ["faq", "Питання й відповіді (на сторінці не показуються)"],
+    ],
+  },
+];
+
 const SUMMARY_PROPS: Prop[] = [
   { path: "id", slug: "key", label: "Ідентифікатор (slug сторінки)", type: "string", required: true },
   { path: "caseId", label: "Провадження (id у реєстрі)", type: "string", required: true },
@@ -181,9 +336,10 @@ const SUMMARY_PROPS: Prop[] = [
     label: "Коротка назва для пошуку (до 70 знаків)",
     type: "string",
     localized: true,
+    maxLength: 70,
     help: "Лише для вкладки браузера, Google і соцмереж. На сторінці лишається повний заголовок. Порожнє — береться повний.",
   },
-  { path: "metaDesc", label: "Опис для пошуковиків (до 160 знаків)", type: "text", localized: true },
+  { path: "metaDesc", label: "Опис для пошуковиків (до 160 знаків)", type: "text", localized: true, maxLength: 160 },
   { path: "asOf", label: "Станом на (РРРР-ММ-ДД)", type: "string" },
   { path: "provisionalSource", label: "Джерело попереднє", type: "boolean" },
 
@@ -643,6 +799,8 @@ export const COLLECTIONS: CollectionSpec[] = [
     urlPattern: "/uk/cases/{slug}",
     listLabel: (v, key) => (v.title as L | undefined)?.uk ?? key,
     props: SUMMARY_PROPS,
+    form: SUMMARY_FORM,
+    listColumns: ["judgment_court_uk", "judgment_date", "as_of"],
   },
   /* Блог — сторінки src/app/[locale]/blog; див. src/content/blog.ts. */
   {
@@ -819,6 +977,7 @@ function fieldDefs(props: Prop[], sub: boolean): Record<string, unknown>[] {
     const validation: Record<string, unknown> = {};
     if (p.options && !sub) validation.options = [...p.options];
     if (p.type === "repeater") validation.subFields = fieldDefs(p.items!, true);
+    if (p.maxLength && !sub) validation.maxLength = p.maxLength;
     const base = {
       type: p.type,
       ...(Object.keys(validation).length ? { validation } : {}),
@@ -847,13 +1006,57 @@ function fieldDefs(props: Prop[], sub: boolean): Record<string, unknown>[] {
   return fields;
 }
 
-/** EmDash seed field definitions for a collection. */
-export function seedFields(spec: CollectionSpec) {
+/**
+ * The props in form order, each labelled «N · Section — label». Props the
+ * form does not name keep their place after it; `formProblems` reports them.
+ */
+function arranged(spec: CollectionSpec): Prop[] {
+  if (!spec.form) return spec.props;
+  const byPath = new Map(spec.props.map((p) => [p.path, p]));
+  const out: Prop[] = [];
+  const placed = new Set<string>();
+  spec.form.forEach((section, i) => {
+    for (const entry of section.fields) {
+      const [path, label] = typeof entry === "string" ? [entry, undefined] : entry;
+      const p = byPath.get(path);
+      if (!p || placed.has(path)) continue;
+      placed.add(path);
+      out.push({ ...p, label: `${i + 1} · ${section.title} — ${label ?? p.label}` });
+    }
+  });
+  for (const p of spec.props) if (!placed.has(p.path)) out.push(p);
+  return out;
+}
+
+/** Top-level props the form leaves out, lists twice, or names wrongly. */
+export function formProblems(spec: CollectionSpec): string[] {
+  if (!spec.form) return [];
+  const out: string[] = [];
+  const paths = new Set(spec.props.map((p) => p.path));
+  const seen = new Set<string>();
+  for (const section of spec.form) {
+    for (const entry of section.fields) {
+      const path = typeof entry === "string" ? entry : entry[0];
+      if (!paths.has(path)) out.push(`${spec.slug}: form names «${path}», which is not a property`);
+      if (seen.has(path)) out.push(`${spec.slug}: form lists «${path}» twice`);
+      seen.add(path);
+    }
+  }
+  for (const p of spec.props) if (!seen.has(p.path)) out.push(`${spec.slug}: «${p.path}» is not in the form`);
+  const slugs = new Set(seedFields(spec).map((f) => String(f.slug)));
+  for (const c of spec.listColumns ?? []) if (!slugs.has(c)) out.push(`${spec.slug}: list column «${c}» is not a field`);
+  if ((spec.listColumns?.length ?? 0) > 4) out.push(`${spec.slug}: EmDash shows at most four list columns`);
+  return out;
+}
+
+/** EmDash seed field definitions for a collection, `sortOrder` included. */
+export function seedFields(spec: CollectionSpec): Record<string, unknown>[] {
   const fields: Record<string, unknown>[] = [];
   if (spec.listLabel) {
     fields.push({
       slug: LIST_LABEL,
-      label: "Назва в списку адмінки",
+      /* The hint is in the label: the admin does not render help text. */
+      label: spec.form ? "0 · Назва в списку адмінки (на сайт не впливає)" : "Назва в списку адмінки",
       type: "string",
       options: { helpText: "Лише для списку в адмінці; на сайт не впливає." },
     });
@@ -868,9 +1071,9 @@ export function seedFields(spec: CollectionSpec) {
       options: { helpText: "Порядок, у якому записи йдуть на сайті (менше — вище)." },
     });
   }
-  for (const f of fieldDefs(spec.props, false)) {
+  for (const f of fieldDefs(arranged(spec), false)) {
     const localizedText = /_(uk|en)$/.test(String(f.slug)) && f.type !== "json" && f.type !== "repeater";
     fields.push(localizedText ? { ...f, searchable: true } : f);
   }
-  return fields;
+  return fields.map((f, i) => ({ ...f, sortOrder: i }));
 }
