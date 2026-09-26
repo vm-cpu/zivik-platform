@@ -409,6 +409,26 @@
   .nsv-mobnav .nsv-support {
     padding-inline: var(--space-4);
   }
+  /* «← На головну» у бібліотеці й на мапі: 24 → 40.
+
+     24 — це поріг, і вище він їх уже підняв. Але це вихід зі сторінки, і
+     стоїть він сам-один угорі, над заголовком: промах тут не шкодить нікому
+     поруч, а влучання важить більше, ніж у рядку підвалу. Коробку далі не
+     ростимо — на мапі під посиланням заголовок на відстані 2px, у бібліотеці
+     під ним вирахуваний відступ до h1, і обидва зсунулися б. Росте прозорий
+     `::after` на `--space-2` вгору і вниз: ціль 40, текст і ритм шапки ті
+     самі. На мапі шапка має `pointer-events: none`, а посилання — `auto`;
+     псевдоелемент успадковує від посилання, тож поле працює й над полотном. */
+  .reg-back,
+  .mp-back {
+    position: relative;
+  }
+  .reg-back::after,
+  .mp-back::after {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--space-2)) 0;
+  }
   /* The lamp's pull chain is 22px of button around a 1.5px chain and a bead,
      absolutely placed. Its `<i>` is positioned from the button's left edge, so
      two more pixels of width move nothing that is drawn. */

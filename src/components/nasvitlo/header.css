@@ -8,12 +8,16 @@
    the same dark ground on every page.
    ============================================================ */
 
+/* 44, а не 40. Це єдиний вхід до навігації на телефоні — і на 390 він
+   був на чотири пікселі менший за ціль, яку сайт дає кнопкам масштабу мапи
+   й «Підтримати нас» у меню, що ним же відкривається. Три риски
+   лишаються 20-піксельними: росте поле, не значок. */
 .nsv-burger {
   display: none;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   background: none;
   border: 0;
   cursor: pointer;

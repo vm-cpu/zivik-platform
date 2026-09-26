@@ -665,8 +665,19 @@
    people. Breaks fall between names instead, where the separator already is;
    the longest of the six measures 127px against a 237px column at 375, so nothing
    here can overflow the rail. */
+/* Ім'я — ціль, а не підрядковий текст.
+
+   Виміряно на 390: шість імен по 15 пікселів заввишки, а ціль під пальцем —
+   щонайменше 24 (WCAG 2.5.8). Виняток «посилання всередині речення» тут не
+   діє: це перелік із шести окремих переходів на сайт МКС, і кожне стоїть
+   саме. `inline-flex` із `min-height`, як у `.reg-doc` і `.rw-s` вище: рядки
+   переліку стають вищими, але між двома рядками імен більше немає зони, де
+   палець влучає в обидва одразу. Базова лінія `inline-flex` — це базова
+   лінія його тексту, тож «·» між іменами стоїть на тій самій лінії, що й
+   були. */
 .registrypage .reg-wrap .reg-acts-list a{
   position:relative;z-index:1;
+  display:inline-flex;align-items:center;min-height:24px;
   white-space:nowrap;
   color:var(--ink2);
   text-decoration:underline;
