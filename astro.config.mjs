@@ -34,6 +34,12 @@ const buildEnv = [
   "NEXT_PUBLIC_SITE_URL",
   "VERCEL_PROJECT_PRODUCTION_URL",
   "VERCEL_ENV",
+  /* Вмикають те, що вимкнено до запуску: маячок Cloudflare Web Analytics
+     (src/lib/analytics.ts) і мета-тег підтвердження Google Search Console
+     (`verificationMetadata` у src/lib/seo.ts). Без значення — нічого з цього в HTML
+     немає. Див. docs/LAUNCH.md. */
+  "NEXT_PUBLIC_CF_ANALYTICS_TOKEN",
+  "GOOGLE_SITE_VERIFICATION",
 ];
 const define = Object.fromEntries(
   buildEnv.map((k) => [`process.env.${k}`, JSON.stringify(process.env[k])]),

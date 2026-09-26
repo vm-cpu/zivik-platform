@@ -7,6 +7,12 @@
  * drift apart on what a reader's browser is told to allow.
  */
 
+import {
+  analyticsEnabled,
+  CF_BEACON_ORIGIN,
+  CF_REPORT_ORIGIN,
+} from "./analytics";
+
 /**
  * Search engines are kept out until SITE_INDEXABLE=true — see `isIndexable`
  * in lib/seo.ts.
@@ -71,13 +77,27 @@ const previewSources = vercelPreview
     }
   : { script: "", connect: "", frame: "", img: "" };
 
+/**
+ * Cloudflare Web Analytics — лише коли збірка має токен (`lib/analytics.ts`).
+ *
+ * Два джерела й нічого більше: скрипт маячка з static.cloudflareinsights.com
+ * і його звіти на cloudflareinsights.com. Без токена їх у політиці немає —
+ * «default-src 'self'» вище лишається правдою буквально, а не «плюс сервіс,
+ * якого ми не вмикали». Політика збирається під час збірки (next.config.ts
+ * повертає її з `headers()`, astro.config.mjs пише в `_headers`), тож
+ * увімкнення аналітики — це нова збірка, як і для самого маячка.
+ */
+const analyticsSources = analyticsEnabled
+  ? { script: ` ${CF_BEACON_ORIGIN}`, connect: ` ${CF_REPORT_ORIGIN}` }
+  : { script: "", connect: "" };
+
 export const csp = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${previewSources.script}`,
+  `script-src 'self' 'unsafe-inline'${analyticsSources.script}${previewSources.script}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data:${previewSources.img}`,
   "font-src 'self'",
-  `connect-src 'self'${previewSources.connect}`,
+  `connect-src 'self'${analyticsSources.connect}${previewSources.connect}`,
   "manifest-src 'self'",
   "media-src 'self'",
   "worker-src 'self' blob:",
