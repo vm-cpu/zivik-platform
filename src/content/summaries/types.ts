@@ -735,6 +735,17 @@ export interface DecisionSummary extends VerbatimSummary {
    */
   title?: Localized;
   /**
+   * The page's name for a browser tab, a search result and a shared link —
+   * `<title>`, `og:title`, the Article `headline`. Only where the full title
+   * runs past what a result shows (about 60–70 characters): the two ICJ
+   * cases carry a whole convention in their names, and a result cut after
+   * «Застосування Міжнародної конвенції про боротьбу з…» never reached the
+   * court. The page itself keeps the full title in its H1, and the structured
+   * data keeps it as `alternativeHeadline` — a lawyer searches by the full
+   * caption, and it has to be there to be found.
+   */
+  seoTitle?: Localized;
+  /**
    * The masthead's two verbatim lines, said in Ukrainian.
    *
    * `masthead.official` and `masthead.judgment` come out of the verbatim

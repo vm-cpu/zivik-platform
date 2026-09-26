@@ -169,6 +169,13 @@ const SUMMARY_PROPS: Prop[] = [
   { path: "id", slug: "key", label: "Ідентифікатор (slug сторінки)", type: "string", required: true },
   { path: "caseId", label: "Провадження (id у реєстрі)", type: "string", required: true },
   { path: "title", label: "Заголовок", type: "string", localized: true },
+  {
+    path: "seoTitle",
+    label: "Коротка назва для пошуку (до 70 знаків)",
+    type: "string",
+    localized: true,
+    help: "Лише для вкладки браузера, Google і соцмереж. На сторінці лишається повний заголовок. Порожнє — береться повний.",
+  },
   { path: "metaDesc", label: "Опис для пошуковиків (до 160 знаків)", type: "text", localized: true },
   { path: "asOf", label: "Станом на (РРРР-ММ-ДД)", type: "string" },
   { path: "provisionalSource", label: "Джерело попереднє", type: "boolean" },
