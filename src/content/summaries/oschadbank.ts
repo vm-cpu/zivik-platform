@@ -59,7 +59,7 @@ export const oschadbank: DecisionSummary = {
   card: {
     title: "Ощадбанк проти Російської Федерації",
     eyebrow: "Постійна палата третейського суду · 26 листопада 2018",
-    kicker: "$1,1 млрд за експропріацію в Криму",
+    kicker: "$1,11 млрд за експропріацію в Криму",
   },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
