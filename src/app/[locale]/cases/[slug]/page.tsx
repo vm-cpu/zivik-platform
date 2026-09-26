@@ -263,7 +263,6 @@ const TYPE_LABEL: Record<string, { uk: string; en: string }> = {
 const MK = atlas.markers as Record<string, number[]>;
 const MAP_AREAS = (atlas as { areas?: Record<string, string> }).areas ?? {};
 
-const mapContext = atlas.context;
 /**
  * Named pieces of ground a theatre can be about — see `areas` on `Theatre`.
  * "country" is the outline itself and is not in here; drawing it twice would
@@ -378,8 +377,9 @@ function TheatreMap({
 }) {
   /* Everything resolved here, on the server: `CaseMap` is a client component
      and its props are serialized into the payload, so a {uk, en} pair would
-     ship both languages to every reader — and the atlas would ship whole
-     rather than the handful of paths this case actually draws. */
+     ship both languages to every reader. The ground is the exception: it
+     is the same on every case, so the component imports the atlas itself
+     and this hands it only the keys of the areas to light. */
   const seat = MK[forum.key] ?? MK.hague;
   const marks: [number, number][] = [
     [seat[0], seat[1]],
@@ -455,9 +455,6 @@ function TheatreMap({
          a different size on each of the eight. This is what turns one back
          into the other. */
       unit={Math.round((w / 1000) * 1000) / 1000}
-      context={mapContext}
-      uaPath={atlas.ukraine}
-      regions={atlas.regions}
       seat={{
         name: pick(forum.name, locale),
         caption: pick(forum.caption, locale),
@@ -517,9 +514,12 @@ function TheatreMap({
           dy: n.dy,
         })),
         ground: t.ground,
-        areas: (t.areas ?? [])
-          .map((k) => (k === "country" ? atlas.ukraine : MAP_AREAS[k]))
-          .filter(Boolean),
+        /* Keys, not paths: the component reads the ground from the atlas
+           it imports, so the geometry is fetched once as a module and
+           cached rather than written into every decision page's payload.
+           Filtered to keys that resolve, as the paths were — a key naming
+           nothing lit nothing then and must not light anything now. */
+        areas: (t.areas ?? []).filter((k) => k === "country" || k in MAP_AREAS),
         labelDx: t.labelDx,
         labelDy: t.labelDy,
       }))}
