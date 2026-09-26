@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nasvitlo",
+  "account_id": "55d2d3b8fd8d4d615a297eb49f5622c9",
+  "main": "./site/worker.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nasvitlo",
+      "database_id": "bbde7a56-829d-49b3-b898-eede9a347fa3",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "nasvitlo-media",
+    },
+  ],
+  "observability": { "enabled": true },
+  // EmDash's maintenance tasks (scheduled publishing, cleanup).
+  "triggers": {
+    "crons": ["*/5 * * * *"],
+  },
+}

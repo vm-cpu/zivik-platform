@@ -1,0 +1,10 @@
+---
+import Document from "../layouts/Document.astro";
+import { notFoundPage } from "../lib/route";
+
+export const prerender = true;
+
+const resolved = await notFoundPage(Astro);
+---
+
+<Document {...resolved} />

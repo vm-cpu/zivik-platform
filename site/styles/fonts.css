@@ -1,0 +1,28 @@
+/*
+ * The three brand faces, self-hosted from @fontsource — the same weights and
+ * styles `src/app/[locale]/layout.tsx` asks next/font for, and nothing more
+ * (see the measurements in that file for why each one is here).
+ *
+ * next/font exposes each face as a CSS variable that globals.css reads
+ * (`--brand-font-body: var(--font-fira), 'Fira Sans'`). The variables are
+ * set here to the fontsource family names so globals.css is untouched.
+ */
+@import "@fontsource/charis-sil/400.css";
+@import "@fontsource/charis-sil/700.css";
+@import "@fontsource/charis-sil/400-italic.css";
+@import "@fontsource/fira-sans/400.css";
+@import "@fontsource/fira-sans/500.css";
+@import "@fontsource/fira-sans/600.css";
+@import "@fontsource/fira-sans/700.css";
+@import "@fontsource/fira-sans/400-italic.css";
+@import "@fontsource/fira-sans/500-italic.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+:root {
+  --font-charis: "Charis SIL";
+  --font-charis-italic: "Charis SIL";
+  --font-fira: "Fira Sans";
+  --font-fira-italic: "Fira Sans";
+  --font-ibm-plex-mono: "IBM Plex Mono";
+}

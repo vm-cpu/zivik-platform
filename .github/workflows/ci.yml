@@ -32,3 +32,21 @@ jobs:
       - run: npm ci
       - run: npx tsc --noEmit
       - run: npm run build
+
+  # The Cloudflare build (Astro + EmDash, see docs/CLOUDFLARE.md). It builds
+  # from src/content — CI has no access to the D1 database — which is exactly
+  # what a snapshot build compiles too, so a page that breaks here breaks
+  # there. `cf:content check` proves every record survives the trip through
+  # EmDash's schema unchanged.
+  cloudflare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run cf:check
+      - run: npm run cf:content -- check
+      - run: npx astro build

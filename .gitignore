@@ -43,3 +43,15 @@ next-env.d.ts
 # keep the env template tracked
 !.env.example
 .fonts-cache/
+
+# Astro / Cloudflare build
+/dist/
+/.astro/
+/.wrangler/
+/.emdash/
+.dev.vars*
+!.dev.vars.example
+emdash-env.d.ts
+worker-configuration.d.ts
+/data.db
+/uploads/

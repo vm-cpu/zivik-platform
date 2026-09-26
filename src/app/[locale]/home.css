@@ -510,7 +510,11 @@
   /* `:not(.acc)` went with the accordion: the band it excluded is gone, and
      an exclusion for an element nobody renders is a rule reading heavier than
      it is. */
-  .page .lmp > :not(.pj){
+  /* The second selector is the Cloudflare build's (site/islands/): there
+     LampShell's children arrive inside a `display: contents` <nsv-slot>, so
+     the bands are its grandchildren. Under Next it matches nothing. */
+  .page .lmp > :not(.pj, nsv-slot),
+  .page .lmp > nsv-slot > :not(.pj){
     /* The gutter grows to whatever it takes to keep the content within
        --measure. Capping the band itself (max-width + margin:auto) looked
        identical on the paper sections and broke every band that carries its

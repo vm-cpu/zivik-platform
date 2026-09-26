@@ -23,6 +23,10 @@ npm run dev
 
 Сайт підніметься на http://localhost:3000 і відкриється на `/uk`.
 
+Друга збірка — на Cloudflare Workers з адмінкою EmDash (`npm run cf:dev`,
+адмінка на http://localhost:4321/_emdash/admin) — описана в
+[docs/CLOUDFLARE.md](docs/CLOUDFLARE.md).
+
 ## Команди
 
 | Команда | Що робить |

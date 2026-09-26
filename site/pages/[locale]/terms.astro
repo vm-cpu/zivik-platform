@@ -1,0 +1,13 @@
+---
+import Document from "../../layouts/Document.astro";
+import { runRoute, staticPaths } from "../../lib/route";
+import * as page from "@/app/[locale]/terms/page";
+
+export const prerender = true;
+export const getStaticPaths = staticPaths(page, "/[locale]/terms");
+
+const resolved = await runRoute(Astro, page);
+if (resolved instanceof Response) return resolved;
+---
+
+<Document {...resolved} />

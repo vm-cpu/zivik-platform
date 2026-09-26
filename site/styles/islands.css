@@ -1,0 +1,5 @@
+/* The island runtime's two wrappers stay out of layout. See site/islands/. */
+nsv-island,
+nsv-slot {
+  display: contents;
+}
