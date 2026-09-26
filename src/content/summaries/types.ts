@@ -285,72 +285,6 @@ export type Outcome =
   | "convicted"
   | "acquitted";
 
-/** One row of the verdict matrix — how the court or tribunal disposed of a claim. */
-export interface Verdict {
-  /**
-   * An id on this page the row's ground links to, where the detail lives
-   * somewhere below.
-   *
-   * «Заперечення Росії щодо юрисдикції — відхилено» is one row of the index;
-   * eighteen thousand pixels down, a panel of cards says which three
-   * objections and on what ground each fell. Nothing joined them. Where the
-   * ground is a date the row already links into the chronology; this is the
-   * same seam for a ground that is not a date.
-   */
-  inAnchor?: string;
-  /**
-   * Grouping key, e.g. a treaty ("CERD") or a stage ("Jurisdiction"). Where it
-   * matches an `Instrument.abbr` the heading links to the official text.
-   */
-  track: string;
-  /** Display form of the track, when the key is not a proper name. */
-  trackLabel?: Localized;
-  /**
-   * The stage the ground belongs to, set apart from the ground itself.
-   *
-   * The ICC's grounds are «Перша хвиля · 17 березня 2023» — a stage and a
-   * date packed into one cell, so the column had to be three lines wide to
-   * hold two words of claim beside it, and the stage read as part of the
-   * date rather than as the category it is. Recorded separately, it is a
-   * tag over the date: a wave of warrants, an enforcement ruling, a ruling
-   * on co-operation.
-   *
-   * Only the ICC has stages; a decision without them is unchanged, which
-   * is why this is a tag and not a fourth column — a column would be empty
-   * on seven of the eight.
-   */
-  trackStage?: Localized;
-  claim: Localized;
-  outcome: Outcome;
-  /**
-   * The dispositif's catch-all: «Відхиляє всі інші вимоги, заявлені Україною
-   * щодо…». It is a clause of the judgment, so the record keeps it — but it
-   * is not a claim, and as a row of the index it took the same weight as a
-   * finding while carrying nothing a reader could use. Flagged rather than
-   * matched on its wording, which would break the day one is reworded.
-   *
-   * The index leaves these out and says them once, in the line under its
-   * heading; see `.sec-sum` in cases/[slug]/page.tsx.
-   */
-  residual?: boolean;
-  /**
-   * What to print in the result column, where the shared word is wrong.
-   *
-   * `not-decided` prints «Не розглядалося» on three decisions, and on two of
-   * them that is exactly what happened — a tribunal reached the claims it
-   * needed and left the alternatives alone. On icj-genocide it is untrue in a
-   * way a reader cannot catch: the Court DID decide submissions (c) and (d),
-   * held them admissible, and then found it had no power over them. «Не
-   * розглядалося» reads as the Court not getting to them. Owner: «"Not
-   * decided" не коректне формулювання».
-   *
-   * A row-level override rather than a new `Outcome`, because the colour, the
-   * sort order and the scorecard arithmetic are all right already — the only
-   * thing wrong is the word.
-   */
-  outcomeLabel?: Localized;
-}
-
 /** One measured quantity in the "what was taken" instrument. */
 export interface Metric {
   label: Localized;
@@ -635,8 +569,6 @@ export interface JudgmentSource {
   urlType?: string;
   /** The same, for `caseUrl`. Absent means the court's own case page. */
   caseUrlType?: string;
-  /** Length of the published text, where it is known. */
-  pages?: number;
   /** Delivery date as ISO 8601 (YYYY-MM-DD) — used in structured data. */
   date: string;
   /** Label for the primary action, when "read the judgment" does not fit. */
@@ -657,34 +589,12 @@ export interface Forum {
 export interface PlainLanguage {
   /** 2–3 sentence "what this is and how it ended", in everyday words. */
   tldr: Localized;
-  /** Practical significance — why a non-lawyer should care. */
-  whyMatters: Localized;
 }
 
 /** A glossary term with a plain definition. */
 export interface GlossaryTerm {
   term: Localized;
   def: Localized;
-}
-
-/** An actor in the case, explained in one line. */
-export interface WhoEntry {
-  name: Localized;
-  role: Localized;
-  kind: "party" | "court" | "actor";
-}
-
-/** A plain-language question and answer. */
-export interface FaqEntry {
-  q: Localized;
-  a: Localized;
-}
-
-/** A pointer to a related case. */
-export interface RelatedCase {
-  label: Localized;
-  note: Localized;
-  href: string;
 }
 
 /** A doctrinal ruling the Court settled on a point of law. */
@@ -789,14 +699,6 @@ export interface DecisionSummary extends VerbatimSummary {
    */
   asOf?: string;
   /**
-   * The source doc's tab for this case is not yet marked finalized: the
-   * verbatim was ingested from a working draft and will be re-ingested when
-   * the tab is done. Renders a provenance notice high on the page and again
-   * above the verbatim text; that notice has been removed at the user's
-   * instruction and the flag is data only.
-   */
-  provisionalSource?: boolean;
-  /**
    * Search-result description, under 160 characters in both locales.
    *
    * `plain.tldr` used to serve as this, and it is a three-to-four-sentence
@@ -807,15 +709,11 @@ export interface DecisionSummary extends VerbatimSummary {
   metaDesc?: Localized;
   plain: PlainLanguage;
   glossary: GlossaryTerm[];
-  whoIsWho: WhoEntry[];
-  faq: FaqEntry[];
-  related: RelatedCase[];
   judgment: JudgmentSource;
   instruments: Instrument[];
   stats: Stat[];
   glance: GlanceFact[];
   timeline: TimelineEvent[];
-  verdicts: Verdict[];
   interpretations: Interpretation[];
   sources: Citation[];
 
@@ -910,36 +808,6 @@ export interface DecisionSummary extends VerbatimSummary {
    * «Суд» in the caption over the same paragraph.
    */
   positionLabel?: Localized;
-  /** Heading for the verdict matrix, when "what the Court found" is wrong. */
-  verdictsHeading?: Localized;
-  /**
-   * Drop the verdict matrix's first column — the ground each claim was
-   * brought under.
-   *
-   * It earns its place where the claims run under several instruments: on
-   * icj-cerd-icsft the column is what tells a CERD claim from an ICSFT one.
-   * On icj-genocide every row reads «Genocide Convention», because there is
-   * only one convention in the case and the masthead has already named it
-   * twice — so the column spends 140px repeating itself three times and the
-   * claims beside it wrap for want of that width. Owner: «зліва забрати
-   * Genocide convention».
-   *
-   * The `track` stays in the data: it is what the rows are grouped and sorted
-   * by, and the day a second instrument enters this docket the column comes
-   * back by deleting one line.
-   */
-  verdictsTrackless?: true;
-  /**
-   * Heading for the index's first column, when «Підстава» is wrong.
-   *
-   * That column holds whatever the claim was brought under, and what that
-   * is differs by forum: at the ICJ it is the convention — ICSFT, CERD —
-   * which is a ground. At the ICC it is a wave of warrants and the date
-   * they issued, which is a stage. Calling a stage a ground is the kind of
-   * small untruth a legal archive cannot afford, so the record names its
-   * own column. Owner: «хіба це підстава?»
-   */
-  verdictsTrackHeading?: Localized;
   /** Filters for the timeline. Absent → a plain, unfiltered timeline. */
   timelineTracks?: TimelineTrack[];
   provisionalMeasures?: ProvisionalMeasure[];

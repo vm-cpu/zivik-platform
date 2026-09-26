@@ -213,7 +213,6 @@ const SUMMARY_FORM: FormSection[] = [
       ["id", "Адреса сторінки (slug)"],
       ["caseId", "Провадження в реєстрі (id)"],
       ["asOf", "Станом на (РРРР-ММ-ДД)"],
-      ["provisionalSource", "Джерело попереднє"],
     ],
   },
   {
@@ -245,10 +244,8 @@ const SUMMARY_FORM: FormSection[] = [
     title: "Коротко",
     fields: [
       ["plain.tldr", "Коротко"],
-      ["plain.whyMatters", "Чому це важливо"],
       ["glance", "Коротко про справу (таблиця)"],
       ["stats", "Цифри"],
-      ["whoIsWho", "Хто є хто"],
     ],
   },
   {
@@ -258,7 +255,6 @@ const SUMMARY_FORM: FormSection[] = [
       ["judgment.urlType", "Тип документа"],
       ["judgment.caseUrl", "Сторінка справи на сайті суду"],
       ["judgment.caseUrlType", "Тип сторінки справи"],
-      ["judgment.pages", "Сторінок у рішенні"],
       ["judgment.readLabel", "Підпис кнопки «читати»"],
       ["judgment.fileLabel", "Підпис файлу"],
     ],
@@ -278,18 +274,12 @@ const SUMMARY_FORM: FormSection[] = [
     fields: [
       ["blocks", "Англійський оригінал"],
       ["blocksUk", "Українською"],
+      ["positionLabel", "Підпис над позицією суду («Позиція Суду»)"],
     ],
   },
   {
-    title: "Висновки суду",
-    fields: [
-      ["verdictsHeading", "Заголовок"],
-      ["verdictsTrackHeading", "Заголовок доріжок"],
-      ["verdictsTrackless", "Без доріжок"],
-      ["positionLabel", "Підпис позиції сторони"],
-      ["verdicts", "Висновки"],
-      ["interpretations", "Тлумачення"],
-    ],
+    title: "Тлумачення",
+    fields: [["interpretations", "Як суд витлумачив терміни"]],
   },
   {
     title: "Тимчасові заходи",
@@ -314,7 +304,6 @@ const SUMMARY_FORM: FormSection[] = [
     title: "Джерела",
     fields: [
       ["sources", "Джерела"],
-      ["related", "Пов'язані справи"],
     ],
   },
   {
@@ -322,7 +311,6 @@ const SUMMARY_FORM: FormSection[] = [
     fields: [
       ["bands", "Смуги сторінки"],
       ["hideSections", "Приховати розділи"],
-      ["faq", "Питання й відповіді (на сторінці не показуються)"],
     ],
   },
 ];
@@ -341,7 +329,6 @@ const SUMMARY_PROPS: Prop[] = [
   },
   { path: "metaDesc", label: "Опис для пошуковиків (до 160 знаків)", type: "text", localized: true, maxLength: 160 },
   { path: "asOf", label: "Станом на (РРРР-ММ-ДД)", type: "string" },
-  { path: "provisionalSource", label: "Джерело попереднє", type: "boolean" },
 
   { path: "masthead.official", slug: "masthead_official", label: "Шапка: офіційна назва", type: "text", required: true },
   { path: "masthead.parties", slug: "masthead_parties", label: "Шапка: сторони", type: "string", required: true },
@@ -375,7 +362,6 @@ const SUMMARY_PROPS: Prop[] = [
   },
 
   { path: "plain.tldr", slug: "tldr", label: "Коротко", type: "text", localized: true, required: true },
-  { path: "plain.whyMatters", slug: "why_matters", label: "Чому це важливо", type: "text", localized: true, required: true },
 
   { path: "judgment.court", slug: "judgment_court", label: "Рішення: суд", type: "string", localized: true, required: true },
   { path: "judgment.date", slug: "judgment_date", label: "Рішення: дата", type: "string", required: true },
@@ -383,7 +369,6 @@ const SUMMARY_PROPS: Prop[] = [
   { path: "judgment.urlType", slug: "judgment_url_type", label: "Рішення: тип документа", type: "string" },
   { path: "judgment.caseUrl", slug: "judgment_case_url", label: "Рішення: сторінка справи", type: "string", required: true },
   { path: "judgment.caseUrlType", slug: "judgment_case_url_type", label: "Рішення: тип сторінки справи", type: "string" },
-  { path: "judgment.pages", slug: "judgment_pages", label: "Рішення: сторінок", type: "integer" },
   { path: "judgment.readLabel", slug: "judgment_read_label", label: "Рішення: підпис «читати»", type: "string", localized: true },
   { path: "judgment.fileLabel", slug: "judgment_file_label", label: "Рішення: підпис файлу", type: "string", localized: true },
 
@@ -429,17 +414,6 @@ const SUMMARY_PROPS: Prop[] = [
     ],
   },
   {
-    path: "whoIsWho",
-    label: "Хто є хто",
-    type: "repeater",
-    required: true,
-    items: [
-      { path: "name", label: "Ім'я / назва", type: "string", localized: true, required: true },
-      { path: "role", label: "Роль", type: "text", localized: true, required: true },
-      { path: "kind", label: "Тип", type: "select", options: ["party", "court", "actor"], required: true },
-    ],
-  },
-  {
     path: "timeline",
     label: "Хронологія",
     type: "repeater",
@@ -462,26 +436,7 @@ const SUMMARY_PROPS: Prop[] = [
       { path: "label", label: "Назва", type: "string", localized: true, required: true },
     ],
   },
-  { path: "verdictsHeading", label: "Висновки: заголовок", type: "string", localized: true },
-  { path: "verdictsTrackHeading", label: "Висновки: заголовок доріжок", type: "string", localized: true },
-  { path: "verdictsTrackless", label: "Висновки без доріжок", type: "boolean" },
   { path: "positionLabel", label: "Підпис позиції сторони", type: "string", localized: true },
-  {
-    path: "verdicts",
-    label: "Висновки суду",
-    type: "repeater",
-    required: true,
-    items: [
-      { path: "track", label: "Доріжка", type: "string", required: true },
-      { path: "trackLabel", label: "Назва доріжки", type: "string", localized: true },
-      { path: "trackStage", label: "Стадія доріжки", type: "string", localized: true },
-      { path: "claim", label: "Твердження", type: "text", localized: true, required: true },
-      { path: "outcome", label: "Результат", type: "select", options: VERDICT_OUTCOMES, required: true },
-      { path: "outcomeLabel", label: "Підпис результату", type: "string", localized: true },
-      { path: "residual", label: "Залишкове", type: "boolean" },
-      { path: "inAnchor", label: "Якір у тексті", type: "string" },
-    ],
-  },
   {
     path: "interpretations",
     label: "Тлумачення",
@@ -514,16 +469,6 @@ const SUMMARY_PROPS: Prop[] = [
     ],
   },
   {
-    path: "faq",
-    label: "Питання й відповіді",
-    type: "repeater",
-    required: true,
-    items: [
-      { path: "q", label: "Питання", type: "text", localized: true, required: true },
-      { path: "a", label: "Відповідь", type: "text", localized: true, required: true },
-    ],
-  },
-  {
     path: "instruments",
     label: "Міжнародні інструменти",
     type: "repeater",
@@ -533,17 +478,6 @@ const SUMMARY_PROPS: Prop[] = [
       { path: "name", label: "Назва", type: "string", localized: true, required: true },
       { path: "year", label: "Рік", type: "integer", required: true },
       { path: "url", label: "Посилання", type: "string", required: true },
-    ],
-  },
-  {
-    path: "related",
-    label: "Пов'язані справи",
-    type: "repeater",
-    required: true,
-    items: [
-      { path: "label", label: "Назва", type: "string", localized: true, required: true },
-      { path: "note", label: "Примітка", type: "text", localized: true, required: true },
-      { path: "href", label: "Посилання", type: "string", required: true },
     ],
   },
   {

@@ -109,10 +109,6 @@ export const icjCerdIcsft: DecisionSummary = {
       uk: "31 січня 2024 року Міжнародний суд ООН («Суд») виніс рішення по суті у справі, порушеній Україною проти Російської Федерації у 2017 році («Рішення»). Україна стверджувала про численні порушення Росією двох договорів: Міжнародної конвенції про боротьбу з фінансуванням тероризму 1999 року («ICSFT») та Міжнародної конвенції про ліквідацію всіх форм расової дискримінації 1965 року («CERD»). Більшість вимог України було відхилено.",
       en: "On January 31, 2024, the International Court of Justice (“the Court”) issued a judgment on the merits of the case brought by Ukraine against the Russian Federation in 2017 (“the Judgment”). Ukraine alleged numerous violations by Russia of two treaties: the 1999 International Convention for the Suppression of the Financing of Terrorism (“ICSFT”), and the 1965 International Convention on the Elimination of All Forms of Racial Discrimination (“CERD”). Most of Ukraine's claims were dismissed.",
     },
-    whyMatters: {
-      uk: "Рішення Міжнародного суду ООН остаточне й оскарженню не підлягає, але не має механізму примусового виконання. Його головна вага — фактологічна та правова: воно офіційно фіксує порушення й дає опору для майбутніх позовів, статей та аргументів.",
-      en: "A judgment of the International Court of Justice is final and cannot be appealed, but there is no mechanism to enforce it. Its weight is factual and legal: it puts the breaches on the record and gives a foundation for future claims, writing and argument.",
-    },
   },
 
   glossary: [
@@ -167,111 +163,11 @@ export const icjCerdIcsft: DecisionSummary = {
     },
   ],
 
-  whoIsWho: [
-    {
-      name: { uk: "Україна", en: "Ukraine" },
-      role: { uk: "Заявник — держава, що подала позов.", en: "Applicant — the State that brought the case." },
-      kind: "party",
-    },
-    {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
-      role: { uk: "Відповідач.", en: "Respondent." },
-      kind: "party",
-    },
-    {
-      name: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
-      role: {
-        uk: "Головний судовий орган ООН у Гаазі; вирішує спори між державами.",
-        en: "The UN's principal judicial organ, in The Hague; settles disputes between States.",
-      },
-      kind: "court",
-    },
-    {
-      name: { uk: "Кримські татари", en: "Crimean Tatars" },
-      role: {
-        uk: "Корінний народ Криму; від їхнього імені порушено питання дискримінації за CERD.",
-        en: "Indigenous people of Crimea; the CERD discrimination claims were brought on their behalf.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
-      role: {
-        uk: "Самопроголошені збройні угруповання на сході; за їх фінансування Україна винила РФ.",
-        en: "Self-proclaimed armed groups in the east; Ukraine blamed Russia for financing them.",
-      },
-      kind: "actor",
-    },
-  ],
-
-  faq: [
-    {
-      q: { uk: "То Україна виграла?", en: "So did Ukraine win?" },
-      a: {
-        uk: "Частково. Суд визнав два порушення по суті (нерозслідування фінансування тероризму та згортання освіти українською в Криму) і два порушення тимчасового наказу, але відхилив більшість інших вимог.",
-        en: "Partly. The Court upheld two breaches on the merits (failure to investigate terrorism financing, and curtailing Ukrainian-language education in Crimea) and two breaches of the interim Order, but dismissed most other claims.",
-      },
-    },
-    {
-      q: { uk: "Чи можна змусити Росію виконати рішення?", en: "Can Russia be forced to comply?" },
-      a: {
-        uk: "Прямого механізму примусу немає. Рішення остаточне, але його дотримання залежить від самої держави; теоретично питання виконання може розглядати Рада Безпеки ООН.",
-        en: "There is no direct enforcement mechanism. The judgment is final, but compliance depends on the State itself; in theory enforcement can be raised at the UN Security Council.",
-      },
-    },
-    {
-      q: { uk: "Навіщо це рішення, якщо його не виконують?", en: "Why does the judgment matter if it isn't enforced?" },
-      a: {
-        uk: "Воно офіційно й авторитетно фіксує факти та правові порушення — це основа для майбутніх позовів, репарацій, журналістики й адвокації.",
-        en: "It authoritatively puts the facts and legal breaches on the record — a foundation for future claims, reparations, journalism and advocacy.",
-      },
-    },
-    {
-      q: { uk: "Що буде далі?", en: "What happens next?" },
-      a: {
-        uk: "Рішення МС ООН оскарженню не підлягає. Паралельно тривають інші справи проти РФ — про геноцид (МС ООН), у ЄСПЛ та в Міжнародному кримінальному суді.",
-        en: "An ICJ judgment cannot be appealed. Other cases against Russia continue in parallel — on genocide (ICJ), at the ECtHR, and at the International Criminal Court.",
-      },
-    },
-  ],
-
-  related: [
-    {
-      label: {
-        uk: "Звинувачення у геноциді (Україна проти РФ)",
-        en: "Allegations of Genocide (Ukraine v. Russian Federation)",
-      },
-      note: { uk: "МС ООН · 32 держави-інтервенти", en: "ICJ · 32 States intervening" },
-      href: "/cases/icj-genocide",
-    },
-    {
-      label: { uk: "Ордери МКС на арешт", en: "ICC arrest warrants" },
-      note: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },
-      /* The situation page, which is where the six warrants are. `#registry`
-         was written when nothing here had a page and it resolves to the home
-         page's preview band — a card that names a decision and lands the
-         reader on a list of thirty-three. */
-      href: "/cases/icc-ukraine",
-    },
-    {
-      label: { uk: "MH17 (ЄСПЛ)", en: "MH17 (ECtHR)" },
-      note: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
-      href: "/cases/echr-ukraine-netherlands",
-    },
-  ],
 
   judgment: {
     court: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
     url: "https://www.icj-cij.org/sites/default/files/case-related/166/166-20240131-jud-01-00-en.pdf",
     caseUrl: "https://www.icj-cij.org/case/166",
-    /* 139 — the page count of the PDF at `url`, which is the convention
-       icj-genocide already uses (70 there is likewise a file count). It read
-       213: that is the number printed on the judgment's last page, because
-       the judgment opens at I.C.J. Reports p. 80 and closes at p. 213, so it
-       runs 134 Reports pages. The page renders this as "PDF, {n} с.", which
-       made the button promise a reader seventy-four pages that are not
-       there. */
-    pages: 139,
     date: "2024-01-31",
   },
 
@@ -380,136 +276,6 @@ export const icjCerdIcsft: DecisionSummary = {
       iso: "2024-01-31",
       label: { uk: "Рішення по суті", en: "Judgment on the merits" },
       kind: "judgment",
-    },
-  ],
-
-  /* Every claim Ukraine brought, and what the Court did with it.
-   *
-   * This was the dispositif and nothing else: four violations and three
-   * catch-all clauses. The catch-alls are in the judgment's own words —
-   * «Відхиляє всі інші вимоги, заявлені Україною щодо…» — and as an index
-   * they told a reader that something had been rejected without saying
-   * what, which is the one question this table exists to answer. Owner:
-   * «не вистачає можливості переглянути які саме вимоги відхилено».
-   *
-   * The twelve rows below are the findings the write-up sets out, one per
-   * heading in «Висновки за ICSFT» and «Висновки за CERD» and one for the
-   * limb of the Order the Court held was not breached. Each outcome is the
-   * one recorded on that finding — see `outcomes` in the write-up's blocks
-   * and the note on it in summaries/types.ts. The catch-alls stay in the
-   * record, flagged residual, because they are clauses of the judgment;
-   * they stay out of the index because the index now says what they meant.
-   */
-  verdicts: [
-    {
-      track: "ICSFT",
-      claim: { uk: "Ст. 8 — незаморожені кошти", en: "Art. 8 — funds not frozen" },
-      outcome: "no-violation",
-    },
-    {
-      track: "ICSFT",
-      claim: { uk: "Ст. 9(1) — нерозслідування", en: "Art. 9(1) — failure to investigate" },
-      outcome: "violation",
-    },
-    {
-      track: "ICSFT",
-      claim: { uk: "Ст. 10 — непереслідування", en: "Art. 10 — failure to prosecute" },
-      outcome: "no-violation",
-    },
-    {
-      track: "ICSFT",
-      claim: { uk: "Ст. 12 — правова допомога", en: "Art. 12 — mutual legal assistance" },
-      outcome: "no-violation",
-    },
-    {
-      track: "ICSFT",
-      claim: { uk: "Ст. 18 — співпраця у запобіганні", en: "Art. 18 — co-operation in prevention" },
-      outcome: "no-violation",
-    },
-    {
-      track: "ICSFT",
-      claim: { uk: "Інші вимоги", en: "All other submissions" },
-      outcome: "rejected",
-      residual: true,
-    },
-    {
-      track: "CERD",
-      claim: {
-        uk: "Ст. 2(1)(a) і 5(e)(v) — освіта українською",
-        en: "Arts. 2(1)(a) & 5(e)(v) — Ukrainian-language education",
-      },
-      outcome: "violation",
-    },
-    {
-      track: "CERD",
-      claim: {
-        uk: "Зникнення, вбивства, викрадення, катування",
-        en: "Disappearances, murders, abductions, torture",
-      },
-      outcome: "no-violation",
-    },
-    {
-      track: "CERD",
-      claim: { uk: "Правоохоронні заходи", en: "Law-enforcement measures" },
-      outcome: "no-violation",
-    },
-    {
-      track: "CERD",
-      claim: { uk: "Заборона Меджлісу", en: "Ban on the Mejlis" },
-      outcome: "no-violation",
-    },
-    {
-      track: "CERD",
-      claim: { uk: "Громадянство", en: "Citizenship" },
-      outcome: "no-violation",
-    },
-    {
-      track: "CERD",
-      claim: { uk: "Культурно значущі зібрання", en: "Culturally significant gatherings" },
-      outcome: "no-violation",
-    },
-    {
-      track: "CERD",
-      claim: { uk: "Засоби масової інформації", en: "Media outlets" },
-      outcome: "no-violation",
-    },
-    {
-      track: "CERD",
-      claim: { uk: "Культурна спадщина та інституції", en: "Cultural heritage and institutions" },
-      outcome: "no-violation",
-    },
-    {
-      track: "CERD",
-      claim: { uk: "Інші вимоги", en: "All other submissions" },
-      outcome: "rejected",
-      residual: true,
-    },
-    {
-      track: "Provisional measures",
-      // Without this the Ukrainian page prints the English key as a section
-      // heading in the middle of the verdict matrix.
-      trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
-      claim: { uk: "Збереження заборони Меджлісу", en: "Maintaining the ban on the Mejlis" },
-      outcome: "violation",
-    },
-    {
-      track: "Provisional measures",
-      trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
-      claim: { uk: "Загострення спору", en: "Aggravating / extending the dispute" },
-      outcome: "violation",
-    },
-    {
-      track: "Provisional measures",
-      trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
-      claim: { uk: "Доступність освіти українською", en: "Keeping Ukrainian-language education available" },
-      outcome: "no-violation",
-    },
-    {
-      track: "Provisional measures",
-      trackLabel: { uk: "Тимчасові заходи", en: "Provisional measures" },
-      claim: { uk: "Інші вимоги", en: "All other submissions" },
-      outcome: "rejected",
-      residual: true,
     },
   ],
 

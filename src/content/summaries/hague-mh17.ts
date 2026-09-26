@@ -44,7 +44,6 @@ export const hagueMh17: DecisionSummary = {
   },
 
   asOf: "2026-08-22",
-  provisionalSource: true,
 
   forum: {
     institution: { uk: "Окружний суд Гааги", en: "District Court of The Hague" },
@@ -62,10 +61,6 @@ export const hagueMh17: DecisionSummary = {
     tldr: {
       uk: "17 липня 2014 року ракета «Бук» збила над Донеччиною рейс MH17 — загинули всі 298 людей на борту. 17 листопада 2022 року нідерландський суд заочно засудив до довічного ув'язнення трьох організаторів доставки «Бука» — Гіркіна, Дубинського і Харченка — і виправдав четвертого підсудного, Пулатова. Вирок остаточний: ні прокуратура, ні засуджені його не оскаржили.",
       en: "On 17 July 2014 a Buk missile downed flight MH17 over the Donetsk region — all 298 aboard died. On 17 November 2022 a Dutch court sentenced three men who organised the Buk's deployment — Girkin, Dubinskiy and Kharchenko — to life in prison in absentia, and acquitted the fourth accused, Pulatov. The verdict is final: neither the prosecution nor the convicted appealed.",
-    },
-    whyMatters: {
-      uk: "Це перший кримінальний вирок за збиття MH17 — і рідкісний приклад, коли національний суд довів до кінця заочний процес про міжнародний злочин: з іменами, доказами і довічними вироками. Його фактологія (маршрут «Бука», ролі підсудних) стала опорою для рішення ЄСПЛ 2025 року і позовів родин.",
-      en: "The first criminal verdict for the downing of MH17 — and a rare instance of a national court completing an in-absentia trial of an international crime, with names, evidence and life sentences. Its factual record (the Buk's route, the defendants' roles) underpins the ECtHR's 2025 judgment and the families' claims.",
     },
   },
 
@@ -107,108 +102,6 @@ export const hagueMh17: DecisionSummary = {
     },
   ],
 
-  whoIsWho: [
-    {
-      name: { uk: "Прокуратура Нідерландів", en: "The Dutch Public Prosecution Service" },
-      role: {
-        uk: "Обвинувачення на основі матеріалів JIT; вимагало довічного ув'язнення для всіх чотирьох.",
-        en: "Prosecuted on the JIT record; sought life imprisonment for all four.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Ігор Гіркін («Стрєлков»)", en: "Igor Girkin (\"Strelkov\")" },
-      role: {
-        uk: "«Міністр оборони ДНР», формальний командувач її сил. Засуджений заочно до довічного.",
-        en: "The \"DPR defence minister\" and formal commander of its forces. Convicted in absentia; life.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "Сергій Дубинський", en: "Sergei Dubinskiy" },
-      role: {
-        uk: "Керівник «розвідки ДНР»; замовив доставку «Бука». Засуджений заочно до довічного.",
-        en: "Head of \"DPR intelligence\"; ordered the Buk brought in. Convicted in absentia; life.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "Леонід Харченко", en: "Leonid Kharchenko" },
-      role: {
-        uk: "Командир підрозділу, що супроводжував установку до місця пуску. Засуджений заочно до довічного.",
-        en: "Commanded the unit escorting the TELAR to the launch site. Convicted in absentia; life.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "Олег Пулатов", en: "Oleg Pulatov" },
-      role: {
-        uk: "Заступник Дубинського; єдиний, хто мав захист у процесі. Виправданий — активної ролі не доведено.",
-        en: "Dubinskiy's deputy; the only one defended at trial. Acquitted — no active role proven.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "Окружний суд Гааги", en: "The District Court of The Hague" },
-      role: {
-        uk: "Розглядав справу в захищеному комплексі біля Схіпгола; вирок — 17 листопада 2022 року.",
-        en: "Sat in the secured complex near Schiphol; verdict on 17 November 2022.",
-      },
-      kind: "court",
-    },
-  ],
-
-  faq: [
-    {
-      q: { uk: "Чому судили Нідерланди, а не Україна чи міжнародний суд?", en: "Why the Netherlands, not Ukraine or an international court?" },
-      a: {
-        uk: "Більшість загиблих — 196 із 298 — громадяни Нідерландів, і держави JIT домовилися, що процес вестиме нідерландська юстиція за нідерландським правом. Спроба створити трибунал ООН у 2015 році була заблокована вето Росії в Радбезі.",
-        en: "Most of the dead — 196 of 298 — were Dutch, and the JIT States agreed the Netherlands would prosecute under Dutch law. A 2015 attempt at a UN tribunal was vetoed by Russia in the Security Council.",
-      },
-    },
-    {
-      q: { uk: "Вирок заочний — він щось означає?", en: "The verdict is in absentia — does it mean anything?" },
-      a: {
-        uk: "Так. Він остаточний (ніхто не оскаржив), довічні строки діють, засуджені — в міжнародному розшуку і фактично замкнені в Росії. Суд також задовольнив позови родин — понад 16 млн євро компенсацій. А доказова база вироку лягла в основу рішення ЄСПЛ 2025 року.",
-        en: "Yes. It is final (no one appealed), the life sentences stand, the convicted are internationally wanted and effectively confined to Russia. The court also granted the families' claims — over EUR 16 million in compensation. And its record underpins the ECtHR's 2025 judgment.",
-      },
-    },
-    {
-      q: { uk: "Чому Пулатова виправдали?", en: "Why was Pulatov acquitted?" },
-      a: {
-        uk: "Суд не знайшов доказів його активної чи вирішальної участі: він знав про «Бук» і бачив його, але не доведено, що він щось вирішував чи міг змінити. Це виправдання — найкраща відповідь на закиди про «показовий процес»: суд виправдовує, коли доказів бракує.",
-        en: "The court found no evidence of an active or crucial role: he knew of and saw the Buk, but nothing showed he decided anything or could change it. The acquittal is the best answer to \"show trial\" claims — the court acquits where proof falls short.",
-      },
-    },
-    {
-      q: { uk: "А хто відповість за сам пуск і за Росію як державу?", en: "And who answers for the launch itself — and for Russia as a State?" },
-      a: {
-        uk: "Екіпаж «Бука» і командну вертикаль JIT дослідила у 2023 році, але призупинила розслідування без нових підозрюваних. Державну відповідальність Росії за MH17 у 2025 році встановив ЄСПЛ у справі «Україна і Нідерланди проти Росії»; триває і провадження Ради ІКАО за скаргою Нідерландів та Австралії.",
-        en: "The JIT examined the Buk crew and the chain of command in 2023 but suspended the investigation without new suspects. Russia's State responsibility for MH17 was established by the ECtHR in 2025 in Ukraine and the Netherlands v. Russia; ICAO Council proceedings brought by the Netherlands and Australia also continue.",
-      },
-    },
-  ],
-
-  related: [
-    {
-      label: {
-        uk: "Україна і Нідерланди проти Росії (ЄСПЛ)",
-        en: "Ukraine and the Netherlands v. Russia (ECtHR)",
-      },
-      note: { uk: "державна відповідальність за MH17 — рішення 2025 року", en: "State responsibility for MH17 — the 2025 judgment" },
-      href: "/cases/echr-ukraine-netherlands",
-    },
-    {
-      label: { uk: "Фінляндія проти Тордена", en: "Finland v. Torden" },
-      note: { uk: "інший нацсуд: універсальна юрисдикція", en: "another national court: universal jurisdiction" },
-      href: "/cases/finland-torden",
-    },
-    {
-      label: { uk: "Ситуація в Україні (МКС)", en: "Situation in Ukraine (ICC)" },
-      note: { uk: "міжнародний кримінальний трек", en: "the international criminal track" },
-      href: "/cases/icc-ukraine",
-    },
-  ],
 
   judgment: {
     court: { uk: "Окружний суд Гааги", en: "District Court of The Hague" },
@@ -321,47 +214,6 @@ export const hagueMh17: DecisionSummary = {
         uk: "Рішення «Україна і Нідерланди проти Росії» спирається зокрема на фактологію цього вироку.",
         en: "Ukraine and the Netherlands v. Russia builds in part on this verdict's factual record.",
       },
-    },
-  ],
-
-  verdictsHeading: { uk: "Вирок суду", en: "The court's verdict" },
-
-  verdicts: [
-    {
-      track: "Гіркін · Girkin",
-      trackLabel: { uk: "Ігор Гіркін", en: "Igor Girkin" },
-      claim: {
-        uk: "Спричинення падіння MH17 і вбивство 298 людей — довічне ув'язнення (заочно)",
-        en: "Causing MH17 to crash; the murder of 298 people — life imprisonment (in absentia)",
-      },
-      outcome: "convicted",
-    },
-    {
-      track: "Дубинський · Dubinskiy",
-      trackLabel: { uk: "Сергій Дубинський", en: "Sergei Dubinskiy" },
-      claim: {
-        uk: "Ті самі пункти — довічне ув'язнення (заочно)",
-        en: "The same counts — life imprisonment (in absentia)",
-      },
-      outcome: "convicted",
-    },
-    {
-      track: "Харченко · Kharchenko",
-      trackLabel: { uk: "Леонід Харченко", en: "Leonid Kharchenko" },
-      claim: {
-        uk: "Ті самі пункти — довічне ув'язнення (заочно)",
-        en: "The same counts — life imprisonment (in absentia)",
-      },
-      outcome: "convicted",
-    },
-    {
-      track: "Пулатов · Pulatov",
-      trackLabel: { uk: "Олег Пулатов", en: "Oleg Pulatov" },
-      claim: {
-        uk: "Активної чи вирішальної участі не доведено",
-        en: "No active or crucial involvement proven",
-      },
-      outcome: "acquitted",
     },
   ],
 

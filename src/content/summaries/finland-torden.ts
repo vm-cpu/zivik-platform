@@ -57,7 +57,6 @@ export const finlandTorden: DecisionSummary = {
   },
 
   asOf: "2026-08-22",
-  provisionalSource: true,
 
   forum: {
     institution: { uk: "Окружний суд Гельсінкі", en: "Helsinki District Court" },
@@ -75,10 +74,6 @@ export const finlandTorden: DecisionSummary = {
     tldr: {
       uk: "Воїслав Торден (раніше Ян Петровський) — заступник командира російського неонацистського загону «Русич». У вересні 2014-го його підрозділ під українським прапором влаштував засідку на батальйон «Айдар»: щонайменше 22 загиблих. У 2023 році Фінляндія затримала його в аеропорту Гельсінкі, а 14 березня 2025 року засудила до довічного ув'язнення за воєнні злочини — за універсальною юрисдикцією, хоча злочини скоєно в Україні проти українців.",
       en: "Voislav Torden (formerly Yan Petrovsky) was deputy commander of the Russian neo-Nazi unit Rusich. In September 2014 his unit ambushed the Aidar battalion under a Ukrainian flag: at least 22 dead. Finland arrested him at Helsinki airport in 2023 and on 14 March 2025 sentenced him to life imprisonment for war crimes — under universal jurisdiction, though the crimes were committed in Ukraine against Ukrainians.",
-    },
-    whyMatters: {
-      uk: "Це перше в Фінляндії засудження за воєнні злочини у війні проти України — і демонстрація того, як працює універсальна юрисдикція: виконавцю досить перетнути кордон будь-якої держави, що переслідує міжнародні злочини. Жоден ордер МКС не знадобився — вистачило національного суду.",
-      en: "Finland's first war-crimes conviction from the war on Ukraine — and a demonstration of universal jurisdiction at work: a perpetrator need only cross the border of any State that prosecutes international crimes. No ICC warrant was needed; a national court sufficed.",
     },
   },
 
@@ -120,95 +115,6 @@ export const finlandTorden: DecisionSummary = {
     },
   ],
 
-  whoIsWho: [
-    {
-      name: { uk: "Фінляндія", en: "Finland" },
-      role: {
-        uk: "Держава обвинувачення: Національна прокуратура після розслідування Національного бюро розслідувань.",
-        en: "The prosecuting State: the National Prosecution Authority, after an NBI investigation.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Воїслав Торден (раніше Ян Петровський)", en: "Voislav Torden (formerly Yan Petrovsky)" },
-      role: {
-        uk: "Підсудний. Підсанкційний росіянин, заступник командира «Русича»; затриманий у Гельсінкі 2023 року під вигаданим ім'ям.",
-        en: "The accused. A sanctioned Russian, Rusich's deputy commander; arrested in Helsinki in 2023 under an assumed name.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Окружний суд Гельсінкі", en: "Helsinki District Court" },
-      role: {
-        uk: "Судив за фінським Кримінальним кодексом на основі універсальної юрисдикції; вирок — 14 березня 2025 року.",
-        en: "Tried the case under the Finnish Criminal Code on universal jurisdiction; judgment on 14 March 2025.",
-      },
-      kind: "court",
-    },
-    {
-      name: { uk: "Батальйон «Айдар»", en: "The Aidar battalion" },
-      role: {
-        uk: "Український підрозділ, на колону якого 5 вересня 2014 року влаштували засідку; потерпілі приєднали цивільні позови.",
-        en: "The Ukrainian unit ambushed on 5 September 2014; its victims joined civil claims to the case.",
-      },
-      kind: "actor",
-    },
-  ],
-
-  faq: [
-    {
-      q: {
-        uk: "Чому Фінляндія судить за злочини, скоєні в Україні проти українців?",
-        en: "Why does Finland try crimes committed in Ukraine against Ukrainians?",
-      },
-      a: {
-        uk: "Бо воєнні злочини — злочини проти всього людства. Глава 11, розділ 5(1) фінського Кримінального кодексу прямо дозволяє судити за них «незалежно від місця вчинення і громадянства потерпілих чи виконавців». Тордена судили, бо він фізично опинився на фінській території.",
-        en: "Because war crimes are crimes against all humanity. Chapter 11, Section 5(1) of Finland's Criminal Code allows trying them \"regardless of where they were committed, and irrespective of the nationality of the victims or perpetrators\". Torden was tried because he was physically on Finnish soil.",
-      },
-    },
-    {
-      q: { uk: "Який вирок і чи остаточний він?", en: "What was the verdict, and is it final?" },
-      a: {
-        uk: "14 березня 2025 року суд визнав Тордена винним за пунктами 2–5 і призначив довічне ув'язнення. За пунктом 1 — неправомірне використання прапора — його виправдали: суд не визнав доведеним, що саме «Русич» організував і провів засідку. Апеляцію подали обидві сторони: прокуратура — на виправдання, захист — на вирок.",
-        en: "On 14 March 2025 the court convicted Torden on charges 2–5 and imposed life imprisonment. He was acquitted on charge 1, improper use of a flag: the court did not find it established that Rusich organised and carried out the ambush. Both sides appealed — the prosecution against the acquittal, the defence against the conviction.",
-      },
-    },
-    {
-      q: { uk: "Чому його не видали Україні?", en: "Why wasn't he extradited to Ukraine?" },
-      a: {
-        uk: "Фінський суд раніше відмовив у видачі через умови тримання, які могли б порушити його права, — і натомість Фінляндія судила його сама. Універсальна юрисдикція якраз і існує, щоб відмова у видачі не означала безкарності.",
-        en: "A Finnish court earlier refused extradition over detention conditions that could breach his rights — and Finland tried him itself instead. That is what universal jurisdiction is for: a refused extradition must not mean impunity.",
-      },
-    },
-    {
-      q: { uk: "До чого тут Римський статут?", en: "Where does the Rome Statute come in?" },
-      a: {
-        uk: "Фінське визначення воєнних злочинів відсилає до Женевських конвенцій з протоколами і до Римського статуту, який Фінляндія ратифікувала. Тож обвинувачення сформульовані в тих самих категоріях, що й перед МКС, — але розглянуті національним судом.",
-        en: "Finland's war-crimes definition points to the Geneva Conventions with their Protocols and to the Rome Statute, which Finland ratified. The charges are framed in the same categories as before the ICC — but tried by a national court.",
-      },
-    },
-  ],
-
-  related: [
-    {
-      label: { uk: "Вирок у справі MH17 (Гаага)", en: "The MH17 verdict (The Hague)" },
-      note: { uk: "інший шлях нацсуду: заочний процес", en: "another national route: trial in absentia" },
-      href: "/cases/hague-mh17",
-    },
-    {
-      label: { uk: "Ситуація в Україні (МКС)", en: "Situation in Ukraine (ICC)" },
-      note: { uk: "міжнародний трек індивідуальної відповідальності", en: "the international track of individual responsibility" },
-      href: "/cases/icc-ukraine",
-    },
-    {
-      label: {
-        uk: "Україна і Нідерланди проти Росії (ЄСПЛ)",
-        en: "Ukraine and the Netherlands v. Russia (ECtHR)",
-      },
-      note: { uk: "державна відповідальність за той самий Донбас-2014", en: "State responsibility for the same Donbas 2014" },
-      href: "/cases/echr-ukraine-netherlands",
-    },
-  ],
 
   /*
    * NEITHER of these links is a court document, and the page must not pretend
@@ -322,32 +228,6 @@ export const finlandTorden: DecisionSummary = {
         uk: "Перше у Фінляндії засудження за воєнні злочини у війні проти України. Апеляцію подали обидві сторони.",
         en: "Finland's first war-crimes conviction from the war on Ukraine. Both sides appealed.",
       },
-    },
-  ],
-
-  verdictsHeading: { uk: "Вирок суду", en: "The court's verdict" },
-
-  verdicts: [
-    {
-      track: "14.03.2025",
-      trackLabel: { uk: "Вирок 14 березня 2025", en: "Verdict of 14 March 2025" },
-      claim: {
-        uk: "Воєнні злочини — 4 з 5 пунктів обвинувачення; довічне ув'язнення",
-        en: "War crimes — four of the five charges; life imprisonment",
-      },
-      outcome: "convicted",
-    },
-    {
-      track: "14.03.2025",
-      trackLabel: { uk: "Вирок 14 березня 2025", en: "Verdict of 14 March 2025" },
-      claim: { uk: "Один пункт обвинувачення", en: "One of the charges" },
-      outcome: "rejected",
-    },
-    {
-      track: "Далі",
-      trackLabel: { uk: "Оскарження", en: "Appeal" },
-      claim: { uk: "Апеляції обох сторін", en: "Appeals by both sides" },
-      outcome: "not-decided",
     },
   ],
 

@@ -48,7 +48,6 @@ export const dtekKrymenergo: DecisionSummary = {
   },
 
   asOf: "2026-08-22",
-  provisionalSource: true,
 
   /* Справу вирішував арбітражний трибунал за регламентом ЮНСІТРАЛ, а не
      суд: ППТС адмініструє провадження, але не ухвалює рішення. Огляд каже
@@ -67,10 +66,6 @@ export const dtekKrymenergo: DecisionSummary = {
     tldr: {
       uk: "«Крименерго» — кримський енергооператор групи ДТЕК: 27 тисяч км² мережі, понад 780 тисяч споживачів. У 2015 році Росія забрала компанію. Арбітраж у Гаазі відхилив усі п'ять заперечень Росії і визнав незаконну експропріацію: 207,8 млн доларів відшкодування плюс відсотки — разом близько 267 млн. Росія добровільно не платить, тож ДТЕК стягує борг через суди США і Нідерландів — аж до арешту акцій структур «Газпрому».",
       en: "Krymenergo was DTEK's Crimean grid operator: 27,000 km² of network, more than 780,000 customers. In 2015 Russia took the company. A tribunal in The Hague rejected all five of Russia's objections and found an unlawful expropriation: USD 207.8 million in damages plus interest — about USD 267 million in all. Russia has not paid, so DTEK is enforcing through US and Dutch courts — up to the seizure of Gazprom-linked shares.",
-    },
-    whyMatters: {
-      uk: "Це друге «кримське» рішення на платформі за тим самим договором 1998 року — і воно пішло далі за Ощадбанк у двох речах: трибунал прямо застосував естопель (Росія не може називати Крим своїм і водночас не своїм) і чітко визначив, коли інвестицію «зроблено» за ст. 12. А стягнення вже дотяглося до активів «Газпрому» в Нідерландах.",
-      en: "This is the platform's second Crimea award under the same 1998 treaty — and it goes beyond Oschadbank in two ways: the tribunal applied estoppel outright (Russia cannot call Crimea its own and not its own at once) and settled when an investment is \"made\" under Article 12. Enforcement has already reached Gazprom assets in the Netherlands.",
     },
   },
 
@@ -123,111 +118,6 @@ export const dtekKrymenergo: DecisionSummary = {
         uk: "Позиція арбітра, який не згоден з більшістю. Тут висновок про «територію» і присудження ухвалено більшістю складу.",
         en: "The view of an arbitrator who disagrees with the majority. Here the territory holding and the damages award were by majority.",
       },
-    },
-  ],
-
-  whoIsWho: [
-    {
-      name: { uk: "АТ «ДТЕК Крименерго»", en: "JSC DTEK Krymenergo" },
-      role: {
-        uk: "Позивач. Оператор кримської розподільчої мережі; з 2006–2012 років контролюється групою ДТЕК.",
-        en: "Claimant. Operator of Crimea's distribution grid; controlled by the DTEK group since 2006–2012.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Група ДТЕК", en: "DTEK Energy Group" },
-      role: {
-        uk: "Найбільший приватний енергохолдинг України; бенефіціарний власник — Рінат Ахметов. Придбала 57,6% «Крименерго».",
-        en: "Ukraine's largest private power group, beneficially owned by Rinat Akhmetov. It bought 57.6% of Krymenergo.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
-      role: {
-        uk: "Відповідач. На відміну від справи Ощадбанку, брала участь у процесі й висунула п'ять попередніх заперечень — усі відхилено.",
-        en: "Respondent. Unlike in Oschadbank, it took part and raised six preliminary objections — all rejected.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Склад арбітражу (PCA 2018-41)", en: "The tribunal (PCA 2018-41)" },
-      role: {
-        uk: "Ad hoc трибунал за Регламентом ЮНСІТРАЛ 1976 року, адміністрований ПАС; місце арбітражу — Гаага.",
-        en: "An ad hoc tribunal under the 1976 UNCITRAL Rules, administered by the PCA; the seat was The Hague.",
-      },
-      kind: "court",
-    },
-    {
-      name: { uk: "Gazprom International", en: "Gazprom International" },
-      role: {
-        uk: "Нідерландська ланка «Газпрому», чиї акції арештовано на виконання рішення — підтверджено апеляцією в березні 2026 року.",
-        en: "Gazprom's Dutch arm, whose shares were seized in satisfaction of the award — confirmed on appeal in March 2026.",
-      },
-      kind: "actor",
-    },
-  ],
-
-  faq: [
-    {
-      q: { uk: "Скільки насправді присуджено — 207,8 чи 267 мільйонів?", en: "So is the award 207.8 or 267 million?" },
-      a: {
-        uk: "Обидва числа правильні. Диспозитив присуджує 207,8 млн доларів відшкодування плюс відсотки за ставкою LIBOR 3м (або SOFR) + 1%, складні, від 22 січня 2015 року — дня, коли Росія забрала компанію. З нарахованими відсотками на день рішення сума становила близько 267 млн, і саме її називала преса.",
-        en: "Both numbers are right. The dispositif awards USD 207.8 million plus interest at 3-month LIBOR (or SOFR) + 1%, compounded from 22 January 2015 — the day Russia took the company. With interest accrued to the award date that came to about USD 267 million, the figure the press reported.",
-      },
-    },
-    {
-      q: { uk: "Чим ця справа відрізняється від Ощадбанку?", en: "How does this differ from Oschadbank?" },
-      a: {
-        uk: "Той самий договір і той самий висновок про «територію», але процесуально — протилежність: Росія тут брала участь, наймала адвокатів і висунула п'ять заперечень, включно зі звинуваченням у корупційному придбанні акцій. Трибунал відхилив усі п'ять — тож це рішення пройшло повноцінний змагальний процес.",
-        en: "Same treaty, same territory holding — but procedurally the opposite: Russia participated, briefed counsel and raised five objections, including a corruption allegation. The tribunal rejected all five — so this award survived a fully contested process.",
-      },
-    },
-    {
-      q: { uk: "Чому просили 421 млн, а дали 207,8?", en: "They asked for 421 million — why 207.8?" },
-      a: {
-        uk: "Позивач вимагав не менш як 421,2 млн. Трибунал погодився з відповідальністю повністю, але порахував збитки за власною оцінкою — «меншою сумою, ніж вимагав Позивач», як прямо сказано в рішенні. Присудження суми ухвалене більшістю складу.",
-        en: "The claimant sought at least USD 421.2 million. The tribunal agreed on liability in full but valued the loss itself — \"a lower amount than the one claimed\", as the award says. The damages ruling was by majority.",
-      },
-    },
-    {
-      q: { uk: "Росія платить?", en: "Is Russia paying?" },
-      a: {
-        uk: "Добровільно — ні. ДТЕК пішов шляхом Нью-Йоркської конвенції: у листопаді 2023 року подав до федерального суду США клопотання про визнання рішення; у лютому 2026-го апеляційний суд США відмовив Росії в суверенному імунітеті, у квітні — відхилив її прохання про зупинку. У Нідерландах у березні 2026 року апеляція підтвердила арешт акцій Gazprom International на виконання рішення.",
-        en: "Not voluntarily. DTEK took the New York Convention route: a petition to confirm in US federal court in November 2023; in February 2026 the US Court of Appeals denied Russia sovereign immunity, and in April declined its stay request. In the Netherlands, a March 2026 appeal confirmed the seizure of Gazprom International shares in satisfaction of the award.",
-      },
-    },
-    {
-      q: { uk: "Що таке аргумент про «радянські активи»?", en: "What was the \"Soviet Assets\" argument?" },
-      a: {
-        uk: "Значну частину мережі збудовано до 1992 року, і Росія доводила, що ст. 12 ДІД такі активи не захищає. Трибунал одностайно відповів: інвестицію «зроблено» тоді, коли інвестор набув власність, — а це сталося після 1 січня 1992 року за версією обох сторін (1995 чи 2012). Тест виконано.",
-        en: "Much of the grid predates 1992, and Russia argued Article 12 leaves such assets unprotected. The tribunal answered unanimously: an investment is \"made\" when the investor acquires ownership — which on both parties' versions (1995 or 2012) happened after 1 January 1992. Test satisfied.",
-      },
-    },
-  ],
-
-  related: [
-    {
-      label: { uk: "Ощадбанк проти РФ", en: "Oschadbank v. Russian Federation" },
-      note: { uk: "PCA 2016-14 · той самий ДІД, той самий підхід до «території»", en: "PCA 2016-14 · same BIT, same territory approach" },
-      href: "/cases/oschadbank",
-    },
-    {
-      label: { uk: "ПАТ «Укрнафта» проти РФ", en: "PJSC Ukrnafta v. Russian Federation" },
-      note: { uk: "PCA 2015-34 · кримська серія", en: "PCA 2015-34 · the Crimea line of cases" },
-      /* pca-24, the registry row for PCA 2015-34. It has no write-up, and
-         its own page says so; `#registry` sent a reader who wanted this
-         arbitration to the home page's preview of the whole library. */
-      href: "/cases/pca-24",
-    },
-    {
-      label: {
-        uk: "ICSFT і CERD (Україна проти РФ)",
-        en: "ICSFT and CERD (Ukraine v. Russian Federation)",
-      },
-      note: { uk: "МС ООН · міждержавний вимір Криму", en: "ICJ · the inter-State dimension of Crimea" },
-      href: "/cases/icj-cerd-icsft",
     },
   ],
 
@@ -399,44 +289,6 @@ export const dtekKrymenergo: DecisionSummary = {
         uk: "Апеляційний суд підтвердив арешт на виконання рішення; у травні 2026-го суд відмовився заборонити переміщення активів структури «Газпрому» до Угорщини.",
         en: "The appeals court confirmed the seizure in satisfaction of the award; in May 2026 a Dutch court declined to enjoin a Gazprom unit from moving assets to Hungary.",
       },
-    },
-  ],
-
-  verdictsHeading: { uk: "Що вирішив арбітраж", en: "What the tribunal decided" },
-
-  verdicts: [
-    {
-      track: "Jurisdiction",
-      trackLabel: { uk: "Юрисдикція", en: "Jurisdiction" },
-      claim: { uk: "Усі п'ять попередніх заперечень Росії", en: "All five of Russia's preliminary objections" },
-      outcome: "rejected",
-    },
-    {
-      track: "Merits",
-      trackLabel: { uk: "Суть", en: "Merits" },
-      claim: { uk: "Ст. 5 — незаконна експропріація (всі чотири умови порушено)", en: "Art. 5 — unlawful expropriation (all four conditions failed)" },
-      outcome: "violation",
-    },
-    {
-      track: "Merits",
-      trackLabel: { uk: "Суть", en: "Merits" },
-      claim: { uk: "Ст. 2 і 3 — правовий захист і недискримінація", en: "Arts. 2 and 3 — legal protection and non-discrimination" },
-      outcome: "violation",
-    },
-    {
-      track: "Remedies",
-      trackLabel: { uk: "Наслідки", en: "Remedies" },
-      claim: {
-        uk: "Відшкодування 207 800 000 доларів + LIBOR 3м/SOFR + 1% з 22.01.2015 (більшістю)",
-        en: "Damages of USD 207,800,000 + 3M LIBOR/SOFR + 1% from 22 Jan 2015 (by majority)",
-      },
-      outcome: "granted",
-    },
-    {
-      track: "Remedies",
-      trackLabel: { uk: "Наслідки", en: "Remedies" },
-      claim: { uk: "Витрати: $1 362 422,88 адміністративних + $9 401 644,76 правових", en: "Costs: $1,362,422.88 administrative + $9,401,644.76 legal" },
-      outcome: "granted",
     },
   ],
 

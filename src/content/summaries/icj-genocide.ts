@@ -213,10 +213,6 @@ export const icjGenocide: DecisionSummary = {
       uk: "Росія виправдовувала вторгнення вигаданим «геноцидом на Донбасі». Україна пішла до Міжнародного суду ООН, щоб той офіційно засвідчив: геноциду не було. Суд погодився розглядати саме це — і відхилив п'ять із шести заперечень Росії. Але вимоги визнати незаконними визнання «ДНР/ЛНР» і саму «спецоперацію» Суд розглядати відмовився: це поза межами Конвенції про геноцид.",
       en: "Russia justified its invasion with a fabricated “genocide in Donbas”. Ukraine went to the International Court of Justice to have it put on the record that no genocide occurred. The Court agreed to hear exactly that claim, rejecting five of Russia's six objections. It refused, however, to rule on the recognition of the “DPR/LPR” and on the “special military operation” themselves: those lie outside the Genocide Convention.",
     },
-    whyMatters: {
-      uk: "Це перша справа в історії Суду, де держава просить визнати, що вона НЕ вчиняла геноциду — щоб вибити ґрунт з-під приводу для війни. Аргумент України підтримали 33 держави, що стало найбільшою участю третіх сторін в історії Суду. Водночас рішення окреслило межу: Конвенція про геноцид не є інструментом для оцінки застосування сили.",
-      en: "This is the first case in the Court's history in which a State asks to be declared NOT to have committed genocide — to knock away the stated pretext for a war. Ukraine's argument drew 33 States into the proceedings, the largest third-party participation the Court has seen. The judgment also drew a boundary: the Genocide Convention is not a vehicle for judging the use of force.",
-    },
   },
 
   glossary: [
@@ -271,139 +267,11 @@ export const icjGenocide: DecisionSummary = {
     },
   ],
 
-  whoIsWho: [
-    {
-      name: { uk: "Україна", en: "Ukraine" },
-      role: {
-        uk: "Заявник. Просить Суд встановити, що геноциду в Луганській і Донецькій областях не було.",
-        en: "Applicant. Asks the Court to find that no genocide was committed in the Luhansk and Donetsk oblasts.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
-      role: {
-        uk: "Відповідач. Заявила шість попередніх заперечень проти юрисдикції Суду та прийнятності позову.",
-        en: "Respondent. Raised six preliminary objections to the Court's jurisdiction and the admissibility of the claim.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
-      role: {
-        uk: "Головний судовий орган ООН у Гаазі. Вирішує спори між державами; його рішення остаточні й оскарженню не підлягають.",
-        en: "The principal judicial organ of the UN, in The Hague. It settles disputes between States; its judgments are final and without appeal.",
-      },
-      kind: "court",
-    },
-    {
-      name: { uk: "32 держави, що вступили у справу", en: "32 intervening States" },
-      role: {
-        uk: "З 33 держав, які подали декларації за статтею 63 Статуту між 21 липня і 15 грудня 2022 року, Суд допустив 32 — 14 голосами проти 1. Усі 32 були представлені на слуханнях у вересні 2023 року.",
-        en: "Of the 33 States that filed declarations under Article 63 of the Statute between 21 July and 15 December 2022, the Court admitted 32, by fourteen votes to one. All 32 were represented at the September 2023 hearings.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "Сполучені Штати Америки", en: "United States of America" },
-      role: {
-        uk: "Єдина держава, чию декларацію про вступ Суд одностайно визнав неприйнятною на стадії попередніх заперечень — саме тому в назві справи 32, а не 33 держави.",
-        en: "The one State whose declaration of intervention the Court unanimously held inadmissible at the preliminary objections stage — which is why the case is titled with 32 States, not 33.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "Ів Доде, суддя ad hoc", en: "Yves Daudet, judge ad hoc" },
-      role: {
-        uk: "У складі Суду не було судді української національності, тож Україна скористалася правом за статтею 31(2) Статуту й обрала суддю ad hoc. Він голосував з більшістю в усіх дев'яти пунктах резолютивної частини та додав окрему думку.",
-        en: "The Bench included no judge of Ukrainian nationality, so Ukraine exercised its right under Article 31 (2) of the Statute to choose a judge ad hoc. He voted with the majority on all nine operative paragraphs and appended a separate opinion.",
-      },
-      kind: "court",
-    },
-  ],
-
-  faq: [
-    {
-      q: {
-        uk: "Суд визнав, що Україна не вчиняла геноциду?",
-        en: "Did the Court find that Ukraine committed no genocide?",
-      },
-      a: {
-        uk: "Ще ні. 2 лютого 2024 року Суд вирішив лише, що має право розглядати це питання й що вимога прийнятна. Саме твердження про відсутність геноциду перевірятимуть на наступному етапі — по суті.",
-        en: "Not yet. On 2 February 2024 the Court decided only that it may hear the question and that the claim is admissible. Whether no genocide occurred will be examined at the next stage, on the merits.",
-      },
-    },
-    {
-      q: {
-        uk: "Чому Суд відмовився оцінювати «спецоперацію» і визнання «ДНР/ЛНР»?",
-        en: "Why did the Court refuse to assess the “special military operation” and the recognition of the “DPR/LPR”?",
-      },
-      a: {
-        uk: "Бо його юрисдикція тут походить лише зі статті IX Конвенції про геноцид. Застосування сили й визнання держав, як зазначив Суд, лежать поза Конвенцією й регулюються іншими нормами міжнародного права.",
-        en: "Because its jurisdiction here comes only from Article IX of the Genocide Convention. The use of force and the recognition of States, the Court held, lie outside the Convention and are governed by other rules of international law.",
-      },
-    },
-    {
-      q: {
-        uk: "Що означає «п'ять заперечень відхилено, одне задоволено»?",
-        en: "What does “five objections rejected, one upheld” mean?",
-      },
-      a: {
-        uk: "Росія намагалася зупинити справу шістьма способами. П'ять спроб Суд відкинув — справа живе. Одна спрацювала: задоволене друге заперечення відсікло від розгляду вимоги (c) і (d) Меморандуму України.",
-        en: "Russia tried six ways to stop the case. Five failed — the case survives. One worked: the second objection, upheld, cut submissions (c) and (d) of Ukraine's Memorial out of the case.",
-      },
-    },
-    {
-      q: {
-        uk: "Навіщо у справу вступили 33 держави?",
-        en: "Why did 33 States intervene?",
-      },
-      a: {
-        uk: "Стаття 63 Статуту дозволяє учасникам договору подати своє тлумачення. Держави підтримали позицію, що недобросовісне посилання на Конвенцію як привід для сили є зловживанням нею. Суд допустив 32 з 33 — це найбільша участь третіх держав в його історії.",
-        en: "Article 63 of the Statute lets parties to a convention put their own construction before the Court. These States supported the reading that invoking the Convention in bad faith, as a pretext for force, is an abuse of it. The Court admitted 32 of the 33 — the largest third-party participation in its history.",
-      },
-    },
-    {
-      q: {
-        uk: "Чому вимоги (b), (c) і (d) у тексті вище й у таблиці рішень різні?",
-        en: "Why do submissions (b), (c) and (d) differ between the text above and the verdict table?",
-      },
-      a: {
-        uk: "Бо це два різні переліки. Позов від 26 лютого 2022 року містив вимоги (a)–(f) у § 30, а Меморандум від 1 липня 2022 року — інші вимоги, під тими самими літерами, у § 178. Резолютивна частина рішення вирішує саме про § 178 Меморандуму, тож таблиця цитує його. Суд сам звіряє два переліки в § 54–55 рішення.",
-        en: "Because they are two different lists. The Application of 26 February 2022 set out requests (a)–(f) in its paragraph 30; the Memorial of 1 July 2022 set out different submissions, under the same letters, in its paragraph 178. The dispositif rules on § 178 of the Memorial, so the table quotes that. The Court itself lines the two lists up at § 54–55 of the judgment.",
-      },
-    },
-    {
-      q: {
-        uk: "Отже, Суд визнав вторгнення законним?",
-        en: "So did the Court find the invasion lawful?",
-      },
-      a: {
-        uk: "Ні. Суд сказав лише, що не має права оцінювати застосування сили через Конвенцію про геноцид. Він окремо нагадав (§ 150): згода держави на юрисдикцію Суду і відповідність її дій міжнародному праву — різні речі, і держави залишаються відповідальними за протиправні діяння незалежно від того, чи визнали вони юрисдикцію.",
-        en: "No. The Court said only that it may not judge the use of force through the Genocide Convention. It added a reminder of its own (§ 150): a State's acceptance of the Court's jurisdiction and the lawfulness of its conduct are different questions, and States remain responsible for wrongful acts whether or not they have consented to jurisdiction.",
-      },
-    },
-  ],
-
-  related: [
-    {
-      label: {
-        uk: "ICSFT і CERD (Україна проти Росії)",
-        en: "ICSFT and CERD (Ukraine v. Russian Federation)",
-      },
-      note: {
-        uk: "Рішення по суті від 31 січня 2024 — за день до цього. Крим і Донбас, два інші договори.",
-        en: "Judgment on the merits of 31 January 2024 — the day before this one. Crimea and Donbas, under two other treaties.",
-      },
-      href: "/cases/icj-cerd-icsft",
-    },
-  ],
 
   judgment: {
     court: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
     url: "https://www.icj-cij.org/sites/default/files/case-related/182/182-20240202-jud-01-00-en.pdf",
     caseUrl: "https://www.icj-cij.org/case/182",
-    pages: 70,
     date: "2024-02-02",
   },
 
@@ -738,79 +606,6 @@ export const icjGenocide: DecisionSummary = {
       note: {
         uk: "11 голосами проти 4. Тим самим наказом, одностайно, Суд дозволив Україні подати Репліку до 7 грудня 2026 року, а Росії — Дуплік до 7 грудня 2027 року. До наказу додано сім окремих і особливих думок та заяв (наказ, § 68; прес-реліз 2025/55).",
         en: "By eleven votes to four. By the same Order, unanimously, the Court authorized Ukraine to submit a Reply by 7 December 2026 and Russia a Rejoinder by 7 December 2027. Seven separate and dissenting opinions and declarations are appended to it (the Order, § 68; press release 2025/55).",
-      },
-    },
-  ],
-
-  /* «Сформулювати, як "Аргументи України"» (review). The heading it replaces
-     — «Що з вимог України пройшло далі» — asked the reader to hold a question
-     while reading three long submissions, and the answer to it is the result
-     column anyway. What the section is, is Ukraine's submissions and what
-     became of each. */
-  verdictsHeading: {
-    uk: "Аргументи України",
-    en: "Ukraine's submissions",
-  },
-  /* «Зліва забрати Genocide convention». One convention in the case, three
-     rows, one string — see `verdictsTrackless` in summaries/types.ts. */
-  verdictsTrackless: true,
-
-  /* These are the submissions in § 178 of Ukraine's Memorial, quoted as the
-     judgment reproduces them at § 25 — the list the dispositif actually rules
-     on. They are NOT the "(a)"–"(f)" list in the verbatim prose above, which
-     is paragraph 30 of the Application (judgment § 24) and letters the same
-     ground differently. See the file header.
-
-     (c) and (d) read `rejected` until this pass, which said the Court had
-     considered them and refused them. It did not. It held them ADMISSIBLE —
-     the third preliminary objection against them was rejected, § 129 and
-     dispositif (4) — and then found it had no power over them: "submissions
-     (c) and (d) in paragraph 178 of Ukraine's Memorial do not fall within the
-     jurisdiction of the Court and that the Court may not deal with them on the
-     merits" (§ 149, closing sentence; the same sentence is block 34 of the
-     verbatim). `not-decided` is the union member for that, and it leaves the
-     scorecard untouched: the count line reads off `granted`, which is still
-     submission (b) alone — "1 вимогу задоволено з 3".
-
-     One open question for the researchers, deliberately not answered here.
-     § 178 of the Memorial has five submissions, (a)-(e); this matrix carries
-     three. (a) is the request that the Court declare it has jurisdiction, which
-     the dispositif answers at (8). (e) — that Russia breached the Order of
-     16 March 2022 — the judgment never touches: § 55 defines the second aspect
-     of the dispute as (c) and (d) only, and no paragraph of the judgment
-     mentions submission (e). Adding either row would change the denominator the
-     scorecard prints, so it is an editorial call, not a correction. */
-  verdicts: [
-    {
-      track: "Genocide Convention",
-      claim: {
-        uk: "(b) Немає достовірних доказів того, що Україна відповідальна за вчинення геноциду на порушення Конвенції в Донецькій і Луганській областях",
-        en: "(b) There is no credible evidence that Ukraine is responsible for committing genocide in violation of the Genocide Convention in the Donetsk and Luhansk oblasts of Ukraine",
-      },
-      outcome: "granted",
-    },
-    {
-      track: "Genocide Convention",
-      claim: {
-        uk: "(c) Застосування Росією сили в Україні та проти України, розпочате 24 лютого 2022 року, порушує статті I і IV Конвенції",
-        en: "(c) The Russian Federation's use of force in and against Ukraine beginning on 24 February 2022 violates Articles I and IV of the Genocide Convention",
-      },
-      outcome: "not-decided",
-      outcomeLabel: {
-        uk: "Суд не знайшов юрисдикції, аби розглядати аргумент",
-        en: "The Court found no jurisdiction to entertain this submission",
-      },
-    },
-    {
-      track: "Genocide Convention",
-      claim: {
-        uk: "(d) Визнання Росією незалежності «ДНР» і «ЛНР» 21 лютого 2022 року порушує статті I і IV Конвенції",
-        en: "(d) The Russian Federation's recognition of the independence of the so-called “DPR” and “LPR” on 21 February 2022 violates Articles I and IV of the Genocide Convention",
-      },
-      outcome: "not-decided",
-      outcomeLabel: {
-        uk: "Суд не знайшов юрисдикції, аби розглядати аргумент",
-        en: "The Court found no jurisdiction to entertain this submission",
       },
     },
   ],

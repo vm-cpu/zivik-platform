@@ -186,7 +186,7 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
        сторінки прибрано, а індекс обіцяє читачеві, що слова, які він шукав,
        на сторінці є. Обіцянку, якої сторінка не тримає, краще не давати —
        та сама причина, з якої звідси свого часу пішли `questions` і
-       `related`. Саме поле лишається в записі. */
+       `related`. Згодом і саме поле прибрано з даних. */
     all(s.title, s.metaDesc, s.plain.tldr),
     s.masthead.parties,
     s.masthead.official,
@@ -205,9 +205,7 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
   // ── machinery: what the court did with the claims, and with the facts ──
   out.machinery.push(
     /* `verdicts` і `verdictsHeading` теж пішли: смугу «Що вирішив суд»,
-       яка одна їх малювала, знято. Текст вимог і назва смуги лишаються в
-       записі й далі перевіряються — але шукати по них означало б наводити
-       читача на сторінку, де цих слів немає. */
+       яка одна їх малювала, знято, а згодом ці поля пішли й із даних. */
     (s.theatres ?? []).map((t) => all(t.place, t.tag, t.summary)).join(" "),
     s.objections
       ? all(s.objections.heading, s.objections.note) +

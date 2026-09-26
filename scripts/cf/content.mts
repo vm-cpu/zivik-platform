@@ -231,9 +231,13 @@ async function push(write: boolean) {
  *   ~ a field whose label, position or length limit differs is updated;
  *   ~ a collection whose admin list columns differ is updated.
  *
- * It never renames a slug, changes a type or removes anything, so no stored
- * value is touched. Without `--yes` it only reports. The token needs Schema
- * Read and Schema Write (Settings → API tokens).
+ * It never renames a slug or changes a type. It removes nothing unless asked:
+ * with `--prune`, a field the running EmDash has and collections.ts no longer
+ * describes is deleted — its column and every value in it, in every entry,
+ * so take a backup first (docs/BACKUPS.md). Without `--yes` it only reports.
+ * The token needs Schema Read and Schema Write (Settings → API tokens).
+ *
+ *   … cf:content -- schema --prune [--yes]
  */
 type RemoteField = {
   slug: string;
@@ -243,7 +247,7 @@ type RemoteField = {
   options?: Record<string, unknown> | null;
 };
 
-async function schema(write: boolean) {
+async function schema(write: boolean, prune: boolean) {
   const base = process.env.EMDASH_URL?.replace(/\/$/, "");
   const token = process.env.EMDASH_TOKEN;
   if (!base || !token) throw new Error("schema needs EMDASH_URL and EMDASH_TOKEN");
@@ -265,6 +269,7 @@ async function schema(write: boolean) {
 
   let added = 0;
   let updated = 0;
+  let removed = 0;
   for (const [order, spec] of COLLECTIONS.entries()) {
     const got = await api("GET", `/schema/collections/${spec.slug}?includeFields=true`);
     const fields = seedFields(spec);
@@ -319,6 +324,15 @@ async function schema(write: boolean) {
         validation: Object.keys(validation).length ? validation : null,
       });
     }
+    if (prune) {
+      const want = new Set(fields.map((f) => String(f.slug)));
+      for (const slug of have.keys()) {
+        if (want.has(slug)) continue;
+        removed++;
+        console.log(`  - field ${spec.slug}.${slug} (${have.get(slug)!.label}) — deletes its values`);
+        if (write) await api("DELETE", `/schema/collections/${spec.slug}/fields/${slug}`);
+      }
+    }
     const wantCols = spec.listColumns ?? [];
     const haveCols = got.item?.admin?.listColumns ?? [];
     if (wantCols.join() !== haveCols.join()) {
@@ -327,10 +341,11 @@ async function schema(write: boolean) {
       if (write) await api("PUT", `/schema/collections/${spec.slug}`, { admin: { listColumns: wantCols } });
     }
   }
-  const n = added + updated;
+  const n = added + updated + removed;
   if (!n) console.log("  cf:content schema: the running EmDash matches collections.ts.");
-  else if (!write) console.log(`  cf:content schema: ${added} to add, ${updated} to update — run again with --yes to apply.`);
-  else console.log(`  cf:content schema: added ${added}, updated ${updated}.`);
+  else if (!write)
+    console.log(`  cf:content schema: ${added} to add, ${updated} to update, ${removed} to delete — run again with --yes to apply.`);
+  else console.log(`  cf:content schema: added ${added}, updated ${updated}, deleted ${removed}.`);
 }
 
 const [cmd = "check", ...rest] = process.argv.slice(2);
@@ -346,7 +361,7 @@ if (cmd === "check") {
 } else if (cmd === "push") {
   await push(rest.includes("--yes"));
 } else if (cmd === "schema") {
-  await schema(rest.includes("--yes"));
+  await schema(rest.includes("--yes"), rest.includes("--prune"));
 } else {
   console.error(`unknown command: ${cmd}`);
   process.exit(2);

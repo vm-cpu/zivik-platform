@@ -1362,13 +1362,15 @@ export default async function CasePage({
 
   /* `pagesLabel` stood here — «PDF, 139 с.» under «Читати рішення». The
      review took the page count off the dashboard and then off the button:
-     «Забрати цифру про те, що рішення має 139 сторінок». `judgment.pages`
-     stays in the data and still feeds the pending page's «Обсяг рішення». */
+     «Забрати цифру про те, що рішення має 139 сторінок». The pending page's
+     «Обсяг рішення» reads the registry row's own count; `judgment.pages`,
+     which nothing read, has left the write-ups and the admin. */
   /* ── Лічильник диспозитива прибрано ──────────────────────────────────
      Він рахував, чого в диспозитиві більше — порушень, задоволених вимог
      чи обвинувальних вироків, — і друкував це в шапці смуги «Що вирішив
      суд». Смуги немає, отже, немає й того, хто ставив це питання.
-     `summary.verdicts` лишається в записі й далі перевіряється. */
+     `verdicts` (і їхні заголовки) згодом прибрано й із даних та адмінки —
+     власниця: «забери все чого немає на сторінці» (26.09.2026). */
 
   /** Resolve a Localized pair for this render's locale (client-prop hygiene:
    *  client components receive plain strings, never both languages). */
@@ -1779,8 +1781,8 @@ export default async function CasePage({
       /* The FAQPage graph stood here and went out with the band it described.
          Structured data states what a page shows; the questions are no longer
          on it, and a graph promising answers a reader cannot find is the kind
-         of claim this archive exists not to make. `summary.faq` is still in
-         the data — see the note on the band. */
+         of claim this archive exists not to make. The questions themselves
+         have since left the data too — see the note on the band. */
       {
         "@type": "BreadcrumbList",
         "@id": `${pageUrl}#breadcrumbs`,
@@ -1971,8 +1973,8 @@ export default async function CasePage({
             )}
             {/* «Чому це важливо» прибрано — власниця: «чому це важливо
                 також». Це був відступ обіч речення про справу, з золотою
-                лінією ліворуч; `plain.whyMatters` лишається в записі й
-                перевіряється, сторінка його більше не друкує. */}
+                лінією ліворуч. Згодом поле пішло й з даних та адмінки:
+                «забери все чого немає на сторінці». */}
             <p className="body">{pick(plain.tldr, locale)}</p>
           </div>
         </section>
@@ -2629,8 +2631,8 @@ export default async function CasePage({
           rows of «Картка справи» a screen above: «Заявник — Україна»,
           «Відповідач — Російська Федерація», «Суд — Міжнародний суд ООН».
           A band whose whole content is a restatement of the table over it is
-          not a band. `summary.whoIsWho` stays in the data, unread, the way
-          `faq` does. */}
+          not a band. The data left too, with its admin field: «забери все
+          чого немає на сторінці» (owner, 26 September 2026). */}
 
       {/* Its own id and its own nav entry. It had neither, so it was reached
           only by scrolling past «Хто є хто» — and the chip that was supposed
@@ -2672,10 +2674,13 @@ export default async function CasePage({
       {/* «Забрати Часті запитання» (review). The band was an accordion of
           four questions — «То Україна виграла?», «Що буде далі?» — written
           for the page rather than drawn from the decision, in a register
-          the archive does not use anywhere else. `summary.faq` stays in the
-          data, unread by any surface — the band is gone, and so are the
-          FAQPage graph and the search index's «Часті запитання» section,
-          because both described text that is no longer on the page. */}
+          the archive does not use anywhere else. The band is gone, and so are
+          the FAQPage graph and the search index's «Часті запитання» section,
+          because both described text that is no longer on the page. The
+          questions went on as unread data, with a field in the admin that
+          edited nothing a reader could see, until the owner took them out of
+          the data and the admin as well (26 September 2026): «прибери зовсім
+          наразі — бо зараз ми заплутаємо користувача». */}
 
       {/* The apparatus, at the foot of the page.
 
@@ -2789,10 +2794,10 @@ export default async function CasePage({
           that guesses at the same relations per page is a third list to keep
           in agreement with those two.
 
-          `summary.related` stays in the data, unread, the way `whoIsWho` and
-          `faq` do; the band comes back by restoring this block. Its anchor
-          leaves the search index with it — a hit on #related would scroll to
-          nothing. */}
+          The list itself has since left the data and the admin as well
+          (owner: «забери все чого немає на сторінці»); bringing the band back
+          means bringing the field back. Its anchor left the search index with
+          it — a hit on #related would scroll to nothing. */}
         </div>
       </div>
       </main>

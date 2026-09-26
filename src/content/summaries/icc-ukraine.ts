@@ -121,14 +121,6 @@ export const iccUkraine: DecisionSummary = {
       uk: "Міжнародний кримінальний суд розслідує воєнні злочини, злочини проти людяності та геноцид на території України з 2013 року. Судді видали шість ордерів на арешт: Путіну і Львовій-Бєловій — за депортацію українських дітей, чотирьом вищим військовим командувачам — за ракетну кампанію проти енергосистеми. Це не вирок: ордер означає обґрунтовану підозру, а судити МКС може лише тих, кого заарештують.",
       en: "The International Criminal Court is investigating war crimes, crimes against humanity and genocide on the territory of Ukraine since 2013. Its judges have issued six arrest warrants: for Putin and Lvova-Belova over the deportation of Ukrainian children, and for four top military commanders over the missile campaign against the power grid. None of this is a verdict: a warrant means reasonable grounds to believe, and the ICC can only try a person it has in custody.",
     },
-    whyMatters: {
-      /* Зачин «уперше під ордером МКС — глава держави, що є постійним
-         членом Ради Безпеки» прибрано з тієї самої причини, що й у
-         примітці хронології: в огляді його немає. Лишилося зобов'язання,
-         яке справді випливає з Римського статуту. */
-      uk: "125 держав-учасниць Римського статуту юридично зобов'язані заарештувати підозрюваних на своїй території.",
-      en: "The 125 States Parties to the Rome Statute are legally bound to arrest the suspects on their territory.",
-    },
   },
 
   glossary: [
@@ -197,139 +189,6 @@ export const iccUkraine: DecisionSummary = {
         uk: "«Парламент» МКС — представники всіх 125 держав-членів. Саме їй Суд передає питання про невиконання державою обов'язку арешту.",
         en: "The ICC's \"parliament\" of all 125 member States. Non-compliance with an arrest obligation is referred to it.",
       },
-    },
-  ],
-
-  whoIsWho: [
-    {
-      name: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },
-      role: {
-        uk: "Постійний суд у Гаазі, що судить осіб (не держави) за найтяжчі міжнародні злочини.",
-        en: "The permanent court in The Hague that tries individuals — not States — for the gravest international crimes.",
-      },
-      kind: "court",
-    },
-    {
-      name: { uk: "Офіс Прокурора МКС", en: "Office of the Prosecutor" },
-      role: {
-        uk: "Веде розслідування ситуації в Україні; у 2022–2025 роках його очолював Карім Хан.",
-        en: "Runs the Ukraine investigation; led in 2022–2025 by Karim Khan.",
-      },
-      kind: "actor",
-    },
-    {
-      name: { uk: "Pre-Trial Chamber II", en: "Pre-Trial Chamber II" },
-      role: {
-        uk: "Видала всі шість ордерів і констатувала невиконання обов'язку арешту Монголією (2024) і Таджикистаном (2026).",
-        /* Both findings, in both locales. The Ukrainian side named Mongolia and
-           Tajikistan; the English side named only Mongolia, so a reader of the
-           English page met the second finding in the chronology below without
-           ever having been told the Chamber made it. */
-        en: "Issued all six warrants and found the failures to arrest by Mongolia (2024) and Tajikistan (2026).",
-      },
-      kind: "court",
-    },
-    {
-      name: { uk: "Україна", en: "Ukraine" },
-      role: {
-        uk: "Держава території злочинів. Двічі визнавала юрисдикцію Суду (2014, 2015), з 1 січня 2025 року — 125-та держава-учасниця.",
-        en: "The territorial State. It accepted the Court's jurisdiction twice (2014, 2015) and became the 125th State Party on 1 January 2025.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
-      role: {
-        uk: "Не є учасницею Статуту, юрисдикцію не визнає. У відповідь порушила кримінальні справи проти прокурора та суддів МКС.",
-        en: "Not a party to the Statute and rejects the Court's jurisdiction. It responded with criminal cases against the ICC's Prosecutor and judges.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Шість підозрюваних", en: "The six suspects" },
-      role: {
-        uk: "Путін, Львова-Бєлова, Кобилаш, Соколов, Шойгу, Герасимов. Жоден не під вартою; МКС не судить заочно.",
-        en: "Putin, Lvova-Belova, Kobylash, Sokolov, Shoigu, Gerasimov. None is in custody; the ICC does not try in absentia.",
-      },
-      kind: "actor",
-    },
-  ],
-
-  faq: [
-    {
-      q: {
-        uk: "Ордер означає, що Путін уже визнаний винним?",
-        en: "Does the warrant mean Putin has been found guilty?",
-      },
-      a: {
-        uk: "Ні. Ордер — це висновок суддів, що є «обґрунтовані підстави вважати» причетність до злочинів. Вина встановлюється лише вироком після повного процесу, а МКС не судить за відсутності обвинуваченого — тож процес можливий тільки після арешту чи добровільної явки.",
-        en: "No. A warrant is a judicial finding of \"reasonable grounds to believe\". Guilt can be established only by a judgment after a full trial, and the ICC does not try in absentia — so a trial requires arrest or surrender.",
-      },
-    },
-    {
-      q: { uk: "Хто зобов'язаний його заарештувати?", en: "Who is obliged to arrest him?" },
-      a: {
-        uk: "Усі 125 держав-учасниць Римського статуту, щойно підозрюваний опиниться на їхній території. Практика поки інша, і двічі Суд це зафіксував: у вересні 2024 року Монголія прийняла Путіна без арешту, у жовтні 2025-го — Таджикистан, і щодо обох Pre-Trial Chamber II ухвалила констатацію за статтею 87(7) з передачею Асамблеї держав-учасниць (ICC-01/22-90 від 24.10.2024 і ICC-01/22-143 від 19.03.2026). До Південної Африки на саміт БРІКС-2023 Путін натомість не поїхав.",
-        en: "All 125 States Parties to the Rome Statute, the moment a suspect enters their territory. Practice has lagged: in September 2024 Mongolia hosted Putin without arresting him — Pre-Trial Chamber II found a breach and referred it to the Assembly of States Parties; Tajikistan did the same in October 2025. Putin chose not to travel to South Africa for the 2023 BRICS summit.",
-      },
-    },
-    {
-      q: {
-        uk: "Чи захищає Путіна імунітет глави держави?",
-        en: "Doesn't head-of-state immunity protect Putin?",
-      },
-      a: {
-        uk: "Перед МКС — ні. У рішенні щодо Монголії від 24 жовтня 2024 року Палата підтвердила: персональні імунітети, включно з імунітетом глави держави, не діють перед Судом, і держави-учасниці зобов'язані виконувати ордери незалежно від посади підозрюваного.",
-        en: "Not before the ICC. In its Mongolia decision of 24 October 2024 the Chamber reaffirmed that personal immunities, including that of a Head of State, are not opposable before the Court, and States Parties must execute warrants regardless of official capacity.",
-      },
-    },
-    {
-      q: { uk: "Про скільки дітей ідеться?", en: "How many children are at stake?" },
-      a: {
-        uk: "Офіційна українська база «Діти війни» налічує понад 19,5 тисячі депортованих чи примусово переміщених дітей; станом на грудень 2025 року повернути вдалося 1 859. Оцінки омбудсменів сягають 150–300 тисяч. Це дані поза матеріалами Суду — ордери самі кількість не називають.",
-        en: "Ukraine's official \"Children of War\" database counts more than 19,500 deported or forcibly transferred children; as of December 2025, 1,859 had been returned. Ombudspersons' estimates run to 150,000–300,000. These are figures from outside the Court's record — the warrants themselves state no number.",
-      },
-    },
-    {
-      q: { uk: "Як відповіла Росія?", en: "How has Russia responded?" },
-      a: {
-        uk: "Дзеркальними переслідуваннями: порушила кримінальні справи проти прокурора Каріма Хана і суддів МКС, а в грудні 2025 року московський суд заочно засудив Хана та вісьмох суддів, включно з президенткою Суду Томоко Аканє, до 3,5–15 років. Спецдоповідачі ООН зажадали припинити ці репресії.",
-        en: "With mirror prosecutions: it opened criminal cases against Prosecutor Karim Khan and ICC judges, and in December 2025 a Moscow court sentenced Khan and eight judges — including Court President Tomoko Akane — in absentia to 3.5–15 years. UN Special Rapporteurs have demanded Russia end the reprisals.",
-      },
-    },
-    {
-      q: {
-        uk: "А хто судитиме за сам напад на Україну?",
-        en: "And who will try the invasion itself?",
-      },
-      a: {
-        uk: "Не МКС: щодо злочину агресії його юрисдикція в цій ситуації обмежена, бо Росія не є учасницею Статуту. Цю прогалину закриває Спеціальний трибунал щодо злочину агресії, угоду про який Україна і Рада Європи підписали 25 червня 2025 року.",
-        en: "Not the ICC: its jurisdiction over the crime of aggression is blocked here because Russia is not a party to the Statute. That gap is being closed by the Special Tribunal for the Crime of Aggression, whose founding agreement Ukraine and the Council of Europe signed on 25 June 2025.",
-      },
-    },
-  ],
-
-  related: [
-    {
-      label: {
-        uk: "Звинувачення у геноциді (Україна проти РФ)",
-        en: "Allegations of Genocide (Ukraine v. Russian Federation)",
-      },
-      note: { uk: "МС ООН · держави, не особи", en: "ICJ · States, not individuals" },
-      href: "/cases/icj-genocide",
-    },
-    {
-      label: {
-        uk: "ICSFT і CERD (Україна проти РФ)",
-        en: "ICSFT and CERD (Ukraine v. Russian Federation)",
-      },
-      note: { uk: "МС ООН · Крим і Донбас", en: "ICJ · Crimea and Donbas" },
-      href: "/cases/icj-cerd-icsft",
-    },
-    {
-      label: { uk: "Ощадбанк проти РФ", en: "Oschadbank v. Russian Federation" },
-      note: { uk: "PCA · інвестиційний арбітраж", en: "PCA · investment arbitration" },
-      href: "/cases/oschadbank",
     },
   ],
 
@@ -683,91 +542,6 @@ export const iccUkraine: DecisionSummary = {
         uk: "Держава-учасниця, яку Суд не називає, звернулася за консультаціями за ст. 97 Статуту: чи може вона приймати мирні переговори за участю Путіна. Палата відповіла, що винятку з обов'язку арешту немає і держава не може призупинити виконання ордера сама; конференція, формально скликана ООН, робить зобов'язання за Статутом ООН релевантними, але зважує їх Суд. Єдиний шлях, яким провадження взагалі можна призупинити, — стаття 16 Статуту: відстрочка на прохання Ради Безпеки ООН, і просити про неї держава не може.",
         en: "A State Party the Court does not name sought consultations under article 97: whether it could host peace talks with Mr Putin present. The Chamber answered that no exception to the duty to arrest exists and that a State cannot suspend a warrant on its own initiative; a conference formally convened by the United Nations makes UN Charter obligations relevant, but it is the Court that weighs them. The one route by which proceedings can be suspended at all is article 16 — a deferral at the request of the UN Security Council, which is not a State's to ask for.",
       },
-    },
-  ],
-
-  verdictsHeading: { uk: "Що вирішила Палата", en: "What the Chamber decided" },
-  /* Not «Підстава»: this column holds a wave of warrants or an enforcement
-     ruling and the date it issued, which is a stage, not a ground. */
-  verdictsTrackHeading: { uk: "Етап", en: "Stage" },
-
-  verdicts: [
-    {
-      track: "17.03.2023",
-      trackStage: { uk: "Перша хвиля", en: "First wave" },
-      trackLabel: { uk: "17 березня 2023", en: "17 March 2023" },
-      claim: {
-        uk: "Путін і Львова-Бєлова: депортація та незаконне переміщення дітей",
-        en: "Putin and Lvova-Belova: deportation and unlawful transfer of children",
-      },
-      outcome: "granted",
-    },
-    {
-      track: "05.03.2024",
-      trackStage: { uk: "Друга хвиля", en: "Second wave" },
-      trackLabel: { uk: "5 березня 2024", en: "5 March 2024" },
-      claim: {
-        uk: "Кобилаш і Соколов: напади на цивільні об'єкти, надмірна шкода, нелюдські діяння",
-        en: "Kobylash and Sokolov: attacks on civilian objects, excessive harm, inhumane acts",
-      },
-      outcome: "granted",
-    },
-    {
-      track: "24.06.2024",
-      trackStage: { uk: "Третя хвиля", en: "Third wave" },
-      trackLabel: { uk: "24 червня 2024", en: "24 June 2024" },
-      claim: {
-        uk: "Шойгу і Герасимов: ті самі звинувачення на рівні міністра оборони та Генштабу",
-        en: "Shoigu and Gerasimov: the same charges at Defence-Ministry and General-Staff level",
-      },
-      outcome: "granted",
-    },
-    {
-      track: "24.10.2024",
-      trackStage: { uk: "Виконання", en: "Enforcement" },
-      trackLabel: { uk: "24 жовтня 2024", en: "24 October 2024" },
-      claim: {
-        uk: "Монголія порушила обов'язок заарештувати Путіна; імунітет глави держави перед МКС не діє",
-        en: "Mongolia breached its duty to arrest Putin; head-of-state immunity is not opposable before the ICC",
-      },
-      outcome: "violation",
-    },
-    /* The matrix stopped at Mongolia while the prose, the chronology and the
-       takings tile all counted two article 87(7) findings — so the one panel
-       that is meant to enumerate what the Chamber decided was the one panel
-       that disagreed with the rest of the page. The second finding is
-       ICC-01/22-143 of 19 March 2026, "Finding under article 87(7) of the Rome
-       Statute on the non-compliance by Tajikistan with the request by the Court
-       to cooperate in the arrest and surrender of Vladimir Vladimirovich Putin
-       and referral to the Assembly of States Parties" (Pre-Trial Chamber II);
-       the Presidency referred it on to the Assembly on 7 May 2026 under
-       regulation 109(4). The track is keyed to the day of the finding, which is
-       the chronology entry it links down to — not to Putin's 9 October 2025
-       visit, which is the non-arrest and not the decision. */
-    {
-      track: "19.03.2026",
-      trackStage: { uk: "Виконання", en: "Enforcement" },
-      trackLabel: { uk: "19 березня 2026", en: "19 March 2026" },
-      claim: {
-        uk: "Таджикистан не виконав запит про арешт і передачу Путіна; питання передано Асамблеї держав-учасниць",
-        en: "Tajikistan failed to execute the request to arrest and surrender Putin; referred to the Assembly of States Parties",
-      },
-      outcome: "violation",
-    },
-    {
-      /* The claim is written as the State's contention, not as the Chamber's
-         holding, because the outcome key applies to the row's claim: «Держава:
-         переговори дозволяють не виконувати арешт» → «Відхилено» reads the way
-         the ruling went. Written as the holding it would have inverted.
-         Keyed to the day, which is the chronology entry it links down to. */
-      track: "09.06.2026",
-      trackStage: { uk: "Співпраця", en: "Co-operation" },
-      trackLabel: { uk: "9 червня 2026", en: "9 June 2026" },
-      claim: {
-        uk: "Держава-учасниця: мирні переговори за участю особи під ордером дозволяють не виконувати арешт",
-        en: "A State Party: peace talks attended by a person under warrant permit non-execution of the arrest",
-      },
-      outcome: "rejected",
     },
   ],
 
@@ -1194,7 +968,7 @@ export const iccUkraine: DecisionSummary = {
        It was removed as a duplicate of the FAQ entry that says the same
        thing — «А хто судитиме за сам напад на Україну?» — and then the
        FAQ turned out not to render: that band was taken off these pages
-       earlier in the project and `summary.faq` has been unread data since.
+       earlier in the project, and the questions have since left the data.
        So this was not the second telling, it was the only one, and taking
        it left the page silent on the one limit of the Court's reach here.
        Owner: «повертай тлумачення». */

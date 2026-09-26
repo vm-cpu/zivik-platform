@@ -58,7 +58,6 @@ export const echrUkraineNetherlands: DecisionSummary = {
   },
 
   asOf: "2026-08-22",
-  provisionalSource: true,
 
   forum: {
     institution: {
@@ -79,10 +78,6 @@ export const echrUkraineNetherlands: DecisionSummary = {
     tldr: {
       uk: "Чотири міждержавні скарги — три від України, одна від Нідерландів через збиття MH17 — Велика палата ЄСПЛ розглянула разом і 9 липня 2025 року винесла рішення по суті. Суд визнав Росію відповідальною за системні порушення прав людини на сході України з 2014 року і по всій країні з 2022-го: від збиття MH17 і страт полонених до катувань, депортації дітей і заборони української освіти. Сатисфакцію (компенсації) буде визначено окремим рішенням.",
       en: "Four inter-State applications — three by Ukraine, one by the Netherlands over the downing of MH17 — were decided together by the ECtHR's Grand Chamber on 9 July 2025. The Court held Russia responsible for systemic human-rights violations in eastern Ukraine since 2014 and across the country from 2022: from the downing of MH17 and executions of prisoners to torture, the deportation of children and the ban on Ukrainian-language education. Just satisfaction is reserved for a separate ruling.",
-    },
-    whyMatters: {
-      uk: "Це перше рішення ЄСПЛ по суті про повномасштабну міждержавну війну в Європі — і розворот від Georgia v. Russia (II): Суд поширив Конвенцію на активні бойові дії. Для сімей жертв MH17 це перша судова констатація відповідальності Росії; для тисяч індивідуальних скарг українців — фундамент фактів і права.",
-      en: "It is the ECtHR's first merits judgment on a full-scale inter-State war in Europe — and a turn away from Georgia v. Russia (II): the Court extended the Convention to active hostilities. For the MH17 families it is the first judicial finding of Russia's responsibility; for thousands of individual Ukrainian applications, a foundation of fact and law.",
     },
   },
 
@@ -138,136 +133,10 @@ export const echrUkraineNetherlands: DecisionSummary = {
     },
   ],
 
-  whoIsWho: [
-    {
-      name: { uk: "Україна", en: "Ukraine" },
-      role: {
-        uk: "Заявниця у трьох із чотирьох заяв (2014, 2016, 2022) — про схід України та повномасштабне вторгнення.",
-        en: "Applicant in three of the four applications (2014, 2016, 2022) — on eastern Ukraine and the full-scale invasion.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Нідерланди", en: "The Netherlands" },
-      role: {
-        uk: "Заявник у справі MH17 (заява 2020 року): 298 загиблих, з них 196 — громадяни Нідерландів.",
-        en: "Applicant in the MH17 case (the 2020 application): 298 dead, 196 of them Dutch nationals.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Російська Федерація", en: "Russian Federation" },
-      role: {
-        uk: "Відповідачка. Виключена з Ради Європи 16 березня 2022 року; з 16 вересня 2022-го — поза Конвенцією; у провадженні по суті участі не брала.",
-        en: "Respondent. Expelled from the Council of Europe on 16 March 2022; outside the Convention from 16 September 2022; it did not take part on the merits.",
-      },
-      kind: "party",
-    },
-    {
-      name: { uk: "Велика палата ЄСПЛ", en: "The Grand Chamber" },
-      role: {
-        uk: "17 суддів у Страсбурзі; рішення по суті від 9 липня 2025 року — здебільшого одностайне.",
-        en: "Seventeen judges in Strasbourg; the merits judgment of 9 July 2025 was largely unanimous.",
-      },
-      kind: "court",
-    },
-    {
-      name: { uk: "«ДНР» / «ЛНР»", en: "\"DPR\" / \"LPR\"" },
-      role: {
-        uk: "Сепаратистські утворення, чиї дії з 11 травня 2014 року автоматично присвоюються Росії.",
-        en: "The separatist entities whose acts are automatically attributable to Russia from 11 May 2014.",
-      },
-      kind: "actor",
-    },
-  ],
-
-  faq: [
-    {
-      q: { uk: "Чому Нідерланди — сторона цієї справи?", en: "Why are the Netherlands a party?" },
-      a: {
-        uk: "Через MH17. 17 липня 2014 року ракета «Бук», яку Росія передала сепаратистам, збила малайзійський Boeing над Донеччиною — загинули всі 298 людей на борту, зокрема 196 нідерландців. У 2020 році Нідерланди подали власну міждержавну заяву, і Суд об'єднав її з українськими.",
-        en: "Because of MH17. On 17 July 2014 a Buk missile that Russia had supplied to the separatists downed the Malaysian Boeing over the Donetsk region — all 298 aboard died, 196 of them Dutch. In 2020 the Netherlands filed its own inter-State application, joined with Ukraine's.",
-      },
-    },
-    {
-      q: { uk: "Росію ж виключили з Ради Європи — чому Суд узагалі розглядав справу?", en: "Russia was expelled — how could the Court still decide?" },
-      a: {
-        uk: "Конвенція діяла для Росії до 16 вересня 2022 року, і Суд зберігає юрисдикцію щодо всього, що сталося до цієї дати. Тому рішення охоплює вісім років конфлікту — від 2014-го до перших семи місяців повномасштабного вторгнення.",
-        en: "The Convention bound Russia until 16 September 2022, and the Court keeps jurisdiction over everything before that date. So the judgment covers eight years of the conflict — from 2014 through the first seven months of the full-scale invasion.",
-      },
-    },
-    {
-      q: { uk: "Що це дає практично, якщо Росія не визнає Суд?", en: "What does it change if Russia ignores the Court?" },
-      a: {
-        uk: "Три речі. Авторитетно встановлені факти — від «Бука» для MH17 до системних катувань — які працюють в інших процесах. Правову базу для понад десяти тисяч індивідуальних скарг українців, що чекають у Страсбурзі. І стадію сатисфакції: присуджені суми стануть частиною загального рахунку до Росії, як у справах Ощадбанку і ДТЕК.",
-        en: "Three things. Authoritatively established facts — from the Buk for MH17 to systemic torture — usable in other fora. A legal foundation for the ten-thousand-plus individual Ukrainian applications pending in Strasbourg. And the just-satisfaction phase: the sums awarded will join the broader bill to Russia, as in Oschadbank and DTEK.",
-      },
-    },
-    {
-      /* «Історичне» — наше слово, в огляді його немає. Питання ставить те
-         саме, не оцінюючи наперед. */
-      q: { uk: "Що це рішення змінює для самого Суду?", en: "What does the judgment change for the Court itself?" },
-      a: {
-        uk: "Суд уперше застосував Конвенцію до активної фази міждержавної війни, відійшовши від Georgia v. Russia (II) з її «контекстом хаосу». Планована державна кампанія насильства — це не хаос, а здійснення влади і контролю, сказав Суд.",
-        en: "For the first time the Court applied the Convention to the active phase of an inter-State war, stepping away from Georgia v. Russia (II) and its \"context of chaos\". A planned State campaign of violence, the Court said, is not chaos but the exercise of authority and control.",
-      },
-    },
-    {
-      q: { uk: "Що далі?", en: "What happens next?" },
-      a: {
-        uk: "Стадія справедливої сатисфакції — розмір компенсацій Суд визначить окремо. Виконання рішення наглядає Комітет міністрів Ради Європи; паралельно факти рішення живлять Реєстр збитків для України та інші механізми відповідальності.",
-        en: "The just-satisfaction phase — the Court will fix compensation separately. Execution is supervised by the Council of Europe's Committee of Ministers; in parallel the judgment's findings feed the Register of Damage for Ukraine and other accountability mechanisms.",
-      },
-    },
-  ],
-
-  related: [
-
-    {
-      // hague-mh17 names this judgment as its sequel; the link ran one way
-      // only, on a page whose second applicant State is a party because of
-      // MH17.
-      label: {
-        uk: "Справа MH17: вирок у Гаазі",
-        en: "The MH17 case: the verdict in The Hague",
-      },
-      note: {
-        uk: "Окружний суд Гааги · кримінальний вирок, 2022",
-        en: "The Hague District Court · criminal verdict, 2022",
-      },
-      href: "/cases/hague-mh17",
-    },
-    {
-      label: {
-        uk: "ICSFT і CERD (Україна проти РФ)",
-        en: "ICSFT and CERD (Ukraine v. Russian Federation)",
-      },
-      note: { uk: "МС ООН · схід і Крим, 2014–2022", en: "ICJ · the east and Crimea, 2014–2022" },
-      href: "/cases/icj-cerd-icsft",
-    },
-    {
-      label: { uk: "Ситуація в Україні (МКС)", en: "Situation in Ukraine (ICC)" },
-      note: {
-        uk: "МКС · кримінальна відповідальність осіб за ті самі кампанії",
-        en: "ICC · individual criminal responsibility for the same campaigns",
-      },
-      href: "/cases/icc-ukraine",
-    },
-    {
-      label: { uk: "Україна проти Росії (Крим) [ВП]", en: "Ukraine v. Russia (re Crimea) [GC]" },
-      note: { uk: "ЄСПЛ · кримська гілка", en: "ECtHR · the Crimea branch" },
-      href: "/cases/ecthr-4",
-    },
-  ],
-
   judgment: {
 
     // cases.ts records 304; without it the button omits "PDF, N pp."
 
-    /* 501, the PDF's own page count (its printed pagination runs to 497,
-       then Annexes A-C). It read 304, which is not a number that appears
-       anywhere in the document. */
-    pages: 501,
     court: { uk: "Європейський суд з прав людини", en: "European Court of Human Rights" },
     url: "https://hudoc.echr.coe.int/eng#{%22appno%22:[%2243800/14%22],%22itemid%22:[%22001-244292%22]}",
     caseUrl: "https://www.echr.coe.int/w/ukraine-and-the-netherlands-v.-russia-nos.-8019/16-43800/14-and-28525/20-1",
@@ -494,125 +363,6 @@ export const echrUkraineNetherlands: DecisionSummary = {
         uk: "Компенсації Суд визначить окремим рішенням; виконання наглядає Комітет міністрів РЄ.",
         en: "Compensation will be fixed by a separate ruling; execution is supervised by the CoE Committee of Ministers.",
       },
-    },
-  ],
-
-  verdictsHeading: { uk: "Що встановив Суд", en: "What the Court found" },
-
-  verdicts: [
-    {
-      track: "Art. 2",
-      claim: {
-        uk: "Право на життя: напади на цивільних, збиття MH17, страти полонених",
-        en: "Right to life: attacks on civilians, the downing of MH17, executions of prisoners",
-      },
-      outcome: "violation",
-    },
-    {
-      track: "Art. 3",
-      claim: {
-        uk: "Катування, сексуальне насильство, нелюдські умови тримання",
-        en: "Torture, sexual violence, inhuman conditions of detention",
-      },
-      outcome: "violation",
-    },
-    {
-      track: "Art. 4 § 2",
-      claim: { uk: "Примусова праця", en: "Forced labour" },
-      outcome: "violation",
-    },
-    {
-      track: "Art. 5",
-      claim: { uk: "Викрадення, незаконні арешти й затримання", en: "Abductions, unlawful arrests and detention" },
-      outcome: "violation",
-    },
-    /* Article 8 stood on this page only inside the children row, where it is
-       one of three articles in a single sentence — so the finding that carries
-       it in its own right, the administrative practice of forced transfer,
-       displacement, filtration and the destruction and looting of homes
-       (operative points 11, 16 and 20), had no row at all. */
-    {
-      track: "Art. 8",
-      claim: {
-        uk: "Примусове переміщення, фільтрація, знищення і пограбування житла",
-        en: "Forced transfer and displacement, filtration, the destruction and looting of homes",
-      },
-      outcome: "violation",
-    },
-    {
-      track: "Art. 9–10",
-      claim: {
-        uk: "Переслідування релігійних громад; журналістів і мовників",
-        en: "Persecution of religious congregations; of journalists and broadcasters",
-      },
-      outcome: "violation",
-    },
-    /* Articles 11 and 13 were missing from the matrix, which is most of why
-       the twelve in the stat tile could not be counted off this page. Both are
-       in the operative part: point 19, an administrative practice of
-       interference with peaceful assembly in violation of Article 11; and
-       points 7 and 24, Article 13 taken with Article 2 for MH17 and taken with
-       Articles 2, 3, 4 § 2, 5, 8, 9, 10, 11 and 14 and Articles 1 and 2 of
-       Protocol No. 1 for the practices. Neither appears in the verbatim
-       findings list this matrix otherwise restates, so both are taken from the
-       judgment itself (HUDOC 001-244292, pp. 495-496). */
-    {
-      track: "Art. 11",
-      claim: {
-        uk: "Втручання у свободу мирних зібрань",
-        en: "Interference with the right to peaceful assembly",
-      },
-      outcome: "violation",
-    },
-    {
-      track: "Art. 13",
-      claim: {
-        uk: "Відсутність ефективного засобу юридичного захисту — щодо MH17 і щодо всіх адміністративних практик",
-        en: "No effective remedy — both for MH17 and for every administrative practice found",
-      },
-      outcome: "violation",
-    },
-    {
-      track: "P1-1, P1-2",
-      claim: {
-        uk: "Знищення і привласнення власності; заборона освіти українською",
-        en: "Destruction and appropriation of property; the ban on Ukrainian-language education",
-      },
-      outcome: "violation",
-    },
-    {
-      track: "Art. 14",
-      claim: {
-        uk: "Дискримінація за етнічністю і проукраїнською позицією (одностайно)",
-        en: "Discrimination by ethnicity and pro-Ukrainian stance (unanimous)",
-      },
-      outcome: "violation",
-    },
-    /* CHECKED, AND LEFT AS IT STANDS. The verbatim findings block says this
-       finding was "in breach of Articles 3, 5 and 8 of the Convention and
-       Article 2 of Protocol No. 4 … (by majority)", and this row says only
-       Articles 3, 5 and 8, unanimously. The row is the one that matches the
-       Court. Operative point 22 reads, in full: "Holds, unanimously, that there
-       has been an administrative practice of the transfer to Russia and, in
-       many cases, the adoption there of Ukrainian children in violation of
-       Articles 3, 5 and 8 of the Convention and that it is not necessary to
-       examine separately the complaint under Article 2 of Protocol No. 4 to the
-       Convention" (HUDOC 001-244292, p. 496). So P4-2 was declined, not found,
-       and the vote was unanimous rather than by a majority — the verbatim
-       overstates the holding on both counts.
-
-       The verbatim is not corrected: it is the source document's tab ingested
-       unedited, quirks kept, and this is one of the quirks. It is recorded here
-       and in docs/research/echr-ukraine-netherlands-sources.md so that the next
-       ingest of that tab does not quietly "fix" this row to match it. */
-    {
-      track: "Діти · Children",
-      trackLabel: { uk: "Депортація дітей", en: "Deportation of children" },
-      claim: {
-        uk: "Ст. 3, 5 і 8: викрадення і переміщення до Росії трьох груп дітей (одностайно)",
-        en: "Arts. 3, 5 and 8: abduction and transfer to Russia of three groups of children (unanimously)",
-      },
-      outcome: "violation",
     },
   ],
 
