@@ -70,11 +70,18 @@ const emdashScheduled = createScheduledHandler();
 async function retryMissedPublish(env: { DB: D1Database }) {
   const pulledAt = __NSV_SNAPSHOT_PULLED_AT__;
   if (!pulledAt) return;
-  const live = COLLECTIONS.map(
-    (c) => `SELECT live_revision_id AS id FROM "ec_${c.slug}" WHERE status = 'published' AND deleted_at IS NULL`,
-  ).join(" UNION ALL ");
   let latest: string | null = null;
   try {
+    /* Only the tables that exist: a collection added after the seed (the
+       blog) has none until its schema is created. */
+    const { results } = await env.DB.prepare(
+      "SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'ec_%'",
+    ).all<{ name: string }>();
+    const present = new Set(results.map((r) => r.name));
+    const live = COLLECTIONS.filter((c) => present.has(`ec_${c.slug}`))
+      .map((c) => `SELECT live_revision_id AS id FROM "ec_${c.slug}" WHERE status = 'published' AND deleted_at IS NULL`)
+      .join(" UNION ALL ");
+    if (!live) return;
     const row = await env.DB.prepare(
       `SELECT MAX(created_at) AS t FROM revisions WHERE id IN (${live})`,
     ).first<{ t: string | null }>();

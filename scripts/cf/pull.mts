@@ -55,8 +55,16 @@ function tables(): Set<string> {
 }
 
 const present = tables();
-const missing = COLLECTIONS.filter((c) => !present.has(`ec_${c.slug}`)).map((c) => c.slug);
-if (missing.length === COLLECTIONS.length) {
+/* A collection added after the seed (`optional`) that D1 does not have yet is
+   left out of the snapshot, so its value comes from the file — the build does
+   not fail on a schema change the admin has not caught up with. */
+const pending = COLLECTIONS.filter((c) => c.optional && !present.has(`ec_${c.slug}`));
+for (const c of pending) {
+  console.warn(`  cf:pull: ${DB} has no ec_${c.slug} yet — ${c.slug} builds from ${c.source.file}.`);
+}
+const PULLED = COLLECTIONS.filter((c) => !pending.includes(c));
+const missing = PULLED.filter((c) => !present.has(`ec_${c.slug}`)).map((c) => c.slug);
+if (missing.length === PULLED.length) {
   rmSync(OUT, { force: true });
   console.warn(`  cf:pull: EmDash has not set up ${DB} yet — building from src/content.`);
   process.exit(0);
@@ -68,7 +76,7 @@ if (missing.length) {
   );
 }
 
-const statements = COLLECTIONS.map((c) => {
+const statements = PULLED.map((c) => {
   const order = c.shape === "array" ? `${POSITION}, slug` : "slug";
   return `SELECT * FROM "ec_${c.slug}" WHERE status = 'published' AND deleted_at IS NULL ORDER BY ${order}`;
 });
@@ -76,7 +84,7 @@ const results = query(statements.join(";\n"));
 
 const collections: Record<string, unknown> = {};
 let total = 0;
-COLLECTIONS.forEach((spec, i) => {
+PULLED.forEach((spec, i) => {
   const rows = results[i] ?? [];
   total += rows.length;
   const values = rows.map((r) => [String(r.slug), fromRow(spec, r)] as const);
@@ -106,7 +114,7 @@ if (total === 0) {
 const snapshot = {
   source: local ? "local" : "remote",
   pulledAt: new Date().toISOString(),
-  bindings: COLLECTIONS.map((c) => ({ collection: c.slug, shape: c.shape, ...c.source })),
+  bindings: PULLED.map((c) => ({ collection: c.slug, shape: c.shape, ...c.source })),
   collections,
 };
 mkdirSync(dirname(OUT), { recursive: true });
