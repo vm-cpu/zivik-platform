@@ -39,7 +39,7 @@ export const isIndexable = process.env.SITE_INDEXABLE === "true";
  * The `robots` metadata field while the archive is closed.
  *
  * The comment above says the noindex is carried "by a header and a meta tag";
- * only the header existed — `curl https://zivik-platform.vercel.app/uk | grep
+ * only the header existed — `curl <siteUrl>/uk | grep
  * 'name="robots"'` came back empty on every route. One header, set in
  * `next.config.ts`, was the whole defence. That is one misconfiguration away
  * from an indexed half-built archive: a header is a property of how the file
@@ -56,6 +56,27 @@ export const isIndexable = process.env.SITE_INDEXABLE === "true";
 export const robotsMetadata: Metadata["robots"] = isIndexable
   ? undefined
   : { index: false, follow: false };
+
+/**
+ * Підтвердження власності в Google Search Console — мета-тегом.
+ *
+ * Search Console пропонує два способи: запис TXT у DNS або
+ * `<meta name="google-site-verification" content="…">` на головній. DNS
+ * кращий (підтверджує весь домен разом із піддоменами), але потребує
+ * доступу до DNS-зони, якого в редакції може не бути. Тоді — цей: код із
+ * Search Console кладеться у змінну збірки GOOGLE_SITE_VERIFICATION, і тег
+ * з'являється на кожній сторінці (його несе `homeMetadata`, яку успадковують
+ * усі). Без змінної поля немає зовсім — порожній тег Google не прийме.
+ *
+ * Прапорець збірки, як SITE_INDEXABLE: Next вбудовує його під час
+ * пререндеру, збірка для Cloudflare — через `define` в astro.config.mjs, а тег
+ * там рендерить `site/lib/metadata.ts`. Див. docs/LAUNCH.md.
+ */
+const googleSiteVerification =
+  process.env.GOOGLE_SITE_VERIFICATION?.trim() || undefined;
+
+export const verificationMetadata: Metadata["verification"] =
+  googleSiteVerification ? { google: googleSiteVerification } : undefined;
 
 /**
  * Serialise a JSON-LD graph for a `<script type="application/ld+json">` body.
@@ -214,6 +235,8 @@ export function homeMetadata(locale: Locale, dict: Dictionary): Metadata {
     // Inherited by every page under the [locale] layout — none of them set
     // `robots`, so this one tag closes the whole tree until launch.
     robots: robotsMetadata,
+    // Search Console; undefined — і тега немає — без GOOGLE_SITE_VERIFICATION.
+    verification: verificationMetadata,
     alternates: {
       canonical: path,
       languages: languageAlternates(),

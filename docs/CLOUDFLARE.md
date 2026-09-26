@@ -137,7 +137,9 @@ JSON — але кожен окремим полем: повторювач EmDas
    - Production branch: поки гілка цього PR; після злиття — `main`.
    - Змінні збірки: `NEXT_PUBLIC_SITE_URL` = адреса сайту на Cloudflare
      (канонічні URL, sitemap); `SITE_INDEXABLE` / `FEATURE_GLOSSARY` — як на
-     Vercel.
+     Vercel. До запуску ще `GOOGLE_SITE_VERIFICATION` і
+     `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` — див. docs/LAUNCH.md; нічний бекап
+     D1 — docs/BACKUPS.md.
    - **Токен збірки має читати D1** — `cf:pull` бере з D1 опублікований
      контент. Токен, який Workers Builds створює тепер (у нас — «nasvitlo
      build token»), уже має *Account · D1 · Edit*; старіші токени могли його
