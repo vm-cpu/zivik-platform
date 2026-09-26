@@ -141,6 +141,9 @@ take **locale-resolved strings**, never `{uk, en}` pairs — client props
 serialize into the page payload, and raw pairs shipped both languages to
 every reader. The template resolves with `pick()` at the call site.
 
-Share cards: `scripts/og-cards.py` regenerates `public/og/` (site card +
-one per case). The legal verification checklist source is
+Share cards: `scripts/og-cards.mts` draws `public/og/cases/<slug>.png` for
+every summary at build time (`prebuild`; `npm run og` in `cf:build`, from the
+D1 snapshot), redrawing only what changed (`public/og/cases/manifest.json`);
+`--site` redraws the site card `public/og/nasvitlo.png`. A page links its own
+card only when the manifest lists it (`caseOgImage` in `src/lib/seo.ts`). The legal verification checklist source is
 `docs/verification/checklist.html`.

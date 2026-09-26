@@ -105,7 +105,7 @@ JSON — але кожен окремим полем: повторювач EmDas
 | Команда | Що робить |
 |---|---|
 | `npm run cf:dev` | Локально: Astro + EmDash + локальна D1/R2 (miniflare). Адмінка — `http://localhost:4321/_emdash/admin`; швидкий вхід — `/_emdash/api/setup/dev-bypass`. |
-| `npm run cf:build` | Повна продакшн-збірка: check → seed → pull (з віддаленої D1) → `astro build`. |
+| `npm run cf:build` | Повна продакшн-збірка: check → seed → pull (з віддаленої D1) → картки для соцмереж (`npm run og`) → `astro build`. |
 | `npm run cf:build:local` | Те саме, але знімок — з локальної D1. |
 | `npm run cf:preview` | Запуск зібраного сайту у workerd. |
 | `npm run cf:deploy` | `cf:build` + `wrangler deploy` (потрібен `CLOUDFLARE_API_TOKEN`). |
@@ -189,9 +189,11 @@ EMDASH_URL=https://<адреса> EMDASH_TOKEN=<токен> npm run cf:content -
 (як «Блог») не валить збірку, доки її таблиці в D1 ще немає: збірка бере
 значення з файлу.
 
-Зараз у коді є, а в робочій базі ще немає: поле `seo_title` в «Оглядах
-рішень» і колекція «Блог» (`posts`, сторінок /blog поки немає — див.
-`src/content/blog.ts`).
+Зараз у коді є, а в робочій базі ще немає: поля `seo_title` і `card_title`,
+`card_eyebrow`, `card_kicker` в «Оглядах рішень» і колекція «Блог» (`posts`,
+сторінок /blog поки немає — див. `src/content/blog.ts`). Доки полів `card_*`
+немає, `npm run og` бере текст карток для соцмереж з файлів (для оглядів, які
+там є), тож вісім наявних карток не змінюються.
 
 ## Перемикання (коли будете готові)
 
