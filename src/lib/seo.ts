@@ -84,6 +84,85 @@ export function jsonLdHtml(graph: unknown): { __html: string } {
   };
 }
 
+/** A search snippet is cut off around here. */
+export const META_MAX = 160;
+
+/**
+ * Нижня межа, під якою опис уже не «короткий», а порожній.
+ *
+ * Аудит виміряв: /en/cases/oschadbank віддавав у пошук 43 символи — «Oschadbank
+ * is Ukraine's state savings bank.» — бо `shortDescription` брав тільки перше
+ * речення tldr; сторінки справ без огляду (pca-31, nl-33) — 46–52 символи
+ * службових позначок. Сніпет такої довжини пошуковик переписує сам, з
+ * будь-якого шматка сторінки. 110 — це нижче за найкоротший авторський
+ * `metaDesc` в архіві (132), тож жоден написаний руками опис ця межа не
+ * зачіпає.
+ */
+export const META_MIN = 110;
+
+/**
+ * Cut a string to at most `max` characters at a word boundary, with a visible
+ * ellipsis — never the engine's silent one, never mid-word.
+ */
+export function cutAtWord(text: string, max: number): string {
+  const t = text.trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max - 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  /* Trailing punctuation off before the ellipsis: «…Russia,…» reads as a typo. */
+  return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:—–-]+$/u, "")}…`;
+}
+
+/**
+ * Split prose into sentences without breaking a number or an abbreviation.
+ *
+ * A bare `/[.!?]/` split cut «USD 1.1 billion» after «1.» and «Ukraine v.
+ * Russia» after «v.», both of which are in the archive's plain-language text.
+ * So a boundary is terminal punctuation followed by whitespace and a capital,
+ * a digit or an opening quote; and a boundary right after a short
+ * lower-case token («v.», «al.», «ст.», «п.») is taken back.
+ */
+export function splitSentences(text: string): string[] {
+  const parts = text
+    .trim()
+    .split(/(?<=[.!?…])\s+(?=[«"“'\p{Lu}\d])/u)
+    .filter(Boolean);
+  const out: string[] = [];
+  for (const p of parts) {
+    const prev = out[out.length - 1];
+    if (prev && /(?:^|\s)(?:v|vs|al|No|nos|Art|art|p|pp|ст|п|ч|р|див)\.$/u.test(prev)) {
+      out[out.length - 1] = `${prev} ${p}`;
+    } else {
+      out.push(p);
+    }
+  }
+  return out;
+}
+
+/**
+ * A search description built from prose: whole sentences from the start while
+ * they fit under `META_MAX`; and if that leaves it under `META_MIN`, the next
+ * sentence is carried on to the limit and cut at a word. Nothing is reordered
+ * and nothing is added — the text is the author's, only shortened.
+ */
+export function descriptionFromProse(text: string): string {
+  const sentences = splitSentences(text);
+  let out = "";
+  let i = 0;
+  for (; i < sentences.length; i++) {
+    const next = out ? `${out} ${sentences[i]}` : sentences[i];
+    if (next.length > META_MAX) break;
+    out = next;
+  }
+  if (out.length >= META_MIN || i >= sentences.length) return out || cutAtWord(text, META_MAX);
+  /* The sentence that did not fit, carried on as far as the limit allows. */
+  const room = META_MAX - (out ? out.length + 1 : 0);
+  /* A few words and an ellipsis say less than the full stop before them. */
+  if (out && room < 40) return out;
+  const tail = cutAtWord(sentences[i], room);
+  return out ? `${out} ${tail}` : tail;
+}
+
 /** The site-wide share card, used by every page that has no card of its own. */
 export const defaultOgImage = "/og/nasvitlo.png";
 

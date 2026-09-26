@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { decisionMetadata, jsonLdHtml, siteUrl } from "@/lib/seo";
+import {
+  decisionMetadata,
+  descriptionFromProse,
+  jsonLdHtml,
+  META_MIN,
+  siteUrl,
+} from "@/lib/seo";
 import { foreignLang, isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
@@ -298,29 +304,31 @@ const MAP_AREAS = (atlas as { areas?: Record<string, string> }).areas ?? {};
   }
 }
 
-/** A search snippet is cut off around here. */
-const META_MAX = 160;
-
 /**
  * The description a search result shows.
  *
  * `pick(summary.plain.tldr, locale)` used to be handed to `description`
  * verbatim, and the tldr is a three-to-four-sentence paragraph: every decision
  * page's snippet ran 300–496 characters and broke off mid-sentence. A summary
- * that has authored a `metaDesc` gets it (index.ts enforces the limit). The
- * rest fall back to the tldr's opening sentence — which is always "what this
- * case is and how it ended" — and only if that too is over the limit is it cut,
- * at a word boundary, with a visible ellipsis rather than the engine's silent
- * one.
+ * that has authored a `metaDesc` gets it (index.ts enforces the limit).
+ *
+ * Решта брала лише перше речення tldr — і на Ощадбанку це було «Oschadbank is
+ * Ukraine's state savings bank.»: 43 символи, без суду, без рішення, без
+ * суми (аудит SEO). Тепер tldr береться реченнями від початку, поки вони
+ * вміщаються в 160, а якщо й так виходить менше за `META_MIN`, наступне
+ * речення доводиться до межі й обрізається на слові з видимою трикрапкою
+ * (`descriptionFromProse` у lib/seo.ts). Жодного слова не додано — це той
+ * самий tldr, лише коротший.
+ *
+ * Авторський `metaDesc`, коротший за `META_MIN`, так само поступається
+ * довшому з tldr; сьогодні таких немає (найкоротший — 132), але межа
+ * одна для обох джерел.
  */
 function shortDescription(summary: DecisionSummary, locale: Locale): string {
-  if (summary.metaDesc) return pick(summary.metaDesc, locale);
-  const tldr = pick(summary.plain.tldr, locale).trim();
-  const first = /^[^.!?]*[.!?]/.exec(tldr)?.[0]?.trim() ?? tldr;
-  if (first.length <= META_MAX) return first;
-  const cut = first.slice(0, META_MAX - 1);
-  const lastSpace = cut.lastIndexOf(" ");
-  return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+  const authored = summary.metaDesc ? pick(summary.metaDesc, locale).trim() : "";
+  if (authored.length >= META_MIN) return authored;
+  const fromTldr = descriptionFromProse(pick(summary.plain.tldr, locale));
+  return fromTldr.length > authored.length ? fromTldr : authored;
 }
 
 /**

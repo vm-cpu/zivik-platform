@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { foreignLang, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { decisionMetadata, isIndexable, robotsMetadata } from "@/lib/seo";
+import { cutAtWord, decisionMetadata, isIndexable, META_MAX, robotsMetadata } from "@/lib/seo";
 import { caseName, pick } from "@/content/types";
 import type { RegistryCase } from "@/content/types";
 import { institutions } from "@/content/institutions";
@@ -79,6 +79,55 @@ export function pendingCase(slug: string): RegistryCase | undefined {
 const money = moneyFull;
 
 /**
+ * Опис сторінки справи без огляду — для пошукової видачі.
+ *
+ * Був «Ще досліджуємо. Призупинено · Заявлена · 2024.» — 46 символів
+ * (pca-31), 52 англійською (nl-33): ні назви справи, ні суду, лише службові
+ * позначки, і пошуковик підставляв замість них що завгодно зі сторінки (аудит
+ * SEO). Тепер опис складено з того самого запису реєстру, у тому самому
+ * порядку, що й сторінка: назва, суд, стан · примітка · рік, і наприкінці —
+ * що цей огляд ще пишеться. Нічого, чого немає в записі.
+ *
+ * Хвіст (стан, примітка, рік, «ще досліджуємо») — обов'язковий: це те, що
+ * сторінка каже про себе, і те, що опис казав і раніше. Під 160 поступається
+ * голова: спершу повна назва суду — його абревіатурі, тоді назва справи
+ * обрізається на слові (а якщо від неї лишилося б менше за 60 символів —
+ * з хвоста йде примітка). Найдовша назва в реєстрі — 218 символів, тож без
+ * цього порядку опис розірвало б посеред «ще досліджуємо».
+ */
+function pendingDescription(
+  entry: RegistryCase,
+  inst: (typeof institutions)[number] | undefined,
+  researching: string,
+  locale: Locale,
+): string {
+  const tailOf = (withNote: boolean) =>
+    `${[pick(entry.status, locale), withNote ? pick(entry.note, locale) : "", entry.year]
+      .filter(Boolean)
+      .join(" · ")}. ${researching}.`;
+  const name = caseName(entry, locale);
+  const forums = inst ? [pick(inst.name, locale), pick(inst.abbr, locale)] : [entry.institutionId];
+  for (const forum of forums) {
+    const d = `${name} — ${forum}. ${tailOf(true)}`;
+    if (d.length <= META_MAX) return d;
+  }
+  const forum = forums[forums.length - 1];
+  /* Назва — те, що людина шукала; примітка — довідка до неї. Коли довга
+     примітка (lt-39, itlos-15 — по 60–80 символів) лишила б від назви
+     «Lithuania v a…», поступається примітка, а не назва. */
+  const NAME_MIN = 60;
+  for (const withNote of [true, false]) {
+    const tail = tailOf(withNote);
+    const room = META_MAX - ` — ${forum}. ${tail}`.length;
+    if (room >= Math.min(name.length, NAME_MIN)) {
+      return `${cutAtWord(name, room)} — ${forum}. ${tail}`;
+    }
+  }
+  /* Сюди не доходить жоден запис реєстру; межа однаково тримається. */
+  return cutAtWord(`${name} — ${forum}. ${tailOf(false)}`, META_MAX);
+}
+
+/**
  * Title and description for a proceeding with no summary yet.
  *
  * Same shape as the summary pages — `decisionMetadata` gives it the canonical,
@@ -109,9 +158,7 @@ export function pendingMetadata({
        інститут…» is 130 characters before the forum's name begins. The full
        caption is on the page, in the row that carries it. */
     title: `${caseName(entry, locale)} — ${inst ? pick(inst.name, locale) : entry.institutionId}`,
-    description: `${t.title}. ${pick(entry.status, locale)} · ${pick(entry.note, locale)}${
-      entry.year ? ` · ${entry.year}` : ""
-    }.`,
+    description: pendingDescription(entry, inst, t.title, locale),
     ogAlt: dict.meta.ogAlt,
     siteName: dict.brand.wordmark,
   });
