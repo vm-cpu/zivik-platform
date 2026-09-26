@@ -11,6 +11,7 @@ import { IBM_Plex_Mono, Charis_SIL, Fira_Sans } from "next/font/google";
 import { getDictionary } from "@/i18n/dictionaries";
 import { homeMetadata } from "@/lib/seo";
 import { glossaryEnabled } from "@/lib/flags";
+import { blogEnabled, blogMissingPaths } from "@/content/blog";
 import { CF_BEACON_SRC, cfBeaconConfig } from "@/lib/analytics";
 import Header from "@/components/nasvitlo/Header";
 import { headerDict } from "@/components/nasvitlo/header-dict";
@@ -182,6 +183,8 @@ export default async function LocaleLayout({
             locale={safe}
             dict={headerDict(dict)}
             showGlossary={glossaryEnabled}
+            showBlog={blogEnabled(safe)}
+            missingPaths={blogMissingPaths()}
             supportHref={CENTRE_URL}
             supportLabel={dict.footer.support}
           />

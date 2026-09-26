@@ -1,0 +1,231 @@
+/* ============================================================================
+   Blog: the index and a post.
+
+   Own palette from the --brand-* tokens, like .teampage and .casepage. On the
+   site rail (--page-gutter), with the column capped against the LEFT edge —
+   DESIGN.md §2. A post reads at the reading measure (--prose-max); the index
+   is a list of entries at the same measure, so a reader moving from one to the
+   other does not watch the column change width.
+   ========================================================================== */
+.blogpage {
+  --red: var(--brand-red);
+  --redd: var(--brand-red-dark);
+  --gold: var(--brand-gold);
+  --paper: var(--brand-paper);
+  --surface: var(--brand-surface);
+  --ink: var(--brand-ink);
+  --ink2: var(--brand-ink-2);
+  --faint: var(--brand-faint);
+  --rule: var(--brand-rule);
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--brand-font-body), sans-serif;
+  font-size: var(--t-body);
+  line-height: 1.65;
+}
+
+.blog-wrap {
+  padding: 0 var(--page-gutter) var(--space-16);
+}
+.blog-wrap > * {
+  max-width: var(--prose-max);
+}
+
+/* Links in the page body only — `.blogpage a` would tie with the mobile menu's
+   rule and repaint it (see the note in team.css). */
+.blog-wrap a {
+  color: var(--red);
+  text-decoration: none;
+}
+.blog-wrap a:hover {
+  color: var(--redd);
+}
+
+/* ── Masthead ─────────────────────────────────────────────────────────── */
+.blog-mast,
+.post-mast {
+  padding: var(--space-10) 0 var(--space-6);
+}
+.blog-mast {
+  border-bottom: 1px solid var(--rule);
+}
+.blog-wrap .blog-back {
+  display: inline-block;
+  margin-bottom: var(--space-5);
+  font: 700 var(--t-micro) var(--brand-font-body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+.blog-wrap .blog-back:hover {
+  color: var(--red);
+}
+.blog-mast h1,
+.post-mast h1 {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--t-mast);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* The date line: mono, the face the site keeps for dates and dockets. Gold is
+   structure; red would say «breach». */
+.blog-meta {
+  margin: 0 0 var(--space-2);
+  font: 400 var(--t-cap) / 1.5 var(--brand-font-mono), monospace;
+  letter-spacing: 0.02em;
+  color: var(--ink2);
+}
+
+/* ── Index ────────────────────────────────────────────────────────────── */
+.blog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.blog-item {
+  padding: var(--space-7) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.blog-item-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: var(--t-h2);
+  line-height: 1.22;
+}
+.blog-wrap .blog-item-title a {
+  color: var(--ink);
+}
+.blog-wrap .blog-item-title a:hover {
+  color: var(--red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+.blog-excerpt {
+  margin: 0;
+  color: var(--ink2);
+}
+
+/* ── Post ─────────────────────────────────────────────────────────────── */
+.post-mast .blog-meta {
+  margin-bottom: var(--space-3);
+}
+.post-lede {
+  margin: var(--space-5) 0 0;
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-lead);
+  line-height: 1.45;
+  color: var(--ink2);
+}
+
+.post-cover {
+  margin: var(--space-2) 0 var(--space-8);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--brand-paper-2);
+  box-shadow: var(--shadow-sm);
+}
+.post-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.post-body {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--rule);
+}
+.post-body p {
+  margin: 0 0 var(--space-5);
+  color: var(--ink);
+}
+.post-body p:last-child {
+  margin-bottom: 0;
+}
+
+.post-label {
+  margin: 0 0 var(--space-3);
+  font: 600 var(--t-micro) / 1.4 var(--brand-font-body), sans-serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.post-tags,
+.post-related {
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--rule);
+}
+.post-tags ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+/* Chips are pills (DESIGN.md, shape). Neutral outline: a topic is neither a
+   finding nor a court. */
+.post-tags li {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--r-pill);
+  border: 1px solid color-mix(in srgb, var(--ink2) 68%, var(--paper));
+  font-size: var(--t-sm);
+  line-height: 1.4;
+  color: var(--ink2);
+}
+
+.post-related ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+/* Each related summary is a card that is a link: radius + soft elevation, and
+   it lifts 2px on hover (DESIGN.md, components). */
+.blog-wrap .post-related a {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+.blog-wrap .post-related a:hover {
+  color: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.post-related-court {
+  font: 400 var(--t-cap) / 1.5 var(--brand-font-mono), monospace;
+  color: var(--brand-forum);
+}
+.post-related-name {
+  font-family: var(--brand-font-display), Georgia, serif;
+  font-size: var(--t-body);
+  line-height: 1.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-wrap .post-related a,
+  .blog-wrap .post-related a:hover {
+    transition: none;
+    transform: none;
+  }
+}

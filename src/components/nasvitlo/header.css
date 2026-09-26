@@ -75,7 +75,12 @@
   display: flex;
 }
 
-@media (max-width: 880px) {
+/* 1079, not 880. With seven items (the blog is the seventh) the bar needs
+   about 1060px to hold every label on one line: measured on the built page,
+   «Про проєкт» and «Бібліотека рішень» broke onto two lines anywhere below
+   that, and at 900px the nav ran 11px into the wordmark. Keep this and the
+   three 1079/1080 rules in [locale]/shared.css together. */
+@media (max-width: 1079px) {
   .nsv-nav {
     display: none !important;
   }

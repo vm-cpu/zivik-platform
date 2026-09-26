@@ -4,6 +4,7 @@ import { isIndexable, siteUrl } from "@/lib/seo";
 import { glossaryEnabled } from "@/lib/flags";
 import { registryCases } from "@/content/cases";
 import { latestSummaryLastModified, summaryLastModified } from "@/content/summaries";
+import { blogPosts, blogEnabled, postHasLocale, postsIn } from "@/content/blog";
 
 /**
  * Absolute hreflang map for one path shape, including `x-default`.
@@ -152,6 +153,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }));
   });
 
+  /* The blog: the index in each language that has a post, and each post in
+     the languages it was written in — hreflang only between the ones that
+     exist (see `postHasLocale`). Nothing at all before the first post. */
+  const presentIn = (present: readonly (typeof locales)[number][], path: (l: string) => string) => {
+    const languages: Record<string, string> = {};
+    for (const l of present) languages[l] = `${siteUrl}${path(l)}`;
+    const fallback = present.includes(defaultLocale) ? defaultLocale : present[0];
+    if (fallback) languages["x-default"] = `${siteUrl}${path(fallback)}`;
+    return languages;
+  };
+  const blogLocales = locales.filter(blogEnabled);
+  const blogIndex: MetadataRoute.Sitemap = blogLocales.map((locale) => ({
+    url: `${siteUrl}/${locale}/blog`,
+    lastModified: postsIn(locale)[0].date,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+    alternates: { languages: presentIn(blogLocales, (l) => `/${l}/blog`) },
+  }));
+  const blog: MetadataRoute.Sitemap = blogPosts.flatMap((p) => {
+    const present = locales.filter((l) => postHasLocale(p, l));
+    const languages = presentIn(present, (l) => `/${l}/blog/${p.slug}`);
+    return present.map((locale) => ({
+      url: `${siteUrl}/${locale}/blog/${p.slug}`,
+      lastModified: p.date,
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+      alternates: { languages },
+    }));
+  });
+
   return [
     ...homes,
     ...registry,
@@ -160,6 +191,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...about,
     ...team,
     ...cases,
+    ...blogIndex,
+    ...blog,
     ...legal,
   ];
 }

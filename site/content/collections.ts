@@ -644,7 +644,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     listLabel: (v, key) => (v.title as L | undefined)?.uk ?? key,
     props: SUMMARY_PROPS,
   },
-  /* Блог — закладено наперед: сторінок /blog ще немає (див. src/content/blog.ts). */
+  /* Блог — сторінки src/app/[locale]/blog; див. src/content/blog.ts. */
   {
     slug: "posts",
     label: "Блог",

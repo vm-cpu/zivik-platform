@@ -10,6 +10,7 @@ import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { CENTRE_URL } from "@/content/centre";
 import { glossaryEnabled } from "@/lib/flags";
+import { blogEnabled, blogMissingPaths } from "@/content/blog";
 import Header from "@/components/nasvitlo/Header";
 import { headerDict } from "@/components/nasvitlo/header-dict";
 import Footer from "@/components/nasvitlo/Footer";
@@ -33,6 +34,8 @@ export default function Chrome({
             locale={locale}
             dict={headerDict(dict)}
             showGlossary={glossaryEnabled}
+            showBlog={blogEnabled(locale)}
+            missingPaths={blogMissingPaths()}
             supportHref={CENTRE_URL}
             supportLabel={dict.footer.support}
           />

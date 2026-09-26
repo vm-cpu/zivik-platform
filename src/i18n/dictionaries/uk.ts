@@ -359,6 +359,7 @@ const uk = {
     linkGlossary: "Словник",
     linkAbout: "Про проєкт",
     linkTeam: "Команда",
+    linkBlog: "Блог",
     email: "louis.sohn.center@ucu.edu.ua",
     support: "Підтримати нас",
     /* Must not contradict the controller's address in content/legal.ts,

@@ -24,11 +24,19 @@ export default function Header({
    *  `lib/flags.ts`, handed down rather than read here because this is a
    *  client component and the flag is server-only. */
   showGlossary,
+  /** Whether this language has a published post — `blogEnabled` in
+   *  `content/blog.ts`, handed down for the same reason as the glossary. */
+  showBlog = false,
+  /** Paths that do not exist — `blogMissingPaths()`. The language switch
+   *  steps around them instead of linking a 404. */
+  missingPaths = [],
 }: {
   locale: Locale;
   dict: HeaderDict;
   skipTo?: string;
   showGlossary: boolean;
+  showBlog?: boolean;
+  missingPaths?: string[];
   /** Where the support ask goes, and what it says. Both come from the
    *  footer's dictionary, handed down rather than picked up here: the footer
    *  and the bar must show one control with one label, and the way to
@@ -95,6 +103,18 @@ export default function Header({
     // points at it rather than at the band on the home page.
     { label: dict.nav.map, href: `${home}/map`, active: pathname === `${home}/map` },
     { label: dict.nav.team, href: `${home}/team`, active: pathname === `${home}/team` },
+    /* Only once there is something to read in this language — an empty
+       «Блог» is a promise the reader checks and finds unkept. Active on a
+       post too: the reader is still in the blog. */
+    ...(showBlog
+      ? [
+          {
+            label: dict.nav.blog,
+            href: `${home}/blog`,
+            active: pathname === `${home}/blog` || pathname.startsWith(`${home}/blog/`),
+          },
+        ]
+      : []),
     /* No «Партнери» tab. The partner row is on the home page and only there —
        owner's decision — so the page it pointed at no longer exists. A top-
        level tab for one mark that is already on the first screen was the
@@ -108,7 +128,12 @@ export default function Header({
     const segments = pathname.split("/").filter(Boolean);
     if (segments.length && locales.includes(segments[0] as Locale)) {
       segments[0] = next;
-      return `/${segments.join("/")}`;
+      /* The one kind of page that may be missing in the other language is a
+         blog post written in one language only; then the switch goes up a
+         level, to the blog — or home, if that language has no blog yet. */
+      let target = `/${segments.join("/")}`;
+      while (missingPaths.includes(target)) target = target.slice(0, target.lastIndexOf("/"));
+      return target || `/${next}`;
     }
     return `/${next}`;
   };
@@ -241,7 +266,7 @@ export default function Header({
 
                The ceiling moves and the floor barely does, because they are
                constrained by different things. On a wide screen nothing is
-               competing for the bar, so the cap goes 56 → 72px. Below 880px
+               competing for the bar, so the cap goes 56 → 72px. Below 1080px
                the nav is a burger and the bar holds the mark, the wordmark,
                the burger and the UA / EN switch; the mark is nearly two to
                one, so every pixel of height costs two of width, and at 375px
@@ -366,7 +391,7 @@ export default function Header({
         </div>
       </header>
 
-      {/* A <nav>, not a <div>. `.nsv-nav` above is display:none under 880px and
+      {/* A <nav>, not a <div>. `.nsv-nav` above is display:none under 1080px and
           this drawer replaces it, so on a phone the site carried no navigation
           landmark at all — the one landmark a screen-reader user jumps to
           first. Only ever one of the two is rendered, so they cannot be

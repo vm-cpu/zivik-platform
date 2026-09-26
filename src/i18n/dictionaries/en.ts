@@ -188,6 +188,7 @@ const en: Dictionary = {
     linkGlossary: "Glossary",
     linkAbout: "About the project",
     linkTeam: "Team",
+    linkBlog: "Blog",
     email: "louis.sohn.center@ucu.edu.ua",
     support: "Support us",
     /* "Svientsitskoho" is the transliteration content/legal.ts already

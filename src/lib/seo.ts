@@ -275,11 +275,21 @@ export function homeMetadata(locale: Locale, dict: Dictionary): Metadata {
   };
 }
 
-/** `hreflang` map for a page that exists at the same path in every locale. */
-export function pathAlternates(path: (locale: Locale) => string) {
+/**
+ * `hreflang` map for a page at the same path in every locale — or, with
+ * `exists`, only in the locales that have it. A blog post written only in
+ * Ukrainian has no /en page, and hreflang pointing at a 404 tells a crawler
+ * the pair is broken. x-default then falls to the first locale that exists.
+ */
+export function pathAlternates(
+  path: (locale: Locale) => string,
+  exists: (locale: Locale) => boolean = () => true,
+) {
   const languages: Record<string, string> = {};
-  for (const locale of locales) languages[locale] = path(locale);
-  languages["x-default"] = path(defaultLocale);
+  const present = locales.filter(exists);
+  for (const locale of present) languages[locale] = path(locale);
+  const fallback = present.includes(defaultLocale) ? defaultLocale : present[0];
+  if (fallback) languages["x-default"] = path(fallback);
   return languages;
 }
 

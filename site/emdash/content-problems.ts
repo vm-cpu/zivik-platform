@@ -52,6 +52,7 @@ export function problems(collection: string, content: Record<string, unknown>): 
       out.push(`«${p.label}»: тут має бути об'єкт — { … }`);
     }
   }
+  if (collection === "posts") out.push(...postProblems(content));
   if (out.length) return out;
   /* Everything else the build reads — repeaters, numbers, selects — through
      the build's own decoder, so the two cannot disagree. */
@@ -63,3 +64,23 @@ export function problems(collection: string, content: Record<string, unknown>): 
   return out;
 }
 
+
+/**
+ * A blog post's address and date, in the same formats the build checks
+ * (src/content/blog.ts). Caught here, before saving: at build time the same
+ * mistake fails the whole build and the post never reaches the site.
+ * Written out rather than imported so the Worker does not pull the blog
+ * content module into the admin bundle.
+ */
+function postProblems(content: Record<string, unknown>): string[] {
+  const out: string[] = [];
+  const slug = content.key;
+  if (typeof slug === "string" && slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    out.push("«Адреса»: лише малі латинські літери, цифри й дефіс — напр. «icj-hearing-2026»");
+  }
+  const date = content.date;
+  if (typeof date === "string" && date && (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(Date.parse(date)))) {
+    out.push("«Дата»: у форматі РРРР-ММ-ДД — напр. 2026-09-26");
+  }
+  return out;
+}

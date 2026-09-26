@@ -79,7 +79,7 @@
 }
 
 /* The bar drops it with the nav on narrow widths; the drawer picks it up. */
-@media (max-width: 880px) {
+@media (max-width: 1079px) {
   /* Only the bar's copy goes. The drawer has its own, and the footer's is not
      in the bar at all — hiding it there would take the ask off the bottom of
      every page on a phone. */
@@ -111,7 +111,7 @@
   outline: 2px solid var(--brand-gold-lit);
   outline-offset: 2px;
 }
-@media (max-width: 880px) {
+@media (max-width: 1079px) {
   .nsv-support-icon {
     display: inline-flex;
   }
@@ -137,7 +137,7 @@
   font: 600 var(--t-micro) var(--brand-font-body);
   color: var(--brand-gold-pale);
 }
-@media (min-width: 881px) {
+@media (min-width: 1080px) {
   .nsv-support-drawer {
     display: none;
   }

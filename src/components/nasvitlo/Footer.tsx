@@ -4,6 +4,7 @@ import "./footer.css";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
 import { glossaryEnabled } from "@/lib/flags";
+import { blogEnabled } from "@/content/blog";
 
 const colHead: React.CSSProperties = {
   font: "700 var(--t-micro) var(--brand-font-body)",
@@ -162,9 +163,11 @@ export default function Footer({
 
             «Суди та інстанції» and «Документи» carried no href — they were
             labels for pages that do not exist, and a reader who pressed them
-            got nothing at all. «Блог» was the third of them, and the owner has
-            since decided there will be no blog. A footer is a map of the site;
-            three entries that lead nowhere make it a map of a different one. */}
+            got nothing at all. «Блог» was the third of them. The blog exists
+            now, and it is listed here the way the glossary is: only on a build
+            where the page does — once a post is published in this language.
+            A footer is a map of the site; entries that lead nowhere make it a
+            map of a different one. */}
         {column(f.colArchive, [
           { label: f.linkRegistry, href: `/${locale}/registry` },
           { label: f.linkMap, href: `/${locale}/map` },
@@ -178,6 +181,7 @@ export default function Footer({
         {column(f.colCenter, [
           { label: f.linkAbout, href: `/${locale}/about` },
           { label: f.linkTeam, href: `/${locale}/team` },
+          ...(blogEnabled(locale) ? [{ label: f.linkBlog, href: `/${locale}/blog` }] : []),
         ])}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
