@@ -129,6 +129,10 @@ export const icjGenocide: DecisionSummary = {
     uk: "Звинувачення у геноциді згідно з Конвенцією про запобігання злочину геноциду та покарання за нього (Україна проти Російської Федерації: 32 держави-інтервенти). Попередні заперечення",
     en: "Allegations of Genocide under the Convention on the Prevention and Punishment of the Crime of Genocide (Ukraine v. Russian Federation: 32 States intervening). Preliminary Objections",
   },
+  seoTitle: {
+    uk: "Україна проти Росії: геноцид, попередні заперечення — МС ООН",
+    en: "Ukraine v. Russia (Genocide), Preliminary Objections — ICJ",
+  },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader

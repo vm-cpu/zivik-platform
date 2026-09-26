@@ -1137,7 +1137,11 @@ export async function generateMetadata({
   return decisionMetadata({
     locale,
     slug,
-    title: `${parties} — ${pick(summary.judgment.court, locale)}`,
+    /* The tab and the search result take the short name where the summary
+       has one; the H1 keeps the full title (see `seoTitle`). */
+    title: summary.seoTitle
+      ? pick(summary.seoTitle, locale)
+      : `${parties} — ${pick(summary.judgment.court, locale)}`,
     description: shortDescription(summary, locale),
     ogAlt: dict.meta.ogAlt,
     siteName: dict.brand.wordmark,
@@ -1615,18 +1619,31 @@ export default async function CasePage({
    * based on, the questions it answers, and where it sits in the site.
    */
   const pageUrl = `${siteUrl}/${locale}/cases/${slug}`;
+  const fullHeadline = `${parties} — ${pick(judgment.court, locale)}`;
+  const shortHeadline = summary.seoTitle ? pick(summary.seoTitle, locale) : fullHeadline;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Article",
         "@id": `${pageUrl}#article`,
-        headline: `${parties} — ${pick(judgment.court, locale)}`,
+        /* `headline` is what a result shows, so it takes the short name where
+           there is one; the full title — the caption a lawyer searches by —
+           stays as `alternativeHeadline`. */
+        headline: shortHeadline,
+        ...(fullHeadline !== shortHeadline ? { alternativeHeadline: fullHeadline } : {}),
         description: pick(plain.tldr, locale),
         inLanguage: locale,
         url: pageUrl,
-        datePublished: judgment.date,
-        ...(summary.asOf ? { dateModified: summary.asOf } : {}),
+        mainEntityOfPage: pageUrl,
+        image: `${siteUrl}/og/cases/${slug}.png`,
+        /* The article's dates, not the decision's. `datePublished` carried
+           the judgment date, so a summary of the 2018 Oschadbank award read as
+           a 2018 article. The decision's date is `about.datePublished` below;
+           the summary's own is the date its context was last verified, where
+           one is recorded, and absent where it is not rather than invented. */
+        ...(summary.asOf ? { datePublished: summary.asOf, dateModified: summary.asOf } : {}),
+        author: { "@type": "Organization", name: dict.footer.org, url: `${siteUrl}/${locale}/about` },
         /*
          * The decision itself is a court document, not legislation; the
          * treaties it applies stay Legislation in `mentions` below.
@@ -1655,7 +1672,8 @@ export default async function CasePage({
         publisher: {
           "@type": "Organization",
           name: dict.footer.org,
-          url: siteUrl,
+          // The locale's home, not the bare origin: `/` is a 307.
+          url: `${siteUrl}/${locale}`,
         },
         citation: sources.map((s) => ({
           "@type": "CreativeWork",
@@ -1690,7 +1708,7 @@ export default async function CasePage({
             name: dict.nav.decisions,
             item: `${siteUrl}/${locale}/registry`,
           },
-          { "@type": "ListItem", position: 3, name: parties },
+          { "@type": "ListItem", position: 3, name: shortHeadline },
         ],
       },
     ],
