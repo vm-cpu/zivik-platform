@@ -85,13 +85,17 @@ export default function NotFound() {
       {locales.map((locale) => {
         const t = T[locale];
         const primary = locale === defaultLocale;
+        /* One heading per page. The second language says the same thing
+           smaller, so it is the first one's translation, not a second
+           title — a paragraph, marked with its own lang. */
+        const Heading = primary ? "h1" : "p";
         return (
           <div
             key={locale}
             lang={locale}
             style={{ display: "flex", flexDirection: "column", gap: 14 }}
           >
-            <h1
+            <Heading
               style={{
                 fontFamily: "var(--brand-font-display), Georgia, serif",
                 fontWeight: 400,
@@ -104,7 +108,7 @@ export default function NotFound() {
               }}
             >
               {t.heading}
-            </h1>
+            </Heading>
             <p
               style={{
                 fontSize: primary ? 16 : 14,

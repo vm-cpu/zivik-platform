@@ -139,8 +139,18 @@ export function staticPaths(page: NextPageModule, pattern: string) {
   };
 }
 
+/**
+ * The page's URL as a reader types it. `build.format: "file"` writes
+ * uk/about.html, and during prerender Astro reports that file name as the
+ * pathname — which reached `usePathname()`, so the header's language switch
+ * linked to /en/about.html (a 307 on every page), the nav never marked its
+ * active item, and the `rendered` cache, keyed by the clean path, missed and
+ * rendered every page twice.
+ */
+const pagePath = (astro: AstroGlobal) => astro.url.pathname.replace(/\.html$/, "");
+
 export async function runRoute(astro: AstroGlobal, page: NextPageModule): Promise<Resolved | Response> {
-  const pathname = astro.url.pathname;
+  const pathname = pagePath(astro);
   const outcome =
     rendered.get(pathname) ??
     (await resolvePage(
@@ -156,7 +166,7 @@ export async function runRoute(astro: AstroGlobal, page: NextPageModule): Promis
 }
 
 export async function notFoundPage(astro: AstroGlobal): Promise<Resolved> {
-  const outcome = await notFoundOutcome(defaultLocale, astro.url.pathname);
+  const outcome = await notFoundOutcome(defaultLocale, pagePath(astro));
   astro.response.status = 404;
   return (outcome as Extract<Outcome, { kind: "page" }>).resolved;
 }
