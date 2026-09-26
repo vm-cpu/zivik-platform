@@ -27,6 +27,10 @@ export { PluginBridge };
  *     use it, always carries the session cookie.
  *   - HSTS on everything the Worker answers. `_headers` covers the static
  *     files only; on a custom domain nothing else would add it to the admin.
+ *   - The admin's pages get /admin-guide.js, the step-by-step tour for a
+ *     first-time editor (public/admin-guide.js). EmDash's admin is a built
+ *     app we do not fork; the tour sits on top of it. Its CSP allows scripts
+ *     from 'self', and the file is a static asset.
  *   - `X-Robots-Tag: noindex` on the admin, and no `Server-Timing` anywhere.
  *     The login page had neither a robots tag nor a header, so a crawler that
  *     ignores robots.txt could list it; and EmDash's Server-Timing told any
@@ -133,6 +137,15 @@ export default {
     if (!out.headers.has("strict-transport-security")) out.headers.set("strict-transport-security", HSTS);
     out.headers.delete("server-timing");
     if (pathname.startsWith("/_emdash/")) out.headers.set("x-robots-tag", "noindex, nofollow");
+    if (pathname.startsWith("/_emdash/admin") && out.headers.get("content-type")?.startsWith("text/html")) {
+      return new HTMLRewriter()
+        .on("head", {
+          element(head) {
+            head.append('<script src="/admin-guide.js" defer></script>', { html: true });
+          },
+        })
+        .transform(out);
+    }
     return out;
   },
   async scheduled(controller, env, ctx) {

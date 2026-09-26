@@ -96,6 +96,11 @@ const headersFile = {
         "/favicon.ico",
         "  Cache-Control: public, max-age=86400",
         "",
+        /* The admin tour: small, unhashed, and changed with the admin — so
+           revalidated on every load rather than cached stale for a day. */
+        "/admin-guide.js",
+        "  Cache-Control: no-cache",
+        "",
       ];
       appendFileSync(new URL("_headers", dir), lines.join("\n"));
     },

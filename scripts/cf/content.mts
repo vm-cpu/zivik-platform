@@ -116,7 +116,8 @@ async function seed(out: string) {
       titleField: spec.titleField,
       ...(spec.listColumns ? { admin: { listColumns: spec.listColumns } } : {}),
       /* The seed format has no sortOrder: the array order is the order. */
-      fields: seedFields(spec).map(({ sortOrder: _, ...f }) => f),
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      fields: seedFields(spec).map(({ sortOrder, ...f }) => f),
     });
     const entries = await loadSource(spec);
     content[spec.slug] = entries.map(([key, value], i) => ({
