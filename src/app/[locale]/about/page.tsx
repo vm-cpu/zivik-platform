@@ -20,6 +20,7 @@ import {
   pathAlternates,
   ogImage,
   defaultOgImage,
+  jsonLdHtml,
 } from "@/lib/seo";
 import "../about.css";
 
@@ -352,6 +353,27 @@ export default async function AboutPage({
 
   const roleGroups = groupTeamByRole();
 
+  /**
+   * Хто видає бібліотеку — як структуровані дані.
+   *
+   * Головна й сторінки рішень називали видавця в `publisher`, але ніде не
+   * казали про нього більше за назву. Ця сторінка — та, що про нього, тож
+   * граф `Organization` стоїть тут. Кожне значення — з того, що сторінка
+   * вже показує: назва — з підвалу (`dict.footer.org`), знак — той самий
+   * червоний знак факультету, що стоїть у картці центру нижче, `sameAs` —
+   * сторінка центру на сайті факультету (`CENTRE_URL`, адреса власниці).
+   * Інших адрес центру в репозиторії немає, і вигадувати їх не можна.
+   */
+  const orgLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteUrl}/${locale}/about#organization`,
+    name: dict.footer.org,
+    url: `${siteUrl}/${locale}/about`,
+    logo: `${siteUrl}/logos/fp-logo-red-${locale}.svg`,
+    sameAs: [CENTRE_URL],
+  };
+
   const L = <V,>(x: Record<Locale, V>) => pick(x, locale);
   /* The citation table travels with the prose — see content/about.ts. */
   const aboutLinks = about.links ? L(about.links) : [];
@@ -376,6 +398,10 @@ export default async function AboutPage({
        recessed, the quotation dark, the roster on paper, the contact
        recessed. No two dark bands touch. */
     <div className="page aboutpage">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={jsonLdHtml(orgLd)}
+      />
       <main id="content" tabIndex={-1}>
         {/* The masthead is a dark band, not a line of black type on white.
 

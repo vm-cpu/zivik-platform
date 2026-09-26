@@ -332,6 +332,42 @@ function shortDescription(summary: DecisionSummary, locale: Locale): string {
 }
 
 /**
+ * Реєстровий номер справи — для `identifier` у структурованих даних.
+ *
+ * Окремого поля для нього немає ні в огляді, ні в реєстрі: номер живе там,
+ * де його записали — у примітці рядка («ICJ GL 166 · Крим, Донбас», «PCA
+ * 2016-14», «ICC-01/22», «Apps 8019/16 et al. · …», «Helsinki · R
+ * 706/2024/11203 · …»), у повній назві («…, PCA Case No. 2018-41») або, для
+ * MH17, в адресі самого вироку на rechtspraak.nl (примітка там обірвана на
+ * «ECLI:NL:RBDHA»). Нового поля не заведено навмисно: збірка для Cloudflare
+ * бере реєстр із D1, і поле, якого немає в схемі EmDash, у продакшені просто
+ * зникло б.
+ *
+ * Тому тут — лише точні формати реєстрів, кожен зі своєю назвою, і нічого,
+ * що довелося б угадувати: рядок, який не збігся з жодним, не дає
+ * `identifier` зовсім. Значення — дослівно те, що стоїть у записі.
+ */
+const DOCKETS: { re: RegExp; propertyID: string; value: (m: RegExpExecArray) => string }[] = [
+  { re: /\bICJ GL (\d+)\b/, propertyID: "ICJ General List No.", value: (m) => m[1] },
+  { re: /\bPCA (?:Case No\. )?(\d{4}-\d+)\b/, propertyID: "PCA Case No.", value: (m) => m[1] },
+  { re: /\bICC-\d{2}\/\d{2}\b/, propertyID: "ICC situation", value: (m) => m[0] },
+  { re: /\bApps? (\d+\/\d{2})\b/, propertyID: "ECHR application no.", value: (m) => m[1] },
+  { re: /\bR \d+\/\d{4}\/\d+\b/, propertyID: "Case No.", value: (m) => m[0] },
+  { re: /\bECLI:[A-Z]{2}:[A-Z0-9]+:\d{4}:[A-Z0-9.]+\b/, propertyID: "ECLI", value: (m) => m[0] },
+];
+
+function docketOf(caseId: string): { propertyID: string; value: string } | undefined {
+  const row = registryCases.find((c) => c.id === caseId);
+  if (!row) return undefined;
+  const haystack = [row.note.en, row.name, row.decisionUrl ?? ""].join("\n");
+  for (const d of DOCKETS) {
+    const m = d.re.exec(haystack);
+    if (m) return { propertyID: d.propertyID, value: d.value(m) };
+  }
+  return undefined;
+}
+
+/**
  * What a link in the masthead actually points at, and who published it.
  *
  * `judgment.url` and `judgment.caseUrl` are normally the court's own document
@@ -1629,6 +1665,7 @@ export default async function CasePage({
   const pageUrl = `${siteUrl}/${locale}/cases/${slug}`;
   const fullHeadline = `${parties} — ${pick(judgment.court, locale)}`;
   const shortHeadline = summary.seoTitle ? pick(summary.seoTitle, locale) : fullHeadline;
+  const docket = docketOf(summary.caseId);
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -1675,8 +1712,21 @@ export default async function CasePage({
             : readSrc.official
               ? { url: judgment.url }
               : {}),
+          /* Номер справи в реєстрі суду — див. `docketOf`. Лише якщо запис
+             його справді містить. */
+          ...(docket
+            ? { identifier: { "@type": "PropertyValue", ...docket } }
+            : {}),
+          /* `sameAs` — твердження, що ця адреса і є справа, лише іншою
+             сторінкою. Тому тільки сторінка справи, яку підсумок визнає
+             судовою (`fileSrc.official`) — та сама умова, що вже стоїть над
+             `url`. finland-torden, де `caseUrl` — стаття в «Українській
+             правді», його не отримує. */
+          ...(fileSrc.official ? { sameAs: judgment.caseUrl } : {}),
         },
         ...(readSrc.official ? { isBasedOn: judgment.url } : {}),
+        /* Не голий корінь: `/` відповідає 307 на мовну версію, і видавець,
+           що вказує на редирект, — посилання, яке краулер мусить розгортати. */
         publisher: {
           "@type": "Organization",
           name: dict.footer.org,
