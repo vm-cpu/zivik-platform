@@ -107,9 +107,9 @@
    drawing now, so the band's 72px gutter was reaching in and squeezing its
    text to a 156px column inside a 300px block. */
 .casepage .mapband > .lbl {
-  max-width: calc(var(--measure) + var(--gutter) * 2);
-  margin-inline: auto;
-  padding-inline: var(--gutter);
+  width: min(100%, calc(var(--page-gutter) + var(--measure) + var(--gutter)));
+  margin-inline: 0;
+  padding-inline: var(--page-gutter) var(--gutter);
 }
 .casepage .mapband > .lbl {
   margin-bottom: var(--space-5);
