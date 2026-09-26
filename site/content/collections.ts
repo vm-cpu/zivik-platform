@@ -93,6 +93,12 @@ export interface CollectionSpec {
   titleField: string;
   /** Admin sidebar folder. */
   group: string;
+  /**
+   * Where "Live View" in the admin opens an entry. EmDash requires `{slug}`;
+   * collections with no page per entry point at the page that lists them,
+   * the slug riding along as a fragment the page may or may not have.
+   */
+  urlPattern: string;
   props: Prop[];
   /**
    * A field that exists only to make the admin list readable. Written by the
@@ -390,6 +396,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     key: (v) => String(v.id),
     titleField: "name_uk",
     group: GROUP_LIBRARY,
+    urlPattern: "/uk/registry#{slug}",
     props: [
       { path: "id", label: "Ідентифікатор", type: "string", required: true, slug: "key" },
       { path: "abbr", label: "Абревіатура", type: "string", localized: true, required: true },
@@ -415,6 +422,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     key: (v) => String(v.id),
     titleField: LIST_LABEL,
     group: GROUP_LIBRARY,
+    urlPattern: "/uk/registry#{slug}",
     listLabel: (v) => String(v.nameUk ?? v.nameShort ?? v.name),
     props: [
       { path: "id", label: "Ідентифікатор", type: "string", required: true, slug: "key" },
@@ -458,6 +466,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     key: (v) => String(v.id),
     titleField: "name_uk",
     group: GROUP_SITE,
+    urlPattern: "/uk#{slug}",
     props: [
       { path: "id", label: "Ідентифікатор", type: "string", required: true, slug: "key" },
       { path: "name", label: "Назва", type: "string", localized: true, required: true },
@@ -479,6 +488,7 @@ export const COLLECTIONS: CollectionSpec[] = [
         .replace(/^-|-$/g, ""),
     titleField: "name_uk",
     group: GROUP_SITE,
+    urlPattern: "/uk/team#{slug}",
     props: [
       { path: "name", label: "Ім'я", type: "string", localized: true, required: true },
       {
@@ -501,6 +511,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     key: () => "about",
     titleField: "title_uk",
     group: GROUP_SITE,
+    urlPattern: "/uk/about#{slug}",
     props: [
       { path: "title", label: "Заголовок", type: "string", localized: true, required: true },
       {
@@ -529,6 +540,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     key: (v) => String(v.key),
     titleField: "title_uk",
     group: GROUP_MAP,
+    urlPattern: "/uk/map#{slug}",
     props: [
       { path: "key", label: "Ідентифікатор", type: "string", required: true },
       { path: "area", label: "Територія", type: "select", options: ["country", "crimea", "east"] },
@@ -552,6 +564,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     key: (v) => String(v.key),
     titleField: "city_uk",
     group: GROUP_MAP,
+    urlPattern: "/uk/map#{slug}",
     props: [
       { path: "key", label: "Ідентифікатор", type: "string", required: true },
       { path: "city", label: "Місто", type: "string", localized: true, required: true },
@@ -572,6 +585,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     key: (v) => String(v.key).toLowerCase(),
     titleField: "name_uk",
     group: GROUP_MAP,
+    urlPattern: "/uk/map#{slug}",
     props: [
       { path: "key", label: "Ідентифікатор (назва в europe-map.json)", type: "string", required: true },
       { path: "name", label: "Назва", type: "string", localized: true, required: true },
@@ -587,6 +601,7 @@ export const COLLECTIONS: CollectionSpec[] = [
     source: { file: "src/content/summaries/index.ts", export: "SUMMARIES" },
     titleField: LIST_LABEL,
     group: GROUP_LIBRARY,
+    urlPattern: "/uk/cases/{slug}",
     listLabel: (v, key) => (v.title as L | undefined)?.uk ?? key,
     props: SUMMARY_PROPS,
   },

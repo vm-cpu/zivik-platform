@@ -93,6 +93,7 @@ async function seed(out: string) {
       supports: ["drafts", "revisions", "search"],
       routable: false,
       group: spec.group,
+      urlPattern: spec.urlPattern,
       sortOrder: order++,
       titleField: spec.titleField,
       fields: seedFields(spec),
