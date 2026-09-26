@@ -812,8 +812,17 @@
 }
 
 /* The citation, under the name. Quieter than the line above it — the reader
-   finds the row by its name and quotes it by its citation, in that order —
-   and set in the mono face a thing you quote deserves.
+   finds the row by its name and quotes it by its citation, in that order.
+
+   Шрифт — Fira, не моноширинний. Тут стояло «mono face a thing you quote
+   deserves», але DESIGN.md віддає моноширинний машинерії — датам, номерам
+   справ, § — а це назва справи, людська фраза: «Allegations of Genocide
+   under the Convention… (Ukraine v. Russian Federation)». Моноширинним на
+   390 вона розтягувалася на три–п'ять рядків під назвою, яку читач шукав, і
+   виглядала як службовий код. Тихішою за назву її роблять розмір
+   (`--t-cap`) і колір (`--ink2`), а не гарнітура; `lang="en"` у розмітці
+   лишається. Рік і дата рішення праворуч (`.reg-year`, `.reg-decided`) і
+   далі моноширинні — машинерія рядка це вони.
 
    The class is named for what it used to hold: the Ukrainian line, when the
    citation led and this sat under it. The two changed places (see the note in
@@ -822,7 +831,7 @@
 .registrypage .reg-name-uk {
   display: block;
   margin-top: 2px;
-  font-family: var(--brand-font-mono);
+  font-family: var(--brand-font-body), sans-serif;
   font-size: var(--t-cap);
   line-height: 1.35;
   /* `--ink2`, not `--ink-2`. The hyphenated spelling is the token name in
