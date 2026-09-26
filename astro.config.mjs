@@ -50,6 +50,11 @@ const define = Object.fromEntries(
   }
   define.__NSV_SNAPSHOT_PULLED_AT__ = JSON.stringify(pulledAt);
 }
+/* Who may publish from the admin (site/emdash/review-policy.ts): an EmDash
+   role level, 50 (administrator) unless the build says otherwise. */
+define.__NSV_PUBLISH_MIN_ROLE__ = JSON.stringify(
+  [20, 30, 40, 50].includes(Number(process.env.PUBLISH_MIN_ROLE)) ? Number(process.env.PUBLISH_MIN_ROLE) : 50,
+);
 
 /**
  * The Next build's security headers, for Cloudflare's static asset server.
@@ -110,6 +115,33 @@ export default defineConfig({
           entrypoint: here("./site/emdash/rebuild-on-publish.ts"),
           format: "native",
           capabilities: ["content:read"],
+        },
+        /* Email for sign-in links, recovery and invitations — only once the
+           build says a provider is set up (see site/emdash/email-resend.ts). */
+        ...(process.env.EMAIL_PROVIDER === "resend"
+          ? [
+              {
+                id: "nsv-email-resend",
+                version: "1.0.0",
+                entrypoint: here("./site/emdash/email-resend.ts"),
+                format: /** @type {const} */ ("native"),
+                capabilities: /** @type {any} */ (["email:provide"]),
+              },
+            ]
+          : []),
+        {
+          id: "nsv-staging-on-save",
+          version: "1.0.0",
+          entrypoint: here("./site/emdash/staging-on-save.ts"),
+          format: "native",
+          capabilities: ["content:read"],
+        },
+        {
+          id: "nsv-review-policy",
+          version: "1.0.0",
+          entrypoint: here("./site/emdash/review-policy.ts"),
+          format: "native",
+          capabilities: ["hooks.content-policy:register"],
         },
         {
           id: "nsv-validate-content",

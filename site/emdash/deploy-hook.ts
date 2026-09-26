@@ -29,16 +29,26 @@ function hookUrl(raw: string): URL | string {
   }
 }
 
-/** POST the deploy hook; true when Cloudflare accepted it. */
-export async function requestRebuild(reason: string, log: Log): Promise<boolean> {
-  const raw = (env as unknown as Record<string, string | undefined>).DEPLOY_HOOK_URL;
+/**
+ * POST a deploy hook; true when Cloudflare accepted it. `name` is the Worker
+ * secret holding the URL — DEPLOY_HOOK_URL for production, STAGING_DEPLOY_HOOK_URL
+ * for the drafts build (docs/STAGING.md). `quietIfUnset` keeps a hook that is
+ * simply not configured out of the logs.
+ */
+export async function requestRebuild(
+  reason: string,
+  log: Log,
+  name = "DEPLOY_HOOK_URL",
+  quietIfUnset = false,
+): Promise<boolean> {
+  const raw = (env as unknown as Record<string, string | undefined>)[name];
   if (!raw?.trim()) {
-    log.info(`rebuild skipped (${reason}): DEPLOY_HOOK_URL is not set`);
+    if (!quietIfUnset) log.info(`rebuild skipped (${reason}): ${name} is not set`);
     return false;
   }
   const url = hookUrl(raw);
   if (typeof url === "string") {
-    log.error(`rebuild skipped (${reason}): DEPLOY_HOOK_URL is ${url}`);
+    log.error(`rebuild skipped (${reason}): ${name} is ${url}`);
     return false;
   }
   let res: Response;

@@ -3,6 +3,9 @@
  *
  *   npm run cf:pull              from the deployed D1 database (--remote)
  *   npm run cf:pull -- --local   from the local dev database
+ *   npm run cf:pull -- --drafts  published entries with their unpublished
+ *                                edits applied, plus never-published ones —
+ *                                for the staging build only (docs/STAGING.md)
  *
  * Reads every collection described in site/content/collections.ts — only
  * entries whose status is `published` (a saved draft lives in `revisions`
@@ -24,6 +27,12 @@ import { COLLECTIONS, POSITION, fromRow, type Row } from "../../site/content/col
 const DB = "nasvitlo";
 const OUT = resolve(".emdash/snapshot.json");
 const local = process.argv.includes("--local");
+/* Staging: what editors are working on, not what readers see. A saved draft
+   lives in `revisions` (the row keeps the published values), so each row with
+   a draft_revision_id takes that revision's data on top; entries never
+   published (status `draft`) are included too. Never for production — the
+   production build runs cf:pull without it. */
+const drafts = process.argv.includes("--drafts");
 
 function query(sql: string): Row[][] {
   let out: string;
@@ -77,10 +86,26 @@ if (missing.length) {
 }
 
 const statements = PULLED.map((c) => {
-  const order = c.shape === "array" ? `${POSITION}, slug` : "slug";
-  return `SELECT * FROM "ec_${c.slug}" WHERE status = 'published' AND deleted_at IS NULL ORDER BY ${order}`;
+  const order = c.shape === "array" ? `t.${POSITION}, t.slug` : "t.slug";
+  return drafts
+    ? `SELECT t.*, r.data AS "__draft" FROM "ec_${c.slug}" t LEFT JOIN revisions r ON r.id = t.draft_revision_id ` +
+        `WHERE t.status IN ('published', 'draft') AND t.deleted_at IS NULL ORDER BY ${order}`
+    : `SELECT * FROM "ec_${c.slug}" t WHERE t.status = 'published' AND t.deleted_at IS NULL ORDER BY ${order}`;
 });
-const results = query(statements.join(";\n"));
+const results = query(statements.join(";\n")).map((rows) =>
+  rows.map((row) => {
+    const { __draft, ...base } = row;
+    if (typeof __draft !== "string" || !__draft) return base;
+    const { _slug, ...data } = JSON.parse(__draft) as Row;
+    return { ...base, ...data, ...(typeof _slug === "string" && _slug ? { slug: _slug } : {}) };
+  }),
+);
+if (drafts && PULLED.some((c) => c.shape === "array")) {
+  /* A draft may move an entry; keep the list in the order the drafts say. */
+  PULLED.forEach((c, i) => {
+    if (c.shape === "array") results[i]?.sort((a, b) => Number(a[POSITION]) - Number(b[POSITION]));
+  });
+}
 
 const collections: Record<string, unknown> = {};
 let total = 0;
@@ -112,7 +137,7 @@ if (total === 0) {
 }
 
 const snapshot = {
-  source: local ? "local" : "remote",
+  source: `${local ? "local" : "remote"}${drafts ? ", drafts" : ""}`,
   pulledAt: new Date().toISOString(),
   bindings: PULLED.map((c) => ({ collection: c.slug, shape: c.shape, ...c.source })),
   collections,

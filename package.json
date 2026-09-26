@@ -17,6 +17,7 @@
     "cf:content": "tsx scripts/cf/content.mts",
     "cf:pull": "tsx scripts/cf/pull.mts",
     "cf:build": "npm run cf:content -- check && npm run cf:content -- seed && npm run cf:pull && astro build",
+    "cf:build:staging": "npm run cf:content -- check && npm run cf:content -- seed && npm run cf:pull -- --drafts && astro build",
     "cf:build:local": "npm run cf:content -- check && npm run cf:content -- seed && npm run cf:pull -- --local && astro build",
     "cf:preview": "astro preview",
     "cf:deploy": "npm run cf:build && wrangler deploy",
