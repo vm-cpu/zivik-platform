@@ -54,3 +54,7 @@ emdash-env.d.ts
 worker-configuration.d.ts
 /data.db
 /uploads/
+
+# Pictures uploaded in the admin, written by the Cloudflare build
+# (scripts/cf/media.mts) — never committed.
+/public/media/

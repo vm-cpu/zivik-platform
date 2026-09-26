@@ -95,6 +95,11 @@ const headersFile = {
         "/favicon.ico",
         "  Cache-Control: public, max-age=86400",
         "",
+        /* Uploads written by the build (scripts/cf/media.mts): named by
+           their content, so a replaced picture is a new file. */
+        "/media/*",
+        "  Cache-Control: public, max-age=31536000, immutable",
+        "",
         /* The admin tour: small, unhashed, and changed with the admin — so
            revalidated on every load rather than cached stale for a day. */
         "/admin-guide.js",

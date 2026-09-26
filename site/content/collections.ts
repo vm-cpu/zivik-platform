@@ -33,7 +33,8 @@ export type FieldType =
   | "select"
   | "multiSelect"
   | "json"
-  | "repeater";
+  | "repeater"
+  | "image";
 
 /** One property of the exported value, stored as one field (or two, if localized). */
 export interface Prop {
@@ -84,6 +85,15 @@ export interface Prop {
   maxLength?: number;
   /** Admin editor from a plugin, "<plugin id>:<widget>" (site/emdash/json-editors). */
   widget?: string;
+  /**
+   * For `image`: a picture uploaded in the admin (EmDash's media library, R2)
+   * that stands in for the path property `into`. The Cloudflare build
+   * (scripts/cf/pull.mts → media.mts) fetches it, sizes it for `profile` and
+   * writes it under /media/, so the site keeps serving a static file and the
+   * page code keeps reading a path. An upload wins over the path; the path
+   * stays for pictures already in the repository.
+   */
+  upload?: { into: string; profile: "portrait" | "logo" | "cover" };
 }
 
 /**
@@ -591,7 +601,14 @@ export const COLLECTIONS: CollectionSpec[] = [
       { path: "id", label: "Ідентифікатор", type: "string", required: true, slug: "key" },
       { path: "name", label: "Назва", type: "string", localized: true, required: true },
       { path: "blurb", label: "Хто це", type: "text", localized: true },
-      { path: "logo", label: "Логотип (шлях у /public)", type: "string" },
+      {
+        path: "logoFile",
+        slug: "logo_file",
+        label: "Логотип — завантажити",
+        type: "image",
+        upload: { into: "logo", profile: "logo" },
+      },
+      { path: "logo", label: "Логотип — шлях у /public (якщо не завантажено)", type: "string" },
       { path: "url", label: "Сайт", type: "url" },
     ],
   },
@@ -619,7 +636,14 @@ export const COLLECTIONS: CollectionSpec[] = [
         required: true,
         help: "Англійська роль — ключ групи на /about (див. teamGroups у src/content/team.ts).",
       },
-      { path: "photo", label: "Фото (шлях у /public/team)", type: "string" },
+      {
+        path: "photoFile",
+        slug: "photo_file",
+        label: "Фото — завантажити",
+        type: "image",
+        upload: { into: "photo", profile: "portrait" },
+      },
+      { path: "photo", label: "Фото — шлях у /public/team (якщо не завантажено)", type: "string" },
     ],
   },
   {
@@ -768,7 +792,14 @@ export const COLLECTIONS: CollectionSpec[] = [
       },
       { path: "date", label: "Дата (РРРР-ММ-ДД)", type: "string", required: true },
       { path: "author", label: "Автор", type: "string", localized: true },
-      { path: "cover", label: "Обкладинка (шлях у /public/blog)", type: "string" },
+      {
+        path: "coverFile",
+        slug: "cover_file",
+        label: "Обкладинка — завантажити",
+        type: "image",
+        upload: { into: "cover", profile: "cover" },
+      },
+      { path: "cover", label: "Обкладинка — шлях у /public/blog (якщо не завантажено)", type: "string" },
       { path: "coverAlt", label: "Опис обкладинки для незрячих", type: "string", localized: true },
       { path: "tags", label: "Теги (по одному в рядку)", type: "text", lines: true },
       {
@@ -805,7 +836,7 @@ function setIn(obj: Obj, path: string, v: unknown) {
 
 function encode(p: Prop, v: unknown): unknown {
   if (v === undefined || v === null) return null;
-  if (p.type === "json" || p.type === "multiSelect") return v;
+  if (p.type === "json" || p.type === "multiSelect" || p.type === "image") return v;
   if (p.type === "repeater") return (v as Obj[]).map((item) => encodeProps(p.items!, item));
   if (p.paragraphs) return (v as string[]).join("\n\n");
   if (p.lines) return (v as string[]).join("\n");
@@ -823,6 +854,7 @@ function decode(p: Prop, v: unknown): unknown {
   if (v === "" && p.blankOk) return "";
   if (v === undefined || v === null || v === "") return p.nullable ? null : undefined;
   switch (p.type) {
+    case "image":
     case "json":
     case "multiSelect":
       return typeof v === "string" ? JSON.parse(v) : v;

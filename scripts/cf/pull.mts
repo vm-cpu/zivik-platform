@@ -22,6 +22,7 @@
 import { execFileSync } from "node:child_process";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { resolveUploads } from "./media.mjs";
 import { COLLECTIONS, POSITION, fromRow, type Row } from "../../site/content/collections";
 
 const DB = "nasvitlo";
@@ -129,6 +130,10 @@ PULLED.forEach((spec, i) => {
   }
   console.log(`  ${spec.slug}: ${rows.length}`);
 });
+
+/* Pictures uploaded in the admin become files under public/media, and their
+   paths take the place of the upload in the values (scripts/cf/media.mts). */
+await resolveUploads(collections);
 
 if (total === 0) {
   rmSync(OUT, { force: true });
