@@ -2230,7 +2230,15 @@ export default function EventsMap({
               a scatter of city dots the eye has to gather up itself.
 
               Under Ukraine and under the markers: the subject of these
-              proceedings and the seats themselves both stay on top. */}
+              proceedings and the seats themselves both stay on top.
+
+              Outside the aria-hidden group: these shapes are buttons, and a
+              focusable control inside aria-hidden is announced as nothing —
+              the keyboard lands on it and a screen reader says silence. The
+              group closes around them and reopens after, so the painting
+              order is unchanged. */}
+        </g>
+        <g>
           {Object.entries(geo.forums).map(([name, d]) => {
             /* A shape with a country entry behind it answers when pressed; one
                without is scenery. Today every lit shape has an entry — the
@@ -2263,6 +2271,8 @@ export default function EventsMap({
               />
             );
           })}
+        </g>
+        <g aria-hidden="true">
           <path className="emap-ua" d={geo.ukraine} />
           {/* The 27 regions, as the lines between them. Six unlabelled dots
               inside a blank country said nothing about where anything was;

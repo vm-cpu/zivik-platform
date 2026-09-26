@@ -936,7 +936,10 @@
   font: 400 var(--t-lead) var(--brand-font-display), serif;
   font-variant-numeric: lining-nums;
   line-height: 1;
-  color: var(--brand-faint-dark);
+  /* --faint, not --brand-faint-dark: that one is an ink for the dark
+     scenes, and on this band's paper it measured 3.24:1 — under AA for a
+     numeral at this size. --faint is the paper's own caption ink. */
+  color: var(--faint);
 }
 
 /* Знак факультету — бічна колонка при прозі, не плитка під нею.

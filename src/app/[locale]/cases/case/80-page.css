@@ -110,7 +110,9 @@
      carrying both put 24px there where the design puts 12. */
   font-size: clamp(20px, 2.4vw, 23px);
   line-height: 1;
-  color: var(--brand-gold-mark);
+  /* --brand-gold-warm, the gold for text on paper. --brand-gold-mark is the
+     "lit" indicator's fill and read 2.5:1 here as a numeral. */
+  color: var(--brand-gold-warm);
 }
 /* `.sec-sum` пішла зі смугою «Що вирішив суд»: однорядковий підсумок у
    шапці секції носила тільки вона. */

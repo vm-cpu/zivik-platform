@@ -684,6 +684,11 @@
 }
 .casepage .machinery-stack {
   display: grid;
+  /* One explicit track, allowed below its content's width. The implicit
+     track is `auto`, which grows to the widest child — at 320px the
+     objections and attribution blocks pushed the page to 338 and it
+     scrolled sideways. */
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(36px, 4.5vw, 60px);
 }
 .casepage .mach-note {
@@ -830,7 +835,10 @@
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  /* min(100%, 320px): a 320px minimum cannot fit a 320px screen once the
+     gutters are taken — the cards ran 18px past the edge and the page
+     scrolled sideways. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: var(--space-4);
 }
 .casepage .obj-card {
