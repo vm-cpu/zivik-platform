@@ -29,12 +29,14 @@ function hookUrl(raw: string): URL | string {
     if (url.protocol !== "https:") return `expected an https:// URL, got ${url.protocol}`;
     return url;
   } catch {
-    return `not a valid URL (${cleaned.length} characters, starts with "${cleaned.slice(0, 8)}")`;
+    /* Only the length: a mis-pasted secret may be some other credential. */
+    return `not a valid URL (${cleaned.length} characters; expected https://api.cloudflare.com/…)`;
   }
 }
 
 /* The hook URL is a credential — anyone holding it can start builds — so logs
-   name only its host, never the path with the hook id. */
+   name only its host, never the path with the hook id, and never any part of
+   a value that failed to parse. */
 async function rebuild(reason: string, ctx: PluginContext) {
   const raw = (env as unknown as Record<string, string | undefined>).DEPLOY_HOOK_URL;
   if (!raw?.trim()) {
