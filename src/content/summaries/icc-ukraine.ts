@@ -87,6 +87,13 @@ export const iccUkraine: DecisionSummary = {
     uk: "Ситуація в Україні",
     en: "Situation in Ukraine",
   },
+  /* The share card's wording (scripts/og-cards.mts). Carried over from the
+     hand-drawn cards so the redrawn ones say the same. */
+  card: {
+    title: "Ситуація в Україні",
+    eyebrow: "Міжнародний кримінальний суд · ICC-01/22",
+    kicker: "6 ордерів на арешт — одна вертикаль влади",
+  },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader

@@ -193,6 +193,31 @@ const SUMMARY_PROPS: Prop[] = [
   { path: "mastheadUk.official", slug: "masthead_uk_official", label: "Шапка (укр.): офіційна назва", type: "text" },
   { path: "mastheadUk.judgment", slug: "masthead_uk_judgment", label: "Шапка (укр.): рішення", type: "string" },
 
+  /* The share card's three lines (scripts/og-cards.mts draws it at build
+     time). Optional: without them the card derives its text, and a D1 that
+     does not have these columns yet reads as all three empty. */
+  {
+    path: "card.title",
+    slug: "card_title",
+    label: "Картка для соцмереж: заголовок",
+    type: "string",
+    help: "Назва справи на картці, до ~45 знаків. Порожнє — коротка назва для пошуку або заголовок.",
+  },
+  {
+    path: "card.eyebrow",
+    slug: "card_eyebrow",
+    label: "Картка для соцмереж: суд і дата",
+    type: "string",
+    help: "Напр. «ЄСПЛ, Велика палата · 9 липня 2025». Порожнє — інституція і рядок «Шапка (укр.): рішення».",
+  },
+  {
+    path: "card.kicker",
+    slug: "card_kicker",
+    label: "Картка для соцмереж: підсумок",
+    type: "string",
+    help: "Один рядок під назвою: головний результат. Порожнє — виділена цифра з «Цифри».",
+  },
+
   { path: "plain.tldr", slug: "tldr", label: "Коротко", type: "text", localized: true, required: true },
   { path: "plain.whyMatters", slug: "why_matters", label: "Чому це важливо", type: "text", localized: true, required: true },
 

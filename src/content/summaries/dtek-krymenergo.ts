@@ -30,6 +30,13 @@ export const dtekKrymenergo: DecisionSummary = {
     uk: "ДТЕК Крименерго проти Російської Федерації",
     en: "JSC DTEK Krymenergo v. the Russian Federation",
   },
+  /* The share card's wording (scripts/og-cards.mts). Carried over from the
+     hand-drawn cards so the redrawn ones say the same. */
+  card: {
+    title: "ДТЕК Крименерго проти РФ",
+    eyebrow: "Постійна палата третейського суду · 1 листопада 2023",
+    kicker: "$207,8 млн + відсотки за кримську енергомережу",
+  },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader

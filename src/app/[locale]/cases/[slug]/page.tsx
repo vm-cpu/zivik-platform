@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
+  caseOgImage,
   decisionMetadata,
   descriptionFromProse,
   jsonLdHtml,
@@ -1189,7 +1190,7 @@ export async function generateMetadata({
     description: shortDescription(summary, locale),
     ogAlt: dict.meta.ogAlt,
     siteName: dict.brand.wordmark,
-    image: `/og/cases/${slug}.png`,
+    image: caseOgImage(slug),
   });
 }
 
@@ -1681,7 +1682,7 @@ export default async function CasePage({
         inLanguage: locale,
         url: pageUrl,
         mainEntityOfPage: pageUrl,
-        image: `${siteUrl}/og/cases/${slug}.png`,
+        image: `${siteUrl}${caseOgImage(slug)}`,
         /* The article's dates, not the decision's. `datePublished` carried
            the judgment date, so a summary of the 2018 Oschadbank award read as
            a 2018 article. The decision's date is `about.datePublished` below;

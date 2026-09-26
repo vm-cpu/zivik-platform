@@ -7,6 +7,7 @@ import {
   type Locale,
 } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
+import caseCards from "../../public/og/cases/manifest.json";
 
 /**
  * Absolute site origin, used for canonical URLs, Open Graph and the sitemap.
@@ -188,9 +189,23 @@ export function descriptionFromProse(text: string): string {
 export const defaultOgImage = "/og/nasvitlo.png";
 
 /**
- * Real pixel size of the share cards in `public/og/`, measured off the files
- * on disk (all nine PNGs are exactly 1200x630 — `scripts/og-cards.py` renders
- * at 2x and downsamples to this size).
+ * A decision's own share card, or the site card where it has none.
+ *
+ * The cards are drawn at build time by scripts/og-cards.mts, which lists in
+ * public/og/cases/manifest.json every slug whose card it has on disk. The
+ * page used to point at `/og/cases/${slug}.png` unconditionally, so a summary
+ * made in the admin — which no one had drawn a card for — unfurled with a
+ * broken image. Reading the list instead of the directory keeps this free of
+ * `fs`: it runs the same in the Next build, the Astro prerender and a Worker.
+ */
+export function caseOgImage(slug: string): string {
+  return Object.hasOwn(caseCards.cards, slug) ? `/og/cases/${slug}.png` : defaultOgImage;
+}
+
+/**
+ * Real pixel size of the share cards in `public/og/` — every one is exactly
+ * 1200x630: the site card, and the case cards `scripts/og-cards.mts` draws at
+ * this size.
  *
  * These are worth emitting: without og:image:width/height a crawler has to
  * fetch the image before it can decide how to lay the card out, so the first

@@ -54,6 +54,13 @@ export const oschadbank: DecisionSummary = {
     uk: "Ощадбанк проти Російської Федерації",
     en: "JSC Oschadbank v. the Russian Federation",
   },
+  /* The share card's wording (scripts/og-cards.mts). Carried over from the
+     hand-drawn cards so the redrawn ones say the same. */
+  card: {
+    title: "Ощадбанк проти Російської Федерації",
+    eyebrow: "Постійна палата третейського суду · 26 листопада 2018",
+    kicker: "$1,1 млрд за експропріацію в Криму",
+  },
   /* The masthead in Ukrainian — the caption under the title and the line
      in the eyebrow. `masthead` keeps the decision's own English, which is
      what the citation block reproduces; this is what a Ukrainian reader
