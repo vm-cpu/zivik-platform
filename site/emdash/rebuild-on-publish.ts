@@ -10,20 +10,53 @@
  * Bursts are fine. Cloudflare drops a hook call that arrives while an earlier
  * one is still queued, so publishing ten entries in a row costs one build.
  *
- * Without the secret (local dev, a preview) it logs and does nothing.
+ * Without the secret (local dev, a preview) it logs and does nothing. A hook
+ * that cannot be reached, or a malformed secret, is logged with its cause and
+ * never thrown: a failed rebuild must not read as a failed publish.
  */
 import { definePlugin, type PluginContext } from "emdash";
 import { env } from "cloudflare:workers";
 
+/**
+ * The hook URL as pasted into `wrangler secret put` or the dashboard, cleaned
+ * of what a paste tends to carry along: surrounding whitespace and newlines,
+ * and quotes around the whole value.
+ */
+function hookUrl(raw: string): URL | string {
+  const cleaned = raw.trim().replace(/^(["'])(.*)\1$/s, "$2").trim();
+  try {
+    const url = new URL(cleaned);
+    if (url.protocol !== "https:") return `expected an https:// URL, got ${url.protocol}`;
+    return url;
+  } catch {
+    return `not a valid URL (${cleaned.length} characters, starts with "${cleaned.slice(0, 8)}")`;
+  }
+}
+
+/* The hook URL is a credential — anyone holding it can start builds — so logs
+   name only its host, never the path with the hook id. */
 async function rebuild(reason: string, ctx: PluginContext) {
-  const url = (env as unknown as Record<string, string | undefined>).DEPLOY_HOOK_URL;
-  if (!url) {
+  const raw = (env as unknown as Record<string, string | undefined>).DEPLOY_HOOK_URL;
+  if (!raw?.trim()) {
     ctx.log.info(`rebuild skipped (${reason}): DEPLOY_HOOK_URL is not set`);
     return;
   }
-  const res = await fetch(url, { method: "POST" });
+  const url = hookUrl(raw);
+  if (typeof url === "string") {
+    ctx.log.error(`rebuild skipped (${reason}): DEPLOY_HOOK_URL is ${url}`);
+    return;
+  }
+  let res: Response;
+  try {
+    res = await fetch(url, { method: "POST" });
+  } catch (error) {
+    const message = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+    ctx.log.error(`rebuild request to ${url.host} did not complete (${reason}): ${message}`);
+    return;
+  }
   if (!res.ok) {
-    ctx.log.error(`rebuild request failed (${reason}): ${res.status} ${await res.text()}`);
+    const body = (await res.text().catch(() => "")).slice(0, 500);
+    ctx.log.error(`rebuild request failed (${reason}): ${res.status} ${body}`);
     return;
   }
   ctx.log.info(`rebuild requested (${reason})`);
