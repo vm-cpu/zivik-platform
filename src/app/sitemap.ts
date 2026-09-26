@@ -3,7 +3,7 @@ import { defaultLocale, locales } from "@/i18n/config";
 import { isIndexable, siteUrl } from "@/lib/seo";
 import { glossaryEnabled } from "@/lib/flags";
 import { registryCases } from "@/content/cases";
-import { summaryLastModified } from "@/content/summaries";
+import { latestSummaryLastModified, summaryLastModified } from "@/content/summaries";
 
 /**
  * Absolute hreflang map for one path shape, including `x-default`.
@@ -39,8 +39,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const homeLanguages = languagesFor((l) => `/${l}`);
 
+  /* Головна й бібліотека своєї дати не мають — вони зібрані з оглядів і
+     змінюються тоді, коли змінюється огляд. Тож їхня дата — найсвіжіша серед
+     оглядів (`asOf`, інакше дата рішення): новий огляд або перевірений
+     контекст зсуває її, і краулер бачить, що обидві сторінки варто
+     перечитати. Без неї обидві стояли в карті взагалі без `lastModified`. */
+  const contentModified = latestSummaryLastModified();
+  const contentDate = contentModified ? { lastModified: contentModified } : {};
+
   const homes: MetadataRoute.Sitemap = locales.map((locale) => ({
     url: `${siteUrl}/${locale}`,
+    ...contentDate,
     changeFrequency: "weekly",
     priority: locale === "uk" ? 1 : 0.9,
     alternates: { languages: homeLanguages },
@@ -55,6 +64,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const registryLanguages = languagesFor((l) => `/${l}/registry`);
   const registry: MetadataRoute.Sitemap = locales.map((locale) => ({
     url: `${siteUrl}/${locale}/registry`,
+    ...contentDate,
     changeFrequency: "weekly",
     priority: locale === "uk" ? 0.9 : 0.8,
     alternates: { languages: registryLanguages },
