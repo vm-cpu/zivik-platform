@@ -11,6 +11,7 @@ import type { Dictionary } from "@/i18n/dictionaries";
 import { CENTRE_URL } from "@/content/centre";
 import { glossaryEnabled } from "@/lib/flags";
 import Header from "@/components/nasvitlo/Header";
+import { headerDict } from "@/components/nasvitlo/header-dict";
 import Footer from "@/components/nasvitlo/Footer";
 import { PathnameContext } from "../shims/navigation";
 
@@ -30,7 +31,7 @@ export default function Chrome({
       <div className="nsv-root">
         <Header
             locale={locale}
-            dict={dict}
+            dict={headerDict(dict)}
             showGlossary={glossaryEnabled}
             supportHref={CENTRE_URL}
             supportLabel={dict.footer.support}

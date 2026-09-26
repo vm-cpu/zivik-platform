@@ -4,18 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { locales, localeNames, type Locale } from "@/i18n/config";
-import type { Dictionary } from "@/i18n/dictionaries";
-
-/**
- * Only what the bar reads.
- *
- * This is a client component, so whatever it takes is serialized into the
- * payload of every page. It used to take the whole `Dictionary` — 4,937 bytes
- * of it — to read ten strings worth 250. Narrowing the prop is the difference,
- * on every one of the site's ninety-odd pages.
- */
-export type HeaderDict = Pick<Dictionary, "nav" | "brand">;
+import type { HeaderDict } from "./header-dict";
 import "./header.css";
+
+/* Only what the bar reads — built by `headerDict()` in ./header-dict.ts, which
+   is where the reason lives. Re-exported so the type keeps its old address. */
+export type { HeaderDict };
 
 /** Dark top bar: brand, primary nav (collapses to a menu), language switch. */
 export default function Header({

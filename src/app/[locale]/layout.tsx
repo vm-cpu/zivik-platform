@@ -12,6 +12,7 @@ import { getDictionary } from "@/i18n/dictionaries";
 import { homeMetadata } from "@/lib/seo";
 import { glossaryEnabled } from "@/lib/flags";
 import Header from "@/components/nasvitlo/Header";
+import { headerDict } from "@/components/nasvitlo/header-dict";
 import Footer from "@/components/nasvitlo/Footer";
 // Only cross-surface primitives load for every page. home.css is the home
 // page's own stylesheet and is imported there — loading it here put 399
@@ -178,7 +179,7 @@ export default async function LocaleLayout({
         <div className="nsv-root">
           <Header
             locale={safe}
-            dict={dict}
+            dict={headerDict(dict)}
             showGlossary={glossaryEnabled}
             supportHref={CENTRE_URL}
             supportLabel={dict.footer.support}

@@ -35,6 +35,25 @@ interface Props {
 const { locale, metadata, html } = Astro.props;
 const tags = metadataTags(metadata);
 const preloadFonts = locale === "uk" ? [firaLatin, firaCyrillic, charisLatin, charisCyrillic] : [firaLatin, charisLatin];
+
+/**
+ * Whether this page needs React in the browser at all.
+ *
+ * Every page has the header island; many have nothing else — /about, /team,
+ * the legal pages, every pending case, the 404. There the header was the only
+ * reason the island runtime loaded, and all it hydrates is a burger that flips
+ * one attribute. Those pages get site/islands/header.ts instead: the same
+ * behaviour in a few hundred bytes, over the markup the server already
+ * rendered. Any other island on the page — including one inside a slot —
+ * and the page hydrates exactly as before, header included.
+ *
+ * Read off the rendered page rather than declared per route, so a page that
+ * gains an island cannot forget to ask for React.
+ */
+const HEADER = "components/nasvitlo/Header.tsx";
+const hydrates = [...html.matchAll(/<nsv-island data-k="([^"#]*)#/g)].some(
+  (m) => m[1] !== HEADER,
+);
 ---
 
 <!doctype html>
@@ -72,8 +91,16 @@ const preloadFonts = locale === "uk" ? [firaLatin, firaCyrillic, charisLatin, ch
         </script>
       )
     }
-    <script>
-      import "../islands/client.tsx";
-    </script>
+    {
+      hydrates ? (
+        <script>
+          import "../islands/client.tsx";
+        </script>
+      ) : (
+        <script>
+          import "../islands/header.ts";
+        </script>
+      )
+    }
   </body>
 </html>
