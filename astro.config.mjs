@@ -60,6 +60,16 @@ const headersFile = {
         ...securityHeaders.map((h) => `  ${h.key}: ${h.value}`),
         "  Strict-Transport-Security: max-age=63072000; includeSubDomains",
         "",
+        /* Portraits and logos are unhashed files that change about once a
+           year. Left at the asset server's max-age=0 they were revalidated on
+           every visit; a day is short enough that a replaced photo shows up
+           tomorrow without anyone renaming it. */
+        "/team/*",
+        "  Cache-Control: public, max-age=86400",
+        "",
+        "/logos/*",
+        "  Cache-Control: public, max-age=86400",
+        "",
       ];
       appendFileSync(new URL("_headers", dir), lines.join("\n"));
     },
