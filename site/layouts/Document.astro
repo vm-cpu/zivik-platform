@@ -8,6 +8,16 @@ import type { Metadata } from "next";
 import type { Locale } from "@/i18n/config";
 import { localeHtmlLang } from "@/i18n/config";
 import favicon from "@/app/favicon.ico?url";
+/* The faces the first screen is set in, preloaded. Without this the browser
+   found them only after parsing the page CSS — 15–18 font files, 264–315 kB,
+   queued behind the stylesheet. Only regular body (Fira 400) and display
+   (Charis 400): both need the latin subset on every page (spaces, digits,
+   punctuation live there), and a Ukrainian page the cyrillic one too. The
+   same source files as fonts.css, so Vite emits one asset for both. */
+import firaLatin from "@fontsource/fira-sans/files/fira-sans-latin-400-normal.woff2?url";
+import firaCyrillic from "@fontsource/fira-sans/files/fira-sans-cyrillic-400-normal.woff2?url";
+import charisLatin from "@fontsource/charis-sil/files/charis-sil-latin-400-normal.woff2?url";
+import charisCyrillic from "@fontsource/charis-sil/files/charis-sil-cyrillic-400-normal.woff2?url";
 // Imported for its stylesheets: the page itself arrives rendered.
 import "../lib/Chrome";
 import { metadataTags } from "../lib/metadata";
@@ -24,6 +34,7 @@ interface Props {
 
 const { locale, metadata, html } = Astro.props;
 const tags = metadataTags(metadata);
+const preloadFonts = locale === "uk" ? [firaLatin, firaCyrillic, charisLatin, charisCyrillic] : [firaLatin, charisLatin];
 ---
 
 <!doctype html>
@@ -43,6 +54,7 @@ const tags = metadataTags(metadata);
       )
     }
     <link rel="icon" href={favicon} sizes="any" />
+    {preloadFonts.map((href) => <link rel="preload" href={href} as="font" type="font/woff2" crossorigin />)}
   </head>
   <body class="min-h-full">
     <Fragment set:html={html} />

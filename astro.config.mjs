@@ -106,7 +106,7 @@ export default defineConfig({
   vite: {
     define,
     plugins: [
-      clientIslands({ root: here("./src") }),
+      clientIslands({ root: here("./src"), serverOnly: ["components/nasvitlo/HeroMap.tsx"] }),
       contentSnapshot({ snapshot: here("./.emdash/snapshot.json"), root: here(".") }),
       adminLocales({ keep: ["en", "uk"] }),
     ],
