@@ -12,11 +12,8 @@ import {
 import { foreignLang, isLocale, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/dictionaries";
 import { pick } from "@/content/types";
-import TermSearch from "@/components/cases/TermSearch";
 import CaseToc from "@/components/cases/CaseToc";
 import ToTop from "@/components/cases/ToTop";
-import { markTerms, type TermRef } from "@/content/mark-terms";
-import TermTooltips from "@/components/cases/TermTooltips";
 import CaseTimeline from "@/components/cases/CaseTimeline";
 import MoneyBars from "@/components/cases/MoneyBars";
 import AttributionTree from "@/components/cases/AttributionTree";
@@ -29,8 +26,6 @@ import { registryCases } from "@/content/cases";
 import CasePending, { pendingMetadata } from "@/components/cases/CasePending";
 import "./pending.css";
 import { SUMMARIES } from "@/content/summaries";
-import { sortKey, idOf } from "@/content/glossary";
-import { glossaryEnabled } from "@/lib/flags";
 import type { Localized } from "@/content/types";
 import type {
   DecisionSummary,
@@ -104,7 +99,6 @@ const T = {
      the answer as the third thing in the exchange. */
   ordered: { uk: "Наказано", en: "Ordered" },
   progress: { uk: "Прогрес читання", en: "Reading progress" },
-  glossaryH: { uk: "Словник", en: "Glossary" },
 
   /* The theatre map's text alternative. It was the literal string "Map of
      Europe" — English on a Ukrainian page, so a Ukrainian voice spoke it
@@ -187,23 +181,6 @@ const T = {
   dotCap: {
     uk: "На полі показано перші {n} позначок.",
     en: "The field draws the first {n} marks.",
-  },
-  /* The chip has to name the band it lands on. It said «Що варто знати» /
-     "What to know" and landed on a band headed «Хто є хто» / "Who's who" — a
-     reader clicking for a primer got a cast list. The band's own heading is
-     the label now; the glossary underneath it, which was silently annexed to
-     this destination, gets its own entry below. */
-  navGlossary: { uk: "Словник", en: "Glossary" },
-  termsSearch: { uk: "Знайти термін…", en: "Find a term…" },
-  termsSearchLabel: { uk: "Пошук у словнику справи", en: "Search this case's terms" },
-  termsClear: { uk: "Очистити пошук", en: "Clear search" },
-  termsEmpty: {
-    uk: "Такого терміна тут немає. Спробуйте словник бібліотеки — там усі.",
-    en: "No such term here. Try the library's glossary — it has them all.",
-  },
-  glossaryAll: {
-    uk: "Ці терміни у словнику бібліотеки",
-    en: "These terms in the library's glossary",
   },
   /* «Самері» was a transliteration of "summary" standing as a section name
      on a Ukrainian page. Review: «розділ "САМЕРІ" … замінила б на "ПОВНИЙ
@@ -580,7 +557,6 @@ function TheatreMap({
 /** Render one findings-table cell: verbatim text, sub-headings pulled out. */
 function Findings({
   text,
-  mark,
   claimLabel,
   positionLabel,
   heads,
@@ -596,9 +572,6 @@ function Findings({
   /** «Україна твердила» / «Позиція Суду» — the two columns' captions. */
   claimLabel: string;
   positionLabel: string;
-  /** Wraps the first appearance of each glossary term. Identity, when the
-      page has no glossary to mark against. */
-  mark: (s: string) => React.ReactNode;
 }) {
   const lines = text
     .split("\n")
@@ -684,7 +657,7 @@ function Findings({
             <li key={i}>
               <span className="fl-text">
                 {heads?.[i] ? <b className="fl-head">{heads[i]}</b> : null}
-                {mark(t)}
+                {t}
               </span>
               <span className="v-out h4-out" data-o={outcomes[i]}>
                 {pick(OUTCOME_LABEL[outcomes[i]], locale)}
@@ -697,13 +670,13 @@ function Findings({
     return numbered ? (
       <ol className="findings f-list">
         {items.map((t, i) => (
-          <li key={i}>{mark(t)}</li>
+          <li key={i}>{t}</li>
         ))}
       </ol>
     ) : (
       <ul className="findings f-list">
         {items.map((t, i) => (
-          <li key={i}>{mark(t)}</li>
+          <li key={i}>{t}</li>
         ))}
       </ul>
     );
@@ -760,7 +733,7 @@ function Findings({
               /* Nothing marks where the Court starts: prose, as written. */
               part.body.map((l, i) => (
                 <p className="body" key={i}>
-                  {mark(l)}
+                  {l}
                 </p>
               ))
             ) : (
@@ -774,7 +747,7 @@ function Findings({
                       <div className="lbl-c">{t.court ? positionLabel : claimLabel}</div>
                     )}
                     {t.lines.map((l, k) => (
-                      <BoxPara key={k} text={l} mark={mark} />
+                      <BoxPara key={k} text={l} />
                     ))}
                   </div>
                 ))}
@@ -845,7 +818,6 @@ const TRAILING_CITE = /\s*\(\s*§+[^)]*\)\s*(:?)\s*$/;
 function takeQuotation(
   body: SummaryBlock[],
   start: number,
-  mark: (s: string) => React.ReactNode,
 ): { nodes: React.ReactNode[]; next: number } | null {
   const b = body[start];
   if (!b || (b.kind !== "p" && b.kind !== "lead")) return null;
@@ -873,7 +845,7 @@ function takeQuotation(
         </div>
       ) : (
         <p className="body" key={`ql-${start}`}>
-          {mark(lead)}
+          {lead}
         </p>
       ),
     );
@@ -934,28 +906,28 @@ const ELEMENTS =
    text gets here. What is left is labels. */
 const BOX_LEAD = /^([^:»"”]{6,48}):\s+(\S[\s\S]+)$/;
 
-function BoxPara({ text, mark }: { text: string; mark: (s: string) => React.ReactNode }) {
+function BoxPara({ text }: { text: string }) {
   const m = BOX_LEAD.exec(text);
   if (m && m[1].split(/\s+/).length <= 6 && !/^[«"“]/.test(m[2])) {
     return (
       <>
         <div className="lbl-c box-lead">{m[1]}</div>
-        <p>{mark(m[2])}</p>
+        <p>{m[2]}</p>
       </>
     );
   }
-  return <p>{mark(text)}</p>;
+  return <p>{text}</p>;
 }
 
-function HoldingText({ text, mark }: { text: string; mark: (s: string) => React.ReactNode }) {
+function HoldingText({ text }: { text: string }) {
   const m = ELEMENTS.exec(text);
-  if (!m) return <BoxPara text={text} mark={mark} />;
+  if (!m) return <BoxPara text={text} />;
   return (
     <>
-      <p>{mark(m[1])}</p>
+      <p>{m[1]}</p>
       <ol className="els">
-        <li>{mark(m[2])}</li>
-        <li>{mark(m[3])}</li>
+        <li>{m[2]}</li>
+        <li>{m[3]}</li>
       </ol>
     </>
   );
@@ -964,14 +936,12 @@ function HoldingText({ text, mark }: { text: string; mark: (s: string) => React.
 /** Render one verbatim block in reading order. */
 function Block({
   block,
-  mark,
   claimLabel,
   positionLabel,
   locale,
 }: {
   block: SummaryBlock;
   locale: Locale;
-  mark: (s: string) => React.ReactNode;
   /* The two captions a finding's columns carry. Passed down rather than
      read here: this renderer has no locale of its own. */
   claimLabel: string;
@@ -979,7 +949,7 @@ function Block({
 }) {
   switch (block.kind) {
     case "lead":
-      return <p className="lead">{mark(block.text)}</p>;
+      return <p className="lead">{block.text}</p>;
     case "h2":
       return <PartHead text={block.text} />;
     case "h3":
@@ -987,11 +957,11 @@ function Block({
     case "h4":
       return <h4>{block.text}</h4>;
     case "subject":
-      return <p className="body">{mark(block.text)}</p>;
+      return <p className="body">{block.text}</p>;
     case "note":
       return (
         <aside className="nb">
-          <p>{mark(block.text)}</p>
+          <p>{block.text}</p>
         </aside>
       );
     case "position":
@@ -1001,7 +971,7 @@ function Block({
       return (
         <div className="rule">
           <div className="lbl-c">{positionLabel}</div>
-          <HoldingText text={block.text} mark={mark} />
+          <HoldingText text={block.text} />
         </div>
       );
     case "claim":
@@ -1011,7 +981,7 @@ function Block({
         <div className="pair pair-turns">
           <div className="claim">
             <div className="lbl-c">{claimLabel}</div>
-            <p>{mark(block.text)}</p>
+            <p>{block.text}</p>
           </div>
         </div>
       );
@@ -1019,7 +989,6 @@ function Block({
       return (
         <Findings
           text={block.text}
-          mark={mark}
           claimLabel={claimLabel}
           positionLabel={positionLabel}
           heads={block.heads}
@@ -1060,7 +1029,7 @@ function Block({
         return (
           <>
             <div className="lbl-c scope-l">{`${scope[1]} ${scope[2]}`}</div>
-            <p className="body">{mark(rest.charAt(0).toUpperCase() + rest.slice(1))}</p>
+            <p className="body">{rest.charAt(0).toUpperCase() + rest.slice(1)}</p>
           </>
         );
       }
@@ -1093,7 +1062,7 @@ function Block({
               <div className="listed-h">{listed[1].replace(/:$/, "")}</div>
               <ul>
                 {items.map((x, i) => (
-                  <li key={i}>{mark(x)}</li>
+                  <li key={i}>{x}</li>
                 ))}
               </ul>
             </div>
@@ -1130,14 +1099,14 @@ function Block({
               <div className="listed-h">{named[1].replace(/:$/, "")}</div>
               <ul>
                 {items.map((x, i) => (
-                  <li key={i}>{mark(x)}</li>
+                  <li key={i}>{x}</li>
                 ))}
               </ul>
             </div>
           );
         }
       }
-      return <p className="body">{mark(block.text)}</p>;
+      return <p className="body">{block.text}</p>;
     }
   }
 }
@@ -1233,35 +1202,6 @@ export default async function CasePage({
 
   const { masthead, judgment, instruments, timeline, sources } = summary;
   const { interpretations, plain } = summary;
-  /* Alphabetical, in the reader's own collation, and sorted here rather than
-     in the band: the term chips at the head of the verbatim text link to
-     `#term-N`, and the band renders the same array, so both have to number
-     the same list. Sorting once, on the server, keeps the anchors in the HTML
-     and keeps the two in step.
-
-     `sortKey` strips leading guillemets before comparing — «ДНР» files under Д,
-     not under «, which is the same rule the dictionary page uses. */
-  const glossary = [...summary.glossary].sort((a, b) =>
-    sortKey(pick(a.term, locale)).localeCompare(
-      sortKey(pick(b.term, locale)),
-      locale === "uk" ? "uk" : "en",
-      { sensitivity: "base" },
-    ),
-  );
-  /* The terms this decision defines, pointed at their entry in the dictionary.
-     The definition travels with the mark, so a reader never has to leave the
-     sentence to find out what a word means. */
-  /* Empty on a build without the dictionary, which `markTerms` already treats
-     as "leave the prose alone" — the alternative is a verbatim summary shot
-     through with links to a 404. */
-  const termRefs: TermRef[] = glossaryEnabled
-    ? glossary.map((g) => ({
-        id: idOf(g.term.uk),
-        term: pick(g.term, locale),
-        def: pick(g.def, locale),
-        href: `/${locale}/glossary#${idOf(g.term.uk)}`,
-      }))
-    : [];
 
   /* Where a verdict's track is also a moment in the chronology.
 
@@ -1414,7 +1354,6 @@ export default async function CasePage({
     refs: "rulings",
     pmeas: "measures",
     machinery: "machinery",
-    terms: "glossary",
     srcs: "sec-sources",
   };
   const showBand = (name: string) =>
@@ -1429,7 +1368,6 @@ export default async function CasePage({
     ["refs", interpretations.length > 0],
     ["pmeas", provisionalMeasures.length > 0],
     ["machinery", hasMachinery],
-    ["terms", glossaryEnabled],
     ["srcs", sources.length > 0],
   ];
   const ground: Record<string, "p" | "p2"> = {};
@@ -1676,9 +1614,6 @@ export default async function CasePage({
       : []),
     /* What happened to the award afterwards — its own band now. */
     ...(afterlife ? [{ id: "after", label: pick(afterlife.heading, locale) }] : []),
-    ...(glossaryEnabled
-      ? [{ id: "glossary", label: pick(T.navGlossary, locale) }]
-      : []),
     ...(sources.length > 0 ? [{ id: "sec-sources", label: pick(T.sources, locale) }] : []),
   ];
   /* The chip row shows the bands this decision actually renders. */
@@ -1929,10 +1864,6 @@ export default async function CasePage({
       </header>
 
       {/* 1a — Sticky page navigation: every band, not just the article */}
-      {/* Escape closes a term definition — the one thing the CSS-only
-          tooltips cannot do for themselves. Renders nothing. */}
-      {termRefs.length > 0 && <TermTooltips />}
-
       <ToTop label={pick(T.toTop, locale)} />
 
       {/* Everything below the masthead is one light canvas with a column of
@@ -2041,13 +1972,6 @@ export default async function CasePage({
                 `.lbl` trails off every label it draws. Owner: «повний огляд?
                 зайвий заголовок. Зайва смуга.» The contents still names the
                 parts, which is where that label's job went. */}
-            {/* The «Терміни в цьому тексті» chip row is gone. It listed the
-                decision's headwords above the verbatim and linked each to the
-                glossary band below — which made sense while the terms were
-                only defined at the foot of the page. They are marked in the
-                prose itself now, each carrying its definition where the reader
-                meets the word, so the row was a table of contents for
-                something the text already does. */}
         {(() => {
           let h2i = 0;
           let h3i = 0;
@@ -2057,14 +1981,6 @@ export default async function CasePage({
              order. Counted within their own heading, so the count restarts
              wherever a new run begins. */
           let d = 0;
-          /* One set for the whole article, filled as the blocks are walked in
-             reading order, so "first occurrence" means first on the page and
-             not first in each paragraph. The map callback runs eagerly, here,
-             rather than inside each Block — leaving the mutation to React's
-             render order would make the result depend on when React chose to
-             call the component. */
-          const used = new Set<string>();
-          const mark = (t: string) => markTerms(t, termRefs, used);
           /* Walked rather than mapped, because one shape spans more than one
              block: a run of [h3, claim] units is a single row of boxes on a
              hairline grid. «Вимоги України за ICSFT» and «…за CERD» are the
@@ -2154,11 +2070,11 @@ export default async function CasePage({
                           {u.place && <span className="c-place">{u.place}</span>}
                         </div>
                       )}
-                      {u.subject && <p className="c-sub">{mark(u.subject)}</p>}
+                      {u.subject && <p className="c-sub">{u.subject}</p>}
                       <div className="lbl-c" id={u.id}>
                         {u.head}
                       </div>
-                      <p>{mark(u.text)}</p>
+                      <p>{u.text}</p>
                     </div>
                   ))}
                 </div>,
@@ -2182,13 +2098,13 @@ export default async function CasePage({
                 if (body[j]?.kind === "position") {
                   right.push(
                     <div key={`p-${j}`} className="rule-p">
-                      <HoldingText text={body[j].text} mark={mark} />
+                      <HoldingText text={body[j].text} />
                     </div>,
                   );
                   j += 1;
                   continue;
                 }
-                const q = takeQuotation(body, j, mark);
+                const q = takeQuotation(body, j);
                 if (!q) break;
                 right.push(...q.nodes);
                 j = q.next;
@@ -2198,7 +2114,7 @@ export default async function CasePage({
                   <div className="pair pair-turns" key={`cp-${i}`}>
                     <div className="claim">
                       <div className="lbl-c">{pick(T.claimed, locale)}</div>
-                      <p>{mark(b.text)}</p>
+                      <p>{b.text}</p>
                     </div>
                     <div className="rule">
                       <div className="lbl-c">{pick(summary.positionLabel ?? T.courtPosition, locale)}</div>
@@ -2211,7 +2127,7 @@ export default async function CasePage({
               }
             }
             {
-              const q = takeQuotation(body, i, mark);
+              const q = takeQuotation(body, i);
               if (q) {
                 out.push(
                   <div className="qt-group" key={`qg-${i}`}>
@@ -2238,7 +2154,7 @@ export default async function CasePage({
                 <div className="rule" key={`pos-${at}`}>
                   <div className="lbl-c">{pick(summary.positionLabel ?? T.courtPosition, locale)}</div>
                   {run.map((t, k) => (
-                    <HoldingText key={k} text={t} mark={mark} />
+                    <HoldingText key={k} text={t} />
                   ))}
                 </div>,
               );
@@ -2288,7 +2204,7 @@ export default async function CasePage({
               /* Ours, not the Court's. */
               out.push(
                 <aside className="nb" key={i}>
-                  <p>{mark(b.text)}</p>
+                  <p>{b.text}</p>
                 </aside>,
               );
               continue;
@@ -2310,7 +2226,6 @@ export default async function CasePage({
                 key={i}
                 block={b}
                 locale={locale}
-                mark={mark}
                 claimLabel={pick(T.claimed, locale)}
                 positionLabel={pick(summary.positionLabel ?? T.courtPosition, locale)}
               />,
@@ -2613,16 +2528,9 @@ export default async function CasePage({
           biggest band on the page, and the navigation did not admit it
           existed. */}
 
-      {/* 3 — Reader's guide.
-
-          Two sections, not two columns. They were side by side inside one
-          band, 336px and 788px wide, under byte-identical 11px gold uppercase
-          headings, and the roster's own role label was set in exactly that
-          same style — so the band offered a reader three headings and no way
-          to tell a cast list from a dictionary. They are different objects
-          and they now have different shapes: the roster is a grid of cards
-          across the full rail, each led by a kind chip; the glossary is a
-          ruled dictionary poured into two columns. Different grounds, too. */}
+      {/* 3 — Reader's guide. Nothing is left of it: it held two bands, the
+          roster and this decision's slice of the glossary, and both are
+          gone. */}
       {/* «Хто є хто» stood here and is gone.
 
           Review: «Забрати учасників» and, on a screenshot of the whole band,
@@ -2634,42 +2542,14 @@ export default async function CasePage({
           not a band. The data left too, with its admin field: «забери все
           чого немає на сторінці» (owner, 26 September 2026). */}
 
-      {/* Its own id and its own nav entry. It had neither, so it was reached
-          only by scrolling past «Хто є хто» — and the chip that was supposed
-          to lead here was pointing at that band instead. */}
-      {/* This band is the library's glossary, filtered to one decision.
-
-          The fifty headwords in the archive were only ever reachable through
-          whichever decision happened to define them, so a reader who wanted to
-          know what «hors de combat» means had to already know which case to
-          open. They have a page of their own now, and the link below is this
-          band's own contents on it — same terms, plus the other decisions'
-          readings of the four words that two courts define differently. */}
-      {shows("glossary") && glossaryEnabled && (
-        <section className="terms" data-ground={ground["terms"]} id="glossary" data-navsec aria-label={pick(T.glossaryH, locale)}>
-          <div className="rail">
-            <div className="sec-h">
-              <h2>{pick(T.glossaryH, locale)}</h2>
-            </div>
-            <TermSearch
-              terms={glossary.map((g) => ({
-                term: pick(g.term, locale),
-                def: pick(g.def, locale),
-              }))}
-              placeholder={pick(T.termsSearch, locale)}
-              label={pick(T.termsSearchLabel, locale)}
-              clear={pick(T.termsClear, locale)}
-              empty={pick(T.termsEmpty, locale)}
-            />
-            <p className="terms-more">
-              <Link href={`/${locale}/glossary?case=${slug}`}>
-                {pick(T.glossaryAll, locale)} →
-              </Link>
-            </p>
-          </div>
-        </section>
-      )}
-
+      {/* «Словник» stood here — this decision's terms, each with a plain
+          definition, and a link into the library-wide glossary page. Owner:
+          «вимикаємо словник». It had been hidden in production since the
+          review: the definitions were written for the site rather than quoted
+          from a source, on an archive that invites readers to cite it. The
+          page, the band, the marks in the prose and the admin field went
+          together. How a court itself read its terms is «Тлумачення» above,
+          and stays. */}
 
       {/* «Забрати Часті запитання» (review). The band was an accordion of
           four questions — «То Україна виграла?», «Що буде далі?» — written

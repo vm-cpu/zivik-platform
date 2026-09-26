@@ -332,8 +332,8 @@
      page's body size. Declared here, where the rest of the scale is.
 
      --t-mast is a step the scale was missing rather than a synonym. A section
-     page's title — /registry, /about, /team, /partners, /glossary, the legal
-     pages — sat at clamp(30px, 5vw, 44px), between --t-h2's 29px ceiling and
+     page's title — /registry, /about, /team, /partners, the legal pages
+     — sat at clamp(30px, 5vw, 44px), between --t-h2's 29px ceiling and
      --t-h1's 32px floor. It is not the decision page's hero and it is not a
      section heading; giving it --t-h1 would have doubled it, and --t-h2 would
      have made a page's title the same size as the headings inside it. */

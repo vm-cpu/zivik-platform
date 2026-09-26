@@ -7,7 +7,7 @@
  * `src/content/cases.ts` → `registryCases`. For each of those modules this
  * swaps the initializer of that one `export const` for the published value
  * and leaves everything else in the file alone: the derived exports
- * (`registryProceedings`, `GLOSSARY`, `registryTotal` …), the helper
+ * (`registryProceedings`, `registryTotal` …), the helper
  * functions and the invariants that throw when the record contradicts itself
  * all run on the published content exactly as they run on the file's.
  *

@@ -45,9 +45,6 @@ const EXEMPT = new Set([
      defect in order to name it necessarily reproduces it. */
   "src/content/summaries/dtek-krymenergo.ts",
   "src/content/summaries/echr-ukraine-netherlands.ts",
-  /* Character classes, not prose: these files spell out both alphabets on
-     purpose so the term marker can find word boundaries Cyrillic \b cannot. */
-  "src/content/mark-terms.tsx",
 ]);
 
 /** Latin abbreviations that belong inside Ukrainian text. */

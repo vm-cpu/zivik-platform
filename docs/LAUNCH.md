@@ -21,7 +21,6 @@
 | `SITE_INDEXABLE=true` | індексацію: знімає `noindex` (мета-тег і `X-Robots-Tag`), додає sitemap у `robots.txt` | `noindex, nofollow` на кожній сторінці |
 | `GOOGLE_SITE_VERIFICATION` | `<meta name="google-site-verification">` на всіх сторінках | тега немає |
 | `NEXT_PUBLIC_CF_ANALYTICS_TOKEN` | маячок Cloudflare Web Analytics, два джерела в CSP, абзац про аналітику в політиці конфіденційності й нову дату редакції | ні маячка, ні джерел у CSP, політика каже «аналітики немає» |
-| `FEATURE_GLOSSARY=true` | «Словник» | прихований (див. `src/lib/flags.ts`) |
 
 ---
 

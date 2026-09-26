@@ -12,9 +12,9 @@
  * emitted CSS is how the two are told apart, and it is the only place either
  * loss is visible at all.
  *
- * So this reads what was actually emitted. It is the CSS half of
- * `npm run verify`, beside flag-check's HTML half, and it runs on the same
- * terms: after `next build`, against `.next`.
+ * So this reads what was actually emitted. It is the first half of
+ * `npm run verify`, beside ghost-check, and it runs after `next build`,
+ * against `.next`.
  *
  *     npm run build && npm run verify
  */

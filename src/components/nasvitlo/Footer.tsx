@@ -3,7 +3,6 @@ import Link from "next/link";
 import "./footer.css";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/dictionaries";
-import { glossaryEnabled } from "@/lib/flags";
 import { blogEnabled } from "@/content/blog";
 
 const colHead: React.CSSProperties = {
@@ -164,19 +163,13 @@ export default function Footer({
             «Суди та інстанції» and «Документи» carried no href — they were
             labels for pages that do not exist, and a reader who pressed them
             got nothing at all. «Блог» was the third of them. The blog exists
-            now, and it is listed here the way the glossary is: only on a build
-            where the page does — once a post is published in this language.
+            now, and it is listed only on a build where the page does — once a
+            post is published in this language.
             A footer is a map of the site; entries that lead nowhere make it a
             map of a different one. */}
         {column(f.colArchive, [
           { label: f.linkRegistry, href: `/${locale}/registry` },
           { label: f.linkMap, href: `/${locale}/map` },
-          /* Dropped, not disabled, on a build without the glossary — see
-             `glossaryEnabled`. A footer link to a 404 is the kind of thing
-             nobody notices until a reader reports it. */
-          ...(glossaryEnabled
-            ? [{ label: f.linkGlossary, href: `/${locale}/glossary` }]
-            : []),
         ])}
         {column(f.colCenter, [
           { label: f.linkAbout, href: `/${locale}/about` },

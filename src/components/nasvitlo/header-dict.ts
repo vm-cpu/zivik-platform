@@ -23,7 +23,7 @@ import type { Dictionary } from "@/i18n/dictionaries";
 export interface HeaderDict {
   nav: Pick<
     Dictionary["nav"],
-    "skip" | "menu" | "home" | "about" | "decisions" | "glossary" | "map" | "team" | "blog"
+    "skip" | "menu" | "home" | "about" | "decisions" | "map" | "team" | "blog"
   >;
   brand: Pick<Dictionary["brand"], "wordmark" | "facultyAlt">;
 }
@@ -36,7 +36,6 @@ export function headerDict({ nav, brand }: Dictionary): HeaderDict {
       home: nav.home,
       about: nav.about,
       decisions: nav.decisions,
-      glossary: nav.glossary,
       map: nav.map,
       team: nav.team,
       blog: nav.blog,

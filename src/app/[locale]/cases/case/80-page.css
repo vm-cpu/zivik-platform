@@ -47,8 +47,7 @@
 .casepage .lede,
 .casepage .refs,
 .casepage .pmeas,
-.casepage .chron,
-.casepage .terms {
+.casepage .chron {
   background: transparent;
   color: var(--ink);
   /* No edge of its own. A band used to be a full-bleed strip and needed a
@@ -65,7 +64,6 @@
 .casepage .refs,
 .casepage .pmeas,
 .casepage .chron,
-.casepage .terms,
 /* Ці три були поза переліком і через це тримали кожна по 34 пікселі відступу
    зверху і знизу — отже між двома сусідніми смугами виходило 68 замість
    спільних 29, а там, де вони стоять утрьох поспіль, сторінка розривалася

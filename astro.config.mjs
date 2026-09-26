@@ -29,7 +29,6 @@ const here = (p) => fileURLToPath(new URL(p, import.meta.url));
  * the build, not to whichever Worker isolate happens to serve the request.
  */
 const buildEnv = [
-  "FEATURE_GLOSSARY",
   "SITE_INDEXABLE",
   "NEXT_PUBLIC_SITE_URL",
   "VERCEL_PROJECT_PRODUCTION_URL",

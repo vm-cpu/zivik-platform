@@ -99,6 +99,16 @@ export const iccUkraine: DecisionSummary = {
      what the citation block reproduces; this is what a Ukrainian reader
      sees at the top of the page. See `mastheadUk` in summaries/types.ts. */
   mastheadUk: {
+    /* «Pre-Trial Chamber II» not translated. Review's instruction: «не слід
+       перекладати… але залишити Pre-Trial Chamber II». The chamber's name is
+       how it is cited, including in Ukrainian legal writing, and the
+       translations the page carried are ones the Court does not use of
+       itself. Applied at every occurrence rather than only where it was
+       marked — the page had been running three names for one bench:
+       «Палата досудового провадження II» in the Ukrainian summary and the
+       States-Parties answer, «Палатою попереднього провадження II» in this
+       masthead, and the English name in the warrant wall. A bare «Палата»
+       with no numeral is left alone: that is "the Chamber", not the name. */
     official:
       "Ситуація в Україні, ICC-01/22 — розслідування та ордери на арешт, видані Pre-Trial Chamber II",
     judgment: "Ордери від 17 березня 2023 · 5 березня 2024 · 24 червня 2024",
@@ -122,75 +132,6 @@ export const iccUkraine: DecisionSummary = {
       en: "The International Criminal Court is investigating war crimes, crimes against humanity and genocide on the territory of Ukraine since 2013. Its judges have issued six arrest warrants: for Putin and Lvova-Belova over the deportation of Ukrainian children, and for four top military commanders over the missile campaign against the power grid. None of this is a verdict: a warrant means reasonable grounds to believe, and the ICC can only try a person it has in custody.",
     },
   },
-
-  glossary: [
-    {
-      term: { uk: "Римський статут", en: "Rome Statute" },
-      def: {
-        uk: "Договір 1998 року, що заснував МКС. Визначає чотири злочини: геноцид, злочини проти людяності, воєнні злочини та злочин агресії.",
-        en: "The 1998 treaty that created the ICC. It defines four crimes: genocide, crimes against humanity, war crimes and the crime of aggression.",
-      },
-    },
-    {
-      term: { uk: "Ордер на арешт", en: "Warrant of arrest" },
-      def: {
-        uk: "Наказ суддів затримати підозрюваного. Видається, коли є «обґрунтовані підстави вважати» причетність до злочину. Це не визнання вини — вирок можливий лише після судового процесу.",
-        en: "A judicial order to detain a suspect, issued on \"reasonable grounds to believe\" they are responsible for a crime. It is not a finding of guilt — that can come only after trial.",
-      },
-    },
-    {
-      /* Not translated. Review's instruction: «не слід перекладати… але
-         залишити Pre-Trial Chamber II». The chamber's name is how it is cited,
-         including in Ukrainian legal writing, and the translations the page
-         carried are ones the Court does not use of itself. Applied at every
-         occurrence rather than only where it was marked — the page had been
-         running three names for one bench: «Палата досудового провадження II»
-         in the Ukrainian summary and the States-Parties answer, «Палатою
-         попереднього провадження II» in the masthead, and the English name
-         in the warrant wall. A bare «Палата» with no numeral is left alone:
-         that is "the Chamber", not the name. */
-      term: { uk: "Pre-Trial Chamber II", en: "Pre-Trial Chamber II" },
-      def: {
-        uk: "Колегія суддів МКС, яка на стадії розслідування вирішує, чи видавати ордери та чи достатньо доказів для суду.",
-        en: "The ICC bench that, at the investigation stage, decides whether to issue warrants and whether the evidence suffices for trial.",
-      },
-    },
-    {
-      term: { uk: "Стаття 12(3)", en: "Article 12(3)" },
-      def: {
-        uk: "Механізм, яким держава — не член МКС може разово визнати юрисдикцію Суду щодо злочинів на своїй території. Україна скористалася ним двічі — у 2014 і 2015 роках.",
-        en: "The mechanism by which a non-member State can accept the Court's jurisdiction over crimes on its territory. Ukraine used it twice, in 2014 and 2015.",
-      },
-    },
-    {
-      term: { uk: "Воєнний злочин", en: "War crime" },
-      def: {
-        uk: "Серйозне порушення законів війни: напади на цивільних і цивільні об'єкти, депортація населення, катування (ст. 8 Статуту).",
-        en: "A serious violation of the laws of war: attacks on civilians and civilian objects, deportation, torture (art. 8 of the Statute).",
-      },
-    },
-    {
-      term: { uk: "Злочин проти людяності", en: "Crime against humanity" },
-      def: {
-        uk: "Нелюдські діяння, вчинені в межах широкомасштабного або систематичного нападу на цивільне населення (ст. 7 Статуту).",
-        en: "Inhumane acts committed as part of a widespread or systematic attack on a civilian population (art. 7 of the Statute).",
-      },
-    },
-    {
-      term: { uk: "Командна відповідальність", en: "Superior responsibility" },
-      def: {
-        uk: "Стаття 28 Статуту: командир або цивільний керівник відповідає за злочини підлеглих, якщо не запобіг їм і не покарав за них.",
-        en: "Article 28 of the Statute: a commander or civilian superior is liable for subordinates' crimes they failed to prevent or punish.",
-      },
-    },
-    {
-      term: { uk: "Асамблея держав-учасниць", en: "Assembly of States Parties" },
-      def: {
-        uk: "«Парламент» МКС — представники всіх 125 держав-членів. Саме їй Суд передає питання про невиконання державою обов'язку арешту.",
-        en: "The ICC's \"parliament\" of all 125 member States. Non-compliance with an arrest obligation is referred to it.",
-      },
-    },
-  ],
 
   judgment: {
     court: { uk: "Міжнародний кримінальний суд", en: "International Criminal Court" },

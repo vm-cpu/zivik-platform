@@ -119,7 +119,7 @@ const fill = (pattern: string, params: Params) =>
  *
  * A path whose page calls `notFound()` is left out rather than written: a
  * prerendered 404 would be served as a file, with a 200. That is how the
- * glossary stays absent from a build that does not carry it.
+ * blog stays absent from a locale that has no posts yet.
  */
 export function staticPaths(page: NextPageModule, pattern: string) {
   return async () => {

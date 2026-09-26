@@ -111,58 +111,6 @@ export const icjCerdIcsft: DecisionSummary = {
     },
   },
 
-  glossary: [
-    {
-      term: { uk: "Меджліс", en: "Mejlis" },
-      def: {
-        uk: "Представницький орган кримськотатарського народу; заборонений Росією у 2016 році.",
-        en: "The representative body of the Crimean Tatar people; banned by Russia in 2016.",
-      },
-    },
-    {
-      term: { uk: "Тимчасові заходи", en: "Provisional measures" },
-      def: {
-        uk: "Термінові приписи суду на час розгляду справи, щоб зберегти права сторін — свого роду забезпечення позову.",
-        en: "Urgent orders a court issues while a case is pending, to preserve the parties' rights — akin to an injunction.",
-      },
-    },
-    {
-      term: { uk: "Dispositif", en: "Dispositif" },
-      def: {
-        uk: "Резолютивна (постановча) частина рішення — власне висновки, до яких дійшов суд.",
-        en: "The operative part of a judgment — the Court's actual findings and orders.",
-      },
-    },
-    {
-      term: { uk: "CERD", en: "CERD" },
-      def: {
-        uk: "Міжнародна конвенція про ліквідацію всіх форм расової дискримінації (1965).",
-        en: "International Convention on the Elimination of All Forms of Racial Discrimination (1965).",
-      },
-    },
-    {
-      term: { uk: "ICSFT", en: "ICSFT" },
-      def: {
-        uk: "Міжнародна конвенція про боротьбу з фінансуванням тероризму (1999).",
-        en: "International Convention for the Suppression of the Financing of Terrorism (1999).",
-      },
-    },
-    {
-      term: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
-      def: {
-        uk: "Самопроголошені утворення на сході України, підтримувані Росією; лапки означають невизнання.",
-        en: "Self-proclaimed entities in eastern Ukraine backed by Russia; quotation marks signal non-recognition.",
-      },
-    },
-    {
-      term: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },
-      def: {
-        uk: "Головний судовий орган ООН у Гаазі; вирішує спори між державами.",
-        en: "The principal judicial organ of the UN, in The Hague; settles disputes between States.",
-      },
-    },
-  ],
-
 
   judgment: {
     court: { uk: "Міжнародний суд ООН", en: "International Court of Justice" },

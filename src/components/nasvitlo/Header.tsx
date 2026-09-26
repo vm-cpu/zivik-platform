@@ -20,12 +20,10 @@ export default function Header({
   skipTo = "#content",
   supportHref,
   supportLabel,
-  /** Whether this deployment carries a glossary — `glossaryEnabled` in
-   *  `lib/flags.ts`, handed down rather than read here because this is a
-   *  client component and the flag is server-only. */
-  showGlossary,
   /** Whether this language has a published post — `blogEnabled` in
-   *  `content/blog.ts`, handed down for the same reason as the glossary. */
+   *  `content/blog.ts`, handed down rather than read here because this is a
+   *  client component: reading the posts here would ship them to the
+   *  browser for one boolean. */
   showBlog = false,
   /** Paths that do not exist — `blogMissingPaths()`. The language switch
    *  steps around them instead of linking a 404. */
@@ -34,7 +32,6 @@ export default function Header({
   locale: Locale;
   dict: HeaderDict;
   skipTo?: string;
-  showGlossary: boolean;
   showBlog?: boolean;
   missingPaths?: string[];
   /** Where the support ask goes, and what it says. Both come from the
@@ -84,21 +81,6 @@ export default function Header({
       href: `${home}/registry`,
       active: pathname === `${home}/registry`,
     },
-    /* Next to the library, because that is what it is drawn from: the fifty
-       headwords are gathered out of the decisions, and a reader who wants a
-       term rather than a case should not have to find a case first.
-
-       Absent entirely on a build without the glossary, rather than disabled or
-       greyed: a menu item that leads to a 404 is worse than no menu item. */
-    ...(showGlossary
-      ? [
-          {
-            label: dict.nav.glossary,
-            href: `${home}/glossary`,
-            active: pathname === `${home}/glossary`,
-          },
-        ]
-      : []),
     // The map has its own page now — full screen, zoom and pan — so the menu
     // points at it rather than at the band on the home page.
     { label: dict.nav.map, href: `${home}/map`, active: pathname === `${home}/map` },

@@ -63,7 +63,7 @@ design, not in a theme.
   |---|---|---|
   | red | a breach, a conviction, a loss | `violation`, `convicted`, the unreturned share of a proportion |
   | gold | relief, a finding in someone's favour, the archive's own structure | `granted`, rules, labels, the drawn share |
-  | forum | which institution — **and nothing else** | the court in a library row, on a glossary definition's trail back, in a pending page's eyebrow |
+  | forum | which institution — **and nothing else** | the court in a library row, in a pending page's eyebrow |
 
   The forum hue is deliberately close in weight to the other two (1.4 against
   gold, 1.3 against red on paper) so that a newcomer does not shout over the
@@ -388,8 +388,8 @@ drift from the system it enforces — and fails the run on a font size off the
 anywhere at all, or the loss of the site's widow guard.
 
 `npm run verify` is the other half, and it reads what the build emitted rather
-than what the source says: `scripts/flag-check.mjs` for the feature flag,
-`scripts/build-css-check.mjs` for declarations the design depends on, and
+than what the source says: `scripts/build-css-check.mjs` for declarations the
+design depends on, and
 `scripts/ghost-check.mjs` for rules that style nothing — a selector whose class
 appears in no class attribute and on no built page cannot match anything, and
 is read, weighed and shipped by everyone who touches the file afterwards. It

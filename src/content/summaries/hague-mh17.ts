@@ -64,44 +64,6 @@ export const hagueMh17: DecisionSummary = {
     },
   },
 
-  glossary: [
-    {
-      term: { uk: "Заочний розгляд (in absentia)", en: "Trial in absentia" },
-      def: {
-        uk: "Процес без присутності підсудних. Нідерландське право його дозволяє; підсудні мали захисників і право на новий розгляд у разі затримання (крім Пулатова, який обрав захист і був виправданий).",
-        en: "A trial without the accused present. Dutch law allows it; the accused had counsel and a retrial right if apprehended (Pulatov chose to mount a defence — and was acquitted).",
-      },
-    },
-    {
-      term: { uk: "Buk TELAR", en: "Buk TELAR" },
-      def: {
-        uk: "Самохідна пускова установка ЗРК «Бук». Суд встановив: ракету випустили з поля біля Первомайського, з установки, привезеної з Росії й повернутої туди.",
-        en: "The Buk system's self-propelled launcher. The court found the missile was fired from a field near Pervomaiskyi, from a TELAR brought in from Russia and returned there.",
-      },
-    },
-    {
-      term: { uk: "JIT", en: "JIT" },
-      def: {
-        uk: "Спільна слідча група (Нідерланди, Австралія, Бельгія, Малайзія, Україна), що зібрала доказову базу справи.",
-        en: "The Joint Investigation Team (the Netherlands, Australia, Belgium, Malaysia, Ukraine) that built the evidentiary record.",
-      },
-    },
-    {
-      term: { uk: "ECLI", en: "ECLI" },
-      def: {
-        uk: "Європейський ідентифікатор судового рішення. Вирок Гіркіну: ECLI:NL:RBDHA:2022:14037.",
-        en: "The European Case Law Identifier. Girkin's verdict: ECLI:NL:RBDHA:2022:14037.",
-      },
-    },
-    {
-      term: { uk: "Справа Локербі", en: "The Lockerbie case" },
-      def: {
-        uk: "Вибух Boeing над Локербі 1988 року (270 загиблих) — орієнтир, на який обвинувачення посилалося щодо міри покарання.",
-        en: "The 1988 bombing of a Boeing over Lockerbie (270 dead) — the sentencing reference the prosecution invoked.",
-      },
-    },
-  ],
-
 
   judgment: {
     court: { uk: "Окружний суд Гааги", en: "District Court of The Hague" },

@@ -1,7 +1,6 @@
 import { SUMMARIES } from "@/content/summaries";
 import type { DecisionSummary } from "@/content/summaries/types";
 import type { Localized } from "@/content/types";
-import { glossaryEnabled } from "@/lib/flags";
 
 /**
  * A search index over what the write-ups *say*, built at build time.
@@ -10,8 +9,8 @@ import { glossaryEnabled } from "@/lib/flags";
  * The library page searched five groups of row metadata — name, note, court,
  * status, subject field, date — and nothing else. Eight of the thirty-three
  * proceedings have a full write-up: a plain-language summary, a chronology, a
- * table of the court's findings, provisional measures, a glossary, a who's-who
- * and an FAQ. None of it was reachable. A reader looking for «депортація
+ * table of the court's findings, provisional measures, a who's-who and an
+ * FAQ. None of it was reachable. A reader looking for «депортація
  * дітей», "universal jurisdiction", «тимчасові заходи» or "reparations" got
  * "Нічого не знайдено" from an archive that says a great deal about each.
  *
@@ -77,8 +76,8 @@ export const CONTENT_INDEX_PATH = "/search-index.json";
  * Measured both ways during the build (gzipped bytes of the whole prerendered
  * `/uk/registry` document, which is what a reader actually downloads):
  * the figures are in the report accompanying this change. The authored layer
- * — tldr, findings, chronology, glossary, who's-who, FAQ, instruments,
- * measures, theatres — is a small fraction of the weight and carries the
+ * — tldr, findings, chronology, who's-who, FAQ, instruments, measures,
+ * theatres — is a small fraction of the weight and carries the
  * vocabulary a reader searches with, because it is the layer written *for*
  * a reader. The verbatim body is the judgment's own procedural English and
  * roughly triples the index for matches that mostly land on the same cases the
@@ -104,12 +103,6 @@ export const SECTIONS = [
   "machinery",
   "rulings",
   "measures",
-  /* The glossary got a band of its own (#glossary) when it was split out of
-     the who's-who. The index went on filing its fifty headwords under
-     `handbook`, so a reader who searched a decision page for a term was landed
-     one band too high, on the who's-who, and had to find the word themselves.
-     The link resolved, which is why nothing caught it. */
-  "glossary",
   "fulltext",
 ] as const;
 
@@ -176,7 +169,6 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
     machinery: [],
     rulings: [],
     measures: [],
-    glossary: [],
     fulltext: [],
   };
 
@@ -287,15 +279,11 @@ function sectionText(s: DecisionSummary): Record<SectionId, string> {
      restatement of «Картка справи» — so the anchor is gone with it, and text
      that is no longer on the page must not be searchable into it. */
 
-  /* ── glossary: the terms this decision defines, in their own band ──
-     Indexed only when that band is built (`glossaryEnabled`). The index is
-     what sends a reader from the library's search box to `#glossary` on a
-     decision page, so on a deployment without the dictionary these entries
-     would land them on a section that is not there — a search result that
-     scrolls to nothing, for a word the page no longer shows. */
-  if (glossaryEnabled) {
-    out.glossary.push(s.glossary.map((g) => all(g.term, g.def)).join(" "));
-  }
+  /* `#glossary` stood here too, indexing each decision's terms. The glossary
+     is gone from the site — owner: «вимикаємо словник» — and with it the
+     band a hit would have scrolled to. It had been indexed only on builds
+     that published the glossary, which production never did, so no
+     production index loses anything. */
 
   // ── fulltext: the verbatim body and its bibliography ──
   if (INDEX_VERBATIM) {
@@ -405,7 +393,6 @@ export const contentIndex: ContentIndex = build();
     "machinery",
     "rulings",
     "measures",
-    "glossary",
     "fulltext",
   ]);
   const stray = SECTIONS.filter((s) => !rendered.has(s));

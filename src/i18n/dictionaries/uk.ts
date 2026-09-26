@@ -71,7 +71,6 @@ const uk = {
     home: "Головна",
       about: "Про проєкт",
     decisions: "Бібліотека рішень",
-    glossary: "Словник",
     map: "Мапа",
     team: "Команда",
     blog: "Блог",
@@ -356,7 +355,6 @@ const uk = {
        «Мапа» — so the footer was sending a reader to a page that no longer
        existed under that name. */
     linkMap: "Мапа",
-    linkGlossary: "Словник",
     linkAbout: "Про проєкт",
     linkTeam: "Команда",
     linkBlog: "Блог",

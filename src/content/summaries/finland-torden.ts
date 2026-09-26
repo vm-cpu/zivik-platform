@@ -77,44 +77,6 @@ export const finlandTorden: DecisionSummary = {
     },
   },
 
-  glossary: [
-    {
-      term: { uk: "Універсальна юрисдикція", en: "Universal jurisdiction" },
-      def: {
-        uk: "Право держави судити за найтяжчі міжнародні злочини незалежно від місця вчинення і громадянства учасників. У Фінляндії — глава 11, розділ 5(1) Кримінального кодексу.",
-        en: "A State's power to try the gravest international crimes regardless of where they occurred or anyone's nationality. In Finland: Chapter 11, Section 5(1) of the Criminal Code.",
-      },
-    },
-    {
-      term: { uk: "«Русич»", en: "Rusich" },
-      def: {
-        uk: "Російський неонацистський найманецький загін, пов'язаний із «Вагнером»; відомий жорстокістю до полонених. Торден — співзасновник і заступник командира.",
-        en: "A Russian neo-Nazi mercenary unit tied to Wagner, notorious for its treatment of prisoners. Torden co-founded and deputy-commanded it.",
-      },
-    },
-    {
-      term: { uk: "Віроломство", en: "Perfidy" },
-      def: {
-        uk: "Заборонене МГП зловживання довірою супротивника — тут: атака під українським прапором. Звідси пункт про «неналежне використання прапора».",
-        en: "The IHL-prohibited abuse of an enemy's trust — here, attacking under a Ukrainian flag. Hence the \"improper use of a flag\" charge.",
-      },
-    },
-    {
-      term: { uk: "Відмова в пощаді", en: "Denying quarter" },
-      def: {
-        uk: "Оголошення, що полонених не братимуть. Саме по собі є воєнним злочином — навіть у формі постів у соцмережах.",
-        en: "Declaring that no prisoners will be taken. A war crime in itself — even as social-media posts.",
-      },
-    },
-    {
-      term: { uk: "Hors de combat", en: "Hors de combat" },
-      def: {
-        uk: "«Поза боєм»: поранені й ті, хто здався. Їх убивство — умисне вбивство за Женевськими конвенціями.",
-        en: "\"Out of the fight\": the wounded and those who surrendered. Killing them is wilful killing under the Geneva Conventions.",
-      },
-    },
-  ],
-
 
   /*
    * NEITHER of these links is a court document, and the page must not pretend

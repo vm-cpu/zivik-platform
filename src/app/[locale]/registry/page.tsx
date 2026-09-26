@@ -221,10 +221,6 @@ const T = {
     machinery: { uk: "Розбір рішення", en: "Anatomy" },
     rulings: { uk: "Тлумачення", en: "Key rulings" },
     measures: { uk: "Тимчасові заходи", en: "Provisional measures" },
-    /* Its own band since the glossary was split out of the who's-who, and its
-       own section here since the index was still filing terms under the one
-       above — a term search landed on the cast list. */
-    glossary: { uk: "Словник", en: "Glossary" },
     /* `questions` and `related` both stood here. Each band is gone from the
        decision page, and a hit pointing at #questions or #related would land
        on nothing. Neighbouring decisions are this page's own job: the docket

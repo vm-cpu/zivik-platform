@@ -14,19 +14,6 @@ console.log(
     : "  SITE_INDEXABLE is not set — this build serves noindex to search engines",
 );
 
-/**
- * The glossary is a per-deployment decision, so the build says which way it
- * went — same reasoning as SITE_INDEXABLE above. The failure this catches is
- * the quiet one: a staging build that lost its flag looks exactly like a
- * correct production build, and the reviewers find out by opening a 404.
- * See `src/lib/flags.ts`.
- */
-console.log(
-  process.env.FEATURE_GLOSSARY === "true"
-    ? "  FEATURE_GLOSSARY=true — this build publishes the glossary"
-    : "  FEATURE_GLOSSARY is not set — the glossary is hidden in this build",
-);
-
 const nextConfig: NextConfig = {
   /**
    * Pin the Turbopack root to this package.

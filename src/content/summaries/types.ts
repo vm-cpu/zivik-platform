@@ -591,12 +591,6 @@ export interface PlainLanguage {
   tldr: Localized;
 }
 
-/** A glossary term with a plain definition. */
-export interface GlossaryTerm {
-  term: Localized;
-  def: Localized;
-}
-
 /** A doctrinal ruling the Court settled on a point of law. */
 export interface Interpretation {
   term: Localized;
@@ -708,7 +702,6 @@ export interface DecisionSummary extends VerbatimSummary {
    */
   metaDesc?: Localized;
   plain: PlainLanguage;
-  glossary: GlossaryTerm[];
   judgment: JudgmentSource;
   instruments: Instrument[];
   stats: Stat[];
@@ -794,7 +787,6 @@ export interface DecisionSummary extends VerbatimSummary {
     | "measures"
     | "machinery"
     | "scale"
-    | "glossary"
   >;
   /**
    * What to call the forum's own voice, where «Суд» is wrong.

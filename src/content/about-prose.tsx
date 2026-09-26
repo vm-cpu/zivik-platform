@@ -11,7 +11,8 @@ import type { AboutLink } from "./types";
  * here.
  *
  * The match is on the literal phrase, first occurrence, once per paragraph:
- * the same rule `mark-terms.tsx` follows and for the same reason. A phrase the
+ * Wikipedia's rule, for Wikipedia's reason — a phrase linked at every
+ * appearance turns prose into a field of underlines. A phrase the
  * prose does not contain is caught at module load in `content/about.ts`, not
  * here — by the time a paragraph reaches this function the only honest thing
  * left to do with an unmatched phrase is leave the text alone.

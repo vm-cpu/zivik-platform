@@ -136,14 +136,6 @@
   color: var(--pgold);
 }
 
-/* The `.termchips` rules stood here and are gone with the row they styled: a
-   line of pill links at the head of the summary, repeating terms the prose now
-   marks where they are actually used. */
-/* glossary entries are jump targets now */
-.casepage .glossary > div {
-  scroll-margin-top: calc(var(--anchor-gap) + var(--space-4));
-}
-
 
 /* criminal outcomes reuse the breach pair's colours: a conviction reads like
    a violation chip, an acquittal like a no-violation chip.

@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { defaultLocale, locales } from "@/i18n/config";
 import { isIndexable, siteUrl } from "@/lib/seo";
-import { glossaryEnabled } from "@/lib/flags";
 import { registryCases } from "@/content/cases";
 import { latestSummaryLastModified, summaryLastModified } from "@/content/summaries";
 import { blogPosts, blogEnabled, postHasLocale, postsIn } from "@/content/blog";
@@ -70,23 +69,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: locale === "uk" ? 0.9 : 0.8,
     alternates: { languages: registryLanguages },
   }));
-
-  /* The glossary. It changes when a write-up lands, since its fifty headwords
-     are gathered from the eight — so it tracks the library's cadence, not a
-     decision page's.
-
-     Empty on a build that does not carry it (`glossaryEnabled`): the route
-     404s there, and a sitemap that lists a 404 is how you teach a crawler the
-     archive is unreliable. */
-  const glossaryLanguages = languagesFor((l) => `/${l}/glossary`);
-  const glossary: MetadataRoute.Sitemap = glossaryEnabled
-    ? locales.map((locale) => ({
-        url: `${siteUrl}/${locale}/glossary`,
-        changeFrequency: "monthly",
-        priority: locale === "uk" ? 0.7 : 0.6,
-        alternates: { languages: glossaryLanguages },
-      }))
-    : [];
 
   // One entry per decision page per locale, with hreflang between the pair.
   // The registry is the source of truth for which summaries exist.
@@ -186,7 +168,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...homes,
     ...registry,
-    ...glossary,
     ...map,
     ...about,
     ...team,

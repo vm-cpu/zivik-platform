@@ -81,58 +81,6 @@ export const echrUkraineNetherlands: DecisionSummary = {
     },
   },
 
-  glossary: [
-    {
-      term: { uk: "ЄКПЛ / Конвенція", en: "ECHR / the Convention" },
-      def: {
-        uk: "Європейська конвенція з прав людини (1950). Росія була її стороною до 16 вересня 2022 року — тому Суд розглядає події лише до цієї дати.",
-        en: "The European Convention on Human Rights (1950). Russia was a party until 16 September 2022 — so the Court examines events only up to that date.",
-      },
-    },
-    {
-      term: { uk: "Велика палата", en: "Grand Chamber" },
-      def: {
-        uk: "Найвищий склад ЄСПЛ — 17 суддів. Розглядає найважливіші справи; її рішення остаточні.",
-        en: "The ECtHR's highest formation — 17 judges. It hears the most important cases; its judgments are final.",
-      },
-    },
-    {
-      term: { uk: "Міждержавна скарга", en: "Inter-State application" },
-      def: {
-        uk: "Скарга однієї держави проти іншої (ст. 33 Конвенції) — рідкісний інструмент: тут їх одразу чотири, об'єднані в одне провадження.",
-        en: "An application by one State against another (Article 33) — a rare instrument: here four of them, joined in one proceeding.",
-      },
-    },
-    {
-      term: { uk: "Фактичний контроль", en: "Effective control" },
-      def: {
-        uk: "Тест екстериторіальної юрисдикції: держава відповідає за Конвенцією там, де фактично контролює територію — навіть поза своїми кордонами. Щодо «ДНР»/«ЛНР» — з 11 травня 2014 року.",
-        en: "The extraterritorial-jurisdiction test: a State answers under the Convention wherever it effectively controls territory, even beyond its borders. For the \"DPR\"/\"LPR\" — from 11 May 2014.",
-      },
-    },
-    {
-      term: { uk: "МГП", en: "IHL" },
-      def: {
-        uk: "Міжнародне гуманітарне право — право збройних конфліктів. Суд постановив: воно не витісняє гарантій Конвенції, а тлумачиться з нею в гармонії.",
-        en: "International humanitarian law — the law of armed conflict. The Court held it does not displace the Convention's guarantees; the two are read in harmony.",
-      },
-    },
-    {
-      term: { uk: "Hors de combat", en: "Hors de combat" },
-      def: {
-        uk: "«Поза боєм» — поранені, полонені, ті, хто склав зброю. Їх убивство чи катування — порушення і МГП, і Конвенції.",
-        en: "\"Out of the fight\" — the wounded, prisoners, those who surrendered. Killing or torturing them violates both IHL and the Convention.",
-      },
-    },
-    {
-      term: { uk: "Справедлива сатисфакція", en: "Just satisfaction" },
-      def: {
-        uk: "Компенсація за ст. 41 Конвенції. У цій справі її винесено в окрему стадію — суми ще попереду.",
-        en: "Compensation under Article 41. Here it is reserved to a separate phase — the figures are still to come.",
-      },
-    },
-  ],
-
   judgment: {
 
     // cases.ts records 304; without it the button omits "PDF, N pp."

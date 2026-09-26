@@ -190,7 +190,7 @@ export const icjGenocide: DecisionSummary = {
      sections the review names. The chronology, the map, the write-up and the
      sources — the four the first line asked for — are all still here; what
      joins them is the matrix, the docket card, the ledger of Russia's six
-     objections, the intervention figures and the glossary.
+     objections and the intervention figures.
 
      Not the neighbours: «забери з усіх рішень секцію Пов'язані рішення» took
      that band out of the template for every decision (49de66a), so it is not
@@ -214,58 +214,6 @@ export const icjGenocide: DecisionSummary = {
       en: "Russia justified its invasion with a fabricated “genocide in Donbas”. Ukraine went to the International Court of Justice to have it put on the record that no genocide occurred. The Court agreed to hear exactly that claim, rejecting five of Russia's six objections. It refused, however, to rule on the recognition of the “DPR/LPR” and on the “special military operation” themselves: those lie outside the Genocide Convention.",
     },
   },
-
-  glossary: [
-    {
-      term: { uk: "Попередні заперечення", en: "Preliminary objections" },
-      def: {
-        uk: "Заперечення відповідача проти самої можливості розгляду справи — щодо юрисдикції суду або прийнятності позову. Розглядаються до суті спору.",
-        en: "A respondent's challenge to the case being heard at all — to the Court's jurisdiction or the claim's admissibility. Decided before the merits.",
-      },
-    },
-    {
-      term: { uk: "Ratione materiae", en: "Ratione materiae" },
-      def: {
-        uk: "«За предметом»: чи належить спір до кола питань, які регулює конкретний договір. Тут — чи охоплює Конвенція про геноцид застосування сили та визнання держав.",
-        en: "“By subject-matter”: whether a dispute falls within what a given treaty governs. Here — whether the Genocide Convention covers the use of force and the recognition of States.",
-      },
-    },
-    {
-      term: { uk: "Стаття IX", en: "Article IX" },
-      def: {
-        uk: "Арбітражне застереження Конвенції про геноцид: воно дозволяє передати спір щодо тлумачення чи застосування Конвенції до Міжнародного суду ООН.",
-        en: "The Genocide Convention's compromissory clause: it lets a dispute over the Convention's interpretation or application be brought to the International Court of Justice.",
-      },
-    },
-    {
-      term: { uk: "Стаття 63 Статуту Суду", en: "Article 63 of the Statute" },
-      def: {
-        uk: "Право держави — учасниці договору вступити у справу, де тлумачать цей договір, і подати свої міркування щодо тлумачення.",
-        en: "The right of a State party to a convention to intervene in a case construing that convention and put its own reading before the Court.",
-      },
-    },
-    {
-      term: { uk: "Декларативне рішення", en: "Declaratory judgment" },
-      def: {
-        uk: "Рішення, яке лише констатує правове становище (тут — що геноциду не було), без присудження відшкодування чи інших заходів.",
-        en: "A judgment that only states the legal position (here — that no genocide occurred), without awarding reparation or other relief.",
-      },
-    },
-    {
-      term: { uk: "Зустрічна вимога", en: "Counter-claim" },
-      def: {
-        uk: "Самостійна вимога відповідача, заявлена у своєму ж запереченні по суті. Вона допускається, лише якщо безпосередньо пов'язана з предметом позову й охоплена юрисдикцією Суду (ст. 80 Регламенту).",
-        en: "An autonomous claim by the respondent, made inside its own pleading on the merits. It is allowed only if it is directly connected with the subject-matter of the claim and comes within the Court's jurisdiction (Rules of Court, Art. 80).",
-      },
-    },
-    {
-      term: { uk: "«ДНР» / «ЛНР»", en: "“DPR” / “LPR”" },
-      def: {
-        uk: "Самопроголошені утворення на сході України, визнані Росією 21 лютого 2022 року; лапки означають невизнання.",
-        en: "Self-proclaimed entities in eastern Ukraine, recognized by Russia on 21 February 2022; quotation marks signal non-recognition.",
-      },
-    },
-  ],
 
 
   judgment: {

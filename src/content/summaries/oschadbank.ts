@@ -91,65 +91,6 @@ export const oschadbank: DecisionSummary = {
     },
   },
 
-  glossary: [
-    {
-      term: { uk: "ДІД (BIT)", en: "BIT" },
-      def: {
-        uk: "Двосторонній інвестиційний договір — угода двох держав про захист інвестицій їхніх компаній. Тут: угода Україна–Росія від 27 листопада 1998 року.",
-        en: "Bilateral investment treaty — an agreement between two States protecting each other's investors. Here: the Ukraine–Russia treaty of 27 November 1998.",
-      },
-    },
-    {
-      term: { uk: "Експропріація", en: "Expropriation" },
-      def: {
-        uk: "Вилучення державою інвестиції. Може бути прямою (націоналізація) або непрямою — коли заходи держави позбавляють власника економічної користі від активу.",
-        en: "A State taking an investment. It can be direct (nationalisation) or indirect — measures that strip the owner of the economic use of the asset.",
-      },
-    },
-    {
-      term: { uk: "«Повзуча» експропріація", en: "Creeping expropriation" },
-      def: {
-        uk: "Серія заходів, кожен з яких сам собою не є вилученням, але разом вони дають той самий результат.",
-        en: "A series of measures, none decisive on its own, that together produce the same result as a taking.",
-      },
-    },
-    {
-      term: { uk: "Присвоєння поведінки", en: "Attribution" },
-      def: {
-        uk: "Правило, за яким дії конкретного органу чи особи вважаються діями держави. Кодифіковане у Статтях КМП ООН про відповідальність держав.",
-        en: "The rule that decides whose conduct counts as the State's. Codified in the ILC Articles on State Responsibility.",
-      },
-    },
-    {
-      term: { uk: "UNCITRAL Rules", en: "UNCITRAL Rules" },
-      def: {
-        uk: "Арбітражний регламент ЮНСІТРАЛ (тут — редакція 1976 року): процедурні правила розгляду, не пов'язані з жодним постійним судом.",
-        en: "The UNCITRAL Arbitration Rules (here, the 1976 version): procedural rules for an arbitration, not tied to any standing court.",
-      },
-    },
-    {
-      term: { uk: "Місце арбітражу", en: "Seat of arbitration" },
-      def: {
-        uk: "Юридична «прописка» арбітражу. Визначає, суди якої країни можуть скасувати рішення. Тут — Париж, тому справу перевіряли французькі суди.",
-        en: "The legal home of an arbitration. It decides which national courts may set the award aside. Here Paris, so the French courts reviewed it.",
-      },
-    },
-    {
-      term: { uk: "Скасування рішення", en: "Set-aside / annulment" },
-      def: {
-        uk: "Перевірка рішення судом за місцем арбітражу. Суд не переглядає спір по суті, а перевіряє, зокрема, чи мав арбітраж юрисдикцію.",
-        en: "Review of an award by the courts of the seat. Those courts do not re-hear the dispute; they check matters such as whether the tribunal had jurisdiction.",
-      },
-    },
-    {
-      term: { uk: "Розгляд за відсутності сторони", en: "Non-appearance" },
-      def: {
-        uk: "Якщо належно повідомлена сторона не бере участі, арбітраж усе одно розглядає справу на основі наявних доказів (ст. 28 Регламенту).",
-        en: "Where a duly notified party stays away, the tribunal still decides the case on the evidence before it (Article 28 of the Rules).",
-      },
-    },
-  ],
-
   judgment: {
     court: { uk: "Постійна палата третейського суду", en: "Permanent Court of Arbitration" },
     url: "https://jusmundi.com/en/document/decision/en-oschadbank-v-russian-federation-none-currently-available-friday-1st-january-2016#decision_4484",

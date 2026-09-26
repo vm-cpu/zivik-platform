@@ -174,8 +174,8 @@ const OUTCOMES = ["judgment", "award", "verdict", "liability", "upheld", "warran
  * DecisionSummary (src/content/summaries/types.ts) as editor-facing fields.
  *
  * Flat parts become ordinary fields; lists of flat records — the text of the
- * write-up itself, the glossary, the chronology, the FAQ, the sources — become
- * repeaters, one row per item. The parts that nest a list inside a list
+ * write-up itself, the chronology, the FAQ, the sources — become repeaters,
+ * one row per item. The parts that nest a list inside a list
  * (warrants → waves → persons → charges, objections → votes, the map's
  * theatres) stay JSON, one field per section: a repeater cannot hold another
  * repeater. */
@@ -301,7 +301,6 @@ const SUMMARY_FORM: FormSection[] = [
   },
   { title: "Заперечення", fields: [["objections", "Заперечення"]] },
   { title: "Що було далі", fields: [["afterlife", "Що було далі"]] },
-  { title: "Глосарій", fields: [["glossary", "Терміни"]] },
   {
     title: "Джерела",
     fields: [
@@ -461,16 +460,6 @@ const SUMMARY_PROPS: Prop[] = [
     ],
   },
   {
-    path: "glossary",
-    label: "Глосарій",
-    type: "repeater",
-    required: true,
-    items: [
-      { path: "term", label: "Термін", type: "string", localized: true, required: true },
-      { path: "def", label: "Визначення", type: "text", localized: true, required: true },
-    ],
-  },
-  {
     path: "instruments",
     label: "Міжнародні інструменти",
     type: "repeater",
@@ -503,7 +492,7 @@ const SUMMARY_PROPS: Prop[] = [
     path: "hideSections",
     label: "Приховати розділи",
     type: "multiSelect",
-    options: ["overview", "rulings", "measures", "machinery", "scale", "glossary"],
+    options: ["overview", "rulings", "measures", "machinery", "scale"],
   },
 
   /* Nested sections: JSON, one field each. */

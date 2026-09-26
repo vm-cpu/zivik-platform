@@ -69,58 +69,6 @@ export const dtekKrymenergo: DecisionSummary = {
     },
   },
 
-  glossary: [
-    {
-      term: { uk: "ДІД (BIT)", en: "BIT" },
-      def: {
-        uk: "Двосторонній інвестиційний договір Україна–Росія від 27 листопада 1998 року — той самий, за яким виграв Ощадбанк.",
-        en: "The Ukraine–Russia bilateral investment treaty of 27 November 1998 — the same treaty Oschadbank won under.",
-      },
-    },
-    {
-      term: { uk: "Естопель", en: "Estoppel" },
-      def: {
-        uk: "Заборона суперечити власним попереднім заявам. Тут: Росія проголошує Крим своєю суверенною територією — отже, не може заперечувати, що для цілей ДІД він є її «територією».",
-        en: "A bar on contradicting one's own prior statements. Here: Russia proclaims Crimea its sovereign territory — so it cannot deny that Crimea is its \"territory\" for the purposes of the BIT.",
-      },
-    },
-    {
-      term: { uk: "Ad hoc арбітраж", en: "Ad hoc arbitration" },
-      def: {
-        uk: "Арбітраж, створений для однієї справи, без постійної інституції. Справу адміністрував ПАС (PCA) у Гаазі за Регламентом ЮНСІТРАЛ 1976 року.",
-        en: "A tribunal constituted for one case, with no standing institution. The PCA in The Hague administered it under the 1976 UNCITRAL Rules.",
-      },
-    },
-    {
-      term: { uk: "«Радянські активи»", en: "\"Soviet Assets\"" },
-      def: {
-        uk: "Активи, збудовані чи набуті до 1 січня 1992 року. Росія доводила, що ст. 12 ДІД їх не захищає; трибунал відповів: важить дата набуття власності інвестором, а вона — після 1992 року.",
-        en: "Assets built or acquired before 1 January 1992. Russia argued Article 12 leaves them unprotected; the tribunal answered that what counts is when the investor acquired ownership — after 1992.",
-      },
-    },
-    {
-      term: { uk: "Експропріація", en: "Expropriation" },
-      def: {
-        uk: "Вилучення інвестиції державою. Законна лише за чотирьох кумулятивних умов ст. 5(1): суспільний інтерес, належна процедура, недискримінація, компенсація. Тут не виконано жодної.",
-        en: "A State taking an investment. Lawful only on Article 5(1)'s four cumulative conditions: public interest, due process, non-discrimination, compensation. Here none was met.",
-      },
-    },
-    {
-      term: { uk: "Нью-Йоркська конвенція", en: "New York Convention" },
-      def: {
-        uk: "Конвенція 1958 року про визнання і виконання арбітражних рішень — механізм, яким рішення виконують у 170+ державах, зокрема у США й Нідерландах.",
-        en: "The 1958 convention on recognition and enforcement of arbitral awards — the mechanism by which the award is enforced in 170+ States, including the US and the Netherlands.",
-      },
-    },
-    {
-      term: { uk: "Окрема думка", en: "Separate opinion" },
-      def: {
-        uk: "Позиція арбітра, який не згоден з більшістю. Тут висновок про «територію» і присудження ухвалено більшістю складу.",
-        en: "The view of an arbitrator who disagrees with the majority. Here the territory holding and the damages award were by majority.",
-      },
-    },
-  ],
-
   judgment: {
     court: { uk: "Постійна палата третейського суду", en: "Permanent Court of Arbitration" },
     url: "https://www.italaw.com/sites/default/files/case-documents/180426.pdf",
