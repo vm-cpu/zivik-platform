@@ -157,6 +157,16 @@ export default defineConfig({
           format: "native",
           capabilities: ["hooks.content-policy:register"],
         },
+        /* Form editors instead of raw JSON boxes for the summaries' JSON
+           fields — admin only (site/emdash/json-editors). */
+        {
+          id: "nsv-json-editors",
+          version: "1.0.0",
+          entrypoint: here("./site/emdash/json-editors/index.ts"),
+          adminEntry: here("./site/emdash/json-editors/admin.tsx"),
+          format: "native",
+          capabilities: [],
+        },
         {
           id: "nsv-validate-content",
           version: "1.0.0",

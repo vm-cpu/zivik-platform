@@ -82,6 +82,8 @@ export interface Prop {
    * limit — the one hint it renders (it does not show `help`).
    */
   maxLength?: number;
+  /** Admin editor from a plugin, "<plugin id>:<widget>" (site/emdash/json-editors). */
+  widget?: string;
 }
 
 /**
@@ -263,10 +265,10 @@ const SUMMARY_FORM: FormSection[] = [
   {
     title: "Мапа і масштаб",
     fields: [
-      ["theatres", "Театри подій (JSON)"],
-      ["mapFocus", "Фокус мапи (JSON)"],
+      ["theatres", "Театри подій"],
+      ["mapFocus", "Фокус мапи"],
       ["mapAfterPart", "Мапа після частини №"],
-      ["takings", "Втрати в цифрах (JSON)"],
+      ["takings", "Втрати в цифрах"],
     ],
   },
   {
@@ -292,13 +294,13 @@ const SUMMARY_FORM: FormSection[] = [
     title: "Механізм",
     fields: [
       ["instruments", "Міжнародні інструменти"],
-      ["attribution", "Ланцюг відповідальності (JSON)"],
-      ["amounts", "Суми (JSON)"],
-      ["warrants", "Ордери (JSON)"],
+      ["attribution", "Ланцюг відповідальності"],
+      ["amounts", "Суми"],
+      ["warrants", "Ордери"],
     ],
   },
-  { title: "Заперечення", fields: [["objections", "Заперечення (JSON)"]] },
-  { title: "Що було далі", fields: [["afterlife", "Що було далі (JSON)"]] },
+  { title: "Заперечення", fields: [["objections", "Заперечення"]] },
+  { title: "Що було далі", fields: [["afterlife", "Що було далі"]] },
   { title: "Глосарій", fields: [["glossary", "Терміни"]] },
   {
     title: "Джерела",
@@ -505,14 +507,14 @@ const SUMMARY_PROPS: Prop[] = [
   },
 
   /* Nested sections: JSON, one field each. */
-  { path: "theatres", label: "Мапа: театри подій (JSON)", type: "json" },
-  { path: "mapFocus", label: "Мапа: фокус (JSON)", type: "json", help: '{"forumKey":"hague","reachTo":"…"}' },
-  { path: "takings", label: "Втрати в цифрах (JSON)", type: "json" },
-  { path: "amounts", label: "Суми (JSON)", type: "json" },
-  { path: "attribution", label: "Ланцюг відповідальності (JSON)", type: "json" },
-  { path: "objections", label: "Заперечення (JSON)", type: "json" },
-  { path: "afterlife", label: "Що було далі (JSON)", type: "json" },
-  { path: "warrants", label: "Ордери (JSON)", type: "json" },
+  { path: "theatres", label: "Мапа: театри подій (JSON)", type: "json", widget: "nsv-json-editors:theatres" },
+  { path: "mapFocus", label: "Мапа: фокус (JSON)", type: "json", widget: "nsv-json-editors:mapFocus", help: '{"forumKey":"hague","reachTo":"…"}' },
+  { path: "takings", label: "Втрати в цифрах (JSON)", type: "json", widget: "nsv-json-editors:takings" },
+  { path: "amounts", label: "Суми (JSON)", type: "json", widget: "nsv-json-editors:amounts" },
+  { path: "attribution", label: "Ланцюг відповідальності (JSON)", type: "json", widget: "nsv-json-editors:attribution" },
+  { path: "objections", label: "Заперечення (JSON)", type: "json", widget: "nsv-json-editors:objections" },
+  { path: "afterlife", label: "Що було далі (JSON)", type: "json", widget: "nsv-json-editors:afterlife" },
+  { path: "warrants", label: "Ордери (JSON)", type: "json", widget: "nsv-json-editors:warrants" },
 ];
 
 export const COLLECTIONS: CollectionSpec[] = [
@@ -918,6 +920,7 @@ function fieldDefs(props: Prop[], sub: boolean): Record<string, unknown>[] {
       /* Repeater sub-fields take their choices directly. */
       ...(p.options && sub ? { options: [...p.options] } : {}),
       ...(p.help && !sub ? { options: { helpText: p.help } } : {}),
+      ...(p.widget && !sub ? { widget: p.widget } : {}),
     };
     /* A repeater may be empty even where the list is required: the site
        tells "none" from "absent" by `required`, not by the editor. */

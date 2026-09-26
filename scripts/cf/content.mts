@@ -228,7 +228,7 @@ async function push(write: boolean) {
  * description the seed uses:
  *
  *   + a collection or field that is missing is created;
- *   ~ a field whose label, position or length limit differs is updated;
+ *   ~ a field whose label, position, length limit or editor differs is updated;
  *   ~ a collection whose admin list columns differ is updated.
  *
  * It never renames a slug or changes a type. It removes nothing unless asked:
@@ -241,6 +241,7 @@ async function push(write: boolean) {
  */
 type RemoteField = {
   slug: string;
+  widget?: string | null;
   label: string;
   sortOrder: number;
   validation?: Record<string, unknown> | null;
@@ -308,6 +309,8 @@ async function schema(write: boolean, prune: boolean) {
       if (remote.label !== f.label) changes.push(`label «${f.label}»`);
       if (remote.sortOrder !== f.sortOrder) changes.push(`position ${remote.sortOrder} → ${f.sortOrder}`);
       if (wantMax !== haveMax) changes.push(`max length ${haveMax ?? "—"} → ${wantMax ?? "—"}`);
+      const wantWidget = (f.widget as string | undefined) ?? "";
+      if ((remote.widget ?? "") !== wantWidget) changes.push(`editor ${remote.widget || "—"} → ${wantWidget || "—"}`);
       if (!changes.length) continue;
       updated++;
       console.log(`  ~ field ${spec.slug}.${slug}: ${changes.join(", ")}`);
@@ -321,6 +324,7 @@ async function schema(write: boolean, prune: boolean) {
       await api("PUT", `/schema/collections/${spec.slug}/fields/${slug}`, {
         label: f.label,
         sortOrder: f.sortOrder,
+        ...(wantWidget ? { widget: wantWidget } : {}),
         validation: Object.keys(validation).length ? validation : null,
       });
     }
