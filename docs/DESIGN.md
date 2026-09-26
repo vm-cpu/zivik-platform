@@ -275,7 +275,14 @@ are forbidden: they read as neither sharp nor round.
   in it**; nothing else here changed.
 
   The grounds that are dark: the lamp stage, the map, the court mastheads, and
-  the decision page's overview band.
+  the decision page's overview band. Two whole pages are dark too, and by
+  decision rather than oversight: a **pending proceeding** (a case the light
+  has not reached yet — one dim bulb, no summary) and the **404**. Both stand
+  alone between the header and the footer, so the islands rule is not what
+  judges them; their metaphor is. The pending page's column is also centred
+  rather than on the rail: it has no contents column beside it, and 820px
+  pressed left on a 1440 window left more empty paper than text. Owner's
+  decision, 26 September 2026, after an audit flagged both.
 - Instruments are **full width in one column**. Two dense columns of unrelated
   content read as clutter.
 - **Everything is responsive. No element carries a fixed width.** Owner's rule,
@@ -424,7 +431,10 @@ a share of the window.
 - **Accessibility.** One `:focus-visible` ring covers every control, switching
   to lamp gold on dark scenes. AA contrast everywhere. Reduced motion honoured.
 - **Citability.** Decision pages carry metadata, canonical, hreflang and JSON-LD
-  (`Article` + `FAQPage` + `BreadcrumbList`). This archive exists to be quoted.
+  (`Article` + `BreadcrumbList`; `FAQPage` went out with the questions band —
+  structured data states only what the page shows). The `<title>` may be a
+  short `seoTitle`; the H1 and `alternativeHeadline` keep the full caption.
+  This archive exists to be quoted.
 - **Weight.** Ship lean: the map is baked to SVG at build time from a coarse
   atlas rather than pulling a runtime library. No CDN dependencies — the CSP and
   the preview sandbox both block them.
