@@ -1166,6 +1166,31 @@ export function generateStaticParams() {
   return [...slugs, ...pending].map((slug) => ({ slug }));
 }
 
+/**
+ * Hosts that belong to a court or tribunal itself — the only pages the
+ * JSON-LD may call the same thing as the case (`sameAs`). A case page on a
+ * database of awards or a news site is a citation, not the case.
+ */
+const COURT_HOSTS = [
+  "icj-cij.org",
+  "icc-cpi.int",
+  "echr.coe.int",
+  "hudoc.echr.coe.int",
+  "pca-cpa.org",
+  "docs.pca-cpa.org",
+  "courtmh17.com",
+  "rechtspraak.nl",
+  "itlos.org",
+];
+function isCourtSite(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    return COURT_HOSTS.some((h) => host === h || host.endsWith(`.${h}`));
+  } catch {
+    return false;
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -1722,8 +1747,13 @@ export default async function CasePage({
              сторінкою. Тому тільки сторінка справи, яку підсумок визнає
              судовою (`fileSrc.official`) — та сама умова, що вже стоїть над
              `url`. finland-torden, де `caseUrl` — стаття в «Українській
-             правді», його не отримує. */
-          ...(fileSrc.official ? { sameAs: judgment.caseUrl } : {}),
+             правді», його не отримує.
+
+             І тільки сайт самого суду (`isCourtSite`): у Ощадбанку й ДТЕК
+             сторінка справи — italaw та IAReporter, добрі бази, але не суд;
+             `sameAs` на них казав би Google, що справа — це їхній запис.
+             Власниця: «прибери sameAs». */
+          ...(fileSrc.official && isCourtSite(judgment.caseUrl) ? { sameAs: judgment.caseUrl } : {}),
         },
         ...(readSrc.official ? { isBasedOn: judgment.url } : {}),
         /* Не голий корінь: `/` відповідає 307 на мовну версію, і видавець,
