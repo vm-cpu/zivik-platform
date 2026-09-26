@@ -39,6 +39,8 @@ const link: React.CSSProperties = {
   textTransform: "uppercase",
   padding: "13px 22px",
   textDecoration: "none",
+  // Buttons are pills (DESIGN.md, shape table), like every other on the site.
+  borderRadius: "var(--r-pill)",
 };
 
 const T = {
@@ -126,8 +128,8 @@ export default function NotFound() {
                 style={{
                   ...link,
                   background: primary ? "var(--brand-cherry)" : "transparent",
-                  color: primary ? "#fff" : "var(--brand-gold-pale)",
-                  border: primary ? 0 : "2px solid rgba(240,221,168,.35)",
+                  color: primary ? "var(--brand-cream-warm)" : "var(--brand-gold-pale)",
+                  border: primary ? 0 : "2px solid color-mix(in srgb, var(--brand-gold-pale) 35%, transparent)",
                 }}
               >
                 {t.registry}
@@ -136,7 +138,7 @@ export default function NotFound() {
                 href={`/${locale}`}
                 style={{
                   ...link,
-                  border: "2px solid rgba(240,221,168,.5)",
+                  border: "2px solid color-mix(in srgb, var(--brand-gold-pale) 50%, transparent)",
                   color: "var(--brand-gold-pale)",
                 }}
               >
