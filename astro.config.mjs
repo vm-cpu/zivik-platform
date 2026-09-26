@@ -19,7 +19,7 @@ import { clientIslands } from "./site/islands/vite-plugin.mjs";
 import { contentSnapshot } from "./site/content/vite-plugin.mjs";
 import { adminLocales } from "./site/emdash/admin-locales.mjs";
 import { securityHeaders } from "./src/lib/security-headers.ts";
-import { appendFileSync } from "node:fs";
+import { appendFileSync, readFileSync } from "node:fs";
 
 const here = (p) => fileURLToPath(new URL(p, import.meta.url));
 
@@ -38,6 +38,18 @@ const buildEnv = [
 const define = Object.fromEntries(
   buildEnv.map((k) => [`process.env.${k}`, JSON.stringify(process.env[k])]),
 );
+/* When the content snapshot this build compiles was taken, for the Worker's
+   cron to compare against the latest publish in D1 (site/worker.ts). Null
+   when the build ran from the files — then there is nothing to compare. */
+{
+  let pulledAt = null;
+  try {
+    pulledAt = JSON.parse(readFileSync(here("./.emdash/snapshot.json"), "utf8")).pulledAt ?? null;
+  } catch {
+    /* no snapshot: a build from src/content */
+  }
+  define.__NSV_SNAPSHOT_PULLED_AT__ = JSON.stringify(pulledAt);
+}
 
 /**
  * The Next build's security headers, for Cloudflare's static asset server.
@@ -98,6 +110,13 @@ export default defineConfig({
           entrypoint: here("./site/emdash/rebuild-on-publish.ts"),
           format: "native",
           capabilities: ["content:read"],
+        },
+        {
+          id: "nsv-validate-content",
+          version: "1.0.0",
+          entrypoint: here("./site/emdash/validate-content.ts"),
+          format: "native",
+          capabilities: ["content:write"],
         },
       ],
     }),
