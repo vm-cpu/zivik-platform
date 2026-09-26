@@ -34,8 +34,19 @@ function walk(dir, out = []) {
   return out;
 }
 
-/** @param {{ root: string }} opts */
-export function clientIslands({ root }) {
+/**
+ * @param {{ root: string, serverOnly?: string[] }} opts
+ *
+ * `serverOnly` lists "use client" modules (paths relative to `root`) that
+ * render here as plain server markup and never hydrate. A module belongs on
+ * it when it has no state, no effects and no handlers — when "use client" is
+ * there for a reason that is Next's alone. HeroMap is the case: under Next
+ * the directive keeps its 68 outlines out of the flight payload; under Astro
+ * there is no flight payload, and hydrating it only shipped its geometry
+ * again as a 38 kB (brotli) chunk to redraw a picture already in the HTML.
+ */
+export function clientIslands({ root, serverOnly = [] }) {
+  const skip = new Set(serverOnly);
   /** @type {Map<string, string>} absolute path -> island key */
   let islands = new Map();
 
@@ -43,12 +54,32 @@ export function clientIslands({ root }) {
     islands = new Map();
     for (const file of walk(root)) {
       const src = readFileSync(file, "utf8");
-      if (DIRECTIVE.test(src) && HAS_DEFAULT.test(src)) {
-        islands.set(file, relative(root, file).split(sep).join("/"));
+      const key = relative(root, file).split(sep).join("/");
+      if (DIRECTIVE.test(src) && HAS_DEFAULT.test(src) && !skip.has(key)) {
+        islands.set(file, key);
       }
     }
   };
   scan();
+
+  /**
+   * In the browser build, an island's stylesheet imports are dropped.
+   *
+   * client.tsx loads every island through one dynamic-import table, and Astro
+   * hands each page the CSS of everything that script can reach — so
+   * EventsMap's 26 kB of `.emap` rules were a render-blocking stylesheet on
+   * /team, /about and every decision, none of which has a map. The server
+   * build still imports them, and that is how a page that renders the island
+   * gets its CSS: from what it renders, not from what the shared script
+   * could load.
+   */
+  const CSS_IMPORT = /^\s*import\s+["'][^"']+\.css["'];?\s*$/gm;
+  const clientSide = (code, id) => {
+    const [file] = id.split("?");
+    if (!islands.has(file) || !CSS_IMPORT.test(code)) return;
+    CSS_IMPORT.lastIndex = 0;
+    return { code: code.replace(CSS_IMPORT, ""), map: null };
+  };
 
   return {
     name: "nsv-use-client-islands",
@@ -70,7 +101,7 @@ export function clientIslands({ root }) {
     transform(code, id, options) {
       const ssr =
         options?.ssr ?? (this.environment ? this.environment.config.consumer === "server" : false);
-      if (!ssr) return;
+      if (!ssr) return clientSide(code, id);
       const [file, query = ""] = id.split("?");
       if (query.includes(ORIGINAL)) return;
       const key = islands.get(file);
